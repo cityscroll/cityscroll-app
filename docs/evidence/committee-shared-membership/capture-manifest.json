@@ -1,0 +1,1018 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "surface": "committees linked through shared members, on a committee record",
+  "condition": "Served from the repository's own edge-handler responses over the built site directory. No production traffic is involved and no image binary is committed; each entry carries the sha256 of the rendered scope it asserts about.",
+  "image_binaries_committed": false,
+  "signals": [],
+  "captures": [
+    {
+      "id": "desktop-committee-connections",
+      "route": "/committees/5309/",
+      "route_note": "City Council subcommittee record; the section reads the committee graph and people lookup the document already loads.",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "javascript": "enabled",
+      "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
+      "repository_revision": "632aa857a8365011f93e5f8c1800d8331e3aa730",
+      "source_blob": {
+        "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
+        "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
+        "site/civic-documents.css": "7a3b1d6f0bf1a7af1ca4ec773e84265413b53817"
+      },
+      "data_vintage": {
+        "committee_graph_generated_at": "2026-09-06T15:47:21Z",
+        "committee_graph_as_of": "2026-09-06",
+        "person_hub_retrieved_at": "2026-09-06T16:04:22.087Z"
+      },
+      "assertion": "The record names the 22 other committees its own members sit on, gives each the count of distinct people behind it, lists no caucus among them, keeps one document outline with a single main landmark, and does not scroll sideways.",
+      "assertion_holds": true,
+      "render_scope": "outerHTML of #committee-shared-membership",
+      "render_sha256": "b036aca436701ddd9c428936603802b7092e843a85dcbaac010556532891540b",
+      "observed": {
+        "section": {
+          "heading": "Committees these members also serve on",
+          "summary": "22 other City Council committees have members in common with this one, as recorded on 2026-09-06.",
+          "basis": "Drawn from the City Council office records published here, dated 2026-09-06. Other members can serve on these committees without a record in this set.",
+          "as_of": "2026-09-06",
+          "committee_count": 22,
+          "subject_members": 6,
+          "represented_officials": 24,
+          "excluded_caucus_bodies": 6,
+          "rows": [
+            {
+              "committee_id": "11",
+              "shared_members": 3,
+              "href": "/committees/11/"
+            },
+            {
+              "committee_id": "19",
+              "shared_members": 3,
+              "href": "/committees/19/"
+            },
+            {
+              "committee_id": "5235",
+              "shared_members": 2,
+              "href": "/committees/5235/"
+            },
+            {
+              "committee_id": "5269",
+              "shared_members": 2,
+              "href": "/committees/5269/"
+            },
+            {
+              "committee_id": "12",
+              "shared_members": 2,
+              "href": "/committees/12/"
+            },
+            {
+              "committee_id": "5119",
+              "shared_members": 2,
+              "href": "/committees/5119/"
+            },
+            {
+              "committee_id": "5106",
+              "shared_members": 2,
+              "href": "/committees/5106/"
+            },
+            {
+              "committee_id": "5212",
+              "shared_members": 2,
+              "href": "/committees/5212/"
+            },
+            {
+              "committee_id": "5294",
+              "shared_members": 1,
+              "href": "/committees/5294/"
+            },
+            {
+              "committee_id": "6",
+              "shared_members": 1,
+              "href": "/committees/6/"
+            },
+            {
+              "committee_id": "5237",
+              "shared_members": 1,
+              "href": "/committees/5237/"
+            },
+            {
+              "committee_id": "5105",
+              "shared_members": 1,
+              "href": "/committees/5105/"
+            },
+            {
+              "committee_id": "5316",
+              "shared_members": 1,
+              "href": "/committees/5316/"
+            },
+            {
+              "committee_id": "5312",
+              "shared_members": 1,
+              "href": "/committees/5312/"
+            },
+            {
+              "committee_id": "7",
+              "shared_members": 1,
+              "href": "/committees/7/"
+            },
+            {
+              "committee_id": "5308",
+              "shared_members": 1,
+              "href": "/committees/5308/"
+            },
+            {
+              "committee_id": "5293",
+              "shared_members": 1,
+              "href": "/committees/5293/"
+            },
+            {
+              "committee_id": "14",
+              "shared_members": 1,
+              "href": "/committees/14/"
+            },
+            {
+              "committee_id": "16",
+              "shared_members": 1,
+              "href": "/committees/16/"
+            },
+            {
+              "committee_id": "17",
+              "shared_members": 1,
+              "href": "/committees/17/"
+            },
+            {
+              "committee_id": "5268",
+              "shared_members": 1,
+              "href": "/committees/5268/"
+            },
+            {
+              "committee_id": "5317",
+              "shared_members": 1,
+              "href": "/committees/5317/"
+            }
+          ],
+          "details_elements": 0,
+          "scripts": 0,
+          "horizontal_overflow": false
+        },
+        "keyboard": {
+          "visible": 17,
+          "reachable": 17,
+          "disclosed": 83,
+          "native": true,
+          "new_tab": 0
+        },
+        "outline": {
+          "headings": 3,
+          "unique_headings": 3,
+          "h1": 1,
+          "main": 1
+        },
+        "axe": {
+          "failing_violations": [],
+          "passes": true
+        }
+      }
+    },
+    {
+      "id": "narrow-committee-connections",
+      "route": "/committees/5309/",
+      "route_note": "City Council subcommittee record; the section reads the committee graph and people lookup the document already loads.",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "javascript": "enabled",
+      "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
+      "repository_revision": "632aa857a8365011f93e5f8c1800d8331e3aa730",
+      "source_blob": {
+        "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
+        "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
+        "site/civic-documents.css": "7a3b1d6f0bf1a7af1ca4ec773e84265413b53817"
+      },
+      "data_vintage": {
+        "committee_graph_generated_at": "2026-09-06T15:47:21Z",
+        "committee_graph_as_of": "2026-09-06",
+        "person_hub_retrieved_at": "2026-09-06T16:04:22.087Z"
+      },
+      "assertion": "The record names the 22 other committees its own members sit on, gives each the count of distinct people behind it, lists no caucus among them, keeps one document outline with a single main landmark, and does not scroll sideways.",
+      "assertion_holds": true,
+      "render_scope": "outerHTML of #committee-shared-membership",
+      "render_sha256": "b036aca436701ddd9c428936603802b7092e843a85dcbaac010556532891540b",
+      "observed": {
+        "section": {
+          "heading": "Committees these members also serve on",
+          "summary": "22 other City Council committees have members in common with this one, as recorded on 2026-09-06.",
+          "basis": "Drawn from the City Council office records published here, dated 2026-09-06. Other members can serve on these committees without a record in this set.",
+          "as_of": "2026-09-06",
+          "committee_count": 22,
+          "subject_members": 6,
+          "represented_officials": 24,
+          "excluded_caucus_bodies": 6,
+          "rows": [
+            {
+              "committee_id": "11",
+              "shared_members": 3,
+              "href": "/committees/11/"
+            },
+            {
+              "committee_id": "19",
+              "shared_members": 3,
+              "href": "/committees/19/"
+            },
+            {
+              "committee_id": "5235",
+              "shared_members": 2,
+              "href": "/committees/5235/"
+            },
+            {
+              "committee_id": "5269",
+              "shared_members": 2,
+              "href": "/committees/5269/"
+            },
+            {
+              "committee_id": "12",
+              "shared_members": 2,
+              "href": "/committees/12/"
+            },
+            {
+              "committee_id": "5119",
+              "shared_members": 2,
+              "href": "/committees/5119/"
+            },
+            {
+              "committee_id": "5106",
+              "shared_members": 2,
+              "href": "/committees/5106/"
+            },
+            {
+              "committee_id": "5212",
+              "shared_members": 2,
+              "href": "/committees/5212/"
+            },
+            {
+              "committee_id": "5294",
+              "shared_members": 1,
+              "href": "/committees/5294/"
+            },
+            {
+              "committee_id": "6",
+              "shared_members": 1,
+              "href": "/committees/6/"
+            },
+            {
+              "committee_id": "5237",
+              "shared_members": 1,
+              "href": "/committees/5237/"
+            },
+            {
+              "committee_id": "5105",
+              "shared_members": 1,
+              "href": "/committees/5105/"
+            },
+            {
+              "committee_id": "5316",
+              "shared_members": 1,
+              "href": "/committees/5316/"
+            },
+            {
+              "committee_id": "5312",
+              "shared_members": 1,
+              "href": "/committees/5312/"
+            },
+            {
+              "committee_id": "7",
+              "shared_members": 1,
+              "href": "/committees/7/"
+            },
+            {
+              "committee_id": "5308",
+              "shared_members": 1,
+              "href": "/committees/5308/"
+            },
+            {
+              "committee_id": "5293",
+              "shared_members": 1,
+              "href": "/committees/5293/"
+            },
+            {
+              "committee_id": "14",
+              "shared_members": 1,
+              "href": "/committees/14/"
+            },
+            {
+              "committee_id": "16",
+              "shared_members": 1,
+              "href": "/committees/16/"
+            },
+            {
+              "committee_id": "17",
+              "shared_members": 1,
+              "href": "/committees/17/"
+            },
+            {
+              "committee_id": "5268",
+              "shared_members": 1,
+              "href": "/committees/5268/"
+            },
+            {
+              "committee_id": "5317",
+              "shared_members": 1,
+              "href": "/committees/5317/"
+            }
+          ],
+          "details_elements": 0,
+          "scripts": 0,
+          "horizontal_overflow": false
+        },
+        "keyboard": {
+          "visible": 17,
+          "reachable": 17,
+          "disclosed": 83,
+          "native": true,
+          "new_tab": 0
+        },
+        "outline": {
+          "headings": 3,
+          "unique_headings": 3,
+          "h1": 1,
+          "main": 1
+        },
+        "axe": {
+          "failing_violations": [],
+          "passes": true
+        }
+      }
+    },
+    {
+      "id": "desktop-expansions-open",
+      "route": "/committees/5309/#committee-shared-membership-12",
+      "route_note": "The same record with four of its linked committees expanded in place.",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "javascript": "enabled",
+      "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
+      "repository_revision": "632aa857a8365011f93e5f8c1800d8331e3aa730",
+      "source_blob": {
+        "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
+        "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
+        "site/civic-documents.css": "7a3b1d6f0bf1a7af1ca4ec773e84265413b53817"
+      },
+      "data_vintage": {
+        "committee_graph_generated_at": "2026-09-06T15:47:21Z",
+        "committee_graph_as_of": "2026-09-06",
+        "person_hub_retrieved_at": "2026-09-06T16:04:22.087Z"
+      },
+      "assertion": "Each named committee expands in place to exactly the people the projection reports, with both roles and the days both memberships cover, each name linking to that person's own record, and every revealed link focusable.",
+      "assertion_holds": true,
+      "render_scope": "outerHTML of #committee-shared-membership",
+      "render_sha256": "b036aca436701ddd9c428936603802b7092e843a85dcbaac010556532891540b",
+      "observed": {
+        "expansions": {
+          "11": {
+            "open": true,
+            "count_label": "3 shared members",
+            "people": [
+              {
+                "href": "/officials/7825/",
+                "name": "Alexa Avilés",
+                "detail": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions: Committee Member · Committee on Finance: Committee Member · On both 2026-01-15 to 2029-12-31"
+              },
+              {
+                "href": "/officials/7801/",
+                "name": "Christopher Marte",
+                "detail": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions: Chair · Committee on Finance: Committee Member · On both 2026-01-15 to 2029-12-31"
+              },
+              {
+                "href": "/officials/7798/",
+                "name": "Oswald J. Feliz",
+                "detail": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions: Committee Member · Committee on Finance: Committee Member · On both 2026-01-15 to 2029-12-31"
+              }
+            ]
+          },
+          "19": {
+            "open": true,
+            "count_label": "3 shared members",
+            "people": [
+              {
+                "href": "/officials/7832/",
+                "name": "Kamillah Hanks",
+                "detail": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions: Committee Member · Committee on Public Safety: Committee Member · On both 2026-01-15 to 2029-12-31"
+              },
+              {
+                "href": "/officials/7798/",
+                "name": "Oswald J. Feliz",
+                "detail": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions: Committee Member · Committee on Public Safety: Chair · On both 2026-01-15 to 2029-12-31"
+              },
+              {
+                "href": "/officials/7824/",
+                "name": "Sandy Nurse",
+                "detail": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions: Committee Member · Committee on Public Safety: Committee Member · On both 2026-01-15 to 2029-12-31"
+              }
+            ]
+          },
+          "5106": {
+            "open": true,
+            "count_label": "2 shared members",
+            "people": [
+              {
+                "href": "/officials/7801/",
+                "name": "Christopher Marte",
+                "detail": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions: Chair · Committee on Parks and Recreation: Committee Member · On both 2026-01-15 to 2029-12-31"
+              },
+              {
+                "href": "/officials/7824/",
+                "name": "Sandy Nurse",
+                "detail": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions: Committee Member · Committee on Parks and Recreation: Committee Member · On both 2026-01-15 to 2029-12-31"
+              }
+            ]
+          },
+          "12": {
+            "open": true,
+            "count_label": "2 shared members",
+            "people": [
+              {
+                "href": "/officials/7825/",
+                "name": "Alexa Avilés",
+                "detail": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions: Committee Member · Committee on General Welfare: Committee Member · On both 2026-01-15 to 2029-12-31"
+              },
+              {
+                "href": "/officials/7824/",
+                "name": "Sandy Nurse",
+                "detail": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions: Committee Member · Committee on General Welfare: Committee Member · On both 2026-01-15 to 2029-12-31"
+              }
+            ]
+          }
+        },
+        "keyboard": {
+          "visible": 4,
+          "reachable": 4,
+          "disclosed": 1,
+          "native": true,
+          "new_tab": 0
+        }
+      }
+    },
+    {
+      "id": "desktop-walk-committee-back",
+      "route": "/committees/5309/ → /committees/11/ → Back",
+      "route_note": "Both records are published committee routes; the walk uses plain anchors only.",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "javascript": "enabled",
+      "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
+      "repository_revision": "632aa857a8365011f93e5f8c1800d8331e3aa730",
+      "source_blob": {
+        "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
+        "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
+        "site/civic-documents.css": "7a3b1d6f0bf1a7af1ca4ec773e84265413b53817"
+      },
+      "data_vintage": {
+        "committee_graph_generated_at": "2026-09-06T15:47:21Z",
+        "committee_graph_as_of": "2026-09-06",
+        "person_hub_retrieved_at": "2026-09-06T16:04:22.087Z"
+      },
+      "assertion": "Opening a shared-member expansion, following the linked committee, and pressing Back returns to the originating record with the same expansion still open, because the expansion lives in the URL.",
+      "assertion_holds": true,
+      "render_scope": "outerHTML of #committee-shared-membership",
+      "render_sha256": "b036aca436701ddd9c428936603802b7092e843a85dcbaac010556532891540b",
+      "observed": {
+        "destination": {
+          "heading": "Committees these members also serve on",
+          "summary": "28 other City Council committees have members in common with this one, as recorded on 2026-09-06.",
+          "basis": "Drawn from the City Council office records published here, dated 2026-09-06. Other members can serve on these committees without a record in this set.",
+          "as_of": "2026-09-06",
+          "committee_count": 28,
+          "subject_members": 8,
+          "represented_officials": 24,
+          "excluded_caucus_bodies": 5,
+          "rows": [
+            {
+              "committee_id": "5268",
+              "shared_members": 3,
+              "href": "/committees/5268/"
+            },
+            {
+              "committee_id": "5309",
+              "shared_members": 3,
+              "href": "/committees/5309/"
+            },
+            {
+              "committee_id": "5235",
+              "shared_members": 2,
+              "href": "/committees/5235/"
+            },
+            {
+              "committee_id": "5237",
+              "shared_members": 2,
+              "href": "/committees/5237/"
+            },
+            {
+              "committee_id": "12",
+              "shared_members": 2,
+              "href": "/committees/12/"
+            },
+            {
+              "committee_id": "14",
+              "shared_members": 2,
+              "href": "/committees/14/"
+            },
+            {
+              "committee_id": "16",
+              "shared_members": 2,
+              "href": "/committees/16/"
+            },
+            {
+              "committee_id": "17",
+              "shared_members": 2,
+              "href": "/committees/17/"
+            },
+            {
+              "committee_id": "5106",
+              "shared_members": 2,
+              "href": "/committees/5106/"
+            },
+            {
+              "committee_id": "5212",
+              "shared_members": 2,
+              "href": "/committees/5212/"
+            },
+            {
+              "committee_id": "5127",
+              "shared_members": 2,
+              "href": "/committees/5127/"
+            },
+            {
+              "committee_id": "5272",
+              "shared_members": 2,
+              "href": "/committees/5272/"
+            },
+            {
+              "committee_id": "5104",
+              "shared_members": 2,
+              "href": "/committees/5104/"
+            },
+            {
+              "committee_id": "3",
+              "shared_members": 1,
+              "href": "/committees/3/"
+            },
+            {
+              "committee_id": "4",
+              "shared_members": 1,
+              "href": "/committees/4/"
+            },
+            {
+              "committee_id": "6",
+              "shared_members": 1,
+              "href": "/committees/6/"
+            },
+            {
+              "committee_id": "7",
+              "shared_members": 1,
+              "href": "/committees/7/"
+            },
+            {
+              "committee_id": "9",
+              "shared_members": 1,
+              "href": "/committees/9/"
+            },
+            {
+              "committee_id": "5308",
+              "shared_members": 1,
+              "href": "/committees/5308/"
+            },
+            {
+              "committee_id": "5293",
+              "shared_members": 1,
+              "href": "/committees/5293/"
+            },
+            {
+              "committee_id": "5241",
+              "shared_members": 1,
+              "href": "/committees/5241/"
+            },
+            {
+              "committee_id": "5119",
+              "shared_members": 1,
+              "href": "/committees/5119/"
+            },
+            {
+              "committee_id": "5315",
+              "shared_members": 1,
+              "href": "/committees/5315/"
+            },
+            {
+              "committee_id": "5107",
+              "shared_members": 1,
+              "href": "/committees/5107/"
+            },
+            {
+              "committee_id": "19",
+              "shared_members": 1,
+              "href": "/committees/19/"
+            },
+            {
+              "committee_id": "5120",
+              "shared_members": 1,
+              "href": "/committees/5120/"
+            },
+            {
+              "committee_id": "5122",
+              "shared_members": 1,
+              "href": "/committees/5122/"
+            },
+            {
+              "committee_id": "5311",
+              "shared_members": 1,
+              "href": "/committees/5311/"
+            }
+          ],
+          "details_elements": 0,
+          "scripts": 0,
+          "horizontal_overflow": false
+        },
+        "returned_url_fragment": "committee-shared-membership-11",
+        "expansion": {
+          "open": true,
+          "count_label": "3 shared members",
+          "people": [
+            {
+              "href": "/officials/7825/",
+              "name": "Alexa Avilés",
+              "detail": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions: Committee Member · Committee on Finance: Committee Member · On both 2026-01-15 to 2029-12-31"
+            },
+            {
+              "href": "/officials/7801/",
+              "name": "Christopher Marte",
+              "detail": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions: Chair · Committee on Finance: Committee Member · On both 2026-01-15 to 2029-12-31"
+            },
+            {
+              "href": "/officials/7798/",
+              "name": "Oswald J. Feliz",
+              "detail": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions: Committee Member · Committee on Finance: Committee Member · On both 2026-01-15 to 2029-12-31"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "desktop-walk-official-back",
+      "route": "/committees/5309/ → /officials/7801/ → Back",
+      "route_note": "The member link opens that person's existing published record.",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "javascript": "enabled",
+      "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
+      "repository_revision": "632aa857a8365011f93e5f8c1800d8331e3aa730",
+      "source_blob": {
+        "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
+        "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
+        "site/civic-documents.css": "7a3b1d6f0bf1a7af1ca4ec773e84265413b53817"
+      },
+      "data_vintage": {
+        "committee_graph_generated_at": "2026-09-06T15:47:21Z",
+        "committee_graph_as_of": "2026-09-06",
+        "person_hub_retrieved_at": "2026-09-06T16:04:22.087Z"
+      },
+      "assertion": "Following a shared member to their own record and pressing Back returns to the originating committee with the same expansion still open.",
+      "assertion_holds": true,
+      "render_scope": "outerHTML of #committee-shared-membership",
+      "render_sha256": "b036aca436701ddd9c428936603802b7092e843a85dcbaac010556532891540b",
+      "observed": {
+        "member_route": "/officials/7801/",
+        "expansion": {
+          "open": true,
+          "count_label": "3 shared members",
+          "people": [
+            {
+              "href": "/officials/7825/",
+              "name": "Alexa Avilés",
+              "detail": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions: Committee Member · Committee on Finance: Committee Member · On both 2026-01-15 to 2029-12-31"
+            },
+            {
+              "href": "/officials/7801/",
+              "name": "Christopher Marte",
+              "detail": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions: Chair · Committee on Finance: Committee Member · On both 2026-01-15 to 2029-12-31"
+            },
+            {
+              "href": "/officials/7798/",
+              "name": "Oswald J. Feliz",
+              "detail": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions: Committee Member · Committee on Finance: Committee Member · On both 2026-01-15 to 2029-12-31"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "narrow-reciprocal-committee",
+      "route": "/committees/5106/#committee-shared-membership-5309",
+      "route_note": "The committee the subcommittee links to, read back from its own record.",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "javascript": "enabled",
+      "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
+      "repository_revision": "632aa857a8365011f93e5f8c1800d8331e3aa730",
+      "source_blob": {
+        "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
+        "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
+        "site/civic-documents.css": "7a3b1d6f0bf1a7af1ca4ec773e84265413b53817"
+      },
+      "data_vintage": {
+        "committee_graph_generated_at": "2026-09-06T15:47:21Z",
+        "committee_graph_as_of": "2026-09-06",
+        "person_hub_retrieved_at": "2026-09-06T16:04:22.087Z"
+      },
+      "assertion": "The Parks record identifies the same two members, Marte and Nurse, as shared with the subcommittee, with the two roles swapped and the same overlapping days.",
+      "assertion_holds": true,
+      "render_scope": "outerHTML of #committee-shared-membership",
+      "render_sha256": "4a57673bd94a7f71e0458df9a32c73dfe445c0c4ea00f0f6d2f3d778d4e88518",
+      "observed": {
+        "section": {
+          "heading": "Committees these members also serve on",
+          "summary": "20 other City Council committees have members in common with this one, as recorded on 2026-09-06.",
+          "basis": "Drawn from the City Council office records published here, dated 2026-09-06. Other members can serve on these committees without a record in this set.",
+          "as_of": "2026-09-06",
+          "committee_count": 20,
+          "subject_members": 5,
+          "represented_officials": 24,
+          "excluded_caucus_bodies": 5,
+          "rows": [
+            {
+              "committee_id": "11",
+              "shared_members": 2,
+              "href": "/committees/11/"
+            },
+            {
+              "committee_id": "12",
+              "shared_members": 2,
+              "href": "/committees/12/"
+            },
+            {
+              "committee_id": "5107",
+              "shared_members": 2,
+              "href": "/committees/5107/"
+            },
+            {
+              "committee_id": "5127",
+              "shared_members": 2,
+              "href": "/committees/5127/"
+            },
+            {
+              "committee_id": "5268",
+              "shared_members": 2,
+              "href": "/committees/5268/"
+            },
+            {
+              "committee_id": "5309",
+              "shared_members": 2,
+              "href": "/committees/5309/"
+            },
+            {
+              "committee_id": "5235",
+              "shared_members": 1,
+              "href": "/committees/5235/"
+            },
+            {
+              "committee_id": "5105",
+              "shared_members": 1,
+              "href": "/committees/5105/"
+            },
+            {
+              "committee_id": "5316",
+              "shared_members": 1,
+              "href": "/committees/5316/"
+            },
+            {
+              "committee_id": "5312",
+              "shared_members": 1,
+              "href": "/committees/5312/"
+            },
+            {
+              "committee_id": "9",
+              "shared_members": 1,
+              "href": "/committees/9/"
+            },
+            {
+              "committee_id": "5239",
+              "shared_members": 1,
+              "href": "/committees/5239/"
+            },
+            {
+              "committee_id": "14",
+              "shared_members": 1,
+              "href": "/committees/14/"
+            },
+            {
+              "committee_id": "5241",
+              "shared_members": 1,
+              "href": "/committees/5241/"
+            },
+            {
+              "committee_id": "16",
+              "shared_members": 1,
+              "href": "/committees/16/"
+            },
+            {
+              "committee_id": "5315",
+              "shared_members": 1,
+              "href": "/committees/5315/"
+            },
+            {
+              "committee_id": "5212",
+              "shared_members": 1,
+              "href": "/committees/5212/"
+            },
+            {
+              "committee_id": "19",
+              "shared_members": 1,
+              "href": "/committees/19/"
+            },
+            {
+              "committee_id": "5108",
+              "shared_members": 1,
+              "href": "/committees/5108/"
+            },
+            {
+              "committee_id": "5311",
+              "shared_members": 1,
+              "href": "/committees/5311/"
+            }
+          ],
+          "details_elements": 0,
+          "scripts": 0,
+          "horizontal_overflow": false
+        },
+        "expansion": {
+          "open": true,
+          "count_label": "2 shared members",
+          "people": [
+            {
+              "href": "/officials/7801/",
+              "name": "Christopher Marte",
+              "detail": "Committee on Parks and Recreation: Committee Member · Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions: Chair · On both 2026-01-15 to 2029-12-31"
+            },
+            {
+              "href": "/officials/7824/",
+              "name": "Sandy Nurse",
+              "detail": "Committee on Parks and Recreation: Committee Member · Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions: Committee Member · On both 2026-01-15 to 2029-12-31"
+            }
+          ]
+        },
+        "axe": {
+          "failing_violations": [],
+          "passes": true
+        }
+      }
+    },
+    {
+      "id": "narrow-no-javascript",
+      "route": "/committees/5309/#committee-shared-membership-11",
+      "route_note": "The committee record is server-rendered; the expansion is a CSS target, not a script.",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "javascript": "disabled",
+      "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
+      "repository_revision": "632aa857a8365011f93e5f8c1800d8331e3aa730",
+      "source_blob": {
+        "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
+        "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
+        "site/civic-documents.css": "7a3b1d6f0bf1a7af1ca4ec773e84265413b53817"
+      },
+      "data_vintage": {
+        "committee_graph_generated_at": "2026-09-06T15:47:21Z",
+        "committee_graph_as_of": "2026-09-06",
+        "person_hub_retrieved_at": "2026-09-06T16:04:22.087Z"
+      },
+      "assertion": "With scripting unavailable the section still lists every linked committee and the URL still opens one of them onto its three named people.",
+      "assertion_holds": true,
+      "render_scope": "outerHTML of #committee-shared-membership",
+      "render_sha256": "b036aca436701ddd9c428936603802b7092e843a85dcbaac010556532891540b",
+      "observed": {
+        "expansion_open": true,
+        "linked_committees": 22,
+        "revealed_people": 3
+      }
+    },
+    {
+      "id": "negative-historical-roster",
+      "route": "/committees/20/",
+      "route_note": "Committee on Rules, Privileges and Elections",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "javascript": "enabled",
+      "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
+      "repository_revision": "632aa857a8365011f93e5f8c1800d8331e3aa730",
+      "source_blob": {
+        "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
+        "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
+        "site/civic-documents.css": "7a3b1d6f0bf1a7af1ca4ec773e84265413b53817"
+      },
+      "data_vintage": {
+        "committee_graph_generated_at": "2026-09-06T15:47:21Z",
+        "committee_graph_as_of": "2026-09-06",
+        "person_hub_retrieved_at": "2026-09-06T16:04:22.087Z"
+      },
+      "assertion": "Its recorded roster is entirely historical at this vintage, so the record keeps every recorded membership period and renders no connections section at all — not an empty one, and not a zero.",
+      "assertion_holds": true,
+      "render_scope": "outerHTML of main.committee-document",
+      "render_sha256": "c6b7557d2573f42ce170e9e8b399691846bfd17ee47c2b88db7b89b1d41437e6",
+      "observed": {
+        "connections_section": 0,
+        "roster_members": 14,
+        "axe": {
+          "failing_violations": [],
+          "passes": true
+        }
+      }
+    },
+    {
+      "id": "negative-caucus",
+      "route": "/committees/5285/",
+      "route_note": "Caucus - Progressive Caucus",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "javascript": "enabled",
+      "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
+      "repository_revision": "632aa857a8365011f93e5f8c1800d8331e3aa730",
+      "source_blob": {
+        "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
+        "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
+        "site/civic-documents.css": "7a3b1d6f0bf1a7af1ca4ec773e84265413b53817"
+      },
+      "data_vintage": {
+        "committee_graph_generated_at": "2026-09-06T15:47:21Z",
+        "committee_graph_as_of": "2026-09-06",
+        "person_hub_retrieved_at": "2026-09-06T16:04:22.087Z"
+      },
+      "assertion": "A caucus reaches the reader through the same office-record family as a committee, and never lends its roster to a committee connection, so this record renders no connections section.",
+      "assertion_holds": true,
+      "render_scope": "outerHTML of main.committee-document",
+      "render_sha256": "9eb2c93c3b788bb0eeaaa549f32de63b527a83423f7ddd31c6078ee04159def4",
+      "observed": {
+        "connections_section": 0,
+        "roster_members": 21,
+        "axe": {
+          "failing_violations": [],
+          "passes": true
+        }
+      }
+    },
+    {
+      "id": "negative-failed-load",
+      "route": "/committees/5309/ with the committee graph asset unavailable",
+      "route_note": "The same request with the document's own graph asset answering 503.",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "javascript": "enabled",
+      "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
+      "repository_revision": "632aa857a8365011f93e5f8c1800d8331e3aa730",
+      "source_blob": {
+        "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
+        "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
+        "site/civic-documents.css": "7a3b1d6f0bf1a7af1ca4ec773e84265413b53817"
+      },
+      "data_vintage": {
+        "committee_graph_generated_at": "2026-09-06T15:47:21Z",
+        "committee_graph_as_of": "2026-09-06",
+        "person_hub_retrieved_at": "2026-09-06T16:04:22.087Z"
+      },
+      "assertion": "A committee whose own graph asset cannot be read answers plainly and paints no partial connections section.",
+      "assertion_holds": true,
+      "render_scope": "outerHTML of main",
+      "render_sha256": "66e6d90512cda78c267931e9a3824eb14073899af1139fd0e1ee39bc0f0ae668",
+      "observed": {
+        "connections_section": 0,
+        "partial_rows": 0,
+        "heading": "Committee record not found"
+      }
+    }
+  ]
+}

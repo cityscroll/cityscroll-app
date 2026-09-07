@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/committee-shared-membership",
+  "status": "implemented",
+  "fingerprint": "committee-shared-membership.v1",
+  "updated_at": "2026-09-07T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "committee-shared-membership-document",
+      "path": "site/committee_document.mjs"
+    },
+    {
+      "id": "committee-shared-membership-tests",
+      "path": "test/existing_connections_committee.test.mjs"
+    },
+    {
+      "id": "committee-shared-membership-fixtures",
+      "path": "tools/render_committee_shared_members_fixtures.mjs"
+    },
+    {
+      "id": "committee-shared-membership-capture",
+      "path": "tools/capture_committee_shared_members_evidence.py"
+    },
+    {
+      "id": "committee-shared-membership-served-evidence",
+      "path": "docs/evidence/committee-shared-membership/README.md"
+    }
+  ]
+}

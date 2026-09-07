@@ -1,5 +1,11 @@
 import { constellationLink } from "./affordance_grammar.mjs";
 import {
+  COMMITTEE_SHARED_MEMBERSHIP_ANCHOR,
+  COMMITTEE_SHARED_MEMBERSHIP_STRINGS,
+  buildCommitteeSharedMembershipView,
+  renderCommitteeSharedMembershipHTML,
+} from "./committee_coservice.mjs";
+import {
   gateNodePageRender,
   renderCivicDocumentAssets,
   renderCivicDocumentMast,
@@ -91,6 +97,14 @@ export function buildCommitteeDocumentView(graph = {}, people = {}, value, extra
     members,
     proceeding_roles: proceedingRoles,
     land_matter_join: proceedingRoles ? landMatterJoinState(proceedingRoles) : null,
+    // The other committees reached through this committee's own members, read
+    // from the graph and the people lookup this document already loads, so the
+    // section adds no request. The as-of day is the snapshot's own vintage: a
+    // membership snapshot can only answer for a day it observed.
+    shared_membership: buildCommitteeSharedMembershipView(graph, id, {
+      asOf: clean(graph.generated_at, 80).slice(0, 10) || null,
+      people,
+    }),
   };
 }
 
@@ -126,13 +140,24 @@ export function renderCommitteeDocument(view, { currentHref = "" } = {}) {
     exportClass: "committee_members",
   });
   const proceedingSection = renderCommitteeProceedingSection(view);
+  // The committee record is served as a static document with no dictionary
+  // runtime, so the section renders the English copy the shipped dictionary
+  // carries for these keys in every first-class language.
+  const sharedSection = renderNodeSection({
+    heading: COMMITTEE_SHARED_MEMBERSHIP_STRINGS.committee_shared_heading,
+    headingId: `${COMMITTEE_SHARED_MEMBERSHIP_ANCHOR}-heading`,
+    extraClass: "committee-shared-section",
+    attrs: { id: COMMITTEE_SHARED_MEMBERSHIP_ANCHOR },
+    body: renderCommitteeSharedMembershipHTML(view.shared_membership, { escapeHtml: esc }),
+    exportClass: "committee_shared_membership",
+  });
   const back = renderNodeBack({
     href: "/browse/people/",
     label: "Browse people and organizations",
     currentHref,
   });
   const councilBack = `<p class="node-kicker civic-object-kicker"><a class="ui-constellation-link" href="/agencies/city-council/" data-role-relation="part_of">New York City Council</a> committee</p>`;
-  return gateNodePageRender(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(view.title)} · CityScroll</title><meta name="description" content="New York City Council committee record and linked members."><link rel="canonical" href="https://cityscroll.org${esc(view.canonical_href)}"><meta property="og:url" content="https://cityscroll.org${esc(view.canonical_href)}">${renderCivicDocumentAssets("/")}</head><body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: "browse", surfaceClass: "committee-document-mast" })}<main id="main" class="node-document committee-document" data-node-document="1" data-civic-object-kind="committee" data-committee-id="${esc(view.id)}" data-subject-ref="${esc(view.ref)}">${back}<header class="node-hero civic-object-hero">${councilBack}<h1>${esc(view.title)}</h1></header>${proceedingSection}${memberSection}</main>${renderNodeFooter()}</body></html>`);
+  return gateNodePageRender(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(view.title)} · CityScroll</title><meta name="description" content="New York City Council committee record and linked members."><link rel="canonical" href="https://cityscroll.org${esc(view.canonical_href)}"><meta property="og:url" content="https://cityscroll.org${esc(view.canonical_href)}">${renderCivicDocumentAssets("/")}</head><body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: "browse", surfaceClass: "committee-document-mast" })}<main id="main" class="node-document committee-document" data-node-document="1" data-civic-object-kind="committee" data-committee-id="${esc(view.id)}" data-subject-ref="${esc(view.ref)}">${back}<header class="node-hero civic-object-hero">${councilBack}<h1>${esc(view.title)}</h1></header>${proceedingSection}${memberSection}${sharedSection}</main>${renderNodeFooter()}</body></html>`);
 }
 
 function roleReceipt(edge) {

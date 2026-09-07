@@ -20,6 +20,12 @@
  *
  * Co-service is a roster fact: two names appear on the same body for
  * overlapping dates. It carries nothing about attendance or agreement.
+ *
+ * The same observations are read from both ends. From an official, the question
+ * is which colleagues share a body; from a committee, which other committees
+ * share a member. One reader, one repeated-row collapse and one interval
+ * intersection serve both, so the two pages cannot report different counts for
+ * the same pair of records.
  */
 
 import { constellationLink } from "./affordance_grammar.mjs";
@@ -114,12 +120,13 @@ function coserviceRole(observation) {
  * Collapse repeated observations of the same person on the same body into one
  * membership carrying the widest dates the publisher recorded around that day.
  */
-function coserviceMembershipsByBody(observations) {
-  const byBody = new Map();
+function coserviceMergeMemberships(observations, keyOf) {
+  const merged = new Map();
   for (const observation of observations) {
-    const current = byBody.get(observation.committee_ref);
+    const key = keyOf(observation);
+    const current = merged.get(key);
     if (!current) {
-      byBody.set(observation.committee_ref, { ...observation, observation_count: 1 });
+      merged.set(key, { ...observation, observation_count: 1 });
       continue;
     }
     current.observation_count += 1;
@@ -130,7 +137,11 @@ function coserviceMembershipsByBody(observations) {
       current.source_title = observation.source_title;
     }
   }
-  return byBody;
+  return merged;
+}
+
+function coserviceMembershipsByBody(observations) {
+  return coserviceMergeMemberships(observations, (observation) => observation.committee_ref);
 }
 
 function coserviceUnavailableView(graph, asOf) {
@@ -406,4 +417,333 @@ export function renderCommitteeCoServiceHTML(view, { escapeHtml, translate, tran
     <ul class="official-coservice-colleagues">${visible.map((colleague) => coserviceColleagueMarkup(colleague, view, options)).join("")}</ul>
     ${disclosure}
   </section>`;
+}
+
+/* ------------------------------------------------------------------------- *
+ * The same evidence, read from a committee.
+ *
+ * The projection above answers "who does this member sit with?". Read from the
+ * other end, the identical dated observations answer "which other committees do
+ * this committee's members also sit on?". Both directions call the same
+ * observation reader, the same repeated-row collapse and the same interval
+ * intersection, so a count shown on one page cannot disagree with the count
+ * shown on the other.
+ * ------------------------------------------------------------------------- */
+
+export const COMMITTEE_SHARED_MEMBERSHIP_SCHEMA = "cityscroll.committee_shared_membership.v1";
+
+/** How many linked committees stay in the open list before the rest are disclosed. */
+export const COMMITTEE_SHARED_VISIBLE_COMMITTEES = 8;
+
+/** The anchor the section carries, so a disclosure can link back to a closed list. */
+export const COMMITTEE_SHARED_MEMBERSHIP_ANCHOR = "committee-shared-membership";
+
+/**
+ * The resident copy this section renders.
+ *
+ * The committee record is served as a static document with no dictionary
+ * runtime, so it renders these English strings directly. They are byte-equal to
+ * the `committee_shared_*` entries of the shipped `en` dictionary, and
+ * test/existing_connections_committee.test.mjs fails the day they drift apart or
+ * the day a shipping language is missing one of them.
+ */
+export const COMMITTEE_SHARED_MEMBERSHIP_STRINGS = Object.freeze({
+  committee_shared_heading: "Committees these members also serve on",
+  committee_shared_summary_one:
+    "{n} other City Council committee has a member in common with this one, as recorded on {date}.",
+  committee_shared_summary_other:
+    "{n} other City Council committees have members in common with this one, as recorded on {date}.",
+  committee_shared_basis:
+    "Drawn from the City Council office records published here, dated {vintage}. Other members can serve on these committees without a record in this set.",
+  committee_shared_members_one: "{n} shared member",
+  committee_shared_members_other: "{n} shared members",
+  committee_shared_expand_one: "Show the shared member",
+  committee_shared_expand_other: "Show the {n} shared members",
+  committee_shared_expand_aria: "Show the members this committee shares with {committee}",
+  committee_shared_collapse: "Hide",
+  committee_shared_collapse_aria: "Hide the members this committee shares with {committee}",
+  committee_shared_body_role: "{body}: {role}",
+  committee_shared_overlap: "On both {start} to {end}",
+  committee_shared_more_one: "Show {n} more committee",
+  committee_shared_more_other: "Show {n} more committees",
+});
+
+const sharedFill = (text, vars) => Object.entries(vars || {}).reduce(
+  (value, [name, replacement]) => value.replaceAll(`{${name}}`, String(replacement)),
+  String(text ?? ""),
+);
+
+const sharedEnglishTranslate = (key, vars) => sharedFill(COMMITTEE_SHARED_MEMBERSHIP_STRINGS[key] ?? "", vars);
+
+const sharedEnglishTranslateCount = (base, count, vars) => sharedFill(
+  COMMITTEE_SHARED_MEMBERSHIP_STRINGS[`${base}_${count === 1 ? "one" : "other"}`]
+    ?? COMMITTEE_SHARED_MEMBERSHIP_STRINGS[`${base}_other`]
+    ?? "",
+  { n: String(count), ...(vars || {}) },
+);
+
+function sharedUnavailableView(graph, asOf, subject) {
+  return {
+    schema: COMMITTEE_SHARED_MEMBERSHIP_SCHEMA,
+    version: 1,
+    state: "unknown",
+    as_of: asOf,
+    vintage: coserviceClean(graph?.generated_at, 80) || null,
+    source: "nyc_legistar_office_records",
+    subject,
+    committees: [],
+    committee_count: 0,
+    visible_count: 0,
+    disclosed_count: 0,
+    subject_member_count: 0,
+    represented_official_count: 0,
+    excluded_caucus_body_count: 0,
+    unnamed_member_count: 0,
+    subject_is_caucus: false,
+  };
+}
+
+/**
+ * Build the linked-committee view for one committee.
+ *
+ * A committee is linked to this one when a person the publisher records on both
+ * bodies holds those two memberships over days that meet. `asOf` is required for
+ * the same reason as above: a membership snapshot can only answer for a day it
+ * observed. The count is of distinct people, never of publisher rows.
+ */
+export function buildCommitteeSharedMembershipView(graph = {}, committeeId, {
+  asOf = null,
+  people = null,
+  limit = COMMITTEE_SHARED_VISIBLE_COMMITTEES,
+} = {}) {
+  const subjectId = coserviceCommitteeId(committeeId);
+  const day = coserviceDay(asOf);
+  if (!subjectId || !day) return sharedUnavailableView(graph, day, null);
+  const subjectRef = `committee:${subjectId}`;
+  const subject = {
+    id: subjectId,
+    ref: subjectRef,
+    name: coserviceBodyName(graph, subjectRef),
+    href: `/committees/${encodeURIComponent(subjectId)}/`,
+  };
+  if (graph?.publication !== "published") return sharedUnavailableView(graph, day, subject);
+
+  // A caucus reaches the reader through the same office-record family as a
+  // committee. It is never a linked formal body, and a caucus never lends its
+  // roster to a committee connection from either end.
+  const isCaucusRef = (ref) => isCouncilCaucusBody(coserviceBodyName(graph, ref));
+  if (isCaucusRef(subjectRef)) {
+    return { ...sharedUnavailableView(graph, day, subject), state: "empty", subject_is_caucus: true };
+  }
+
+  const observations = coserviceObservations(graph, day);
+  const representedOfficials = new Set(
+    observations.filter((observation) => !isCaucusRef(observation.committee_ref))
+      .map((observation) => observation.official_id),
+  );
+  // One membership per person on this committee, however many rows the
+  // publisher repeated for it.
+  const subjectMemberships = coserviceMergeMemberships(
+    observations.filter((observation) => observation.committee_ref === subjectRef),
+    (observation) => observation.official_id,
+  );
+  if (!subjectMemberships.size) {
+    return {
+      ...sharedUnavailableView(graph, day, subject),
+      state: "empty",
+      represented_official_count: representedOfficials.size,
+    };
+  }
+
+  const caucusBodies = new Set();
+  const byCommittee = new Map();
+  for (const observation of observations) {
+    if (observation.committee_ref === subjectRef) continue;
+    const here = subjectMemberships.get(observation.official_id);
+    if (!here) continue;
+    if (isCaucusRef(observation.committee_ref)) {
+      caucusBodies.add(observation.committee_ref);
+      continue;
+    }
+    const overlap = datedServiceOverlap(here, observation);
+    if (!overlap) continue;
+    const entry = byCommittee.get(observation.committee_ref) || {
+      committee_id: observation.committee_id,
+      committee_ref: observation.committee_ref,
+      name: coserviceBodyName(graph, observation.committee_ref),
+      href: `/committees/${encodeURIComponent(observation.committee_id)}/`,
+      members: new Map(),
+    };
+    const existing = entry.members.get(observation.official_id);
+    if (existing) {
+      // A repeated publisher row widens the recorded window; it never becomes a
+      // second shared member.
+      existing.observation_count += 1;
+      if (overlap.start < existing.overlap_start) existing.overlap_start = overlap.start;
+      if (overlap.end > existing.overlap_end) existing.overlap_end = overlap.end;
+      if (observation.is_chair && existing.linked_role !== "Chair") {
+        existing.linked_role = coserviceRole(observation);
+        existing.linked_role_source_title = observation.source_title;
+      }
+    } else {
+      entry.members.set(observation.official_id, {
+        official_id: observation.official_id,
+        ref: `official:${observation.official_id}`,
+        name: coserviceClean(people?.by_person_id?.[observation.official_id]?.person_name) || null,
+        href: `/officials/${encodeURIComponent(observation.official_id)}/`,
+        subject_role: coserviceRole(here),
+        subject_role_source_title: here.source_title,
+        linked_role: coserviceRole(observation),
+        linked_role_source_title: observation.source_title,
+        overlap_start: overlap.start,
+        overlap_end: overlap.end,
+        observation_count: 1,
+      });
+    }
+    byCommittee.set(observation.committee_ref, entry);
+  }
+
+  const unnamed = new Set();
+  for (const entry of byCommittee.values()) {
+    for (const member of entry.members.values()) if (!member.name) unnamed.add(member.official_id);
+  }
+  const byName = (left, right) => String(left.name || "").localeCompare(String(right.name || ""), "en-US");
+  const committees = [...byCommittee.values()]
+    .map((entry) => {
+      // A person the publisher records without a published name is counted, and
+      // never rendered as a bare id.
+      const members = [...entry.members.values()].filter((member) => member.name).sort(byName);
+      return {
+        committee_id: entry.committee_id,
+        committee_ref: entry.committee_ref,
+        name: entry.name,
+        href: entry.href,
+        anchor: `${COMMITTEE_SHARED_MEMBERSHIP_ANCHOR}-${entry.committee_id}`,
+        shared_member_count: members.length,
+        shared_members: members,
+      };
+    })
+    .filter((entry) => entry.name && entry.shared_member_count > 0)
+    .sort((left, right) => right.shared_member_count - left.shared_member_count || byName(left, right));
+
+  const boundedLimit = Number.isInteger(limit) && limit > 0 ? limit : COMMITTEE_SHARED_VISIBLE_COMMITTEES;
+  const visible = Math.min(committees.length, boundedLimit);
+  const namedSubjectMembers = [...subjectMemberships.keys()]
+    .filter((officialId) => coserviceClean(people?.by_person_id?.[officialId]?.person_name));
+
+  return {
+    schema: COMMITTEE_SHARED_MEMBERSHIP_SCHEMA,
+    version: 1,
+    state: committees.length ? "matched" : "empty",
+    as_of: day,
+    vintage: coserviceClean(graph?.generated_at, 80) || null,
+    source: "nyc_legistar_office_records",
+    subject,
+    committees,
+    committee_count: committees.length,
+    visible_count: visible,
+    disclosed_count: Math.max(0, committees.length - visible),
+    subject_member_count: namedSubjectMembers.length,
+    represented_official_count: representedOfficials.size,
+    excluded_caucus_body_count: caucusBodies.size,
+    unnamed_member_count: unnamed.size,
+    subject_is_caucus: false,
+  };
+}
+
+function sharedMemberMarkup(member, row, view, { escape, translate }) {
+  const link = constellationLink({
+    href: member.href,
+    label: member.name,
+    className: "committee-shared-member-link",
+    attributes: {
+      "data-pivot-target-kind": "official",
+      "data-pivot-target-id": member.official_id,
+      "data-pivot-relation-label": "shared member",
+    },
+    escape,
+  });
+  const detail = [
+    translate("committee_shared_body_role", {
+      body: escape(view.subject?.name || ""),
+      role: escape(member.subject_role),
+    }),
+    translate("committee_shared_body_role", { body: escape(row.name), role: escape(member.linked_role) }),
+    translate("committee_shared_overlap", {
+      start: escape(member.overlap_start),
+      end: escape(member.overlap_end),
+    }),
+  ].join(" · ");
+  return `<li class="committee-shared-member" data-shared-official-id="${escape(member.official_id)}" data-shared-overlap-start="${escape(member.overlap_start)}" data-shared-overlap-end="${escape(member.overlap_end)}" data-shared-subject-role-source="${escape(member.subject_role_source_title || "")}" data-shared-linked-role-source="${escape(member.linked_role_source_title || "")}">
+      <span lang="en" dir="ltr">${link}</span>
+      <span class="node-muted committee-shared-member-detail" lang="en" dir="ltr">${detail}</span>
+    </li>`;
+}
+
+/**
+ * One linked committee.
+ *
+ * The expansion is a `:target` disclosure rather than a `<details>` element: a
+ * history entry carries the URL, not element state, so an expansion that lives
+ * in the fragment is the one still open when the reader walks to a member, on to
+ * another committee, and presses Back. It is script-free, keeps modified-click
+ * behaviour, and with the stylesheet unavailable the members simply render.
+ */
+function sharedCommitteeMarkup(row, view, options) {
+  const { escape, translate, translateCount } = options;
+  const link = constellationLink({
+    href: row.href,
+    label: row.name,
+    className: "committee-shared-committee-link",
+    attributes: {
+      "data-pivot-target-kind": "committee",
+      "data-pivot-target-id": row.committee_id,
+      "data-pivot-relation-label": "shares members with",
+    },
+    escape,
+  });
+  const openLabel = translateCount("committee_shared_expand", row.shared_member_count);
+  const openAria = translate("committee_shared_expand_aria", { committee: escape(row.name) });
+  const closeAria = translate("committee_shared_collapse_aria", { committee: escape(row.name) });
+  return `<li class="committee-shared-row" id="${escape(row.anchor)}" data-shared-committee-id="${escape(row.committee_id)}" data-shared-member-count="${row.shared_member_count}">
+      <p class="committee-shared-head"><span lang="en" dir="ltr">${link}</span> <span class="committee-shared-count">${translateCount("committee_shared_members", row.shared_member_count)}</span></p>
+      <p class="committee-shared-controls"><a class="committee-shared-open" href="#${escape(row.anchor)}" aria-label="${openAria}">${openLabel}</a><a class="committee-shared-close" href="#${escape(COMMITTEE_SHARED_MEMBERSHIP_ANCHOR)}" aria-label="${closeAria}">${translate("committee_shared_collapse")}</a></p>
+      <ul class="committee-shared-members">${row.shared_members.map((member) => sharedMemberMarkup(member, row, view, options)).join("")}</ul>
+    </li>`;
+}
+
+/**
+ * Render the linked-committee body for a committee record.
+ *
+ * A committee with no supported linked row renders nothing at all, so an
+ * unpublished, empty or single-body graph never becomes furniture. The caller
+ * wraps this in the document's own section chrome.
+ */
+export function renderCommitteeSharedMembershipHTML(view, {
+  escapeHtml,
+  translate,
+  translateCount,
+} = {}) {
+  if (view?.schema !== COMMITTEE_SHARED_MEMBERSHIP_SCHEMA) return "";
+  if (view.state !== "matched" || !view.committees?.length) return "";
+  const escape = typeof escapeHtml === "function" ? escapeHtml : (value) => String(value ?? "");
+  const t = typeof translate === "function" ? translate : sharedEnglishTranslate;
+  const tc = typeof translateCount === "function" ? translateCount : sharedEnglishTranslateCount;
+  const options = { escape, translate: t, translateCount: tc };
+  const visible = view.committees.slice(0, view.visible_count);
+  const disclosed = view.committees.slice(view.visible_count);
+  const moreAnchor = `${COMMITTEE_SHARED_MEMBERSHIP_ANCHOR}-more`;
+  const overflow = disclosed.length
+    ? `<div class="committee-shared-overflow" id="${escape(moreAnchor)}" data-shared-disclosed="${disclosed.length}">
+      <p class="committee-shared-controls"><a class="committee-shared-open" href="#${escape(moreAnchor)}">${tc("committee_shared_more", disclosed.length)}</a><a class="committee-shared-close" href="#${escape(COMMITTEE_SHARED_MEMBERSHIP_ANCHOR)}">${t("committee_shared_collapse")}</a></p>
+      <ul class="node-record-list committee-shared-list">${disclosed.map((row) => sharedCommitteeMarkup(row, view, options)).join("")}</ul>
+    </div>`
+    : "";
+  const vintage = view.vintage ? String(view.vintage).slice(0, 10) : view.as_of;
+  return `<div class="committee-shared-membership" data-committee-shared-membership="1" data-shared-schema="${escape(view.schema)}" data-shared-state="${escape(view.state)}" data-shared-as-of="${escape(view.as_of)}" data-shared-committee-count="${view.committee_count}" data-shared-subject-members="${view.subject_member_count}" data-shared-represented-officials="${view.represented_official_count}" data-shared-excluded-caucus-bodies="${view.excluded_caucus_body_count}">
+    <p class="committee-shared-summary">${tc("committee_shared_summary", view.committee_count, { date: escape(view.as_of) })}</p>
+    <p class="node-muted committee-shared-basis">${t("committee_shared_basis", { vintage: escape(vintage) })}</p>
+    <ul class="node-record-list committee-shared-list">${visible.map((row) => sharedCommitteeMarkup(row, view, options)).join("")}</ul>
+    ${overflow}
+  </div>`;
 }
