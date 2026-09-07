@@ -144,8 +144,8 @@ test("an organization outside the published set answers with its own honest abse
 
   const browse = await executeOrganizationsBrowse(provider.browse, { query: uncovered, kind: "agency" });
   assert.equal(browse.availability, "empty");
-  // The empty page says what it is a statement about, rather than standing as a bare zero.
-  assert.match(browse.coverage.absence, /coverage statement/);
+  // The empty page reports the coverage it read, rather than standing as a bare zero.
+  assert.match(browse.coverage.absence, /reports that model's coverage/);
   assert.equal(browse.coverage.state, "published");
 });
 

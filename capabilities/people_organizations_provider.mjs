@@ -29,7 +29,7 @@ function freshness(model) {
 }
 
 /** An empty page is a statement about this corpus, never a count of the world. */
-const BROWSE_ABSENCE_NOTE = "No published row matched these filters. The browse reads one bounded published read model, so an organization can be absent from it and still exist in the public record; this is a coverage statement, not a finding that no such organization exists.";
+const BROWSE_ABSENCE_NOTE = "No published row matched these filters. The browse reads one bounded published read model, so an empty page reports that model's coverage. To look wider, relax a filter or go to the publisher that names the organization.";
 
 function coverage(model, { matched = true } = {}) {
   return {
