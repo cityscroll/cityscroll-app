@@ -4895,3 +4895,113 @@ select {
 .budget-request-dialog-actions {
   margin: 12px 0 0;
 }
+
+/* Hearing preparation: the board's published agenda beside the previous
+ * cycle's own record.
+ *
+ * The whole section is ordinary flow content, so with no stylesheet it renders
+ * as an ordered list of times and titles followed by prose — which is the
+ * correct failure, because the reading is a sequence of statements and not a
+ * layout. Everything below is spacing and emphasis.
+ *
+ * The two fiscal years are the one thing the styling is asked to help with.
+ * The budget segment is marked out from the rest of the evening, and the
+ * previous cycle's sentence naming both years is given the weight of a lede,
+ * so a reader skimming still meets the distinction rather than only the list.
+ */
+.board-hearing-segments {
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.board-hearing-segment {
+  margin-block-start: var(--space-2);
+  padding-inline-start: var(--space-2);
+  border-inline-start: 2px solid var(--color-border-subtle, currentColor);
+}
+
+.board-hearing-segment[data-hearing-budget-segment] {
+  border-inline-start-color: var(--color-action);
+}
+
+.board-hearing-segment-time {
+  font-variant-numeric: tabular-nums;
+}
+
+.board-hearing-segment-label {
+  color: var(--color-text-muted);
+  font-size: .875rem;
+}
+
+.board-hearing-segment[data-hearing-budget-segment] > .node-record-main > .board-hearing-segment-label {
+  color: var(--color-action);
+  font-weight: 600;
+}
+
+.board-hearing-segment-title,
+.board-hearing-segment-detail,
+.board-hearing-participation-passage,
+.board-hearing-example-question {
+  margin: var(--space-1) 0 0;
+}
+
+.board-hearing-agenda-links,
+.board-hearing-participation-action,
+.board-hearing-participation-watch,
+.board-hearing-previous-link,
+.board-hearing-document-link,
+.board-hearing-disagreement-link {
+  margin: var(--space-2) 0 0;
+}
+
+.board-hearing-previous-lede {
+  margin-block-start: var(--space-2);
+}
+
+.board-hearing-example-list {
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.board-hearing-example-statement {
+  margin: var(--space-1) 0 0;
+  padding-inline-start: var(--space-2);
+  border-inline-start: 2px solid var(--color-border-subtle, currentColor);
+}
+
+.board-hearing-documents {
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.board-hearing-document,
+.board-hearing-disagreement {
+  margin-block-start: var(--space-2);
+}
+
+/* A document this site has not read is marked as such in the flow of the list,
+   not only in its sentence, so the state survives a skim. */
+.board-hearing-document[data-extraction-state="not_extracted"] > .board-hearing-document-state,
+.board-hearing-document[data-extraction-state="not_attempted"] > .board-hearing-document-state {
+  font-style: italic;
+}
+
+.board-hearing-disagreements {
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.board-hearing-disagreement-code {
+  font-variant-numeric: tabular-nums;
+}
+
+.board-hearing-disagreement-register,
+.board-hearing-disagreement-document {
+  margin: var(--space-1) 0 0;
+  padding-inline-start: var(--space-2);
+  border-inline-start: 2px solid var(--color-border-subtle, currentColor);
+}

@@ -1,0 +1,1646 @@
+{
+  "schema": "cityscroll.hearing_context_capture.v1",
+  "captured_at": "2026-09-07T18:40:05.279988+00:00",
+  "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+  "data_vintage": {
+    "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+    "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+    "community_board_budget_register_as_of": "2026-09-07",
+    "community_board_minutes_scorecard": "2026-09-06"
+  },
+  "counts": {
+    "agenda_segments": 3,
+    "previous_cycle_documents": 5,
+    "previous_cycle_requests": 59,
+    "statement_passages": 56,
+    "responses_compared": 59,
+    "response_source_disagreements": 1
+  },
+  "positive_board": "brooklyn-cb-14",
+  "hearing_date": "2026-09-14",
+  "hearing_fiscal_year": 2028,
+  "previous_fiscal_year": 2027,
+  "worked_example": "214202702C",
+  "min_target_px": 24,
+  "captures": [
+    {
+      "surface": "community_board_document",
+      "case": "hearing-context-narrow-touch",
+      "route": "/community-boards/brooklyn-cb-14/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "data_vintage": {
+        "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Preparing to speak at this board's budget hearing",
+        "state": "available",
+        "hearing_date_attribute": "2026-09-14",
+        "hearing_fiscal_year_attribute": "2028",
+        "previous_fiscal_year_attribute": "2027",
+        "upcoming_fiscal_year_attribute": "2028",
+        "ready_for_inspection": true,
+        "segments": [
+          {
+            "start": "18:30",
+            "kind": "public_hearing",
+            "fiscal_year": null,
+            "budget": false
+          },
+          {
+            "start": "18:45",
+            "kind": "public_hearing",
+            "fiscal_year": "2028",
+            "budget": true
+          },
+          {
+            "start": "19:00",
+            "kind": "regular_meeting",
+            "fiscal_year": null,
+            "budget": false
+          }
+        ],
+        "budget_segments": 1,
+        "document_rows": 5,
+        "unread_document_rows": 1,
+        "disagreement_rows": 1,
+        "registration_link_present": true,
+        "links": {
+          "count": 11,
+          "visible": 11,
+          "reachable": 11,
+          "native": true,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 1,
+          "visible": 1,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "visible_inspect_controls": 1,
+        "smallest_target_px": 24,
+        "collects_nothing": {
+          "forms": 0,
+          "fields": 0,
+          "submits": 0,
+          "frames": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "states_previous_cycle_boundary": true,
+        "states_identity_join": true,
+        "states_submits_nothing": true,
+        "worked_example_row_present": true
+      },
+      "axe": {
+        "scope": "#board-hearing-preparation",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "targets": [
+              ".community-board-money-metrics"
+            ]
+          }
+        ],
+        "page_passes": false
+      },
+      "assertion": "/community-boards/brooklyn-cb-14/ at 390x844: the board's published agenda separates the fiscal year 2028 budget hearing from the cannabis hearing that opens the same evening and the regular meeting that follows it, the previous cycle's fiscal year 2027 record is named as previous rather than as the coming agenda, and the worked example carries the board's own statement passage beside the answer the agency published",
+      "screenshot": ".artifacts/hearing-preparation/hearing-context-narrow-touch-390x844.png",
+      "screenshot_sha256": "8c517db0ef8338dbec34d6e9f7fa9871a0f13ce48884c0f05332e387620c1165",
+      "render_sha256": "a7bc057750e6849616a7a4371f275a0aec4f971deefa962df0778f558e9ef525"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "hearing-context-desktop",
+      "route": "/community-boards/brooklyn-cb-14/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "data_vintage": {
+        "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Preparing to speak at this board's budget hearing",
+        "state": "available",
+        "hearing_date_attribute": "2026-09-14",
+        "hearing_fiscal_year_attribute": "2028",
+        "previous_fiscal_year_attribute": "2027",
+        "upcoming_fiscal_year_attribute": "2028",
+        "ready_for_inspection": true,
+        "segments": [
+          {
+            "start": "18:30",
+            "kind": "public_hearing",
+            "fiscal_year": null,
+            "budget": false
+          },
+          {
+            "start": "18:45",
+            "kind": "public_hearing",
+            "fiscal_year": "2028",
+            "budget": true
+          },
+          {
+            "start": "19:00",
+            "kind": "regular_meeting",
+            "fiscal_year": null,
+            "budget": false
+          }
+        ],
+        "budget_segments": 1,
+        "document_rows": 5,
+        "unread_document_rows": 1,
+        "disagreement_rows": 1,
+        "registration_link_present": true,
+        "links": {
+          "count": 11,
+          "visible": 11,
+          "reachable": 11,
+          "native": true,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 1,
+          "visible": 1,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "visible_inspect_controls": 1,
+        "smallest_target_px": 24,
+        "collects_nothing": {
+          "forms": 0,
+          "fields": 0,
+          "submits": 0,
+          "frames": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "states_previous_cycle_boundary": true,
+        "states_identity_join": true,
+        "states_submits_nothing": true,
+        "worked_example_row_present": true
+      },
+      "axe": {
+        "scope": "#board-hearing-preparation",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "targets": [
+              ".community-board-money-metrics"
+            ]
+          }
+        ],
+        "page_passes": false
+      },
+      "assertion": "/community-boards/brooklyn-cb-14/ at 1440x900: the board's published agenda separates the fiscal year 2028 budget hearing from the cannabis hearing that opens the same evening and the regular meeting that follows it, the previous cycle's fiscal year 2027 record is named as previous rather than as the coming agenda, and the worked example carries the board's own statement passage beside the answer the agency published",
+      "screenshot": ".artifacts/hearing-preparation/hearing-context-desktop-1440x900.png",
+      "screenshot_sha256": "303d3a5888a60505410ca7ba2edc41c001a13073c0a254ca356bd8a4562ac421",
+      "render_sha256": "a7bc057750e6849616a7a4371f275a0aec4f971deefa962df0778f558e9ef525"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "hearing-context-no-javascript-narrow-touch",
+      "route": "/community-boards/brooklyn-cb-14/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "data_vintage": {
+        "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "disabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Preparing to speak at this board's budget hearing",
+        "state": "available",
+        "hearing_date_attribute": "2026-09-14",
+        "hearing_fiscal_year_attribute": "2028",
+        "previous_fiscal_year_attribute": "2027",
+        "upcoming_fiscal_year_attribute": "2028",
+        "ready_for_inspection": false,
+        "segments": [
+          {
+            "start": "18:30",
+            "kind": "public_hearing",
+            "fiscal_year": null,
+            "budget": false
+          },
+          {
+            "start": "18:45",
+            "kind": "public_hearing",
+            "fiscal_year": "2028",
+            "budget": true
+          },
+          {
+            "start": "19:00",
+            "kind": "regular_meeting",
+            "fiscal_year": null,
+            "budget": false
+          }
+        ],
+        "budget_segments": 1,
+        "document_rows": 5,
+        "unread_document_rows": 1,
+        "disagreement_rows": 1,
+        "registration_link_present": true,
+        "links": {
+          "count": 11,
+          "visible": 11,
+          "reachable": 11,
+          "native": true,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 1,
+          "visible": 0,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "visible_inspect_controls": 0,
+        "smallest_target_px": 26,
+        "collects_nothing": {
+          "forms": 0,
+          "fields": 0,
+          "submits": 0,
+          "frames": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "agenda_times_present": true,
+        "statement_passage_present": true,
+        "published_answer_present": true
+      },
+      "assertion": "/community-boards/brooklyn-cb-14/ at 390x844 with scripting disabled: every agenda time, the board's own statement passage, the published answer and the board's registration link are already in the document, and the inspect control is not offered at all",
+      "render_sha256": "2d377443a5564a5f10af06fbdefe08ae6d3a96f925e4281a52a9e453b4684b6f"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "hearing-context-no-javascript-desktop",
+      "route": "/community-boards/brooklyn-cb-14/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "data_vintage": {
+        "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "disabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Preparing to speak at this board's budget hearing",
+        "state": "available",
+        "hearing_date_attribute": "2026-09-14",
+        "hearing_fiscal_year_attribute": "2028",
+        "previous_fiscal_year_attribute": "2027",
+        "upcoming_fiscal_year_attribute": "2028",
+        "ready_for_inspection": false,
+        "segments": [
+          {
+            "start": "18:30",
+            "kind": "public_hearing",
+            "fiscal_year": null,
+            "budget": false
+          },
+          {
+            "start": "18:45",
+            "kind": "public_hearing",
+            "fiscal_year": "2028",
+            "budget": true
+          },
+          {
+            "start": "19:00",
+            "kind": "regular_meeting",
+            "fiscal_year": null,
+            "budget": false
+          }
+        ],
+        "budget_segments": 1,
+        "document_rows": 5,
+        "unread_document_rows": 1,
+        "disagreement_rows": 1,
+        "registration_link_present": true,
+        "links": {
+          "count": 11,
+          "visible": 11,
+          "reachable": 11,
+          "native": true,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 1,
+          "visible": 0,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "visible_inspect_controls": 0,
+        "smallest_target_px": 27,
+        "collects_nothing": {
+          "forms": 0,
+          "fields": 0,
+          "submits": 0,
+          "frames": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "agenda_times_present": true,
+        "statement_passage_present": true,
+        "published_answer_present": true
+      },
+      "assertion": "/community-boards/brooklyn-cb-14/ at 1440x900 with scripting disabled: every agenda time, the board's own statement passage, the published answer and the board's registration link are already in the document, and the inspect control is not offered at all",
+      "render_sha256": "2d377443a5564a5f10af06fbdefe08ae6d3a96f925e4281a52a9e453b4684b6f"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "hearing-context-documents-desktop",
+      "route": "/community-boards/brooklyn-cb-14/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "data_vintage": {
+        "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Preparing to speak at this board's budget hearing",
+        "state": "available",
+        "hearing_date_attribute": "2026-09-14",
+        "hearing_fiscal_year_attribute": "2028",
+        "previous_fiscal_year_attribute": "2027",
+        "upcoming_fiscal_year_attribute": "2028",
+        "ready_for_inspection": true,
+        "segments": [
+          {
+            "start": "18:30",
+            "kind": "public_hearing",
+            "fiscal_year": null,
+            "budget": false
+          },
+          {
+            "start": "18:45",
+            "kind": "public_hearing",
+            "fiscal_year": "2028",
+            "budget": true
+          },
+          {
+            "start": "19:00",
+            "kind": "regular_meeting",
+            "fiscal_year": null,
+            "budget": false
+          }
+        ],
+        "budget_segments": 1,
+        "document_rows": 5,
+        "unread_document_rows": 1,
+        "disagreement_rows": 1,
+        "registration_link_present": true,
+        "links": {
+          "count": 11,
+          "visible": 11,
+          "reachable": 11,
+          "native": true,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 1,
+          "visible": 1,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "visible_inspect_controls": 1,
+        "smallest_target_px": 24,
+        "collects_nothing": {
+          "forms": 0,
+          "fields": 0,
+          "submits": 0,
+          "frames": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "states_unread_document": true,
+        "states_vote_boundary": true,
+        "states_two_publishers": true,
+        "unread_documents_still_linked": 1
+      },
+      "assertion": "/community-boards/brooklyn-cb-14/: the scanned letter of comment is linked where the board published it and stated as a document this site has not read, the ratified vote to send it is stated as a vote rather than as the letter's contents, and the one answer the two publishers print differently is shown in both of their wordings",
+      "render_sha256": "a7bc057750e6849616a7a4371f275a0aec4f971deefa962df0778f558e9ef525"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "hearing-context-journey-narrow-touch",
+      "route": "/community-boards/brooklyn-cb-14/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "data_vintage": {
+        "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "dialog_named_the_record": true,
+        "url_unchanged": true,
+        "scroll_preserved": true,
+        "list_preserved": true,
+        "focus_returned_to_control": true,
+        "registration_is_a_link": true,
+        "registration_destination": "https://airtable.com/app1RjYKMlyOTLNPS/pagXaTG7U6Yzd1Uxl/form",
+        "collects_nothing": {
+          "forms": 0,
+          "fields": 0,
+          "submits": 0,
+          "frames": 0
+        },
+        "no_horizontal_overflow": true
+      },
+      "assertion": "/community-boards/brooklyn-cb-14/ at 390x844: inspecting the worked example and dismissing it leaves the reader's address, scroll offset and the district's own request list exactly as they were, returns focus to the control it was opened from, and leaves the board's registration form as an ordinary outbound link that this page has not submitted anything to",
+      "render_sha256": "a7bc057750e6849616a7a4371f275a0aec4f971deefa962df0778f558e9ef525"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "hearing-context-journey-desktop",
+      "route": "/community-boards/brooklyn-cb-14/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "data_vintage": {
+        "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "dialog_named_the_record": true,
+        "url_unchanged": true,
+        "scroll_preserved": true,
+        "list_preserved": true,
+        "focus_returned_to_control": true,
+        "registration_is_a_link": true,
+        "registration_destination": "https://airtable.com/app1RjYKMlyOTLNPS/pagXaTG7U6Yzd1Uxl/form",
+        "collects_nothing": {
+          "forms": 0,
+          "fields": 0,
+          "submits": 0,
+          "frames": 0
+        },
+        "no_horizontal_overflow": true
+      },
+      "assertion": "/community-boards/brooklyn-cb-14/ at 1440x900: inspecting the worked example and dismissing it leaves the reader's address, scroll offset and the district's own request list exactly as they were, returns focus to the control it was opened from, and leaves the board's registration form as an ordinary outbound link that this page has not submitted anything to",
+      "render_sha256": "a7bc057750e6849616a7a4371f275a0aec4f971deefa962df0778f558e9ef525"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "hearing-context-keyboard-desktop",
+      "route": "/community-boards/brooklyn-cb-14/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "data_vintage": {
+        "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "control_focusable": true,
+        "enter_opened_the_record": true,
+        "focus_moved_into_the_record": true,
+        "escape_dismissed_the_record": true,
+        "focus_returned_to_control": true
+      },
+      "assertion": "/community-boards/brooklyn-cb-14/: the worked example's inspect control takes focus, Enter opens the record, focus moves inside it, Escape dismisses it, and focus returns to the control it was opened from, with no pointer used at any step",
+      "render_sha256": "a7bc057750e6849616a7a4371f275a0aec4f971deefa962df0778f558e9ef525"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "hearing-context-language-en",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=en)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "data_vintage": {
+        "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Preparing to speak at this board's budget hearing",
+        "state": "available",
+        "hearing_date_attribute": "2026-09-14",
+        "hearing_fiscal_year_attribute": "2028",
+        "previous_fiscal_year_attribute": "2027",
+        "upcoming_fiscal_year_attribute": "2028",
+        "ready_for_inspection": true,
+        "segments": [
+          {
+            "start": "18:30",
+            "kind": "public_hearing",
+            "fiscal_year": null,
+            "budget": false
+          },
+          {
+            "start": "18:45",
+            "kind": "public_hearing",
+            "fiscal_year": "2028",
+            "budget": true
+          },
+          {
+            "start": "19:00",
+            "kind": "regular_meeting",
+            "fiscal_year": null,
+            "budget": false
+          }
+        ],
+        "budget_segments": 1,
+        "document_rows": 5,
+        "unread_document_rows": 1,
+        "disagreement_rows": 1,
+        "registration_link_present": true,
+        "links": {
+          "count": 11,
+          "visible": 11,
+          "reachable": 11,
+          "native": true,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 1,
+          "visible": 1,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "visible_inspect_controls": 1,
+        "smallest_target_px": 24,
+        "collects_nothing": {
+          "forms": 0,
+          "fields": 0,
+          "submits": 0,
+          "frames": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "direction": null,
+        "language": null,
+        "published_agenda_wording_preserved": true,
+        "statement_passage_preserved": true,
+        "published_answer_preserved": true
+      },
+      "axe": {
+        "scope": "#board-hearing-preparation",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in en with the board's published agenda wording, its own statement passage and the agency's published answer left in the source language, and no label left unresolved",
+      "render_sha256": "a7bc057750e6849616a7a4371f275a0aec4f971deefa962df0778f558e9ef525"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "hearing-context-language-es",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=es)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "data_vintage": {
+        "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "es",
+      "observed": {
+        "section_present": true,
+        "heading": "Prepararse para hablar en la audiencia presupuestaria de esta junta",
+        "state": "available",
+        "hearing_date_attribute": "2026-09-14",
+        "hearing_fiscal_year_attribute": "2028",
+        "previous_fiscal_year_attribute": "2027",
+        "upcoming_fiscal_year_attribute": "2028",
+        "ready_for_inspection": true,
+        "segments": [
+          {
+            "start": "18:30",
+            "kind": "public_hearing",
+            "fiscal_year": null,
+            "budget": false
+          },
+          {
+            "start": "18:45",
+            "kind": "public_hearing",
+            "fiscal_year": "2028",
+            "budget": true
+          },
+          {
+            "start": "19:00",
+            "kind": "regular_meeting",
+            "fiscal_year": null,
+            "budget": false
+          }
+        ],
+        "budget_segments": 1,
+        "document_rows": 5,
+        "unread_document_rows": 1,
+        "disagreement_rows": 1,
+        "registration_link_present": true,
+        "links": {
+          "count": 11,
+          "visible": 11,
+          "reachable": 11,
+          "native": true,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 1,
+          "visible": 1,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "visible_inspect_controls": 1,
+        "smallest_target_px": 24,
+        "collects_nothing": {
+          "forms": 0,
+          "fields": 0,
+          "submits": 0,
+          "frames": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "direction": "ltr",
+        "language": "es",
+        "published_agenda_wording_preserved": true,
+        "statement_passage_preserved": true,
+        "published_answer_preserved": true
+      },
+      "axe": {
+        "scope": "#board-hearing-preparation",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in es with the board's published agenda wording, its own statement passage and the agency's published answer left in the source language, and no label left unresolved",
+      "render_sha256": "7f63fd7c389d8328409d789a4a803824e05c969d301961eaaca306377390ae8c"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "hearing-context-language-zh-Hans",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=zh-Hans)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "data_vintage": {
+        "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "zh-Hans",
+      "observed": {
+        "section_present": true,
+        "heading": "\u4e3a\u672c\u59d4\u5458\u4f1a\u7684\u9884\u7b97\u542c\u8bc1\u4f1a\u53d1\u8a00\u505a\u51c6\u5907",
+        "state": "available",
+        "hearing_date_attribute": "2026-09-14",
+        "hearing_fiscal_year_attribute": "2028",
+        "previous_fiscal_year_attribute": "2027",
+        "upcoming_fiscal_year_attribute": "2028",
+        "ready_for_inspection": true,
+        "segments": [
+          {
+            "start": "18:30",
+            "kind": "public_hearing",
+            "fiscal_year": null,
+            "budget": false
+          },
+          {
+            "start": "18:45",
+            "kind": "public_hearing",
+            "fiscal_year": "2028",
+            "budget": true
+          },
+          {
+            "start": "19:00",
+            "kind": "regular_meeting",
+            "fiscal_year": null,
+            "budget": false
+          }
+        ],
+        "budget_segments": 1,
+        "document_rows": 5,
+        "unread_document_rows": 1,
+        "disagreement_rows": 1,
+        "registration_link_present": true,
+        "links": {
+          "count": 11,
+          "visible": 11,
+          "reachable": 11,
+          "native": true,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 1,
+          "visible": 1,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "visible_inspect_controls": 1,
+        "smallest_target_px": 24,
+        "collects_nothing": {
+          "forms": 0,
+          "fields": 0,
+          "submits": 0,
+          "frames": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "direction": "ltr",
+        "language": "zh-Hans",
+        "published_agenda_wording_preserved": true,
+        "statement_passage_preserved": true,
+        "published_answer_preserved": true
+      },
+      "axe": {
+        "scope": "#board-hearing-preparation",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in zh-Hans with the board's published agenda wording, its own statement passage and the agency's published answer left in the source language, and no label left unresolved",
+      "render_sha256": "a0050676ca69f8d6254b3035cb2fc5efe886c541f9e1cc4de639e9140303eba6"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "hearing-context-language-ru",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=ru)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "data_vintage": {
+        "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "ru",
+      "observed": {
+        "section_present": true,
+        "heading": "\u041f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u043a\u0430 \u043a \u0432\u044b\u0441\u0442\u0443\u043f\u043b\u0435\u043d\u0438\u044e \u043d\u0430 \u0431\u044e\u0434\u0436\u0435\u0442\u043d\u044b\u0445 \u0441\u043b\u0443\u0448\u0430\u043d\u0438\u044f\u0445 \u044d\u0442\u043e\u0433\u043e \u0441\u043e\u0432\u0435\u0442\u0430",
+        "state": "available",
+        "hearing_date_attribute": "2026-09-14",
+        "hearing_fiscal_year_attribute": "2028",
+        "previous_fiscal_year_attribute": "2027",
+        "upcoming_fiscal_year_attribute": "2028",
+        "ready_for_inspection": true,
+        "segments": [
+          {
+            "start": "18:30",
+            "kind": "public_hearing",
+            "fiscal_year": null,
+            "budget": false
+          },
+          {
+            "start": "18:45",
+            "kind": "public_hearing",
+            "fiscal_year": "2028",
+            "budget": true
+          },
+          {
+            "start": "19:00",
+            "kind": "regular_meeting",
+            "fiscal_year": null,
+            "budget": false
+          }
+        ],
+        "budget_segments": 1,
+        "document_rows": 5,
+        "unread_document_rows": 1,
+        "disagreement_rows": 1,
+        "registration_link_present": true,
+        "links": {
+          "count": 11,
+          "visible": 11,
+          "reachable": 11,
+          "native": true,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 1,
+          "visible": 1,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "visible_inspect_controls": 1,
+        "smallest_target_px": 24,
+        "collects_nothing": {
+          "forms": 0,
+          "fields": 0,
+          "submits": 0,
+          "frames": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "direction": "ltr",
+        "language": "ru",
+        "published_agenda_wording_preserved": true,
+        "statement_passage_preserved": true,
+        "published_answer_preserved": true
+      },
+      "axe": {
+        "scope": "#board-hearing-preparation",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in ru with the board's published agenda wording, its own statement passage and the agency's published answer left in the source language, and no label left unresolved",
+      "render_sha256": "bfacfe0f013460349f636e519acbeef5000d521c83100f6b281a15a834ec4e1a"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "hearing-context-language-bn",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=bn)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "data_vintage": {
+        "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "bn",
+      "observed": {
+        "section_present": true,
+        "heading": "\u098f\u0987 \u09ac\u09cb\u09b0\u09cd\u09a1\u09c7\u09b0 \u09ac\u09be\u099c\u09c7\u099f \u09b6\u09c1\u09a8\u09be\u09a8\u09bf\u09a4\u09c7 \u09ac\u09b2\u09be\u09b0 \u09aa\u09cd\u09b0\u09b8\u09cd\u09a4\u09c1\u09a4\u09bf",
+        "state": "available",
+        "hearing_date_attribute": "2026-09-14",
+        "hearing_fiscal_year_attribute": "2028",
+        "previous_fiscal_year_attribute": "2027",
+        "upcoming_fiscal_year_attribute": "2028",
+        "ready_for_inspection": true,
+        "segments": [
+          {
+            "start": "18:30",
+            "kind": "public_hearing",
+            "fiscal_year": null,
+            "budget": false
+          },
+          {
+            "start": "18:45",
+            "kind": "public_hearing",
+            "fiscal_year": "2028",
+            "budget": true
+          },
+          {
+            "start": "19:00",
+            "kind": "regular_meeting",
+            "fiscal_year": null,
+            "budget": false
+          }
+        ],
+        "budget_segments": 1,
+        "document_rows": 5,
+        "unread_document_rows": 1,
+        "disagreement_rows": 1,
+        "registration_link_present": true,
+        "links": {
+          "count": 11,
+          "visible": 11,
+          "reachable": 11,
+          "native": true,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 1,
+          "visible": 1,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "visible_inspect_controls": 1,
+        "smallest_target_px": 24,
+        "collects_nothing": {
+          "forms": 0,
+          "fields": 0,
+          "submits": 0,
+          "frames": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "direction": "ltr",
+        "language": "bn",
+        "published_agenda_wording_preserved": true,
+        "statement_passage_preserved": true,
+        "published_answer_preserved": true
+      },
+      "axe": {
+        "scope": "#board-hearing-preparation",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in bn with the board's published agenda wording, its own statement passage and the agency's published answer left in the source language, and no label left unresolved",
+      "render_sha256": "770c12c7ef9f5d90dd5e2c867986b716bbd44ab9e417d884c179d0957658dcb6"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "hearing-context-language-ht",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=ht)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "data_vintage": {
+        "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "ht",
+      "observed": {
+        "section_present": true,
+        "heading": "Prepare pou pale nan odyans bidj\u00e8 kons\u00e8y sa a",
+        "state": "available",
+        "hearing_date_attribute": "2026-09-14",
+        "hearing_fiscal_year_attribute": "2028",
+        "previous_fiscal_year_attribute": "2027",
+        "upcoming_fiscal_year_attribute": "2028",
+        "ready_for_inspection": true,
+        "segments": [
+          {
+            "start": "18:30",
+            "kind": "public_hearing",
+            "fiscal_year": null,
+            "budget": false
+          },
+          {
+            "start": "18:45",
+            "kind": "public_hearing",
+            "fiscal_year": "2028",
+            "budget": true
+          },
+          {
+            "start": "19:00",
+            "kind": "regular_meeting",
+            "fiscal_year": null,
+            "budget": false
+          }
+        ],
+        "budget_segments": 1,
+        "document_rows": 5,
+        "unread_document_rows": 1,
+        "disagreement_rows": 1,
+        "registration_link_present": true,
+        "links": {
+          "count": 11,
+          "visible": 11,
+          "reachable": 11,
+          "native": true,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 1,
+          "visible": 1,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "visible_inspect_controls": 1,
+        "smallest_target_px": 24,
+        "collects_nothing": {
+          "forms": 0,
+          "fields": 0,
+          "submits": 0,
+          "frames": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "direction": "ltr",
+        "language": "ht",
+        "published_agenda_wording_preserved": true,
+        "statement_passage_preserved": true,
+        "published_answer_preserved": true
+      },
+      "axe": {
+        "scope": "#board-hearing-preparation",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in ht with the board's published agenda wording, its own statement passage and the agency's published answer left in the source language, and no label left unresolved",
+      "render_sha256": "6b887c352de6854fe43306a55fea6483e46ceecdb5de441ab0294bcdfbb2db35"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "hearing-context-language-ko",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=ko)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "data_vintage": {
+        "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "ko",
+      "observed": {
+        "section_present": true,
+        "heading": "\uc774 \uc704\uc6d0\ud68c \uc608\uc0b0 \uacf5\uccad\ud68c\uc5d0\uc11c \ubc1c\uc5b8\ud560 \uc900\ube44",
+        "state": "available",
+        "hearing_date_attribute": "2026-09-14",
+        "hearing_fiscal_year_attribute": "2028",
+        "previous_fiscal_year_attribute": "2027",
+        "upcoming_fiscal_year_attribute": "2028",
+        "ready_for_inspection": true,
+        "segments": [
+          {
+            "start": "18:30",
+            "kind": "public_hearing",
+            "fiscal_year": null,
+            "budget": false
+          },
+          {
+            "start": "18:45",
+            "kind": "public_hearing",
+            "fiscal_year": "2028",
+            "budget": true
+          },
+          {
+            "start": "19:00",
+            "kind": "regular_meeting",
+            "fiscal_year": null,
+            "budget": false
+          }
+        ],
+        "budget_segments": 1,
+        "document_rows": 5,
+        "unread_document_rows": 1,
+        "disagreement_rows": 1,
+        "registration_link_present": true,
+        "links": {
+          "count": 11,
+          "visible": 11,
+          "reachable": 11,
+          "native": true,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 1,
+          "visible": 1,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "visible_inspect_controls": 1,
+        "smallest_target_px": 24,
+        "collects_nothing": {
+          "forms": 0,
+          "fields": 0,
+          "submits": 0,
+          "frames": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "direction": "ltr",
+        "language": "ko",
+        "published_agenda_wording_preserved": true,
+        "statement_passage_preserved": true,
+        "published_answer_preserved": true
+      },
+      "axe": {
+        "scope": "#board-hearing-preparation",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in ko with the board's published agenda wording, its own statement passage and the agency's published answer left in the source language, and no label left unresolved",
+      "render_sha256": "1464911a547cf374ee50b14bad6cc96fd5258383feadf53992e17e06d81cf2d9"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "hearing-context-language-fr",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=fr)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "data_vintage": {
+        "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "fr",
+      "observed": {
+        "section_present": true,
+        "heading": "Se pr\u00e9parer \u00e0 prendre la parole \u00e0 l'audience budg\u00e9taire de ce conseil",
+        "state": "available",
+        "hearing_date_attribute": "2026-09-14",
+        "hearing_fiscal_year_attribute": "2028",
+        "previous_fiscal_year_attribute": "2027",
+        "upcoming_fiscal_year_attribute": "2028",
+        "ready_for_inspection": true,
+        "segments": [
+          {
+            "start": "18:30",
+            "kind": "public_hearing",
+            "fiscal_year": null,
+            "budget": false
+          },
+          {
+            "start": "18:45",
+            "kind": "public_hearing",
+            "fiscal_year": "2028",
+            "budget": true
+          },
+          {
+            "start": "19:00",
+            "kind": "regular_meeting",
+            "fiscal_year": null,
+            "budget": false
+          }
+        ],
+        "budget_segments": 1,
+        "document_rows": 5,
+        "unread_document_rows": 1,
+        "disagreement_rows": 1,
+        "registration_link_present": true,
+        "links": {
+          "count": 11,
+          "visible": 11,
+          "reachable": 11,
+          "native": true,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 1,
+          "visible": 1,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "visible_inspect_controls": 1,
+        "smallest_target_px": 24,
+        "collects_nothing": {
+          "forms": 0,
+          "fields": 0,
+          "submits": 0,
+          "frames": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "direction": "ltr",
+        "language": "fr",
+        "published_agenda_wording_preserved": true,
+        "statement_passage_preserved": true,
+        "published_answer_preserved": true
+      },
+      "axe": {
+        "scope": "#board-hearing-preparation",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in fr with the board's published agenda wording, its own statement passage and the agency's published answer left in the source language, and no label left unresolved",
+      "render_sha256": "a580130b7ffe99f7c6f4f863c5c7b2d53dac10364554c53c5377e82999c3b572"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "hearing-context-language-pl",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=pl)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "data_vintage": {
+        "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "pl",
+      "observed": {
+        "section_present": true,
+        "heading": "Przygotowanie do zabrania g\u0142osu na bud\u017cetowym wys\u0142uchaniu tej rady",
+        "state": "available",
+        "hearing_date_attribute": "2026-09-14",
+        "hearing_fiscal_year_attribute": "2028",
+        "previous_fiscal_year_attribute": "2027",
+        "upcoming_fiscal_year_attribute": "2028",
+        "ready_for_inspection": true,
+        "segments": [
+          {
+            "start": "18:30",
+            "kind": "public_hearing",
+            "fiscal_year": null,
+            "budget": false
+          },
+          {
+            "start": "18:45",
+            "kind": "public_hearing",
+            "fiscal_year": "2028",
+            "budget": true
+          },
+          {
+            "start": "19:00",
+            "kind": "regular_meeting",
+            "fiscal_year": null,
+            "budget": false
+          }
+        ],
+        "budget_segments": 1,
+        "document_rows": 5,
+        "unread_document_rows": 1,
+        "disagreement_rows": 1,
+        "registration_link_present": true,
+        "links": {
+          "count": 11,
+          "visible": 11,
+          "reachable": 11,
+          "native": true,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 1,
+          "visible": 1,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "visible_inspect_controls": 1,
+        "smallest_target_px": 24,
+        "collects_nothing": {
+          "forms": 0,
+          "fields": 0,
+          "submits": 0,
+          "frames": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "direction": "ltr",
+        "language": "pl",
+        "published_agenda_wording_preserved": true,
+        "statement_passage_preserved": true,
+        "published_answer_preserved": true
+      },
+      "axe": {
+        "scope": "#board-hearing-preparation",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in pl with the board's published agenda wording, its own statement passage and the agency's published answer left in the source language, and no label left unresolved",
+      "render_sha256": "08854d8b1aec2dda0839eb97dcb09f9ae25db1cefc9fecaf0eb094d1fc2406fe"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "hearing-context-language-ar",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=ar)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "data_vintage": {
+        "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "ar",
+      "observed": {
+        "section_present": true,
+        "heading": "\u0627\u0644\u0627\u0633\u062a\u0639\u062f\u0627\u062f \u0644\u0644\u062a\u062d\u062f\u062b \u0641\u064a \u062c\u0644\u0633\u0629 \u0627\u0644\u0645\u064a\u0632\u0627\u0646\u064a\u0629 \u0644\u0647\u0630\u0627 \u0627\u0644\u0645\u062c\u0644\u0633",
+        "state": "available",
+        "hearing_date_attribute": "2026-09-14",
+        "hearing_fiscal_year_attribute": "2028",
+        "previous_fiscal_year_attribute": "2027",
+        "upcoming_fiscal_year_attribute": "2028",
+        "ready_for_inspection": true,
+        "segments": [
+          {
+            "start": "18:30",
+            "kind": "public_hearing",
+            "fiscal_year": null,
+            "budget": false
+          },
+          {
+            "start": "18:45",
+            "kind": "public_hearing",
+            "fiscal_year": "2028",
+            "budget": true
+          },
+          {
+            "start": "19:00",
+            "kind": "regular_meeting",
+            "fiscal_year": null,
+            "budget": false
+          }
+        ],
+        "budget_segments": 1,
+        "document_rows": 5,
+        "unread_document_rows": 1,
+        "disagreement_rows": 1,
+        "registration_link_present": true,
+        "links": {
+          "count": 11,
+          "visible": 11,
+          "reachable": 11,
+          "native": true,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 1,
+          "visible": 1,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "visible_inspect_controls": 1,
+        "smallest_target_px": 24,
+        "collects_nothing": {
+          "forms": 0,
+          "fields": 0,
+          "submits": 0,
+          "frames": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "direction": "rtl",
+        "language": "ar",
+        "published_agenda_wording_preserved": true,
+        "statement_passage_preserved": true,
+        "published_answer_preserved": true
+      },
+      "axe": {
+        "scope": "#board-hearing-preparation",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in ar with the board's published agenda wording, its own statement passage and the agency's published answer left in the source language, and no label left unresolved",
+      "render_sha256": "e7f8bafc8af4c492167de020187de1cbdd17d68216ddb0e1cd0fe62d1710fab2"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "hearing-context-language-ur",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=ur)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "data_vintage": {
+        "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "ur",
+      "observed": {
+        "section_present": true,
+        "heading": "\u0627\u0633 \u0628\u0648\u0631\u0688 \u06a9\u06cc \u0628\u062c\u0679 \u0633\u0645\u0627\u0639\u062a \u0645\u06cc\u06ba \u0628\u0648\u0644\u0646\u06d2 \u06a9\u06cc \u062a\u06cc\u0627\u0631\u06cc",
+        "state": "available",
+        "hearing_date_attribute": "2026-09-14",
+        "hearing_fiscal_year_attribute": "2028",
+        "previous_fiscal_year_attribute": "2027",
+        "upcoming_fiscal_year_attribute": "2028",
+        "ready_for_inspection": true,
+        "segments": [
+          {
+            "start": "18:30",
+            "kind": "public_hearing",
+            "fiscal_year": null,
+            "budget": false
+          },
+          {
+            "start": "18:45",
+            "kind": "public_hearing",
+            "fiscal_year": "2028",
+            "budget": true
+          },
+          {
+            "start": "19:00",
+            "kind": "regular_meeting",
+            "fiscal_year": null,
+            "budget": false
+          }
+        ],
+        "budget_segments": 1,
+        "document_rows": 5,
+        "unread_document_rows": 1,
+        "disagreement_rows": 1,
+        "registration_link_present": true,
+        "links": {
+          "count": 11,
+          "visible": 11,
+          "reachable": 11,
+          "native": true,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 1,
+          "visible": 1,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "visible_inspect_controls": 1,
+        "smallest_target_px": 24,
+        "collects_nothing": {
+          "forms": 0,
+          "fields": 0,
+          "submits": 0,
+          "frames": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "direction": "rtl",
+        "language": "ur",
+        "published_agenda_wording_preserved": true,
+        "statement_passage_preserved": true,
+        "published_answer_preserved": true
+      },
+      "axe": {
+        "scope": "#board-hearing-preparation",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in ur with the board's published agenda wording, its own statement passage and the agency's published answer left in the source language, and no label left unresolved",
+      "render_sha256": "c736ad4e48fefa93dda9cd0d7c4c1a6a71105f346dfefe3425ab6fc281242648"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "hearing-context-failed-load",
+      "route": "/community-boards/brooklyn-cb-14/ (the retained hearing reading could not be read)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "data_vintage": {
+        "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Preparing to speak at this board's budget hearing",
+        "state": "unavailable",
+        "hearing_date_attribute": null,
+        "hearing_fiscal_year_attribute": null,
+        "previous_fiscal_year_attribute": null,
+        "upcoming_fiscal_year_attribute": null,
+        "ready_for_inspection": false,
+        "segments": [],
+        "budget_segments": 0,
+        "document_rows": 0,
+        "unread_document_rows": 0,
+        "disagreement_rows": 0,
+        "registration_link_present": false,
+        "links": {
+          "count": 0,
+          "visible": 0,
+          "reachable": 0,
+          "native": true,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 0,
+          "visible": 0,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "visible_inspect_controls": 0,
+        "smallest_target_px": null,
+        "collects_nothing": {
+          "forms": 0,
+          "fields": 0,
+          "submits": 0,
+          "frames": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "direction": null,
+        "language": null,
+        "agenda_absent": true,
+        "hearing_year_absent": true
+      },
+      "axe": {
+        "scope": "#board-hearing-preparation",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the retained reading could not be read: the section says so, offers a retry and a route to the board's own page, and shows no agenda time and no fiscal year it cannot stand behind",
+      "render_sha256": "c3f8d5ae581103d96788816dede7e1c6fa26b65f5f0bad5916001f202fc2ce35"
+    }
+  ],
+  "axe_all_pass": true
+}

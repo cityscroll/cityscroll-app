@@ -1207,6 +1207,26 @@ function budgetRequestAnswerMarkup(answer, t, lang) {
  * offered an affordance that would not work, and every fact the control would
  * show is already written into the row.
  */
+export function renderBudgetRequestRecord(request, { lang = "en", reciprocalHref = null, compact = false } = {}) {
+  const language = BUDGET_REQUEST_STRINGS[lang] ? lang : "en";
+  return budgetRequestMarkup(request, budgetRequestT(language), language, { reciprocalHref, compact });
+}
+
+/**
+ * The dialog labels one section hands the boot module, already serialized.
+ *
+ * Exported so a surface that renders a request row outside this module's own
+ * sections can carry the same labels rather than a second, drifting copy of
+ * the same eight strings. It returns the attribute's value, not an object to
+ * be serialized again: a caller that stringified it a second time would hand
+ * the boot module a quoted string it declines to parse, and the affordance
+ * would silently never appear.
+ */
+export function budgetRequestInspectLabels(lang = "en") {
+  const language = BUDGET_REQUEST_STRINGS[lang] ? lang : "en";
+  return budgetRequestLabels(budgetRequestT(language));
+}
+
 function budgetRequestMarkup(request, t, lang, { reciprocalHref = null, compact = false } = {}) {
   const facts = [];
   const rank = budgetRequestRankSentence(request, t);
