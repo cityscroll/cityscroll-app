@@ -2,9 +2,35 @@
   "schema_version": 1,
   "feature": "land-same-applicant-projects",
   "record": "cityscroll-engineering/land-same-applicant-projects",
-  "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-  "data_vintage": "2026-08-23T07:59:09.786Z",
+  "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+  "data_vintage": "2026-09-06T16:05:05.204Z",
   "server": "local static server over the built _site, external hosts aborted",
+  "subjects": {
+    "corpus_projects": 244,
+    "repeated_labels": 18,
+    "projects_covered": 44,
+    "pair_label": "GO Quay LLC",
+    "pair_subject": "2024K0358",
+    "pair_other": "2025K0287",
+    "pair_other_name": "Monitor Point - 56 Quay Demapping",
+    "pair_other_status": "In Public Review",
+    "pair_subject_name": "Monitor Point",
+    "largest_label": "DPR - Department of Parks & Recreation NYC",
+    "largest_subject": "2022X0150",
+    "largest_others": [
+      "2023M0452",
+      "2025K0318",
+      "2025Q0314",
+      "2025Q0316",
+      "2026R0186",
+      "P2009M0029",
+      "P2012R0043"
+    ],
+    "person_label": "Eric Palatnik",
+    "person_subject": "2023K0368",
+    "person_other": "2024R0300",
+    "singleton_subject": "2018X0438"
+  },
   "files": [
     {
       "name": "positive-pair-390.png",
@@ -15,8 +41,8 @@
         390,
         844
       ],
-      "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-      "data_vintage": "2026-08-23T07:59:09.786Z",
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
       "specimen": "positive-pair",
       "assertion": "a repeated exact applicant label lists the other retained project with its published name, source status, milestone and date, and excludes the subject",
       "axe": {
@@ -56,8 +82,8 @@
         390,
         844
       ],
-      "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-      "data_vintage": "2026-08-23T07:59:09.786Z",
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
       "specimen": "positive-largest",
       "assertion": "the largest repeated label lists every other retained project in the corpus the page holds, each project id once, and says so when a milestone date is not published",
       "axe": {
@@ -151,8 +177,8 @@
         390,
         844
       ],
-      "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-      "data_vintage": "2026-08-23T07:59:09.786Z",
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
       "specimen": "positive-person",
       "assertion": "a person-shaped applicant is grouped in the applicant position and is never called an owner, developer, parent company, affiliate or subsidiary",
       "axe": {
@@ -192,8 +218,8 @@
         390,
         844
       ],
-      "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-      "data_vintage": "2026-08-23T07:59:09.786Z",
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
       "specimen": "translated",
       "assertion": "the section's own copy is translated while the published project name and source status stay in the source language",
       "axe": {
@@ -233,8 +259,8 @@
         390,
         844
       ],
-      "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-      "data_vintage": "2026-08-23T07:59:09.786Z",
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
       "specimen": "negative-singleton",
       "assertion": "an applicant label that occurs once in the retained corpus adds no section and no empty furniture",
       "axe": {
@@ -243,7 +269,7 @@
       },
       "evidence": {
         "present": false,
-        "page_text": "Skip to content\nEnglish\nEspa\u00f1ol\n\u4e2d\u6587\uff08\u7b80\u4f53\uff09\n\u0420\u0443\u0441\u0441\u043a\u0438\u0439\n\u09ac\u09be\u0982\u09b2\u09be\nKrey\u00f2l ayisyen\n\ud55c\uad6d\uc5b4\nFran\u00e7ais\nPolski\n\u0627\u0644\u0639\u0631\u0628\u064a\u0629\n\u0627\u0631\u062f\u0648\nCityScroll\n\nSubscribe to NYC contracts, rezonings, and hearings that interest you.\n\nSEARCH\n\nWhat are you looking for?\n\nSearch NYC records by topic. Results stay grouped by civic object.\n\nWhat are you looking for?\nSearch\n\nNew NYC contracts and RFPs by email every Monday.\n\nEmail address\nGet weekly updates\n\nChoose what to follow\n\nNow\nSee deadlines and upcoming events\nNear you\nKeep these filters. Add a place.\nFollowing\nOpen your watches\nBrowse\nExplore city topics\nGuide\nLearn how to read city records\n\nCIVIC OBJECTS\n\nCONTRACTS\nPEOPLE + ORGANIZATIONS\nLAND\nRULES\nMEETINGS\nEXAMS\n\nZONING\n\nLand-use applications\n\nPick a land-use application to see it in plain English -- applicant, what's proposed, affordable units when relevant, status -- and on a map. Try \"79 Rivington\" or \"Gowanus\".\n\nHOW THIS LIST WORKS\nZIP OR PLACE\nMore filters\nFollow this search\nAsk CityScroll\n\nInterprets your request\n\nACTION TYPE\nAll (0)\nAcquisition (0)\nDisposition (0)\nCertification (0)\nRenewal (0)\nMajor concession (0)\nLegal document (0)\nRezoning (0)\nSpecial permit (0)\nAuthorization (0)\nSite selection (0)\nCity map change (0)\nDemapping (0)\nUrban renewal (0)\nLandmark designation (0)\nSubstantial compliance (0)\nOffice space (0)\nBusiness improvement district (0)\nFranchise or consent (0)\nHousing plan (0)\nPrivately owned public space (0)\nLandfill (0)\nREGULATORY EFFECT DERIVED FROM THE PROJECT BRIEF\nAll (0)\nUpzoning (0)\nDownzoning (0)\nMixed density change (0)\nNo density change (0)\nRACIAL EQUITY REPORT REQUIRED?\nAll\nRacial Equity Report required\nRacial Equity Report observed\nPublisher identifies as not timely filed\nREVIEW PROCEDURE\nULURP and expedited (0)\nULURP only (0)\nExpedited (ELURP) (0)\nNon-ULURP (0)\nSTAGE\nAll (0)\nActive projects (0)\nPublic review (0)\nPre-certification / filed (0)\nCommunity Board review (0)\nBorough President review (0)\nCity Planning Commission (0)\nCity Council review (0)\nCompleted / no longer active (0)\nNEXT OPPORTUNITY\nAll (0)\nAny future public action (0)\nUpcoming hearing (0)\nOther upcoming action (0)\nNo known future public action (0)\nLand-use applications\n1 results\nShare / export\n\n\u25c6\n2009 Sedgwick Avenue Rezoning\n\nCopy link\n\nRezoningUpzoning\n(derived from the project brief)\nULURP onlyaffordable housingBronx \u00b7 CD X05 \u00b7 City Council District 14 \u00b7 Sedgwick Holdings LLC \u00b7 Noticed\nEAS - Review Filed Land Use Application \u00b7 2024-06-11\n\nLISTING\n\n\u2190 Browse CityScroll\n\n\u25c6\n2009 Sedgwick Avenue Rezoning\nNoticed RezoningUpzoning\n(derived from the project brief)\n Report an issueULURP only Mandatory Inclusionary Housing\nSedgwick Holdings LLC\nAPPLICANT\n\u25c6\nBronx \u00b7 \n\u25c6\nCD X05 \u00b7 \n\u25c6\nCity Council District 14\nWHERE\nWHERE THIS STANDS\n\nWhere this stands is unknown\n\nCurrent stage\nUnknown\nCurrent actor\nUnknown\nRole\nUnknown\nEffect\nUnknown\nWhy this body appears\nMultiple review tracks apply. Authority stays unknown\nExpected next stage\nUnknown\nPublished next opportunity\nUpcoming-opportunity source not checked\nSources\nProfile: Not found in checked materializations\nStage evidence: EAS - Review Filed Land Use Application\nGeography reason: NYC Charter \u00a7 196\nPublished opportunity: Upcoming-opportunity source not checked\nFollow this project\nObserved recommendation\nNo observed recommendation\nActions: Zoning map amendment \u00b7 Zoning text amendment\nWhat can I do now?\nOpen ZAP project\n\u2197\n(opens in new tab)\nFollow land-use activity\nHow to participate in this rezoning\nCurrent ULURP phase\nEnvironmental review (CEQR)\nPublic status\nNoticed\nFull project record on ZAP: zap.planning.nyc.gov\n\u2197\n(opens in new tab)\n.\nCopy link\nQR code\nFollow projectSubscribe to project calendar\nOpen ZAP project\n\u2197\n(opens in new tab)\nFollow this area\nPROJECT CONNECTIONS\nFilter by this project\n\nRecords connected with this project, grouped by the questions they answer.\n\nAPPLIED BY\nLINKED\nSedgwick Holdings LLC\nSee all connected records\nTOUCHES PARCELS\nLINKED\n\u25c6\nBronx \u2014 Block 3230, Lot 5 (BBL 2032300005) Report an issue\n\u25c6\nBronx \u2014 Block 3230, Lot 10 (BBL 2032300010) Report an issue\n\u25c6\nBronx \u2014 Block 3230, Lot 16 (BBL 2032300016) Report an issue\n\u25c6\nBronx \u2014 Block 3230, Lot 30 (BBL 2032300030) Report an issue\n\u25c6\nBronx \u2014 Block 3230, Lot 33 (BBL 2032300033) Report an issue\n\u25c6\nBronx \u2014 Block 3230, Lot 35 (BBL 2032300035) Report an issue\nSee all connected records\nDECIDED BY\nLINKED\n0.-DCP-Signature-Form--signed-.pdf\n(opens in new tab)\n1.-2009-Sedgwick-Avenue---LR-Item-3-6-7-24.pdf\n(opens in new tab)\n2.-2009-Sedgwick-Avenue---Zoning-Map.pdf\n(opens in new tab)\n3.-2009-Sedgwick-Avenue---Tax-Map.pdf\n(opens in new tab)\n4.-2009-Sedgwick-Avenue---Area-Map.pdf\n(opens in new tab)\n5.-2009-Sedgwick-Avenue---Photographs.pdf\n(opens in new tab)\nSee all connected records\nLAND-USE OUTCOMES\nPublic status Noticed \u00b7 12 decision document(s) from the Zoning Application Portal. Open full ZAP project\n(opens in new tab)\nPROJECT TIMELINE\nFull project on ZAP\n(opens in new tab)\nWHERE THIS PROJECT IS NOW\n\nEnvironmental review (CEQR)\n\nEAS - Review Filed Land Use Application \u00b7 since 2024-09-06\nPublic status: Noticed \u2014 not yet certified into formal ULURP public review.\n\nWhat\u2019s next: Certification\n\nFILING\n\u2192\nCEQR\n\u2192\nNOTICE\n\u2192\nCERTIFY\n\u2192\nCB\n\u2192\nBP\n\u2192\nCPC\n\u2192\nCOUNCIL\n\u2192\nMAYOR\nEnvironmental review (CEQR)\nCURRENT\n2 milestones \u00b7 2024-09-06 \u2192 2024-09-06\nCEQR Fee Paid\n2024-09-06 \u00b7 In Progress\nEnvironmental Assessment Statement Filed\n2024-09-06 \u00b7 Completed\nPre-certification notice\nALSO UNDERWAY\nPublic notice issued while filing or environmental review continues \u2014 these steps can overlap.\nPre-certification notice (public status: Noticed)\n2024-11-01 \u00b7 Noticed\nEarlier phases\nCertification\nNOT STARTED\nPlanned 2025-08-04\nCommunity Board review\nNOT STARTED\nPlanned 2025-11-10\nBorough President review\nNOT STARTED\nPlanned 2025-12-17\nCity Planning Commission\nNOT STARTED\nPlanned 2026-01-05 \u2192 2026-01-07\nCity Council review\nNOT STARTED\nPlanned 2026-06-12\nMayoral / Appeals Board\nNOT STARTED\nPlanned 2026-07-13 \u2192 2026-07-27\nWHAT PAST CASES SHOW\n\nPast land-use cases were 97% approved. Final action usually came 2.5\u20136.5 months after certification (150 cases since 2018).\n\nPast results: 97% approved \u00b7 1% modified \u00b7 1% disapproved.\n\nLegal deadlines still control. This past range is context only. How we count and test this\n\nShow all dates\nThe NYC Open Data milestone date (2024-06-11) trails the live ZAP portal (2024-12-13) by 185 days.\nDecision documents\n0.-DCP-Signature-Form--signed-.pdf\n(opens in new tab)\n1.-2009-Sedgwick-Avenue---LR-Item-3-6-7-24.pdf\n(opens in new tab)\n2.-2009-Sedgwick-Avenue---Zoning-Map.pdf\n(opens in new tab)\n3.-2009-Sedgwick-Avenue---Tax-Map.pdf\n(opens in new tab)\nDecision documents\nView DOB NOW filings\nOutcome details come from NYC Open Data, the Zoning Application Portal, and DOB NOW filings. Updated daily.\n2009 Sedgwick Avenue Rezoning\n\u00d7\n+\n\u2212\n Leaflet | \u00a9 OpenStreetMap \u00a9 CARTO\n\u2190\n\u2191\n\u2193\n\u2192\n\nCityScroll connects NYC agencies, mandates, parcels, people, and processes across public records, with City Record as one source among five, through August 5, 2026. Guide \u00b7 About \u00b7 Feedback \u00b7 My investigation \u00b7 API and feeds \u00b7 Stats"
+        "negative_claim": []
       }
     },
     {
@@ -255,14 +281,14 @@
         390,
         844
       ],
-      "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-      "data_vintage": "2026-08-23T07:59:09.786Z",
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
       "specimen": "negative-failed-load",
       "assertion": "a project list that never arrives leaves the applicant area unchanged and never becomes a no-other-projects claim",
       "axe": null,
       "evidence": {
         "present": false,
-        "page_text": "Skip to content\nEnglish\nEspa\u00f1ol\n\u4e2d\u6587\uff08\u7b80\u4f53\uff09\n\u0420\u0443\u0441\u0441\u043a\u0438\u0439\n\u09ac\u09be\u0982\u09b2\u09be\nKrey\u00f2l ayisyen\n\ud55c\uad6d\uc5b4\nFran\u00e7ais\nPolski\n\u0627\u0644\u0639\u0631\u0628\u064a\u0629\n\u0627\u0631\u062f\u0648\nCityScroll\n\nSubscribe to NYC contracts, rezonings, and hearings that interest you.\n\nSEARCH\n\nWhat are you looking for?\n\nSearch NYC records by topic. Results stay grouped by civic object.\n\nWhat are you looking for?\nSearch\n\nNew NYC contracts and RFPs by email every Monday.\n\nEmail address\nGet weekly updates\n\nChoose what to follow\n\nNow\nSee deadlines and upcoming events\nNear you\nKeep these filters. Add a place.\nFollowing\nOpen your watches\nBrowse\nExplore city topics\nGuide\nLearn how to read city records\n\nCIVIC OBJECTS\n\nCONTRACTS\nPEOPLE + ORGANIZATIONS\nLAND\nRULES\nMEETINGS\nEXAMS\n\nZONING\n\nLand-use applications\n\nPick a land-use application to see it in plain English -- applicant, what's proposed, affordable units when relevant, status -- and on a map. Try \"79 Rivington\" or \"Gowanus\".\n\nHOW THIS LIST WORKS\nZIP OR PLACE\nMore filters\nFollow this search\nAsk CityScroll\n\nInterprets your request\n\nACTION TYPE\nAll (0)\nAcquisition (0)\nDisposition (0)\nCertification (0)\nRenewal (0)\nMajor concession (0)\nLegal document (0)\nRezoning (0)\nSpecial permit (0)\nAuthorization (0)\nSite selection (0)\nCity map change (0)\nDemapping (0)\nUrban renewal (0)\nLandmark designation (0)\nSubstantial compliance (0)\nOffice space (0)\nBusiness improvement district (0)\nFranchise or consent (0)\nHousing plan (0)\nPrivately owned public space (0)\nLandfill (0)\nREGULATORY EFFECT DERIVED FROM THE PROJECT BRIEF\nAll (0)\nUpzoning (0)\nDownzoning (0)\nMixed density change (0)\nNo density change (0)\nRACIAL EQUITY REPORT REQUIRED?\nAll\nRacial Equity Report required\nRacial Equity Report observed\nPublisher identifies as not timely filed\nREVIEW PROCEDURE\nULURP and expedited (0)\nULURP only (0)\nExpedited (ELURP) (0)\nNon-ULURP (0)\nSTAGE\nAll (0)\nActive projects (0)\nPublic review (0)\nPre-certification / filed (0)\nCommunity Board review (0)\nBorough President review (0)\nCity Planning Commission (0)\nCity Council review (0)\nCompleted / no longer active (0)\nNEXT OPPORTUNITY\nAll (0)\nAny future public action (0)\nUpcoming hearing (0)\nOther upcoming action (0)\nNo known future public action (0)\nLand-use applications\nThe latest CityScroll snapshot is unavailable. Retry.\nShare / export\n\nCityScroll connects NYC agencies, mandates, parcels, people, and processes across public records, with City Record as one source among five, through August 5, 2026. Guide \u00b7 About \u00b7 Feedback \u00b7 My investigation \u00b7 API and feeds \u00b7 Stats"
+        "negative_claim": []
       }
     },
     {
@@ -274,8 +300,8 @@
         390,
         844
       ],
-      "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-      "data_vintage": "2026-08-23T07:59:09.786Z",
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
       "specimen": "back-navigation",
       "assertion": "each listed project is a reciprocal native link; going back restores the original project and its expanded section",
       "axe": {
@@ -340,8 +366,8 @@
         390,
         844
       ],
-      "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-      "data_vintage": "2026-08-23T07:59:09.786Z",
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
       "specimen": "keyboard",
       "assertion": "the disclosure collapses and re-expands from the keyboard alone and never navigates or subscribes",
       "axe": {
@@ -381,8 +407,8 @@
         390,
         844
       ],
-      "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-      "data_vintage": "2026-08-23T07:59:09.786Z",
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
       "specimen": "rtl-ar",
       "assertion": "in a right-to-left language the section reads right-to-left, the published project name stays isolated left-to-right, and the page gains no horizontal scroll",
       "axe": {
@@ -422,21 +448,22 @@
     },
     {
       "name": "no-javascript-390.png",
-      "bytes": 65154,
-      "sha256": "f9c08de9f636a8163d830af02b76cc52002f8919f9e8b1e68391b7707fcf2f73",
+      "bytes": 63601,
+      "sha256": "25818de5e5e3ccdefaffc6f7debcd9c338bc97e7b56ba303dcf344b5122e9390",
       "route": "/browse/zoning/ (scripting disabled)",
       "viewport": [
         390,
         844
       ],
-      "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-      "data_vintage": "2026-08-23T07:59:09.786Z",
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
       "specimen": "no-javascript",
       "assertion": "the existing land document renders no project record without script, so this section adds nothing there and makes no claim",
       "axe": null,
       "evidence": {
         "rows": 0,
-        "section": 0
+        "section": 0,
+        "negative_claim": []
       }
     },
     {
@@ -448,8 +475,8 @@
         1440,
         900
       ],
-      "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-      "data_vintage": "2026-08-23T07:59:09.786Z",
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
       "specimen": "positive-pair",
       "assertion": "a repeated exact applicant label lists the other retained project with its published name, source status, milestone and date, and excludes the subject",
       "axe": {
@@ -489,8 +516,8 @@
         1440,
         900
       ],
-      "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-      "data_vintage": "2026-08-23T07:59:09.786Z",
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
       "specimen": "positive-largest",
       "assertion": "the largest repeated label lists every other retained project in the corpus the page holds, each project id once, and says so when a milestone date is not published",
       "axe": {
@@ -584,8 +611,8 @@
         1440,
         900
       ],
-      "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-      "data_vintage": "2026-08-23T07:59:09.786Z",
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
       "specimen": "positive-person",
       "assertion": "a person-shaped applicant is grouped in the applicant position and is never called an owner, developer, parent company, affiliate or subsidiary",
       "axe": {
@@ -625,8 +652,8 @@
         1440,
         900
       ],
-      "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-      "data_vintage": "2026-08-23T07:59:09.786Z",
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
       "specimen": "translated",
       "assertion": "the section's own copy is translated while the published project name and source status stay in the source language",
       "axe": {
@@ -666,8 +693,8 @@
         1440,
         900
       ],
-      "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-      "data_vintage": "2026-08-23T07:59:09.786Z",
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
       "specimen": "negative-singleton",
       "assertion": "an applicant label that occurs once in the retained corpus adds no section and no empty furniture",
       "axe": {
@@ -676,7 +703,7 @@
       },
       "evidence": {
         "present": false,
-        "page_text": "Skip to content\nEnglish\nEspa\u00f1ol\n\u4e2d\u6587\uff08\u7b80\u4f53\uff09\n\u0420\u0443\u0441\u0441\u043a\u0438\u0439\n\u09ac\u09be\u0982\u09b2\u09be\nKrey\u00f2l ayisyen\n\ud55c\uad6d\uc5b4\nFran\u00e7ais\nPolski\n\u0627\u0644\u0639\u0631\u0628\u064a\u0629\n\u0627\u0631\u062f\u0648\nCityScroll\n\nSubscribe to NYC contracts, rezonings, and hearings that interest you.\n\nSEARCH\n\nWhat are you looking for?\n\nSearch NYC records by topic. Results stay grouped by civic object.\n\nWhat are you looking for?\nSearch\n\nNew NYC contracts and RFPs by email every Monday.\n\nEmail address\nGet weekly updates\n\nChoose what to follow\n\nNow\nSee deadlines and upcoming events\nNear you\nKeep these filters. Add a place.\nFollowing\nOpen your watches\nBrowse\nExplore city topics\nGuide\nLearn how to read city records\n\nCIVIC OBJECTS\n\nCONTRACTS\nPEOPLE + ORGANIZATIONS\nLAND\nRULES\nMEETINGS\nEXAMS\n\nZONING\n\nLand-use applications\n\nPick a land-use application to see it in plain English -- applicant, what's proposed, affordable units when relevant, status -- and on a map. Try \"79 Rivington\" or \"Gowanus\".\n\nHOW THIS LIST WORKS\nZIP OR PLACE\nMore filters\nFollow this search\nAsk CityScroll\n\nInterprets your request\n\nACTION TYPE\nAll (0)\nAcquisition (0)\nDisposition (0)\nCertification (0)\nRenewal (0)\nMajor concession (0)\nLegal document (0)\nRezoning (0)\nSpecial permit (0)\nAuthorization (0)\nSite selection (0)\nCity map change (0)\nDemapping (0)\nUrban renewal (0)\nLandmark designation (0)\nSubstantial compliance (0)\nOffice space (0)\nBusiness improvement district (0)\nFranchise or consent (0)\nHousing plan (0)\nPrivately owned public space (0)\nLandfill (0)\nREGULATORY EFFECT DERIVED FROM THE PROJECT BRIEF\nAll (0)\nUpzoning (0)\nDownzoning (0)\nMixed density change (0)\nNo density change (0)\nRACIAL EQUITY REPORT REQUIRED?\nAll\nRacial Equity Report required\nRacial Equity Report observed\nPublisher identifies as not timely filed\nREVIEW PROCEDURE\nULURP and expedited (0)\nULURP only (0)\nExpedited (ELURP) (0)\nNon-ULURP (0)\nSTAGE\nAll (0)\nActive projects (0)\nPublic review (0)\nPre-certification / filed (0)\nCommunity Board review (0)\nBorough President review (0)\nCity Planning Commission (0)\nCity Council review (0)\nCompleted / no longer active (0)\nNEXT OPPORTUNITY\nAll (0)\nAny future public action (0)\nUpcoming hearing (0)\nOther upcoming action (0)\nNo known future public action (0)\nLand-use applications\n1 results\nShare / export\n\n\u25c6\n2009 Sedgwick Avenue Rezoning\n\nCopy link\n\nRezoningUpzoning\n(derived from the project brief)\nULURP onlyaffordable housingBronx \u00b7 CD X05 \u00b7 City Council District 14 \u00b7 Sedgwick Holdings LLC \u00b7 Noticed\nEAS - Review Filed Land Use Application \u00b7 2024-06-11\n\nLISTING\n\n\u2190 Browse CityScroll\n\n\u25c6\n2009 Sedgwick Avenue Rezoning\nNoticed RezoningUpzoning\n(derived from the project brief)\n Report an issueULURP only Mandatory Inclusionary Housing\nSedgwick Holdings LLC\nAPPLICANT\n\u25c6\nBronx \u00b7 \n\u25c6\nCD X05 \u00b7 \n\u25c6\nCity Council District 14\nWHERE\nWHERE THIS STANDS\n\nWhere this stands is unknown\n\nCurrent stage\nUnknown\nCurrent actor\nUnknown\nRole\nUnknown\nEffect\nUnknown\nWhy this body appears\nMultiple review tracks apply. Authority stays unknown\nExpected next stage\nUnknown\nPublished next opportunity\nUpcoming-opportunity source not checked\nSources\nProfile: Not found in checked materializations\nStage evidence: EAS - Review Filed Land Use Application\nGeography reason: NYC Charter \u00a7 196\nPublished opportunity: Upcoming-opportunity source not checked\nFollow this project\nObserved recommendation\nNo observed recommendation\nActions: Zoning map amendment \u00b7 Zoning text amendment\nWhat can I do now?\nOpen ZAP project\n\u2197\n(opens in new tab)\nFollow land-use activity\nHow to participate in this rezoning\nCurrent ULURP phase\nEnvironmental review (CEQR)\nPublic status\nNoticed\nFull project record on ZAP: zap.planning.nyc.gov\n\u2197\n(opens in new tab)\n.\nCopy link\nQR code\nFollow projectSubscribe to project calendar\nOpen ZAP project\n\u2197\n(opens in new tab)\nFollow this area\nPROJECT CONNECTIONS\nFilter by this project\n\nRecords connected with this project, grouped by the questions they answer.\n\nAPPLIED BY\nLINKED\nSedgwick Holdings LLC\nSee all connected records\nTOUCHES PARCELS\nLINKED\n\u25c6\nBronx \u2014 Block 3230, Lot 5 (BBL 2032300005) Report an issue\n\u25c6\nBronx \u2014 Block 3230, Lot 10 (BBL 2032300010) Report an issue\n\u25c6\nBronx \u2014 Block 3230, Lot 16 (BBL 2032300016) Report an issue\n\u25c6\nBronx \u2014 Block 3230, Lot 30 (BBL 2032300030) Report an issue\n\u25c6\nBronx \u2014 Block 3230, Lot 33 (BBL 2032300033) Report an issue\n\u25c6\nBronx \u2014 Block 3230, Lot 35 (BBL 2032300035) Report an issue\nSee all connected records\nDECIDED BY\nLINKED\n0.-DCP-Signature-Form--signed-.pdf\n(opens in new tab)\n1.-2009-Sedgwick-Avenue---LR-Item-3-6-7-24.pdf\n(opens in new tab)\n2.-2009-Sedgwick-Avenue---Zoning-Map.pdf\n(opens in new tab)\n3.-2009-Sedgwick-Avenue---Tax-Map.pdf\n(opens in new tab)\n4.-2009-Sedgwick-Avenue---Area-Map.pdf\n(opens in new tab)\n5.-2009-Sedgwick-Avenue---Photographs.pdf\n(opens in new tab)\nSee all connected records\nLAND-USE OUTCOMES\nPublic status Noticed \u00b7 12 decision document(s) from the Zoning Application Portal. Open full ZAP project\n(opens in new tab)\nPROJECT TIMELINE\nFull project on ZAP\n(opens in new tab)\nWHERE THIS PROJECT IS NOW\n\nEnvironmental review (CEQR)\n\nEAS - Review Filed Land Use Application \u00b7 since 2024-09-06\nPublic status: Noticed \u2014 not yet certified into formal ULURP public review.\n\nWhat\u2019s next: Certification\n\nFILING\n\u2192\nCEQR\n\u2192\nNOTICE\n\u2192\nCERTIFY\n\u2192\nCB\n\u2192\nBP\n\u2192\nCPC\n\u2192\nCOUNCIL\n\u2192\nMAYOR\nEnvironmental review (CEQR)\nCURRENT\n2 milestones \u00b7 2024-09-06 \u2192 2024-09-06\nCEQR Fee Paid\n2024-09-06 \u00b7 In Progress\nEnvironmental Assessment Statement Filed\n2024-09-06 \u00b7 Completed\nPre-certification notice\nALSO UNDERWAY\nPublic notice issued while filing or environmental review continues \u2014 these steps can overlap.\nPre-certification notice (public status: Noticed)\n2024-11-01 \u00b7 Noticed\nEarlier phases\nCertification\nNOT STARTED\nPlanned 2025-08-04\nCommunity Board review\nNOT STARTED\nPlanned 2025-11-10\nBorough President review\nNOT STARTED\nPlanned 2025-12-17\nCity Planning Commission\nNOT STARTED\nPlanned 2026-01-05 \u2192 2026-01-07\nCity Council review\nNOT STARTED\nPlanned 2026-06-12\nMayoral / Appeals Board\nNOT STARTED\nPlanned 2026-07-13 \u2192 2026-07-27\nWHAT PAST CASES SHOW\n\nPast land-use cases were 97% approved. Final action usually came 2.5\u20136.5 months after certification (150 cases since 2018).\n\nPast results: 97% approved \u00b7 1% modified \u00b7 1% disapproved.\n\nLegal deadlines still control. This past range is context only. How we count and test this\n\nShow all dates\nThe NYC Open Data milestone date (2024-06-11) trails the live ZAP portal (2024-12-13) by 185 days.\nDecision documents\n0.-DCP-Signature-Form--signed-.pdf\n(opens in new tab)\n1.-2009-Sedgwick-Avenue---LR-Item-3-6-7-24.pdf\n(opens in new tab)\n2.-2009-Sedgwick-Avenue---Zoning-Map.pdf\n(opens in new tab)\n3.-2009-Sedgwick-Avenue---Tax-Map.pdf\n(opens in new tab)\nDecision documents\nView DOB NOW filings\nOutcome details come from NYC Open Data, the Zoning Application Portal, and DOB NOW filings. Updated daily.\n2009 Sedgwick Avenue Rezoning\n\u00d7\n+\n\u2212\n Leaflet | \u00a9 OpenStreetMap \u00a9 CARTO\n\u2190\n\u2191\n\u2193\n\u2192\n\nCityScroll connects NYC agencies, mandates, parcels, people, and processes across public records, with City Record as one source among five, through August 5, 2026. Guide \u00b7 About \u00b7 Feedback \u00b7 My investigation \u00b7 API and feeds \u00b7 Stats"
+        "negative_claim": []
       }
     },
     {
@@ -688,14 +715,14 @@
         1440,
         900
       ],
-      "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-      "data_vintage": "2026-08-23T07:59:09.786Z",
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
       "specimen": "negative-failed-load",
       "assertion": "a project list that never arrives leaves the applicant area unchanged and never becomes a no-other-projects claim",
       "axe": null,
       "evidence": {
         "present": false,
-        "page_text": "Skip to content\nEnglish\nEspa\u00f1ol\n\u4e2d\u6587\uff08\u7b80\u4f53\uff09\n\u0420\u0443\u0441\u0441\u043a\u0438\u0439\n\u09ac\u09be\u0982\u09b2\u09be\nKrey\u00f2l ayisyen\n\ud55c\uad6d\uc5b4\nFran\u00e7ais\nPolski\n\u0627\u0644\u0639\u0631\u0628\u064a\u0629\n\u0627\u0631\u062f\u0648\nCityScroll\n\nSubscribe to NYC contracts, rezonings, and hearings that interest you.\n\nSEARCH\n\nWhat are you looking for?\n\nSearch NYC records by topic. Results stay grouped by civic object.\n\nWhat are you looking for?\nSearch\n\nNew NYC contracts and RFPs by email every Monday.\n\nEmail address\nGet weekly updates\n\nChoose what to follow\n\nNow\nSee deadlines and upcoming events\nNear you\nKeep these filters. Add a place.\nFollowing\nOpen your watches\nBrowse\nExplore city topics\nGuide\nLearn how to read city records\n\nCIVIC OBJECTS\n\nCONTRACTS\nPEOPLE + ORGANIZATIONS\nLAND\nRULES\nMEETINGS\nEXAMS\n\nZONING\n\nLand-use applications\n\nPick a land-use application to see it in plain English -- applicant, what's proposed, affordable units when relevant, status -- and on a map. Try \"79 Rivington\" or \"Gowanus\".\n\nHOW THIS LIST WORKS\nZIP OR PLACE\nMore filters\nFollow this search\nAsk CityScroll\n\nInterprets your request\n\nACTION TYPE\nAll (0)\nAcquisition (0)\nDisposition (0)\nCertification (0)\nRenewal (0)\nMajor concession (0)\nLegal document (0)\nRezoning (0)\nSpecial permit (0)\nAuthorization (0)\nSite selection (0)\nCity map change (0)\nDemapping (0)\nUrban renewal (0)\nLandmark designation (0)\nSubstantial compliance (0)\nOffice space (0)\nBusiness improvement district (0)\nFranchise or consent (0)\nHousing plan (0)\nPrivately owned public space (0)\nLandfill (0)\nREGULATORY EFFECT DERIVED FROM THE PROJECT BRIEF\nAll (0)\nUpzoning (0)\nDownzoning (0)\nMixed density change (0)\nNo density change (0)\nRACIAL EQUITY REPORT REQUIRED?\nAll\nRacial Equity Report required\nRacial Equity Report observed\nPublisher identifies as not timely filed\nREVIEW PROCEDURE\nULURP and expedited (0)\nULURP only (0)\nExpedited (ELURP) (0)\nNon-ULURP (0)\nSTAGE\nAll (0)\nActive projects (0)\nPublic review (0)\nPre-certification / filed (0)\nCommunity Board review (0)\nBorough President review (0)\nCity Planning Commission (0)\nCity Council review (0)\nCompleted / no longer active (0)\nNEXT OPPORTUNITY\nAll (0)\nAny future public action (0)\nUpcoming hearing (0)\nOther upcoming action (0)\nNo known future public action (0)\nLand-use applications\nThe latest CityScroll snapshot is unavailable. Retry.\nShare / export\n\nCityScroll connects NYC agencies, mandates, parcels, people, and processes across public records, with City Record as one source among five, through August 5, 2026. Guide \u00b7 About \u00b7 Feedback \u00b7 My investigation \u00b7 API and feeds \u00b7 Stats"
+        "negative_claim": []
       }
     },
     {
@@ -707,8 +734,8 @@
         1440,
         900
       ],
-      "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-      "data_vintage": "2026-08-23T07:59:09.786Z",
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
       "specimen": "back-navigation",
       "assertion": "each listed project is a reciprocal native link; going back restores the original project and its expanded section",
       "axe": {
@@ -773,8 +800,8 @@
         1440,
         900
       ],
-      "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-      "data_vintage": "2026-08-23T07:59:09.786Z",
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
       "specimen": "keyboard",
       "assertion": "the disclosure collapses and re-expands from the keyboard alone and never navigates or subscribes",
       "axe": {
@@ -814,8 +841,8 @@
         1440,
         900
       ],
-      "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-      "data_vintage": "2026-08-23T07:59:09.786Z",
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
       "specimen": "rtl-ar",
       "assertion": "in a right-to-left language the section reads right-to-left, the published project name stays isolated left-to-right, and the page gains no horizontal scroll",
       "axe": {
@@ -862,14 +889,15 @@
         1440,
         900
       ],
-      "revision": "110c1c4396d57d4e17616cceded9028f9e26747e",
-      "data_vintage": "2026-08-23T07:59:09.786Z",
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
       "specimen": "no-javascript",
       "assertion": "the existing land document renders no project record without script, so this section adds nothing there and makes no claim",
       "axe": null,
       "evidence": {
         "rows": 0,
-        "section": 0
+        "section": 0,
+        "negative_claim": []
       }
     }
   ]
