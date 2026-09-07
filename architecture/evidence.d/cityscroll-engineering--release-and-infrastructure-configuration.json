@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/release-and-infrastructure-configuration",
+  "status": "implemented",
+  "fingerprint": "release-and-infrastructure-configuration.v1",
+  "updated_at": "2026-09-07T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "release-and-infrastructure-reference",
+      "path": "docs/release/cloudflare-native-builds.md"
+    },
+    {
+      "id": "release-and-infrastructure-contract",
+      "path": "docs/release/cloudflare-native-builds.json"
+    },
+    {
+      "id": "release-infrastructure-facts",
+      "path": "tools/release_infrastructure_facts.mjs"
+    },
+    {
+      "id": "release-infrastructure-facts-tests",
+      "path": "test/release_infrastructure_facts.test.mjs"
+    },
+    {
+      "id": "release-claim-to-source-matrix",
+      "path": "docs/evidence/release-and-infrastructure-configuration/claim-to-source-matrix.md"
+    }
+  ]
+}

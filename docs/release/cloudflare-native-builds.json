@@ -18,6 +18,7 @@
   ],
   "pages": {
     "project": "cityscroll",
+    "automatic_deploy_events": ["push:main", "schedule", "workflow_dispatch"],
     "release_control_plane": "github_actions",
     "automatic_deploy_workflow": ".github/workflows/deploy-cloudflare-pages.yml",
     "production_branch": "main",
@@ -32,10 +33,13 @@
     "name": "cityscroll-worker",
     "root_directory": "worker",
     "production_branch": "main",
+    "release_control_plane": "github_actions",
+    "automatic_deploy_workflow": ".github/workflows/deploy-worker.yml",
+    "automatic_deploy_events": ["push:main", "workflow_dispatch"],
+    "native_builds_connection": "unverified",
     "build_command": "../tools/install_worker_dependencies.sh",
     "deploy_command": "npx wrangler d1 migrations apply crol-notices --remote && npx wrangler deploy --var GIT_COMMIT_SHA:${WORKERS_CI_COMMIT_SHA} --var WRANGLER_ENV:production",
     "preview_deploy_command": "npx wrangler versions upload --var GIT_COMMIT_SHA:${WORKERS_CI_COMMIT_SHA} --var WRANGLER_ENV:preview",
-    "path_includes": ["worker/**", "capabilities/**", "entity_resolution/**", "ontology/**", "site/**", "tools/**", "warehouse/**"],
-    "manual_fallback_workflow": ".github/workflows/deploy-worker.yml"
+    "path_includes": ["worker/**", "capabilities/**", "entity_resolution/**", "ontology/**", "site/**", "tools/**", "warehouse/**"]
   }
 }

@@ -383,16 +383,22 @@ array as the prompted value); the route 500s until it's set. Vars (in `wrangler.
 `ALERTS_LIVE` (master switch — anything but `"true"` = dry-run: still **renders** each
 digest and logs the full HTML + headers, but never calls Resend and never bumps send
 counters / last-sent clocks), `ALERTS_FROM`, `ALERTS_REPLY_TO`, `MAX_PER_RUN`,
-`MAX_SENDS_PER_DAY`, `HEARTBEAT_DAYS`, and `FEEDBACK_TO`. Fire a cron
-locally by hitting `/__scheduled?cron=0+10+*+*+*` or `/__scheduled?cron=0+13+*+*+*` under
-`wrangler dev`.
+`MAX_SENDS_PER_DAY`, `HEARTBEAT_DAYS`, and `FEEDBACK_TO`. Three cron triggers are configured
+(`0 8 * * *`, `0 10 * * *`, `0 13 * * *`, UTC authoritative); their responsibilities are in
+[`docs/release/cloudflare-native-builds.md`](../docs/release/cloudflare-native-builds.md). Fire one
+locally by hitting `/__scheduled?cron=0+8+*+*+*`, `/__scheduled?cron=0+10+*+*+*` or
+`/__scheduled?cron=0+13+*+*+*` under `wrangler dev`.
 
 ### Automatic deploys
 
 `.github/workflows/deploy-worker.yml` deploys the Worker automatically on every push to `main`
-that touches `worker/**` or the shared Following renderer
-(`site/following_view.mjs` / `site/data/watch_templates.json`) (also runnable by hand via
-`workflow_dispatch` for a re-run without a new commit). Its post-deploy smoke includes the
+that matches its path filter — `worker/**`, `capabilities/**`, `entity_resolution/**`,
+`ontology/**`, `site/**`, `tools/**`, `warehouse/**`, the shared Following renderer
+(`site/following_view.mjs` / `site/data/watch_templates.json`) and several named builders — and
+also runs by hand via `workflow_dispatch` for a re-run without a new commit. The trigger,
+schedule and binding inventory this section summarizes is owned by
+[`docs/release/cloudflare-native-builds.md`](../docs/release/cloudflare-native-builds.md); read
+the exact `paths:` list there or in the workflow rather than from prose. Its post-deploy smoke includes the
 Following create-first contract on the canonical site route. Each deploy **applies pending D1
 migrations** (`wrangler d1 migrations apply
 crol-notices --remote`) before `wrangler deploy`, so schema changes under `migrations/` land
@@ -403,7 +409,9 @@ overwrite a live secret with a `[vars]` entry of the same name on deploy; keep s
 through `wrangler secret put` by hand (above) and never add one to `wrangler.toml`'s `[vars]`
 block or to the workflow's bulk `vars:` input. Identity for `GET /health` is the exception:
 `wrangler deploy --var GIT_COMMIT_SHA:<sha> --var WRANGLER_ENV:production` injects only that
-pair. Workers Builds uses `WORKERS_CI_COMMIT_SHA` the same way. A `concurrency: worker-deploy` group (no cancel-in-progress) makes
+pair. The Workers Builds commands declared in the release contract use `WORKERS_CI_COMMIT_SHA`
+the same way; whether that dashboard connection exists is not verifiable from this repository and
+is recorded as unverified in the release reference. A `concurrency: worker-deploy` group (no cancel-in-progress) makes
 two quick merges deploy in order rather than racing. `npm run deploy` from a laptop
 remains the escape hatch for an emergency deploy outside the merge flow and stamps
 the same health identity pair (pair it with
