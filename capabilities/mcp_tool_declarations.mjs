@@ -912,3 +912,15 @@ export const MCP_PUBLIC_CAPABILITY_TOOL_BINDINGS = Object.freeze(
     capabilityReference && authorityClass === "public_read"
   )),
 );
+
+/**
+ * Contract-surface tools: read-only tools that answer from this repository's own
+ * published contract rather than from a record. They hold no capability, reach no
+ * store, and return nothing an anonymous caller could not already read, which is what
+ * lets a scoped machine-client profile carry one without widening its data grant.
+ */
+export const MCP_CONTRACT_SURFACE_TOOL_BINDINGS = Object.freeze(
+  MCP_TOOL_BINDINGS.filter(({ capabilityReference, contractReference, operationClass, storeAccess }) => (
+    !capabilityReference && contractReference && operationClass === "read" && !storeAccess
+  )),
+);

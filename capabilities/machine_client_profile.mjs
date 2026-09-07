@@ -20,14 +20,24 @@
 //   Authentication grants reads, not authority. A profile's allowlist is validated
 //   against the capability registry's own `authorityClass` / `storeAccess` facts, so a
 //   future tool cannot join a profile by being added to a list — it has to be a
-//   registered public read with provider-only store access first.
+//   registered public read with provider-only store access first. The one other thing a
+//   profile may hold is a CONTRACT-SURFACE tool: a read that answers from this
+//   repository's published contract rather than from a record, holds no capability and
+//   reaches no store. `list_capability_gaps` is one — a profile that could not see it
+//   would be told what the endpoint answers and never what it declares it cannot, which
+//   is exactly the silence the declaration exists to end. That class is derived from the
+//   tool bindings, not named here, so it cannot be widened by an edit to this file.
 //
 // Rotation (A7): a profile accepts more than one secret binding at a time. Rotating
 // means changing WHICH binding holds the live value; the profile id, its allowlist and
 // its meter key are unchanged, so capability semantics survive a rotation or a
 // revocation untouched.
 
-import { MCP_PUBLIC_CAPABILITY_TOOL_BINDINGS, MCP_TOOL_BINDINGS } from "./mcp_tool_declarations.mjs";
+import {
+  MCP_CONTRACT_SURFACE_TOOL_BINDINGS,
+  MCP_PUBLIC_CAPABILITY_TOOL_BINDINGS,
+  MCP_TOOL_BINDINGS,
+} from "./mcp_tool_declarations.mjs";
 
 /** Meter name for profile-keyed quota. Distinct from the anonymous per-address meter. */
 export const MACHINE_CLIENT_METER = "mcpclient";
@@ -80,6 +90,7 @@ export const MACHINE_CLIENT_ERROR_CLASSES = Object.freeze([
 ]);
 
 const PUBLIC_READ_TOOL_NAMES = new Set(MCP_PUBLIC_CAPABILITY_TOOL_BINDINGS.map((binding) => binding.name));
+const CONTRACT_SURFACE_TOOL_NAMES = new Set(MCP_CONTRACT_SURFACE_TOOL_BINDINGS.map((binding) => binding.name));
 const TOOL_BINDINGS_BY_NAME = new Map(MCP_TOOL_BINDINGS.map((binding) => [binding.name, binding]));
 
 /**
@@ -96,7 +107,8 @@ export const MACHINE_CLIENT_PROFILES = Object.freeze([
     id: "public-research-read",
     label: "Public civic-research reads",
     description:
-      "Registered public-read capabilities only. Grants no watch preview, no watch creation, "
+      "Registered public-read capabilities, plus the endpoint's own declaration of the "
+      + "questions it does not answer. Grants no watch preview, no watch creation, "
       + "no mutation, no administrative route, and no raw source, database, key-value or "
       + "object-store access.",
     secretBindings: Object.freeze([
@@ -120,6 +132,7 @@ export const MACHINE_CLIENT_PROFILES = Object.freeze([
       "get_land_project",
       "browse_land_projects",
       "get_land_decision_path",
+      "list_capability_gaps",
     ]),
   }),
 ]);
@@ -179,11 +192,26 @@ export function validateMachineClientProfiles(profiles = MACHINE_CLIENT_PROFILES
         problems.push(`${at}: ${name} is not a declared tool`);
         continue;
       }
-      if (!PUBLIC_READ_TOOL_NAMES.has(name)) {
-        problems.push(`${at}: ${name} is not a registered public-read capability`);
-      }
+      // Both classes are reads. Neither may mutate, and neither may reach a store.
       if (binding.operationClass !== "read") {
         problems.push(`${at}: ${name} has operationClass ${binding.operationClass}, not read`);
+      }
+      if (CONTRACT_SURFACE_TOOL_NAMES.has(name)) {
+        // A contract-surface read answers from the published contract, so it carries no
+        // capability and no store access at all — the absence IS the check here.
+        if (binding.capabilityReference) {
+          problems.push(`${at}: ${name} is listed as a contract surface but holds capability ${binding.capabilityReference}`);
+        }
+        if (binding.storeAccess) {
+          problems.push(`${at}: ${name} is listed as a contract surface but reaches ${binding.storeAccess}`);
+        }
+        if (binding.annotations?.readOnlyHint !== true) {
+          problems.push(`${at}: ${name} is listed as a contract surface but is not annotated read-only`);
+        }
+        continue;
+      }
+      if (!PUBLIC_READ_TOOL_NAMES.has(name)) {
+        problems.push(`${at}: ${name} is not a registered public-read capability`);
       }
       if (binding.authorityClass !== "public_read") {
         problems.push(`${at}: ${name} has authorityClass ${binding.authorityClass || "(none)"}, not public_read`);

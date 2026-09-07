@@ -19,7 +19,8 @@ validation. `test/machine_client_profile.test.mjs` is the contract test.
 A profile is a named integration identity with three parts:
 
 - a **stable id** (`public-research-read`), used as the quota meter key and the telemetry label;
-- an **exact allowlist** of registered public-read capability tools;
+- an **exact allowlist** of registered public-read capability tools, plus any contract-surface
+  read (a tool that answers from the endpoint's published contract rather than from a record);
 - one or more **deployment-secret binding names** whose values authenticate the profile.
 
 The allowlist is written out as a literal list rather than derived from the capability registry
@@ -42,14 +43,23 @@ filtered listing exists to close. The distinction is preserved internally in tel
 
 ## What a profile may never carry
 
-Profiles grant registered public-read capabilities only. The negative rule excludes watch
-preview, watch creation, future mutations, administrative routes, raw source or store access,
-subscription authority, and email authority.
+Profiles grant registered public-read capabilities and contract-surface reads. The negative rule
+excludes watch preview, watch creation, future mutations, administrative routes, raw source or
+store access, subscription authority, and email authority.
 
-This is enforced against the capability registry, not merely documented. A tool joins a profile
-only if the registry says it has `operationClass: read`, `authorityClass: public_read`,
-`storeAccess: provider-only`, and a registered capability reference. Authenticating as a profile
-grants no database, key-value, object-store, subscription, or email authority.
+This is enforced against the capability registry, not merely documented. A capability tool joins
+a profile only if the registry says it has `operationClass: read`, `authorityClass: public_read`,
+`storeAccess: provider-only`, and a registered capability reference.
+
+The one other thing a profile may hold is a **contract-surface read**: a read that answers from
+this repository's own published contract, holds no capability reference and reaches no store at
+all. `list_capability_gaps` is one — it returns the capability gaps the endpoint declares about
+itself, which an anonymous caller can already read, so a profile carrying it gains no record
+access. A profile that could not see it would be told what the endpoint answers and never what it
+declares it cannot. That class is derived from the tool bindings, so a tool cannot join it by
+being renamed or listed: the moment a binding holds a capability or any store access it stops
+qualifying, and the profile fails validation. Authenticating as a profile grants no database,
+key-value, object-store, subscription, or email authority.
 
 ## Quota
 

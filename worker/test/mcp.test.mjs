@@ -344,6 +344,22 @@ test("an authenticated profile discovers only its granted tools", async () => {
   assert.ok(names.includes("search_notices"), "granted reads stay discoverable");
   assert.ok(!names.includes("preview_watch"), "watch preview is not discoverable");
   assert.ok(!names.includes("create_watch"), "watch creation is not discoverable");
+  // The declared gaps are public product truth: a credentialed integration must be able
+  // to name what the endpoint does not answer, exactly as an anonymous caller can.
+  assert.ok(names.includes("list_capability_gaps"), "declared gaps stay discoverable under a profile");
+});
+
+test("a credentialed caller can read the declared capability gaps", async () => {
+  const env = { SUBS: new MockKV(), NL_METER: new MockKV(), [PROFILE_BINDING]: PROFILE_SECRET };
+  const called = await (await handleMcp(post(
+    { jsonrpc: "2.0", id: 33, method: "tools/call", params: { name: "list_capability_gaps", arguments: {} } },
+    { authorization: `Bearer ${PROFILE_SECRET}` },
+  ), env)).json();
+  assert.equal(called.result.isError, undefined);
+  assert.deepEqual(
+    called.result.structuredContent.gaps.map(({ gap }) => gap),
+    ["civic.outcome.prediction"],
+  );
 });
 
 test("an anonymous caller still sees the full inventory", async () => {
