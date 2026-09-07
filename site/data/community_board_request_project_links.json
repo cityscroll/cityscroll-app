@@ -1,0 +1,1717 @@
+{
+  "schema": "cityscroll.community_board_request_project_links.v1",
+  "relation": "budget_request_names_capital_project_code",
+  "method": "exact_published_project_code",
+  "negative_rule": "A link between a request and a capital project is a reference the published text makes, and nothing else. It is never funding, inclusion in the project's scope, a commitment, delivery or fulfilment of the request, and a request and a project keep the separate dates their own publishers gave them.",
+  "policy": {
+    "join": "a whole published capital project code named in the answer or in the board's own submission, scoped to one managing agency",
+    "minimum_code_length": 6,
+    "identifier_must_carry_a_digit": true,
+    "name_similarity_is_not_a_relation": true,
+    "substring_of_a_longer_code_is_not_that_code": true,
+    "candidates_remain_unlinked_until_reviewed": true,
+    "reviewed_scope_and_agency_required": true,
+    "amounts_are_whole_project_figures": "the project's own budget and recorded spending, never a figure about this request",
+    "dates_are_each_publisher_s_own": "the answer's publication date and the capital observation's reporting and record dates are kept apart",
+    "relation_is_not_fulfilment": true
+  },
+  "reviewed_on": "2026-09-07",
+  "source_scope": {
+    "requests": {
+      "publisher": "New York City Office of Management and Budget",
+      "name": "Register of Community Board Budget Requests",
+      "dataset_id": "vn4m-mk4t",
+      "source_url": "https://data.cityofnewyork.us/d/vn4m-mk4t",
+      "acquired_at": "2026-09-07T11:54:00.629Z",
+      "servable_publications": [
+        "20260512",
+        "20260630"
+      ],
+      "as_of": "2026-09-07"
+    },
+    "capital_projects": {
+      "source": "capital_projects_dashboard",
+      "source_contract_id": "capital-projects-dashboard",
+      "dataset_id": "fb86-vt7u",
+      "source_url": "https://data.cityofnewyork.us/resource/fb86-vt7u.json",
+      "landing_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+      "latest_retained_release": "202605",
+      "published_project_codes": 7659,
+      "published_projects": 7928
+    }
+  },
+  "counts": {
+    "requests_considered": 3809,
+    "requests_with_a_candidate": 17,
+    "candidates": 17,
+    "relations": 16,
+    "projects_related": 12,
+    "boards_with_a_relation": 10,
+    "reviewed_refusals": 6,
+    "candidates_pending_review": 0
+  },
+  "relations": [
+    {
+      "relation": "budget_request_names_capital_project_code",
+      "method": "exact_published_project_code",
+      "request": {
+        "board_id": "bronx-cb-03",
+        "tracking_code": "103202717C",
+        "fiscal_year": 2027,
+        "request_class": "capital",
+        "responsible_agency": {
+          "source_label": "Department of Transportation",
+          "agency_id": "transportation"
+        }
+      },
+      "evidence": {
+        "project_code": "HWX100SBC",
+        "managing_agency": "DDC",
+        "match_rule": "whole published project code, scoped to one managing agency",
+        "named_in": [
+          "response"
+        ],
+        "reviewed_named_in": "response",
+        "passages": [
+          {
+            "named_in": "response",
+            "publication": "20260512",
+            "publication_date": "2026-05-12",
+            "published_spelling": "HWX100SBC",
+            "passage": "The agency in partnership with DDC will be reconstructing the SBS BX 6 route under capital project HWX100SBC in 2026."
+          },
+          {
+            "named_in": "response",
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "published_spelling": "HWX100SBC",
+            "passage": "The agency in partnership with DDC will be reconstructing the SBS BX 6 route under capital project HWX100SBC in 2026."
+          }
+        ]
+      },
+      "capital_project": {
+        "source": "capital_projects_dashboard",
+        "source_url": "https://data.cityofnewyork.us/resource/fb86-vt7u.json",
+        "landing_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+        "financial_identity": {
+          "managing_agency": "DDC",
+          "project_code": "HWX100SBC"
+        },
+        "pid": "4364",
+        "project_name": "South Bronx East-West Crosstown SBS",
+        "project_scope": "The South Bronx Crosstown SBS capital project (BRT) will add bus pads and construct bus bulbs, curb and median extensions, and pedestrian islands for enhanced pedestrian safety and access improvements.",
+        "project_scope_published_blank": false,
+        "project_scope_repeats_name": false,
+        "current_phase": "Construction",
+        "borough": "Bronx",
+        "community_board": "Bronx",
+        "project_budget": 57611798.46,
+        "recorded_project_spending": 8931746,
+        "project_forecast_completion": "2028-10-04",
+        "observation": {
+          "reporting_period": "202605",
+          "agency_data_date": "2026-06-23",
+          "financial_data_date": "2026-05-18",
+          "latest_retained_release": "202605",
+          "from_latest_retained_release": true,
+          "releases_observed": 9
+        },
+        "also_published_under_managing_agencies": [],
+        "agencies": {
+          "managing": {
+            "code": "DDC",
+            "agency_id": "design-and-construction",
+            "href": "/agencies/design-and-construction/",
+            "name": "Department of Design and Construction"
+          },
+          "sponsoring": [
+            {
+              "code": "DOT",
+              "agency_id": "transportation",
+              "href": "/agencies/transportation/",
+              "name": "New York City Department of Transportation"
+            }
+          ]
+        }
+      },
+      "review": {
+        "reviewed_on": "2026-09-07",
+        "agency_evidence": "The answer names Design and Construction as the agency doing the work in partnership with Transportation, and the retained project record is managed by Design and Construction and sponsored by Transportation.",
+        "scope_evidence": "The answer describes reconstruction of the SBS BX 6 route; the retained project is the South Bronx East-West Crosstown Select Bus Service project, whose published scope is bus pads, bus bulbs, curb and median extensions and pedestrian islands.",
+        "scope_difference": "The answer also states the agency does not understand the request as written and needs more information, so naming the project is not agreement with what the board asked for.",
+        "scope_difference_quote": {
+          "named_in": "response",
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "quote": "The agency does not understand the request as written and requires more clarification."
+        }
+      }
+    },
+    {
+      "relation": "budget_request_names_capital_project_code",
+      "method": "exact_published_project_code",
+      "request": {
+        "board_id": "bronx-cb-10",
+        "tracking_code": "110202705C",
+        "fiscal_year": 2027,
+        "request_class": "capital",
+        "responsible_agency": {
+          "source_label": "Department of Environmental Protection",
+          "agency_id": "environmental-protection"
+        }
+      },
+      "evidence": {
+        "project_code": "SEX200400",
+        "managing_agency": "DDC",
+        "match_rule": "whole published project code, scoped to one managing agency",
+        "named_in": [
+          "board_submission"
+        ],
+        "reviewed_named_in": "board_submission",
+        "passages": [
+          {
+            "named_in": "board_submission",
+            "publication": "20260512",
+            "publication_date": "2026-05-12",
+            "published_spelling": "SEX 200400",
+            "passage": "DDC Project SEX 200400 should include the entire of Minnieford Avenue and should extend as far as Bridge Street."
+          },
+          {
+            "named_in": "board_submission",
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "published_spelling": "SEX 200400",
+            "passage": "DDC Project SEX 200400 should include the entire of Minnieford Avenue and should extend as far as Bridge Street."
+          }
+        ]
+      },
+      "capital_project": {
+        "source": "capital_projects_dashboard",
+        "source_url": "https://data.cityofnewyork.us/resource/fb86-vt7u.json",
+        "landing_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+        "financial_identity": {
+          "managing_agency": "DDC",
+          "project_code": "SEX200400"
+        },
+        "pid": "4322",
+        "project_name": "STM AND SAN SEWERS IN MINNIEFORD AVENUE AREA",
+        "project_scope": "Storm and Sanitary Sewers in: Terrace St. between Minnieford Ave. and King Ave.",
+        "project_scope_published_blank": false,
+        "project_scope_repeats_name": false,
+        "current_phase": "Construction",
+        "borough": "Bronx",
+        "community_board": "Bronx 10",
+        "project_budget": 23516413.64,
+        "recorded_project_spending": 12957640.33,
+        "project_forecast_completion": "2026-10-08",
+        "observation": {
+          "reporting_period": "202605",
+          "agency_data_date": "2026-06-23",
+          "financial_data_date": "2026-05-18",
+          "latest_retained_release": "202605",
+          "from_latest_retained_release": true,
+          "releases_observed": 9
+        },
+        "also_published_under_managing_agencies": [],
+        "agencies": {
+          "managing": {
+            "code": "DDC",
+            "agency_id": "design-and-construction",
+            "href": "/agencies/design-and-construction/",
+            "name": "Department of Design and Construction"
+          },
+          "sponsoring": [
+            {
+              "code": "DEP",
+              "agency_id": "environmental-protection",
+              "href": "/agencies/environmental-protection/",
+              "name": "Department of Environmental Protection"
+            }
+          ]
+        }
+      },
+      "review": {
+        "reviewed_on": "2026-09-07",
+        "agency_evidence": "The board names the project as a Design and Construction project, and the retained project record is managed by Design and Construction and sponsored by Environmental Protection, the agency responsible for answering this request.",
+        "scope_evidence": "The board names storm flooding on Minnieford Avenue; the retained project is storm and sanitary sewers in the Minnieford Avenue area, recorded in this same district.",
+        "scope_difference": "The board names the project in order to ask that its limits be extended; the published answer does not name it and does not support the request, so the project record is not an answer to it.",
+        "scope_difference_quote": {
+          "named_in": "response",
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "quote": "PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION."
+        }
+      }
+    },
+    {
+      "relation": "budget_request_names_capital_project_code",
+      "method": "exact_published_project_code",
+      "request": {
+        "board_id": "brooklyn-cb-03",
+        "tracking_code": "203202719C",
+        "fiscal_year": 2027,
+        "request_class": "capital",
+        "responsible_agency": {
+          "source_label": "Department of Transportation",
+          "agency_id": "transportation"
+        }
+      },
+      "evidence": {
+        "project_code": "HWTRK1",
+        "managing_agency": "DDC",
+        "match_rule": "whole published project code, scoped to one managing agency",
+        "named_in": [
+          "response"
+        ],
+        "reviewed_named_in": "response",
+        "passages": [
+          {
+            "named_in": "response",
+            "publication": "20260512",
+            "publication_date": "2026-05-12",
+            "published_spelling": "HWTRK1",
+            "passage": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: Reconstruction of this block is funded and part of HWTRK1 which is currently in Design at DDC."
+          },
+          {
+            "named_in": "response",
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "published_spelling": "HWTRK1",
+            "passage": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: Reconstruction of this block is funded and part of HWTRK1 which is currently in Design at DDC."
+          }
+        ]
+      },
+      "capital_project": {
+        "source": "capital_projects_dashboard",
+        "source_url": "https://data.cityofnewyork.us/resource/fb86-vt7u.json",
+        "landing_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+        "financial_identity": {
+          "managing_agency": "DDC",
+          "project_code": "HWTRK1"
+        },
+        "pid": "4384",
+        "project_name": "TRENCH RESTORATION BROOKLYN",
+        "project_scope": "Trench Restoration in The Borough Of Brooklyn including Full Street Reconstruction",
+        "project_scope_published_blank": false,
+        "project_scope_repeats_name": false,
+        "current_phase": "Construction Procurement",
+        "borough": "Brooklyn",
+        "community_board": "Brooklyn",
+        "project_budget": 67862831.45,
+        "recorded_project_spending": 4831778.7,
+        "project_forecast_completion": "2029-09-28",
+        "observation": {
+          "reporting_period": "202605",
+          "agency_data_date": "2026-06-23",
+          "financial_data_date": "2026-05-18",
+          "latest_retained_release": "202605",
+          "from_latest_retained_release": true,
+          "releases_observed": 9
+        },
+        "also_published_under_managing_agencies": [],
+        "agencies": {
+          "managing": {
+            "code": "DDC",
+            "agency_id": "design-and-construction",
+            "href": "/agencies/design-and-construction/",
+            "name": "Department of Design and Construction"
+          },
+          "sponsoring": [
+            {
+              "code": "DOT",
+              "agency_id": "transportation",
+              "href": "/agencies/transportation/",
+              "name": "New York City Department of Transportation"
+            }
+          ]
+        }
+      },
+      "review": {
+        "reviewed_on": "2026-09-07",
+        "agency_evidence": "The answer places the work at Design and Construction, and the retained project record is managed by Design and Construction and sponsored by Transportation, the agency responsible for answering this request.",
+        "scope_evidence": "The board asks for roadway repair and restoration on a Brooklyn corridor; the retained project is trench restoration in the borough of Brooklyn including full street reconstruction.",
+        "scope_difference": "The answer describes the project as in design; the retained capital observation, taken on its own later date, records it in construction procurement. Both are kept with their own dates rather than reconciled.",
+        "scope_difference_quote": {
+          "named_in": "response",
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "quote": "Reconstruction of this block is funded and part of HWTRK1 which is currently in Design at DDC."
+        }
+      }
+    },
+    {
+      "relation": "budget_request_names_capital_project_code",
+      "method": "exact_published_project_code",
+      "request": {
+        "board_id": "brooklyn-cb-04",
+        "tracking_code": "204202703CS",
+        "fiscal_year": 2027,
+        "request_class": "continued-support",
+        "responsible_agency": {
+          "source_label": "Department of Transportation",
+          "agency_id": "transportation"
+        }
+      },
+      "evidence": {
+        "project_code": "HWK876",
+        "managing_agency": "DDC",
+        "match_rule": "whole published project code, scoped to one managing agency",
+        "named_in": [
+          "response",
+          "board_submission"
+        ],
+        "reviewed_named_in": "response",
+        "passages": [
+          {
+            "named_in": "response",
+            "publication": "20260512",
+            "publication_date": "2026-05-12",
+            "published_spelling": "HWK876",
+            "passage": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: HWK876 is scheduled to start construction in 2026."
+          },
+          {
+            "named_in": "board_submission",
+            "publication": "20260512",
+            "publication_date": "2026-05-12",
+            "published_spelling": "HWK876",
+            "passage": "Complete the repair of the following roadbeds on the HWK876 project: Weirfield Street between Wyckoff & Irving Avenues."
+          },
+          {
+            "named_in": "response",
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "published_spelling": "HWK876",
+            "passage": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: HWK876 is scheduled to start construction in 2026."
+          },
+          {
+            "named_in": "board_submission",
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "published_spelling": "HWK876",
+            "passage": "Complete the repair of the following roadbeds on the HWK876 project: Weirfield Street between Wyckoff & Irving Avenues."
+          }
+        ]
+      },
+      "capital_project": {
+        "source": "capital_projects_dashboard",
+        "source_url": "https://data.cityofnewyork.us/resource/fb86-vt7u.json",
+        "landing_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+        "financial_identity": {
+          "managing_agency": "DDC",
+          "project_code": "HWK876"
+        },
+        "pid": "4244",
+        "project_name": "RECON WYCKOFF AV-FLUSHING to COOPER AV/SE",
+        "project_scope": "Reconstruction of Wyckoff Avenue from Flushing Avenue to Cooper Avenue, in the Boroughs of Brooklyn and Queens..",
+        "project_scope_published_blank": false,
+        "project_scope_repeats_name": false,
+        "current_phase": "Design",
+        "borough": "Brooklyn",
+        "community_board": "Brooklyn 04",
+        "project_budget": 58387416.35,
+        "recorded_project_spending": 8080800.31,
+        "project_forecast_completion": "2030-06-14",
+        "observation": {
+          "reporting_period": "202605",
+          "agency_data_date": "2026-06-23",
+          "financial_data_date": "2026-05-18",
+          "latest_retained_release": "202605",
+          "from_latest_retained_release": true,
+          "releases_observed": 9
+        },
+        "also_published_under_managing_agencies": [],
+        "agencies": {
+          "managing": {
+            "code": "DDC",
+            "agency_id": "design-and-construction",
+            "href": "/agencies/design-and-construction/",
+            "name": "Department of Design and Construction"
+          },
+          "sponsoring": [
+            {
+              "code": "DEP",
+              "agency_id": "environmental-protection",
+              "href": "/agencies/environmental-protection/",
+              "name": "Department of Environmental Protection"
+            },
+            {
+              "code": "DOT",
+              "agency_id": "transportation",
+              "href": "/agencies/transportation/",
+              "name": "New York City Department of Transportation"
+            }
+          ]
+        }
+      },
+      "review": {
+        "reviewed_on": "2026-09-07",
+        "agency_evidence": "Both the board and the answer name the project code, and the retained project record is managed by Design and Construction and sponsored by Environmental Protection and Transportation, the agency responsible for answering this request.",
+        "scope_evidence": "The board asks for a roadbed on the named project to be completed; the retained project is the reconstruction of Wyckoff Avenue from Flushing Avenue to Cooper Avenue, recorded in this district.",
+        "scope_difference": "The answer says construction is scheduled to start in 2026 and the start date is not yet set. The retained capital observation, on its own date, still records the project in design.",
+        "scope_difference_quote": {
+          "named_in": "response",
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "quote": "HWK876 is scheduled to start construction in 2026."
+        }
+      }
+    },
+    {
+      "relation": "budget_request_names_capital_project_code",
+      "method": "exact_published_project_code",
+      "request": {
+        "board_id": "brooklyn-cb-04",
+        "tracking_code": "204202704CS",
+        "fiscal_year": 2027,
+        "request_class": "continued-support",
+        "responsible_agency": {
+          "source_label": "Department of Transportation",
+          "agency_id": "transportation"
+        }
+      },
+      "evidence": {
+        "project_code": "HWK876",
+        "managing_agency": "DDC",
+        "match_rule": "whole published project code, scoped to one managing agency",
+        "named_in": [
+          "response"
+        ],
+        "reviewed_named_in": "response",
+        "passages": [
+          {
+            "named_in": "response",
+            "publication": "20260512",
+            "publication_date": "2026-05-12",
+            "published_spelling": "HWK876",
+            "passage": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: Wyckoff Ave, Flushing to Cooper Ave is included in HWK876 which will be starting construction in 2026."
+          },
+          {
+            "named_in": "response",
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "published_spelling": "HWK876",
+            "passage": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: Wyckoff Ave, Flushing to Cooper Ave is included in HWK876 which will be starting construction in 2026."
+          }
+        ]
+      },
+      "capital_project": {
+        "source": "capital_projects_dashboard",
+        "source_url": "https://data.cityofnewyork.us/resource/fb86-vt7u.json",
+        "landing_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+        "financial_identity": {
+          "managing_agency": "DDC",
+          "project_code": "HWK876"
+        },
+        "pid": "4244",
+        "project_name": "RECON WYCKOFF AV-FLUSHING to COOPER AV/SE",
+        "project_scope": "Reconstruction of Wyckoff Avenue from Flushing Avenue to Cooper Avenue, in the Boroughs of Brooklyn and Queens..",
+        "project_scope_published_blank": false,
+        "project_scope_repeats_name": false,
+        "current_phase": "Design",
+        "borough": "Brooklyn",
+        "community_board": "Brooklyn 04",
+        "project_budget": 58387416.35,
+        "recorded_project_spending": 8080800.31,
+        "project_forecast_completion": "2030-06-14",
+        "observation": {
+          "reporting_period": "202605",
+          "agency_data_date": "2026-06-23",
+          "financial_data_date": "2026-05-18",
+          "latest_retained_release": "202605",
+          "from_latest_retained_release": true,
+          "releases_observed": 9
+        },
+        "also_published_under_managing_agencies": [],
+        "agencies": {
+          "managing": {
+            "code": "DDC",
+            "agency_id": "design-and-construction",
+            "href": "/agencies/design-and-construction/",
+            "name": "Department of Design and Construction"
+          },
+          "sponsoring": [
+            {
+              "code": "DEP",
+              "agency_id": "environmental-protection",
+              "href": "/agencies/environmental-protection/",
+              "name": "Department of Environmental Protection"
+            },
+            {
+              "code": "DOT",
+              "agency_id": "transportation",
+              "href": "/agencies/transportation/",
+              "name": "New York City Department of Transportation"
+            }
+          ]
+        }
+      },
+      "review": {
+        "reviewed_on": "2026-09-07",
+        "agency_evidence": "The answer names the project code, and the retained project record is managed by Design and Construction and sponsored by Environmental Protection and Transportation, the agency responsible for answering this request.",
+        "scope_evidence": "The answer states that Wyckoff Avenue from Flushing Avenue to Cooper Avenue is included in the named project, which is the retained project's own published extent.",
+        "scope_difference": "The answer says construction is scheduled to start in 2026 and the start date is not yet set. The retained capital observation, on its own date, still records the project in design.",
+        "scope_difference_quote": {
+          "named_in": "response",
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "quote": "Wyckoff Ave, Flushing to Cooper Ave is included in HWK876 which will be starting construction in 2026."
+        }
+      }
+    },
+    {
+      "relation": "budget_request_names_capital_project_code",
+      "method": "exact_published_project_code",
+      "request": {
+        "board_id": "brooklyn-cb-06",
+        "tracking_code": "206202703CS",
+        "fiscal_year": 2027,
+        "request_class": "continued-support",
+        "responsible_agency": {
+          "source_label": "Department of Environmental Protection",
+          "agency_id": "environmental-protection"
+        }
+      },
+      "evidence": {
+        "project_code": "SEK20068",
+        "managing_agency": "DDC",
+        "match_rule": "whole published project code, scoped to one managing agency",
+        "named_in": [
+          "board_submission"
+        ],
+        "reviewed_named_in": "board_submission",
+        "passages": [
+          {
+            "named_in": "board_submission",
+            "publication": "20260512",
+            "publication_date": "2026-05-12",
+            "published_spelling": "SEK20068",
+            "passage": "Sufficient funds are requested to fully fund project #SEK20068 for preliminary design investigations, final design and ultimate repair of the 9th Street and Second Avenue corridors abutting the Gowanus Canal."
+          },
+          {
+            "named_in": "board_submission",
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "published_spelling": "SEK20068",
+            "passage": "Sufficient funds are requested to fully fund project #SEK20068 for preliminary design investigations, final design and ultimate repair of the 9th Street and Second Avenue corridors abutting the Gowanus Canal."
+          }
+        ]
+      },
+      "capital_project": {
+        "source": "capital_projects_dashboard",
+        "source_url": "https://data.cityofnewyork.us/resource/fb86-vt7u.json",
+        "landing_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+        "financial_identity": {
+          "managing_agency": "DDC",
+          "project_code": "SEK20068"
+        },
+        "pid": null,
+        "project_name": "New Storm and Combined Sewers and Water Main work in 9th st.",
+        "project_scope": null,
+        "project_scope_published_blank": false,
+        "project_scope_repeats_name": true,
+        "current_phase": "(Pending)",
+        "borough": "Brooklyn",
+        "community_board": "Brooklyn 06",
+        "project_budget": 27021211.28,
+        "recorded_project_spending": 24742634.5,
+        "project_forecast_completion": null,
+        "observation": {
+          "reporting_period": "202405",
+          "agency_data_date": null,
+          "financial_data_date": null,
+          "latest_retained_release": "202605",
+          "from_latest_retained_release": false,
+          "releases_observed": 1
+        },
+        "also_published_under_managing_agencies": [],
+        "agencies": {
+          "managing": {
+            "code": "DDC",
+            "agency_id": "design-and-construction",
+            "href": "/agencies/design-and-construction/",
+            "name": "Department of Design and Construction"
+          },
+          "sponsoring": []
+        }
+      },
+      "review": {
+        "reviewed_on": "2026-09-07",
+        "agency_evidence": "The board names the project number in full; the retained project record is managed by Design and Construction and recorded in this district, and Environmental Protection, the agency responsible for answering, is the sewer authority the request addresses.",
+        "scope_evidence": "The board asks for design and repair of the 9th Street and Second Avenue corridors by the Gowanus Canal; the retained project is new storm and combined sewers and water main work in 9th Street.",
+        "scope_difference": "The published answer does not name the project and does not support the request. The most recent retained capital observation of this project is from an earlier release than the current one, so its figures are older than the rest of this reading.",
+        "scope_difference_quote": {
+          "named_in": "response",
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "quote": "PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION."
+        }
+      }
+    },
+    {
+      "relation": "budget_request_names_capital_project_code",
+      "method": "exact_published_project_code",
+      "request": {
+        "board_id": "brooklyn-cb-06",
+        "tracking_code": "206202704CS",
+        "fiscal_year": 2027,
+        "request_class": "continued-support",
+        "responsible_agency": {
+          "source_label": "Department of Environmental Protection",
+          "agency_id": "environmental-protection"
+        }
+      },
+      "evidence": {
+        "project_code": "SEK20068",
+        "managing_agency": "DDC",
+        "match_rule": "whole published project code, scoped to one managing agency",
+        "named_in": [
+          "board_submission"
+        ],
+        "reviewed_named_in": "board_submission",
+        "passages": [
+          {
+            "named_in": "board_submission",
+            "publication": "20260512",
+            "publication_date": "2026-05-12",
+            "published_spelling": "SEK20068",
+            "passage": "Sufficient funds are requested to fully fund project #SEK20068 for preliminary design investigations, final design and ultimate repair of the 9th Street and Second Avenue corridors abutting the Gowanus Canal."
+          },
+          {
+            "named_in": "board_submission",
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "published_spelling": "SEK20068",
+            "passage": "Sufficient funds are requested to fully fund project #SEK20068 for preliminary design investigations, final design and ultimate repair of the 9th Street and Second Avenue corridors abutting the Gowanus Canal."
+          }
+        ]
+      },
+      "capital_project": {
+        "source": "capital_projects_dashboard",
+        "source_url": "https://data.cityofnewyork.us/resource/fb86-vt7u.json",
+        "landing_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+        "financial_identity": {
+          "managing_agency": "DDC",
+          "project_code": "SEK20068"
+        },
+        "pid": null,
+        "project_name": "New Storm and Combined Sewers and Water Main work in 9th st.",
+        "project_scope": null,
+        "project_scope_published_blank": false,
+        "project_scope_repeats_name": true,
+        "current_phase": "(Pending)",
+        "borough": "Brooklyn",
+        "community_board": "Brooklyn 06",
+        "project_budget": 27021211.28,
+        "recorded_project_spending": 24742634.5,
+        "project_forecast_completion": null,
+        "observation": {
+          "reporting_period": "202405",
+          "agency_data_date": null,
+          "financial_data_date": null,
+          "latest_retained_release": "202605",
+          "from_latest_retained_release": false,
+          "releases_observed": 1
+        },
+        "also_published_under_managing_agencies": [],
+        "agencies": {
+          "managing": {
+            "code": "DDC",
+            "agency_id": "design-and-construction",
+            "href": "/agencies/design-and-construction/",
+            "name": "Department of Design and Construction"
+          },
+          "sponsoring": []
+        }
+      },
+      "review": {
+        "reviewed_on": "2026-09-07",
+        "agency_evidence": "The board names the project number in full; the retained project record is managed by Design and Construction and recorded in this district, and Environmental Protection, the agency responsible for answering, is the sewer authority the request addresses.",
+        "scope_evidence": "The board asks for design and repair of the 9th Street and Second Avenue corridors by the Gowanus Canal; the retained project is new storm and combined sewers and water main work in 9th Street.",
+        "scope_difference": "The published answer does not name the project and does not support the request. The most recent retained capital observation of this project is from an earlier release than the current one, so its figures are older than the rest of this reading.",
+        "scope_difference_quote": {
+          "named_in": "response",
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "quote": "PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION."
+        }
+      }
+    },
+    {
+      "relation": "budget_request_names_capital_project_code",
+      "method": "exact_published_project_code",
+      "request": {
+        "board_id": "brooklyn-cb-06",
+        "tracking_code": "206202705CS",
+        "fiscal_year": 2027,
+        "request_class": "continued-support",
+        "responsible_agency": {
+          "source_label": "Department of Transportation",
+          "agency_id": "transportation"
+        }
+      },
+      "evidence": {
+        "project_code": "HWK700B",
+        "managing_agency": "DDC",
+        "match_rule": "whole published project code, scoped to one managing agency",
+        "named_in": [
+          "response",
+          "board_submission"
+        ],
+        "reviewed_named_in": "response",
+        "passages": [
+          {
+            "named_in": "response",
+            "publication": "20260512",
+            "publication_date": "2026-05-12",
+            "published_spelling": "HWK700B",
+            "passage": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: The HWK700B capital project will include several safety measures in the form of curb extensions, pedestrian safety islands, and bike infrastructure."
+          },
+          {
+            "named_in": "board_submission",
+            "publication": "20260512",
+            "publication_date": "2026-05-12",
+            "published_spelling": "HWK700B",
+            "passage": "In conjunction with the city's infrastructure work being planned under HWK700B, sufficient funds are requested to undertake the design investigation and construction of appropriate amenities and traffic calming devices to facilitate the safe movement of pedestrians and traffic."
+          },
+          {
+            "named_in": "response",
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "published_spelling": "HWK700B",
+            "passage": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: The HWK700B capital project will include several safety measures in the form of curb extensions, pedestrian safety islands, and bike infrastructure."
+          },
+          {
+            "named_in": "board_submission",
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "published_spelling": "HWK700B",
+            "passage": "In conjunction with the city's infrastructure work being planned under HWK700B, sufficient funds are requested to undertake the design investigation and construction of appropriate amenities and traffic calming devices to facilitate the safe movement of pedestrians and traffic."
+          }
+        ]
+      },
+      "capital_project": {
+        "source": "capital_projects_dashboard",
+        "source_url": "https://data.cityofnewyork.us/resource/fb86-vt7u.json",
+        "landing_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+        "financial_identity": {
+          "managing_agency": "DDC",
+          "project_code": "HWK700B"
+        },
+        "pid": "4288",
+        "project_name": "RECONSTRUCTION OF COLUMBIA STREET - PHASE 2",
+        "project_scope": "Roadway reconstruction including new sewers, water main, street lighting and traffic signals: Columbia Street south of Hamilton Avenue.",
+        "project_scope_published_blank": false,
+        "project_scope_repeats_name": false,
+        "current_phase": "Design",
+        "borough": "Brooklyn",
+        "community_board": "Brooklyn 06",
+        "project_budget": 52381845.09,
+        "recorded_project_spending": 4546931.82,
+        "project_forecast_completion": "2030-08-30",
+        "observation": {
+          "reporting_period": "202605",
+          "agency_data_date": "2026-06-23",
+          "financial_data_date": "2026-05-18",
+          "latest_retained_release": "202605",
+          "from_latest_retained_release": true,
+          "releases_observed": 9
+        },
+        "also_published_under_managing_agencies": [],
+        "agencies": {
+          "managing": {
+            "code": "DDC",
+            "agency_id": "design-and-construction",
+            "href": "/agencies/design-and-construction/",
+            "name": "Department of Design and Construction"
+          },
+          "sponsoring": [
+            {
+              "code": "DOT",
+              "agency_id": "transportation",
+              "href": "/agencies/transportation/",
+              "name": "New York City Department of Transportation"
+            }
+          ]
+        }
+      },
+      "review": {
+        "reviewed_on": "2026-09-07",
+        "agency_evidence": "The answer names the project code, and the retained project record is managed by Design and Construction and sponsored by Transportation, the agency responsible for answering this request.",
+        "scope_evidence": "The board asks for traffic calming alongside the street reconstruction it names; the retained project is the reconstruction of Columbia Street, phase 2, recorded in this district, and the answer states the project will include curb extensions, pedestrian safety islands and bike infrastructure.",
+        "scope_difference": "The board asks for the reconstruction project's scope to be expanded. The answer lists what the project already includes; it does not say the board's additions were accepted.",
+        "scope_difference_quote": {
+          "named_in": "response",
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "quote": "The HWK700B capital project will include several safety measures in the form of curb extensions, pedestrian safety islands, and bike infrastructure."
+        }
+      }
+    },
+    {
+      "relation": "budget_request_names_capital_project_code",
+      "method": "exact_published_project_code",
+      "request": {
+        "board_id": "brooklyn-cb-06",
+        "tracking_code": "206202706CS",
+        "fiscal_year": 2027,
+        "request_class": "continued-support",
+        "responsible_agency": {
+          "source_label": "Department of Transportation",
+          "agency_id": "transportation"
+        }
+      },
+      "evidence": {
+        "project_code": "HWK1669B",
+        "managing_agency": "DDC",
+        "match_rule": "whole published project code, scoped to one managing agency",
+        "named_in": [
+          "response"
+        ],
+        "reviewed_named_in": "response",
+        "passages": [
+          {
+            "named_in": "response",
+            "publication": "20260512",
+            "publication_date": "2026-05-12",
+            "published_spelling": "HWK1669B",
+            "passage": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: The medians on 4th Avenue between Atlantic Avenue and 8th Street will be raised and upgraded as part of HWK1669B Phase B which is currently in design."
+          },
+          {
+            "named_in": "response",
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "published_spelling": "HWK1669B",
+            "passage": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: The medians on 4th Avenue between Atlantic Avenue and 8th Street will be raised and upgraded as part of HWK1669B Phase B which is currently in design."
+          }
+        ]
+      },
+      "capital_project": {
+        "source": "capital_projects_dashboard",
+        "source_url": "https://data.cityofnewyork.us/resource/fb86-vt7u.json",
+        "landing_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+        "financial_identity": {
+          "managing_agency": "DDC",
+          "project_code": "HWK1669B"
+        },
+        "pid": "4245",
+        "project_name": "4th Ave Safety Improvements - Phase B",
+        "project_scope": "Redesign of 4th Ave from Atlantic Ave to 64th Street.",
+        "project_scope_published_blank": false,
+        "project_scope_repeats_name": false,
+        "current_phase": "Design",
+        "borough": "Brooklyn",
+        "community_board": "Brooklyn",
+        "project_budget": 148984071.4,
+        "recorded_project_spending": 2167215.39,
+        "project_forecast_completion": "2031-06-30",
+        "observation": {
+          "reporting_period": "202605",
+          "agency_data_date": "2026-06-23",
+          "financial_data_date": "2026-05-18",
+          "latest_retained_release": "202605",
+          "from_latest_retained_release": true,
+          "releases_observed": 9
+        },
+        "also_published_under_managing_agencies": [
+          "DOT"
+        ],
+        "agencies": {
+          "managing": {
+            "code": "DDC",
+            "agency_id": "design-and-construction",
+            "href": "/agencies/design-and-construction/",
+            "name": "Department of Design and Construction"
+          },
+          "sponsoring": [
+            {
+              "code": "DOT",
+              "agency_id": "transportation",
+              "href": "/agencies/transportation/",
+              "name": "New York City Department of Transportation"
+            }
+          ]
+        }
+      },
+      "review": {
+        "reviewed_on": "2026-09-07",
+        "agency_evidence": "The answer names the project code, and the reviewed record is the one managed by Design and Construction and sponsored by Transportation. The same code is also published under Transportation as a separate row, and that row is a different record, not this one.",
+        "scope_evidence": "The board asks for medians on 4th Avenue; the answer states the medians between Atlantic Avenue and 8th Street will be raised and upgraded as part of the named phase, and the retained project is the redesign of 4th Avenue from Atlantic Avenue to 64th Street.",
+        "scope_difference": "The board asks for medians between Pacific Street and 8th Street. The answer describes work between Atlantic Avenue and 8th Street, which is not the same extent.",
+        "scope_difference_quote": {
+          "named_in": "response",
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "quote": "The medians on 4th Avenue between Atlantic Avenue and 8th Street will be raised and upgraded as part of HWK1669B Phase B which is currently in design."
+        }
+      }
+    },
+    {
+      "relation": "budget_request_names_capital_project_code",
+      "method": "exact_published_project_code",
+      "request": {
+        "board_id": "brooklyn-cb-18",
+        "tracking_code": "218202701CS",
+        "fiscal_year": 2027,
+        "request_class": "continued-support",
+        "responsible_agency": {
+          "source_label": "Department of Transportation",
+          "agency_id": "transportation"
+        }
+      },
+      "evidence": {
+        "project_code": "HWK614D",
+        "managing_agency": "DDC",
+        "match_rule": "whole published project code, scoped to one managing agency",
+        "named_in": [
+          "response"
+        ],
+        "reviewed_named_in": "response",
+        "passages": [
+          {
+            "named_in": "response",
+            "publication": "20260512",
+            "publication_date": "2026-05-12",
+            "published_spelling": "HWK614D",
+            "passage": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: This work will be completed as part of an already-funded capital project (HWK614D) that is currently under construction."
+          },
+          {
+            "named_in": "response",
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "published_spelling": "HWK614D",
+            "passage": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: This work will be completed as part of an already-funded capital project (HWK614D) that is currently under construction."
+          }
+        ]
+      },
+      "capital_project": {
+        "source": "capital_projects_dashboard",
+        "source_url": "https://data.cityofnewyork.us/resource/fb86-vt7u.json",
+        "landing_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+        "financial_identity": {
+          "managing_agency": "DDC",
+          "project_code": "HWK614D"
+        },
+        "pid": "4218",
+        "project_name": "RECONSTRUCTION OF BERGEN AVE AREA, BKLYN/BED-784",
+        "project_scope": "Reconstruction of Bergen Avenue Area, including Storm Sewers, Water Mains, Street Lighting, Traffic Signal Work, and reconstruction of new outfall at East Mill Basin.",
+        "project_scope_published_blank": false,
+        "project_scope_repeats_name": false,
+        "current_phase": "Close-out",
+        "borough": "Brooklyn",
+        "community_board": "Brooklyn 18",
+        "project_budget": 37317711.8,
+        "recorded_project_spending": 32657483.96,
+        "project_forecast_completion": "2023-06-24",
+        "observation": {
+          "reporting_period": "202605",
+          "agency_data_date": "2023-09-01",
+          "financial_data_date": "2026-05-18",
+          "latest_retained_release": "202605",
+          "from_latest_retained_release": true,
+          "releases_observed": 9
+        },
+        "also_published_under_managing_agencies": [],
+        "agencies": {
+          "managing": {
+            "code": "DDC",
+            "agency_id": "design-and-construction",
+            "href": "/agencies/design-and-construction/",
+            "name": "Department of Design and Construction"
+          },
+          "sponsoring": [
+            {
+              "code": "DOT",
+              "agency_id": "transportation",
+              "href": "/agencies/transportation/",
+              "name": "New York City Department of Transportation"
+            }
+          ]
+        }
+      },
+      "review": {
+        "reviewed_on": "2026-09-07",
+        "agency_evidence": "The answer names the project code, and the retained project record is managed by Design and Construction and sponsored by Transportation, the agency responsible for answering this request.",
+        "scope_evidence": "The board asks for reconstruction of Avenue K between Bergen and Ralph Avenues; the retained project is the reconstruction of the Bergen Avenue area including storm sewers, water mains, street lighting and traffic signal work, recorded in this district.",
+        "scope_difference": "The answer says this work will be completed as part of the named project. The retained capital observation, on its own later date, records the project in close-out, and neither statement is a record that this board's street was built.",
+        "scope_difference_quote": {
+          "named_in": "response",
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "quote": "This work will be completed as part of an already-funded capital project (HWK614D) that is currently under construction."
+        }
+      }
+    },
+    {
+      "relation": "budget_request_names_capital_project_code",
+      "method": "exact_published_project_code",
+      "request": {
+        "board_id": "brooklyn-cb-18",
+        "tracking_code": "218202702CS",
+        "fiscal_year": 2027,
+        "request_class": "continued-support",
+        "responsible_agency": {
+          "source_label": "Department of Transportation",
+          "agency_id": "transportation"
+        }
+      },
+      "evidence": {
+        "project_code": "HWK614D",
+        "managing_agency": "DDC",
+        "match_rule": "whole published project code, scoped to one managing agency",
+        "named_in": [
+          "response"
+        ],
+        "reviewed_named_in": "response",
+        "passages": [
+          {
+            "named_in": "response",
+            "publication": "20260512",
+            "publication_date": "2026-05-12",
+            "published_spelling": "HWK614D",
+            "passage": "OMB supports the agency's position as follows: Agency does not support but can address the need alternatively Explanation: This work will be completed as part of an already-funded capital project (HWK614D) that is currently under construction."
+          },
+          {
+            "named_in": "response",
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "published_spelling": "HWK614D",
+            "passage": "OMB supports the agency's position as follows: Agency does not support but can address the need alternatively Explanation: This work will be completed as part of an already-funded capital project (HWK614D) that is currently under construction."
+          }
+        ]
+      },
+      "capital_project": {
+        "source": "capital_projects_dashboard",
+        "source_url": "https://data.cityofnewyork.us/resource/fb86-vt7u.json",
+        "landing_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+        "financial_identity": {
+          "managing_agency": "DDC",
+          "project_code": "HWK614D"
+        },
+        "pid": "4218",
+        "project_name": "RECONSTRUCTION OF BERGEN AVE AREA, BKLYN/BED-784",
+        "project_scope": "Reconstruction of Bergen Avenue Area, including Storm Sewers, Water Mains, Street Lighting, Traffic Signal Work, and reconstruction of new outfall at East Mill Basin.",
+        "project_scope_published_blank": false,
+        "project_scope_repeats_name": false,
+        "current_phase": "Close-out",
+        "borough": "Brooklyn",
+        "community_board": "Brooklyn 18",
+        "project_budget": 37317711.8,
+        "recorded_project_spending": 32657483.96,
+        "project_forecast_completion": "2023-06-24",
+        "observation": {
+          "reporting_period": "202605",
+          "agency_data_date": "2023-09-01",
+          "financial_data_date": "2026-05-18",
+          "latest_retained_release": "202605",
+          "from_latest_retained_release": true,
+          "releases_observed": 9
+        },
+        "also_published_under_managing_agencies": [],
+        "agencies": {
+          "managing": {
+            "code": "DDC",
+            "agency_id": "design-and-construction",
+            "href": "/agencies/design-and-construction/",
+            "name": "Department of Design and Construction"
+          },
+          "sponsoring": [
+            {
+              "code": "DOT",
+              "agency_id": "transportation",
+              "href": "/agencies/transportation/",
+              "name": "New York City Department of Transportation"
+            }
+          ]
+        }
+      },
+      "review": {
+        "reviewed_on": "2026-09-07",
+        "agency_evidence": "The answer names the project code, and the retained project record is managed by Design and Construction and sponsored by Transportation, the agency responsible for answering this request.",
+        "scope_evidence": "The board asks for reconstruction of Bergen Avenue between named cross streets; the retained project is the reconstruction of the Bergen Avenue area, recorded in this district.",
+        "scope_difference": "The answer to this request is that the agency does not support it but can address the need another way, and names the project as that other way. Naming the project is therefore explicitly not agreement with what the board asked for.",
+        "scope_difference_quote": {
+          "named_in": "response",
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "quote": "Agency does not support but can address the need alternatively"
+        }
+      }
+    },
+    {
+      "relation": "budget_request_names_capital_project_code",
+      "method": "exact_published_project_code",
+      "request": {
+        "board_id": "manhattan-cb-02",
+        "tracking_code": "302202716C",
+        "fiscal_year": 2027,
+        "request_class": "capital",
+        "responsible_agency": {
+          "source_label": "Department of Transportation",
+          "agency_id": "transportation"
+        }
+      },
+      "evidence": {
+        "project_code": "HWPR19MC1",
+        "managing_agency": "DDC",
+        "match_rule": "whole published project code, scoped to one managing agency",
+        "named_in": [
+          "response"
+        ],
+        "reviewed_named_in": "response",
+        "passages": [
+          {
+            "named_in": "response",
+            "publication": "20260512",
+            "publication_date": "2026-05-12",
+            "published_spelling": "HWPR19MC1.",
+            "passage": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: Per DOT-610263-M3S1, this corner has been added to the pedestrian ramp database for future repairs under contract HWPR19MC1."
+          },
+          {
+            "named_in": "response",
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "published_spelling": "HWPR19MC1.",
+            "passage": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: Per DOT-610263-M3S1, this corner has been added to the pedestrian ramp database for future repairs under contract HWPR19MC1."
+          }
+        ]
+      },
+      "capital_project": {
+        "source": "capital_projects_dashboard",
+        "source_url": "https://data.cityofnewyork.us/resource/fb86-vt7u.json",
+        "landing_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+        "financial_identity": {
+          "managing_agency": "DDC",
+          "project_code": "HWPR19MC1"
+        },
+        "pid": "4011",
+        "project_name": "Complex Upgrades Ped Ramps - Manhattan",
+        "project_scope": null,
+        "project_scope_published_blank": false,
+        "project_scope_repeats_name": true,
+        "current_phase": "Construction",
+        "borough": "Manhattan",
+        "community_board": "Manhattan",
+        "project_budget": 28638752.73,
+        "recorded_project_spending": 8883374.92,
+        "project_forecast_completion": "2027-06-01",
+        "observation": {
+          "reporting_period": "202605",
+          "agency_data_date": "2026-06-23",
+          "financial_data_date": "2026-05-18",
+          "latest_retained_release": "202605",
+          "from_latest_retained_release": true,
+          "releases_observed": 9
+        },
+        "also_published_under_managing_agencies": [],
+        "agencies": {
+          "managing": {
+            "code": "DDC",
+            "agency_id": "design-and-construction",
+            "href": "/agencies/design-and-construction/",
+            "name": "Department of Design and Construction"
+          },
+          "sponsoring": [
+            {
+              "code": "DOT",
+              "agency_id": "transportation",
+              "href": "/agencies/transportation/",
+              "name": "New York City Department of Transportation"
+            }
+          ]
+        }
+      },
+      "review": {
+        "reviewed_on": "2026-09-07",
+        "agency_evidence": "The answer names the code, and the retained project record is managed by Design and Construction and sponsored by Transportation, the agency responsible for answering this request.",
+        "scope_evidence": "The board asks for pedestrian ramps at two Manhattan corners; the retained project is complex pedestrian ramp upgrades in Manhattan.",
+        "scope_difference": "The answer says the corner was added to a ramp database for future repairs under the named record and describes it as in preliminary design. The retained capital observation, on its own later date, records the project in construction, and neither says these two corners are in the work now under way.",
+        "scope_difference_quote": {
+          "named_in": "response",
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "quote": "this corner has been added to the pedestrian ramp database for future repairs under contract HWPR19MC1"
+        }
+      }
+    },
+    {
+      "relation": "budget_request_names_capital_project_code",
+      "method": "exact_published_project_code",
+      "request": {
+        "board_id": "queens-cb-04",
+        "tracking_code": "404202702CS",
+        "fiscal_year": 2027,
+        "request_class": "continued-support",
+        "responsible_agency": {
+          "source_label": "Department of Transportation",
+          "agency_id": "transportation"
+        }
+      },
+      "evidence": {
+        "project_code": "HWD10311",
+        "managing_agency": "DDC",
+        "match_rule": "whole published project code, scoped to one managing agency",
+        "named_in": [
+          "response"
+        ],
+        "reviewed_named_in": "response",
+        "passages": [
+          {
+            "named_in": "response",
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "published_spelling": "HWD10311",
+            "passage": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: A current capital project, HWD10311 111th Street Safety Improvements, is in design and these comments will be considered."
+          }
+        ]
+      },
+      "capital_project": {
+        "source": "capital_projects_dashboard",
+        "source_url": "https://data.cityofnewyork.us/resource/fb86-vt7u.json",
+        "landing_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+        "financial_identity": {
+          "managing_agency": "DDC",
+          "project_code": "HWD10311"
+        },
+        "pid": "3946",
+        "project_name": "111TH STREET SAFETY IMPROVEMENTS, QNS",
+        "project_scope": null,
+        "project_scope_published_blank": false,
+        "project_scope_repeats_name": true,
+        "current_phase": "Design",
+        "borough": "Queens",
+        "community_board": "Queens, Queens 03, Queens 04",
+        "project_budget": 102333503,
+        "recorded_project_spending": 1345393.4,
+        "project_forecast_completion": "2031-08-27",
+        "observation": {
+          "reporting_period": "202605",
+          "agency_data_date": "2026-06-23",
+          "financial_data_date": "2026-05-18",
+          "latest_retained_release": "202605",
+          "from_latest_retained_release": true,
+          "releases_observed": 9
+        },
+        "also_published_under_managing_agencies": [],
+        "agencies": {
+          "managing": {
+            "code": "DDC",
+            "agency_id": "design-and-construction",
+            "href": "/agencies/design-and-construction/",
+            "name": "Department of Design and Construction"
+          },
+          "sponsoring": [
+            {
+              "code": "DOT",
+              "agency_id": "transportation",
+              "href": "/agencies/transportation/",
+              "name": "New York City Department of Transportation"
+            }
+          ]
+        }
+      },
+      "review": {
+        "reviewed_on": "2026-09-07",
+        "agency_evidence": "The answer names the code and the project's own name, and the retained project record is managed by Design and Construction and sponsored by Transportation, the agency responsible for answering this request.",
+        "scope_evidence": "The board asks about the 111th Street center island malls; the retained project is 111th Street safety improvements in Queens, recorded across this district and its neighbour.",
+        "scope_difference": "The answer says the board's comments will be considered by a project already in design. It does not say the malls are in that project's scope.",
+        "scope_difference_quote": {
+          "named_in": "response",
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "quote": "A current capital project, HWD10311 111th Street Safety Improvements, is in design and these comments will be considered."
+        }
+      }
+    },
+    {
+      "relation": "budget_request_names_capital_project_code",
+      "method": "exact_published_project_code",
+      "request": {
+        "board_id": "queens-cb-05",
+        "tracking_code": "405202714C",
+        "fiscal_year": 2027,
+        "request_class": "capital",
+        "responsible_agency": {
+          "source_label": "Department of Transportation",
+          "agency_id": "transportation"
+        }
+      },
+      "evidence": {
+        "project_code": "RWQ005",
+        "managing_agency": "DDC",
+        "match_rule": "whole published project code, scoped to one managing agency",
+        "named_in": [
+          "board_submission"
+        ],
+        "reviewed_named_in": "board_submission",
+        "passages": [
+          {
+            "named_in": "board_submission",
+            "publication": "20260512",
+            "publication_date": "2026-05-12",
+            "published_spelling": "RWQ005",
+            "passage": "Reconstruction of the Cooper Avenue Underpass Retaining Walls has been completed (RWQ005), at a cost of more than $6 million."
+          },
+          {
+            "named_in": "board_submission",
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "published_spelling": "RWQ005",
+            "passage": "Reconstruction of the Cooper Avenue Underpass Retaining Walls has been completed (RWQ005), at a cost of more than $6 million."
+          }
+        ]
+      },
+      "capital_project": {
+        "source": "capital_projects_dashboard",
+        "source_url": "https://data.cityofnewyork.us/resource/fb86-vt7u.json",
+        "landing_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+        "financial_identity": {
+          "managing_agency": "DDC",
+          "project_code": "RWQ005"
+        },
+        "pid": null,
+        "project_name": "RETAINING WALL - COOPER AV",
+        "project_scope": null,
+        "project_scope_published_blank": false,
+        "project_scope_repeats_name": true,
+        "current_phase": "(Completed)",
+        "borough": "Queens",
+        "community_board": "Queens",
+        "project_budget": 8729377.35,
+        "recorded_project_spending": 8559628.4,
+        "project_forecast_completion": null,
+        "observation": {
+          "reporting_period": "202605",
+          "agency_data_date": null,
+          "financial_data_date": "2026-05-18",
+          "latest_retained_release": "202605",
+          "from_latest_retained_release": true,
+          "releases_observed": 8
+        },
+        "also_published_under_managing_agencies": [],
+        "agencies": {
+          "managing": {
+            "code": "DDC",
+            "agency_id": "design-and-construction",
+            "href": "/agencies/design-and-construction/",
+            "name": "Department of Design and Construction"
+          },
+          "sponsoring": []
+        }
+      },
+      "review": {
+        "reviewed_on": "2026-09-07",
+        "agency_evidence": "The board names the project code in full, and the retained project record is managed by Design and Construction and recorded in this borough.",
+        "scope_evidence": "The board names the completed reconstruction of the Cooper Avenue underpass retaining walls; the retained project is the Cooper Avenue retaining wall, and the retained capital observation records it completed.",
+        "scope_difference": "The board names this project to say it did not solve the flooding, and asks for different work. The published answer refers the request to Environmental Protection. The project is prior work the board is arguing from, not an answer to the request.",
+        "scope_difference_quote": {
+          "named_in": "response",
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "quote": "This request has been addressed by NYC DEP."
+        }
+      }
+    },
+    {
+      "relation": "budget_request_names_capital_project_code",
+      "method": "exact_published_project_code",
+      "request": {
+        "board_id": "queens-cb-05",
+        "tracking_code": "405202716C",
+        "fiscal_year": 2027,
+        "request_class": "capital",
+        "responsible_agency": {
+          "source_label": "Department of Transportation",
+          "agency_id": "transportation"
+        }
+      },
+      "evidence": {
+        "project_code": "HWK876",
+        "managing_agency": "DDC",
+        "match_rule": "whole published project code, scoped to one managing agency",
+        "named_in": [
+          "board_submission"
+        ],
+        "reviewed_named_in": "board_submission",
+        "passages": [
+          {
+            "named_in": "board_submission",
+            "publication": "20260512",
+            "publication_date": "2026-05-12",
+            "published_spelling": "HWK 876",
+            "passage": "RECONSTRUCT WYCKOFF AVENUE, FROM FLUSHING AVENUE TO COOPER AVENUE IN RIDGEWOOD (Queens and Brooklyn) - HWK 876."
+          },
+          {
+            "named_in": "board_submission",
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "published_spelling": "HWK 876",
+            "passage": "RECONSTRUCT WYCKOFF AVENUE, FROM FLUSHING AVENUE TO COOPER AVENUE IN RIDGEWOOD (Queens and Brooklyn) - HWK 876."
+          }
+        ]
+      },
+      "capital_project": {
+        "source": "capital_projects_dashboard",
+        "source_url": "https://data.cityofnewyork.us/resource/fb86-vt7u.json",
+        "landing_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+        "financial_identity": {
+          "managing_agency": "DDC",
+          "project_code": "HWK876"
+        },
+        "pid": "4244",
+        "project_name": "RECON WYCKOFF AV-FLUSHING to COOPER AV/SE",
+        "project_scope": "Reconstruction of Wyckoff Avenue from Flushing Avenue to Cooper Avenue, in the Boroughs of Brooklyn and Queens..",
+        "project_scope_published_blank": false,
+        "project_scope_repeats_name": false,
+        "current_phase": "Design",
+        "borough": "Brooklyn",
+        "community_board": "Brooklyn 04",
+        "project_budget": 58387416.35,
+        "recorded_project_spending": 8080800.31,
+        "project_forecast_completion": "2030-06-14",
+        "observation": {
+          "reporting_period": "202605",
+          "agency_data_date": "2026-06-23",
+          "financial_data_date": "2026-05-18",
+          "latest_retained_release": "202605",
+          "from_latest_retained_release": true,
+          "releases_observed": 9
+        },
+        "also_published_under_managing_agencies": [],
+        "agencies": {
+          "managing": {
+            "code": "DDC",
+            "agency_id": "design-and-construction",
+            "href": "/agencies/design-and-construction/",
+            "name": "Department of Design and Construction"
+          },
+          "sponsoring": [
+            {
+              "code": "DEP",
+              "agency_id": "environmental-protection",
+              "href": "/agencies/environmental-protection/",
+              "name": "Department of Environmental Protection"
+            },
+            {
+              "code": "DOT",
+              "agency_id": "transportation",
+              "href": "/agencies/transportation/",
+              "name": "New York City Department of Transportation"
+            }
+          ]
+        }
+      },
+      "review": {
+        "reviewed_on": "2026-09-07",
+        "agency_evidence": "The board names the project code, spelled with a space before its digits, and the retained project record is managed by Design and Construction and sponsored by Environmental Protection and Transportation, the agency responsible for answering this request.",
+        "scope_evidence": "The board asks for the reconstruction of Wyckoff Avenue from Flushing Avenue to Cooper Avenue, which is the retained project's own published extent across the Brooklyn and Queens border.",
+        "scope_difference": "The answer states that the capital project within Brooklyn is ongoing but the Queens segment was removed from it and improved by in-house resurfacing. The retained project record therefore does not describe work in this district, and it is recorded against the Brooklyn district on its own separately dated observation.",
+        "scope_difference_quote": {
+          "named_in": "response",
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "quote": "However, as noted the Queens segment was removed and improved via in-house resurfacing."
+        }
+      }
+    },
+    {
+      "relation": "budget_request_names_capital_project_code",
+      "method": "exact_published_project_code",
+      "request": {
+        "board_id": "staten-island-cb-02",
+        "tracking_code": "502202702CS",
+        "fiscal_year": 2027,
+        "request_class": "continued-support",
+        "responsible_agency": {
+          "source_label": "Department of Environmental Protection",
+          "agency_id": "environmental-protection"
+        }
+      },
+      "evidence": {
+        "project_code": "MIBBNC05B",
+        "managing_agency": "DEP",
+        "match_rule": "whole published project code, scoped to one managing agency",
+        "named_in": [
+          "board_submission"
+        ],
+        "reviewed_named_in": "board_submission",
+        "passages": [
+          {
+            "named_in": "board_submission",
+            "publication": "20260512",
+            "publication_date": "2026-05-12",
+            "published_spelling": "MIBBNC05B",
+            "passage": "Provide additional funding to move project number MIBBNC05B into the budget for the next fiscal year."
+          },
+          {
+            "named_in": "board_submission",
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "published_spelling": "MIBBNC05B",
+            "passage": "Provide additional funding to move project number MIBBNC05B into the budget for the next fiscal year."
+          }
+        ]
+      },
+      "capital_project": {
+        "source": "capital_projects_dashboard",
+        "source_url": "https://data.cityofnewyork.us/resource/fb86-vt7u.json",
+        "landing_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+        "financial_identity": {
+          "managing_agency": "DEP",
+          "project_code": "MIBBNC05B"
+        },
+        "pid": null,
+        "project_name": "Instal New Storm SE & Rplmt San SE & Dist WM Hylan Blvd SI",
+        "project_scope": null,
+        "project_scope_published_blank": false,
+        "project_scope_repeats_name": true,
+        "current_phase": "(Partner-managed)",
+        "borough": "Staten Island",
+        "community_board": "Staten Island 02",
+        "project_budget": 79132000,
+        "recorded_project_spending": 0,
+        "project_forecast_completion": null,
+        "observation": {
+          "reporting_period": "202605",
+          "agency_data_date": null,
+          "financial_data_date": null,
+          "latest_retained_release": "202605",
+          "from_latest_retained_release": true,
+          "releases_observed": 9
+        },
+        "also_published_under_managing_agencies": [],
+        "agencies": {
+          "managing": {
+            "code": "DEP",
+            "agency_id": "environmental-protection",
+            "href": "/agencies/environmental-protection/",
+            "name": "Department of Environmental Protection"
+          },
+          "sponsoring": []
+        }
+      },
+      "review": {
+        "reviewed_on": "2026-09-07",
+        "agency_evidence": "The board names the project number in full, and the retained project record is managed by Environmental Protection, the agency responsible for answering this request.",
+        "scope_evidence": "The board asks for this project to be moved into the next fiscal year's budget; the retained project is new storm and replacement sanitary sewers and distribution water main on Hylan Boulevard, recorded in this district.",
+        "scope_difference": "The answer says the ten-year capital plan is full and the agency cannot guarantee the revenue to move the date, so the project record is not a statement that the request was granted.",
+        "scope_difference_quote": {
+          "named_in": "response",
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "quote": "Our ten year capital plan is full right now and we cannot guarantee if there will be enough additional revenue from water & sewer bills to move up the date for this project."
+        }
+      }
+    }
+  ],
+  "reviewed_refusals": [
+    {
+      "request": {
+        "board_id": "bronx-cb-06",
+        "tracking_code": "106202704C",
+        "fiscal_year": 2027,
+        "request_class": "capital",
+        "responsible_agency": {
+          "source_label": "Department of Parks and Recreation",
+          "agency_id": "parks-and-recreation"
+        }
+      },
+      "project_code": "BATHGATE",
+      "refusal_class": "ordinary_word_published_as_code",
+      "published_as_a_project_code": true,
+      "was_a_candidate": false,
+      "refused_because": "The request is about a Bronx playground of that name, answered by Parks and Recreation. The published code of the same spelling belongs to an Economic Development Corporation campus project. The word carries no digit, so it is never a candidate here.",
+      "reviewed_on": "2026-09-07"
+    },
+    {
+      "request": {
+        "board_id": "bronx-cb-07",
+        "tracking_code": "107202734E",
+        "fiscal_year": 2027,
+        "request_class": "expense",
+        "responsible_agency": {
+          "source_label": "Transit Authority",
+          "agency_id": "n-y-c-transit-authority"
+        }
+      },
+      "project_code": "LAGUARDIA",
+      "refusal_class": "ordinary_word_published_as_code",
+      "published_as_a_project_code": true,
+      "was_a_candidate": false,
+      "refused_because": "The request asks for a bus route to an airport of that name, answered by the transit authority. The published code of the same spelling belongs to a City University streetscape project. The word carries no digit, so it is never a candidate here.",
+      "reviewed_on": "2026-09-07"
+    },
+    {
+      "request": {
+        "board_id": "brooklyn-cb-14",
+        "tracking_code": "214202702C",
+        "fiscal_year": 2027,
+        "request_class": "capital",
+        "responsible_agency": {
+          "source_label": "Brooklyn Public Library",
+          "agency_id": null
+        }
+      },
+      "project_code": "LBM25CTIF",
+      "refusal_class": "name_similarity_only",
+      "published_as_a_project_code": true,
+      "was_a_candidate": false,
+      "refused_because": "The request asks for a building rehabilitation and expansion of a library branch; the published project of that code is an HVAC replacement at the same branch. Neither text publishes the other's identifier, and a rehabilitation and a mechanical replacement are different scopes with different funding.",
+      "reviewed_on": "2026-09-07"
+    },
+    {
+      "request": {
+        "board_id": "brooklyn-cb-14",
+        "tracking_code": "214202708C",
+        "fiscal_year": 2027,
+        "request_class": "capital",
+        "responsible_agency": {
+          "source_label": "Department of Transportation",
+          "agency_id": "transportation"
+        }
+      },
+      "project_code": "HBK243140",
+      "refusal_class": "name_similarity_only",
+      "published_as_a_project_code": true,
+      "was_a_candidate": false,
+      "refused_because": "The request describes bridges the board wants rehabilitated and the purview complications around a plaza of the same street name; the published project of that code is the carriageway over a subway line. The request publishes no identifier, and a shared street name is not an identity.",
+      "reviewed_on": "2026-09-07"
+    },
+    {
+      "request": {
+        "board_id": "brooklyn-cb-14",
+        "tracking_code": "214202701CS",
+        "fiscal_year": 2027,
+        "request_class": "continued-support",
+        "responsible_agency": {
+          "source_label": "Department of Parks and Recreation",
+          "agency_id": "parks-and-recreation"
+        }
+      },
+      "project_code": null,
+      "refusal_class": "no_published_identifier",
+      "published_as_a_project_code": false,
+      "was_a_candidate": false,
+      "refused_because": "The request names a memorial by name and states the board's understanding that capital funding is in place. No published project identifier appears in the request or in the answer, so there is nothing to resolve and nothing is proposed.",
+      "reviewed_on": "2026-09-07"
+    },
+    {
+      "request": {
+        "board_id": "queens-cb-12",
+        "tracking_code": "412202704CS",
+        "fiscal_year": 2027,
+        "request_class": "continued-support",
+        "responsible_agency": {
+          "source_label": "Department of Transportation",
+          "agency_id": "transportation"
+        }
+      },
+      "project_code": "HWQ121B3",
+      "refusal_class": "scope_not_established",
+      "published_as_a_project_code": true,
+      "was_a_candidate": true,
+      "refused_because": "The board names this whole published code, so it is a candidate. The retained project's published description bounds two street grids by 155th and 157th Streets, and the location the request names is far east of them. The published answer does not name the project either. Scope was not established, so no link is offered.",
+      "reviewed_on": "2026-09-07"
+    }
+  ],
+  "candidates_pending_review": []
+}

@@ -1,0 +1,1680 @@
+{
+  "schema": "cityscroll.board_request_project_capture.v1",
+  "captured_at": "2026-09-07T19:15:35.276848+00:00",
+  "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+  "data_vintage": {
+    "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+    "community_board_budget_register_as_of": "2026-09-07",
+    "capital_projects_latest_release": "202605",
+    "request_project_links_reviewed_on": "2026-09-07"
+  },
+  "counts": {
+    "requests_considered": 3809,
+    "requests_with_a_candidate": 17,
+    "candidates": 17,
+    "relations": 16,
+    "projects_related": 12,
+    "boards_with_a_relation": 10,
+    "reviewed_refusals": 6,
+    "candidates_pending_review": 0,
+    "links": {
+      "by_board": {
+        "bronx-cb-03": 1,
+        "bronx-cb-10": 1,
+        "brooklyn-cb-03": 1,
+        "brooklyn-cb-04": 2,
+        "brooklyn-cb-06": 4,
+        "brooklyn-cb-18": 2,
+        "manhattan-cb-02": 1,
+        "queens-cb-04": 1,
+        "queens-cb-05": 2,
+        "staten-island-cb-02": 1
+      },
+      "relations": 16,
+      "requests": 16
+    }
+  },
+  "positive_board": "bronx-cb-03",
+  "positive_request": "103202717C",
+  "positive_project": "HWX100SBC",
+  "scope_difference_board": "queens-cb-05",
+  "scope_difference_request": "405202716C",
+  "min_target_px": 24,
+  "captures": [
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-narrow-touch",
+      "route": "/community-boards/bronx-cb-03/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 1,
+        "rendered_rows": 51,
+        "project_codes": [
+          "HWX100SBC"
+        ],
+        "states_boundary": true,
+        "boundary_on_every_block": true,
+        "observation_lines": 3,
+        "states_published_wording": true,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 3,
+          "visible": 3,
+          "reachable": 3,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": [
+            "/agencies/design-and-construction/",
+            "/agencies/transportation/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u"
+          ]
+        },
+        "smallest_target_px": 51,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 51,
+          "overflowing": 0,
+          "overflowing_without_a_project_block": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": true,
+        "visible_inspect_controls": 32,
+        "names_the_project": true,
+        "states_phase_and_period": true,
+        "states_money_with_its_own_date": true,
+        "states_project_scope": true,
+        "quotes_the_answer_on_scope": true,
+        "rows_without_a_project": 50
+      },
+      "assertion": "/community-boards/bronx-cb-03/ at 390x844: the request whose answer names a capital project carries that project's published record, each figure with the capital record it was read from, the published wording that names it, and the boundary that a named project is not this request's fulfilment; every destination is an ordinary anchor and the requests that name no project carry no block at all",
+      "render_sha256": "f45b369e2c9e713b4840f762d06dede35774c8e8ebdfa2f2e2c329573103d886",
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "targets": [
+              ".community-board-money-metrics"
+            ]
+          }
+        ],
+        "page_passes": false
+      },
+      "screenshot": ".artifacts/board-request-project-links/board-request-project-narrow-touch-390x844.png",
+      "screenshot_sha256": "90830f01de135d5325e9135b2fe2e1b8ad71a5b80ab042c9fbf756ac9caf4e36"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-desktop",
+      "route": "/community-boards/bronx-cb-03/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 1,
+        "rendered_rows": 51,
+        "project_codes": [
+          "HWX100SBC"
+        ],
+        "states_boundary": true,
+        "boundary_on_every_block": true,
+        "observation_lines": 3,
+        "states_published_wording": true,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 3,
+          "visible": 3,
+          "reachable": 3,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": [
+            "/agencies/design-and-construction/",
+            "/agencies/transportation/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u"
+          ]
+        },
+        "smallest_target_px": 27,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 51,
+          "overflowing": 0,
+          "overflowing_without_a_project_block": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": true,
+        "visible_inspect_controls": 32,
+        "names_the_project": true,
+        "states_phase_and_period": true,
+        "states_money_with_its_own_date": true,
+        "states_project_scope": true,
+        "quotes_the_answer_on_scope": true,
+        "rows_without_a_project": 50
+      },
+      "assertion": "/community-boards/bronx-cb-03/ at 1440x900: the request whose answer names a capital project carries that project's published record, each figure with the capital record it was read from, the published wording that names it, and the boundary that a named project is not this request's fulfilment; every destination is an ordinary anchor and the requests that name no project carry no block at all",
+      "render_sha256": "f45b369e2c9e713b4840f762d06dede35774c8e8ebdfa2f2e2c329573103d886",
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "targets": [
+              ".community-board-money-metrics"
+            ]
+          }
+        ],
+        "page_passes": false
+      },
+      "screenshot": ".artifacts/board-request-project-links/board-request-project-desktop-1440x900.png",
+      "screenshot_sha256": "db346fd22904d18ba8ec586081bba28ee1c0829cfd96dc9600e78c93acff1db6"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-no-javascript-narrow-touch",
+      "route": "/community-boards/bronx-cb-03/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "disabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 1,
+        "rendered_rows": 51,
+        "project_codes": [
+          "HWX100SBC"
+        ],
+        "states_boundary": true,
+        "boundary_on_every_block": true,
+        "observation_lines": 3,
+        "states_published_wording": true,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 3,
+          "visible": 3,
+          "reachable": 3,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": [
+            "/agencies/design-and-construction/",
+            "/agencies/transportation/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u"
+          ]
+        },
+        "smallest_target_px": 51,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 51,
+          "overflowing": 0,
+          "overflowing_without_a_project_block": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": false,
+        "visible_inspect_controls": 0,
+        "names_the_project": true,
+        "states_phase_and_period": true,
+        "states_money_with_its_own_date": true,
+        "states_project_scope": true,
+        "quotes_the_answer_on_scope": true,
+        "rows_without_a_project": 50
+      },
+      "assertion": "/community-boards/bronx-cb-03/ at 390x844 with scripting disabled: the request whose answer names a capital project carries that project's published record, each figure with the capital record it was read from, the published wording that names it, and the boundary that a named project is not this request's fulfilment; every destination is an ordinary anchor and the requests that name no project carry no block at all",
+      "render_sha256": "f45b369e2c9e713b4840f762d06dede35774c8e8ebdfa2f2e2c329573103d886"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-no-javascript-desktop",
+      "route": "/community-boards/bronx-cb-03/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "disabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 1,
+        "rendered_rows": 51,
+        "project_codes": [
+          "HWX100SBC"
+        ],
+        "states_boundary": true,
+        "boundary_on_every_block": true,
+        "observation_lines": 3,
+        "states_published_wording": true,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 3,
+          "visible": 3,
+          "reachable": 3,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": [
+            "/agencies/design-and-construction/",
+            "/agencies/transportation/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u"
+          ]
+        },
+        "smallest_target_px": 27,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 51,
+          "overflowing": 0,
+          "overflowing_without_a_project_block": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": false,
+        "visible_inspect_controls": 0,
+        "names_the_project": true,
+        "states_phase_and_period": true,
+        "states_money_with_its_own_date": true,
+        "states_project_scope": true,
+        "quotes_the_answer_on_scope": true,
+        "rows_without_a_project": 50
+      },
+      "assertion": "/community-boards/bronx-cb-03/ at 1440x900 with scripting disabled: the request whose answer names a capital project carries that project's published record, each figure with the capital record it was read from, the published wording that names it, and the boundary that a named project is not this request's fulfilment; every destination is an ordinary anchor and the requests that name no project carry no block at all",
+      "render_sha256": "f45b369e2c9e713b4840f762d06dede35774c8e8ebdfa2f2e2c329573103d886"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-scope-difference-narrow-touch",
+      "route": "/community-boards/queens-cb-05/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 2,
+        "rendered_rows": 56,
+        "project_codes": [
+          "RWQ005",
+          "HWK876"
+        ],
+        "states_boundary": true,
+        "boundary_on_every_block": true,
+        "observation_lines": 5,
+        "states_published_wording": true,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 6,
+          "visible": 6,
+          "reachable": 6,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": [
+            "/agencies/design-and-construction/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u",
+            "/agencies/design-and-construction/",
+            "/agencies/environmental-protection/",
+            "/agencies/transportation/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u"
+          ]
+        },
+        "smallest_target_px": 26,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 56,
+          "overflowing": 15,
+          "overflowing_without_a_project_block": 13
+        },
+        "no_horizontal_overflow": false,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": true,
+        "visible_inspect_controls": 36,
+        "states_named_by_the_board": true,
+        "states_published_spelling": true,
+        "states_scope_difference": true,
+        "states_project_phase": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "targets": [
+              ".community-board-money-metrics"
+            ]
+          }
+        ],
+        "page_passes": false
+      },
+      "assertion": "/community-boards/queens-cb-05/ at 390x844: the district whose street the project no longer covers reaches the project record, and the relationship states in the answer's own words that this district's segment was removed from it and resurfaced in house, beside a capital observation carrying its own separate date",
+      "screenshot": ".artifacts/board-request-project-links/board-request-project-scope-difference-narrow-touch.png",
+      "screenshot_sha256": "a2ce50c21e92845e4fc0df772c7d9d9eaa98874d82bc4bacb55e02c06ec59193",
+      "render_sha256": "33a3830975193d23f26560dbbbafb1c868f16066ddb8070d33ab21abdaff648a"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-scope-difference-desktop",
+      "route": "/community-boards/queens-cb-05/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 2,
+        "rendered_rows": 56,
+        "project_codes": [
+          "RWQ005",
+          "HWK876"
+        ],
+        "states_boundary": true,
+        "boundary_on_every_block": true,
+        "observation_lines": 5,
+        "states_published_wording": true,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 6,
+          "visible": 6,
+          "reachable": 6,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": [
+            "/agencies/design-and-construction/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u",
+            "/agencies/design-and-construction/",
+            "/agencies/environmental-protection/",
+            "/agencies/transportation/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u"
+          ]
+        },
+        "smallest_target_px": 27,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 56,
+          "overflowing": 0,
+          "overflowing_without_a_project_block": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": true,
+        "visible_inspect_controls": 36,
+        "states_named_by_the_board": true,
+        "states_published_spelling": true,
+        "states_scope_difference": true,
+        "states_project_phase": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "targets": [
+              ".community-board-money-metrics"
+            ]
+          }
+        ],
+        "page_passes": false
+      },
+      "assertion": "/community-boards/queens-cb-05/ at 1440x900: the district whose street the project no longer covers reaches the project record, and the relationship states in the answer's own words that this district's segment was removed from it and resurfaced in house, beside a capital observation carrying its own separate date",
+      "screenshot": ".artifacts/board-request-project-links/board-request-project-scope-difference-desktop.png",
+      "screenshot_sha256": "e5ce22e578aa88e3d0fa806791f9552bdf27a1c3afc0aabfd209827a073ea9f2",
+      "render_sha256": "33a3830975193d23f26560dbbbafb1c868f16066ddb8070d33ab21abdaff648a"
+    },
+    {
+      "surface": "journey",
+      "case": "board-request-project-journey-narrow-touch",
+      "route": "/community-boards/bronx-cb-03/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "scope_before": "board-budget-requests-transportation",
+        "scroll_before": 36831,
+        "rows_before": 51,
+        "project_blocks_before": 1,
+        "dialog_open": true,
+        "focus_inside_dialog": true,
+        "dialog_carries_the_project": true,
+        "dialog_carries_the_boundary": true,
+        "dialog_carries_observation_dates": true,
+        "dialog_destinations": [
+          "/agencies/design-and-construction/",
+          "/agencies/transportation/",
+          "https://data.cityofnewyork.us/d/fb86-vt7u",
+          "/agencies/transportation/#agency-budget-requests-bronx-cb-03"
+        ],
+        "scroll_while_open": 34113,
+        "scope_unchanged_by_inspection": true,
+        "dialog_dismissed": true,
+        "scroll_after_dismiss": 34113,
+        "left_for_path": "/agencies/design-and-construction/",
+        "returned_path": "/community-boards/bronx-cb-03/",
+        "returned_by_history": true,
+        "scope_after": "board-budget-requests-transportation",
+        "scroll_before_leaving": 36831,
+        "scroll_after": 36831,
+        "rows_after": 51,
+        "project_blocks_after": 1,
+        "ready_on_return": true,
+        "scroll_preserved_through_inspection": true,
+        "scroll_restored": true
+      },
+      "assertion": "/community-boards/bronx-cb-03/ at 390x844: a reader chooses an agency, inspects the request that names a capital project, dismisses it, opens the agency that manages the project and returns with the browser's own Back to the same chosen agency, the same list and the same scroll position they left from",
+      "screenshot": ".artifacts/board-request-project-links/board-request-project-journey-narrow-touch.png",
+      "screenshot_sha256": "ed0e67104ec2bf9daaa0e4706447d846516d3c2e09dffc17b326805d62e8812e",
+      "render_sha256": "f45b369e2c9e713b4840f762d06dede35774c8e8ebdfa2f2e2c329573103d886"
+    },
+    {
+      "surface": "journey",
+      "case": "board-request-project-journey-desktop",
+      "route": "/community-boards/bronx-cb-03/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "scope_before": "board-budget-requests-transportation",
+        "scroll_before": 22145,
+        "rows_before": 51,
+        "project_blocks_before": 1,
+        "dialog_open": true,
+        "focus_inside_dialog": true,
+        "dialog_carries_the_project": true,
+        "dialog_carries_the_boundary": true,
+        "dialog_carries_observation_dates": true,
+        "dialog_destinations": [
+          "/agencies/design-and-construction/",
+          "/agencies/transportation/",
+          "https://data.cityofnewyork.us/d/fb86-vt7u",
+          "/agencies/transportation/#agency-budget-requests-bronx-cb-03"
+        ],
+        "scroll_while_open": 20266,
+        "scope_unchanged_by_inspection": true,
+        "dialog_dismissed": true,
+        "scroll_after_dismiss": 20266,
+        "left_for_path": "/agencies/design-and-construction/",
+        "returned_path": "/community-boards/bronx-cb-03/",
+        "returned_by_history": true,
+        "scope_after": "board-budget-requests-transportation",
+        "scroll_before_leaving": 22145,
+        "scroll_after": 22145,
+        "rows_after": 51,
+        "project_blocks_after": 1,
+        "ready_on_return": true,
+        "scroll_preserved_through_inspection": true,
+        "scroll_restored": true
+      },
+      "assertion": "/community-boards/bronx-cb-03/ at 1440x900: a reader chooses an agency, inspects the request that names a capital project, dismisses it, opens the agency that manages the project and returns with the browser's own Back to the same chosen agency, the same list and the same scroll position they left from",
+      "screenshot": ".artifacts/board-request-project-links/board-request-project-journey-desktop.png",
+      "screenshot_sha256": "57e498774c8b241b472a7e6e98191b336b57624a2b2839d9857b7793af233f5f",
+      "render_sha256": "f45b369e2c9e713b4840f762d06dede35774c8e8ebdfa2f2e2c329573103d886"
+    },
+    {
+      "surface": "keyboard",
+      "case": "board-request-project-keyboard",
+      "route": "/community-boards/bronx-cb-03/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "group_opened_by_address": true,
+        "smallest_target_px": 24,
+        "destinations_reachable": {
+          "count": 3,
+          "visible": 3,
+          "reachable": 3,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": [
+            "/agencies/design-and-construction/",
+            "/agencies/transportation/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u"
+          ]
+        },
+        "control_focusable": true,
+        "opened_with_keyboard": true,
+        "focus_on_dismiss_control": true,
+        "tab_stays_inside": true,
+        "dialog_carries_the_project": true,
+        "dialog_carries_the_boundary": true,
+        "dismissed_with_escape": true,
+        "focus_returned_to_control": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "targets": [
+              ".community-board-money-metrics"
+            ]
+          }
+        ],
+        "page_passes": false
+      },
+      "assertion": "/community-boards/bronx-cb-03/ by keyboard alone: every project destination is focusable, Tab reaches the inspect control, Enter opens the record with the project and its boundary inside it, Tab stays inside, and Escape dismisses it and returns focus to the control it was opened from",
+      "screenshot": ".artifacts/board-request-project-links/board-request-project-keyboard-1440x900.png",
+      "screenshot_sha256": "1b46144bad7b85a9034cece2238c6fdbda0774cb170da652588753ed14f57ae5",
+      "render_sha256": "f45b369e2c9e713b4840f762d06dede35774c8e8ebdfa2f2e2c329573103d886"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-language-en",
+      "route": "/community-boards/bronx-cb-03/ (lang=en)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 1,
+        "rendered_rows": 51,
+        "project_codes": [
+          "HWX100SBC"
+        ],
+        "states_boundary": true,
+        "boundary_on_every_block": true,
+        "observation_lines": 3,
+        "states_published_wording": true,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 3,
+          "visible": 3,
+          "reachable": 3,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": [
+            "/agencies/design-and-construction/",
+            "/agencies/transportation/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u"
+          ]
+        },
+        "smallest_target_px": 27,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 51,
+          "overflowing": 0,
+          "overflowing_without_a_project_block": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": true,
+        "visible_inspect_controls": 32,
+        "direction": null,
+        "language": null,
+        "state_attribute": "available",
+        "published_wording_preserved": true,
+        "published_project_name_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the block renders in en with the publisher's own passage, project name and scope left in the source language, the boundary stated in the reader's language, and no label left unresolved",
+      "render_sha256": "f45b369e2c9e713b4840f762d06dede35774c8e8ebdfa2f2e2c329573103d886"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-language-es",
+      "route": "/community-boards/bronx-cb-03/ (lang=es)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "es",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 1,
+        "rendered_rows": 51,
+        "project_codes": [
+          "HWX100SBC"
+        ],
+        "states_boundary": true,
+        "boundary_on_every_block": true,
+        "observation_lines": 3,
+        "states_published_wording": false,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 3,
+          "visible": 3,
+          "reachable": 3,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": [
+            "/agencies/design-and-construction/",
+            "/agencies/transportation/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u"
+          ]
+        },
+        "smallest_target_px": 27,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 51,
+          "overflowing": 0,
+          "overflowing_without_a_project_block": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": true,
+        "visible_inspect_controls": 32,
+        "direction": "ltr",
+        "language": "es",
+        "state_attribute": "available",
+        "published_wording_preserved": true,
+        "published_project_name_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the block renders in es with the publisher's own passage, project name and scope left in the source language, the boundary stated in the reader's language, and no label left unresolved",
+      "render_sha256": "c6088828007378879dd7be6fd6d157d2803d5087998895ff4ccd81f3872e74e9"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-language-zh-Hans",
+      "route": "/community-boards/bronx-cb-03/ (lang=zh-Hans)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "zh-Hans",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 1,
+        "rendered_rows": 51,
+        "project_codes": [
+          "HWX100SBC"
+        ],
+        "states_boundary": true,
+        "boundary_on_every_block": true,
+        "observation_lines": 3,
+        "states_published_wording": false,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 3,
+          "visible": 3,
+          "reachable": 3,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": [
+            "/agencies/design-and-construction/",
+            "/agencies/transportation/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u"
+          ]
+        },
+        "smallest_target_px": 27,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 51,
+          "overflowing": 0,
+          "overflowing_without_a_project_block": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": true,
+        "visible_inspect_controls": 32,
+        "direction": "ltr",
+        "language": "zh-Hans",
+        "state_attribute": "available",
+        "published_wording_preserved": true,
+        "published_project_name_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the block renders in zh-Hans with the publisher's own passage, project name and scope left in the source language, the boundary stated in the reader's language, and no label left unresolved",
+      "render_sha256": "9423ee58815de2df348baca5290794759b4486c6bfa927ed370c22a4d7ed641c"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-language-ru",
+      "route": "/community-boards/bronx-cb-03/ (lang=ru)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "ru",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 1,
+        "rendered_rows": 51,
+        "project_codes": [
+          "HWX100SBC"
+        ],
+        "states_boundary": true,
+        "boundary_on_every_block": true,
+        "observation_lines": 3,
+        "states_published_wording": false,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 3,
+          "visible": 3,
+          "reachable": 3,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": [
+            "/agencies/design-and-construction/",
+            "/agencies/transportation/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u"
+          ]
+        },
+        "smallest_target_px": 27,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 51,
+          "overflowing": 0,
+          "overflowing_without_a_project_block": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": true,
+        "visible_inspect_controls": 32,
+        "direction": "ltr",
+        "language": "ru",
+        "state_attribute": "available",
+        "published_wording_preserved": true,
+        "published_project_name_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the block renders in ru with the publisher's own passage, project name and scope left in the source language, the boundary stated in the reader's language, and no label left unresolved",
+      "render_sha256": "1c6f015e53c205ea7fa172b4355a7eef43df5c654406942e4e7c36834a1c10af"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-language-bn",
+      "route": "/community-boards/bronx-cb-03/ (lang=bn)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "bn",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 1,
+        "rendered_rows": 51,
+        "project_codes": [
+          "HWX100SBC"
+        ],
+        "states_boundary": true,
+        "boundary_on_every_block": true,
+        "observation_lines": 3,
+        "states_published_wording": false,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 3,
+          "visible": 3,
+          "reachable": 3,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": [
+            "/agencies/design-and-construction/",
+            "/agencies/transportation/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u"
+          ]
+        },
+        "smallest_target_px": 27,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 51,
+          "overflowing": 0,
+          "overflowing_without_a_project_block": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": true,
+        "visible_inspect_controls": 32,
+        "direction": "ltr",
+        "language": "bn",
+        "state_attribute": "available",
+        "published_wording_preserved": true,
+        "published_project_name_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the block renders in bn with the publisher's own passage, project name and scope left in the source language, the boundary stated in the reader's language, and no label left unresolved",
+      "render_sha256": "f3c5af8997a94afdae51e68cb786ecf41229184ea6af71114032aa41a6333786"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-language-ht",
+      "route": "/community-boards/bronx-cb-03/ (lang=ht)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "ht",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 1,
+        "rendered_rows": 51,
+        "project_codes": [
+          "HWX100SBC"
+        ],
+        "states_boundary": true,
+        "boundary_on_every_block": true,
+        "observation_lines": 3,
+        "states_published_wording": false,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 3,
+          "visible": 3,
+          "reachable": 3,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": [
+            "/agencies/design-and-construction/",
+            "/agencies/transportation/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u"
+          ]
+        },
+        "smallest_target_px": 27,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 51,
+          "overflowing": 0,
+          "overflowing_without_a_project_block": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": true,
+        "visible_inspect_controls": 32,
+        "direction": "ltr",
+        "language": "ht",
+        "state_attribute": "available",
+        "published_wording_preserved": true,
+        "published_project_name_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the block renders in ht with the publisher's own passage, project name and scope left in the source language, the boundary stated in the reader's language, and no label left unresolved",
+      "render_sha256": "20f3ea11f32ab796b17ac99c45a3e67ab2a64103102c0b2eefd087d91aa30075"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-language-ko",
+      "route": "/community-boards/bronx-cb-03/ (lang=ko)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "ko",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 1,
+        "rendered_rows": 51,
+        "project_codes": [
+          "HWX100SBC"
+        ],
+        "states_boundary": true,
+        "boundary_on_every_block": true,
+        "observation_lines": 3,
+        "states_published_wording": false,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 3,
+          "visible": 3,
+          "reachable": 3,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": [
+            "/agencies/design-and-construction/",
+            "/agencies/transportation/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u"
+          ]
+        },
+        "smallest_target_px": 27,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 51,
+          "overflowing": 0,
+          "overflowing_without_a_project_block": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": true,
+        "visible_inspect_controls": 32,
+        "direction": "ltr",
+        "language": "ko",
+        "state_attribute": "available",
+        "published_wording_preserved": true,
+        "published_project_name_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the block renders in ko with the publisher's own passage, project name and scope left in the source language, the boundary stated in the reader's language, and no label left unresolved",
+      "render_sha256": "92761f831c9264b3d9997de6a345f336824158afd909dc0acf7965c3a8844b79"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-language-fr",
+      "route": "/community-boards/bronx-cb-03/ (lang=fr)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "fr",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 1,
+        "rendered_rows": 51,
+        "project_codes": [
+          "HWX100SBC"
+        ],
+        "states_boundary": true,
+        "boundary_on_every_block": true,
+        "observation_lines": 3,
+        "states_published_wording": false,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 3,
+          "visible": 3,
+          "reachable": 3,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": [
+            "/agencies/design-and-construction/",
+            "/agencies/transportation/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u"
+          ]
+        },
+        "smallest_target_px": 27,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 51,
+          "overflowing": 0,
+          "overflowing_without_a_project_block": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": true,
+        "visible_inspect_controls": 32,
+        "direction": "ltr",
+        "language": "fr",
+        "state_attribute": "available",
+        "published_wording_preserved": true,
+        "published_project_name_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the block renders in fr with the publisher's own passage, project name and scope left in the source language, the boundary stated in the reader's language, and no label left unresolved",
+      "render_sha256": "ec4db98c73758941f133ec5758fd60057358558a1088f3a0a9d0722729e3b5c8"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-language-pl",
+      "route": "/community-boards/bronx-cb-03/ (lang=pl)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "pl",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 1,
+        "rendered_rows": 51,
+        "project_codes": [
+          "HWX100SBC"
+        ],
+        "states_boundary": true,
+        "boundary_on_every_block": true,
+        "observation_lines": 3,
+        "states_published_wording": false,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 3,
+          "visible": 3,
+          "reachable": 3,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": [
+            "/agencies/design-and-construction/",
+            "/agencies/transportation/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u"
+          ]
+        },
+        "smallest_target_px": 27,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 51,
+          "overflowing": 0,
+          "overflowing_without_a_project_block": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": true,
+        "visible_inspect_controls": 32,
+        "direction": "ltr",
+        "language": "pl",
+        "state_attribute": "available",
+        "published_wording_preserved": true,
+        "published_project_name_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the block renders in pl with the publisher's own passage, project name and scope left in the source language, the boundary stated in the reader's language, and no label left unresolved",
+      "render_sha256": "edb4ad5751c27afb5361fa34aa896ee53c74a7e2bea3c5768ecd4a03275d5c9c"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-language-ar",
+      "route": "/community-boards/bronx-cb-03/ (lang=ar)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "ar",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 1,
+        "rendered_rows": 51,
+        "project_codes": [
+          "HWX100SBC"
+        ],
+        "states_boundary": true,
+        "boundary_on_every_block": true,
+        "observation_lines": 3,
+        "states_published_wording": false,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 3,
+          "visible": 3,
+          "reachable": 3,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": [
+            "/agencies/design-and-construction/",
+            "/agencies/transportation/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u"
+          ]
+        },
+        "smallest_target_px": 27,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 51,
+          "overflowing": 0,
+          "overflowing_without_a_project_block": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": true,
+        "visible_inspect_controls": 32,
+        "direction": "rtl",
+        "language": "ar",
+        "state_attribute": "available",
+        "published_wording_preserved": true,
+        "published_project_name_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the block renders in ar with the publisher's own passage, project name and scope left in the source language, the boundary stated in the reader's language, and no label left unresolved",
+      "render_sha256": "6a866723e2540a3b650c2902ee6ca0e08110ee2cd7d32ec7cd7c433a1ad8efa3"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-language-ur",
+      "route": "/community-boards/bronx-cb-03/ (lang=ur)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "ur",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 1,
+        "rendered_rows": 51,
+        "project_codes": [
+          "HWX100SBC"
+        ],
+        "states_boundary": true,
+        "boundary_on_every_block": true,
+        "observation_lines": 3,
+        "states_published_wording": false,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 3,
+          "visible": 3,
+          "reachable": 3,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": [
+            "/agencies/design-and-construction/",
+            "/agencies/transportation/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u"
+          ]
+        },
+        "smallest_target_px": 27,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 51,
+          "overflowing": 0,
+          "overflowing_without_a_project_block": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": true,
+        "visible_inspect_controls": 32,
+        "direction": "rtl",
+        "language": "ur",
+        "state_attribute": "available",
+        "published_wording_preserved": true,
+        "published_project_name_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the block renders in ur with the publisher's own passage, project name and scope left in the source language, the boundary stated in the reader's language, and no label left unresolved",
+      "render_sha256": "692678d18d97ad5839254a578c2913d8e91671312fbcf238aa04add02362c310"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-scope-difference",
+      "route": "/community-boards/queens-cb-05/ (the answer says this district's segment came out of the project)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 2,
+        "rendered_rows": 56,
+        "project_codes": [
+          "RWQ005",
+          "HWK876"
+        ],
+        "states_boundary": true,
+        "boundary_on_every_block": true,
+        "observation_lines": 5,
+        "states_published_wording": true,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 6,
+          "visible": 6,
+          "reachable": 6,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": [
+            "/agencies/design-and-construction/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u",
+            "/agencies/design-and-construction/",
+            "/agencies/environmental-protection/",
+            "/agencies/transportation/",
+            "https://data.cityofnewyork.us/d/fb86-vt7u"
+          ]
+        },
+        "smallest_target_px": 27,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 56,
+          "overflowing": 0,
+          "overflowing_without_a_project_block": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": true,
+        "visible_inspect_controls": 36,
+        "direction": null,
+        "language": null,
+        "state_attribute": "available",
+        "states_scope_difference": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the relationship exposes, in the published answer's own words, that this district's segment was removed from the project it names",
+      "render_sha256": "33a3830975193d23f26560dbbbafb1c868f16066ddb8070d33ab21abdaff648a"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-materialization-absent",
+      "route": "/community-boards/bronx-cb-03/ (no relation materialization)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 0,
+        "rendered_rows": 51,
+        "project_codes": [],
+        "states_boundary": false,
+        "boundary_on_every_block": false,
+        "observation_lines": 0,
+        "states_published_wording": false,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 0,
+          "visible": 0,
+          "reachable": 0,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": []
+        },
+        "smallest_target_px": null,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 51,
+          "overflowing": 0,
+          "overflowing_without_a_project_block": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": true,
+        "visible_inspect_controls": 32,
+        "direction": null,
+        "language": null,
+        "state_attribute": "available"
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "no relation materialization at all: every request renders exactly as it did before this relation existed, with no heading, no empty panel and no sentence about a project that was never named",
+      "render_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-narrow-baseline",
+      "route": "/community-boards/queens-cb-05/ (no relation materialization, narrow touch)",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 0,
+        "rendered_rows": 56,
+        "project_codes": [],
+        "states_boundary": false,
+        "boundary_on_every_block": false,
+        "observation_lines": 0,
+        "states_published_wording": false,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 0,
+          "visible": 0,
+          "reachable": 0,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": []
+        },
+        "smallest_target_px": null,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 56,
+          "overflowing": 15,
+          "overflowing_without_a_project_block": 15
+        },
+        "no_horizontal_overflow": false,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": true,
+        "visible_inspect_controls": 36,
+        "direction": null,
+        "language": null,
+        "state_attribute": "available"
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "no relation materialization at all: every request renders exactly as it did before this relation existed, with no heading, no empty panel and no sentence about a project that was never named, measured at 390x844 so a page that already scrolled sideways there is on record as doing so without this block",
+      "render_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-request-project-failed-load",
+      "route": "/community-boards/bronx-cb-03/ (the register could not be read)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "capital_projects_latest_release": "202605",
+        "request_project_links_reviewed_on": "2026-09-07"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "project_blocks": 0,
+        "rendered_rows": 0,
+        "project_codes": [],
+        "states_boundary": false,
+        "boundary_on_every_block": false,
+        "observation_lines": 0,
+        "states_published_wording": false,
+        "claims_fulfilment": false,
+        "destinations": {
+          "count": 0,
+          "visible": 0,
+          "reachable": 0,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0,
+          "destinations": []
+        },
+        "smallest_target_px": null,
+        "project_block_fits_its_row": true,
+        "row_overflow": {
+          "rows": 0,
+          "overflowing": 0,
+          "overflowing_without_a_project_block": 0
+        },
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "ready_for_inspection": false,
+        "visible_inspect_controls": 0,
+        "direction": null,
+        "language": null,
+        "state_attribute": "unavailable"
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the register could not be read: the section says so, lists no request, and adds no capital project block to a list it could not read",
+      "render_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "axe_all_pass": true
+}

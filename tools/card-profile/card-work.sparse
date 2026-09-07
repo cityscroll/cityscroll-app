@@ -333,6 +333,7 @@
 /site/community_board_people_search_producer.mjs
 /site/community_board_proceeding_hosts.mjs
 /site/community_board_relations.mjs
+/site/community_board_request_project_links.mjs
 /site/community_board_resolution_pilot.mjs
 /site/community_board_scope_links.mjs
 /site/community_board_search.mjs

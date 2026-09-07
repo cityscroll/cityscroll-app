@@ -590,6 +590,7 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     sources.communityBoardBudgetRegister || sources.budgetRegister,
     sources.communityBoardBudgetRequests?.[requested] || sources.budgetRequests?.[requested],
     requested,
+    { projectLinks: sources.communityBoardRequestProjectLinks || null },
   );
   // The hearing reading is given the register reading rather than the raw
   // register, so the request it teaches from and the requests listed below it
