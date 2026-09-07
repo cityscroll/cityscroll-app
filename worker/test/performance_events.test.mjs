@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import worker from "../src/worker.mjs";
+import { TAXONOMY_VERSION } from "../src/lib/analytics.mjs";
 import {
   RUM_BATCH_SCHEMA,
   RUM_HEALTH_REASONS,
@@ -376,7 +377,7 @@ test("Worker route and wrangler bindings are visibly separate while usage stays 
   }, {});
   assert.equal(usageResponse.status, 204);
   assert.deepEqual(usagePoints[0], {
-    blobs: ["page_view", "none", "none", "none", "home", "1.3.0", "production"],
+    blobs: ["page_view", "none", "none", "none", "home", TAXONOMY_VERSION, "production"],
     doubles: [1],
     indexes: ["page_view"],
   });

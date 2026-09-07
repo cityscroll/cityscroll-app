@@ -1,8 +1,13 @@
 // POST /events — bounded first-party event intake for the static site.
 
-import { emitUsageEvent, isProductionUsageTraffic, normalizeUsageEvent } from "./lib/analytics.mjs";
+import {
+  emitUsageEvent,
+  isProductionUsageTraffic,
+  normalizeUsageEvent,
+  normalizeUsageTrafficClass,
+} from "./lib/analytics.mjs";
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
-import { bumpCategoryDayStat, bumpStat } from "./lib/stats.mjs";
+import { REJECTED_EVENT_METRIC, bumpCategoryDayStat, bumpStat } from "./lib/stats.mjs";
 
 export const ANALYTICS_DEV_HEADER = "X-CROL-Analytics-Dev";
 const DEV_TOKEN_VERSION = "v1";
@@ -92,14 +97,16 @@ export async function handleEvent(req, env, options = {}) {
     return new Response("Invalid event", { status: 400, headers: cors });
   }
 
-  const normalized = normalizeUsageEvent(input);
-  if (!normalized) return new Response("Invalid event", { status: 400, headers: cors });
-
   // Header validity is deliberately invisible to callers: accepted events always return the
   // same 204. Invalid or missing exclusion tokens continue into the normal counting path.
   // A valid developer-exclusion token stamps traffic_class=developer so desk/ops can filter;
   // production dual-write counters and AE points stay production-only.
-  let trafficClass = normalized.traffic_class;
+  //
+  // Classification happens before validation so that a refused submission can be counted as a
+  // production rejection without a developer probe or a preview deployment being able to move
+  // that counter either.
+  const declared = input && typeof input === "object" && !Array.isArray(input) ? input : {};
+  let trafficClass = normalizeUsageTrafficClass(declared.traffic_class);
   if (env?.ANALYTICS_ENVIRONMENT === "production") {
     const excluded = await hasValidDeveloperExclusion(
       req,
@@ -109,6 +116,15 @@ export async function handleEvent(req, env, options = {}) {
     if (excluded) trafficClass = "developer";
   } else if (env?.ANALYTICS_ENVIRONMENT && env.ANALYTICS_ENVIRONMENT !== "production") {
     trafficClass = "developer";
+  }
+
+  const normalized = normalizeUsageEvent(input);
+  if (!normalized) {
+    if (env?.ALERT_STATE && isProductionUsageTraffic(trafficClass)) {
+      // The count, and nothing from the body that was refused.
+      try { await bumpStat(env.ALERT_STATE, REJECTED_EVENT_METRIC, now); } catch { /* best-effort */ }
+    }
+    return new Response("Invalid event", { status: 400, headers: cors });
   }
   const stamped = { ...normalized, traffic_class: trafficClass };
 
@@ -121,10 +137,12 @@ export async function handleEvent(req, env, options = {}) {
     try {
       const tasks = [bumpStat(env.ALERT_STATE, `usage_${stamped.event}`, now)];
       if (stamped.event === "page_view") {
-        const surface = String(stamped.surface || "home");
+        // The validated surface, with no fallback behind it. A page view that reached here
+        // named a registered surface; one that did not was refused above and counted as a
+        // rejection, which is a different fact from a view of the homepage.
         tasks.push(
           bumpStat(env.ALERT_STATE, "page_view", now),
-          bumpCategoryDayStat(env.ALERT_STATE, "page_view", surface, now),
+          bumpCategoryDayStat(env.ALERT_STATE, "page_view", stamped.surface, now),
         );
       }
       if (stamped.event === "search_run" && stamped.lens && stamped.lens !== "none") {

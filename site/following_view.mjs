@@ -1290,6 +1290,6 @@ export function renderFollowingDocument(view, options = {}) {
 ${renderCivicDocumentMast({ current: "following", siteBase, surfaceClass: "following-mast" })}
 ${renderFollowingBody(view)}
 <footer class="following-footer">Check each item at its source. <a href="/guide/">Guide</a>.</footer>
-<script defer src="${esc(prefix)}analytics.js?v=1.3.0"></script>
+<script type="module" src="${esc(prefix)}analytics.js?v=1.4.0"></script>
 <script type="module" src="${esc(prefix)}app/following.mjs"></script></body></html>`.replace(/[ \t]+$/gm, "");
 }

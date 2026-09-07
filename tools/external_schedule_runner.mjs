@@ -21,6 +21,12 @@ import {
   independentWatchdogFinding,
   loadPublicationCycleContract,
 } from "./desk_health_publication_cycle.mjs";
+import {
+  STATS_PUBLICATION_ISSUE_MARKER,
+  STATS_PUBLICATION_ISSUE_TITLE,
+  evaluateStatsPublication,
+  statsPublicationIssueBody,
+} from "./stats_publication_monitor.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const JOBS_PATH = join(ROOT, "tools", "external_schedule_jobs.json");
@@ -263,6 +269,79 @@ async function runDigestShadow(job, context) {
   return { result, issue: issueIntent(job, context.runKey, result, healthy ? "close" : "open") };
 }
 
+/**
+ * Observe whether the promised daily search-use snapshot exists, and report it.
+ *
+ * Two reads, deliberately from two sides. The public summary is read without a credential and
+ * supplies only what the publisher claims about its own freshness; the dated series is read
+ * from the authenticated desk and supplies what was actually stored. The evaluator then uses
+ * the second to judge the first, which is what makes this independent of a publisher that has
+ * frozen while still reporting success.
+ *
+ * The admin credential is resolved exactly the way every other call in this cycle resolves it.
+ * A missing one is a scheduler configuration fault and is reported as such, never as a failed
+ * publication.
+ */
+async function runStatsDailySnapshot(job, context) {
+  const fetchImpl = context.fetchImpl || globalThis.fetch;
+  const publicUrl = process.env.CITYSCROLL_STATS_URL || "https://api.cityscroll.org/stats";
+  const adminUrl = process.env.CITYSCROLL_ADMIN_STATS_URL || "https://api.cityscroll.org/admin/stats";
+  const observedAt = context.now.toISOString();
+
+  const key = adminKey();
+  if (!key) {
+    const result = {
+      observed_at: observedAt,
+      status: "degraded",
+      degraded_reason: "admin-credential-missing",
+      body: "The daily search-use snapshot monitor has no admin credential, so the stored aggregate series was not read. This is a scheduler configuration fault, not a publication failure.",
+    };
+    return {
+      result,
+      issue: issueIntent(job, context.runKey, result, "open", {
+        title: "Daily search-use snapshot monitor has no admin credential",
+      }),
+    };
+  }
+
+  const observation = { published: null, lineage: null };
+  try {
+    const response = await fetchImpl(publicUrl);
+    const body = response.ok ? await response.json() : null;
+    observation.published = body?.search_usage || null;
+  } catch {
+    observation.published = null;
+  }
+  try {
+    const response = await fetchImpl(adminUrl, { headers: { Authorization: `Bearer ${key}` } });
+    const body = response.ok ? await response.json() : null;
+    const lineage = body?.search_usage_lineage || null;
+    observation.lineage = lineage?.series
+      ? { ...lineage.series, reconciliation: lineage.reconciliation || null }
+      : null;
+  } catch {
+    observation.lineage = null;
+  }
+
+  const finding = evaluateStatsPublication({ now: observedAt, observation });
+  const result = {
+    observed_at: observedAt,
+    status: finding.ok ? "healthy" : "degraded",
+    failing_stage: finding.failing_stage,
+    promised_day: finding.promised_day,
+    evidence: sanitize(finding.evidence),
+    body: statsPublicationIssueBody(finding),
+  };
+  return {
+    result,
+    issue: issueIntent(job, context.runKey, result, finding.ok ? "close" : "open", {
+      title: STATS_PUBLICATION_ISSUE_TITLE,
+      title_aliases: [STATS_PUBLICATION_ISSUE_TITLE],
+      body_contains: [STATS_PUBLICATION_ISSUE_MARKER],
+    }),
+  };
+}
+
 export async function runScheduledJob(job, options = {}) {
   const now = options.now || new Date();
   const stateDir = options.stateDir || process.env.CROL_EXTERNAL_SCHEDULE_STATE_DIR || join(ROOT, ".external-schedule-state");
@@ -272,6 +351,7 @@ export async function runScheduledJob(job, options = {}) {
   else if (job.runner === "source-contracts") output = await runSourceContracts(job, context);
   else if (job.runner === "source-freshness") output = await runFreshnessWatchdog(job, context);
   else if (job.runner === "digest-shadow") output = await runDigestShadow(job, context);
+  else if (job.runner === "stats-daily-snapshot") output = await runStatsDailySnapshot(job, context);
   else throw new Error(`unknown external schedule runner: ${job.runner}`);
   if (output.intents) {
     for (const [index, intent] of output.intents.entries()) await persistScheduleResult({

@@ -1,6 +1,6 @@
 # CityScroll aggregate event taxonomy
 
-Version: **1.3.0**
+Version: **1.4.0**
 Dataset: **`crol_usage_events_v1`**
 Retention: **90 days**
 Initial measured-since boundary: **2026-07-27**
@@ -20,8 +20,8 @@ Each accepted event produces one Workers Analytics Engine data point:
 | `blob2` | lens | `money`, `people`, `land`, `property`, `rules`, `meetings`, `alerts`, or `none` |
 | `blob3` | detail | Event-specific small enumeration below, or `none` |
 | `blob4` | geography of interest | NYC borough selected in a search, or `none`; never inferred visitor location |
-| `blob5` | surface | `home`, `now`, `near-you`, `following`, `browse`, `stats`, `about`, `data`, `api`, `changelog`, `standards`, `worth-a-look`, `digest`, or `email` as allowed per event |
-| `blob6` | taxonomy version | `1.3.0` (the reader also accepts compatible `1.0.0`, `1.1.0`, and `1.2.0` rows) |
+| `blob5` | surface | A surface id from `site/analytics_surface_taxonomy.mjs`, as allowed per event. Browser-produced events may name only a surface whose document ships the collector; `digest` and `email` name a delivered message and are produced by the Worker and the mailer |
+| `blob6` | taxonomy version | `1.4.0` (the reader also accepts compatible `1.0.0`, `1.1.0`, `1.2.0`, and `1.3.0` rows) |
 | `blob7` | traffic class | `production` (default) or `developer`; omitted on pre-traffic_class rows |
 | `double1` | count | Always `1` |
 | `index1` | sampling key | Event name |
@@ -32,23 +32,23 @@ Each accepted event produces one Workers Analytics Engine data point:
 | Event | What one point means | Dimensions |
 |---|---|---|
 | `page_view` | One HTML page loaded. | `surface` |
-| `lens_open` | One primary lens tab selected. | `lens`; `surface=home` |
+| `lens_open` | One primary lens tab selected. | `lens`; a collector surface |
 | `scenario_open` | One task-first scenario route selected. This records the visitor's declared task, not an inferred identity. | `lens`; `detail=city-work\|neighborhood\|hearings\|city-career\|subsidies-land-use\|legal-compliance`; `surface=home` |
-| `search_run` | One user-initiated filter, preset, or natural-language search. | `lens`; `detail=filters\|preset\|natural-language`; optional selected borough; `surface=home\|api` |
-| `deep_link_open` | One permalink opened in the browser. | optional `lens`; `detail=notice\|agency\|vendor\|search\|investigation`; `surface=home\|digest` |
-| `export` | One export action started. | optional `lens`; `detail=csv\|xlsx\|print\|ics\|json`; `surface=home` |
-| `alert_start` | One alert preview or subscribe action started. | optional `lens`; `detail=preview\|subscribe`; `surface=home` |
+| `search_run` | One user-initiated filter, preset, or natural-language search. This is the interaction, not the search that finished; completed searches are counted from execution receipts and the two are never added. | optional `lens`; `detail=filters\|preset\|natural-language`; optional selected borough; a collector surface or `api` |
+| `deep_link_open` | One permalink opened in the browser. | optional `lens`; `detail=notice\|agency\|vendor\|search\|investigation`; a collector surface or `digest` |
+| `export` | One export action started. | optional `lens`; `detail=csv\|xlsx\|print\|ics\|json`; a collector surface |
+| `alert_start` | One alert preview or subscribe action started. | optional `lens`; `detail=preview\|subscribe`; a collector surface |
 | `alert_confirmed` | One double-opt-in subscription was confirmed. | optional `lens`; `surface=email\|api` |
 | `digest_sent` | One digest email was sent. | optional `lens`; `surface=email` |
 | `digest_link_open` | One notice link in a digest was followed. | optional `lens`; `detail=notice`; `surface=digest` |
 | `feed_fetch` | One origin request for a feed completed the event-counting path. | `detail=atom\|json\|ics`; `surface=api` |
 | `saved_search_check` | One accepted batch saved-search check. | `surface=api` |
-| `investigation_share` | One read-only investigation link was created or copied, or one admitted comparative signal was added locally. | `detail=create\|copy\|add_signal`; `surface=home\|api` |
+| `investigation_share` | One read-only investigation link was created or copied, or one admitted comparative signal was added locally. | `detail=create\|copy\|add_signal`; a collector surface or `api` |
 | `comparative_signal_shown` | One admitted comparative signal card was present in the private Worth-a-look projection. This is the aggregate denominator for the existing `investigation_share:add_signal` handoff count. | `detail=visible`; `surface=worth-a-look` |
-| `action_opened` | One matter action was opened. | `detail=direct\|official-handoff`; `surface=home` |
-| `outcome_prompted` | One optional self-report prompt was shown after an official handoff or a passed source-grounded action. | `detail=official-handoff\|passed-action`; `surface=home` |
-| `outcome_dismissed` | One optional self-report prompt was explicitly dismissed without an outcome choice. | `detail=official-handoff\|passed-action`; `surface=home` |
-| `outcome_recorded` | One voluntary post-action self-report was recorded. This is analytically separate from official receipt-backed outcomes. | `detail=submitted\|attended\|bid\|won\|not-useful`; `surface=home` |
+| `action_opened` | One matter action was opened. | `detail=direct\|official-handoff`; a collector surface |
+| `outcome_prompted` | One optional self-report prompt was shown after an official handoff or a passed source-grounded action. | `detail=official-handoff\|passed-action`; a collector surface |
+| `outcome_dismissed` | One optional self-report prompt was explicitly dismissed without an outcome choice. | `detail=official-handoff\|passed-action`; a collector surface |
+| `outcome_recorded` | One voluntary post-action self-report was recorded. This is analytically separate from official receipt-backed outcomes. | `detail=submitted\|attended\|bid\|won\|not-useful`; a collector surface |
 
 ## Data that is never written
 
@@ -65,11 +65,32 @@ watches. Aggregate routing research publishes denominators and category totals.
 The intake rejects unknown events and dimensions. Payloads are capped at 1 KiB. Browser delivery is
 fail-soft, so analytics can never block the action being measured.
 
+## How a surface is decided
+
+`site/analytics_surface_taxonomy.mjs` holds the surface vocabulary, and both halves of the system
+read it: the page script resolves the surface it may name, and the Worker builds its per-event
+allowlists from the same constants. Each row is answerable to the registered route map in
+`site/data/performance-classification-manifest.v1.json`, and a test fails when a surface is added,
+retired, or re-pathed there without being answered in the taxonomy.
+
+A pathname the route map does not register resolves to `unclassified`, and the page script then
+sends nothing at all. There is no fallback surface. Before version 1.4.0 the page script derived a
+surface from the last path segment and answered `home` whenever it recognised nothing — and because
+the platform serves every `.html` document at its extensionless path, that meant the Stats, About,
+API, Data, Changelog and Standards documents, the Search document, the data-health document, and
+every `/browse/<lane>/` document all reported themselves as the homepage. Those rows are real page
+views under a wrong label. They stay readable as `home`; CityScroll does not infer how many of them
+belonged to the homepage, exactly as it does not infer the pre-2026-08-05 split below.
+
 Clean `/now/`, `/near-you/`, `/following/`, and `/browse/` routes receive distinct page-view
-surfaces beginning with the 2026-08-05 taxonomy cutover. Nested document routes keep their parent
-surface. Earlier page views remain readable as `home (before primary-document attribution)`;
-CityScroll does not infer how many of those historical `home` rows belonged to the homepage or to
-one of the four documents.
+surfaces beginning with the 2026-08-05 taxonomy cutover. Earlier page views remain readable as
+`home (before primary-document attribution)`; CityScroll does not infer how many of those
+historical `home` rows belonged to the homepage or to one of the four documents.
+
+A submission the taxonomy refuses is counted, privately, under one per-day key and nothing else:
+no dimension from the refused body is kept. The count is read back only on `/admin/stats`, and only
+production traffic reaches it, so a developer probe cannot move it either. It exists so a producer
+naming a dimension nobody registered shows up as a number rather than as silence.
 
 Outcome-loop completion is characterized only in aggregate: `outcome_recorded` divided by
 `outcome_prompted` for the same rolling window. Aggregate abandonment is prompted minus recorded;
@@ -119,8 +140,8 @@ null, empty, or `production`, so pre-traffic_class history stays continuous.
 The Worker queries one 90-day grouped time series through the Analytics Engine SQL API and
 builds authenticated cuts in `GET /admin/stats`: 7- and 30-day activity, lens interest, search
 activity, scenario interest, deep links, exports, confirmed watches, selected borough interest,
-daily growth, and aggregate action/outcome totals. Version 1.3.0 is additive; queries include
-compatible 1.0.0, 1.1.0, and 1.2.0 rows so the existing rolling window remains continuous.
+daily growth, and aggregate action/outcome totals. Version 1.4.0 is additive; queries include
+compatible 1.0.0, 1.1.0, 1.2.0, and 1.3.0 rows so the existing rolling window remains continuous.
 Queries use `sum(_sample_interval * double1)`, so adaptive sampling remains represented in totals.
 The private response is not cached. Analytics Engine ingestion can still delay a newly accepted
 `POST /events`; durable Worker counters provide immediate continuity where available.

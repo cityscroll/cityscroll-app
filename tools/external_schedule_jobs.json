@@ -1,41 +1,58 @@
 {
-  "schema": "cityscroll.external-schedule-jobs.v1",
-  "scheduler": {
-    "provider": "launchd-or-cron",
-    "ownership": "independent",
-    "poll_interval_seconds": 60,
-    "state_env": "CROL_EXTERNAL_SCHEDULE_STATE_DIR"
+ "schema": "cityscroll.external-schedule-jobs.v1",
+ "scheduler": {
+  "provider": "launchd-or-cron",
+  "ownership": "independent",
+  "poll_interval_seconds": 60,
+  "state_env": "CROL_EXTERNAL_SCHEDULE_STATE_DIR"
+ },
+ "repository": "cityscroll/cityscroll-app",
+ "jobs": [
+  {
+   "id": "action-links-live",
+   "schedule": [
+    "41 11 * * *"
+   ],
+   "runner": "action-links",
+   "issue_title": "Outbound action-link integrity drift"
   },
-  "repository": "cityscroll/cityscroll-app",
-  "jobs": [
-    {
-      "id": "action-links-live",
-      "schedule": ["41 11 * * *"],
-      "runner": "action-links",
-      "issue_title": "Outbound action-link integrity drift"
-    },
-    {
-      "id": "source-contracts-live",
-      "schedule": ["23 10 * * *"],
-      "runner": "source-contracts",
-      "issue_title_prefix": "Live civic-data source contract drift"
-    },
-    {
-      "id": "source-freshness-watchdog",
-      "schedule": ["30 10 * * *"],
-      "runner": "source-freshness",
-      "issue_title": "Source evidence freshness is stale"
-    },
-    {
-      "id": "digest-shadow-monitor",
-      "schedule": ["10 10 * * *", "10 13 * * *"],
-      "runner": "digest-shadow",
-      "issue_title": "Digest shadow run needs attention"
-    }
-  ],
-  "follow_up_jobs": [
-    "attachment-metadata",
-    "surface-load-live",
-    "multi-flywheel"
-  ]
+  {
+   "id": "source-contracts-live",
+   "schedule": [
+    "23 10 * * *"
+   ],
+   "runner": "source-contracts",
+   "issue_title_prefix": "Live civic-data source contract drift"
+  },
+  {
+   "id": "source-freshness-watchdog",
+   "schedule": [
+    "30 10 * * *"
+   ],
+   "runner": "source-freshness",
+   "issue_title": "Source evidence freshness is stale"
+  },
+  {
+   "id": "digest-shadow-monitor",
+   "schedule": [
+    "10 10 * * *",
+    "10 13 * * *"
+   ],
+   "runner": "digest-shadow",
+   "issue_title": "Digest shadow run needs attention"
+  },
+  {
+   "id": "stats-daily-snapshot-monitor",
+   "schedule": [
+    "47 11 * * *"
+   ],
+   "runner": "stats-daily-snapshot",
+   "issue_title": "Daily search-use snapshot was not published"
+  }
+ ],
+ "follow_up_jobs": [
+  "attachment-metadata",
+  "surface-load-live",
+  "multi-flywheel"
+ ]
 }

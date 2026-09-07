@@ -1,0 +1,9 @@
+{
+  "note": "The monitor could not read the stored series at all. An unavailable check is not a failed publication.",
+  "published": {
+    "schema": "cityscroll.public_search_usage.v1",
+    "available": true,
+    "refresh": { "state": "fresh", "verified_at": "2026-09-06T09:10:00.000Z", "attempted_at": "2026-09-06T09:10:00.000Z", "failure_reason": null }
+  },
+  "lineage": { "available": false, "unavailable_reason": "read_failed" }
+}

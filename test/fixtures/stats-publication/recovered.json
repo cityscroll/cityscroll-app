@@ -1,0 +1,15 @@
+{
+  "note": "The same specimen after a successful catch-up run: every promised day is stored and the newest day has advanced.",
+  "published": {
+    "schema": "cityscroll.public_search_usage.v1",
+    "available": true,
+    "refresh": { "state": "fresh", "verified_at": "2026-09-06T11:10:00.000Z", "attempted_at": "2026-09-06T11:10:00.000Z", "failure_reason": null }
+  },
+  "lineage": {
+    "available": true,
+    "newest_day": "2026-09-05",
+    "missing_days": [],
+    "unrecoverable_days": [],
+    "reconciliation": { "rows": [], "missing_days": [], "unrecoverable_days": [] }
+  }
+}

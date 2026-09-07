@@ -13,15 +13,26 @@
 // produced by tools/build_served_coverage_snapshot.mjs, and this route only projects it.
 
 import {
+  REJECTED_EVENT_METRIC,
   dayStr, sumStat, readStatAllTime, readAllCategoryStats, readAllCategoryStatsWindow,
   readHistSeries, readHistEra, mergeRecoveredAllTime,
 } from "./lib/stats.mjs";
 import {
+  ANALYTICS_RETENTION_DAYS,
   completeLensCounts,
   readUsageAnalytics,
   reconcileUsageWithDurableStores,
 } from "./lib/analytics.mjs";
-import { readSearchUsage } from "./lib/search_usage.mjs";
+import { ANALYTICS_COLLECTOR_SURFACES } from "../../site/analytics_surface_taxonomy.mjs";
+import { foldSearchUsage, readSearchUsageObservations, unavailableSearchUsage } from "./lib/search_usage.mjs";
+import {
+  SEARCH_USAGE_DAILY_POPULATION,
+  SEARCH_USAGE_DAILY_POPULATION_VERSION,
+  SEARCH_USAGE_DAILY_RETENTION_DAYS,
+  foldSearchUsageDays,
+  readSearchUsageDailySeries,
+  reconcileSearchUsageDaily,
+} from "./lib/search_usage_daily.mjs";
 import {
   readPublicSearchUsage,
   resolveSearchMeasurementStart,
@@ -131,22 +142,73 @@ async function countLaggingSubs(env, thresholdDays = 2, now = new Date()) {
 }
 
 const WINDOW_DAYS = 7;
-const PAGE_VIEW_SURFACES = Object.freeze([
-  "home",
-  "now",
-  "near-you",
-  "following",
-  "browse",
-  "stats",
-  "about",
-  "data",
-  "api",
-  "changelog",
-  "standards",
-]);
 
+/**
+ * How each search figure on this response is produced, stated once and beside the figures
+ * rather than inside them, so an operator reading them side by side cannot take one for the
+ * other and so the fields themselves keep the bytes they had.
+ *
+ * `usage.searches` counts intent: someone asked. It comes from Analytics Engine, whose rows
+ * are SAMPLED and re-expanded by each row's own sample interval, so it is an estimate.
+ * `search_executions` counts outcome: a search finished and the reader saw what it returned.
+ * It comes from stored execution receipts and is exact. The two answer different questions
+ * over different populations by different methods, and are never added together.
+ */
+const MEASUREMENT_BASIS = Object.freeze({
+  note: "Two different questions, two different methods. Never summed with each other.",
+  "usage.searches": Object.freeze({
+    question: "How often did someone start a search?",
+    method: "sampled",
+    exactness: "estimated",
+    source: "Workers Analytics Engine, expanded by each row's own sample interval.",
+  }),
+  search_executions: Object.freeze({
+    question: "How often did a search finish and render its result?",
+    method: "receipt-count",
+    exactness: "exact",
+    source: "Stored accepted production search-execution receipts.",
+  }),
+});
+
+/**
+ * One receipt scan, two readings: the rolling windows the desk reports and the dated
+ * aggregates the trend is kept in. The reconciliation between them is computed here rather
+ * than trusted, so a stored day that no longer matches the receipts is visible as a row.
+ */
+async function readSearchUsageLineage(env, now) {
+  const measuredSince = await resolveSearchMeasurementStart(env);
+  const read = await readSearchUsageObservations(env, { now });
+  const usage = read.ok
+    ? foldSearchUsage(read.observations, { now, measuredSince, scan: read.scan })
+    : unavailableSearchUsage(read.reason, now);
+  const series = await readSearchUsageDailySeries(env, { now });
+  const observed = read.ok ? foldSearchUsageDays(read.observations, { now, measuredSince }) : { days: {} };
+  return {
+    usage,
+    daily: {
+      population: SEARCH_USAGE_DAILY_POPULATION,
+      population_version: SEARCH_USAGE_DAILY_POPULATION_VERSION,
+      aggregate_retention_days: SEARCH_USAGE_DAILY_RETENTION_DAYS,
+      measured_since: measuredSince,
+      series,
+      reconciliation: reconcileSearchUsageDaily({ storedSeries: series, observedDays: observed.days, now }),
+    },
+  };
+}
+
+/**
+ * The durable page-view fallback is shaped by the same collector-surface list the intake
+ * validator uses, so the KV breakdown and the Analytics Engine breakdown answer for the same
+ * set of pages. A surface written under an older spelling is kept beside them rather than
+ * dropped, because an older row is history.
+ */
 function completePageViewsBySurface(observed = {}) {
-  return Object.fromEntries(PAGE_VIEW_SURFACES.map((surface) => [surface, observed[surface] || 0]));
+  const extras = Object.keys(observed)
+    .filter((surface) => surface && !ANALYTICS_COLLECTOR_SURFACES.includes(surface))
+    .sort();
+  return Object.fromEntries(
+    [...ANALYTICS_COLLECTOR_SURFACES, ...extras].map((surface) => [surface, observed[surface] || 0]),
+  );
 }
 
 async function readFallbackActionOutcomes(env, now = new Date()) {
@@ -277,7 +339,7 @@ export async function handlePrivateStats(req, env, options = {}) {
     nl30d, nlByCategory30d, clicks30d, shares30d, alertsConfirmed7d, alertsConfirmed30d,
     digestLastRun,
     catchUpSentToday, catchUpAllTime, catchUpLastRun, laggingSubs,
-    searchExecutions,
+    searchUsageLineage, rejectedEvents7d, rejectedEvents30d,
   ] = await Promise.all([
       countSubscriptionMetrics(env),
       readInt(env.ALERT_STATE, `sendcount:${today}`),
@@ -316,7 +378,9 @@ export async function handlePrivateStats(req, env, options = {}) {
       countLaggingSubs(env, 2, now),
       // Same measurement start the public projection uses, so the two surfaces can be
       // reconciled against each other at one cutoff instead of two.
-      resolveSearchMeasurementStart(env).then((measuredSince) => readSearchUsage(env, { now, measuredSince })),
+      readSearchUsageLineage(env, now),
+      sumStat(env.ALERT_STATE, REJECTED_EVENT_METRIC, WINDOW_DAYS, now),
+      sumStat(env.ALERT_STATE, REJECTED_EVENT_METRIC, 30, now),
     ]);
 
   // Store continuity: same ALERT_STATE / NL_METER namespaces used before and after the
@@ -391,7 +455,19 @@ export async function handlePrivateStats(req, env, options = {}) {
     // Additive. Completed searches come from accepted execution receipts and
     // are reported beside — never folded into — the input counters above, which answer
     // a different question. Every field before this one keeps its meaning.
-    search_executions: searchExecutions,
+    search_executions: searchUsageLineage.usage,
+    measurement_basis: MEASUREMENT_BASIS,
+    // The dated lineage behind the published summary: which days were folded, whether the
+    // stored days still match the receipts, and which days are gaps rather than zeroes.
+    search_usage_lineage: searchUsageLineage.daily,
+    // Submissions the taxonomy refused, counted and nothing else. A rising number means a
+    // producer is naming a dimension nobody registered.
+    measurement_diagnostics: {
+      note: "Refused submissions are counted, never measured. Production traffic only.",
+      rejected_events_last7d: rejectedEvents7d,
+      rejected_events_last30d: rejectedEvents30d,
+      analytics_retention_days: ANALYTICS_RETENTION_DAYS,
+    },
   };
 
   const res = new Response(JSON.stringify(body, null, 2), {
