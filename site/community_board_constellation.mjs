@@ -56,6 +56,10 @@ import {
   renderCommunityBoardDistrictProjectsSection,
 } from "./community_board_district_projects.mjs";
 import {
+  communityBoardLandPositionsForBoard,
+  renderCommunityBoardLandPositionsSection,
+} from "./community_board_land_positions.mjs";
+import {
   BROOKLYN_CB15_BODY_ID,
   boroughOfficeRolesForBoard,
   renderBoroughOfficeAppointmentSection,
@@ -562,6 +566,10 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     sources.communityBoardDistrictProjects || sources.districtProjects,
     requested,
   );
+  const landPositions = communityBoardLandPositionsForBoard(
+    sources.communityBoardLandPositions || sources.landPositions,
+    requested,
+  );
   const appointmentAuthority = requested === BROOKLYN_CB15_BODY_ID
     ? boroughOfficeRolesForBoard(requested, sources.boroughOffice || sources.boroughOfficeSources || {})
     : null;
@@ -610,6 +618,10 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     // Optional enrichment: absent for a board whose district has no retained
     // project, so the document carries no empty section for it.
     ...(districtProjects ? { district_projects: districtProjects } : {}),
+    // Always present for a board this site publishes: a board this source
+    // records no position for gets a sentence about the source, never silence
+    // that would read as a board that has never taken one.
+    ...(landPositions ? { land_positions: landPositions } : {}),
     ...(appointmentAuthority ? { appointment_authority: appointmentAuthority } : {}),
     categories,
     edge_summary: edgeSummary,
@@ -948,8 +960,8 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
 ${renderNodeBack({ href: "/community-boards/", label: "Back to community board sources", extraClass: "civic-object-back" })}
 <header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">Community board</p><h1>${esc(title)}</h1><p class="node-lede">A local advisory body, its district, committees, proceedings, people, and official source coverage.</p><p class="node-pivot civic-object-pivot"><a href="${esc(place?.view_all_href || "/near-you/")}">Open this board’s place view</a> · <a href="${esc(institution)}">Open this board institution</a> · <a href="${esc(output)}">Open the source directory</a></p></header>
 ${renderRelatedPublicBodiesFor(view.body_id)}
-  ${renderAboutBoardSection(view)}${renderCommunityBoardDistrictProjectsSection(view.district_projects, { lang: options.lang })}${renderCommunityBoardParticipationSection(view)}${renderCommunityBoardMoneyCard(view.money)}${renderCommunityBoardPayrollContext(view.payroll)}${renderCommunityBoardBylawPanel(view.governance)}${renderBoroughOfficeAppointmentSection(view.appointment_authority)}${renderEmptyCoverageNote(emptyCoverageCategories)}${renderedCategories.map((category) => renderCategory(category, view)).join("")}${edgeRail}${local}${actions}${renderUnjoinedSourceSection(view.source_records)}
+  ${renderAboutBoardSection(view)}${renderCommunityBoardDistrictProjectsSection(view.district_projects, { lang: options.lang })}${renderCommunityBoardLandPositionsSection(view.land_positions, { lang: options.lang })}${renderCommunityBoardParticipationSection(view)}${renderCommunityBoardMoneyCard(view.money)}${renderCommunityBoardPayrollContext(view.payroll)}${renderCommunityBoardBylawPanel(view.governance)}${renderBoroughOfficeAppointmentSection(view.appointment_authority)}${renderEmptyCoverageNote(emptyCoverageCategories)}${renderedCategories.map((category) => renderCategory(category, view)).join("")}${edgeRail}${local}${actions}${renderUnjoinedSourceSection(view.source_records)}
 </main>${renderNodeFooter({ extraClass: "civic-object-footer" })}
-<script id="civic-object-payload" type="application/json">${payload}</script><script defer src="${esc(`${prefix}export_workflows.js`)}"></script>${renderCalendarEventPreviewScript(assetPrefix)}
+<script id="civic-object-payload" type="application/json">${payload}</script><script defer src="${esc(`${prefix}export_workflows.js`)}"></script>${renderCalendarEventPreviewScript(assetPrefix)}<script type="module" src="${esc(`${prefix}community_board_land_positions_boot.mjs`)}"></script>
 </body></html>`;
 }

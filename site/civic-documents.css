@@ -4352,3 +4352,227 @@ select {
     display: grid;
   }
 }
+
+/*
+ * Recorded board positions on land use projects.
+ *
+ * The overflow disclosure is held behind a fragment rather than a <details>
+ * element, for the same reason the district project list is: a browser restores
+ * a history entry's URL and scroll offset, not an element's open state, so
+ * putting the expansion in the URL is what lets a reader open the rest of the
+ * list, follow a project, and come back to the list as they left it. With no
+ * stylesheet at all the whole list simply renders, which is the right failure.
+ */
+.board-land-positions-overflow {
+  margin-block-start: var(--space-2);
+}
+
+.board-land-positions-overflow > .board-land-positions-overflow-list,
+.board-land-positions-overflow > .board-land-positions-less {
+  display: none;
+}
+
+.board-land-positions-overflow:target > .board-land-positions-overflow-list {
+  display: grid;
+  margin-block-end: var(--space-2);
+}
+
+.board-land-positions-overflow:target > .board-land-positions-less {
+  display: inline-block;
+}
+
+.board-land-positions-overflow:target > .board-land-positions-more {
+  display: none;
+}
+
+.board-land-positions-more,
+.board-land-positions-less {
+  display: inline-block;
+  /* WCAG 2.5.8: a comfortable target on a touch screen. */
+  min-height: 24px;
+  padding-block: var(--space-1);
+  color: var(--color-action);
+  font-weight: 600;
+}
+
+.board-land-positions-advisory,
+.board-land-positions-tally-boundary,
+.board-land-positions-row-boundary {
+  max-width: var(--measure);
+}
+
+.board-land-position-id {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.board-land-position-waiver {
+  display: block;
+  max-width: var(--measure);
+}
+
+/* The inspect control is progressive enhancement: it stays out of the
+   document's flow until the boot module marks the section ready, so a reader
+   without scripting is only ever offered the project link, which works for
+   them, and the facts it would have shown are already written into the row. */
+.board-land-position-inspect {
+  display: none;
+}
+
+[data-board-land-positions-ready] .board-land-position-inspect {
+  display: inline-block;
+  margin-inline-start: var(--space-1);
+  padding: 1px 8px;
+  font: inherit;
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--color-action);
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  cursor: pointer;
+  /* WCAG 2.5.8: a comfortable target on a touch screen. */
+  min-height: 24px;
+}
+
+[data-board-land-positions-ready] .board-land-position-inspect:hover {
+  background: var(--color-canvas-subtle, transparent);
+}
+
+.board-land-position-dialog {
+  max-width: 36rem;
+  width: calc(100vw - 32px);
+  padding: 0;
+  border: 1px solid var(--color-border-strong, #7a828f);
+  border-radius: 4px;
+  background: var(--color-surface, #fff);
+  color: var(--color-text, #12181f);
+}
+
+.board-land-position-dialog::backdrop {
+  background: rgb(18 24 31 / 45%);
+}
+
+.board-land-position-dialog-inner {
+  padding: 16px;
+  font: 14px/1.55 var(--font-interface, ui-sans-serif, system-ui, sans-serif);
+}
+
+.board-land-position-dialog-close {
+  float: right;
+  margin: -4px -4px 0 8px;
+  padding: 4px 10px;
+  font: inherit;
+  font-size: 13px;
+  color: inherit;
+  background: transparent;
+  border: 1px solid var(--color-border-strong, #7a828f);
+  border-radius: 2px;
+  cursor: pointer;
+  min-height: 32px;
+}
+
+.board-land-position-dialog-kicker {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  color: var(--color-text-muted, #5b6470);
+}
+
+.board-land-position-dialog-title {
+  margin: 4px 0 8px;
+  font-size: 18px;
+  line-height: 1.25;
+  /* A long published project name wraps rather than pushing the dialog wide. */
+  overflow-wrap: anywhere;
+}
+
+.board-land-position-dialog-subhead {
+  margin: 14px 0 4px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.board-land-position-dialog-facts {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 2px;
+}
+
+.board-land-position-dialog-facts li {
+  overflow-wrap: anywhere;
+}
+
+.board-land-position-dialog-others {
+  margin: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.board-land-position-dialog-other {
+  display: grid;
+  grid-template-columns: minmax(0, max-content) minmax(0, 1fr);
+  gap: 2px 12px;
+}
+
+.board-land-position-dialog-other dt {
+  font-weight: 600;
+  color: var(--color-text-muted, #5b6470);
+}
+
+.board-land-position-dialog-other dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.board-land-position-dialog-other-note {
+  grid-column: 2;
+  color: var(--color-text-muted, #5b6470);
+  font-size: 13px;
+}
+
+.board-land-position-dialog-note,
+.board-land-position-dialog-others-none {
+  margin: 10px 0 0;
+  color: var(--color-text-muted, #5b6470);
+  font-size: 13px;
+}
+
+.board-land-position-dialog-actions {
+  margin: 14px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: baseline;
+}
+
+/* Both controls in the action row are real destinations a reader is asked to
+   choose between, so each gets a box a pointer can land on without hitting its
+   neighbour. */
+.board-land-position-dialog-open,
+.board-land-position-dialog-portal {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 24px;
+  padding: 2px 0;
+}
+
+.board-land-position-dialog-open {
+  font-weight: 600;
+}
+
+.board-land-position-dialog-portal,
+.board-land-position-dialog-record {
+  font-size: 13px;
+  color: var(--color-text-muted, #5b6470);
+}
+
+.board-land-position-dialog-record {
+  margin: 12px 0 0;
+  overflow-wrap: anywhere;
+}
