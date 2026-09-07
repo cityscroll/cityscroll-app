@@ -87,6 +87,11 @@ import {
   LAND_DECISION_PATH_GET_LIMITS,
   LAND_DECISION_PATH_GET_PROVIDER_ID,
 } from "./land_decision_path.mjs";
+import {
+  DECLARED_CAPABILITY_GAPS,
+  DECLARED_CAPABILITY_GAPS_SCHEMA,
+  validateDeclaredCapabilityGaps,
+} from "./declared_gaps.mjs";
 import { CITED_RETRIEVAL_OUTPUT_SCHEMA } from "../worker/src/cited_retrieval.mjs";
 import { SEMANTIC_SOURCE_FAMILIES } from "../worker/src/semantic_candidates.mjs";
 
@@ -358,7 +363,7 @@ const LAND_DECISION_PATH_GET_OUTPUT_SCHEMA = Object.freeze({
 
 const SUBSCRIBABLE_LENSES = ["money", "people", "land", "property", "rules", "meetings"];
 
-export const MCP_TOOLS = [
+const MCP_REGISTERED_AND_PILOT_TOOLS = [
   {
     name: "search_federated",
     description: "Search the registered public CityScroll lenses in one bounded result set. Optional scope selects only allowlisted registered lenses. Preserves per-lens coverage, source observations, exact object routes, and federated ranking; it does not expose a raw store or arbitrary query language.",
@@ -673,7 +678,7 @@ export const MCP_TOOLS = [
   },
 ];
 
-export const MCP_TOOL_BINDINGS = Object.freeze([
+const MCP_REGISTERED_AND_PILOT_TOOL_BINDINGS = Object.freeze([
   Object.freeze({
     name: "search_federated",
     operationClass: "read",
@@ -793,8 +798,129 @@ export const MCP_TOOL_BINDINGS = Object.freeze([
   }),
 ]);
 
+// ---------------------------------------------------------------- declared gaps
+//
+// The gaps in capabilities/declared_gaps.mjs are part of the public contract: a caller
+// that cannot be answered should be able to NAME the missing capability rather than
+// guess that one exists. They reach the MCP surface twice — in the server instructions
+// every client receives at initialize, and as one read-only tool for a client that only
+// reads tools/list. Both are derived from that single declaration; neither restates it.
+
+const CAPABILITY_GAPS_SCHEMA_REFERENCE = "mcp.list_capability_gaps.contract@1";
+
+const NEAREST_TOOL_BY_CAPABILITY = new Map(
+  MCP_REGISTERED_AND_PILOT_TOOL_BINDINGS
+    .filter(({ capabilityReference }) => capabilityReference)
+    .map(({ capabilityReference, name }) => [capabilityReference, name]),
+);
+
+function resolveNearestTools(gap) {
+  return gap.nearest.map((reference) => {
+    const tool = NEAREST_TOOL_BY_CAPABILITY.get(reference);
+    // A gap whose nearest capability has no public tool would advertise a dead end.
+    if (!tool) throw new Error(`declared gap ${gap.id} names an unpublished capability: ${reference}`);
+    return tool;
+  });
+}
+
+const declaredGapProblems = validateDeclaredCapabilityGaps();
+if (declaredGapProblems.length > 0) throw new Error(`declared capability gaps are incomplete: ${declaredGapProblems.join("; ")}`);
+
+/** The declared gaps as the machine surface publishes them, tool names resolved. */
+export const MCP_DECLARED_CAPABILITY_GAPS = Object.freeze(DECLARED_CAPABILITY_GAPS.map((gap) => Object.freeze({
+  gap: gap.id,
+  question: gap.question,
+  meaning: gap.meaning,
+  nearest_capability_references: Object.freeze([...gap.nearest]),
+  nearest_tools: Object.freeze(resolveNearestTools(gap)),
+})));
+
+const CAPABILITY_GAPS_OUTPUT_SCHEMA = Object.freeze({
+  type: "object",
+  additionalProperties: false,
+  required: ["schema", "gaps"],
+  properties: {
+    schema: { type: "string", const: DECLARED_CAPABILITY_GAPS_SCHEMA },
+    gaps: {
+      type: "array",
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["gap", "question", "meaning", "nearest_capability_references", "nearest_tools"],
+        properties: {
+          gap: { type: "string" },
+          question: { type: "string" },
+          meaning: { type: "string" },
+          nearest_capability_references: { type: "array", items: { type: "string" } },
+          nearest_tools: { type: "array", items: { type: "string" } },
+        },
+      },
+    },
+  },
+});
+
+const CAPABILITY_GAPS_SUMMARY = MCP_DECLARED_CAPABILITY_GAPS
+  .map(({ gap, question, nearest_tools: nearest }) => `${gap} (${question} — nearest tools: ${nearest.join(", ")})`)
+  .join("; ");
+
+const MCP_CAPABILITY_GAPS_TOOL = Object.freeze({
+  name: "list_capability_gaps",
+  description: `List the capability gaps CityScroll declares about itself, so a caller can name what this endpoint does not answer instead of assuming a tool for it exists. Declared gaps: ${CAPABILITY_GAPS_SUMMARY}. Takes no input, reads no records, and returns only this published declaration.`,
+  inputSchema: { type: "object", additionalProperties: false, properties: {} },
+  outputSchema: CAPABILITY_GAPS_OUTPUT_SCHEMA,
+  annotations: MCP_PUBLIC_READ_ANNOTATIONS,
+});
+
+const MCP_CAPABILITY_GAPS_BINDING = Object.freeze({
+  name: "list_capability_gaps",
+  operationClass: "read",
+  schemaReference: CAPABILITY_GAPS_SCHEMA_REFERENCE,
+  contractReference: CAPABILITY_GAPS_SCHEMA_REFERENCE,
+  annotations: MCP_PUBLIC_READ_ANNOTATIONS,
+});
+
+export const MCP_TOOLS = [...MCP_REGISTERED_AND_PILOT_TOOLS, MCP_CAPABILITY_GAPS_TOOL];
+
+export const MCP_TOOL_BINDINGS = Object.freeze([
+  ...MCP_REGISTERED_AND_PILOT_TOOL_BINDINGS,
+  MCP_CAPABILITY_GAPS_BINDING,
+]);
+
+/** The declaration a caller receives from `list_capability_gaps`. */
+export function declaredCapabilityGapsResult() {
+  return { schema: DECLARED_CAPABILITY_GAPS_SCHEMA, gaps: MCP_DECLARED_CAPABILITY_GAPS.map((gap) => ({ ...gap, nearest_capability_references: [...gap.nearest_capability_references], nearest_tools: [...gap.nearest_tools] })) };
+}
+
+/**
+ * Server-level instructions returned at initialize. Short on purpose: what the endpoint
+ * is, then the declared gaps, which are the only part a caller cannot discover from a
+ * tool listing alone.
+ */
+export const MCP_SERVER_INSTRUCTIONS = [
+  "CityScroll publishes New York City public records. Every tool answers from a published record and returns its source and freshness; none of them opine, and none of them predict.",
+  "",
+  "Declared gaps — questions this endpoint does not answer:",
+  ...MCP_DECLARED_CAPABILITY_GAPS.map(({ gap, question, meaning, nearest_tools: nearest }) => (
+    `- ${gap} — ${question} ${meaning} Nearest available tools: ${nearest.join(", ")}.`
+  )),
+  "",
+  "When a request falls into a declared gap, name the gap by its id, say that it is a declared limit of this endpoint rather than a missing record, and offer what the nearest tools do publish. The same list is available as structured data from the list_capability_gaps tool.",
+].join("\n");
+
 export const MCP_PUBLIC_CAPABILITY_TOOL_BINDINGS = Object.freeze(
   MCP_TOOL_BINDINGS.filter(({ capabilityReference, authorityClass }) => (
     capabilityReference && authorityClass === "public_read"
+  )),
+);
+
+/**
+ * Contract-surface tools: read-only tools that answer from this repository's own
+ * published contract rather than from a record. They hold no capability, reach no
+ * store, and return nothing an anonymous caller could not already read, which is what
+ * lets a scoped machine-client profile carry one without widening its data grant.
+ */
+export const MCP_CONTRACT_SURFACE_TOOL_BINDINGS = Object.freeze(
+  MCP_TOOL_BINDINGS.filter(({ capabilityReference, contractReference, operationClass, storeAccess }) => (
+    !capabilityReference && contractReference && operationClass === "read" && !storeAccess
   )),
 );

@@ -38,8 +38,9 @@ test("current Streamable HTTP client initializes, discovers, and calls all publi
     assert.equal(transport.protocolVersion, "2025-06-18");
     const listed = await client.listTools();
     const byName = new Map(listed.tools.map((tool) => [tool.name, tool]));
-    assert.equal(listed.tools.length, 17);
+    assert.equal(listed.tools.length, 18);
     assert.ok(byName.has("get_land_decision_path"), "the Land decision path must be discoverable");
+    assert.ok(byName.has("list_capability_gaps"), "the declared capability gaps must be discoverable");
     for (const toolCase of CAPABILITY_TOOL_CASES) {
       const tool = byName.get(toolCase.name);
       assert.ok(tool, `${toolCase.name} must be discoverable`);

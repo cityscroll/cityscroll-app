@@ -27,6 +27,7 @@ import {
   validateMachineClientProfiles,
 } from "../capabilities/machine_client_profile.mjs";
 import {
+  MCP_CONTRACT_SURFACE_TOOL_BINDINGS,
   MCP_PUBLIC_CAPABILITY_TOOL_BINDINGS,
   MCP_TOOLS,
   MCP_TOOL_BINDINGS,
@@ -51,14 +52,19 @@ test("A1 · the credential maps to a stable profile id and an exact allowlist", 
 
   // The allowlist is an exact literal, not a runtime filter over the registry.
   assert.ok(Array.isArray(PROFILE.allowlist));
-  assert.equal(PROFILE.allowlist.length, 15);
+  assert.equal(PROFILE.allowlist.length, 16);
   assert.equal(new Set(PROFILE.allowlist).size, PROFILE.allowlist.length);
 
-  // ...and it is exactly the registered public-read set, so the literal cannot drift.
+  // ...and it is exactly the registered public-read set plus the endpoint's own
+  // contract surface, so the literal cannot drift in either direction.
   assert.deepEqual(
     [...PROFILE.allowlist].sort(),
-    MCP_PUBLIC_CAPABILITY_TOOL_BINDINGS.map((binding) => binding.name).sort(),
+    [
+      ...MCP_PUBLIC_CAPABILITY_TOOL_BINDINGS.map((binding) => binding.name),
+      ...MCP_CONTRACT_SURFACE_TOOL_BINDINGS.map((binding) => binding.name),
+    ].sort(),
   );
+  assert.deepEqual(MCP_CONTRACT_SURFACE_TOOL_BINDINGS.map(({ name }) => name), ["list_capability_gaps"]);
 });
 
 test("A1 · every declared profile validates against the capability registry", () => {
@@ -284,14 +290,41 @@ test("A8 · an unrecognized error class degrades to a known class, never free te
 
 test("A9 · the grant carries no mutation, subscription, email or store authority", () => {
   const bindings = new Map(MCP_TOOL_BINDINGS.map((binding) => [binding.name, binding]));
+  const contractSurface = new Set(MCP_CONTRACT_SURFACE_TOOL_BINDINGS.map(({ name }) => name));
   for (const name of PROFILE.allowlist) {
     const binding = bindings.get(name);
     assert.ok(binding, `${name} is a declared tool`);
     assert.equal(binding.operationClass, "read", `${name} is a read`);
+    if (contractSurface.has(name)) {
+      // A contract-surface read answers from the published contract: it holds no
+      // capability and reaches no store at all, so it widens no data grant.
+      assert.equal(binding.capabilityReference, undefined, `${name} holds no capability`);
+      assert.equal(binding.storeAccess, undefined, `${name} reaches no store at all`);
+      assert.equal(binding.annotations.readOnlyHint, true, `${name} is annotated read-only`);
+      continue;
+    }
     assert.equal(binding.authorityClass, "public_read", `${name} is a public read`);
     assert.equal(binding.storeAccess, "provider-only", `${name} reaches no store directly`);
     assert.ok(binding.capabilityReference, `${name} is a registered capability`);
   }
+});
+
+test("A9 · a contract surface cannot smuggle in a record read", () => {
+  // The class is derived, not listed: a binding only qualifies while it holds no
+  // capability and no store access, so widening one fails the profile's validation.
+  const smuggled = [{
+    ...PROFILE,
+    id: "forged-contract-surface",
+    secretBindings: ["FORGED_CONTRACT_SURFACE_TOKEN"],
+    allowlist: ["list_capability_gaps"],
+  }];
+  assert.deepEqual(validateMachineClientProfiles(smuggled), []);
+  assert.equal(
+    MCP_CONTRACT_SURFACE_TOOL_BINDINGS.every(({ capabilityReference, storeAccess }) => (
+      !capabilityReference && !storeAccess
+    )),
+    true,
+  );
 });
 
 test("A9 · the negative rule's exclusions are declared and honored", () => {

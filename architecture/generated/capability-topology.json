@@ -2530,6 +2530,25 @@
         "examples": null,
         "annotations": null,
         "store_access": null
+      },
+      {
+        "name": "list_capability_gaps",
+        "operation_class": "read",
+        "authority_class": null,
+        "schema_reference": "mcp.list_capability_gaps.contract@1",
+        "capability_reference": null,
+        "adapter_id": null,
+        "contract_reference": "mcp.list_capability_gaps.contract@1",
+        "pilot_exception": null,
+        "bounds": null,
+        "examples": null,
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "store_access": null
       }
     ]
   }

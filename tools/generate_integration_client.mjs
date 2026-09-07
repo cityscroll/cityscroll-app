@@ -17,6 +17,7 @@ import { fileURLToPath } from "node:url";
 
 import { CAPABILITY_REGISTRY, validateCapabilityRegistry } from "../capabilities/registry.mjs";
 import { MCP_PUBLIC_CAPABILITY_TOOL_BINDINGS, MCP_TOOLS } from "../capabilities/mcp_tool_declarations.mjs";
+import { DECLARED_CAPABILITY_GAPS } from "../capabilities/declared_gaps.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 export const GENERATED_CLIENT_ROOT = join(ROOT, "integrations/generated-client");
@@ -283,8 +284,19 @@ function renderLandWorkflow() {
   return `import { createIntegrationClient } from "../index.mjs";\n\nexport async function runExpeditedLandProjectWorkflow(client = createIntegrationClient(), { projectId = "2024Q0356", corpus = "historical" } = {}) {\n  const browseInput = { procedure: "elurp", corpus, limit: 25 };\n  const browse = await client.landProjectsBrowse(browseInput);\n  const selectedProjectId = projectId || browse.results?.[0]?.project_id || null;\n  if (!selectedProjectId) return { recipe: "land-expedited-project-workflow", availability: browse.availability, steps: [{ capability_reference: "land.projects.browse@1", input: browseInput, output: browse }] };\n  const getInput = { project_id: selectedProjectId };\n  const pathInput = { project_id: selectedProjectId };\n  const project = await client.landProjectGet(getInput);\n  const decisionPath = await client.landDecisionPathGet(pathInput);\n  return { recipe: "land-expedited-project-workflow", availability: [browse.availability, project.availability, decisionPath.availability], steps: [{ capability_reference: "land.projects.browse@1", input: browseInput, output: browse }, { capability_reference: "land.project.get@1", input: getInput, output: project }, { capability_reference: "land.decision_path.get@1", input: pathInput, output: decisionPath }] };\n}\n`;
 }
 
+// The declared gap is read from capabilities/declared_gaps.mjs, the one place a gap is
+// stated. The package publishes a single unsupported-question recipe, so a second
+// declared gap has to be given its own recipe deliberately rather than silently dropped.
+function declaredGap() {
+  if (DECLARED_CAPABILITY_GAPS.length !== 1) {
+    throw new Error("the generated client publishes one unsupported-question recipe; give any further declared gap its own recipe");
+  }
+  return DECLARED_CAPABILITY_GAPS[0];
+}
+
 function renderUnsupportedQuestion() {
-  return `export function unsupportedQuestion() {\n  return { gap: "civic.outcome.prediction", nearest: ["land.project.get@1", "land.decision_path.get@1"] };\n}\n`;
+  const gap = declaredGap();
+  return `export function unsupportedQuestion() {\n  return { gap: ${JSON.stringify(gap.id)}, nearest: [${gap.nearest.map((reference) => JSON.stringify(reference)).join(", ")}] };\n}\n`;
 }
 
 function questionForFamily(family) {
@@ -310,7 +322,7 @@ function renderEvaluation(operations, familyRecipes) {
     questions: [
       ...familyRows,
       { id: "expedited-land-project-workflow", question: "How can a resident browse an expedited land project, inspect it, and follow its decision path?", answer: { recipe_id: "land-expedited-project-workflow", methods: ["landProjectsBrowse", "landProjectGet", "landDecisionPathGet"], capability_references: landReferences } },
-      { id: "unsupported-outcome-prediction", question: "What outcome will a public decision definitely produce?", answer: { gap: "civic.outcome.prediction", nearest: ["land.project.get@1", "land.decision_path.get@1"] } },
+      { id: declaredGap().recipeId, question: declaredGap().question, answer: { gap: declaredGap().id, nearest: [...declaredGap().nearest] } },
     ],
   };
 }
@@ -350,7 +362,7 @@ export function buildGeneratedOutputs() {
     evidence_class: "local_contract",
     family_recipes: familyRecipes,
     capability_recipes: capabilityRecipes,
-    unsupported_question: { gap: "civic.outcome.prediction", nearest: ["land.project.get@1", "land.decision_path.get@1"] },
+    unsupported_question: { gap: declaredGap().id, nearest: [...declaredGap().nearest] },
   };
   const files = new Map();
   files.set("index.mjs", renderClient(operations));
@@ -362,7 +374,7 @@ export function buildGeneratedOutputs() {
   files.set("recipes/index.json", serialize(recipeIndex));
   files.set("recipes/land-expedited-project-workflow.json", serialize({ schema: "cityscroll.integration_recipe.v1", id: "land-expedited-project-workflow", family: "land", question: "How can a resident browse an expedited land project, inspect it, and follow its decision path?", steps: [{ method: "landProjectsBrowse", capability_reference: "land.projects.browse@1", input: { procedure: "elurp", corpus: "historical", limit: 25 }, output_schema: "schemas/land_projects_browse.output.schema.json", availability: ["complete", "empty", "unavailable"] }, { method: "landProjectGet", capability_reference: "land.project.get@1", input: { project_id: "2024Q0356" }, output_schema: "schemas/land_project_get.output.schema.json", availability: ["available", "not_yet_public", "unavailable"] }, { method: "landDecisionPathGet", capability_reference: "land.decision_path.get@1", input: { project_id: "2024Q0356" }, output_schema: "schemas/land_decision_path_get.output.schema.json", availability: ["available", "not_yet_public", "unavailable"] }], canonical_link_policy: "Each step returns its validated public response unchanged, including any canonical links.", evidence_class: "local_contract" }));
   files.set("recipes/land-expedited-project-workflow.mjs", renderLandWorkflow());
-  files.set("recipes/unsupported-question.json", serialize({ schema: "cityscroll.integration_recipe_gap.v1", id: "unsupported-outcome-prediction", question: "What outcome will a public decision definitely produce?", gap: "civic.outcome.prediction", nearest: ["land.project.get@1", "land.decision_path.get@1"], evidence_class: "local_contract" }));
+  files.set("recipes/unsupported-question.json", serialize({ schema: "cityscroll.integration_recipe_gap.v1", id: declaredGap().recipeId, question: declaredGap().question, gap: declaredGap().id, nearest: [...declaredGap().nearest], evidence_class: "local_contract" }));
   files.set("recipes/unsupported-question.mjs", renderUnsupportedQuestion());
   files.set("evaluation/corpus.json", serialize(renderEvaluation(operations, familyRecipes)));
   return files;
