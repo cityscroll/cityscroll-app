@@ -2,8 +2,8 @@
   "schema": "cityscroll.community_board_decisions_render_manifest.v1",
   "evidence_class": "isolated-consumer-render",
   "capture_mode": "headless-playwright-loopback-static-render",
-  "captured_at": "2026-09-07T12:01:33Z",
-  "revision": "6cd5661c197d92021838262a567c71d0653a43d1-dirty",
+  "captured_at": "2026-09-07T13:23:26Z",
+  "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
   "data_vintage": "2026-09-07",
   "image_directory": ".artifacts/community-board-decisions",
   "image_policy": "Capture images remain ignored and are not committed. Their SHA-256 values bind this textual manifest to the reviewed render.",
@@ -23,7 +23,7 @@
         390,
         844
       ],
-      "revision": "6cd5661c197d92021838262a567c71d0653a43d1-dirty",
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "loaded",
@@ -118,7 +118,7 @@
         "passes": true
       },
       "image": "manhattan-cb-03-loaded-390x844.png",
-      "image_sha256": "4d9a5c4ef45e883698a996016b3f24d5c1ba4ff94b322d62e737f3c927e35c95",
+      "image_sha256": "3800024267f1961182f23996894ebf7a6d0e11b821f02fc74c1eb137ec2411b0",
       "render_content_sha256": "d8a19201cc883ab79dc65b3391343d51afcc149a0dc437d21244fec1fbb2792e"
     },
     {
@@ -128,7 +128,7 @@
         390,
         844
       ],
-      "revision": "6cd5661c197d92021838262a567c71d0653a43d1-dirty",
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
       "data_vintage": "2026-09-07",
       "scripting": false,
       "stylesheet": "loaded",
@@ -202,7 +202,7 @@
         "horizontal_overflow": false
       },
       "image": "manhattan-cb-03-no-script-390x844.png",
-      "image_sha256": "8795530c858481b1b697a5a82b72a0d9d852525cadf71eb3a4d62af9569f9999",
+      "image_sha256": "4777411803b1abf056ca77f77da8e9e3f58f0d4461e0ec342412b91a4b4ba385",
       "render_content_sha256": "d8a19201cc883ab79dc65b3391343d51afcc149a0dc437d21244fec1fbb2792e"
     },
     {
@@ -212,7 +212,7 @@
         390,
         844
       ],
-      "revision": "6cd5661c197d92021838262a567c71d0653a43d1-dirty",
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "blocked",
@@ -307,7 +307,7 @@
         "passes": true
       },
       "image": "manhattan-cb-03-no-stylesheet-390x844.png",
-      "image_sha256": "583cbdacf385eef13fc3dbabc45442eea640ffd4aa032d62b3d4ec91b671c7ee",
+      "image_sha256": "f90d8891ecc8d96c7d9f98f5c64eb74d08dec5122f1abbccd035207181fbec8d",
       "render_content_sha256": "d8a19201cc883ab79dc65b3391343d51afcc149a0dc437d21244fec1fbb2792e"
     },
     {
@@ -317,7 +317,7 @@
         1440,
         900
       ],
-      "revision": "6cd5661c197d92021838262a567c71d0653a43d1-dirty",
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "loaded",
@@ -412,7 +412,7 @@
         "passes": true
       },
       "image": "manhattan-cb-03-loaded-1440x900.png",
-      "image_sha256": "a8a401456a9ab25462cd064bcff106bf810f2cddc9ee78950b6191ea3157da89",
+      "image_sha256": "beccdf9800efc9baa6271e51b3134a2f15b32071a1d0b1e141f015e01982725e",
       "render_content_sha256": "d8a19201cc883ab79dc65b3391343d51afcc149a0dc437d21244fec1fbb2792e"
     },
     {
@@ -422,7 +422,7 @@
         1440,
         900
       ],
-      "revision": "6cd5661c197d92021838262a567c71d0653a43d1-dirty",
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
       "data_vintage": "2026-09-07",
       "scripting": false,
       "stylesheet": "loaded",
@@ -496,7 +496,7 @@
         "horizontal_overflow": false
       },
       "image": "manhattan-cb-03-no-script-1440x900.png",
-      "image_sha256": "4bad8df3c66d2a98d1476b549cf08c94e85bd112edc0f2f699dd322ab54808c9",
+      "image_sha256": "e9407940cc9cd013d750fed9250dde5e470b42c6db00de464e9b58240340f68e",
       "render_content_sha256": "d8a19201cc883ab79dc65b3391343d51afcc149a0dc437d21244fec1fbb2792e"
     },
     {
@@ -506,7 +506,7 @@
         1440,
         900
       ],
-      "revision": "6cd5661c197d92021838262a567c71d0653a43d1-dirty",
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "blocked",
@@ -601,7 +601,7 @@
         "passes": true
       },
       "image": "manhattan-cb-03-no-stylesheet-1440x900.png",
-      "image_sha256": "eba1c87949e4684fde602b55f3f73bd2956d2906afa48c4fa734fc7d73552238",
+      "image_sha256": "622893485f0800d0a15255fde2931c48c107d1edaf2ffbf69dab3fead59c1a8e",
       "render_content_sha256": "d8a19201cc883ab79dc65b3391343d51afcc149a0dc437d21244fec1fbb2792e"
     },
     {
@@ -611,7 +611,7 @@
         390,
         844
       ],
-      "revision": "6cd5661c197d92021838262a567c71d0653a43d1-dirty",
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "loaded",
@@ -706,7 +706,7 @@
         "passes": true
       },
       "journey": {
-        "scroll_before_inspect": 4028,
+        "scroll_before_inspect": 4268,
         "opened_passage": {
           "fragment": "#board-decisions-1-passage",
           "scroll": 2137,
@@ -760,7 +760,7 @@
         "published_document_href": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf"
       },
       "image": "manhattan-cb-03-journey-390x844.png",
-      "image_sha256": "34a56f95138d86a66fe7c69886f465a987c8a30b3334c7fd248d09a0f8937716",
+      "image_sha256": "7717737fa5ef15924962f7055ed7b4431b4c67f718aba8dc90908f3fea5fa104",
       "render_content_sha256": "d8a19201cc883ab79dc65b3391343d51afcc149a0dc437d21244fec1fbb2792e"
     },
     {
@@ -770,7 +770,7 @@
         390,
         844
       ],
-      "revision": "6cd5661c197d92021838262a567c71d0653a43d1-dirty",
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "loaded",
@@ -842,7 +842,7 @@
         "passes": true
       },
       "image": "brooklyn-cb-15-loaded-390x844.png",
-      "image_sha256": "8843183fb8ef74ea97786ccde47d2f97325b32b556f9535c02630cabf5172a96",
+      "image_sha256": "fbafc7a54b02fc854701651a2035a8c8b19b044776f2418ea2a452762f6473c6",
       "render_content_sha256": "02699dd76071a8d189b8380d96adc582f7aeb135f8ebe3b4162e06c4146c6885"
     },
     {
@@ -852,7 +852,7 @@
         390,
         844
       ],
-      "revision": "6cd5661c197d92021838262a567c71d0653a43d1-dirty",
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
       "data_vintage": "2026-09-07",
       "scripting": false,
       "stylesheet": "loaded",
@@ -903,7 +903,7 @@
         "horizontal_overflow": false
       },
       "image": "brooklyn-cb-15-no-script-390x844.png",
-      "image_sha256": "f7e0348600d9aee980adb1fe0a362872a17bcdbadbd709f89e5df1f29854aa26",
+      "image_sha256": "f79595621a0a92c1880394703b7bd55d229a14a1961fff3f2a8f8a884422c645",
       "render_content_sha256": "02699dd76071a8d189b8380d96adc582f7aeb135f8ebe3b4162e06c4146c6885"
     },
     {
@@ -913,7 +913,7 @@
         390,
         844
       ],
-      "revision": "6cd5661c197d92021838262a567c71d0653a43d1-dirty",
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "blocked",
@@ -985,7 +985,7 @@
         "passes": true
       },
       "image": "brooklyn-cb-15-no-stylesheet-390x844.png",
-      "image_sha256": "31280d57b3c32437137487e664be8b0d9ecc1ff00b950032a20c7d42697ac6a2",
+      "image_sha256": "7152295ee437b9ac8b5327803cfc6429133f6998dbfdd7dd31d058b5101af130",
       "render_content_sha256": "02699dd76071a8d189b8380d96adc582f7aeb135f8ebe3b4162e06c4146c6885"
     },
     {
@@ -995,7 +995,7 @@
         1440,
         900
       ],
-      "revision": "6cd5661c197d92021838262a567c71d0653a43d1-dirty",
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "loaded",
@@ -1067,7 +1067,7 @@
         "passes": true
       },
       "image": "brooklyn-cb-15-loaded-1440x900.png",
-      "image_sha256": "4b5b12f1976723834a137ba7ff4ec0024d5cc441eefc571f38afe148c5586ddb",
+      "image_sha256": "b5f6f089ce4b9b45c8556bc162895865facf6fda3e1c91b713be065ef044fcab",
       "render_content_sha256": "02699dd76071a8d189b8380d96adc582f7aeb135f8ebe3b4162e06c4146c6885"
     },
     {
@@ -1077,7 +1077,7 @@
         1440,
         900
       ],
-      "revision": "6cd5661c197d92021838262a567c71d0653a43d1-dirty",
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
       "data_vintage": "2026-09-07",
       "scripting": false,
       "stylesheet": "loaded",
@@ -1128,7 +1128,7 @@
         "horizontal_overflow": false
       },
       "image": "brooklyn-cb-15-no-script-1440x900.png",
-      "image_sha256": "a8aad3c41199fa6836f12ed122c32692ff5fca63c852f39e61f83c00f749056b",
+      "image_sha256": "6ed2a32df45d6deb75876953c1c4d685af0f2e0140756c742898815d31e75029",
       "render_content_sha256": "02699dd76071a8d189b8380d96adc582f7aeb135f8ebe3b4162e06c4146c6885"
     },
     {
@@ -1138,7 +1138,7 @@
         1440,
         900
       ],
-      "revision": "6cd5661c197d92021838262a567c71d0653a43d1-dirty",
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "blocked",
@@ -1210,7 +1210,7 @@
         "passes": true
       },
       "image": "brooklyn-cb-15-no-stylesheet-1440x900.png",
-      "image_sha256": "fbaab2c795a113c0be5aa32437ec4de6527a4c167895477e91fd7e8f53a97908",
+      "image_sha256": "9608391715a5e4ff21f5ee66e7551615e2f0852fcda75117d853ba0293aed1bf",
       "render_content_sha256": "02699dd76071a8d189b8380d96adc582f7aeb135f8ebe3b4162e06c4146c6885"
     },
     {
@@ -1220,7 +1220,7 @@
         390,
         844
       ],
-      "revision": "6cd5661c197d92021838262a567c71d0653a43d1-dirty",
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "loaded",
@@ -1292,7 +1292,7 @@
         "passes": true
       },
       "journey": {
-        "scroll_before_inspect": 3483,
+        "scroll_before_inspect": 3629,
         "opened_passage": {
           "fragment": "#board-decisions-1-passage",
           "scroll": 2647,
@@ -1338,7 +1338,7 @@
         "published_document_href": "https://www.nyc.gov/assets/brooklyncb15/downloads/pdf/Board-Meeting-Minutes-June-30-2026.pdf"
       },
       "image": "brooklyn-cb-15-journey-390x844.png",
-      "image_sha256": "fe0a29fa200f5b7b71086bb3f0c9866b7da67cd64c58ee33bbcecbd88259c1ce",
+      "image_sha256": "41de1ae6b0b9b57fa4ed43c5595f6c145c7163507cab8e97bf551d418b86e256",
       "render_content_sha256": "02699dd76071a8d189b8380d96adc582f7aeb135f8ebe3b4162e06c4146c6885"
     },
     {
@@ -1348,7 +1348,7 @@
         1440,
         900
       ],
-      "revision": "6cd5661c197d92021838262a567c71d0653a43d1-dirty",
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "loaded",
@@ -1364,7 +1364,7 @@
         "smallest_target_css_px": null
       },
       "image": "queens-cb-01-outside-the-pilot-1440x900.png",
-      "image_sha256": "b858105fd592b5a6197db7ffe330e888a6d996bf784a4884217a7e3ede4e4250",
+      "image_sha256": "586a8c863cb5945011abce47f622c9a8f416e6470994fe0300f30463a72632e8",
       "render_content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
   ],
