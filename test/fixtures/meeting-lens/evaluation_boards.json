@@ -1,0 +1,39 @@
+{
+  "schema": "cityscroll.meeting_lens_evaluation_boards.v1",
+  "derived_on": "2026-09-07",
+  "derived_from": {
+    "source": "live evaluation runs of the deployed machine-facing research interface",
+    "receipt_schema": "cityscroll.live_evaluation_run_receipt.v1",
+    "task_family": "meetings",
+    "derivation": "the first community board named in each meetings task's answer, then its rubric claims",
+    "run_count": 3
+  },
+  "question": "the board's most recent full board meeting, its date, and its minutes",
+  "runs": [
+    {
+      "run_generated_at": "2026-09-07T02:10:00.000Z",
+      "task_family": "meetings",
+      "outcome": "incomplete",
+      "board_named": null
+    },
+    {
+      "run_generated_at": "2026-09-07T05:20:00.000Z",
+      "task_family": "meetings",
+      "outcome": "incomplete",
+      "board_named": null
+    },
+    {
+      "run_generated_at": "2026-09-07T07:20:00.000Z",
+      "task_family": "meetings",
+      "outcome": "disclosed_inability",
+      "board_named": "Manhattan Community Board 5"
+    }
+  ],
+  "boards": [
+    {
+      "name": "Manhattan Community Board 5",
+      "borough": "Manhattan",
+      "district": 5
+    }
+  ]
+}

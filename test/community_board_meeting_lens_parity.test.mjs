@@ -13,6 +13,7 @@ import {
   communityBoardRows,
 } from "../site/community_board_scope_links.mjs";
 import { communityBoardPlaceHref } from "../site/community_board_links.mjs";
+import { sourceRecordStatus } from "../site/community_board_source_adapters.mjs";
 import {
   communityBoardMeetingEdgeAccepted,
   communityBoardMeetingEdgeFromSourceRow,
@@ -216,7 +217,12 @@ test("board institution pages and the Meetings lens publish the same canonical m
 
   for (const [boardId, rows] of Object.entries(meetingIndex.by_board)) {
     const expectedIds = rows.map((row) => row.meeting_id).sort();
-    const promotedRows = rows.filter((row) => row.publisher_identifier);
+    // A publisher identifier is necessary for the board-to-meeting edge, not
+    // sufficient: the join also refuses an observation older than its retention
+    // window, so the accepted edge itself is the expectation.
+    const promotedRows = rows.filter((row) => (row.institution_edges || [])
+      .filter((edge) => edge?.relation === "hosts_meeting")
+      .some(communityBoardMeetingEdgeAccepted));
     const scopeHref = communityBoardScopeHref("meetings", boardId);
     const scopeParams = new URLSearchParams(scopeHref.split("?", 2)[1] || "");
     const boardSummary = lookup.by_id[boardId].edge_summary
@@ -233,14 +239,15 @@ test("board institution pages and the Meetings lens publish the same canonical m
         asOf: meetingIndex.generated_at,
         sourceRoleState: "indexed",
       });
-      const accepted = Boolean(row.publisher_identifier);
+      const withinRetention = sourceRecordStatus(row, { asOf: meetingIndex.generated_at }).state === "observed";
+      const accepted = Boolean(row.publisher_identifier) && withinRetention;
       assert.equal(communityBoardMeetingEdgeAccepted(edge), accepted, `${row.meeting_id} edge publication`);
       assert.equal(edge.href, accepted ? `/meetings/${encodeURIComponent(row.meeting_id)}` : null);
       assert.equal(edge.provenance?.observed_receipt?.status, "ok");
       if (accepted) {
         assert.deepEqual(edge.join?.evidence, ["exact_board_identity", "exact_date", "publisher_identifier"]);
       } else {
-        assert.equal(edge.reason, "publisher_identifier_missing");
+        assert.equal(edge.reason, row.publisher_identifier ? "source_stale" : "publisher_identifier_missing");
       }
     }
     for (const row of promotedRows) {
