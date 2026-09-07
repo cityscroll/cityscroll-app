@@ -65,6 +65,10 @@ import {
   renderBoroughOfficeAppointmentSection,
 } from "./civic_institution_borough_office.mjs";
 import { renderRelatedPublicBodiesFor } from "./civic_institution_related_bodies.mjs";
+import {
+  communityBoardResolutionViewForBoard,
+  renderCommunityBoardDecisionsSection,
+} from "./community_board_resolution_pilot.mjs";
 
 export const COMMUNITY_BOARD_CONSTELLATION_SCHEMA = "cityscroll.community_board_constellation.v1";
 export const COMMUNITY_BOARD_CONSTELLATION_METHOD = "community_board_constellation_v1";
@@ -570,6 +574,10 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     sources.communityBoardLandPositions || sources.landPositions,
     requested,
   );
+  const boardDecisions = communityBoardResolutionViewForBoard(
+    sources.communityBoardResolutionPilot || sources.resolutionPilot,
+    requested,
+  );
   const appointmentAuthority = requested === BROOKLYN_CB15_BODY_ID
     ? boroughOfficeRolesForBoard(requested, sources.boroughOffice || sources.boroughOfficeSources || {})
     : null;
@@ -622,6 +630,10 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     // records no position for gets a sentence about the source, never silence
     // that would read as a board that has never taken one.
     ...(landPositions ? { land_positions: landPositions } : {}),
+    // The bounded decision reading covers two boards. Every other board carries
+    // no section at all rather than an empty one that reads as "this board
+    // decided nothing".
+    ...(boardDecisions ? { board_decisions: boardDecisions } : {}),
     ...(appointmentAuthority ? { appointment_authority: appointmentAuthority } : {}),
     categories,
     edge_summary: edgeSummary,
@@ -960,7 +972,7 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
 ${renderNodeBack({ href: "/community-boards/", label: "Back to community board sources", extraClass: "civic-object-back" })}
 <header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">Community board</p><h1>${esc(title)}</h1><p class="node-lede">A local advisory body, its district, committees, proceedings, people, and official source coverage.</p><p class="node-pivot civic-object-pivot"><a href="${esc(place?.view_all_href || "/near-you/")}">Open this board’s place view</a> · <a href="${esc(institution)}">Open this board institution</a> · <a href="${esc(output)}">Open the source directory</a></p></header>
 ${renderRelatedPublicBodiesFor(view.body_id)}
-  ${renderAboutBoardSection(view)}${renderCommunityBoardDistrictProjectsSection(view.district_projects, { lang: options.lang })}${renderCommunityBoardLandPositionsSection(view.land_positions, { lang: options.lang })}${renderCommunityBoardParticipationSection(view)}${renderCommunityBoardMoneyCard(view.money)}${renderCommunityBoardPayrollContext(view.payroll)}${renderCommunityBoardBylawPanel(view.governance)}${renderBoroughOfficeAppointmentSection(view.appointment_authority)}${renderEmptyCoverageNote(emptyCoverageCategories)}${renderedCategories.map((category) => renderCategory(category, view)).join("")}${edgeRail}${local}${actions}${renderUnjoinedSourceSection(view.source_records)}
+  ${renderAboutBoardSection(view)}${renderCommunityBoardDecisionsSection(view.board_decisions, { lang: options.lang })}${renderCommunityBoardLandPositionsSection(view.land_positions, { lang: options.lang })}${renderCommunityBoardDistrictProjectsSection(view.district_projects, { lang: options.lang })}${renderCommunityBoardParticipationSection(view)}${renderCommunityBoardMoneyCard(view.money)}${renderCommunityBoardPayrollContext(view.payroll)}${renderCommunityBoardBylawPanel(view.governance)}${renderBoroughOfficeAppointmentSection(view.appointment_authority)}${renderEmptyCoverageNote(emptyCoverageCategories)}${renderedCategories.map((category) => renderCategory(category, view)).join("")}${edgeRail}${local}${actions}${renderUnjoinedSourceSection(view.source_records)}
 </main>${renderNodeFooter({ extraClass: "civic-object-footer" })}
 <script id="civic-object-payload" type="application/json">${payload}</script><script defer src="${esc(`${prefix}export_workflows.js`)}"></script>${renderCalendarEventPreviewScript(assetPrefix)}<script type="module" src="${esc(`${prefix}community_board_land_positions_boot.mjs`)}"></script>
 </body></html>`;

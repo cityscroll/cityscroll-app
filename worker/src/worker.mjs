@@ -40,6 +40,7 @@ import {
   handleAdminPassportIngest,
   handleAdminPassportIngestMeta,
   handleAdminSourceHealthReceipts,
+  handleAdminBoardResolutionReview,
   handleAdminOpsAlert,
   handleAdminDigestWatchdog,
   handleAdminSchedulerHeartbeat,
@@ -246,6 +247,7 @@ export default {
     if (pathname === "/admin/passport-ingest") return handleAdminPassportIngest(request, env);
     if (pathname === "/admin/passport-ingest-meta") return handleAdminPassportIngestMeta(request, env);
     if (pathname === "/admin/source-health-receipts") return handleAdminSourceHealthReceipts(request, env);
+    if (pathname === "/admin/board-resolution-review") return handleAdminBoardResolutionReview(request, env);
     if (pathname === "/admin/attachment-metadata") return handleAdminAttachmentMetadata(request, env);
     if (pathname === "/" || pathname === "/health") {
       return handleWorkerHealth(env);

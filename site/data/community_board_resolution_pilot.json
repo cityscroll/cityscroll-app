@@ -1,0 +1,357 @@
+{
+  "schema": "cityscroll.community_board_resolution_pilot.v1",
+  "version": 1,
+  "reviewed_on": "2026-09-07",
+  "scope": "A bounded review of four already-published community-board documents. It is not a citywide corpus, it establishes no automatic link between a board decision and any later outcome, and nothing here is inferred from a document that was not read.",
+  "documents": [
+    {
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "board_id": "manhattan-cb-03",
+      "publisher": "Manhattan Community Board 3",
+      "document_role": "minutes",
+      "published_label": "May 2026 Full Board Minutes",
+      "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf",
+      "document_sha256": "9a16cd0b65eaadf619ce72c59edbaaff8ea2169e0de9cdfabf162fb232d19f96",
+      "meeting_date": "2026-05-26",
+      "meeting_date_state": "stated_in_document",
+      "extracted_text_sha256": "8f900f0ccc9f2acf09e6e930733f4459e6438bd4373d5e2edcf39d236b6797a4",
+      "candidate_blocks_observed": 14,
+      "observed_on": "2026-09-07"
+    },
+    {
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "board_id": "manhattan-cb-03",
+      "publisher": "Manhattan Community Board 3",
+      "document_role": "vote_sheet",
+      "published_label": "July 2026 Vote Sheet",
+      "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/votereso/votereso2026-07.pdf",
+      "document_sha256": "5ffb916275265d4c7b48e4ca1c81e534f59d5f9f426cf55ae84598071a0d1e07",
+      "meeting_date": null,
+      "meeting_date_state": "not_stated",
+      "extracted_text_sha256": "4e3c8f06578eda1ea623aaaa5348f2b6d87e87a99cfa73c580e9e95d0ce5cefd",
+      "candidate_blocks_observed": 9,
+      "observed_on": "2026-09-07"
+    },
+    {
+      "document_id": "brooklyn-cb-15:2026-05-26:general-board-minutes",
+      "board_id": "brooklyn-cb-15",
+      "publisher": "Brooklyn Community Board 15",
+      "document_role": "minutes",
+      "published_label": "Monthly Board Meeting - Minutes, General Board Meeting",
+      "document_url": "https://www.nyc.gov/assets/brooklyncb15/downloads/pdf/Board-Meeting-Minutes-May-26-2026.pdf",
+      "document_sha256": "d2b4428cfb2495fcf738ce88ee37fa774a2437def44b1e288d0b33e5dcd78525",
+      "meeting_date": "2026-05-26",
+      "meeting_date_state": "stated_in_document",
+      "extracted_text_sha256": "3c83736ad7353fc0f4fa845bff007cf271fca7daae366afa38cdd42c37432c65",
+      "candidate_blocks_observed": 1,
+      "observed_on": "2026-09-07"
+    },
+    {
+      "document_id": "brooklyn-cb-15:2026-06-30:general-board-minutes",
+      "board_id": "brooklyn-cb-15",
+      "publisher": "Brooklyn Community Board 15",
+      "document_role": "minutes",
+      "published_label": "Monthly Board Meeting - Minutes, General Board Meeting",
+      "document_url": "https://www.nyc.gov/assets/brooklyncb15/downloads/pdf/Board-Meeting-Minutes-June-30-2026.pdf",
+      "document_sha256": "e4b983e6cadf159d43ee52b77d62fd23c74a50e81c878a74296027b00c7b8b4c",
+      "meeting_date": "2026-06-30",
+      "meeting_date_state": "stated_in_document",
+      "extracted_text_sha256": "f2bdd9de839f4c4424176ad9c238bb4a389de28eed0a82f342eb115a8f5bcc62",
+      "candidate_blocks_observed": 1,
+      "observed_on": "2026-09-07"
+    }
+  ],
+  "by_board": {
+    "brooklyn-cb-15": [
+      {
+        "candidate_id": "brooklyn-cb-15:2026-06-30:bsa-154-90-bzii",
+        "board_id": "brooklyn-cb-15",
+        "document_id": "brooklyn-cb-15:2026-06-30:general-board-minutes",
+        "title": "BSA: 154-90-BZII 730 Avenue S - lobby enclosure at the front of the building",
+        "position": "approves",
+        "admission": "published",
+        "document": {
+          "document_id": "brooklyn-cb-15:2026-06-30:general-board-minutes",
+          "board_id": "brooklyn-cb-15",
+          "publisher": "Brooklyn Community Board 15",
+          "document_role": "minutes",
+          "published_label": "Monthly Board Meeting - Minutes, General Board Meeting",
+          "document_url": "https://www.nyc.gov/assets/brooklyncb15/downloads/pdf/Board-Meeting-Minutes-June-30-2026.pdf",
+          "document_sha256": "e4b983e6cadf159d43ee52b77d62fd23c74a50e81c878a74296027b00c7b8b4c",
+          "meeting_date": "2026-06-30",
+          "meeting_date_state": "stated_in_document",
+          "extracted_text_sha256": "f2bdd9de839f4c4424176ad9c238bb4a389de28eed0a82f342eb115a8f5bcc62",
+          "candidate_blocks_observed": 1,
+          "observed_on": "2026-09-07"
+        },
+        "agenda_item_label": "Zoning Committee",
+        "agenda_item_text": "ZONING COMMITTEE:",
+        "passages": [
+          {
+            "role": "case_identity",
+            "text": "BSA: 154-90-BZII 730 Avenue S – Southwest corner of the intersection of East 8th Street and Avenue S",
+            "source_lines": [
+              30,
+              31
+            ]
+          },
+          {
+            "role": "application",
+            "text": "This application is submitted to request modifications to the variance of the “Original Grant” which allowed the construction of a two-story and cellar with a synagogue with which the premise is currently improved. In 2025, they were granted the addition of a new third and fourth floor. Now they are seeking to add a lobby enclosure at the front of the building.",
+            "source_lines": [
+              32,
+              38
+            ]
+          },
+          {
+            "role": "motion",
+            "text": "A motion was made to approve by Eli Zami and seconded by Chick Pallotta",
+            "source_lines": [
+              46,
+              46
+            ]
+          }
+        ],
+        "passage_boundary": {
+          "ends_before_source_line": 64,
+          "next_block_first_line": "PUBLIC HEARING / PUBLIC SESSION:"
+        },
+        "votes": [
+          {
+            "yes": 10,
+            "no": 0,
+            "abstain": 0,
+            "present_not_voting": null,
+            "result": "passed",
+            "subject_wording": "Committee Vote",
+            "text": "A Committee Vote was taken, 10 yes, 0 no and 0 abstention. The motion passed the Committee.",
+            "source_lines": [
+              55,
+              56
+            ],
+            "stage": "committee",
+            "motion_ownership": "sole_motion_in_this_section"
+          },
+          {
+            "yes": 29,
+            "no": 0,
+            "abstain": 0,
+            "present_not_voting": null,
+            "result": "passed",
+            "subject_wording": "Full Board Vote",
+            "text": "A Full Board Vote was taken, 29 yes, 0 no and 0 abstentions. The motion passed.",
+            "source_lines": [
+              62,
+              63
+            ],
+            "stage": "full_board",
+            "motion_ownership": "sole_motion_in_this_section"
+          }
+        ],
+        "excluded_votes": [],
+        "has_committee_vote": true,
+        "has_full_board_vote": true,
+        "authority": {
+          "authority_name": "New York City Board of Standards and Appeals",
+          "relation": "application_before",
+          "review_regime": "bsa_variance_modification",
+          "case_number": "154-90-BZII",
+          "is_ulurp": false
+        },
+        "address": {
+          "assertions": [],
+          "conflicting": false,
+          "property_match_withheld": false
+        },
+        "non_adopted_notes": [
+          {
+            "role": "discussion_not_adopted_condition",
+            "text": "will be confined to their existing exterior stairwell footprint. It was asked if they are planning to use impact glass and it was answered that the glass material has not been identified at this juncture but he would bring that suggestion back to the client.",
+            "source_lines": [
+              41,
+              44
+            ],
+            "classification": "discussion_not_adopted_condition"
+          }
+        ],
+        "subject_topics": [
+          "730 Avenue S",
+          "Board of Standards and Appeals",
+          "154-90-BZII",
+          "lobby enclosure",
+          "variance modification",
+          "East 8th Street",
+          "Avenue S"
+        ]
+      }
+    ],
+    "manhattan-cb-03": [
+      {
+        "candidate_id": "manhattan-cb-03:2026-05-26:transportation-2",
+        "board_id": "manhattan-cb-03",
+        "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+        "title": "Community Board 3 Support for a Bike Lane on St. Marks Place from 3rd Ave to Avenue A",
+        "position": "supports",
+        "admission": "published",
+        "document": {
+          "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+          "board_id": "manhattan-cb-03",
+          "publisher": "Manhattan Community Board 3",
+          "document_role": "minutes",
+          "published_label": "May 2026 Full Board Minutes",
+          "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf",
+          "document_sha256": "9a16cd0b65eaadf619ce72c59edbaaff8ea2169e0de9cdfabf162fb232d19f96",
+          "meeting_date": "2026-05-26",
+          "meeting_date_state": "stated_in_document",
+          "extracted_text_sha256": "8f900f0ccc9f2acf09e6e930733f4459e6438bd4373d5e2edcf39d236b6797a4",
+          "candidate_blocks_observed": 14,
+          "observed_on": "2026-09-07"
+        },
+        "agenda_item_label": "Transportation, Public Safety, Sanitation & Environment Committee item 2",
+        "agenda_item_text": "2. DOT: Proposal for a Bike Lane on St Marks Pl from 4th Ave to Ave A",
+        "passages": [
+          {
+            "role": "title",
+            "text": "VOTE: TITLE: Community Board 3 Support for a Bike Lane on St. Marks Place from 3rd Ave to Avenue A",
+            "source_lines": [
+              788,
+              788
+            ]
+          },
+          {
+            "role": "operative",
+            "text": "Therefore, be it resolved that Manhattan Community Board 3 supports NYC DOT's proposal for a continuous 5' standard bike lane along St. Mark's Place from Third Avenue to Avenue A including the elimination of a parking lane on the north side of the street between 2nd and 3rd Avenues to accommodate the 5' standard bike lane on this block, and Be it further resolved, that Manhattan Community Board 3 urges DOT to work with the community and businesses to address any impacts to changed parking regulations prior to implementation, especially to those businesses located on the block between 2nd and 3rd Avenues.",
+            "source_lines": [
+              815,
+              823
+            ]
+          }
+        ],
+        "passage_boundary": {
+          "ends_before_source_line": 824,
+          "next_block_first_line": "3. Street Co-naming: Stanton & Eldridge Street Intersection in Honor of Dolores \"Brownie\" Morales"
+        },
+        "votes": [
+          {
+            "yes": 34,
+            "no": 1,
+            "abstain": 0,
+            "present_not_voting": 0,
+            "result": "passed",
+            "subject_wording": "Transportation item 2",
+            "text": "34 YES 1 NO 0 ABS 0 PNV MOTION PASSED (Transportation item 2)",
+            "source_lines": [
+              886,
+              886
+            ],
+            "stage": "full_board",
+            "motion_ownership": "names_this_item"
+          }
+        ],
+        "excluded_votes": [
+          {
+            "yes": 3,
+            "no": 28,
+            "abstain": 2,
+            "present_not_voting": 0,
+            "result": "did_not_pass",
+            "subject_wording": "send Transportation item 4 to Landmarks Committee",
+            "text": "3 YES 28 NO 2 ABS 0 PNV MOTION DID NOT PASS (send Transportation item 4 to Landmarks Committee)",
+            "source_lines": [
+              883,
+              883
+            ],
+            "exclusion_reason": "referral_motion_on_another_item"
+          },
+          {
+            "yes": 32,
+            "no": 2,
+            "abstain": 1,
+            "present_not_voting": 0,
+            "result": "passed",
+            "subject_wording": "amending Transportation item 4",
+            "text": "32 YES 2 NO 1 ABS 0 PNV MOTION PASSED (amending Transportation item 4)",
+            "source_lines": [
+              884,
+              884
+            ],
+            "exclusion_reason": "amendment_to_another_item"
+          },
+          {
+            "yes": 35,
+            "no": 0,
+            "abstain": 0,
+            "present_not_voting": 0,
+            "result": "passed",
+            "subject_wording": "excluding Transportation items 2, 3, 4",
+            "text": "35 YES 0 NO 0 ABS 0 PNV MOTION PASSED (excluding Transportation items 2, 3, 4)",
+            "source_lines": [
+              885,
+              885
+            ],
+            "exclusion_reason": "omnibus_that_excludes_this_item"
+          },
+          {
+            "yes": 34,
+            "no": 1,
+            "abstain": 0,
+            "present_not_voting": 0,
+            "result": "passed",
+            "subject_wording": "Transportation item 3",
+            "text": "34 YES 1 NO 0 ABS 0 PNV MOTION PASSED (Transportation item 3)",
+            "source_lines": [
+              887,
+              887
+            ],
+            "exclusion_reason": "another_item"
+          },
+          {
+            "yes": 34,
+            "no": 1,
+            "abstain": 0,
+            "present_not_voting": 0,
+            "result": "passed",
+            "subject_wording": "Transportation item 4",
+            "text": "34 YES 1 NO 0 ABS 0 PNV MOTION PASSED (Transportation item 4)",
+            "source_lines": [
+              888,
+              888
+            ],
+            "exclusion_reason": "another_item"
+          }
+        ],
+        "has_committee_vote": false,
+        "has_full_board_vote": true,
+        "authority": {
+          "authority_name": "New York City Department of Transportation",
+          "relation": "proposal_from",
+          "review_regime": "agency_street_design_proposal",
+          "case_number": null,
+          "is_ulurp": false
+        },
+        "address": {
+          "assertions": [],
+          "conflicting": false,
+          "property_match_withheld": false
+        },
+        "non_adopted_notes": [],
+        "subject_topics": [
+          "bicycle lane",
+          "St. Marks Place",
+          "parking removal",
+          "street resurfacing",
+          "Department of Transportation",
+          "Third Avenue",
+          "Avenue A"
+        ]
+      }
+    ]
+  },
+  "coverage": {
+    "documents": 4,
+    "boards": 2,
+    "candidate_blocks_observed": 25,
+    "decisions_published": 2,
+    "candidates_held": 23
+  }
+}
