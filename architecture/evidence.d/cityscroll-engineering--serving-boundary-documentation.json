@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/serving-boundary-documentation",
+  "status": "implemented",
+  "fingerprint": "serving-boundary-documentation.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "worker-serving-boundary-overview",
+      "path": "worker/README.md"
+    },
+    {
+      "id": "architecture-narrative-serving-seams",
+      "path": "ARCHITECTURE.md"
+    },
+    {
+      "id": "architecture-reference-serving-seams",
+      "path": "docs/architecture.md"
+    },
+    {
+      "id": "serving-claim-to-source-matrix",
+      "path": "docs/evidence/serving-boundary-documentation/claim-to-source-matrix.md"
+    }
+  ]
+}

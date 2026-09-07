@@ -1,39 +1,132 @@
 # cityscroll-worker
 
-The thin serverless backend for **[CityScroll](https://cityscroll.org)** — a single
-**Cloudflare Worker** at `https://api.cityscroll.org` (custom domain; `cityscroll-worker.crol-worker.workers.dev` remains an alias). CityScroll itself is
-100% static (one `index.html` on Cloudflare Pages, no keys); everything that needs a held secret,
-a CORS shim, a schedule, or server-side rendering lives here. The site works fully without
-the worker — every feature degrades gracefully when it's absent.
+The server boundary for **[CityScroll](https://cityscroll.org)** — a single **Cloudflare Worker**
+at `https://api.cityscroll.org` (custom domain; `cityscroll-worker.crol-worker.workers.dev`
+remains an alias). Everything that needs a held secret, a CORS shim, a schedule, D1/KV state, or a
+server-rendered document lives here or in the Pages edge handler described below.
 
 Cloudflare Pages remains the origin for the canonical `cityscroll.org` / `www.cityscroll.org`
 site hostnames. Bounded Worker zone routes serve the dynamic `/near-you*`, `/following*`,
-and `/prefs*` documents on `cityscroll.org`; all other site paths retain the Pages origin.
-The Worker is already dual-homed on `api.cityscroll.org` and the compatibility
+and `/prefs*` documents on `cityscroll.org`; every other site path reaches the Pages project
+first. The Worker is already dual-homed on `api.cityscroll.org` and the compatibility
 alias `api.crol-list.org`. CORS allowlists retain old browser origins for
 compatibility, including `crol-list.jimdc.com` (a GitHub Pages CNAME to
 `jimdc.github.io`, not a Worker route).
 
 > Maintenance rule: this README is updated with every significant feature change — if a
 > route, cron behavior, or defense changes, its description lands here in the same session.
-> (It previously went stale enough to still describe the retired Netlify deployment; don't
-> let that happen again.)
+> (It previously went stale enough to still describe the retired Netlify deployment, and later
+> enough to still call the site one static `index.html` served straight from Pages; don't let
+> that happen again.)
 
 ## How it all plugs together
 
+A reader request crosses up to three seams that fail independently. The Pages project is not a
+plain static-asset host: [`site/_worker.js`](../site/_worker.js) re-exports the default handler
+in [`site/pages_edge.mjs`](../site/pages_edge.mjs), so every request to a canonical site hostname
+enters that handler before any asset is served.
+
 ```
-   Browser (cityscroll.org, served by Cloudflare Pages)
-        │
-        │  most queries go straight to NYC Open Data (CORS-open, no key)
-        ├───────────────────────────►  Socrata SODA / GeoSearch / MapPLUTO
-        │
-        │  the rest go to the worker (const API in index.html)
-        ▼
-   cityscroll-worker (Cloudflare Worker + KV + Cron Triggers)
+Reader on cityscroll.org
+   │
+   ├─ /near-you* · /following* · /prefs*  ──►  cityscroll-worker on bounded zone routes
+   │                                           (`routes` in worker/wrangler.toml)
+   │
+   └─ every other path  ──►  Cloudflare Pages project (site/)
+        site/_worker.js → site/pages_edge.mjs  (default export `fetch`)
+          · GET/HEAD only — any other method is 405; a missing ASSETS binding is 503
+          │
+          ├─ bounded canonical document routes rendered at the edge:
+          │    /notices/<id> · /meetings/<id> · /meeting.ics · /procurements/<id>
+          │    /rules/rulemaking:<id> · /rules/agenda/<item> · /mandates/<id> · /matters/<n>
+          │    /exams/<nnnn> · /committees/<n> · /administrative-code/<id> · /parcels/<bbl>
+          │    /assertions/<id> · /browse[/<facet>] · /agencies|vendors|officials/<id>
+          │    /following/packs/<pack> · /districts/council/<n>/digest
+          │      ├──►  env.ASSETS            committed and built read models under site/data
+          │      └──►  api.cityscroll.org    D1/KV projections (for example GET /notice)
+          │
+          └─ anything else  ──►  env.ASSETS: the static artifact
+               (site/index.html plus about/api/data/stats/standards/changelog, and the
+                generated /browse, /now, /agencies/*, guide and constellation documents)
+
+Browser modules (site/app/*.mjs, loaded by site/index.html)
+   ├──►  committed site/data/* materializations
+   └──►  window.CROL_API_ORIGIN, default https://api.cityscroll.org
 ```
 
+### What stops working when the Worker is unavailable
+
+The static artifact and every edge-rendered document that reads only `env.ASSETS` keep serving, so
+the reader surface degrades instead of disappearing. It does **not** keep working fully:
+
+- `/near-you*`, `/following*` and `/prefs*` are Worker zone routes with no Pages asset behind
+  them, so a Worker outage takes those documents with it.
+- Alerts, the standing feeds (`/feed.xml` · `/feed.json` · `/feed.ics`), subscribe / confirm /
+  unsubscribe, `/feedback`, `/nl`, `/search`, `/mcp`, `/batch`, `/translate`, forecasting,
+  `/vendor-profile`, `/stats` and every `/admin/*` route are Worker-only and answer nothing.
+- Edge-rendered documents lose whichever Worker projection they hydrate from. The notice document
+  is the one place that still has a publisher fallback behind it; the exact order is below.
+
+### One notice read, end to end
+
+`GET /notice?id=<RequestID>` is the read model behind both the edge notice document and the
+browser notice tab. [`src/notice.mjs`](src/notice.mjs) `handleNotice()` →
+`workerNoticeGet().execute()` resolves in this order:
+
+1. **Edge cache.** A `caches.default.match()` hit on the canonical key is returned unchanged
+   (skipped by `prewarmNotices`, which passes `skipCache: true`).
+2. **Materialized D1 row.** `readMaterialized()` selects the `notices` row for the exact
+   `request_id`. **A stale row is still served.** `stale` is `true` when `ingested_at` is missing
+   or older than `MATERIALIZED_MAX_AGE_MS` (two days), and the response still carries
+   `source: "materialized"`, that `generated_at`, and the `civic_time_events` history. A stale
+   snapshot is deliberately preferred to an upstream round trip or a blank notice.
+3. **City Record fallback.** Only when there is no `DB` binding, no matching row, or the D1 read
+   throws does `readUpstream()` issue one Socrata query (`dg92-zbpx`, `$limit=1`,
+   `cf.cacheTtl` 300). A hit answers `source: "public-source-fallback"` with `generated_at: null`
+   and no `civic_time` block.
+4. **Explicit terminals.** No matching upstream row → `availability: "not_yet_public"` → HTTP
+   **404** `{ok:false, reason:"not-found"}`. A throwing or non-2xx upstream read →
+   `availability: "unavailable"` → HTTP **503** `{ok:false, reason:"unavailable"}`. Neither is
+   cached as an empty notice, and neither is reported as an available record.
+
+The two callers treat those terminals differently:
+
+- [`site/pages_edge.mjs`](../site/pages_edge.mjs) `noticeRow()` reads a Worker **404** as "no such
+  notice" and `handleNotice()` renders a 404 document. Any other non-OK status, or a rejected
+  subrequest, falls through to the edge's own City Record read; if that also fails, the document
+  is rendered with HTTP **503** rather than an empty record.
+- [`site/notice-read.mjs`](../site/notice-read.mjs) `read()` falls back to a direct browser
+  Socrata query whenever the Worker response carries no `row` or the request rejects.
+
+A Worker outage therefore does not blank a notice page — the Pages edge still resolves the record
+from the publisher. Only a simultaneous publisher failure produces the 503 document.
+
+### The retained publisher fallback is recorded debt, not the target
+
+The target invariant is that resident reads never fetch publisher data at request time; the
+canonical statement is
+[`docs/architecture.md#resident-read-invariant`](../docs/architecture.md#resident-read-invariant).
+The notice path above does not yet meet it. The gap is recorded exactly rather than described as
+finished:
+
+| Entry | Path | Call | Expires |
+|---|---|---|---|
+| `no-live-20` | `site/notice-read.mjs:47` | browser `soda(...)` fallback | 2026-09-14 |
+| `no-live-21` | `site/notice-read.mjs:48` | `workerFetch("/notice?id=…")` | 2026-09-14 |
+| `no-live-22` | `site/pages_edge.mjs:922` | edge City Record `fetch(...)` | 2026-09-14 |
+
+All three sit under `migration_card: "read-core-01"` with the reason "Notice fallback resolution
+still needs a complete retained notice index", in
+[`architecture/no-live-external-debt.json`](../architecture/no-live-external-debt.json).
+[`architecture/resident-read-policy.json`](../architecture/resident-read-policy.json) classifies
+`/notice` under `first_party_routes.temporary_debt`, and
+`node tools/no_live_external_reads.mjs --check` fails once the manifest expiry passes, so the
+exception cannot quietly become permanent. This README neither extends that expiry nor claims the
+migration is complete. The claim-by-claim audit behind this section — before and after wording,
+immutable revisions, and the handler branch each claim rests on — is
+[`docs/evidence/serving-boundary-documentation/claim-to-source-matrix.md`](../docs/evidence/serving-boundary-documentation/claim-to-source-matrix.md).
+
 The frontend defaults to `https://api.cityscroll.org` through `window.CROL_API_ORIGIN`.
-An unavailable Worker leaves the site in its client-side degraded mode.
 
 ## Routes
 
@@ -59,6 +152,7 @@ Reader-facing HTML uses canonical `cityscroll.org` paths. Existing API-host link
 | `/meeting.ics?id=<request_id>` | GET | One meeting calendar event served from the daily `/hearings` materialization; includes the published New York venue, remote join URL, dial-in details, and timezone-aware event time when available | none |
 | `/entity-dossier?id=` | GET | **Foundation surface (not yet live for demo subject ids):** read-only dossier when a published `canonical_entity` exists; otherwise **404** with `public_status: "not_yet_public"` (subject-registry on lifecycles remains live). Linked assertions, disagreement/missingness, link-confidence bands when resolved; HTML default / JSON via `Accept` or `?format=json`; edge-cached 5 minutes on 200 | none; `DB` |
 | `/inv` · `/inv/<id>` | POST/GET | Share an investigation snapshot (clamped, ≤32KB, 90-day TTL, 10/day/IP; SUBS KV `inv:` prefix) | none |
+| `/notice?id=<request_id>` | GET | **One public City Record notice.** Serves the materialized D1 `notices` row — including a stale one, labelled `stale:true` past two days — with its `generated_at` and `civic_time` history; only a missing binding, missing row, or failed D1 read reaches the single City Record SODA query (`source:"public-source-fallback"`). No upstream row is `404 not-found`; a failed upstream read is `503 unavailable`. Retained migration debt, not the target state: see [One notice read, end to end](#one-notice-read-end-to-end) | none; `DB` |
 | `/priorcycle/<request_id>` | GET | **Precomputed prior-cycle + near-match sets** for an Award notice (Phase 1a — the server side of moving index.html's two live SODA panels off the client; Phase 1b swaps the client to this). Ranked by `src/lib/prior_cycle.mjs`, a hand-synced dual implementation of index.html's matchers (cross-check test fails on divergence); cached in D1 `prior_cycle_matches`, compute-on-miss, cron pre-warms fresh Award notices; validated id, edge-cached 5 min | none |
 | `/translate/<request_id>?lang=` | GET | **Informal notice translation** — original English remains the official record on the client; this returns an optional unofficial title+description aid. Glossary-pinned Haiku call on first miss only; D1 `notice_translations` + edge cache thereafter (no per-pageview upstream). Amounts, dates, PINs, Request IDs, agency names, and addresses must appear verbatim or the response is `{ok:false}` and nothing is cached. Daily ceiling `TRANSLATE_MAX_CALLS_PER_DAY` (default 150) on NEW translations only; cache hits never spend the meter | `ANTHROPIC_API_KEY` for first compute; degrades to `{ok:false}` |
 | `/stats` | GET | **Served-product coverage facts and a narrow search-usage summary** (`public-stats.v4`): the materialised coverage snapshot — per served record set, its record unit, counting rule, count and own evidence date — plus language coverage, plus `search_usage`: searches run and searches returning records, per named period, projected from a scheduled snapshot. Built from `site/data/served_coverage_snapshot.json` and one key read, so the route never fetches a publisher and never scans the receipt store; queries, results, readers, subscriptions, sends, and daily series are intentionally absent; edge-cached 15 min. | none |
