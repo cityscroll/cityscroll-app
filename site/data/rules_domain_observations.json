@@ -2626,10 +2626,42 @@
           "northeast",
           "queens",
           "west",
-          "cwzs"
+          "cwzs",
+          "sanitation",
+          "proposes",
+          "commercial",
+          "waste",
+          "zones",
+          "schedule",
+          "authorize",
+          "make",
+          "amends"
         ],
-        "body_topic_keys": [],
-        "citation_keys": [],
+        "body_topic_keys": [
+          "sanitation",
+          "proposes",
+          "commercial",
+          "waste",
+          "zones",
+          "implementation",
+          "schedule",
+          "authorize",
+          "dsny",
+          "make",
+          "amends"
+        ],
+        "citation_keys": [
+          "nyc-charter:753",
+          "nyc-charter:1043(g)",
+          "nyc-charter:1043",
+          "nyc-admin-code:16-120",
+          "nyc-admin-code:16",
+          "rcny:16:1-01",
+          "section:16-120",
+          "section:16",
+          "section:1-01",
+          "section:1"
+        ],
         "lifecycle_status": "proposal",
         "effective_date": null,
         "adoption_date": null,
@@ -2654,6 +2686,10 @@
         },
         "confidence_tier": "strong",
         "source": "rule-scope"
+      },
+      "rule_evidence_densify": {
+        "method": "city_record_getfile_pdf_v1",
+        "source": "attachment_text"
       }
     },
     {
@@ -4308,10 +4344,38 @@
           "manhattan",
           "commercial",
           "waste",
-          "zones"
+          "zones",
+          "sanitation",
+          "adopts",
+          "schedule",
+          "authorize",
+          "make",
+          "amends"
         ],
-        "body_topic_keys": [],
-        "citation_keys": [],
+        "body_topic_keys": [
+          "sanitation",
+          "adopts",
+          "commercial",
+          "waste",
+          "zones",
+          "implementation",
+          "schedule",
+          "authorize",
+          "dsny",
+          "make",
+          "amends"
+        ],
+        "citation_keys": [
+          "nyc-charter:753",
+          "nyc-admin-code:16-120",
+          "nyc-admin-code:16",
+          "rcny:16:1-01",
+          "section:753",
+          "section:16-120",
+          "section:16",
+          "section:1-01",
+          "section:1"
+        ],
         "lifecycle_status": "adopted",
         "effective_date": null,
         "adoption_date": null,
@@ -4335,6 +4399,10 @@
         },
         "confidence_tier": "strong",
         "source": "rule-scope"
+      },
+      "rule_evidence_densify": {
+        "method": "city_record_getfile_pdf_v1",
+        "source": "attachment_text"
       }
     },
     {
@@ -9313,5 +9381,6 @@
         "source": "rule-scope"
       }
     }
-  ]
+  ],
+  "rule_evidence_attachment_densified_at": "2026-09-07T14:19:11.496Z"
 }

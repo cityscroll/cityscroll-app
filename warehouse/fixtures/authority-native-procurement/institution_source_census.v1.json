@@ -53,22 +53,22 @@
     "rejected"
   ],
   "existing_snapshot": {
-    "generated_at": "2026-09-06T23:21:16.666Z",
+    "generated_at": "2026-09-07T14:37:06.580Z",
     "artifacts": {
       "browse_rows": {
         "path": "site/data/procurement_browse_rows.json",
-        "sha256": "616ba0c260b959237fa162d388b34a7a5149c59c05a9f1b03bc19dc102529737",
-        "row_count": 19862
+        "sha256": "3df8215ab4001c26604dec57d6fcf3ee5edf163280744389be0b699802c66bdc",
+        "row_count": 19885
       },
       "spine_sources": {
         "path": "site/data/procurement_spine_sources.json",
-        "sha256": "f8262a3f801c9ec2823035aaa9923bb89a98c933d39feec3c3504ada4f5b0a54",
+        "sha256": "899993a07d245edf6fc86b26ac48d8df0c0bdaa84af2ecbaa70cb64df4dec786",
         "passport_contract_rows": 12782
       },
       "shared_read_model": {
         "path": "site/data/shared_procurement_read_model.json",
-        "sha256": "6682412dd402877d78ae01815cb10345252797a335738a6f5c0e1da4efb0a54d",
-        "object_count": 19862
+        "sha256": "d5334d6159ca15b7dadac7009585c604112bfd3e3123152b52da0a7dafd42046",
+        "object_count": 19885
       }
     },
     "served_source_counts": {
@@ -475,28 +475,28 @@
       "passport_public_contracts": 12782,
       "checkbook_contracts": 9807
     },
-    "doe_canonical_rows": 3836,
+    "doe_canonical_rows": 3856,
     "doe_rows_by_source": {
       "city_record": 436,
       "passport_public_contracts": 438,
-      "checkbook_contracts": 3398
+      "checkbook_contracts": 3418
     },
     "doe_source_combinations": {
       "city_record+passport_public_contracts": 436,
       "passport_public_contracts": 2,
-      "checkbook_contracts": 3398
+      "checkbook_contracts": 3418
     },
     "already_served_rows": {
-      "checkbook_only": 3398,
+      "checkbook_only": 3418,
       "passport_only": 2,
       "city_record_and_passport": 436,
       "all_three": 0,
-      "total": 3836
+      "total": 3856
     },
     "demonstrated_missing_rows": 0,
     "production_card_proposed": false,
-    "conclusion": "No distinct public DOE corpus is missing from the existing City Record, PASSPort, and Checkbook ingestion snapshot. The 3398 Checkbook-only and 2 PASSPort-only rows are already served by those existing source families; no DOE production card is proposed.",
-    "review_note": "Re-reviewed after the DOE canonical row count moved from 618 to 3836. Acknowledged as a legitimate population change, not a defect: the fresh Checkbook pull widened the served window to the CROL Award publication window, which is the chosen semantics, replacing the retired 2000-row numeric cap. The added rows are all checkbook_contracts in selection_bucket new_unique with distinct procurement and contract ids and no duplicates. Counts by source before -> after: city_record 436 -> 436 (unchanged), passport_public_contracts 438 -> 438 (unchanged), checkbook_contracts 182 -> 3398. Because the two sources this finding compares against are numerically unchanged and the added rows are Checkbook records now served rather than newly discovered gaps, the finding is unweakened: the direction of change is more coverage, not less."
+    "conclusion": "No distinct public DOE corpus is missing from the existing City Record, PASSPort, and Checkbook ingestion snapshot. The 3418 Checkbook-only and 2 PASSPort-only rows are already served by those existing source families; no DOE production card is proposed.",
+    "review_note": "Re-reviewed after the DOE canonical row count moved from 3836 to 3856 on the 2026-09-07 acquisition. Counts by source before -> after: city_record 436 -> 436 (unchanged), passport_public_contracts 438 -> 438 (unchanged), checkbook_contracts 3398 -> 3418. All 20 added rows are Checkbook contract rows, no new source-combination key appeared, and no DOE row is left without a recognised source family. The two sources this finding compares against are numerically unchanged and the added rows are Checkbook records now served rather than newly discovered gaps, so the finding is unchanged in substance: no distinct public DOE corpus is demonstrated missing, and no production card is proposed. The previous review, after the count moved from 618 to 3836, recorded the same direction of change: the fresh Checkbook pull widened the served window to the CROL Award publication window, which is the chosen semantics, replacing the retired 2000-row numeric cap."
   },
   "production_cards": [],
   "production_adapter_change": false

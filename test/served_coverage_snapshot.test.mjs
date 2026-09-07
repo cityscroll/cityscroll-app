@@ -105,7 +105,7 @@ test("registered contracts reproduce independently from the shard the Contracts 
   assert.equal(unit.route, "/browse/contracts/");
   // The vintage is the day the Checkbook population behind these rows was
   // pulled, so it moves with each acquisition rather than staying fixed.
-  assert.equal(unit.evidence_vintage, "2026-09-06T00:00:00.000Z");
+  assert.equal(unit.evidence_vintage, "2026-09-07T00:00:00.000Z");
 });
 
 test("procurement source counts are recounted from served rows, not from declared inputs", () => {
