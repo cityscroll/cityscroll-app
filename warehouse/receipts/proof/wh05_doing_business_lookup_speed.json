@@ -1,9 +1,9 @@
 {
   "schema": "cityscroll.source_acquisition_receipt.v1",
   "source_contract_id": "doing-business-entities",
-  "observed_at": "2026-08-31T15:25:44.983Z",
+  "observed_at": "2026-09-07T13:41:05.021Z",
   "status": "succeeded",
-  "run_id": "doing-business-entities:2026-08-31T15:25:44.983Z",
+  "run_id": "doing-business-entities:2026-09-07T13:41:05.021Z",
   "publisher_clock_basis": "soda_resource_last_modified",
   "publisher_updated_at": null,
   "acquisition": {
@@ -11,7 +11,7 @@
     "row_count": 10770
   },
   "phase": "WH-05",
-  "measured_at": "2026-08-31T15:25:45.399Z",
+  "measured_at": "2026-09-07T13:41:05.472Z",
   "replaces_live_fetch": {
     "function": "attachDoingBusiness",
     "soda_dataset": "72mk-a8z7",
@@ -23,14 +23,14 @@
   },
   "edge_materialization_lookup": {
     "samples_ms": [
-      0.0998,
-      0.0051,
-      0.0023,
-      0.002,
+      0.1152,
+      0.0049,
+      0.0025,
+      0.0021,
       0.002
     ],
     "p50_ms": 0.0013,
-    "mean_ms": 0.0037,
+    "mean_ms": 0.0041,
     "n": 50,
     "note": "Worker hot path after warehouse materialization import (stem index)"
   },
