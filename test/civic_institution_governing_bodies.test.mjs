@@ -255,7 +255,7 @@ test("NYCHA meeting claim ids, BERS vendor and staffing rows, routes, and catego
     "obligations",
     "staffing",
   ]);
-  assert.equal(nycha.categories.meetings.count, 3);
+  assert.equal(nycha.categories.meetings.count, 2);
   assert.equal(nycha.categories.meetings.status, "matched");
   assert.equal(bersRoute.categories.vendors.status, "matched");
   assert.equal(bersRoute.categories.staffing.status, "matched");

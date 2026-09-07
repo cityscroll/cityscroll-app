@@ -403,6 +403,11 @@ function cleanHearing(row) {
   };
   const out = {
     request_id: fullRow.request_id,
+    // The canonical meeting identity every consumer joins on. The committed
+    // snapshot carried it, but this projection had stopped emitting it, so a
+    // rebuild silently dropped it from all 119 rows while the stale committed
+    // copy kept the field alive.
+    meeting_id: normalizeCityRecordMeeting(fullRow).meeting_id,
     agency_name: fullRow.agency_name,
     short_title: shortTitle,
     start_date: fullRow.start_date,

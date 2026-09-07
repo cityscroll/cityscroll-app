@@ -4,7 +4,7 @@
   "domain": "rules",
   "title": "Rules domain observations for entity intelligence",
   "description": "City Record Agency Rules rows (dg92-zbpx) for offline entity-intelligence materialization. Source prose is reduced to bounded rule-evidence stamps and discarded; no invented contract/vendor joins.",
-  "retrieved_at": "2026-09-06T21:40:23.205Z",
+  "retrieved_at": "2026-09-06T22:47:58.530Z",
   "window_days": 180,
   "source": {
     "system": "city_record",
