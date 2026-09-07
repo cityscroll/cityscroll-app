@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "delivery_tier": "resident-snapshot",
-  "generated_at": "2026-09-06T16:04:23.482Z",
+  "generated_at": "2026-09-07T13:15:55.697Z",
   "source": "site/data/property_domain_observations.json",
   "counts": {
     "total": 133,
@@ -1473,65 +1473,6 @@
     {
       "domain": "property",
       "source_system": "city_record",
-      "request_id": "20180326101",
-      "start_date": "2018-04-03T00:00:00.000",
-      "agency_name": "Housing Preservation and Development",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Property Disposition",
-      "short_title": "Disposition",
-      "event_date": "2018-05-09T01:00:00.000",
-      "street_address_1": "1 Centre Street",
-      "property_location": {
-        "scope": "local",
-        "boroughs": [
-          "Bronx",
-          "Staten Island"
-        ],
-        "neighborhoods": [
-          "Mariners Harbor"
-        ],
-        "addresses": [
-          {
-            "label": "345St. Ann’s Avenue",
-            "borough": "Staten Island",
-            "neighborhood": "Mariners Harbor",
-            "latitude": 40.636102,
-            "longitude": -74.165751,
-            "bbl": "5012540004"
-          }
-        ],
-        "tax_lots": [
-          {
-            "label": "Block 2268, Lot 27",
-            "block": "2268",
-            "lots": [
-              "27"
-            ],
-            "source": "2268/27"
-          }
-        ],
-        "bbls": [
-          "2022680027",
-          "5012540004"
-        ],
-        "geometry": {
-          "latitude": 40.636102,
-          "longitude": -74.165751,
-          "label": "345St. Ann’s Avenue"
-        }
-      },
-      "disposition_stage": "hearing",
-      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:2022680027",
-      "disposition_join_keys": [
-        "bbl:2022680027",
-        "bbl:5012540004",
-        "taxlot:bronx:2268/27",
-        "taxlot:staten-island:2268/27"
-      ]
-    },
-    {
-      "domain": "property",
-      "source_system": "city_record",
       "request_id": "20180326111",
       "start_date": "2018-04-03T00:00:00.000",
       "agency_name": "Housing Preservation and Development",
@@ -1654,6 +1595,65 @@
         "taxlot:manhattan:1953/39",
         "taxlot:manhattan:1953/40",
         "taxlot:manhattan:1953/41"
+      ]
+    },
+    {
+      "domain": "property",
+      "source_system": "city_record",
+      "request_id": "20180326101",
+      "start_date": "2018-04-03T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "Disposition",
+      "event_date": "2018-05-09T01:00:00.000",
+      "street_address_1": "1 Centre Street",
+      "property_location": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx",
+          "Staten Island"
+        ],
+        "neighborhoods": [
+          "Mariners Harbor"
+        ],
+        "addresses": [
+          {
+            "label": "345St. Ann’s Avenue",
+            "borough": "Staten Island",
+            "neighborhood": "Mariners Harbor",
+            "latitude": 40.636102,
+            "longitude": -74.165751,
+            "bbl": "5012540004"
+          }
+        ],
+        "tax_lots": [
+          {
+            "label": "Block 2268, Lot 27",
+            "block": "2268",
+            "lots": [
+              "27"
+            ],
+            "source": "2268/27"
+          }
+        ],
+        "bbls": [
+          "2022680027",
+          "5012540004"
+        ],
+        "geometry": {
+          "latitude": 40.636102,
+          "longitude": -74.165751,
+          "label": "345St. Ann’s Avenue"
+        }
+      },
+      "disposition_stage": "hearing",
+      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:2022680027",
+      "disposition_join_keys": [
+        "bbl:2022680027",
+        "bbl:5012540004",
+        "taxlot:bronx:2268/27",
+        "taxlot:staten-island:2268/27"
       ]
     },
     {
@@ -1940,63 +1940,6 @@
     {
       "domain": "property",
       "source_system": "city_record",
-      "request_id": "20171109103",
-      "start_date": "2017-11-17T00:00:00.000",
-      "agency_name": "Housing Preservation and Development",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Property Disposition",
-      "short_title": "Essex Crossing Site 4",
-      "event_date": "2017-12-20T10:00:00.000",
-      "street_address_1": "1 Centre Street",
-      "property_location": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan"
-        ],
-        "neighborhoods": [
-          "Lower East Side"
-        ],
-        "addresses": [
-          {
-            "label": "180 Broome Street",
-            "borough": "Manhattan",
-            "neighborhood": "Lower East Side",
-            "latitude": 40.717343,
-            "longitude": -73.986454,
-            "bbl": "1003467502"
-          }
-        ],
-        "tax_lots": [
-          {
-            "label": "Block 346, Lot 175",
-            "block": "346",
-            "lots": [
-              "175"
-            ],
-            "source": "346/175"
-          }
-        ],
-        "bbls": [
-          "1003460175",
-          "1003467502"
-        ],
-        "geometry": {
-          "latitude": 40.717343,
-          "longitude": -73.986454,
-          "label": "180 Broome Street"
-        }
-      },
-      "disposition_stage": "hearing",
-      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:1003460175",
-      "disposition_join_keys": [
-        "bbl:1003460175",
-        "bbl:1003467502",
-        "taxlot:manhattan:346/175"
-      ]
-    },
-    {
-      "domain": "property",
-      "source_system": "city_record",
       "request_id": "20171109102",
       "start_date": "2017-11-17T00:00:00.000",
       "agency_name": "Housing Preservation and Development",
@@ -2109,6 +2052,63 @@
         "taxlot:brooklyn:3675/4",
         "taxlot:brooklyn:3675/7",
         "taxlot:brooklyn:3675/8"
+      ]
+    },
+    {
+      "domain": "property",
+      "source_system": "city_record",
+      "request_id": "20171109103",
+      "start_date": "2017-11-17T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "Essex Crossing Site 4",
+      "event_date": "2017-12-20T10:00:00.000",
+      "street_address_1": "1 Centre Street",
+      "property_location": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "neighborhoods": [
+          "Lower East Side"
+        ],
+        "addresses": [
+          {
+            "label": "180 Broome Street",
+            "borough": "Manhattan",
+            "neighborhood": "Lower East Side",
+            "latitude": 40.717343,
+            "longitude": -73.986454,
+            "bbl": "1003467502"
+          }
+        ],
+        "tax_lots": [
+          {
+            "label": "Block 346, Lot 175",
+            "block": "346",
+            "lots": [
+              "175"
+            ],
+            "source": "346/175"
+          }
+        ],
+        "bbls": [
+          "1003460175",
+          "1003467502"
+        ],
+        "geometry": {
+          "latitude": 40.717343,
+          "longitude": -73.986454,
+          "label": "180 Broome Street"
+        }
+      },
+      "disposition_stage": "hearing",
+      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:1003460175",
+      "disposition_join_keys": [
+        "bbl:1003460175",
+        "bbl:1003467502",
+        "taxlot:manhattan:346/175"
       ]
     },
     {
@@ -2431,61 +2431,6 @@
     {
       "domain": "property",
       "source_system": "city_record",
-      "request_id": "20170807103",
-      "start_date": "2017-08-14T00:00:00.000",
-      "agency_name": "Housing Preservation and Development",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Property Disposition",
-      "short_title": "Disposition",
-      "event_date": "2017-09-13T10:00:00.000",
-      "street_address_1": "1 Centre Street",
-      "property_location": {
-        "scope": "local",
-        "boroughs": [
-          "Queens"
-        ],
-        "neighborhoods": [
-          "St. Albans"
-        ],
-        "addresses": [
-          {
-            "label": "110-60 Wood Street",
-            "borough": "Queens",
-            "neighborhood": "St. Albans",
-            "latitude": 40.699084,
-            "longitude": -73.771057,
-            "bbl": "4104110006"
-          }
-        ],
-        "tax_lots": [
-          {
-            "label": "Block 10411, Lot 6",
-            "block": "10411",
-            "lots": [
-              "6"
-            ],
-            "source": "10411/6"
-          }
-        ],
-        "bbls": [
-          "4104110006"
-        ],
-        "geometry": {
-          "latitude": 40.699084,
-          "longitude": -73.771057,
-          "label": "110-60 Wood Street"
-        }
-      },
-      "disposition_stage": "hearing",
-      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:4104110006",
-      "disposition_join_keys": [
-        "bbl:4104110006",
-        "taxlot:queens:10411/6"
-      ]
-    },
-    {
-      "domain": "property",
-      "source_system": "city_record",
       "request_id": "20170807104",
       "start_date": "2017-08-14T00:00:00.000",
       "agency_name": "Housing Preservation and Development",
@@ -2555,6 +2500,61 @@
         "bbl:4119760045",
         "taxlot:queens:11962/43",
         "taxlot:queens:11976/45"
+      ]
+    },
+    {
+      "domain": "property",
+      "source_system": "city_record",
+      "request_id": "20170807103",
+      "start_date": "2017-08-14T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "Disposition",
+      "event_date": "2017-09-13T10:00:00.000",
+      "street_address_1": "1 Centre Street",
+      "property_location": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "neighborhoods": [
+          "St. Albans"
+        ],
+        "addresses": [
+          {
+            "label": "110-60 Wood Street",
+            "borough": "Queens",
+            "neighborhood": "St. Albans",
+            "latitude": 40.699084,
+            "longitude": -73.771057,
+            "bbl": "4104110006"
+          }
+        ],
+        "tax_lots": [
+          {
+            "label": "Block 10411, Lot 6",
+            "block": "10411",
+            "lots": [
+              "6"
+            ],
+            "source": "10411/6"
+          }
+        ],
+        "bbls": [
+          "4104110006"
+        ],
+        "geometry": {
+          "latitude": 40.699084,
+          "longitude": -73.771057,
+          "label": "110-60 Wood Street"
+        }
+      },
+      "disposition_stage": "hearing",
+      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:4104110006",
+      "disposition_join_keys": [
+        "bbl:4104110006",
+        "taxlot:queens:10411/6"
       ]
     },
     {
@@ -2816,12 +2816,12 @@
     {
       "domain": "property",
       "source_system": "city_record",
-      "request_id": "20170512109",
+      "request_id": "20170515104",
       "start_date": "2017-05-19T00:00:00.000",
       "agency_name": "Housing Preservation and Development",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Property Disposition",
-      "short_title": "Disposition",
+      "short_title": "Essex Crossing Site 5",
       "event_date": "2017-06-21T10:00:00.000",
       "street_address_1": "1 Centre Street",
       "property_location": {
@@ -2830,89 +2830,44 @@
           "Manhattan"
         ],
         "neighborhoods": [
-          "Spanish Harlem"
+          "Lower East Side"
         ],
         "addresses": [
           {
-            "label": "1461 Park Avenue",
+            "label": "140 Essex Street",
             "borough": "Manhattan",
-            "neighborhood": "Spanish Harlem",
-            "latitude": 40.793727,
-            "longitude": -73.946484,
-            "bbl": "1016357501"
+            "neighborhood": "Lower East Side",
+            "latitude": 40.72019,
+            "longitude": -73.98708,
+            "bbl": "1003547502"
           }
         ],
         "tax_lots": [
           {
-            "label": "Block 1635, Lot 1",
-            "block": "1635",
+            "label": "Block 354, Lot 1",
+            "block": "354",
             "lots": [
               "1"
             ],
-            "source": "1635/1"
+            "source": "354 / 1"
           }
         ],
         "bbls": [
-          "1016350001",
-          "1016357501"
+          "1003540001",
+          "1003547502"
         ],
         "geometry": {
-          "latitude": 40.793727,
-          "longitude": -73.946484,
-          "label": "1461 Park Avenue"
+          "latitude": 40.72019,
+          "longitude": -73.98708,
+          "label": "140 Essex Street"
         }
       },
       "disposition_stage": "hearing",
-      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:1016350001",
+      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:1003540001",
       "disposition_join_keys": [
-        "bbl:1016350001",
-        "bbl:1016357501",
-        "taxlot:manhattan:1635/1"
-      ]
-    },
-    {
-      "domain": "property",
-      "source_system": "city_record",
-      "request_id": "20170512106",
-      "start_date": "2017-05-19T00:00:00.000",
-      "agency_name": "Housing Preservation and Development",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Property Disposition",
-      "short_title": "Disposition",
-      "event_date": "2017-06-21T10:00:00.000",
-      "street_address_1": "1 Centre Street",
-      "property_location": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan"
-        ],
-        "neighborhoods": [
-          "Financial District"
-        ],
-        "addresses": [
-          {
-            "label": "100 Gold Street",
-            "borough": "Manhattan",
-            "neighborhood": "Financial District",
-            "latitude": 40.710156,
-            "longitude": -74.00324,
-            "bbl": "1000940025"
-          }
-        ],
-        "tax_lots": [],
-        "bbls": [
-          "1000940025"
-        ],
-        "geometry": {
-          "latitude": 40.710156,
-          "longitude": -74.00324,
-          "label": "100 Gold Street"
-        }
-      },
-      "disposition_stage": "hearing",
-      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:1000940025",
-      "disposition_join_keys": [
-        "bbl:1000940025"
+        "bbl:1003540001",
+        "bbl:1003547502",
+        "taxlot:manhattan:354/1"
       ]
     },
     {
@@ -2997,6 +2952,108 @@
         "bbl:3042930001",
         "taxlot:brooklyn:3639/35",
         "taxlot:brooklyn:3639/37"
+      ]
+    },
+    {
+      "domain": "property",
+      "source_system": "city_record",
+      "request_id": "20170512106",
+      "start_date": "2017-05-19T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "Disposition",
+      "event_date": "2017-06-21T10:00:00.000",
+      "street_address_1": "1 Centre Street",
+      "property_location": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "neighborhoods": [
+          "Financial District"
+        ],
+        "addresses": [
+          {
+            "label": "100 Gold Street",
+            "borough": "Manhattan",
+            "neighborhood": "Financial District",
+            "latitude": 40.710156,
+            "longitude": -74.00324,
+            "bbl": "1000940025"
+          }
+        ],
+        "tax_lots": [],
+        "bbls": [
+          "1000940025"
+        ],
+        "geometry": {
+          "latitude": 40.710156,
+          "longitude": -74.00324,
+          "label": "100 Gold Street"
+        }
+      },
+      "disposition_stage": "hearing",
+      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:1000940025",
+      "disposition_join_keys": [
+        "bbl:1000940025"
+      ]
+    },
+    {
+      "domain": "property",
+      "source_system": "city_record",
+      "request_id": "20170512109",
+      "start_date": "2017-05-19T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "Disposition",
+      "event_date": "2017-06-21T10:00:00.000",
+      "street_address_1": "1 Centre Street",
+      "property_location": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "neighborhoods": [
+          "Spanish Harlem"
+        ],
+        "addresses": [
+          {
+            "label": "1461 Park Avenue",
+            "borough": "Manhattan",
+            "neighborhood": "Spanish Harlem",
+            "latitude": 40.793727,
+            "longitude": -73.946484,
+            "bbl": "1016357501"
+          }
+        ],
+        "tax_lots": [
+          {
+            "label": "Block 1635, Lot 1",
+            "block": "1635",
+            "lots": [
+              "1"
+            ],
+            "source": "1635/1"
+          }
+        ],
+        "bbls": [
+          "1016350001",
+          "1016357501"
+        ],
+        "geometry": {
+          "latitude": 40.793727,
+          "longitude": -73.946484,
+          "label": "1461 Park Avenue"
+        }
+      },
+      "disposition_stage": "hearing",
+      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:1016350001",
+      "disposition_join_keys": [
+        "bbl:1016350001",
+        "bbl:1016357501",
+        "taxlot:manhattan:1635/1"
       ]
     },
     {
@@ -3216,63 +3273,6 @@
         "assertion:project_agency_vendor:636974792d7265636f72642d32303137303531363131312d616c6265652d737175617265:named_developer:76656e646f723a7374656d3a4a454d42253230414c424545253230535155415245:v1"
       ],
       "assertion_inspect_href": "/assertions/?subject=notice%3A20170516111"
-    },
-    {
-      "domain": "property",
-      "source_system": "city_record",
-      "request_id": "20170515104",
-      "start_date": "2017-05-19T00:00:00.000",
-      "agency_name": "Housing Preservation and Development",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Property Disposition",
-      "short_title": "Essex Crossing Site 5",
-      "event_date": "2017-06-21T10:00:00.000",
-      "street_address_1": "1 Centre Street",
-      "property_location": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan"
-        ],
-        "neighborhoods": [
-          "Lower East Side"
-        ],
-        "addresses": [
-          {
-            "label": "140 Essex Street",
-            "borough": "Manhattan",
-            "neighborhood": "Lower East Side",
-            "latitude": 40.72019,
-            "longitude": -73.98708,
-            "bbl": "1003547502"
-          }
-        ],
-        "tax_lots": [
-          {
-            "label": "Block 354, Lot 1",
-            "block": "354",
-            "lots": [
-              "1"
-            ],
-            "source": "354 / 1"
-          }
-        ],
-        "bbls": [
-          "1003540001",
-          "1003547502"
-        ],
-        "geometry": {
-          "latitude": 40.72019,
-          "longitude": -73.98708,
-          "label": "140 Essex Street"
-        }
-      },
-      "disposition_stage": "hearing",
-      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:1003540001",
-      "disposition_join_keys": [
-        "bbl:1003540001",
-        "bbl:1003547502",
-        "taxlot:manhattan:354/1"
-      ]
     },
     {
       "domain": "property",
@@ -4079,6 +4079,80 @@
     {
       "domain": "property",
       "source_system": "city_record",
+      "request_id": "20161115104",
+      "start_date": "2016-11-21T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "Disposition",
+      "event_date": "2016-12-21T10:00:00.000",
+      "street_address_1": "1 Centre Street",
+      "property_location": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "neighborhoods": [
+          "East New York"
+        ],
+        "addresses": [
+          {
+            "label": "655 Hinsdale Street",
+            "borough": "Brooklyn",
+            "neighborhood": "East New York",
+            "latitude": 40.6586,
+            "longitude": -73.89699,
+            "bbl": "3038670008"
+          },
+          {
+            "label": "653 Hinsdale Street",
+            "borough": null,
+            "neighborhood": null,
+            "latitude": null,
+            "longitude": null,
+            "bbl": null
+          }
+        ],
+        "tax_lots": [
+          {
+            "label": "Block 3867, Lot 8",
+            "block": "3867",
+            "lots": [
+              "8"
+            ],
+            "source": "3867 / 8"
+          },
+          {
+            "label": "Block 3867, Lot 9",
+            "block": "3867",
+            "lots": [
+              "9"
+            ],
+            "source": "3867 / 9"
+          }
+        ],
+        "bbls": [
+          "3038670008",
+          "3038670009"
+        ],
+        "geometry": {
+          "latitude": 40.6586,
+          "longitude": -73.89699,
+          "label": "655 Hinsdale Street"
+        }
+      },
+      "disposition_stage": "hearing",
+      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:3038670008",
+      "disposition_join_keys": [
+        "bbl:3038670008",
+        "bbl:3038670009",
+        "taxlot:brooklyn:3867/8",
+        "taxlot:brooklyn:3867/9"
+      ]
+    },
+    {
+      "domain": "property",
+      "source_system": "city_record",
       "request_id": "20161117102",
       "start_date": "2016-11-21T00:00:00.000",
       "agency_name": "Housing Preservation and Development",
@@ -4319,80 +4393,6 @@
         "taxlot:brooklyn:3866/68",
         "taxlot:brooklyn:4295/19",
         "taxlot:brooklyn:4295/72"
-      ]
-    },
-    {
-      "domain": "property",
-      "source_system": "city_record",
-      "request_id": "20161115104",
-      "start_date": "2016-11-21T00:00:00.000",
-      "agency_name": "Housing Preservation and Development",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Property Disposition",
-      "short_title": "Disposition",
-      "event_date": "2016-12-21T10:00:00.000",
-      "street_address_1": "1 Centre Street",
-      "property_location": {
-        "scope": "local",
-        "boroughs": [
-          "Brooklyn"
-        ],
-        "neighborhoods": [
-          "East New York"
-        ],
-        "addresses": [
-          {
-            "label": "655 Hinsdale Street",
-            "borough": "Brooklyn",
-            "neighborhood": "East New York",
-            "latitude": 40.6586,
-            "longitude": -73.89699,
-            "bbl": "3038670008"
-          },
-          {
-            "label": "653 Hinsdale Street",
-            "borough": null,
-            "neighborhood": null,
-            "latitude": null,
-            "longitude": null,
-            "bbl": null
-          }
-        ],
-        "tax_lots": [
-          {
-            "label": "Block 3867, Lot 8",
-            "block": "3867",
-            "lots": [
-              "8"
-            ],
-            "source": "3867 / 8"
-          },
-          {
-            "label": "Block 3867, Lot 9",
-            "block": "3867",
-            "lots": [
-              "9"
-            ],
-            "source": "3867 / 9"
-          }
-        ],
-        "bbls": [
-          "3038670008",
-          "3038670009"
-        ],
-        "geometry": {
-          "latitude": 40.6586,
-          "longitude": -73.89699,
-          "label": "655 Hinsdale Street"
-        }
-      },
-      "disposition_stage": "hearing",
-      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:3038670008",
-      "disposition_join_keys": [
-        "bbl:3038670008",
-        "bbl:3038670009",
-        "taxlot:brooklyn:3867/8",
-        "taxlot:brooklyn:3867/9"
       ]
     },
     {
@@ -5694,251 +5694,6 @@
     {
       "domain": "property",
       "source_system": "city_record",
-      "request_id": "20160429108",
-      "start_date": "2016-05-06T00:00:00.000",
-      "agency_name": "Housing Preservation and Development",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Property Disposition",
-      "short_title": "Blake/Hendrix",
-      "event_date": "2016-06-08T01:00:00.000",
-      "street_address_1": "1 Centre Street",
-      "property_location": {
-        "scope": "local",
-        "boroughs": [
-          "Brooklyn"
-        ],
-        "neighborhoods": [
-          "East New York"
-        ],
-        "addresses": [
-          {
-            "label": "586 Linwood Street",
-            "borough": "Brooklyn",
-            "neighborhood": "East New York",
-            "latitude": 40.67084,
-            "longitude": -73.881972,
-            "bbl": "3040500025"
-          },
-          {
-            "label": "669 Linwood Street",
-            "borough": null,
-            "neighborhood": null,
-            "latitude": null,
-            "longitude": null,
-            "bbl": null
-          },
-          {
-            "label": "806 Blake Avenue",
-            "borough": null,
-            "neighborhood": null,
-            "latitude": null,
-            "longitude": null,
-            "bbl": null
-          },
-          {
-            "label": "980 Dumont Avenue",
-            "borough": null,
-            "neighborhood": null,
-            "latitude": null,
-            "longitude": null,
-            "bbl": null
-          },
-          {
-            "label": "617 Cleveland Street",
-            "borough": null,
-            "neighborhood": null,
-            "latitude": null,
-            "longitude": null,
-            "bbl": null
-          },
-          {
-            "label": "291 Hinsdale Street",
-            "borough": null,
-            "neighborhood": null,
-            "latitude": null,
-            "longitude": null,
-            "bbl": null
-          },
-          {
-            "label": "289 Hinsdale Street",
-            "borough": null,
-            "neighborhood": null,
-            "latitude": null,
-            "longitude": null,
-            "bbl": null
-          },
-          {
-            "label": "287 Hinsdale Street",
-            "borough": null,
-            "neighborhood": null,
-            "latitude": null,
-            "longitude": null,
-            "bbl": null
-          },
-          {
-            "label": "285 Hinsdale Street",
-            "borough": null,
-            "neighborhood": null,
-            "latitude": null,
-            "longitude": null,
-            "bbl": null
-          },
-          {
-            "label": "848 Blake Avenue",
-            "borough": null,
-            "neighborhood": null,
-            "latitude": null,
-            "longitude": null,
-            "bbl": null
-          },
-          {
-            "label": "588 Warwick Street",
-            "borough": null,
-            "neighborhood": null,
-            "latitude": null,
-            "longitude": null,
-            "bbl": null
-          }
-        ],
-        "tax_lots": [
-          {
-            "label": "Block 4050, Lot 25",
-            "block": "4050",
-            "lots": [
-              "25"
-            ],
-            "source": "4050 / 25"
-          },
-          {
-            "label": "Block 4067, Lot 8",
-            "block": "4067",
-            "lots": [
-              "8"
-            ],
-            "source": "4067 / 8"
-          },
-          {
-            "label": "Block 4058, Lot 18",
-            "block": "4058",
-            "lots": [
-              "18"
-            ],
-            "source": "4058 / 18"
-          },
-          {
-            "label": "Block 4081, Lot 23",
-            "block": "4081",
-            "lots": [
-              "23"
-            ],
-            "source": "4081 / 23"
-          },
-          {
-            "label": "Block 4065, Lot 22",
-            "block": "4065",
-            "lots": [
-              "22"
-            ],
-            "source": "4065 / 22"
-          },
-          {
-            "label": "Block 3767, Lot 10",
-            "block": "3767",
-            "lots": [
-              "10"
-            ],
-            "source": "3767 / 10"
-          },
-          {
-            "label": "Block 3767, Lot 11",
-            "block": "3767",
-            "lots": [
-              "11"
-            ],
-            "source": "3767 / 11"
-          },
-          {
-            "label": "Block 3767, Lot 12",
-            "block": "3767",
-            "lots": [
-              "12"
-            ],
-            "source": "3767 / 12"
-          },
-          {
-            "label": "Block 3767, Lot 13",
-            "block": "3767",
-            "lots": [
-              "13"
-            ],
-            "source": "3767 / 13"
-          },
-          {
-            "label": "Block 4060, Lot 16",
-            "block": "4060",
-            "lots": [
-              "16"
-            ],
-            "source": "4060 / 16"
-          },
-          {
-            "label": "Block 4062, Lot 30",
-            "block": "4062",
-            "lots": [
-              "30"
-            ],
-            "source": "4062 / 30"
-          }
-        ],
-        "bbls": [
-          "3040500025",
-          "3040670008",
-          "3040580018",
-          "3040810023",
-          "3040650022",
-          "3037670010",
-          "3037670011",
-          "3037670012",
-          "3037670013",
-          "3040600016",
-          "3040620030"
-        ],
-        "geometry": {
-          "latitude": 40.67084,
-          "longitude": -73.881972,
-          "label": "586 Linwood Street"
-        }
-      },
-      "disposition_stage": "hearing",
-      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:3037670010",
-      "disposition_join_keys": [
-        "bbl:3037670010",
-        "bbl:3037670011",
-        "bbl:3037670012",
-        "bbl:3037670013",
-        "bbl:3040500025",
-        "bbl:3040580018",
-        "bbl:3040600016",
-        "bbl:3040620030",
-        "bbl:3040650022",
-        "bbl:3040670008",
-        "bbl:3040810023",
-        "taxlot:brooklyn:3767/10",
-        "taxlot:brooklyn:3767/11",
-        "taxlot:brooklyn:3767/12",
-        "taxlot:brooklyn:3767/13",
-        "taxlot:brooklyn:4050/25",
-        "taxlot:brooklyn:4058/18",
-        "taxlot:brooklyn:4060/16",
-        "taxlot:brooklyn:4062/30",
-        "taxlot:brooklyn:4065/22",
-        "taxlot:brooklyn:4067/8",
-        "taxlot:brooklyn:4081/23"
-      ]
-    },
-    {
-      "domain": "property",
-      "source_system": "city_record",
       "request_id": "20160429106",
       "start_date": "2016-05-06T00:00:00.000",
       "agency_name": "Housing Preservation and Development",
@@ -6239,6 +5994,251 @@
     {
       "domain": "property",
       "source_system": "city_record",
+      "request_id": "20160429108",
+      "start_date": "2016-05-06T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "Blake/Hendrix",
+      "event_date": "2016-06-08T01:00:00.000",
+      "street_address_1": "1 Centre Street",
+      "property_location": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "neighborhoods": [
+          "East New York"
+        ],
+        "addresses": [
+          {
+            "label": "586 Linwood Street",
+            "borough": "Brooklyn",
+            "neighborhood": "East New York",
+            "latitude": 40.67084,
+            "longitude": -73.881972,
+            "bbl": "3040500025"
+          },
+          {
+            "label": "669 Linwood Street",
+            "borough": null,
+            "neighborhood": null,
+            "latitude": null,
+            "longitude": null,
+            "bbl": null
+          },
+          {
+            "label": "806 Blake Avenue",
+            "borough": null,
+            "neighborhood": null,
+            "latitude": null,
+            "longitude": null,
+            "bbl": null
+          },
+          {
+            "label": "980 Dumont Avenue",
+            "borough": null,
+            "neighborhood": null,
+            "latitude": null,
+            "longitude": null,
+            "bbl": null
+          },
+          {
+            "label": "617 Cleveland Street",
+            "borough": null,
+            "neighborhood": null,
+            "latitude": null,
+            "longitude": null,
+            "bbl": null
+          },
+          {
+            "label": "291 Hinsdale Street",
+            "borough": null,
+            "neighborhood": null,
+            "latitude": null,
+            "longitude": null,
+            "bbl": null
+          },
+          {
+            "label": "289 Hinsdale Street",
+            "borough": null,
+            "neighborhood": null,
+            "latitude": null,
+            "longitude": null,
+            "bbl": null
+          },
+          {
+            "label": "287 Hinsdale Street",
+            "borough": null,
+            "neighborhood": null,
+            "latitude": null,
+            "longitude": null,
+            "bbl": null
+          },
+          {
+            "label": "285 Hinsdale Street",
+            "borough": null,
+            "neighborhood": null,
+            "latitude": null,
+            "longitude": null,
+            "bbl": null
+          },
+          {
+            "label": "848 Blake Avenue",
+            "borough": null,
+            "neighborhood": null,
+            "latitude": null,
+            "longitude": null,
+            "bbl": null
+          },
+          {
+            "label": "588 Warwick Street",
+            "borough": null,
+            "neighborhood": null,
+            "latitude": null,
+            "longitude": null,
+            "bbl": null
+          }
+        ],
+        "tax_lots": [
+          {
+            "label": "Block 4050, Lot 25",
+            "block": "4050",
+            "lots": [
+              "25"
+            ],
+            "source": "4050 / 25"
+          },
+          {
+            "label": "Block 4067, Lot 8",
+            "block": "4067",
+            "lots": [
+              "8"
+            ],
+            "source": "4067 / 8"
+          },
+          {
+            "label": "Block 4058, Lot 18",
+            "block": "4058",
+            "lots": [
+              "18"
+            ],
+            "source": "4058 / 18"
+          },
+          {
+            "label": "Block 4081, Lot 23",
+            "block": "4081",
+            "lots": [
+              "23"
+            ],
+            "source": "4081 / 23"
+          },
+          {
+            "label": "Block 4065, Lot 22",
+            "block": "4065",
+            "lots": [
+              "22"
+            ],
+            "source": "4065 / 22"
+          },
+          {
+            "label": "Block 3767, Lot 10",
+            "block": "3767",
+            "lots": [
+              "10"
+            ],
+            "source": "3767 / 10"
+          },
+          {
+            "label": "Block 3767, Lot 11",
+            "block": "3767",
+            "lots": [
+              "11"
+            ],
+            "source": "3767 / 11"
+          },
+          {
+            "label": "Block 3767, Lot 12",
+            "block": "3767",
+            "lots": [
+              "12"
+            ],
+            "source": "3767 / 12"
+          },
+          {
+            "label": "Block 3767, Lot 13",
+            "block": "3767",
+            "lots": [
+              "13"
+            ],
+            "source": "3767 / 13"
+          },
+          {
+            "label": "Block 4060, Lot 16",
+            "block": "4060",
+            "lots": [
+              "16"
+            ],
+            "source": "4060 / 16"
+          },
+          {
+            "label": "Block 4062, Lot 30",
+            "block": "4062",
+            "lots": [
+              "30"
+            ],
+            "source": "4062 / 30"
+          }
+        ],
+        "bbls": [
+          "3040500025",
+          "3040670008",
+          "3040580018",
+          "3040810023",
+          "3040650022",
+          "3037670010",
+          "3037670011",
+          "3037670012",
+          "3037670013",
+          "3040600016",
+          "3040620030"
+        ],
+        "geometry": {
+          "latitude": 40.67084,
+          "longitude": -73.881972,
+          "label": "586 Linwood Street"
+        }
+      },
+      "disposition_stage": "hearing",
+      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:3037670010",
+      "disposition_join_keys": [
+        "bbl:3037670010",
+        "bbl:3037670011",
+        "bbl:3037670012",
+        "bbl:3037670013",
+        "bbl:3040500025",
+        "bbl:3040580018",
+        "bbl:3040600016",
+        "bbl:3040620030",
+        "bbl:3040650022",
+        "bbl:3040670008",
+        "bbl:3040810023",
+        "taxlot:brooklyn:3767/10",
+        "taxlot:brooklyn:3767/11",
+        "taxlot:brooklyn:3767/12",
+        "taxlot:brooklyn:3767/13",
+        "taxlot:brooklyn:4050/25",
+        "taxlot:brooklyn:4058/18",
+        "taxlot:brooklyn:4060/16",
+        "taxlot:brooklyn:4062/30",
+        "taxlot:brooklyn:4065/22",
+        "taxlot:brooklyn:4067/8",
+        "taxlot:brooklyn:4081/23"
+      ]
+    },
+    {
+      "domain": "property",
+      "source_system": "city_record",
       "request_id": "20160428104",
       "start_date": "2016-05-05T00:00:00.000",
       "agency_name": "Housing Preservation and Development",
@@ -6429,6 +6429,51 @@
     {
       "domain": "property",
       "source_system": "city_record",
+      "request_id": "20160427103",
+      "start_date": "2016-05-04T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "Disposition 1370 Lyman Place",
+      "event_date": "2016-06-08T10:00:00.000",
+      "street_address_1": "1 Centre Street",
+      "property_location": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "neighborhoods": [
+          "Morrisania"
+        ],
+        "addresses": [
+          {
+            "label": "1370 Lyman Place",
+            "borough": "Bronx",
+            "neighborhood": "Morrisania",
+            "latitude": 40.829916,
+            "longitude": -73.896369,
+            "bbl": "2029700052"
+          }
+        ],
+        "tax_lots": [],
+        "bbls": [
+          "2029700052"
+        ],
+        "geometry": {
+          "latitude": 40.829916,
+          "longitude": -73.896369,
+          "label": "1370 Lyman Place"
+        }
+      },
+      "disposition_stage": "hearing",
+      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:2029700052",
+      "disposition_join_keys": [
+        "bbl:2029700052"
+      ]
+    },
+    {
+      "domain": "property",
+      "source_system": "city_record",
       "request_id": "20160427102",
       "start_date": "2016-05-04T00:00:00.000",
       "agency_name": "Housing Preservation and Development",
@@ -6500,51 +6545,6 @@
         "bbl:4050377507",
         "taxlot:queens:5037/64",
         "taxlot:queens:5037/65"
-      ]
-    },
-    {
-      "domain": "property",
-      "source_system": "city_record",
-      "request_id": "20160427103",
-      "start_date": "2016-05-04T00:00:00.000",
-      "agency_name": "Housing Preservation and Development",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Property Disposition",
-      "short_title": "Disposition 1370 Lyman Place",
-      "event_date": "2016-06-08T10:00:00.000",
-      "street_address_1": "1 Centre Street",
-      "property_location": {
-        "scope": "local",
-        "boroughs": [
-          "Bronx"
-        ],
-        "neighborhoods": [
-          "Morrisania"
-        ],
-        "addresses": [
-          {
-            "label": "1370 Lyman Place",
-            "borough": "Bronx",
-            "neighborhood": "Morrisania",
-            "latitude": 40.829916,
-            "longitude": -73.896369,
-            "bbl": "2029700052"
-          }
-        ],
-        "tax_lots": [],
-        "bbls": [
-          "2029700052"
-        ],
-        "geometry": {
-          "latitude": 40.829916,
-          "longitude": -73.896369,
-          "label": "1370 Lyman Place"
-        }
-      },
-      "disposition_stage": "hearing",
-      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:2029700052",
-      "disposition_join_keys": [
-        "bbl:2029700052"
       ]
     },
     {
@@ -7298,6 +7298,46 @@
     {
       "domain": "property",
       "source_system": "city_record",
+      "request_id": "20150731102",
+      "start_date": "2015-08-07T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "Disposition",
+      "event_date": "2015-09-09T10:00:00.000",
+      "street_address_1": "22 Reade Street",
+      "property_location": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "neighborhoods": [],
+        "addresses": [],
+        "tax_lots": [
+          {
+            "label": "Block 15905, Lot 1",
+            "block": "15905",
+            "lots": [
+              "1"
+            ],
+            "source": "BLOCK LOT 15905 1"
+          }
+        ],
+        "bbls": [
+          "4159050001"
+        ],
+        "geometry": null
+      },
+      "disposition_stage": "hearing",
+      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:4158530040",
+      "disposition_join_keys": [
+        "bbl:4159050001",
+        "taxlot:queens:15905/1"
+      ]
+    },
+    {
+      "domain": "property",
+      "source_system": "city_record",
       "request_id": "20150804106",
       "start_date": "2015-08-07T00:00:00.000",
       "agency_name": "Housing Preservation and Development",
@@ -7350,46 +7390,6 @@
         "bbl:1004090056",
         "bbl:1004097502",
         "taxlot:manhattan:409/56"
-      ]
-    },
-    {
-      "domain": "property",
-      "source_system": "city_record",
-      "request_id": "20150731102",
-      "start_date": "2015-08-07T00:00:00.000",
-      "agency_name": "Housing Preservation and Development",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Property Disposition",
-      "short_title": "Disposition",
-      "event_date": "2015-09-09T10:00:00.000",
-      "street_address_1": "22 Reade Street",
-      "property_location": {
-        "scope": "local",
-        "boroughs": [
-          "Queens"
-        ],
-        "neighborhoods": [],
-        "addresses": [],
-        "tax_lots": [
-          {
-            "label": "Block 15905, Lot 1",
-            "block": "15905",
-            "lots": [
-              "1"
-            ],
-            "source": "BLOCK LOT 15905 1"
-          }
-        ],
-        "bbls": [
-          "4159050001"
-        ],
-        "geometry": null
-      },
-      "disposition_stage": "hearing",
-      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:4158530040",
-      "disposition_join_keys": [
-        "bbl:4159050001",
-        "taxlot:queens:15905/1"
       ]
     },
     {
@@ -7757,62 +7757,6 @@
     {
       "domain": "property",
       "source_system": "city_record",
-      "request_id": "20150427102",
-      "start_date": "2015-05-01T00:00:00.000",
-      "agency_name": "Housing Preservation and Development",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Property Disposition",
-      "short_title": "Beach Green North",
-      "event_date": "2015-06-10T01:00:00.000",
-      "property_location": {
-        "scope": "local",
-        "boroughs": [
-          "Queens"
-        ],
-        "neighborhoods": [
-          "Belle Harbor"
-        ],
-        "addresses": [
-          {
-            "label": "45-05 Rockaway Beach Boulevard",
-            "borough": "Queens",
-            "neighborhood": "Belle Harbor",
-            "latitude": 40.573873,
-            "longitude": -73.85242,
-            "bbl": "4162790001"
-          }
-        ],
-        "tax_lots": [
-          {
-            "label": "Block 15853, Lot 48",
-            "block": "15853",
-            "lots": [
-              "48"
-            ],
-            "source": "15853/48"
-          }
-        ],
-        "bbls": [
-          "4158530048",
-          "4162790001"
-        ],
-        "geometry": {
-          "latitude": 40.573873,
-          "longitude": -73.85242,
-          "label": "45-05 Rockaway Beach Boulevard"
-        }
-      },
-      "disposition_stage": "hearing",
-      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:4158530048",
-      "disposition_join_keys": [
-        "bbl:4158530048",
-        "bbl:4162790001",
-        "taxlot:queens:15853/48"
-      ]
-    },
-    {
-      "domain": "property",
-      "source_system": "city_record",
       "request_id": "20150427103",
       "start_date": "2015-05-01T00:00:00.000",
       "agency_name": "Housing Preservation and Development",
@@ -7884,60 +7828,6 @@
       "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:2033040030",
       "disposition_join_keys": [
         "bbl:2033040030"
-      ]
-    },
-    {
-      "domain": "property",
-      "source_system": "city_record",
-      "request_id": "20150421106",
-      "start_date": "2015-05-01T00:00:00.000",
-      "agency_name": "Housing Preservation and Development",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Property Disposition",
-      "short_title": "Excelsior II",
-      "event_date": "2015-06-10T10:00:00.000",
-      "property_location": {
-        "scope": "local",
-        "boroughs": [
-          "Bronx"
-        ],
-        "neighborhoods": [
-          "Highbridge"
-        ],
-        "addresses": [
-          {
-            "label": "120-126 West 169 Street",
-            "borough": "Bronx",
-            "neighborhood": "Highbridge",
-            "latitude": 40.839596,
-            "longitude": -73.924811,
-            "bbl": "2025180031"
-          }
-        ],
-        "tax_lots": [
-          {
-            "label": "Block 2518, Lot 31",
-            "block": "2518",
-            "lots": [
-              "31"
-            ],
-            "source": "2518 / p/o 31"
-          }
-        ],
-        "bbls": [
-          "2025180031"
-        ],
-        "geometry": {
-          "latitude": 40.839596,
-          "longitude": -73.924811,
-          "label": "120-126 West 169 Street"
-        }
-      },
-      "disposition_stage": "hearing",
-      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:2025180031",
-      "disposition_join_keys": [
-        "bbl:2025180031",
-        "taxlot:bronx:2518/31"
       ]
     },
     {
@@ -8058,6 +7948,116 @@
         "bbl:2027440001",
         "bbl:2030140045",
         "taxlot:bronx:3014/45"
+      ]
+    },
+    {
+      "domain": "property",
+      "source_system": "city_record",
+      "request_id": "20150427102",
+      "start_date": "2015-05-01T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "Beach Green North",
+      "event_date": "2015-06-10T01:00:00.000",
+      "property_location": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "neighborhoods": [
+          "Belle Harbor"
+        ],
+        "addresses": [
+          {
+            "label": "45-05 Rockaway Beach Boulevard",
+            "borough": "Queens",
+            "neighborhood": "Belle Harbor",
+            "latitude": 40.573873,
+            "longitude": -73.85242,
+            "bbl": "4162790001"
+          }
+        ],
+        "tax_lots": [
+          {
+            "label": "Block 15853, Lot 48",
+            "block": "15853",
+            "lots": [
+              "48"
+            ],
+            "source": "15853/48"
+          }
+        ],
+        "bbls": [
+          "4158530048",
+          "4162790001"
+        ],
+        "geometry": {
+          "latitude": 40.573873,
+          "longitude": -73.85242,
+          "label": "45-05 Rockaway Beach Boulevard"
+        }
+      },
+      "disposition_stage": "hearing",
+      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:4158530048",
+      "disposition_join_keys": [
+        "bbl:4158530048",
+        "bbl:4162790001",
+        "taxlot:queens:15853/48"
+      ]
+    },
+    {
+      "domain": "property",
+      "source_system": "city_record",
+      "request_id": "20150421106",
+      "start_date": "2015-05-01T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "Excelsior II",
+      "event_date": "2015-06-10T10:00:00.000",
+      "property_location": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "neighborhoods": [
+          "Highbridge"
+        ],
+        "addresses": [
+          {
+            "label": "120-126 West 169 Street",
+            "borough": "Bronx",
+            "neighborhood": "Highbridge",
+            "latitude": 40.839596,
+            "longitude": -73.924811,
+            "bbl": "2025180031"
+          }
+        ],
+        "tax_lots": [
+          {
+            "label": "Block 2518, Lot 31",
+            "block": "2518",
+            "lots": [
+              "31"
+            ],
+            "source": "2518 / p/o 31"
+          }
+        ],
+        "bbls": [
+          "2025180031"
+        ],
+        "geometry": {
+          "latitude": 40.839596,
+          "longitude": -73.924811,
+          "label": "120-126 West 169 Street"
+        }
+      },
+      "disposition_stage": "hearing",
+      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:2025180031",
+      "disposition_join_keys": [
+        "bbl:2025180031",
+        "taxlot:bronx:2518/31"
       ]
     },
     {
@@ -8193,6 +8193,50 @@
     {
       "domain": "property",
       "source_system": "city_record",
+      "request_id": "20150416112",
+      "start_date": "2015-04-23T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "disposition",
+      "event_date": "2015-05-27T10:00:00.000",
+      "property_location": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "neighborhoods": [
+          "Lower East Side"
+        ],
+        "addresses": [
+          {
+            "label": "145 Clinton Street",
+            "borough": "Manhattan",
+            "neighborhood": "Lower East Side",
+            "latitude": 40.716435,
+            "longitude": -73.986795,
+            "bbl": "1003467501"
+          }
+        ],
+        "tax_lots": [],
+        "bbls": [
+          "1003467501"
+        ],
+        "geometry": {
+          "latitude": 40.716435,
+          "longitude": -73.986795,
+          "label": "145 Clinton Street"
+        }
+      },
+      "disposition_stage": "hearing",
+      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:1003467501",
+      "disposition_join_keys": [
+        "bbl:1003467501"
+      ]
+    },
+    {
+      "domain": "property",
+      "source_system": "city_record",
       "request_id": "20150416111",
       "start_date": "2015-04-23T00:00:00.000",
       "agency_name": "Housing Preservation and Development",
@@ -8244,50 +8288,6 @@
         "bbl:1003520001",
         "bbl:1003527501",
         "taxlot:manhattan:352/1"
-      ]
-    },
-    {
-      "domain": "property",
-      "source_system": "city_record",
-      "request_id": "20150416112",
-      "start_date": "2015-04-23T00:00:00.000",
-      "agency_name": "Housing Preservation and Development",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Property Disposition",
-      "short_title": "disposition",
-      "event_date": "2015-05-27T10:00:00.000",
-      "property_location": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan"
-        ],
-        "neighborhoods": [
-          "Lower East Side"
-        ],
-        "addresses": [
-          {
-            "label": "145 Clinton Street",
-            "borough": "Manhattan",
-            "neighborhood": "Lower East Side",
-            "latitude": 40.716435,
-            "longitude": -73.986795,
-            "bbl": "1003467501"
-          }
-        ],
-        "tax_lots": [],
-        "bbls": [
-          "1003467501"
-        ],
-        "geometry": {
-          "latitude": 40.716435,
-          "longitude": -73.986795,
-          "label": "145 Clinton Street"
-        }
-      },
-      "disposition_stage": "hearing",
-      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:1003467501",
-      "disposition_join_keys": [
-        "bbl:1003467501"
       ]
     },
     {
@@ -8665,60 +8665,6 @@
     {
       "domain": "property",
       "source_system": "city_record",
-      "request_id": "20150213107",
-      "start_date": "2015-02-23T00:00:00.000",
-      "agency_name": "Housing Preservation and Development",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Property Disposition",
-      "short_title": "public hearing",
-      "event_date": "2015-03-25T10:00:00.000",
-      "property_location": {
-        "scope": "local",
-        "boroughs": [
-          "Queens"
-        ],
-        "neighborhoods": [
-          "South Corona"
-        ],
-        "addresses": [
-          {
-            "label": "54-25 101 Street",
-            "borough": "Queens",
-            "neighborhood": "South Corona",
-            "latitude": 40.740016,
-            "longitude": -73.858762,
-            "bbl": "4019390011"
-          }
-        ],
-        "tax_lots": [
-          {
-            "label": "Block 1939, Lot 11",
-            "block": "1939",
-            "lots": [
-              "11"
-            ],
-            "source": "1939/11"
-          }
-        ],
-        "bbls": [
-          "4019390011"
-        ],
-        "geometry": {
-          "latitude": 40.740016,
-          "longitude": -73.858762,
-          "label": "54-25 101 Street"
-        }
-      },
-      "disposition_stage": "hearing",
-      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:4019390011",
-      "disposition_join_keys": [
-        "bbl:4019390011",
-        "taxlot:queens:1939/11"
-      ]
-    },
-    {
-      "domain": "property",
-      "source_system": "city_record",
       "request_id": "20150212114",
       "start_date": "2015-02-23T00:00:00.000",
       "agency_name": "Housing Preservation and Development",
@@ -8768,6 +8714,60 @@
       "disposition_join_keys": [
         "bbl:4085050038",
         "taxlot:queens:8505/38"
+      ]
+    },
+    {
+      "domain": "property",
+      "source_system": "city_record",
+      "request_id": "20150213107",
+      "start_date": "2015-02-23T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "public hearing",
+      "event_date": "2015-03-25T10:00:00.000",
+      "property_location": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "neighborhoods": [
+          "South Corona"
+        ],
+        "addresses": [
+          {
+            "label": "54-25 101 Street",
+            "borough": "Queens",
+            "neighborhood": "South Corona",
+            "latitude": 40.740016,
+            "longitude": -73.858762,
+            "bbl": "4019390011"
+          }
+        ],
+        "tax_lots": [
+          {
+            "label": "Block 1939, Lot 11",
+            "block": "1939",
+            "lots": [
+              "11"
+            ],
+            "source": "1939/11"
+          }
+        ],
+        "bbls": [
+          "4019390011"
+        ],
+        "geometry": {
+          "latitude": 40.740016,
+          "longitude": -73.858762,
+          "label": "54-25 101 Street"
+        }
+      },
+      "disposition_stage": "hearing",
+      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:4019390011",
+      "disposition_join_keys": [
+        "bbl:4019390011",
+        "taxlot:queens:1939/11"
       ]
     },
     {
@@ -9630,6 +9630,73 @@
     {
       "domain": "property",
       "source_system": "city_record",
+      "request_id": "20140514103",
+      "start_date": "2014-05-21T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "Property Dispositions",
+      "event_date": "2014-06-25T10:00:00.000",
+      "property_location": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn",
+          "Manhattan"
+        ],
+        "neighborhoods": [
+          "East New York",
+          "Financial District"
+        ],
+        "addresses": [
+          {
+            "label": "611 Pennsylvania Avenue",
+            "borough": "Brooklyn",
+            "neighborhood": "East New York",
+            "latitude": 40.662199,
+            "longitude": -73.893064,
+            "bbl": "3038400003"
+          },
+          {
+            "label": "100 Gold Street",
+            "borough": "Manhattan",
+            "neighborhood": "Financial District",
+            "latitude": 40.710156,
+            "longitude": -74.00324,
+            "bbl": "1000940025"
+          }
+        ],
+        "tax_lots": [
+          {
+            "label": "Block 3840, Lot 3",
+            "block": "3840",
+            "lots": [
+              "3"
+            ],
+            "source": "3840/3"
+          }
+        ],
+        "bbls": [
+          "3038400003",
+          "1000940025"
+        ],
+        "geometry": {
+          "latitude": 40.662199,
+          "longitude": -73.893064,
+          "label": "611 Pennsylvania Avenue"
+        }
+      },
+      "disposition_stage": "hearing",
+      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:1000940025",
+      "disposition_join_keys": [
+        "bbl:1000940025",
+        "bbl:3038400003",
+        "taxlot:brooklyn:3840/3",
+        "taxlot:manhattan:3840/3"
+      ]
+    },
+    {
+      "domain": "property",
+      "source_system": "city_record",
       "request_id": "20140514102",
       "start_date": "2014-05-21T00:00:00.000",
       "agency_name": "Housing Preservation and Development",
@@ -9700,73 +9767,6 @@
         "bbl:1020387501",
         "taxlot:manhattan:2038/55",
         "taxlot:manhattan:2038/57"
-      ]
-    },
-    {
-      "domain": "property",
-      "source_system": "city_record",
-      "request_id": "20140514103",
-      "start_date": "2014-05-21T00:00:00.000",
-      "agency_name": "Housing Preservation and Development",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Property Disposition",
-      "short_title": "Property Dispositions",
-      "event_date": "2014-06-25T10:00:00.000",
-      "property_location": {
-        "scope": "local",
-        "boroughs": [
-          "Brooklyn",
-          "Manhattan"
-        ],
-        "neighborhoods": [
-          "East New York",
-          "Financial District"
-        ],
-        "addresses": [
-          {
-            "label": "611 Pennsylvania Avenue",
-            "borough": "Brooklyn",
-            "neighborhood": "East New York",
-            "latitude": 40.662199,
-            "longitude": -73.893064,
-            "bbl": "3038400003"
-          },
-          {
-            "label": "100 Gold Street",
-            "borough": "Manhattan",
-            "neighborhood": "Financial District",
-            "latitude": 40.710156,
-            "longitude": -74.00324,
-            "bbl": "1000940025"
-          }
-        ],
-        "tax_lots": [
-          {
-            "label": "Block 3840, Lot 3",
-            "block": "3840",
-            "lots": [
-              "3"
-            ],
-            "source": "3840/3"
-          }
-        ],
-        "bbls": [
-          "3038400003",
-          "1000940025"
-        ],
-        "geometry": {
-          "latitude": 40.662199,
-          "longitude": -73.893064,
-          "label": "611 Pennsylvania Avenue"
-        }
-      },
-      "disposition_stage": "hearing",
-      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:1000940025",
-      "disposition_join_keys": [
-        "bbl:1000940025",
-        "bbl:3038400003",
-        "taxlot:brooklyn:3840/3",
-        "taxlot:manhattan:3840/3"
       ]
     },
     {
@@ -10557,62 +10557,6 @@
     {
       "domain": "property",
       "source_system": "city_record",
-      "request_id": "20140128115",
-      "start_date": "2014-02-05T00:00:00.000",
-      "agency_name": "Housing Preservation and Development",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Property Disposition",
-      "short_title": "Property Disposition",
-      "event_date": "2014-03-12T01:00:00.000",
-      "property_location": {
-        "scope": "local",
-        "boroughs": [
-          "Brooklyn"
-        ],
-        "neighborhoods": [
-          "Borough Park"
-        ],
-        "addresses": [
-          {
-            "label": "1256 37th Street",
-            "borough": "Brooklyn",
-            "neighborhood": "Borough Park",
-            "latitude": 40.64203,
-            "longitude": -73.98591,
-            "bbl": "3052950110"
-          }
-        ],
-        "tax_lots": [
-          {
-            "label": "Block 5295, Lot 4",
-            "block": "5295",
-            "lots": [
-              "4"
-            ],
-            "source": "5295/ p/o 4"
-          }
-        ],
-        "bbls": [
-          "3052950004",
-          "3052950110"
-        ],
-        "geometry": {
-          "latitude": 40.64203,
-          "longitude": -73.98591,
-          "label": "1256 37th Street"
-        }
-      },
-      "disposition_stage": "hearing",
-      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:3052950004",
-      "disposition_join_keys": [
-        "bbl:3052950004",
-        "bbl:3052950110",
-        "taxlot:brooklyn:5295/4"
-      ]
-    },
-    {
-      "domain": "property",
-      "source_system": "city_record",
       "request_id": "20140128114",
       "start_date": "2014-02-05T00:00:00.000",
       "agency_name": "Housing Preservation and Development",
@@ -10708,6 +10652,62 @@
       "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:3053000114",
       "disposition_join_keys": [
         "bbl:3053000114"
+      ]
+    },
+    {
+      "domain": "property",
+      "source_system": "city_record",
+      "request_id": "20140128115",
+      "start_date": "2014-02-05T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "Property Disposition",
+      "event_date": "2014-03-12T01:00:00.000",
+      "property_location": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "neighborhoods": [
+          "Borough Park"
+        ],
+        "addresses": [
+          {
+            "label": "1256 37th Street",
+            "borough": "Brooklyn",
+            "neighborhood": "Borough Park",
+            "latitude": 40.64203,
+            "longitude": -73.98591,
+            "bbl": "3052950110"
+          }
+        ],
+        "tax_lots": [
+          {
+            "label": "Block 5295, Lot 4",
+            "block": "5295",
+            "lots": [
+              "4"
+            ],
+            "source": "5295/ p/o 4"
+          }
+        ],
+        "bbls": [
+          "3052950004",
+          "3052950110"
+        ],
+        "geometry": {
+          "latitude": 40.64203,
+          "longitude": -73.98591,
+          "label": "1256 37th Street"
+        }
+      },
+      "disposition_stage": "hearing",
+      "disposition_subject_ref": "disposition:housing-preservation-and-development:bbl:3052950004",
+      "disposition_join_keys": [
+        "bbl:3052950004",
+        "bbl:3052950110",
+        "taxlot:brooklyn:5295/4"
       ]
     },
     {

@@ -4,15 +4,15 @@
     "annual-examination-schedule",
     "active-civil-service-list"
   ],
-  "verified_at": "2026-09-06",
+  "verified_at": "2026-09-07",
   "join": {
     "method": "exact_exam_number_zero_pad",
     "schedule_rows": 1271,
     "distinct_schedule_exams": 1271,
-    "distinct_list_aggregate_exams": 855,
-    "matched_pairs": 441,
+    "distinct_list_aggregate_exams": 859,
+    "matched_pairs": 445,
     "misses": {
-      "no_list_aggregate": 773,
+      "no_list_aggregate": 769,
       "missing_application_close": 6,
       "missing_established_date": 51,
       "established_before_application_close": 0
@@ -27,26 +27,26 @@
       "citywide": {
         "key": "citywide",
         "label": "citywide",
-        "n": 441,
+        "n": 445,
         "eligible": true,
         "p10_days": 92,
-        "p50_days": 281,
-        "p90_days": 736,
+        "p50_days": 274,
+        "p90_days": 722,
         "median_months": 9,
         "train_from": "2021-05-05",
-        "train_to": "2026-08-26"
+        "train_to": "2026-09-02"
       },
       "open_competitive": {
         "key": "open_competitive",
         "label": "open competitive",
-        "n": 304,
+        "n": 308,
         "eligible": true,
         "p10_days": 92,
-        "p50_days": 246,
-        "p90_days": 757,
+        "p50_days": 239,
+        "p90_days": 744,
         "median_months": 8,
         "train_from": "2021-05-05",
-        "train_to": "2026-08-26"
+        "train_to": "2026-09-02"
       },
       "promotion": {
         "key": "promotion",
@@ -64,7 +64,7 @@
   },
   "backtest": {
     "protocol": "train establishment events through 2024; score lists established in 2025–2026 for exams already open at 2025-01-01",
-    "training_pairs": 279,
+    "training_pairs": 278,
     "scoring_pairs": 86,
     "scorecard": {
       "metric": "prediction_calibration",
@@ -82,16 +82,16 @@
       "resolved_backtest_predictions": 86,
       "resolution_rate": 1,
       "resolution_counts": {
-        "resolved_hit": 53,
-        "resolved_miss": 33,
+        "resolved_hit": 52,
+        "resolved_miss": 34,
         "open": 0
       },
       "timing_prediction_count": 86,
       "timing_realized_count": 86,
-      "timing_resolution_hits": 53,
+      "timing_resolution_hits": 52,
       "interval_nominal": 0.8,
-      "interval_coverage": 0.6163,
-      "interval_coverage_hits": 53,
+      "interval_coverage": 0.6047,
+      "interval_coverage_hits": 52,
       "interval_coverage_count": 86,
       "median_absolute_error_p50_days": 230.5,
       "occurrence_prediction_count": 0,

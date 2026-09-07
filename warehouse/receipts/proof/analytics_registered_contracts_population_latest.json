@@ -2,14 +2,14 @@
   "schema": "cityscroll.analytics_registered_contracts_population_receipt.v1",
   "status": "complete",
   "projection_contract": "cityscroll.analytical_projection.v1",
-  "snapshot_date": "2026-09-06",
-  "generated_at": "2026-09-06T22:12:11.527Z",
+  "snapshot_date": "2026-09-07",
+  "generated_at": "2026-09-07T13:02:33.872Z",
   "population_definition": "Normalized Checkbook NYC registered expense contracts; one row per exact prime_contract_id across explicit collection fiscal-year partitions.",
   "source": {
     "source_tag": "checkbook-contracts",
-    "observed_at": "2026-09-06T22:12:11.527Z",
+    "observed_at": "2026-09-07T13:02:33.872Z",
     "observation_basis": "acquisition receipt pulled_at",
-    "normalized_unique_contracts": 26796,
+    "normalized_unique_contracts": 26822,
     "source_fiscal_years": [
       2025,
       2026,
@@ -19,34 +19,34 @@
   },
   "source_receipt": {
     "schema": "cityscroll.checkbook_contracts_population_receipt.v1",
-    "pulled_at": "2026-09-06T22:12:11.527Z",
+    "pulled_at": "2026-09-07T13:02:33.872Z",
     "checksums": {
-      "page_manifest_sha256": "cd33529c969297dcaab3702d35b5038b1bfbef086147288ac8e770bac318e341",
-      "normalized_contracts_sha256": "24342d1a72ed34770bceacc747d38b192a79e25a8f919bcd365a0f116ffb3205",
-      "committed_graph_slice_sha256": "db22495d5f806763eceed2027cba3665936a60f76ab3fb335068b241f1f5de9b"
+      "page_manifest_sha256": "7eed16d919423fe73899e6550527a5ce6b3a5d0037d9a459dcb409abaa328b35",
+      "normalized_contracts_sha256": "061dad26dbf52d617b134eef2f49e730311f3ef743e2db1a148ec2aea5e08492",
+      "committed_graph_slice_sha256": "e99ab30eb4d9040023d6ef008aaa5a9639070d904358857e92c0ef651957ae30"
     },
     "population": {
-      "api_transaction_rows": 36438,
+      "api_transaction_rows": 36464,
       "by_fiscal_year": {
         "2025": 19335,
         "2026": 14739,
-        "2027": 2364
+        "2027": 2390
       },
-      "normalized_unique_contracts": 26796,
+      "normalized_unique_contracts": 26822,
       "duplicate_slices_collapsed": 9642,
-      "prime_slices": 26796,
+      "prime_slices": 26822,
       "subvendor_slices": 9642,
       "other_slices": 0,
       "blocked": {
         "missing_contract_id_slices": 0,
         "ambiguous_pin_contracts": 0,
-        "missing_pin_contracts": 10817,
+        "missing_pin_contracts": 10837,
         "ambiguous_prime_vendor_contracts": 15,
         "missing_prime_vendor_contracts": 0,
         "ambiguous_agency_contracts": 0,
         "missing_agency_contracts": 0,
         "ambiguous_registration_date_contracts": 0,
-        "ambiguous_start_date_contracts": 82,
+        "ambiguous_start_date_contracts": 84,
         "ambiguous_prime_registration_date_contracts": 0,
         "ambiguous_prime_start_date_contracts": 0,
         "ambiguous_award_method_contracts": 0,
@@ -57,25 +57,25 @@
     }
   },
   "date_retention": {
-    "source_dated_contract_count": 26796,
+    "source_dated_contract_count": 26822,
     "lost_contract_count": 0
   },
   "materialization_findings": [],
   "population": {
-    "normalized_unique_contracts": 26796,
-    "distinct_prime_contract_ids": 26796,
+    "normalized_unique_contracts": 26822,
+    "distinct_prime_contract_ids": 26822,
     "duplicate_contract_ids": 0,
     "duplicate_slices_collapsed": 9642,
     "blocked": {
       "missing_contract_id_slices": 0,
       "ambiguous_pin_contracts": 0,
-      "missing_pin_contracts": 10817,
+      "missing_pin_contracts": 10837,
       "ambiguous_prime_vendor_contracts": 15,
       "missing_prime_vendor_contracts": 0,
       "ambiguous_agency_contracts": 0,
       "missing_agency_contracts": 0,
       "ambiguous_registration_date_contracts": 0,
-      "ambiguous_start_date_contracts": 82,
+      "ambiguous_start_date_contracts": 84,
       "ambiguous_prime_registration_date_contracts": 0,
       "ambiguous_prime_start_date_contracts": 0,
       "ambiguous_award_method_contracts": 0,
@@ -84,12 +84,12 @@
       "ambiguous_includes_subvendors_contracts": 0
     },
     "registration_timing": {
-      "total_contract_count": 26796,
-      "eligible_contract_count": 26796,
+      "total_contract_count": 26822,
+      "eligible_contract_count": 26822,
       "missing_date_contract_count": 0,
-      "retroactive_contract_count": 14552,
-      "early_on_time_contract_count": 12244,
-      "retroactive_share": 0.5430661292730258,
+      "retroactive_contract_count": 14576,
+      "early_on_time_contract_count": 12246,
+      "retroactive_share": 0.5434344940720304,
       "missing_date_share": 0,
       "median_lag_days": 5,
       "p75_lag_days": 116,
@@ -101,9 +101,9 @@
       "city_record_input": "site/data/ocp_awards_warehouse_lookup.json",
       "pin_enrichment": null,
       "buckets": {
-        "exact": 4910,
-        "none": 11069,
-        "cannot_evaluate_missing_pin": 10817
+        "exact": 4909,
+        "none": 11076,
+        "cannot_evaluate_missing_pin": 10837
       }
     }
   },
@@ -113,18 +113,18 @@
       "source_tag": "prime_contracting_agency",
       "field": "agency",
       "usefulness": "required by AP-04",
-      "row_count": 26796,
+      "row_count": 26822,
       "distinct_count": 69,
       "null_count": 0,
       "null_rate": 0,
       "top_values": [
         {
           "value": "Department of Education",
-          "count": 7681
+          "count": 7701
         },
         {
           "value": "Department of Youth and Community Development",
-          "count": 2906
+          "count": 2908
         },
         {
           "value": "Department of Parks and Recreation",
@@ -136,7 +136,7 @@
         },
         {
           "value": "Housing Preservation and Development",
-          "count": 1190
+          "count": 1191
         }
       ]
     },
@@ -145,10 +145,10 @@
       "source_tag": "prime_vendor",
       "field": "prime_vendor",
       "usefulness": "required by AP-04",
-      "row_count": 26796,
-      "distinct_count": 7611,
+      "row_count": 26822,
+      "distinct_count": 7623,
       "null_count": 15,
-      "null_rate": 0.0005597850425436632,
+      "null_rate": 0.0005592424129445977,
       "top_values": [
         {
           "value": "NEW YORK CITY HOUSING AUTHORITY",
@@ -177,7 +177,7 @@
       "source_tag": "prime_contract_registration_date",
       "field": "registration_fiscal_year",
       "usefulness": "required by AP-04; derived",
-      "row_count": 26796,
+      "row_count": 26822,
       "distinct_count": 3,
       "null_count": 0,
       "null_rate": 0,
@@ -192,7 +192,7 @@
         },
         {
           "value": "2027",
-          "count": 2111
+          "count": 2137
         }
       ]
     },
@@ -201,22 +201,22 @@
       "source_tag": "prime_contract_current_amount",
       "field": "contract_amount_band",
       "usefulness": "required by AP-04; derived",
-      "row_count": 26796,
+      "row_count": 26822,
       "distinct_count": 4,
       "null_count": 0,
       "null_rate": 0,
       "top_values": [
         {
           "value": "Under $100,000",
-          "count": 14066
+          "count": 14067
         },
         {
           "value": "$100,000–$999,999",
-          "count": 5990
+          "count": 5997
         },
         {
           "value": "$1 million–$9.99 million",
-          "count": 5090
+          "count": 5108
         },
         {
           "value": "$10 million or more",
@@ -229,10 +229,10 @@
       "source_tag": "prime_contract_award_method",
       "field": "award_method",
       "usefulness": "retained when published",
-      "row_count": 26796,
+      "row_count": 26822,
       "distinct_count": 52,
       "null_count": 146,
-      "null_rate": 0.005448574414091655,
+      "null_rate": 0.005443292819327418,
       "top_values": [
         {
           "value": "SMALL PURCHASE - WRITTEN",
@@ -244,7 +244,7 @@
         },
         {
           "value": "RENEWAL OF CONTRACT",
-          "count": 2800
+          "count": 2821
         },
         {
           "value": "M/WBE SMALL PURCHASE",
@@ -252,7 +252,7 @@
         },
         {
           "value": "BORO NEEDS/DISCRETIONARY FUND",
-          "count": 1910
+          "count": 1911
         }
       ]
     },
@@ -261,18 +261,18 @@
       "source_tag": "prime_contract_industry",
       "field": "industry",
       "usefulness": "buyer-history comparison control",
-      "row_count": 26796,
+      "row_count": 26822,
       "distinct_count": 6,
       "null_count": 0,
       "null_rate": 0,
       "top_values": [
         {
           "value": "Human Services",
-          "count": 10156
+          "count": 10178
         },
         {
           "value": "Goods",
-          "count": 5412
+          "count": 5413
         },
         {
           "value": "Not Classified",
@@ -280,11 +280,11 @@
         },
         {
           "value": "Professional Services",
-          "count": 3321
+          "count": 3322
         },
         {
           "value": "Standardized Services",
-          "count": 2684
+          "count": 2685
         }
       ]
     },
@@ -293,8 +293,8 @@
       "source_tag": "prime_contract_purpose",
       "field": "contract_purpose",
       "usefulness": "case inspection",
-      "row_count": 26796,
-      "distinct_count": 16343,
+      "row_count": 26822,
+      "distinct_count": 16349,
       "null_count": 0,
       "null_rate": 0,
       "top_values": [
@@ -325,22 +325,22 @@
       "source_tag": "document_code",
       "field": "document_code",
       "usefulness": "instrument boundary",
-      "row_count": 26796,
+      "row_count": 26822,
       "distinct_count": 4,
       "null_count": 0,
       "null_rate": 0,
       "top_values": [
         {
           "value": "CT1",
-          "count": 23177
+          "count": 23201
         },
         {
           "value": "CTA1",
-          "count": 2167
+          "count": 2168
         },
         {
           "value": "MA1",
-          "count": 828
+          "count": 829
         },
         {
           "value": "MMA1",
@@ -353,22 +353,22 @@
       "source_tag": "prime_contract_version",
       "field": "contract_version",
       "usefulness": "current source version semantics",
-      "row_count": 26796,
+      "row_count": 26822,
       "distinct_count": 22,
       "null_count": 0,
       "null_rate": 0,
       "top_values": [
         {
           "value": "1",
-          "count": 18322
+          "count": 18346
         },
         {
           "value": "2",
-          "count": 4417
+          "count": 4413
         },
         {
           "value": "3",
-          "count": 1809
+          "count": 1815
         },
         {
           "value": "4",
@@ -385,9 +385,9 @@
       "source_tag": "prime_vendor_mwbe_category",
       "field": "mwbe_category",
       "usefulness": "deferred reader control",
-      "row_count": 26796,
+      "row_count": 26822,
       "distinct_count": 0,
-      "null_count": 26796,
+      "null_count": 26822,
       "null_rate": 1,
       "top_values": []
     },
@@ -396,9 +396,9 @@
       "source_tag": "prime_contract_duration|prime_contract_term",
       "field": "duration",
       "usefulness": "deferred reader control",
-      "row_count": 26796,
+      "row_count": 26822,
       "distinct_count": 0,
-      "null_count": 26796,
+      "null_count": 26822,
       "null_rate": 1,
       "top_values": []
     },
@@ -407,9 +407,9 @@
       "source_tag": "contract_includes_sub_vendors",
       "field": "includes_subvendors",
       "usefulness": "deferred reader control",
-      "row_count": 26796,
+      "row_count": 26822,
       "distinct_count": 0,
-      "null_count": 26796,
+      "null_count": 26822,
       "null_rate": 1,
       "top_values": []
     }

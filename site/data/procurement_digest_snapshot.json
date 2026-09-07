@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.procurement_digest_snapshot.v1",
-  "generated_at": "2026-09-06T22:12:11.527Z",
-  "row_count": 7172,
+  "generated_at": "2026-09-07T13:02:33.872Z",
+  "row_count": 7195,
   "rows": [
     {
       "procurement_id": "procurement:contract:8000000863",
@@ -120276,6 +120276,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT104020279757712",
+      "digest_id": "procurement:contract:CT104020279757712",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279757712",
+      "short_title": "Contract CT104020279757712",
+      "agency_name": "Department of Education",
+      "vendor_name": "B ABOVE WORLDWIDE INSTITUTE INC",
+      "contract_amount": 2847636,
+      "start_date": "2026-09-05",
+      "pin": null,
+      "contract_id": "CT104020279757712",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279757712:checkbook_contracts:contract:registered:CT104020279757712:B ABOVE WORLDWIDE INSTITUTE INC:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279757712:B ABOVE WORLDWIDE INSTITUTE INC:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279757712:B ABOVE WORLDWIDE INSTITUTE INC:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279757712"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT104020279757714",
       "digest_id": "procurement:contract:CT104020279757714",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279757714",
@@ -120626,6 +120661,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT104020279757741",
+      "digest_id": "procurement:contract:CT104020279757741",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279757741",
+      "short_title": "Contract CT104020279757741",
+      "agency_name": "Department of Education",
+      "vendor_name": "IMAGINE EARLY LEARNING CENTERS LLC",
+      "contract_amount": 946278,
+      "start_date": "2026-09-05",
+      "pin": null,
+      "contract_id": "CT104020279757741",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279757741:checkbook_contracts:contract:registered:CT104020279757741:IMAGINE EARLY LEARNING CENTERS LLC:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279757741:IMAGINE EARLY LEARNING CENTERS LLC:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279757741:IMAGINE EARLY LEARNING CENTERS LLC:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279757741"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT104020279757742",
       "digest_id": "procurement:contract:CT104020279757742",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279757742",
@@ -120901,6 +120971,41 @@
           "source_receipt_ref": "materialized:contract:registered:CT104020279757771:NATIONAL ASSOCIATION OF FAMILY DEVELOPMENT CENTERS, INC.:prime-vendor:2026-09-04",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279757771"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279757772",
+      "digest_id": "procurement:contract:CT104020279757772",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279757772",
+      "short_title": "Contract CT104020279757772",
+      "agency_name": "Department of Education",
+      "vendor_name": "NATIONAL ASSOCIATION OF FAMILY DEVELOPMENT CENTERS, INC.",
+      "contract_amount": 1864976.4,
+      "start_date": "2026-09-05",
+      "pin": null,
+      "contract_id": "CT104020279757772",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279757772:checkbook_contracts:contract:registered:CT104020279757772:NATIONAL ASSOCIATION OF FAMILY DEVELOPMENT CENTERS, INC.:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279757772:NATIONAL ASSOCIATION OF FAMILY DEVELOPMENT CENTERS, INC.:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279757772:NATIONAL ASSOCIATION OF FAMILY DEVELOPMENT CENTERS, INC.:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279757772"
         }
       ],
       "type_of_notice_description": null
@@ -121991,6 +122096,111 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT104020279758030",
+      "digest_id": "procurement:contract:CT104020279758030",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279758030",
+      "short_title": "Contract CT104020279758030",
+      "agency_name": "Department of Education",
+      "vendor_name": "CONGREGATION YESHIVA BNEI TORAH INC",
+      "contract_amount": 3879492,
+      "start_date": "2026-09-05",
+      "pin": null,
+      "contract_id": "CT104020279758030",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279758030:checkbook_contracts:contract:registered:CT104020279758030:CONGREGATION YESHIVA BNEI TORAH INC:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279758030:CONGREGATION YESHIVA BNEI TORAH INC:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279758030:CONGREGATION YESHIVA BNEI TORAH INC:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279758030"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279758032",
+      "digest_id": "procurement:contract:CT104020279758032",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279758032",
+      "short_title": "Contract CT104020279758032",
+      "agency_name": "Department of Education",
+      "vendor_name": "FRIENDS OF CROWN HEIGHTS EDUCATIONAL CENTERS INC",
+      "contract_amount": 2454858,
+      "start_date": "2026-09-05",
+      "pin": null,
+      "contract_id": "CT104020279758032",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279758032:checkbook_contracts:contract:registered:CT104020279758032:FRIENDS OF CROWN HEIGHTS EDUCATIONAL CENTERS INC:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279758032:FRIENDS OF CROWN HEIGHTS EDUCATIONAL CENTERS INC:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279758032:FRIENDS OF CROWN HEIGHTS EDUCATIONAL CENTERS INC:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279758032"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279758033",
+      "digest_id": "procurement:contract:CT104020279758033",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279758033",
+      "short_title": "Contract CT104020279758033",
+      "agency_name": "Department of Education",
+      "vendor_name": "QUEENS POINTE TALENT INC",
+      "contract_amount": 3799624,
+      "start_date": "2026-09-05",
+      "pin": null,
+      "contract_id": "CT104020279758033",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279758033:checkbook_contracts:contract:registered:CT104020279758033:QUEENS POINTE TALENT INC:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279758033:QUEENS POINTE TALENT INC:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279758033:QUEENS POINTE TALENT INC:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279758033"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT104020279758034",
       "digest_id": "procurement:contract:CT104020279758034",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279758034",
@@ -122021,6 +122231,41 @@
           "source_receipt_ref": "materialized:contract:registered:CT104020279758034:BROOKLYN KINDERGARTEN SOCIETY:prime-vendor:2026-09-04",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279758034"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279758037",
+      "digest_id": "procurement:contract:CT104020279758037",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279758037",
+      "short_title": "Contract CT104020279758037",
+      "agency_name": "Department of Education",
+      "vendor_name": "FRIENDS OF CROWN HEIGHTS EDUCATIONAL CENTERS INC",
+      "contract_amount": 1443968,
+      "start_date": "2026-09-05",
+      "pin": null,
+      "contract_id": "CT104020279758037",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279758037:checkbook_contracts:contract:registered:CT104020279758037:FRIENDS OF CROWN HEIGHTS EDUCATIONAL CENTERS INC:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279758037:FRIENDS OF CROWN HEIGHTS EDUCATIONAL CENTERS INC:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279758037:FRIENDS OF CROWN HEIGHTS EDUCATIONAL CENTERS INC:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279758037"
         }
       ],
       "type_of_notice_description": null
@@ -122131,6 +122376,111 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT104020279758055",
+      "digest_id": "procurement:contract:CT104020279758055",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279758055",
+      "short_title": "Contract CT104020279758055",
+      "agency_name": "Department of Education",
+      "vendor_name": "APPLETREE DAY CARE CENTER INC.",
+      "contract_amount": 520680,
+      "start_date": "2026-09-05",
+      "pin": null,
+      "contract_id": "CT104020279758055",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279758055:checkbook_contracts:contract:registered:CT104020279758055:APPLETREE DAY CARE CENTER INC.:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279758055:APPLETREE DAY CARE CENTER INC.:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279758055:APPLETREE DAY CARE CENTER INC.:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279758055"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279758070",
+      "digest_id": "procurement:contract:CT104020279758070",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279758070",
+      "short_title": "Contract CT104020279758070",
+      "agency_name": "Department of Education",
+      "vendor_name": "ADDIE MAE COLLINS COMMUNITY SERVICES INC",
+      "contract_amount": 2173202,
+      "start_date": "2026-09-05",
+      "pin": null,
+      "contract_id": "CT104020279758070",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279758070:checkbook_contracts:contract:registered:CT104020279758070:ADDIE MAE COLLINS COMMUNITY SERVICES INC:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279758070:ADDIE MAE COLLINS COMMUNITY SERVICES INC:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279758070:ADDIE MAE COLLINS COMMUNITY SERVICES INC:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279758070"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279758071",
+      "digest_id": "procurement:contract:CT104020279758071",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279758071",
+      "short_title": "Contract CT104020279758071",
+      "agency_name": "Department of Education",
+      "vendor_name": "PARK WEST MONTESSORI INC",
+      "contract_amount": 917100,
+      "start_date": "2026-09-05",
+      "pin": null,
+      "contract_id": "CT104020279758071",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279758071:checkbook_contracts:contract:registered:CT104020279758071:PARK WEST MONTESSORI INC:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279758071:PARK WEST MONTESSORI INC:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279758071:PARK WEST MONTESSORI INC:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279758071"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT104020279758072",
       "digest_id": "procurement:contract:CT104020279758072",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279758072",
@@ -122201,6 +122551,146 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT104020279758104",
+      "digest_id": "procurement:contract:CT104020279758104",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279758104",
+      "short_title": "Contract CT104020279758104",
+      "agency_name": "Department of Education",
+      "vendor_name": "BRIGHT STAR DAYCARE AT ROCHAMBEAU INC",
+      "contract_amount": 1823182,
+      "start_date": "2026-09-05",
+      "pin": null,
+      "contract_id": "CT104020279758104",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279758104:checkbook_contracts:contract:registered:CT104020279758104:BRIGHT STAR DAYCARE AT ROCHAMBEAU INC:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279758104:BRIGHT STAR DAYCARE AT ROCHAMBEAU INC:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279758104:BRIGHT STAR DAYCARE AT ROCHAMBEAU INC:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279758104"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279758105",
+      "digest_id": "procurement:contract:CT104020279758105",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279758105",
+      "short_title": "Contract CT104020279758105",
+      "agency_name": "Department of Education",
+      "vendor_name": "OUR LADY OF MERCY CATHOLIC ACADEMY",
+      "contract_amount": 2464872,
+      "start_date": "2026-09-05",
+      "pin": null,
+      "contract_id": "CT104020279758105",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279758105:checkbook_contracts:contract:registered:CT104020279758105:OUR LADY OF MERCY CATHOLIC ACADEMY:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279758105:OUR LADY OF MERCY CATHOLIC ACADEMY:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279758105:OUR LADY OF MERCY CATHOLIC ACADEMY:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279758105"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279758108",
+      "digest_id": "procurement:contract:CT104020279758108",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279758108",
+      "short_title": "Contract CT104020279758108",
+      "agency_name": "Department of Education",
+      "vendor_name": "NASRY MICHELEN DAY CARE CENTER INC",
+      "contract_amount": 1785740,
+      "start_date": "2026-09-05",
+      "pin": null,
+      "contract_id": "CT104020279758108",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279758108:checkbook_contracts:contract:registered:CT104020279758108:NASRY MICHELEN DAY CARE CENTER INC:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279758108:NASRY MICHELEN DAY CARE CENTER INC:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279758108:NASRY MICHELEN DAY CARE CENTER INC:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279758108"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279758109",
+      "digest_id": "procurement:contract:CT104020279758109",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279758109",
+      "short_title": "Contract CT104020279758109",
+      "agency_name": "Department of Education",
+      "vendor_name": "BROOKLYN CHINESE-AMERICAN ASSOCIATION INC",
+      "contract_amount": 1578570,
+      "start_date": "2026-09-05",
+      "pin": null,
+      "contract_id": "CT104020279758109",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279758109:checkbook_contracts:contract:registered:CT104020279758109:BROOKLYN CHINESE-AMERICAN ASSOCIATION INC:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279758109:BROOKLYN CHINESE-AMERICAN ASSOCIATION INC:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279758109:BROOKLYN CHINESE-AMERICAN ASSOCIATION INC:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279758109"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT104020279758115",
       "digest_id": "procurement:contract:CT104020279758115",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279758115",
@@ -122231,6 +122721,216 @@
           "source_receipt_ref": "materialized:contract:registered:CT104020279758115:FRIENDS OF CROWN HEIGHTS EDUCATIONAL CENTERS INC:prime-vendor:2026-09-04",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279758115"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279758130",
+      "digest_id": "procurement:contract:CT104020279758130",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279758130",
+      "short_title": "Contract CT104020279758130",
+      "agency_name": "Department of Education",
+      "vendor_name": "OUR LADY OF THE BLESSED SACRAMENT CATHOLIC ACADEMY",
+      "contract_amount": 1846128,
+      "start_date": "2026-09-05",
+      "pin": null,
+      "contract_id": "CT104020279758130",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279758130:checkbook_contracts:contract:registered:CT104020279758130:OUR LADY OF THE BLESSED SACRAMENT CATHOLIC ACADEMY:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279758130:OUR LADY OF THE BLESSED SACRAMENT CATHOLIC ACADEMY:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279758130:OUR LADY OF THE BLESSED SACRAMENT CATHOLIC ACADEMY:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279758130"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279758146",
+      "digest_id": "procurement:contract:CT104020279758146",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279758146",
+      "short_title": "Contract CT104020279758146",
+      "agency_name": "Department of Education",
+      "vendor_name": "YEARLING NURSERY SCHOOL INC",
+      "contract_amount": 782280,
+      "start_date": "2026-09-05",
+      "pin": null,
+      "contract_id": "CT104020279758146",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279758146:checkbook_contracts:contract:registered:CT104020279758146:YEARLING NURSERY SCHOOL INC:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279758146:YEARLING NURSERY SCHOOL INC:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279758146:YEARLING NURSERY SCHOOL INC:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279758146"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279758160",
+      "digest_id": "procurement:contract:CT104020279758160",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279758160",
+      "short_title": "Contract CT104020279758160",
+      "agency_name": "Department of Education",
+      "vendor_name": "RONOMOZA INC",
+      "contract_amount": 3607304,
+      "start_date": "2026-09-05",
+      "pin": null,
+      "contract_id": "CT104020279758160",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279758160:checkbook_contracts:contract:registered:CT104020279758160:RONOMOZA INC:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279758160:RONOMOZA INC:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279758160:RONOMOZA INC:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279758160"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279758176",
+      "digest_id": "procurement:contract:CT104020279758176",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279758176",
+      "short_title": "Contract CT104020279758176",
+      "agency_name": "Department of Education",
+      "vendor_name": "SHERLET DAY CARE LLC",
+      "contract_amount": 501984,
+      "start_date": "2026-09-05",
+      "pin": null,
+      "contract_id": "CT104020279758176",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279758176:checkbook_contracts:contract:registered:CT104020279758176:SHERLET DAY CARE LLC:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279758176:SHERLET DAY CARE LLC:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279758176:SHERLET DAY CARE LLC:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279758176"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279758177",
+      "digest_id": "procurement:contract:CT104020279758177",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279758177",
+      "short_title": "Contract CT104020279758177",
+      "agency_name": "Department of Education",
+      "vendor_name": "BROOKLYN CHINESE-AMERICAN ASSOCIATION INC",
+      "contract_amount": 1776078,
+      "start_date": "2026-09-05",
+      "pin": null,
+      "contract_id": "CT104020279758177",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279758177:checkbook_contracts:contract:registered:CT104020279758177:BROOKLYN CHINESE-AMERICAN ASSOCIATION INC:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279758177:BROOKLYN CHINESE-AMERICAN ASSOCIATION INC:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279758177:BROOKLYN CHINESE-AMERICAN ASSOCIATION INC:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279758177"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279758220",
+      "digest_id": "procurement:contract:CT104020279758220",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279758220",
+      "short_title": "Contract CT104020279758220",
+      "agency_name": "Department of Education",
+      "vendor_name": "BROOKLYN KINDERGARTEN SOCIETY",
+      "contract_amount": 963943.2,
+      "start_date": "2026-09-05",
+      "pin": null,
+      "contract_id": "CT104020279758220",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279758220:checkbook_contracts:contract:registered:CT104020279758220:BROOKLYN KINDERGARTEN SOCIETY:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279758220:BROOKLYN KINDERGARTEN SOCIETY:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279758220:BROOKLYN KINDERGARTEN SOCIETY:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279758220"
         }
       ],
       "type_of_notice_description": null
@@ -151706,6 +152406,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT126020278802338",
+      "digest_id": "procurement:contract:CT126020278802338",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278802338",
+      "short_title": "Contract CT126020278802338",
+      "agency_name": "Department of Youth and Community Development",
+      "vendor_name": "PROJECT HOPE CHARITIES INC",
+      "contract_amount": 2120400,
+      "start_date": "2026-09-05",
+      "pin": "26026P0004111",
+      "contract_id": "CT126020278802338",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT126020278802338:checkbook_contracts:contract:registered:CT126020278802338:PROJECT HOPE CHARITIES INC:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT126020278802338:PROJECT HOPE CHARITIES INC:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT126020278802338:PROJECT HOPE CHARITIES INC:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT126020278802338"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT126020278802451",
       "digest_id": "procurement:contract:CT126020278802451",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020278802451",
@@ -152261,6 +152996,41 @@
           "source_receipt_ref": "materialized:contract:registered:CT178120271402116:BEDFORD STUYVESANT RESTORATION CORP:prime-vendor:2026-09-04",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT178120271402116"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT178120278800587",
+      "digest_id": "procurement:contract:CT178120278800587",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT178120278800587",
+      "short_title": "Contract CT178120278800587",
+      "agency_name": "Department of Probation",
+      "vendor_name": "RENAISSANCE YOUTH CENTER",
+      "contract_amount": 1575000,
+      "start_date": "2026-09-05",
+      "pin": "78126N0019001",
+      "contract_id": "CT178120278800587",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT178120278800587:checkbook_contracts:contract:registered:CT178120278800587:RENAISSANCE YOUTH CENTER:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT178120278800587:RENAISSANCE YOUTH CENTER:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT178120278800587:RENAISSANCE YOUTH CENTER:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT178120278800587"
         }
       ],
       "type_of_notice_description": null
@@ -154431,6 +155201,41 @@
           "source_receipt_ref": "materialized:contract:registered:CT180620278802370:GRANITE ENVIRONMENTAL LLC:prime-vendor:2026-09-03",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT180620278802370"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT180620278802423",
+      "digest_id": "procurement:contract:CT180620278802423",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT180620278802423",
+      "short_title": "Contract CT180620278802423",
+      "agency_name": "Housing Preservation and Development",
+      "vendor_name": "STATEWIDE DEMOLITION CORP",
+      "contract_amount": 601962.9,
+      "start_date": "2026-09-05",
+      "pin": "80627E0007001",
+      "contract_id": "CT180620278802423",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT180620278802423:checkbook_contracts:contract:registered:CT180620278802423:STATEWIDE DEMOLITION CORP:prime-vendor:2026-09-05:registered",
+          "state": "registered",
+          "effective_at": "2026-09-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT180620278802423:STATEWIDE DEMOLITION CORP:prime-vendor:2026-09-05",
+          "source_receipt_ref": "materialized:contract:registered:CT180620278802423:STATEWIDE DEMOLITION CORP:prime-vendor:2026-09-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT180620278802423"
         }
       ],
       "type_of_notice_description": null
@@ -180821,41 +181626,6 @@
           "source_receipt_ref": "materialized:contract:registered:CT184620268802275:DRAGONETTI BROTHERS LAND SCAPING NURSERY & FLORIST INC:prime-vendor:2025-10-02",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT184620268802275"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT184620268802394",
-      "digest_id": "procurement:contract:CT184620268802394",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268802394",
-      "short_title": "Contract CT184620268802394",
-      "agency_name": "Department of Parks and Recreation",
-      "vendor_name": "AIO EVENTS & MORE CORP",
-      "contract_amount": 18060,
-      "start_date": "2025-09-02",
-      "pin": "84626C0108001",
-      "contract_id": "CT184620268802394",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT184620268802394:checkbook_contracts:contract:registered:CT184620268802394:AIO EVENTS & MORE CORP:prime-vendor:2025-09-02:registered",
-          "state": "registered",
-          "effective_at": "2025-09-02",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT184620268802394:AIO EVENTS & MORE CORP:prime-vendor:2025-09-02",
-          "source_receipt_ref": "materialized:contract:registered:CT184620268802394:AIO EVENTS & MORE CORP:prime-vendor:2025-09-02",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT184620268802394"
         }
       ],
       "type_of_notice_description": null
@@ -210606,6 +211376,41 @@
           "source_receipt_ref": "materialized:contract:registered:CT184620278802731:PLAYWORLD PARK SOLUTIONS INC:prime-vendor:2026-09-03",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT184620278802731"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT184620278802738",
+      "digest_id": "procurement:contract:CT184620278802738",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278802738",
+      "short_title": "Contract CT184620278802738",
+      "agency_name": "Department of Parks and Recreation",
+      "vendor_name": "GARDEN WORLD INC",
+      "contract_amount": 7698.75,
+      "start_date": "2026-09-03",
+      "pin": "84627C0136001",
+      "contract_id": "CT184620278802738",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT184620278802738:checkbook_contracts:contract:registered:CT184620278802738:GARDEN WORLD INC:prime-vendor:2026-09-03:registered",
+          "state": "registered",
+          "effective_at": "2026-09-03",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT184620278802738:GARDEN WORLD INC:prime-vendor:2026-09-03",
+          "source_receipt_ref": "materialized:contract:registered:CT184620278802738:GARDEN WORLD INC:prime-vendor:2026-09-03",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT184620278802738"
         }
       ],
       "type_of_notice_description": null
