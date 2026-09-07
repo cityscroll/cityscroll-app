@@ -1377,6 +1377,7 @@
     project_connections_group_applicant: 'আবেদনকারী',
     project_connections_group_parcels: 'যেসব জমি ছুঁয়েছে',
     project_connections_group_meetings: 'যারা বিবেচনা করেছে',
+    project_connections_group_council_matters: 'সিটি কাউন্সিল বিষয়',
     project_connections_group_decisions: 'যারা সিদ্ধান্ত নিয়েছে',
     project_connections_group_notices: 'সম্পর্কিত প্রকাশিত বিজ্ঞপ্তি',
     project_connections_group_mih: 'বাধ্যতামূলক অন্তর্ভুক্তিমূলক আবাসন',

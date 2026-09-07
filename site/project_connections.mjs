@@ -28,6 +28,7 @@ export const PROJECT_CONNECTION_GROUPS = Object.freeze([
   { id: "applicant", relation: "applicant_agency", surface: "land" },
   { id: "parcels", relation: "sited_on_parcel", surface: "land" },
   { id: "meetings", relation: "decides_land_project", surface: "land" },
+  { id: "council_matters", relation: "about_project", surface: "land" },
   { id: "decisions", relation: "project_disposition", surface: "land" },
   { id: "notices", relation: "references_project", surface: "land" },
   { id: "mih", relation: "has_mih_area", surface: "land" },
@@ -176,6 +177,7 @@ export function buildProjectConnectionEvidence({
   graphLinks = [],
   outcome = null,
   mihRows = [],
+  councilMatterRows = [],
   coverage = {},
 } = {}) {
   const id = projectId(rawProjectId);
@@ -338,6 +340,20 @@ export function buildProjectConnectionEvidence({
   meetings.items = uniqueBy(meetingItems, (item) => item.ref || item.href);
   meetings.status = meetings.items.length ? "matched" : "not_observed";
   meetings.gap = meetings.items.length ? null : "no_exact_meeting_edge_in_bounded_corpus";
+
+  // The accepted Council land-matter bridge, already reduced to exact matter
+  // identities by site/council_land_matter_links.mjs. This group publishes an
+  // observed legislative history, never a project outcome: every row carries
+  // `about_project` with `is_decision: false`, and the caller supplies rows only
+  // for a project the bridge actually matched.
+  const councilMatters = groups.find((group) => group.id === "council_matters");
+  councilMatters.items = uniqueBy(
+    (Array.isArray(councilMatterRows) ? councilMatterRows : [])
+      .filter((row) => clean(row?.ref, 80).startsWith("matter:") && row?.is_decision === false),
+    (item) => item.ref,
+  );
+  councilMatters.status = councilMatters.items.length ? "matched" : "not_observed";
+  councilMatters.gap = councilMatters.items.length ? null : "no_exact_council_matter_edge_in_bounded_corpus";
 
   const dispositions = Array.isArray(joinedOutcome?.dispositions) ? joinedOutcome.dispositions : [];
   const documents = Array.isArray(joinedOutcome?.documents) ? joinedOutcome.documents : [];

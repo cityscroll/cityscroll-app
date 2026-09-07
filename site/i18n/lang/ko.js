@@ -1376,6 +1376,7 @@
     project_connections_group_applicant: '신청자',
     project_connections_group_parcels: '관련 필지',
     project_connections_group_meetings: '검토 기관',
+    project_connections_group_council_matters: '시의회 안건',
     project_connections_group_decisions: '결정 기관',
     project_connections_group_notices: '관련 게시 공고',
     project_connections_group_mih: '의무적 포용 주택',

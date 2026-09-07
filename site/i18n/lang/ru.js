@@ -1376,6 +1376,7 @@
     project_connections_group_applicant: 'Заявитель',
     project_connections_group_parcels: 'Затрагивает участки',
     project_connections_group_meetings: 'Рассмотрен',
+    project_connections_group_council_matters: 'Вопросы городского совета',
     project_connections_group_decisions: 'Решение принято',
     project_connections_group_notices: 'Связанные опубликованные объявления',
     project_connections_group_mih: 'Обязательное инклюзивное жильё',

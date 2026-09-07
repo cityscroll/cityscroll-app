@@ -351,6 +351,7 @@ family_static_standards() {
   run_and_fail node tools/build_bbl_mappluto_centroids.mjs --check
   run_and_fail node tools/build_land_project_map_points.mjs --check
   run_and_fail node tools/build_land_authority_summary.mjs --check
+  run_and_fail node tools/build_council_land_matter_links.mjs --check
   run_and_fail node tools/generate_source_docs.mjs --check
   run_and_fail node tools/build_capability_topology.mjs --check
   run_and_fail node tools/generate_integration_client.mjs --check

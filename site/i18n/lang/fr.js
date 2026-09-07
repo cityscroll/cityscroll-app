@@ -1458,6 +1458,7 @@
     project_connections_group_applicant: 'Déposé par',
     project_connections_group_parcels: 'Parcelles concernées',
     project_connections_group_meetings: 'Examiné par',
+    project_connections_group_council_matters: 'Dossiers du conseil municipal',
     project_connections_group_decisions: 'Décidé par',
     project_connections_group_notices: 'Avis publiés associés',
     project_connections_group_mih: 'Logement inclusif obligatoire',

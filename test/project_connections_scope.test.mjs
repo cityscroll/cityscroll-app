@@ -118,7 +118,7 @@ test("Timbale Terrace composes five reader-verb groups with confidence and cover
   const result = evidence();
   assert.equal(result.project_ref, PROJECT_REF);
   assert.deepEqual(result.groups.map((group) => group.id), [
-    "applicant", "parcels", "meetings", "decisions", "notices", "mih",
+    "applicant", "parcels", "meetings", "council_matters", "decisions", "notices", "mih",
   ]);
 
   const applicant = result.groups.find((group) => group.id === "applicant");

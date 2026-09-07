@@ -33,6 +33,7 @@ def main() -> None:
                 "applicant": "Applied by",
                 "parcels": "Touches parcels",
                 "meetings": "Considered by",
+                "council_matters": "Council matters",
                 "decisions": "Decided by",
                 "notices": "Related published notices",
                 "mih": "Mandatory Inclusionary Housing",

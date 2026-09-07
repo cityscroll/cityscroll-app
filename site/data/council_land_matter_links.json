@@ -1,0 +1,890 @@
+{
+  "bridge": {
+    "eligible_appearances": 78,
+    "gate": "GO",
+    "linked_matters": 32,
+    "linked_projects": 15,
+    "matched_appearances": 32,
+    "matched_rate": 0.410256
+  },
+  "generated_at": "2026-09-05T00:00:00.000Z",
+  "matters": {
+    "78872": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-05-27",
+          "event_id": "22390",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260105ZMK",
+      "matter_file": "LU 0067-2026",
+      "matter_id": "78872",
+      "project_id": "2024K0358",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78872",
+      "title": "Zoning, Monitor Point, Brooklyn (C 260105 ZMK)."
+    },
+    "78873": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-05-27",
+          "event_id": "22390",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260106ZRK",
+      "matter_file": "LU 0068-2026",
+      "matter_id": "78873",
+      "project_id": "2024K0358",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78873",
+      "title": "Zoning, Monitor Point, Brooklyn (N 260106 ZRK)."
+    },
+    "78874": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-05-27",
+          "event_id": "22390",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260107ZSK",
+      "matter_file": "LU 0069-2026",
+      "matter_id": "78874",
+      "project_id": "2024K0358",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78874",
+      "title": "Zoning, Monitor Point, Brooklyn (C 260107 ZSK)."
+    },
+    "78876": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-05-27",
+          "event_id": "22390",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "250326MMK",
+      "matter_file": "LU 0071-2026",
+      "matter_id": "78876",
+      "project_id": "2025K0287",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78876",
+      "title": "Zoning, Monitor Point, Brooklyn (C 250326 MMK)."
+    },
+    "78877": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-05-27",
+          "event_id": "22390",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260013ZMM",
+      "matter_file": "LU 0072-2026",
+      "matter_id": "78877",
+      "project_id": "2024M0244",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78877",
+      "title": "Zoning, Dewitt Clinton Park North (801 Eleventh Avenue), Manhattan (C 260013 ZMM)."
+    },
+    "78878": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-05-27",
+          "event_id": "22390",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260014ZRM",
+      "matter_file": "LU 0073-2026",
+      "matter_id": "78878",
+      "project_id": "2024M0244",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78878",
+      "title": "Zoning, Dewitt Clinton Park North (801 Eleventh Avenue), Manhattan (N 260014 ZRM)."
+    },
+    "78879": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-05-27",
+          "event_id": "22390",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260015ZSM",
+      "matter_file": "LU 0074-2026",
+      "matter_id": "78879",
+      "project_id": "2024M0244",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78879",
+      "title": "Zoning, Dewitt Clinton Park North (801 Eleventh Avenue), Manhattan (C 260015 ZSM)."
+    },
+    "78880": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-05-27",
+          "event_id": "22390",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260060ZMM",
+      "matter_file": "LU 0075-2026",
+      "matter_id": "78880",
+      "project_id": "2023M0213",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78880",
+      "title": "Zoning, Dewitt Clinton Park North (629 West 54th Street), Manhattan (C 260060 ZMM)."
+    },
+    "78881": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-05-27",
+          "event_id": "22390",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260062ZRM",
+      "matter_file": "LU 0076-2026",
+      "matter_id": "78881",
+      "project_id": "2023M0213",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78881",
+      "title": "Zoning, Dewitt Clinton Park North (629 West 54th Street), Manhattan (N 260062 ZRM)."
+    },
+    "78882": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-05-27",
+          "event_id": "22390",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260061ZSM",
+      "matter_file": "LU 0077-2026",
+      "matter_id": "78882",
+      "project_id": "2023M0213",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78882",
+      "title": "Zoning, Dewitt Clinton Park North (629 West 54th Street), Manhattan (C 260061 ZSM)."
+    },
+    "79065": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-06-17",
+          "event_id": "22437",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "250290ZMQ",
+      "matter_file": "LU 0094-2026",
+      "matter_id": "79065",
+      "project_id": "2024Q0164",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79065",
+      "title": "Zoning, 164th Street Rezoning, Queens (C 250290 ZMQ)."
+    },
+    "79066": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-06-17",
+          "event_id": "22437",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "250291ZRQ",
+      "matter_file": "LU 0095-2026",
+      "matter_id": "79066",
+      "project_id": "2024Q0164",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79066",
+      "title": "Zoning, 164th Street Rezoning, Queens (N 250291 ZRQ)."
+    },
+    "79067": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-06-17",
+          "event_id": "22437",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "250253ZMQ",
+      "matter_file": "LU 0096-2026",
+      "matter_id": "79067",
+      "project_id": "2024Q0113",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79067",
+      "title": "Zoning, 50-20 108th Street Rezoning, Queens (C 250253 ZMQ)."
+    },
+    "79068": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-06-17",
+          "event_id": "22437",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "250254ZRQ",
+      "matter_file": "LU 0097-2026",
+      "matter_id": "79068",
+      "project_id": "2024Q0113",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79068",
+      "title": "Zoning, 50-20 108th Street Rezoning, Queens (N 250254 ZRQ)."
+    },
+    "79069": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-06-17",
+          "event_id": "22437",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260169ZMR",
+      "matter_file": "LU 0098-2026",
+      "matter_id": "79069",
+      "project_id": "2024R0300",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79069",
+      "title": "Zoning, 198-208 Richmond Terrace, Staten Island (C 260169 ZMR)."
+    },
+    "79070": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-06-17",
+          "event_id": "22437",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260170ZRR",
+      "matter_file": "LU 0099-2026",
+      "matter_id": "79070",
+      "project_id": "2024R0300",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79070",
+      "title": "Zoning, 198-208 Richmond Terrace, Staten Island (N 260170 ZRR)."
+    },
+    "79109": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-07-01",
+          "event_id": "22566",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "250248ZMK",
+      "matter_file": "LU 0100-2026",
+      "matter_id": "79109",
+      "project_id": "2023K0183",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79109",
+      "title": "Zoning, 2950 West 24th Street Rezoning, Brooklyn (C 250248 ZMK)."
+    },
+    "79110": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-07-01",
+          "event_id": "22566",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "250249ZRK",
+      "matter_file": "LU 0101-2026",
+      "matter_id": "79110",
+      "project_id": "2023K0183",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79110",
+      "title": "Zoning, 2950 West 24th Street Rezoning, Brooklyn (N 250249 ZRK)."
+    },
+    "79111": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-07-01",
+          "event_id": "22566",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "250215ZSK",
+      "matter_file": "LU 0102-2026",
+      "matter_id": "79111",
+      "project_id": "2023K0183",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79111",
+      "title": "Zoning, 2950 West 24th Street Rezoning, Brooklyn (C 250215 ZSK)."
+    },
+    "79112": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-07-01",
+          "event_id": "22566",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "250250ZSK",
+      "matter_file": "LU 0103-2026",
+      "matter_id": "79112",
+      "project_id": "2023K0183",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79112",
+      "title": "Zoning, 2950 West 24th Street Rezoning, Brooklyn (C 250250 ZSK)."
+    },
+    "79113": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-07-01",
+          "event_id": "22566",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260155ZMQ",
+      "matter_file": "LU 0104-2026",
+      "matter_id": "79113",
+      "project_id": "2022Q0449",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79113",
+      "title": "Zoning, 63-02 Fresh Pond Road Rezoning, Queens (C 260155 ZMQ)."
+    },
+    "79114": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-07-01",
+          "event_id": "22566",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260156ZRQ",
+      "matter_file": "LU 0105-2026",
+      "matter_id": "79114",
+      "project_id": "2022Q0449",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79114",
+      "title": "Zoning, 63-02 Fresh Pond Road Rezoning, Queens (N 260156 ZRQ)."
+    },
+    "79115": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-07-01",
+          "event_id": "22566",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "250245ZMX",
+      "matter_file": "LU 0106-2026",
+      "matter_id": "79115",
+      "project_id": "2024X0132",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79115",
+      "title": "Zoning, 1160 Pugsley Avenue Rezoning, Bronx (C 250245 ZMX)."
+    },
+    "79116": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-07-01",
+          "event_id": "22566",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "250246ZRX",
+      "matter_file": "LU 0107-2026",
+      "matter_id": "79116",
+      "project_id": "2024X0132",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79116",
+      "title": "Zoning, 1160 Pugsley Avenue Rezoning, Bronx (N 250246 ZRX)."
+    },
+    "79117": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-07-01",
+          "event_id": "22566",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260162ZMK",
+      "matter_file": "LU 0108-2026",
+      "matter_id": "79117",
+      "project_id": "2025K0154",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79117",
+      "title": "Zoning, 1166 Bedford Avenue Rezoning, Brooklyn (C 260162 ZMK)."
+    },
+    "79118": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-07-01",
+          "event_id": "22566",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260163ZRK",
+      "matter_file": "LU 0109-2026",
+      "matter_id": "79118",
+      "project_id": "2025K0154",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79118",
+      "title": "Zoning, 1166 Bedford Avenue Rezoning, Brooklyn (N 260163 ZRK)."
+    },
+    "79200": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-07-22",
+          "event_id": "22509",
+          "event_name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260089PCQ",
+      "matter_file": "LU 0114-2026",
+      "matter_id": "79200",
+      "project_id": "2025Q0316",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79200",
+      "title": "Landmarks, Queens CD 2 Walk to Park Site Selection/Acquisition, Queens (C 260089 PCQ)."
+    },
+    "79201": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-07-21",
+          "event_id": "22502",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260149ZMK",
+      "matter_file": "LU 0115-2026",
+      "matter_id": "79201",
+      "project_id": "2024K0286",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79201",
+      "title": "Zoning, 200 Kent Avenue Rezoning, Brooklyn (C 260149 ZMK)."
+    },
+    "79202": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-07-21",
+          "event_id": "22502",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260150ZRK",
+      "matter_file": "LU 0116-2026",
+      "matter_id": "79202",
+      "project_id": "2024K0286",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79202",
+      "title": "Zoning, 200 Kent Avenue Rezoning, Brooklyn (N 260150 ZRK)."
+    },
+    "79203": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-07-21",
+          "event_id": "22502",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260123MCM",
+      "matter_file": "LU 0117-2026",
+      "matter_id": "79203",
+      "project_id": "2025M0252",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79203",
+      "title": "Zoning, Flatiron NoMad Major Concessions, Manhattan (C 260123 MCM)."
+    },
+    "79204": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-07-21",
+          "event_id": "22502",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260147ZMQ",
+      "matter_file": "LU 0118-2026",
+      "matter_id": "79204",
+      "project_id": "2025Q0142",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79204",
+      "title": "Zoning, 47-03 108th Street Rezoning, Queens (C 260147 ZMQ)."
+    },
+    "79205": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-07-21",
+          "event_id": "22502",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260148ZRQ",
+      "matter_file": "LU 0119-2026",
+      "matter_id": "79205",
+      "project_id": "2025Q0142",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79205",
+      "title": "Zoning, 47-03 108th Street Rezoning, Queens (N 260148 ZRQ)."
+    }
+  },
+  "projects": {
+    "2022Q0449": {
+      "matter_ids": [
+        "79113",
+        "79114"
+      ],
+      "project_id": "2022Q0449",
+      "project_name": "63-02 Fresh Pond Road Rezoning"
+    },
+    "2023K0183": {
+      "matter_ids": [
+        "79109",
+        "79110",
+        "79111",
+        "79112"
+      ],
+      "project_id": "2023K0183",
+      "project_name": "2950 West 24th St Rezoning"
+    },
+    "2023M0213": {
+      "matter_ids": [
+        "78880",
+        "78881",
+        "78882"
+      ],
+      "project_id": "2023M0213",
+      "project_name": "Dewitt Clinton Park North (629 West 54th Street)"
+    },
+    "2024K0286": {
+      "matter_ids": [
+        "79201",
+        "79202"
+      ],
+      "project_id": "2024K0286",
+      "project_name": "200 Kent Avenue Rezoning"
+    },
+    "2024K0358": {
+      "matter_ids": [
+        "78872",
+        "78873",
+        "78874"
+      ],
+      "project_id": "2024K0358",
+      "project_name": "Monitor Point"
+    },
+    "2024M0244": {
+      "matter_ids": [
+        "78877",
+        "78878",
+        "78879"
+      ],
+      "project_id": "2024M0244",
+      "project_name": "Dewitt Clinton Park North (801 Eleventh Avenue)"
+    },
+    "2024Q0113": {
+      "matter_ids": [
+        "79067",
+        "79068"
+      ],
+      "project_id": "2024Q0113",
+      "project_name": "50-20 108th Street Rezoning"
+    },
+    "2024Q0164": {
+      "matter_ids": [
+        "79065",
+        "79066"
+      ],
+      "project_id": "2024Q0164",
+      "project_name": "164th Street Rezoning"
+    },
+    "2024R0300": {
+      "matter_ids": [
+        "79069",
+        "79070"
+      ],
+      "project_id": "2024R0300",
+      "project_name": "198-208 Richmond Terrace"
+    },
+    "2024X0132": {
+      "matter_ids": [
+        "79115",
+        "79116"
+      ],
+      "project_id": "2024X0132",
+      "project_name": "1160 Pugsley Avenue Rezoning"
+    },
+    "2025K0154": {
+      "matter_ids": [
+        "79117",
+        "79118"
+      ],
+      "project_id": "2025K0154",
+      "project_name": "1166 Bedford Avenue Rezoning"
+    },
+    "2025K0287": {
+      "matter_ids": [
+        "78876"
+      ],
+      "project_id": "2025K0287",
+      "project_name": "Monitor Point - 56 Quay Demapping"
+    },
+    "2025M0252": {
+      "matter_ids": [
+        "79203"
+      ],
+      "project_id": "2025M0252",
+      "project_name": "Flatiron NoMad Major Concessions"
+    },
+    "2025Q0142": {
+      "matter_ids": [
+        "79204",
+        "79205"
+      ],
+      "project_id": "2025Q0142",
+      "project_name": "47-03 108th Street Rezoning"
+    },
+    "2025Q0316": {
+      "matter_ids": [
+        "79200"
+      ],
+      "project_id": "2025Q0316",
+      "project_name": "Queens CD 2 Walk to Park Site Selection/Acq."
+    }
+  },
+  "relation": {
+    "canonical": "about_project",
+    "compatibility": "decides_land_project",
+    "is_decision": false,
+    "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+    "proceeding": "reviews_project"
+  },
+  "schema": "cityscroll.council_land_matter_links.v1",
+  "source_vintage": {
+    "meeting_outcomes_snapshot_counts": {
+      "absent_count": 303,
+      "present_count": 16,
+      "record_count": 319
+    },
+    "meeting_outcomes_snapshot_generated_at": "2026-08-10T13:08:13.019Z",
+    "zap_projects_warehouse_lookup_materialized_at": "2026-08-23T07:59:09.786Z"
+  }
+}

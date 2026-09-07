@@ -9,6 +9,8 @@ import {
   PROJECT_CONNECTIONS_SCHEMA_VERSION,
   PROJECT_CONNECTION_GROUPS,
 } from "../../site/project_connections.mjs";
+import { councilLandMatterProjectItems } from "../../site/council_land_matter_links.mjs";
+import councilLandMatterLinks from "../../site/data/council_land_matter_links.json" with { type: "json" };
 import {
   entityLinksForProjectFromD1,
   graphLinksForProjectFromD1,
@@ -28,6 +30,8 @@ const currentBblProjectCount = new Set(
 const applicantCount = projectRows.filter((row) => clean(row?.primary_applicant)).length;
 const outcomeRates = outcomeReceipt?.join_measurement?.rates || {};
 const mihRows = Array.isArray(mihLookup?.rows) ? mihLookup.rows : [];
+
+const councilBridge = councilLandMatterLinks?.bridge || {};
 
 export const PROJECT_CONNECTION_COVERAGE = Object.freeze({
   applicant: {
@@ -66,6 +70,17 @@ export const PROJECT_CONNECTION_COVERAGE = Object.freeze({
     scope: "this_project",
     vintage: null,
     gap: "eligible_denominator_not_measured",
+  },
+  council_matters: {
+    // The denominator is every Council matter appearance the strict
+    // notice-to-event join retained, not every project: this group measures how
+    // much of the Council's own retained calendar carries an exact land
+    // identifier.
+    eligible: Number.isFinite(councilBridge.eligible_appearances) ? councilBridge.eligible_appearances : null,
+    linked: Number.isFinite(councilBridge.matched_appearances) ? councilBridge.matched_appearances : null,
+    rate: Number.isFinite(councilBridge.matched_rate) ? councilBridge.matched_rate : null,
+    scope: "retained_council_matter_appearances",
+    vintage: councilLandMatterLinks?.generated_at || null,
   },
   mih: {
     eligible: mihLookup?.join_measurement?.eligible ?? null,
@@ -130,6 +145,7 @@ export async function attachProjectConnections(record, { db = null } = {}) {
       graphLinks,
       outcome: record,
       mihRows,
+      councilMatterRows: councilLandMatterProjectItems(id),
       coverage,
     }),
   };
