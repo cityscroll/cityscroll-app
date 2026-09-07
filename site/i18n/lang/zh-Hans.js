@@ -17,6 +17,20 @@
   W.STRINGS = W.STRINGS || {};
   W.STRINGS["zh-Hans"] = W.STRINGS["zh-Hans"] || {};
   Object.assign(W.STRINGS["zh-Hans"], {
+    // A hearing agenda, indexed by the land use projects its matters belong to
+    // (agenda_project_groups.mjs). Counts go through tn(); the publisher's file
+    // numbers, titles and application numbers stay in the source language.
+    agenda_project_groups_heading: "本议程上的土地使用项目",
+    agenda_project_groups_lead_one: "本议程上的 {total} 项市议会事项中，有 {linked} 项属于 1 个土地使用项目。",
+    agenda_project_groups_lead_other: "本议程上的 {total} 项市议会事项中，有 {linked} 项属于 {groups} 个土地使用项目。",
+    agenda_project_groups_matters_one: "1 项事项",
+    agenda_project_groups_matters_other: "{n} 项事项",
+    agenda_project_groups_applications: "申请编号 {values}",
+    agenda_project_groups_expand: "以该项目提交的事项",
+    agenda_project_groups_unlinked_one: "本议程上有 1 项事项在此来源记录中未与任何土地使用项目相联，该事项仍单独列在下方。",
+    agenda_project_groups_unlinked_other: "本议程上有 {n} 项事项在此来源记录中未与任何土地使用项目相联，这些事项仍单独列在下方。",
+    agenda_project_groups_limit: "事项按照该事项与该项目本就共有的市政申请编号归组，绝不依据标题的相似程度。出现在同一议程上并不代表立场一致；已记录的听证或延期是审议中的一个步骤，而非对该项目的决定。本议程的每一项仍按来源记录给出的顺序列在下方。",
+
     scenario_heading: "您来这里要做什么？",
     scenario_intro: "选择一项任务以使用实用筛选条件开始，或使用上方的类别选项卡。",
     scenario_city_work: "我竞标市政府项目",

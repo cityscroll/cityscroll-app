@@ -17,6 +17,26 @@
   W.STRINGS = W.STRINGS || {};
   W.STRINGS["ru"] = W.STRINGS["ru"] || {};
   Object.assign(W.STRINGS["ru"], {
+    // A hearing agenda, indexed by the land use projects its matters belong to
+    // (agenda_project_groups.mjs). Counts go through tn(); the publisher's file
+    // numbers, titles and application numbers stay in the source language.
+    agenda_project_groups_heading: "Проекты землепользования в этой повестке",
+    agenda_project_groups_lead_one: "Один проект землепользования охватывает {linked} из {total} вопросов городского совета в этой повестке.",
+    agenda_project_groups_lead_few: "{groups} проекта землепользования охватывают {linked} из {total} вопросов городского совета в этой повестке.",
+    agenda_project_groups_lead_many: "{groups} проектов землепользования охватывают {linked} из {total} вопросов городского совета в этой повестке.",
+    agenda_project_groups_lead_other: "{groups} проектов землепользования охватывают {linked} из {total} вопросов городского совета в этой повестке.",
+    agenda_project_groups_matters_one: "{n} вопрос",
+    agenda_project_groups_matters_few: "{n} вопроса",
+    agenda_project_groups_matters_many: "{n} вопросов",
+    agenda_project_groups_matters_other: "{n} вопросов",
+    agenda_project_groups_applications: "Номера заявок {values}",
+    agenda_project_groups_expand: "Вопросы, поданные по этому проекту",
+    agenda_project_groups_unlinked_one: "{n} вопрос этой повестки не связан с проектом землепользования в этой исходной записи. Он приведён ниже отдельно.",
+    agenda_project_groups_unlinked_few: "{n} вопроса этой повестки не связаны с проектом землепользования в этой исходной записи. Они приведены ниже отдельно.",
+    agenda_project_groups_unlinked_many: "{n} вопросов этой повестки не связаны с проектом землепользования в этой исходной записи. Они приведены ниже отдельно.",
+    agenda_project_groups_unlinked_other: "{n} вопросов этой повестки не связаны с проектом землепользования в этой исходной записи. Они приведены ниже отдельно.",
+    agenda_project_groups_limit: "Вопросы группируются по номеру городской заявки, который уже указан и в вопросе, и в проекте, а не по сходству названий. Присутствие в одной повестке не означает общей позиции, а зафиксированные слушания или перенос — это шаг рассмотрения, а не решение по проекту. Каждый пункт этой повестки по-прежнему приведён ниже в том порядке, который даёт исходная запись.",
+
     scenario_heading: "Что вы хотите сделать?",
     scenario_intro: "Выберите задачу, чтобы начать с полезных фильтров, или используйте вкладки категорий выше.",
     scenario_city_work: "Я участвую в торгах на городские заказы",

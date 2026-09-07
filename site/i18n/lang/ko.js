@@ -17,6 +17,20 @@
   W.STRINGS = W.STRINGS || {};
   W.STRINGS["ko"] = W.STRINGS["ko"] || {};
   Object.assign(W.STRINGS["ko"], {
+    // A hearing agenda, indexed by the land use projects its matters belong to
+    // (agenda_project_groups.mjs). Counts go through tn(); the publisher's file
+    // numbers, titles and application numbers stay in the source language.
+    agenda_project_groups_heading: "이 안건에 오른 토지 이용 사업",
+    agenda_project_groups_lead_one: "이 안건의 시의회 안건 {total}건 가운데 {linked}건이 토지 이용 사업 1건에 속합니다.",
+    agenda_project_groups_lead_other: "이 안건의 시의회 안건 {total}건 가운데 {linked}건이 토지 이용 사업 {groups}건에 속합니다.",
+    agenda_project_groups_matters_one: "1건",
+    agenda_project_groups_matters_other: "{n}건",
+    agenda_project_groups_applications: "신청 번호 {values}",
+    agenda_project_groups_expand: "이 사업으로 제출된 안건",
+    agenda_project_groups_unlinked_one: "이 안건 가운데 1건은 이 출처 기록에서 어떤 토지 이용 사업과도 연결되지 않습니다. 해당 안건은 아래에 그대로 따로 표시됩니다.",
+    agenda_project_groups_unlinked_other: "이 안건 가운데 {n}건은 이 출처 기록에서 어떤 토지 이용 사업과도 연결되지 않습니다. 해당 안건은 아래에 그대로 따로 표시됩니다.",
+    agenda_project_groups_limit: "안건은 해당 안건과 사업이 이미 함께 가지고 있는 시 신청 번호로만 묶으며, 제목이 비슷하다는 이유로 묶지 않습니다. 같은 안건에 올랐다는 사실이 같은 입장을 뜻하지는 않으며, 기록된 청문이나 연기는 심의 과정의 한 단계일 뿐 사업에 대한 결정이 아닙니다. 이 안건의 모든 항목은 출처 기록이 정한 순서 그대로 아래에 표시됩니다.",
+
     scenario_heading: "무엇을 하러 오셨나요?",
     scenario_intro: "유용한 필터로 시작할 작업을 선택하거나 위의 카테고리 탭을 이용하세요.",
     scenario_city_work: "시 사업에 입찰합니다",

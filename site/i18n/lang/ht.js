@@ -16,6 +16,20 @@
   W.STRINGS = W.STRINGS || {};
   W.STRINGS["ht"] = W.STRINGS["ht"] || {};
   Object.assign(W.STRINGS["ht"], {
+    // A hearing agenda, indexed by the land use projects its matters belong to
+    // (agenda_project_groups.mjs). Counts go through tn(); the publisher's file
+    // numbers, titles and application numbers stay in the source language.
+    agenda_project_groups_heading: "Pwojè itilizasyon tè nan lòd jou sa a",
+    agenda_project_groups_lead_one: "Yon sèl pwojè itilizasyon tè kouvri {linked} nan {total} zafè Konsèy Minisipal ki nan lòd jou sa a.",
+    agenda_project_groups_lead_other: "{groups} pwojè itilizasyon tè kouvri {linked} nan {total} zafè Konsèy Minisipal ki nan lòd jou sa a.",
+    agenda_project_groups_matters_one: "1 zafè",
+    agenda_project_groups_matters_other: "{n} zafè",
+    agenda_project_groups_applications: "Nimewo demann {values}",
+    agenda_project_groups_expand: "Zafè ki depoze anba pwojè sa a",
+    agenda_project_groups_unlinked_one: "Gen yon zafè nan lòd jou sa a ki pa mare ak okenn pwojè itilizasyon tè nan dosye sous sa a. Li parèt pou kont li pi ba a.",
+    agenda_project_groups_unlinked_other: "Gen {n} zafè nan lòd jou sa a ki pa mare ak okenn pwojè itilizasyon tè nan dosye sous sa a. Yo parèt pou kont yo pi ba a.",
+    agenda_project_groups_limit: "Zafè yo gwoupe dapre nimewo demann vil la ke zafè a ak pwojè a deja pataje, pa janm dapre resanblans ant tit yo. Parèt nan menm lòd jou a pa vle di menm pozisyon, epi yon odyans oswa yon ranvwa ki anrejistre se yon etap nan revizyon an, se pa yon desizyon sou pwojè a. Chak eleman nan lòd jou sa a toujou parèt pi ba a, nan lòd dosye sous la bay.",
+
     scenario_heading: "Kisa ou vin fè la a?",
     scenario_intro: "Chwazi yon travay pou kòmanse ak filtè ki itil, oswa itilize onglet kategori ki anlè yo.",
     scenario_city_work: "Mwen fè òf pou kontra Vil la",

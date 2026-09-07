@@ -21,6 +21,20 @@
   W.STRINGS = W.STRINGS || {};
   W.STRINGS["fr"] = W.STRINGS["fr"] || {};
   Object.assign(W.STRINGS["fr"], {
+    // A hearing agenda, indexed by the land use projects its matters belong to
+    // (agenda_project_groups.mjs). Counts go through tn(); the publisher's file
+    // numbers, titles and application numbers stay in the source language.
+    agenda_project_groups_heading: "Projets d'aménagement à l'ordre du jour",
+    agenda_project_groups_lead_one: "Un projet d'aménagement regroupe {linked} des {total} dossiers du conseil municipal inscrits à cet ordre du jour.",
+    agenda_project_groups_lead_other: "{groups} projets d'aménagement regroupent {linked} des {total} dossiers du conseil municipal inscrits à cet ordre du jour.",
+    agenda_project_groups_matters_one: "1 dossier",
+    agenda_project_groups_matters_other: "{n} dossiers",
+    agenda_project_groups_applications: "Numéros de demande {values}",
+    agenda_project_groups_expand: "Dossiers déposés sous ce projet",
+    agenda_project_groups_unlinked_one: "Un dossier de cet ordre du jour n'est rattaché à aucun projet d'aménagement dans cet enregistrement source. Il figure plus bas, seul.",
+    agenda_project_groups_unlinked_other: "{n} dossiers de cet ordre du jour ne sont rattachés à aucun projet d'aménagement dans cet enregistrement source. Ils figurent plus bas, seuls.",
+    agenda_project_groups_limit: "Les dossiers sont regroupés selon le numéro de demande municipale que le dossier et le projet partagent déjà, jamais selon une ressemblance entre leurs intitulés. Figurer au même ordre du jour ne constitue pas une position commune, et une audience ou un renvoi enregistré est une étape de l'examen, non une décision sur le projet. Chaque point de cet ordre du jour reste affiché plus bas, dans l'ordre donné par l'enregistrement source.",
+
     scenario_heading: "Que voulez-vous faire ?",
     scenario_intro: "Choisissez une tâche pour commencer avec des filtres utiles, ou utilisez les onglets de catégorie ci-dessus.",
     scenario_city_work: "Je réponds aux appels d’offres de la Ville",

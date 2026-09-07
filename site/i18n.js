@@ -2444,6 +2444,20 @@ const STRINGS = {
     subsidy_phase_action_closing: "Watch for closing documents on the Build NYC project record.",
     subsidy_phase_action_compliance: "Watch for post-closing compliance filings on the Build NYC project record.",
 
+    // A hearing agenda, indexed by the land use projects its matters belong to.
+    // Counts go through tn(); the publisher's file numbers, titles and
+    // application numbers are never translated.
+    agenda_project_groups_heading: "Land use projects on this agenda",
+    agenda_project_groups_lead_one: "One land use project covers {linked} of the {total} Council matters on this agenda.",
+    agenda_project_groups_lead_other: "{groups} land use projects cover {linked} of the {total} Council matters on this agenda.",
+    agenda_project_groups_matters_one: "1 matter",
+    agenda_project_groups_matters_other: "{n} matters",
+    agenda_project_groups_applications: "Application numbers {values}",
+    agenda_project_groups_expand: "Matters filed under this project",
+    agenda_project_groups_unlinked_one: "One matter on this agenda is not part of a land use project in this source record. It is listed below on its own.",
+    agenda_project_groups_unlinked_other: "{n} matters on this agenda are not part of a land use project in this source record. They are listed below on their own.",
+    agenda_project_groups_limit: "Matters are grouped by the city application number that the matter and the project already share, never by a likeness between their titles. Being on the same agenda is not a shared position, and a recorded hearing or layover is a step in the review, not a decision on the project. Every item on this agenda is still listed below, in the order the source record gives it.",
+
     // Council meeting outcomes on notice detail (MEET-001)
     meeting_outcomes_heading: "Council meeting outcomes",
     meeting_outcomes_heading_non_council: "Hearing outcomes",

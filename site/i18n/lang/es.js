@@ -17,6 +17,20 @@
   W.STRINGS = W.STRINGS || {};
   W.STRINGS["es"] = W.STRINGS["es"] || {};
   Object.assign(W.STRINGS["es"], {
+    // A hearing agenda, indexed by the land use projects its matters belong to
+    // (agenda_project_groups.mjs). Counts go through tn(); the publisher's file
+    // numbers, titles and application numbers stay in the source language.
+    agenda_project_groups_heading: "Proyectos de uso del suelo en este orden del día",
+    agenda_project_groups_lead_one: "Un proyecto de uso del suelo abarca {linked} de los {total} asuntos del Concejo de este orden del día.",
+    agenda_project_groups_lead_other: "{groups} proyectos de uso del suelo abarcan {linked} de los {total} asuntos del Concejo de este orden del día.",
+    agenda_project_groups_matters_one: "1 asunto",
+    agenda_project_groups_matters_other: "{n} asuntos",
+    agenda_project_groups_applications: "Números de solicitud {values}",
+    agenda_project_groups_expand: "Asuntos presentados bajo este proyecto",
+    agenda_project_groups_unlinked_one: "Un asunto de este orden del día no está vinculado a ningún proyecto de uso del suelo en este registro de origen. Aparece abajo por separado.",
+    agenda_project_groups_unlinked_other: "{n} asuntos de este orden del día no están vinculados a ningún proyecto de uso del suelo en este registro de origen. Aparecen abajo por separado.",
+    agenda_project_groups_limit: "Los asuntos se agrupan por el número de solicitud municipal que el asunto y el proyecto ya comparten, nunca por el parecido entre sus títulos. Estar en el mismo orden del día no es una postura compartida, y una audiencia o un aplazamiento registrado es un paso de la revisión, no una decisión sobre el proyecto. Todos los puntos de este orden del día siguen apareciendo abajo, en el orden que da el registro de origen.",
+
     scenario_heading: "¿Qué vino a hacer?",
     scenario_intro: "Elija una tarea para comenzar con filtros útiles, o use las pestañas de categorías de arriba.",
     scenario_city_work: "Presento ofertas para trabajos de la Ciudad",

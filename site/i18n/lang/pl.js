@@ -25,6 +25,26 @@
   W.STRINGS = W.STRINGS || {};
   W.STRINGS["pl"] = W.STRINGS["pl"] || {};
   Object.assign(W.STRINGS["pl"], {
+    // A hearing agenda, indexed by the land use projects its matters belong to
+    // (agenda_project_groups.mjs). Counts go through tn(); the publisher's file
+    // numbers, titles and application numbers stay in the source language.
+    agenda_project_groups_heading: "Projekty zagospodarowania terenu w tym porządku obrad",
+    agenda_project_groups_lead_one: "Jeden projekt zagospodarowania terenu obejmuje {linked} z {total} spraw Rady Miasta w tym porządku obrad.",
+    agenda_project_groups_lead_few: "{groups} projekty zagospodarowania terenu obejmują {linked} z {total} spraw Rady Miasta w tym porządku obrad.",
+    agenda_project_groups_lead_many: "{groups} projektów zagospodarowania terenu obejmuje {linked} z {total} spraw Rady Miasta w tym porządku obrad.",
+    agenda_project_groups_lead_other: "{groups} projektów zagospodarowania terenu obejmuje {linked} z {total} spraw Rady Miasta w tym porządku obrad.",
+    agenda_project_groups_matters_one: "{n} sprawa",
+    agenda_project_groups_matters_few: "{n} sprawy",
+    agenda_project_groups_matters_many: "{n} spraw",
+    agenda_project_groups_matters_other: "{n} spraw",
+    agenda_project_groups_applications: "Numery wniosków {values}",
+    agenda_project_groups_expand: "Sprawy złożone w ramach tego projektu",
+    agenda_project_groups_unlinked_one: "{n} sprawa z tego porządku obrad nie jest powiązana z żadnym projektem zagospodarowania terenu w tym zapisie źródłowym. Jest wymieniona niżej osobno.",
+    agenda_project_groups_unlinked_few: "{n} sprawy z tego porządku obrad nie są powiązane z żadnym projektem zagospodarowania terenu w tym zapisie źródłowym. Są wymienione niżej osobno.",
+    agenda_project_groups_unlinked_many: "{n} spraw z tego porządku obrad nie jest powiązanych z żadnym projektem zagospodarowania terenu w tym zapisie źródłowym. Są wymienione niżej osobno.",
+    agenda_project_groups_unlinked_other: "{n} spraw z tego porządku obrad nie jest powiązanych z żadnym projektem zagospodarowania terenu w tym zapisie źródłowym. Są wymienione niżej osobno.",
+    agenda_project_groups_limit: "Sprawy są grupowane według miejskiego numeru wniosku, który sprawa i projekt już mają wspólny, nigdy według podobieństwa tytułów. Obecność w tym samym porządku obrad nie oznacza wspólnego stanowiska, a zapisane wysłuchanie lub odroczenie to etap rozpatrywania, nie rozstrzygnięcie w sprawie projektu. Każdy punkt tego porządku obrad nadal jest wymieniony niżej, w kolejności podanej przez zapis źródłowy.",
+
     scenario_heading: "Co chcesz zrobić?",
     scenario_intro: "Wybierz zadanie, aby zacząć od przydatnych filtrów, albo użyj kart kategorii powyżej.",
     scenario_city_work: "Składam oferty na zlecenia miejskie",

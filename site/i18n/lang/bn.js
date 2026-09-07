@@ -17,6 +17,20 @@
   W.STRINGS = W.STRINGS || {};
   W.STRINGS["bn"] = W.STRINGS["bn"] || {};
   Object.assign(W.STRINGS["bn"], {
+    // A hearing agenda, indexed by the land use projects its matters belong to
+    // (agenda_project_groups.mjs). Counts go through tn(); the publisher's file
+    // numbers, titles and application numbers stay in the source language.
+    agenda_project_groups_heading: "এই আলোচ্যসূচিতে থাকা ভূমি ব্যবহার প্রকল্প",
+    agenda_project_groups_lead_one: "এই আলোচ্যসূচির {total}টি সিটি কাউন্সিল বিষয়ের মধ্যে {linked}টি একটি ভূমি ব্যবহার প্রকল্পের অন্তর্গত।",
+    agenda_project_groups_lead_other: "এই আলোচ্যসূচির {total}টি সিটি কাউন্সিল বিষয়ের মধ্যে {linked}টি {groups}টি ভূমি ব্যবহার প্রকল্পের অন্তর্গত।",
+    agenda_project_groups_matters_one: "১টি বিষয়",
+    agenda_project_groups_matters_other: "{n}টি বিষয়",
+    agenda_project_groups_applications: "আবেদন নম্বর {values}",
+    agenda_project_groups_expand: "এই প্রকল্পের অধীনে দাখিল করা বিষয়",
+    agenda_project_groups_unlinked_one: "এই আলোচ্যসূচির একটি বিষয় এই উৎস নথিতে কোনো ভূমি ব্যবহার প্রকল্পের সঙ্গে যুক্ত নয়। সেটি নিচে আলাদাভাবে দেওয়া আছে।",
+    agenda_project_groups_unlinked_other: "এই আলোচ্যসূচির {n}টি বিষয় এই উৎস নথিতে কোনো ভূমি ব্যবহার প্রকল্পের সঙ্গে যুক্ত নয়। সেগুলি নিচে আলাদাভাবে দেওয়া আছে।",
+    agenda_project_groups_limit: "বিষয় ও প্রকল্প যে শহর আবেদন নম্বরটি আগে থেকেই ভাগ করে নেয়, বিষয়গুলিকে সেই নম্বর ধরে দল করা হয়, শিরোনামের মিল দেখে কখনও নয়। একই আলোচ্যসূচিতে থাকা মানে অভিন্ন অবস্থান নয়, আর নথিভুক্ত শুনানি বা মুলতবি পর্যালোচনার একটি ধাপ, প্রকল্পের বিষয়ে সিদ্ধান্ত নয়। এই আলোচ্যসূচির প্রতিটি বিষয় উৎস নথির দেওয়া ক্রমেই নিচে দেওয়া আছে।",
+
     scenario_heading: "আপনি এখানে কী করতে এসেছেন?",
     scenario_intro: "সহায়ক ফিল্টার দিয়ে শুরু করতে একটি কাজ বেছে নিন, অথবা উপরের বিভাগের ট্যাবগুলো ব্যবহার করুন।",
     scenario_city_work: "আমি সিটির কাজে দরপত্র দিই",
