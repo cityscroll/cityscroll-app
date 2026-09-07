@@ -65,6 +65,28 @@ function sourceRows() {
   // read as a board that decided nothing, which is the confusion this reading
   // exists to avoid.
   const communityBoardResolutionPilot = readJson("site/data/community_board_resolution_pilot.json");
+  // The budget request register is read the same way the enrichments above are,
+  // and for the same reason: a board whose requests could not be read must say
+  // so rather than build as though this district had asked its agencies for
+  // nothing. The header and the per-board documents fail independently, because
+  // a missing board document is a different fact from an unreadable register.
+  let communityBoardBudgetRegister;
+  let communityBoardBudgetRequests = {};
+  try {
+    communityBoardBudgetRegister = readJson("site/data/community_board_budget_register.json");
+    for (const entry of communityBoardBudgetRegister.boards || []) {
+      const boardId = String(entry?.board_id || "");
+      if (!boardId) continue;
+      try {
+        communityBoardBudgetRequests[boardId] = readJson(`site/data/community_board_budget_register/${boardId}.json`);
+      } catch (error) {
+        communityBoardBudgetRequests[boardId] = { error: `community_board_budget_register/${boardId} unreadable: ${error.message}` };
+      }
+    }
+  } catch (error) {
+    communityBoardBudgetRegister = { error: `community_board_budget_register unreadable: ${error.message}` };
+    communityBoardBudgetRequests = {};
+  }
   const institutionEdges = {};
   const edgeKeys = new Set();
   const retainEdge = (edge) => {
@@ -136,6 +158,8 @@ function sourceRows() {
     communityBoardLandPositions,
     institutionEdges,
     communityBoardResolutionPilot,
+    communityBoardBudgetRegister,
+    communityBoardBudgetRequests,
   };
 }
 

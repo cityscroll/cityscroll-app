@@ -57,6 +57,7 @@ site/data/checkbook_spending_sources/verification_receipts/checkbook_spending_pa
 site/data/city_record_pin_chain_warehouse_lookup.json
 site/data/committee_graph/verification_receipts/committee_sample_2026-08-12.json
 site/data/community_board_adopted_budget.json
+site/data/community_board_budget_register.json
 site/data/community_board_bylaws.json
 site/data/community_board_constellation_lookup.json
 site/data/community_board_district_projects.json
