@@ -491,3 +491,37 @@ test("raw receipt observations remain backstage until a strict public projection
   assert.match(publicBuildConfig, /^\s+- data\/source_vintage_observations\.json$/m);
   assert.match(publicBuildConfig, /^\s+- data\/source_vintage_alternates\.json$/m);
 });
+
+test("a scheduled probe receipt is attributed to its source contract", () => {
+  // The scheduled live probe writes receipts in the acquisition-receipt shape,
+  // which names its subject source_contract_id. Everything downstream keys on
+  // source_id. A receipt that carried only the first name resolved to no
+  // contract at all, and the projection refused it — so the freshness watchdog
+  // threw on exactly the state directories that had real probe evidence in
+  // them, and reported nothing at all instead of reporting the truth.
+  const registry = { contracts: [contract()] };
+  const scheduleObservations = [{
+    schema: "cityscroll.source_acquisition_receipt.v1",
+    source_contract_id: "daily-source",
+    observed_at: "2026-08-18T10:24:00.000Z",
+    status: "succeeded",
+    run_id: "2026-08-18T10-23:daily-source",
+    publisher_clock_basis: null,
+    publisher_updated_at: null,
+    clock_kind: "check",
+    adapter: "source-contracts-live",
+  }];
+  const projection = buildSourceHealthObservations(registry, { scheduleObservations, asOf: NOW });
+  const [row] = projection.observations;
+  assert.equal(row.source_id, "daily-source");
+  assert.deepEqual(row.health.clocks.cityscroll_checked_acquired, {
+    at: "2026-08-18T10:24:00.000Z",
+    state: "KNOWN",
+    basis: "checked_at",
+  });
+  assert.equal(row.operator.runs[0].adapter, "source-contracts-live");
+  // A liveness check is not an acquisition, so it moves the check clock and
+  // leaves the acquisition clock exactly where it was.
+  assert.equal(row.freshness_watchdog.acquisition.observed_at, null);
+  assert.deepEqual(validateSourceHealthProjection(registry, projection), []);
+});

@@ -241,6 +241,17 @@ export async function recordSchedulerHeartbeat(env, heartbeat = {}, now = new Da
       : null,
     outbox_delivery_token_expires_at: trimmed(heartbeat.outbox_delivery_token_expires_at).slice(0, 40) || null,
     due_jobs: Array.isArray(heartbeat.due_jobs) ? heartbeat.due_jobs.slice(0, 30) : [],
+    // Slots the cycle settled without running. A daily job that quietly misses
+    // a day used to leave nothing behind at all, so an operator reading this
+    // endpoint could not distinguish "nothing was due" from "something was due
+    // and never happened". Each entry names the job, the slot and the reason.
+    missed_slots: Array.isArray(heartbeat.missed_slots)
+      ? heartbeat.missed_slots.slice(0, 30).map((row) => ({
+        id: trimmed(row?.id).slice(0, 80) || null,
+        slot: trimmed(row?.slot).slice(0, 20) || null,
+        reason: trimmed(row?.reason).slice(0, 60) || null,
+      }))
+      : [],
     run_key: heartbeat.run_key || null,
     // rel-12: whether this cycle can actually run a bounded repair task. A
     // cycle with no dispatcher still proves liveness, but the queue must not

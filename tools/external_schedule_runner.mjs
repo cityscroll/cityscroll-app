@@ -398,6 +398,215 @@ export function cronMatches(expression, date) {
 
 async function loadJobs() { return JSON.parse(await readFile(JOBS_PATH, "utf8")); }
 
+/**
+ * A scheduled slot is a promise, so the cycle keeps a ledger of it.
+ *
+ * The trigger polls on an interval rather than at a wall-clock instant, and the
+ * phase of that poll drifts: each cycle starts a fixed interval after the last
+ * one *exited*, so the clock the cycle samples slides forward by however long
+ * the previous cycle took. Once that slide crosses a minute boundary, one
+ * wall-clock minute has no cycle in it at all. Deciding due-ness by comparing a
+ * cron expression against the single instant the cycle happened to sample means
+ * a job whose only slot falls in that minute is never due: it does not run, it
+ * writes no result, and nothing anywhere records that the slot existed. A daily
+ * job then simply skips a day and the only symptom is a missing file.
+ *
+ * The ledger replaces the instant with an interval. Each job remembers the last
+ * slot it accounted for; the next cycle asks which of its slots have passed
+ * since then and settles every one of them, either by running it or by writing
+ * down why it was not run. A slot is never silently dropped again.
+ */
+export const SLOT_LEDGER_SCHEMA = "cityscroll.external-schedule-slot-ledger.v1";
+export const MISSED_SLOT_SCHEMA = "cityscroll.external-schedule-missed-slot.v1";
+export const SLOT_LEDGER_FILE = "schedule.json";
+
+// How far back a cycle will settle slots it has not accounted for. A day plus
+// two hours, so a daily job recovers on the first cycle after an outage while a
+// long silence still resolves to one run rather than a backlog of them.
+export const SLOT_CATCH_UP_MINUTES = 26 * 60;
+
+export const MISSED_SUPERSEDED = "superseded-by-a-later-slot";
+export const MISSED_OUTSIDE_WINDOW = "outside-the-catch-up-window";
+export const MISSED_RUNNER_ERROR = "runner-error";
+
+const MINUTE_MS = 60_000;
+
+function minuteFloor(date) {
+  return new Date(Math.floor(date.getTime() / MINUTE_MS) * MINUTE_MS);
+}
+
+export function slotKey(date) {
+  return runKey(date);
+}
+
+export function slotInstant(key) {
+  const text = String(key || "");
+  if (!/^\d{4}-\d{2}-\d{2}T\d{2}-\d{2}$/.test(text)) return null;
+  const parsed = Date.parse(`${text.replace(/T(\d{2})-(\d{2})$/, "T$1:$2")}:00Z`);
+  return Number.isFinite(parsed) ? new Date(parsed) : null;
+}
+
+/** Every slot a job declares in (after, through], oldest first. */
+export function slotsBetween(job, after, through, options = {}) {
+  const horizonMinutes = options.horizonMinutes || SLOT_CATCH_UP_MINUTES;
+  const end = minuteFloor(through);
+  const earliest = new Date(end.getTime() - horizonMinutes * MINUTE_MS);
+  const start = after && after.getTime() > earliest.getTime() ? minuteFloor(after) : earliest;
+  const expressions = Array.isArray(job?.schedule) ? job.schedule : [];
+  const slots = [];
+  for (let at = start.getTime() + MINUTE_MS; at <= end.getTime(); at += MINUTE_MS) {
+    const candidate = new Date(at);
+    if (expressions.some((expression) => cronMatches(expression, candidate))) slots.push(candidate);
+  }
+  return slots;
+}
+
+/**
+ * Decide what this cycle owes one job: which slot to run, and which slots to
+ * write down as missed.
+ *
+ * Only the newest outstanding slot is run. These are monitors, so a later
+ * observation subsumes an earlier one; running each skipped slot in turn would
+ * report the same present state several times and open the same issue twice.
+ * The older ones are still recorded, because "the 10:30 slot was superseded by
+ * the 10:30 slot a day later" is an operational fact, and a silent slot is the
+ * failure this whole ledger exists to end.
+ *
+ * A job with no ledger adopts the newest slot strictly before now without
+ * running it. A fresh state directory then behaves exactly as an unscheduled
+ * one did — no burst of five jobs on the first cycle, and no invented history
+ * of slots the trigger was not installed for.
+ */
+export function planScheduledSlots(job, options = {}) {
+  const now = options.now || new Date();
+  const horizonMinutes = options.horizonMinutes || SLOT_CATCH_UP_MINUTES;
+  const ledger = options.ledger || null;
+  const lastSlotAt = ledger?.last_slot ? slotInstant(ledger.last_slot) : null;
+  const nowFloor = minuteFloor(now);
+  if (!lastSlotAt) {
+    const before = slotsBetween(job, null, new Date(nowFloor.getTime() - MINUTE_MS), { horizonMinutes });
+    return {
+      seeded: true,
+      run: null,
+      missed: [],
+      last_slot: slotKey(before.length ? before.at(-1) : new Date(nowFloor.getTime() - MINUTE_MS)),
+    };
+  }
+  const horizonStart = new Date(nowFloor.getTime() - horizonMinutes * MINUTE_MS);
+  const truncated = lastSlotAt.getTime() < horizonStart.getTime();
+  const slots = slotsBetween(job, lastSlotAt, now, { horizonMinutes });
+  const missed = slots.slice(0, -1).map((slot) => ({ slot: slotKey(slot), reason: MISSED_SUPERSEDED }));
+  if (truncated) {
+    // The record is addressed to the edge of the window rather than to the last
+    // slot the ledger settled, because that slot did run; what went unobserved
+    // is the stretch between them.
+    missed.unshift({
+      slot: slotKey(horizonStart),
+      reason: MISSED_OUTSIDE_WINDOW,
+      detail: {
+        since: ledger.last_slot,
+        detail: `slots after ${ledger.last_slot} and before ${slotKey(horizonStart)} were older than the ${horizonMinutes}-minute catch-up window and were not evaluated`,
+      },
+    });
+  }
+  if (!slots.length) {
+    return { seeded: false, run: null, missed, last_slot: truncated ? slotKey(horizonStart) : ledger.last_slot };
+  }
+  const run = slots.at(-1);
+  return { seeded: false, run: slotKey(run), missed, last_slot: slotKey(run) };
+}
+
+function slotLedgerPath(stateDir, jobId) {
+  return join(stateDir, "jobs", jobId, SLOT_LEDGER_FILE);
+}
+
+export async function readSlotLedger(stateDir, jobId) {
+  try { return JSON.parse(await readFile(slotLedgerPath(stateDir, jobId), "utf8")); } catch { return null; }
+}
+
+export async function writeSlotLedger(stateDir, jobId, ledger) {
+  const path = slotLedgerPath(stateDir, jobId);
+  await mkdir(dirname(path), { recursive: true });
+  await writeFile(path, `${JSON.stringify({ schema: SLOT_LEDGER_SCHEMA, job_id: jobId, ...ledger }, null, 2)}\n`, "utf8");
+  return ledger;
+}
+
+/**
+ * A slot that was not run leaves a record saying so. It is written beside the
+ * results rather than among them, because it is evidence about the schedule and
+ * not an observation of the world the job watches.
+ */
+export async function recordMissedSlot(stateDir, jobId, slot, reason, detail = {}) {
+  const record = {
+    schema: MISSED_SLOT_SCHEMA,
+    job_id: jobId,
+    slot,
+    reason,
+    observed_at: new Date().toISOString(),
+    ...detail,
+  };
+  const dir = join(stateDir, "missed", jobId);
+  await mkdir(dir, { recursive: true });
+  await writeFile(join(dir, `${slot.replace(/[^a-zA-Z0-9_.-]/g, "_")}.json`), `${JSON.stringify(record, null, 2)}\n`, "utf8");
+  return record;
+}
+
+/**
+ * Run one slot, and settle it either way.
+ *
+ * A runner that threw used to take the whole cycle down with it: the loop was
+ * unguarded and everything after it — the remaining jobs, the outbox replay,
+ * the liveness heartbeat — never happened. One broken job then presented as a
+ * dead scheduler, with nothing anywhere naming the job that broke. The failure
+ * is now a settled slot: recorded, named, and survivable.
+ */
+export async function settleScheduledSlot(job, options = {}) {
+  const { stateDir, now, slot, run = runScheduledJob, log = console.error } = options;
+  try {
+    const output = await run(job, { stateDir, now, runKey: slot });
+    return { summary: { id: job.id, slot, status: output.result.status }, missed: null, record: null };
+  } catch (error) {
+    const detail = sanitize(String(error?.message || error)).slice(0, 400);
+    const record = await recordMissedSlot(stateDir, job.id, slot, MISSED_RUNNER_ERROR, { detail });
+    log(`scheduled job ${job.id} slot ${slot} failed: ${detail}`);
+    return {
+      summary: { id: job.id, slot, status: "failed", detail },
+      missed: { id: job.id, slot, reason: MISSED_RUNNER_ERROR },
+      record,
+    };
+  }
+}
+
+/** Settle every slot this job owes, then advance its ledger past them. */
+export async function settleScheduledJob(job, options = {}) {
+  const { stateDir, now } = options;
+  const plan = planScheduledSlots(job, {
+    now,
+    ledger: await readSlotLedger(stateDir, job.id),
+    ...(options.horizonMinutes ? { horizonMinutes: options.horizonMinutes } : {}),
+  });
+  const missed = [];
+  for (const miss of plan.missed) {
+    await recordMissedSlot(stateDir, job.id, miss.slot, miss.reason, miss.detail || {});
+    missed.push({ id: job.id, slot: miss.slot, reason: miss.reason });
+  }
+  const settled = plan.run
+    ? await settleScheduledSlot(job, { ...options, slot: plan.run })
+    : { summary: null, missed: null };
+  if (settled.missed) missed.push(settled.missed);
+  await writeSlotLedger(stateDir, job.id, {
+    last_slot: plan.last_slot,
+    updated_at: now.toISOString(),
+    ...(plan.seeded ? { seeded_at: now.toISOString() } : {}),
+    ...(settled.summary ? {
+      last_run_slot: settled.summary.slot,
+      last_run_at: now.toISOString(),
+      last_run_status: settled.summary.status,
+    } : {}),
+  });
+  return { plan, summary: settled.summary, missed };
+}
+
 async function pendingOutboxCount(stateDir) {
   try {
     const names = await readdir(join(stateDir, "outbox"));
@@ -757,6 +966,7 @@ export async function publishHeartbeat(stateDir, now, dueJobs, options = {}) {
     outboxDeliveryReason: deliveryReason = null,
     outboxDeliveryIdentity = null,
     outboxDeliveryTokenExpiresAt = null,
+    missedSlots = [],
   } = options;
   const url = process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL
     || "https://api.cityscroll.org/admin/reliability/scheduler";
@@ -791,6 +1001,11 @@ export async function publishHeartbeat(stateDir, now, dueJobs, options = {}) {
     // cycle that keeps reporting the same expiry is one that stopped refreshing.
     // A file token has no readable expiry and reports null rather than a guess.
     outbox_delivery_token_expires_at: outboxDeliveryTokenExpiresAt,
+    // Which promised slots this cycle settled without running. A slot that is
+    // skipped, superseded or thrown out is a scheduling fact the heartbeat has
+    // to carry, because the alternative — the one this field exists to end — is
+    // a daily job that quietly misses a day and leaves nothing behind at all.
+    missed_slots: Array.isArray(missedSlots) ? missedSlots.slice(0, 30) : [],
   };
   const key = adminKey();
   // An unpublishable heartbeat is a failed cycle, not a quiet one: the runner
@@ -881,11 +1096,22 @@ async function main() {
   const replayBefore = await replayOutbox({ stateDir, github, offlineReason: deliveryReason });
   const selected = arg("--job");
   const now = new Date();
-  const due = selected ? jobs.jobs.filter((job) => job.id === selected) : jobs.jobs.filter((job) => job.schedule.some((expression) => cronMatches(expression, now)));
   const summaries = [];
-  for (const job of due) {
-    const output = await runScheduledJob(job, { stateDir, now });
-    summaries.push({ id: job.id, status: output.result.status });
+  const missedSlots = [];
+  if (selected) {
+    // An operator forcing a run observes the world now; it neither claims nor
+    // consumes a scheduled slot, so the ledger is left exactly where it was.
+    for (const job of jobs.jobs.filter((job) => job.id === selected)) {
+      const settled = await settleScheduledSlot(job, { stateDir, now, slot: runKey(now) });
+      summaries.push(settled.summary);
+      if (settled.missed) missedSlots.push(settled.missed);
+    }
+  } else {
+    for (const job of jobs.jobs) {
+      const settled = await settleScheduledJob(job, { stateDir, now });
+      if (settled.summary) summaries.push(settled.summary);
+      missedSlots.push(...settled.missed);
+    }
   }
   const replayAfter = await replayOutbox({ stateDir, github });
   // Scheduler liveness is a postcondition of the real cycle, distinct from every
@@ -896,8 +1122,9 @@ async function main() {
   // Read after the replays, so the expiry on the heartbeat is the one the cycle
   // actually delivered under rather than the one it was configured with.
   const deliverySummary = delivery.source ? delivery.source.summary() : delivery.summary;
-  const heartbeat = await publishHeartbeat(stateDir, new Date(), due.map((job) => job.id), {
+  const heartbeat = await publishHeartbeat(stateDir, new Date(), summaries.map((summary) => summary.id), {
     cycleResult: degraded ? "degraded" : "succeeded",
+    missedSlots,
     outboxDelivery,
     outboxDeliveryReason: deliveryReason,
     outboxDeliveryIdentity: delivery.kind,
