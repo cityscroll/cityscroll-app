@@ -1,8 +1,26 @@
 {
   "schema": "cityscroll.committed_read_model_rebuild.v1",
-  "purpose": "Bind the scheduled first-class dataset refresh to the committed read models that continuous integration re-derives in check mode. Every check-mode gate in the static-standards unit family appears here exactly once, either in rebuild_sequence (the refresh regenerates it) or in not_rebuilt (with the reason it cannot or need not be regenerated on a hosted runner). test/first_class_refresh_committed_read_models.test.mjs compares this file with the workflow definition by builder path and fails when the two lists drift apart.",
+  "purpose": "Bind the scheduled first-class dataset refresh to the committed read models that continuous integration re-derives in check mode. Every check-mode gate in the static-standards unit family appears here exactly once, either in rebuild_sequence (the refresh regenerates it) or in not_rebuilt (with the reason it cannot or need not be regenerated on a hosted runner). test/first_class_refresh_committed_read_models.test.mjs compares this file with the workflow definition by builder path and fails when the two lists drift apart. published_paths is the matching list of pathspecs both halves of the refresh stage when they commit, so a read model this file says the refresh rebuilds cannot be dropped on its way into the pull request.",
   "gate_workflow": ".github/workflows/ci.yml",
   "gate_family": "static-standards",
+  "published_paths": [
+    {
+      "path": "site",
+      "reason": "The published resident datasets and the read models served beside them."
+    },
+    {
+      "path": "worker",
+      "reason": "The served copies the request-time worker reads, including the keyword search index shards."
+    },
+    {
+      "path": "warehouse/receipts",
+      "reason": "Acquisition receipts travel with the populations they attest. Committing the data without them leaves a receipt describing an earlier pull beside the artifact it is supposed to prove."
+    },
+    {
+      "path": "docs",
+      "reason": "Several rebuild steps write a committed evidence document rather than a served artifact: the served-coverage census, the geography located-in audit, the data-source graph and the gap taxonomy. A refresh that regenerates one of these and does not stage it publishes the input without the evidence, and the gate that re-derives the document in check mode then fails on the refresh's own pull request."
+    }
+  ],
   "rebuild_sequence": [
     {
       "id": "derived-json-build-boundary",

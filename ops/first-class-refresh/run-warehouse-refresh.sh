@@ -64,15 +64,23 @@ node tools/first_class_refresh.mjs --run-due
 node "$SCRIPT_DIR/rebuild-committed-read-models.mjs"
 node tools/first_class_refresh.mjs --write-report
 
-if [ -z "$(git status --porcelain -- site worker warehouse/receipts)" ]; then
+# The registry beside this script names the paths the refresh publishes as well
+# as the read models it rebuilds, so both halves stage the same list.
+commit_paths=()
+while IFS= read -r declared; do
+  [ -n "$declared" ] || continue
+  [ -e "$declared" ] && commit_paths+=("$declared")
+done < <(node "$SCRIPT_DIR/rebuild-committed-read-models.mjs" --published-paths)
+if [ "${#commit_paths[@]}" -eq 0 ]; then
+  echo "none of the paths the refresh publishes exist in this checkout." >&2
+  exit 1
+fi
+
+if [ -z "$(git status --porcelain -- "${commit_paths[@]}")" ]; then
   echo "No warehouse-backed dataset changes."
   exit 0
 fi
 
-# Acquisition receipts travel with the populations they attest; see
-# tools/open_first_class_refresh_pr.sh for why.
-commit_paths=(site worker)
-[ -d warehouse/receipts ] && commit_paths+=(warehouse/receipts)
 git add -- "${commit_paths[@]}"
 git commit --quiet -m "Refresh warehouse-backed resident datasets"
 echo "force-pushing $DATA_BRANCH (only ever the job's own dated data branch)"
