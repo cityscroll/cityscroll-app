@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "card": "c2056c90e8441",
+  "capture_mode": "headless-render",
+  "repository_revision": "779872f95",
+  "note": "Rendered output of the two organization surfaces that previously answered not-yet-public for these agencies, captured by invoking the route handlers directly with no store binding, so the bytes come only from the published agency entity records. No image binaries: each capture records the sha256 of the rendered HTML.",
+  "data_vintage": "agency identity roster observed 2026-08-09 (t3jq-9nkf), expense budget observed 2026-07-08 (mwzb-yiwb), award-corroborated contract census observed 2026-09-06",
+  "viewports": [
+    {
+      "id": "responsive",
+      "note": "Both pages are single-column documents with their own responsive rules; the capture is the rendered markup rather than a rasterized viewport."
+    }
+  ],
+  "captures": [
+    {
+      "fixture": "buildings-dossier",
+      "route": "GET /entity-dossier?id=agency:id:buildings (Accept: text/html)",
+      "viewport": "responsive",
+      "assertion": "Returns 200 with a published dossier instead of the not-yet-public page. Ten facts render as observed, each naming its publisher field, its source dataset and the date that dataset was observed; the facts the sources do not carry render as Not observed rather than as a filled-in value.",
+      "content_sha256": "30e28252cd9e17963595b298e9665ddab1c56fdaf33de0f302b6a6e62d582656",
+      "file": null
+    },
+    {
+      "fixture": "city-planning-dossier",
+      "route": "GET /entity-dossier?id=agency:id:city-planning (Accept: text/html)",
+      "viewport": "responsive",
+      "assertion": "Returns 200 with a published dossier instead of the not-yet-public page, with the same sourced and dated fact treatment as the other agency.",
+      "content_sha256": "e9dadce53879adf26eb232cfb81a039fc59c6eefec0c7658749c9754775fcdad",
+      "file": null
+    },
+    {
+      "fixture": "buildings-relationships",
+      "route": "GET /entity-relationships?id=agency:id:buildings (Accept: text/html)",
+      "viewport": "responsive",
+      "assertion": "Returns 200 with ten typed nodes and nine evidence-bearing edges instead of the not-yet-public page. The agency-leadership edge names the principal officer and cites the roster dataset and its observation date; each published-contract edge cites the contract census record and its observation date.",
+      "content_sha256": "137a3b34f383dbb94b6756677013734918f2180ef8fd7ba9eba7781c4d3af15e",
+      "file": null
+    },
+    {
+      "fixture": "city-planning-relationships",
+      "route": "GET /entity-relationships?id=agency:id:city-planning (Accept: text/html)",
+      "viewport": "responsive",
+      "assertion": "Returns 200 with ten typed nodes and nine evidence-bearing edges instead of the not-yet-public page, including the agency-leadership edge with its source and observation date.",
+      "content_sha256": "753a6d35bd41c4048303c83e7bcb5081dddafeec0ad3ba68666939cabb8b615e",
+      "file": null
+    }
+  ],
+  "accessibility": {
+    "note": "Both pages reuse their existing renderers unchanged; this change adds rows to the same sectioned document structure and introduces no new interactive control."
+  }
+}
