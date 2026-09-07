@@ -606,7 +606,7 @@
       "source_path": "docs/source-health-participation.md",
       "source_selector": "uncarded follow-up queue",
       "source_sha256_at_rcp00": "eb2293b3f3d0fd83772c84a2ab336e7402ba6c02520f7c4aaab0fc7cb78a14b4",
-      "source_sha256_after_migration": "80f7f80dda166861bf33a2609211ddcb32f3132c89d412c53841801a4626d53c",
+      "source_sha256_after_migration": "e3c925875508b4d01435be9636d4271540377f0e85abd6bdc6fd9c14f8215f45",
       "canonical_owner": null,
       "resolution": "unresolved",
       "reasoning": "No unique semantic owner was established at the pinned register revision; mutable intent was removed without inventing completion or a duplicate card.",

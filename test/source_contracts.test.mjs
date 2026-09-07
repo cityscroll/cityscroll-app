@@ -432,11 +432,13 @@ test("a declared publisher vintage field is the clock the live check reads", asy
   const originalFetch = globalThis.fetch;
   t.after(() => { globalThis.fetch = originalFetch; });
   const requested = [];
-  // The row-write stamp is fresh; the published vintage the builder ingests is not.
+  // The two publisher clocks disagree: the row-write stamp moved after the
+  // published vintage the builder ingests, so which field is read is visible.
+  const rowsUpdatedAt = Date.UTC(2026, 5, 1) / 1000;
   globalThis.fetch = async (url) => {
     requested.push(String(url));
     if (String(url).includes("/api/views/")) {
-      return socrataMetadata({ rowsUpdatedAt: Math.floor(Date.now() / 1000), fields: ["record_id", "data_current_as_of"] });
+      return socrataMetadata({ rowsUpdatedAt, fields: ["record_id", "data_current_as_of"] });
     }
     if (String(url).includes("%24select=max%28")) {
       // Socrata floating timestamps carry no zone; the registry reads them as UTC.
@@ -464,6 +466,7 @@ test("a declared publisher vintage field is the clock the live check reads", asy
   const error = await verifySocrata(contract).catch((reason) => reason);
   assert.equal(error.finding.publisher_clock_basis, "data_current_as_of");
   assert.equal(error.finding.publisher_updated_at, "2026-01-10T00:00:00.000Z");
+  assert.notEqual(error.finding.publisher_updated_at, new Date(rowsUpdatedAt * 1000).toISOString());
   assert.ok(requested.some((url) => url.includes("max%28data_current_as_of%29")));
 });
 
