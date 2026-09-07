@@ -39,6 +39,16 @@ function sourceRows() {
   const communityBoardMoney = readJson("site/data/community_board_money.json");
   const communityBoardPayrollContext = readJson("site/data/community_board_payroll_staff_count.json");
   const communityBoardParticipation = readJson("site/data/community_board_participation.json");
+  // The district-project list is an optional enrichment. If its artifact cannot
+  // be read, the board pages must say the list failed to load rather than build
+  // as though every district had no projects, so the failure is carried
+  // forward as a state instead of being swallowed here.
+  let communityBoardDistrictProjects;
+  try {
+    communityBoardDistrictProjects = readJson("site/data/community_board_district_projects.json");
+  } catch (error) {
+    communityBoardDistrictProjects = { error: `community_board_district_projects unreadable: ${error.message}` };
+  }
   const institutionEdges = {};
   const edgeKeys = new Set();
   const retainEdge = (edge) => {
@@ -106,6 +116,7 @@ function sourceRows() {
     communityBoardMoney,
     communityBoardPayrollContext,
     communityBoardParticipation,
+    communityBoardDistrictProjects,
     institutionEdges,
   };
 }

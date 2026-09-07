@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/community-board-district-projects",
+  "status": "implemented",
+  "fingerprint": "community-board-district-projects.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "community-board-district-projects-join",
+      "path": "warehouse/lib/community_board_district_projects.mjs"
+    },
+    {
+      "id": "community-board-district-projects-builder",
+      "path": "tools/build_community_board_district_projects.mjs"
+    },
+    {
+      "id": "community-board-district-projects-artifact",
+      "path": "site/data/community_board_district_projects.json"
+    },
+    {
+      "id": "community-board-district-projects-read-model",
+      "path": "site/community_board_district_projects.mjs"
+    }
+  ]
+}

@@ -4173,3 +4173,52 @@ select {
   color: var(--color-text-soft);
   font: 600 .75rem/1.6 var(--font-label);
 }
+
+/*
+ * The district land-project list keeps its overflow behind a fragment rather
+ * than a <details> element. A browser restores a history entry's URL and scroll
+ * offset, not an element's open state, so putting the expansion in the URL is
+ * what lets a reader open the rest of the list, follow a project, and come back
+ * to the list as they left it. With no stylesheet at all the whole list simply
+ * renders, which is the right failure.
+ */
+.board-district-projects-overflow {
+  margin-block-start: var(--space-2);
+}
+
+.board-district-projects-overflow > .board-district-projects-overflow-list,
+.board-district-projects-overflow > .board-district-projects-less {
+  display: none;
+}
+
+.board-district-projects-overflow:target > .board-district-projects-overflow-list {
+  display: grid;
+  margin-block-end: var(--space-2);
+}
+
+.board-district-projects-overflow:target > .board-district-projects-less {
+  display: inline-block;
+}
+
+.board-district-projects-overflow:target > .board-district-projects-more {
+  display: none;
+}
+
+.board-district-projects-more,
+.board-district-projects-less {
+  display: inline-block;
+  /* WCAG 2.5.8: a comfortable target on a touch screen. */
+  min-height: 24px;
+  padding-block: var(--space-1);
+  color: var(--color-action);
+  font-weight: 600;
+}
+
+.board-district-projects-boundary {
+  max-width: var(--measure);
+}
+
+.board-district-project-id {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
