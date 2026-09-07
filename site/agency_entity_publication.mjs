@@ -15,6 +15,14 @@
  * invents a field. Every value carries the dataset it came from and the date
  * that dataset was observed, and a column a source does not publish is left
  * out rather than filled in from a neighbouring source.
+ *
+ * It also publishes the answer to the one question a reader most often puts to
+ * an agency: who leads it. That answer is a statement in its own right rather
+ * than a field that happens to be present, because the question needs an
+ * answer even when no source names an officer. An agency whose registered
+ * sources name nobody is answered "not recorded" and still carries the dataset
+ * that was read; only the reader can say an officer "could not be read", and it
+ * says so rather than reporting an absent or empty leader.
  */
 
 import {
@@ -25,6 +33,27 @@ import {
 export const AGENCY_ENTITY_PUBLICATION_SCHEMA = "cityscroll.agency_entity_publication.v1";
 export const AGENCY_ENTITY_PUBLICATION_METHOD = "agency_entity_publication_v1";
 export const AGENCY_ENTITY_TYPE = "agency";
+
+/** The two answers a published record can give about who leads an agency.
+ *
+ * A reader asking who runs an agency needs the officer, and needs the two ways
+ * an officer can be missing kept apart. "Published" carries the person, the
+ * dataset the name came from and the date that dataset reports its rows were
+ * last updated. "Not recorded" says the registered datasets carry no officer
+ * for this agency, which describes the record itself. A third answer,
+ * "unreadable", belongs to the reader alone: only the reader knows it failed to
+ * use a stored statement, and it says so instead of reporting an absent officer
+ * or an empty leader.
+ */
+export const AGENCY_OFFICER_STATUS = Object.freeze({
+  PUBLISHED: "published",
+  NOT_RECORDED: "not_recorded",
+});
+
+/** The columns an officer statement is allowed to be built from. */
+export const AGENCY_OFFICER_SOURCE_FIELDS = Object.freeze(["head_name", "head_title"]);
+
+export const AGENCY_OFFICER_NOT_RECORDED_NOTE = "The datasets this publication reads carry no officer for this agency. The record was read and it names nobody. Another public source may still name an officer for this agency.";
 
 /** Datasets whose columns this publication is allowed to carry. */
 export const AGENCY_IDENTITY_SOURCE_SYSTEM = "nyc_open_data";
@@ -159,14 +188,7 @@ function leadershipGraph(agencyId, entry, provenance) {
     headTitle: entry?.head_title,
   });
   if (!leader || !observedOn) return { nodes: [], edges: [] };
-  const source = {
-    system: AGENCY_IDENTITY_SOURCE_SYSTEM,
-    id: AGENCY_ROSTER_DATASET,
-    ...(datasetUrl(provenance, AGENCY_ROSTER_DATASET)
-      ? { url: datasetUrl(provenance, AGENCY_ROSTER_DATASET) }
-      : {}),
-  };
-  const evidence = provenanceFor(source, observedOn, ["head_name", "head_title"]);
+  const evidence = provenanceFor(rosterSource(provenance), observedOn, [...AGENCY_OFFICER_SOURCE_FIELDS]);
   return {
     nodes: [{
       id: leader.id,
@@ -185,6 +207,100 @@ function leadershipGraph(agencyId, entry, provenance) {
       provenance: evidence,
     }],
   };
+}
+
+/** Source descriptor for the roster dataset, url included when it publishes one. */
+function rosterSource(provenance) {
+  const url = datasetUrl(provenance, AGENCY_ROSTER_DATASET);
+  return {
+    system: AGENCY_IDENTITY_SOURCE_SYSTEM,
+    id: AGENCY_ROSTER_DATASET,
+    ...(url ? { url } : {}),
+  };
+}
+
+/**
+ * The published answer to "who leads this agency", for one agency.
+ *
+ * The officer comes from the one registered dataset that publishes a head for
+ * an agency, and from that agency's own row in it. A name is never taken from a
+ * similar name, a press page, or a neighbouring agency's row: an agency the
+ * crosswalk has no row for is answered "not recorded", with the dataset that
+ * was read and the date it reports its rows were last updated, so a reader can
+ * tell an officer nobody publishes from an officer nobody could read.
+ */
+export function agencyOfficerStatement({ agencyId, agencyName = "", entry = null, provenance = {} } = {}) {
+  const entityId = entityIdFor(agencyId);
+  if (!entityId) return null;
+  const observedOn = datasetObservedOn(provenance, AGENCY_ROSTER_DATASET);
+  if (!observedOn) return null;
+  const displayName = clean(entry?.canonical_name) || clean(agencyName);
+  const source = rosterSource(provenance);
+  const identity = {
+    entity_id: entityId,
+    agency_id: entityId.replace(/^agency:id:/, ""),
+    ...(displayName ? { agency_name: displayName } : {}),
+  };
+  const leader = entry
+    ? buildPersonLeaderEntity({
+      agencyId: entityId,
+      agencyName: displayName,
+      headName: entry?.head_name,
+      headTitle: entry?.head_title,
+    })
+    : null;
+  if (!leader) {
+    return {
+      ...identity,
+      status: AGENCY_OFFICER_STATUS.NOT_RECORDED,
+      person: null,
+      title: null,
+      consulted_sources: [{
+        ...source,
+        source_fields: [...AGENCY_OFFICER_SOURCE_FIELDS],
+        observed_at: observedOn,
+      }],
+      note: AGENCY_OFFICER_NOT_RECORDED_NOTE,
+    };
+  }
+  return {
+    ...identity,
+    status: AGENCY_OFFICER_STATUS.PUBLISHED,
+    person: leader.display_name,
+    // A title the dataset leaves blank stays blank rather than being supplied.
+    title: clean(leader.role) || null,
+    person_entity_id: leader.id,
+    classification: "publisher_assertion",
+    provenance: provenanceFor(source, observedOn, [...AGENCY_OFFICER_SOURCE_FIELDS]),
+    confidence: leader.confidence,
+  };
+}
+
+/**
+ * Officer statements for every agency this site publishes a record for.
+ *
+ * The set is deliberately wider than the entity records: an agency the site
+ * lists but the identity crosswalk has no row for still gets an answer, and
+ * that answer is "not recorded". Leaving it out instead would put the reader
+ * back where they started, unable to tell an unpublished officer from one the
+ * publication simply never looked for.
+ */
+export function agencyOfficerStatements({ crosswalk = {}, constellation = null } = {}) {
+  const provenance = crosswalk?._provenance || {};
+  const entries = crosswalk?.entries && typeof crosswalk.entries === "object" ? crosswalk.entries : {};
+  const listed = constellation?.by_id && typeof constellation.by_id === "object" ? constellation.by_id : {};
+  const agencyIds = [...new Set([...Object.keys(entries), ...Object.keys(listed)])].sort();
+  const officers = {};
+  for (const agencyId of agencyIds) {
+    const statement = agencyOfficerStatement({
+      agencyId,
+      agencyName: clean(listed[agencyId]?.display_name),
+      entry: entries[agencyId] || null,
+      provenance,
+    });
+    if (statement) officers[statement.entity_id] = statement;
+  }
+  return officers;
 }
 
 function contractGraph(agencyId, agencyRows) {
@@ -286,6 +402,8 @@ export function buildAgencyEntityPublication({
   const rosterObserved = datasetObservedOn(provenance, AGENCY_ROSTER_DATASET);
   const budgetObserved = datasetObservedOn(provenance, AGENCY_BUDGET_DATASET);
   const entityIds = Object.keys(agencies);
+  const officers = agencyOfficerStatements({ crosswalk, constellation });
+  const officerValues = Object.values(officers);
   return {
     schema: AGENCY_ENTITY_PUBLICATION_SCHEMA,
     method: AGENCY_ENTITY_PUBLICATION_METHOD,
@@ -331,9 +449,16 @@ export function buildAgencyEntityPublication({
       published_agency_count: entityIds.length,
       crosswalk_agency_count: Object.keys(entries).length,
       graph_contract_limit: AGENCY_GRAPH_CONTRACT_LIMIT,
+      officer_statement_count: officerValues.length,
+      officers_published_count: officerValues
+        .filter((officer) => officer.status === AGENCY_OFFICER_STATUS.PUBLISHED).length,
+      officers_not_recorded_count: officerValues
+        .filter((officer) => officer.status === AGENCY_OFFICER_STATUS.NOT_RECORDED).length,
       basis: "agency identity crosswalk rows with at least one dataset observation",
+      officer_basis: "the officer each registered dataset publishes for that agency's own row, or an explicit not-recorded answer when none does",
       absence_note: "An agency id absent from this publication is not covered by it. Absence here is not evidence that the agency does not exist or that no public record names it.",
     },
     agencies,
+    officers,
   };
 }

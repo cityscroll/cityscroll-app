@@ -4,7 +4,7 @@
   "method": "agency_entity_publication_v1",
   "generated_at": "2026-09-07T13:02:33.872Z",
   "input_digest": "sha256:be9741c8d5cf558f95a95fd4966cc26ba70a17868e5a5bf7d4de597a24d4ba3b",
-  "publication_digest": "sha256:c60866cebdcd9ee29b2f637e45bd65cad60218762f71cb4e9d7fa7f30f86cb4f",
+  "publication_digest": "sha256:54d1a242093ffbed64f28605c86edd7049f05056888f39b53ba23998760f1442",
   "sources": [
     {
       "system": "nyc_open_data",
@@ -43,9 +43,16 @@
     "published_agency_count": 116,
     "crosswalk_agency_count": 116,
     "graph_contract_limit": 12,
+    "officer_statement_count": 124,
+    "officers_published_count": 107,
+    "officers_not_recorded_count": 17,
     "basis": "agency identity crosswalk rows with at least one dataset observation",
+    "officer_basis": "the officer each registered dataset publishes for that agency's own row, or an explicit not-recorded answer when none does",
     "absence_note": "An agency id absent from this publication is not covered by it. Absence here is not evidence that the agency does not exist or that no public record names it.",
     "agencies_with_principal_officer_edge": 107,
-    "agencies_with_published_contract_edge": 35
+    "agencies_with_published_contract_edge": 35,
+    "officer_statements": 124,
+    "officer_statements_published": 107,
+    "officer_statements_not_recorded": 17
   }
 }

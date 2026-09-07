@@ -17,6 +17,7 @@ import {
   modelRows,
   organizationsBrowseFromModel,
 } from "../../capabilities/people_organizations_provider.mjs";
+import { agencyLeadershipAnswer } from "./lib/published_agency_entity.mjs";
 
 const MODEL_URL = "https://cityscroll.org/data/people_organizations_read_model.json";
 const CACHE = "public, max-age=60, s-maxage=300, stale-while-revalidate=3600";
@@ -39,7 +40,21 @@ function freshness(model) { return { as_of: model.generated_at || "unknown", gen
 function coverage(model) { return { state: model.generated_at ? "published" : "unknown", read_model_schema: model.schema, row_kinds: model.row_kinds, relation_states: model.relation_states, counts: model.counts }; }
 function publicModelRow(row) {
   // The materialized search_text is a presentation/index field, not public row meaning.
-  return Object.fromEntries(Object.entries(row).filter(([field]) => field !== "search_text"));
+  return withLeadership(Object.fromEntries(Object.entries(row).filter(([field]) => field !== "search_text")));
+}
+
+/** Answer "who leads this agency" on the organization row itself.
+ *
+ * A reader who reaches an agency here is usually asking about its head, and
+ * until now that question went unanswered on this surface whatever the record
+ * said. The answer is read from the committed agency publication at request
+ * time, so it carries the dataset and the date that dataset reports its rows
+ * were last updated, and an agency no registered dataset names an officer for
+ * is told so rather than shown a blank leader. */
+function withLeadership(row) {
+  if (row?.kind !== "agency") return row;
+  const leadership = agencyLeadershipAnswer(row.id);
+  return leadership ? { ...row, leadership } : row;
 }
 export function workerPeopleOrganizations(env) {
   return Object.freeze({
@@ -65,7 +80,10 @@ export function workerPeopleOrganizations(env) {
         try {
           const model = await readModel(env);
           if (!PEOPLE_ORGANIZATIONS_READ_MODEL_SCHEMAS.includes(model?.schema)) throw new Error("people organizations read model is unavailable");
-          return organizationsBrowseFromModel(model, input);
+          const browsed = organizationsBrowseFromModel(model, input);
+          return Array.isArray(browsed?.results)
+            ? { ...browsed, results: browsed.results.map(withLeadership) }
+            : browsed;
         } catch (error) {
           console.error("people organizations browse unavailable:", String(error?.message || error));
           return { capability_reference: ORGANIZATIONS_BROWSE_CAPABILITY_REFERENCE, availability: "unavailable", results: null, total_matches: null, pagination: null, coverage: null, freshness: null, error: "unavailable" };
