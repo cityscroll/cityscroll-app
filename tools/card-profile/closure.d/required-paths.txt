@@ -666,6 +666,7 @@ site/procurement_alert_atom.mjs
 site/procurement_browse_capability_index.mjs
 site/procurement_browse_query.mjs
 site/procurement_coverage_labels.mjs
+site/procurement_detail_index.mjs
 site/procurement_digest_compile.mjs
 site/procurement_document.mjs
 site/procurement_event_log.mjs

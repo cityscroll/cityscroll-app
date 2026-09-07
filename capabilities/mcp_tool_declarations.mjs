@@ -303,7 +303,7 @@ const ORGANIZATIONS_BROWSE_OUTPUT_SCHEMA = Object.freeze({
 });
 const CONTRACTS_ANALYSIS_OUTPUT_SCHEMA = Object.freeze({
   type: "object", additionalProperties: false,
-  required: ["capability_reference", "availability", "group_by", "measure", "groups", "denominator", "population", "coverage", "filters", "freshness", "error"],
+  required: ["capability_reference", "availability", "group_by", "measure", "groups", "denominator", "population", "coverage", "contract_detail", "filters", "freshness", "error"],
   properties: {
     capability_reference: { type: "string", const: CONTRACTS_ANALYSIS_CAPABILITY_REFERENCE },
     availability: { type: "string", enum: ["complete", "empty", "unavailable"] },
@@ -313,6 +313,7 @@ const CONTRACTS_ANALYSIS_OUTPUT_SCHEMA = Object.freeze({
     denominator: { type: ["object", "null"] },
     population: { type: ["object", "null"] },
     coverage: { type: ["object", "null"] },
+    contract_detail: { type: ["object", "null"] },
     filters: { type: ["object", "null"] },
     freshness: { type: ["object", "null"] },
     error: { type: ["string", "null"] },
@@ -540,7 +541,7 @@ export const MCP_TOOLS = [
   },
   {
     name: "analyze_contracts",
-    description: "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, coverage, and exact contract IDs. Does not report payments or spending.",
+    description: "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, and coverage. Each group lists the exact contributing registration IDs in contract_ids and, at the same index in contract_procurement_ids, the canonical procurement ID get_contract accepts, or null when that contract is not individually retrievable. Does not report payments or spending.",
     inputSchema: {
       type: "object", additionalProperties: false,
       properties: {

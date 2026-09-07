@@ -13,6 +13,7 @@
         "canonical_name",
         "city_record_match",
         "contract_ids",
+        "contract_procurement_ids",
         "create_watch",
         "fiscal_year",
         "group_by",

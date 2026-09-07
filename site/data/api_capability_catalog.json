@@ -1343,7 +1343,7 @@
       "id": "contracts.analysis",
       "version": "1.0.0",
       "title": "Contracts Analysis",
-      "description": "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, coverage, and exact contract IDs. Does not report payments or spending.",
+      "description": "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, and coverage. Each group lists the exact contributing registration IDs in contract_ids and, at the same index in contract_procurement_ids, the canonical procurement ID get_contract accepts, or null when that contract is not individually retrievable. Does not report payments or spending.",
       "owner": "procurement",
       "operation": "read",
       "authority": {
@@ -1399,6 +1399,7 @@
           "denominator",
           "population",
           "coverage",
+          "contract_detail",
           "filters",
           "freshness",
           "error"
@@ -1470,7 +1471,8 @@
       "provenance": {
         "population": "site/data/analytics_registered_contracts.json",
         "identity": "prime_contract_id (exact registered-contract identity)",
-        "drillThrough": "ordinary Contracts scope with exact contributing contract identifiers"
+        "drillThrough": "ordinary Contracts scope with exact contributing contract identifiers",
+        "contractDetail": "each contributing registration identifier is resolved to the canonical procurement id contract.get@1 accepts, or reported as not individually retrievable with a reason"
       },
       "freshness": {
         "owner": "committed registered-contract analytical projection",

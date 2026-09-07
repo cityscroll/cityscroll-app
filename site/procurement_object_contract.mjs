@@ -11,6 +11,7 @@
  */
 
 import { attachCheckbookPassportCorroboration } from "./checkbook_passport_corroboration.mjs";
+import { procurementContractIdentityKey } from "./procurement_identity_key.mjs";
 
 export const PROCUREMENT_OBJECT_SCHEMA = "cityscroll.procurement_object.v1";
 export const PROCUREMENT_IDENTITY_EDGE_SCHEMA = "cityscroll.procurement_identity_edge.v1";
@@ -62,7 +63,7 @@ function text(value) {
 }
 
 function exactKey(value) {
-  return text(value)?.toUpperCase().replace(/[^A-Z0-9]/g, "") || null;
+  return procurementContractIdentityKey(value);
 }
 
 export function procurementObservationSnapshot(record) {

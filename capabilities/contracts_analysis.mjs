@@ -28,6 +28,23 @@ export const CONTRACTS_ANALYSIS_AVAILABILITY = Object.freeze([
   "empty",
   "unavailable",
 ]);
+// How a contributing registered contract was matched to the procurement detail
+// record a reader can fetch. The aggregate and the detail capability identify
+// the same contract in different namespaces, so the answer must say which
+// authority resolved the pairing rather than leaving a reader to assemble an
+// identifier itself.
+export const PROCUREMENT_DETAIL_RESOLUTIONS = Object.freeze([
+  // The detail read model's own rows were read, so each registration
+  // identifier is resolved through the identity keys the record publishes.
+  "identity_keys",
+  // Only the detail read model's published identity index was read, so a
+  // contract is resolved through the canonical identity that index publishes.
+  "published_identity_index",
+  // No detail read model was available, so retrievability is not claimed.
+  "not_resolved",
+]);
+export const PROCUREMENT_DETAIL_NOT_RETRIEVABLE_REASON =
+  "The shared procurement read model publishes no procurement detail record under this registered contract's own identity, so the contract cannot be fetched individually yet.";
 export const CONTRACTS_ANALYSIS_REPRESENTATIONS = Object.freeze([
   Object.freeze({
     id: "json",
@@ -85,7 +102,8 @@ export const CONTRACTS_ANALYSIS_CAPABILITY = deepFreeze({
     schema: "cityscroll.capability.contracts_analysis.output.v1",
     fields: [
       "capability_reference", "availability", "group_by", "measure", "groups",
-      "denominator", "population", "coverage", "filters", "freshness", "error",
+      "denominator", "population", "coverage", "contract_detail", "filters",
+      "freshness", "error",
     ],
     availability: CONTRACTS_ANALYSIS_AVAILABILITY,
     representations: CONTRACTS_ANALYSIS_REPRESENTATIONS,
@@ -95,6 +113,7 @@ export const CONTRACTS_ANALYSIS_CAPABILITY = deepFreeze({
     population: "site/data/analytics_registered_contracts.json",
     identity: "prime_contract_id (exact registered-contract identity)",
     drillThrough: "ordinary Contracts scope with exact contributing contract identifiers",
+    contractDetail: "each contributing registration identifier is resolved to the canonical procurement id contract.get@1 accepts, or reported as not individually retrievable with a reason",
   },
   freshness: {
     owner: "committed registered-contract analytical projection",
@@ -195,6 +214,68 @@ function assertGroup(group, measure) {
       || group.unit !== measure.unit || !group.drill_through || typeof group.drill_through.href !== "string") {
     throw new TypeError("Contracts analysis group is incomplete");
   }
+  assertGroupContractDetail(group);
+}
+
+/**
+ * A group may not publish an identifier a reader cannot act on. Either every
+ * contributing contract carries the canonical procurement id contract.get@1
+ * accepts at the same index, or it carries an explicit null that the envelope's
+ * contract_detail block explains.
+ */
+function assertGroupContractDetail(group) {
+  const resolved = group.contract_procurement_ids;
+  const retrieval = group.contract_retrieval;
+  if (!retrieval || typeof retrieval !== "object"
+      || !PROCUREMENT_DETAIL_RESOLUTIONS.includes(retrieval.resolution)
+      || !Number.isInteger(retrieval.retrievable_contract_count)
+      || !Number.isInteger(retrieval.not_retrievable_contract_count)) {
+    throw new TypeError("Contracts analysis group is missing its contract retrieval state");
+  }
+  if (resolved === null) {
+    if (retrieval.resolution !== "not_resolved"
+        || retrieval.retrievable_contract_count !== 0
+        || retrieval.not_retrievable_contract_count !== group.contract_count) {
+      throw new TypeError("unresolved Contracts analysis group cannot claim retrievable contracts");
+    }
+    return;
+  }
+  if (!Array.isArray(resolved) || resolved.length !== group.contract_ids.length
+      || retrieval.resolution === "not_resolved") {
+    throw new TypeError("Contracts analysis contract_procurement_ids must pair with contract_ids");
+  }
+  let retrievable = 0;
+  for (const procurementId of resolved) {
+    if (procurementId === null) continue;
+    if (typeof procurementId !== "string" || !procurementId.startsWith("procurement:")) {
+      throw new TypeError("Contracts analysis resolved a non-canonical procurement id");
+    }
+    retrievable += 1;
+  }
+  if (retrieval.retrievable_contract_count !== retrievable
+      || retrieval.not_retrievable_contract_count !== resolved.length - retrievable) {
+    throw new TypeError("Contracts analysis retrieval counts disagree with the resolved ids");
+  }
+}
+
+/** The envelope must name the capability a resolved identifier is fetched through. */
+function assertContractDetail(result) {
+  const detail = result.contract_detail;
+  if (!detail || typeof detail !== "object" || Array.isArray(detail)
+      || detail.capability !== "contract.get@1"
+      || detail.identifier_field !== "contract_procurement_ids"
+      || typeof detail.identifier_note !== "string" || !detail.identifier_note
+      || !PROCUREMENT_DETAIL_RESOLUTIONS.includes(detail.resolution)
+      || typeof detail.not_retrievable_reason !== "string" || !detail.not_retrievable_reason
+      || !Number.isInteger(detail.retrievable_contract_count)
+      || !Number.isInteger(detail.not_retrievable_contract_count)) {
+    throw new TypeError("Contracts analysis contract_detail is incomplete");
+  }
+  for (const group of result.groups) {
+    if (group.contract_retrieval.resolution !== detail.resolution) {
+      throw new TypeError("Contracts analysis group resolution drifted from the envelope");
+    }
+  }
 }
 
 export function validateContractsAnalysisOutput(result, input) {
@@ -203,7 +284,7 @@ export function validateContractsAnalysisOutput(result, input) {
   if (result.capability_reference !== CONTRACTS_ANALYSIS_CAPABILITY_REFERENCE) throw new TypeError("contracts.analysis capability reference drifted");
   if (!CONTRACTS_ANALYSIS_AVAILABILITY.includes(result.availability)) throw new TypeError("contracts.analysis availability is invalid");
   if (result.availability === "unavailable") {
-    if (result.groups !== null || result.error !== "unavailable") throw new TypeError("unavailable Contracts analysis output is inconsistent");
+    if (result.groups !== null || result.contract_detail !== null || result.error !== "unavailable") throw new TypeError("unavailable Contracts analysis output is inconsistent");
     return result;
   }
   if (!CONTRACTS_ANALYSIS_GROUPS.includes(result.group_by) || !result.measure
@@ -225,6 +306,7 @@ export function validateContractsAnalysisOutput(result, input) {
     throw new TypeError("Contracts analysis population, denominator, coverage, or freshness is incomplete");
   }
   if (!result.filters || typeof result.filters !== "object" || Array.isArray(result.filters)) throw new TypeError("Contracts analysis filters are required");
+  assertContractDetail(result);
   if (result.error !== null) throw new TypeError("available Contracts analysis output cannot carry an error");
   assertNoPrivateFields(result);
   return result;
