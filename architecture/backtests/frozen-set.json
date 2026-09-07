@@ -32,6 +32,12 @@
       "path": "architecture/backtests/pr-1056-exams-eligibility.json",
       "feeds": "LA11",
       "observer": "tools/architecture_canary_visibility_observer.mjs"
+    },
+    {
+      "id": "documentation-claim-drift",
+      "title": "Consequential documentation claims contradicted by committed configuration",
+      "path": "architecture/backtests/documentation-claim-drift.json",
+      "observer": "tools/documentation_claim_observer.mjs"
     }
   ]
 }

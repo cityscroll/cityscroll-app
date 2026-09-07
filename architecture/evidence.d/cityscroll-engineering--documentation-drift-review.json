@@ -1,0 +1,45 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/documentation-drift-review",
+  "status": "implemented",
+  "fingerprint": "documentation-drift-review.v1",
+  "updated_at": "2026-09-07T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "documentation-claim-registry",
+      "path": "architecture/documentation-claims.json"
+    },
+    {
+      "id": "documentation-claim-observer",
+      "path": "tools/documentation_claim_observer.mjs"
+    },
+    {
+      "id": "documentation-drift-review",
+      "path": "tools/documentation_drift_review.mjs"
+    },
+    {
+      "id": "documentation-drift-review-tests",
+      "path": "test/documentation_drift_review.test.mjs"
+    },
+    {
+      "id": "documentation-claim-frozen-case",
+      "path": "architecture/backtests/documentation-claim-drift.json"
+    },
+    {
+      "id": "documentation-claim-to-source-matrix",
+      "path": "docs/evidence/documentation-drift-review/claim-to-source-matrix.md"
+    },
+    {
+      "id": "documentation-observer-scope",
+      "path": "docs/evidence/documentation-drift-review/observer-scope.md"
+    },
+    {
+      "id": "documentation-consumer-handoff",
+      "path": "docs/evidence/documentation-drift-review/consumer-handoff.md"
+    },
+    {
+      "id": "documentation-consumer-rehearsal-receipt",
+      "path": "docs/evidence/documentation-drift-review/consumer-rehearsal-receipt.json"
+    }
+  ]
+}

@@ -25,6 +25,11 @@ import {
   observeLandActionCollapse,
   projectCurrentLandActionObservation,
 } from "./architecture_land_action_observer.mjs";
+import { observeDocumentationClaims } from "./documentation_claim_observer.mjs";
+import {
+  loadClaimRegistry,
+  projectCurrentDocumentationObservation,
+} from "./documentation_drift_review.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const FROZEN_SET = "architecture/backtests/frozen-set.json";
@@ -34,6 +39,7 @@ export const REQUIRED_FROZEN_IDS = Object.freeze([
   "pr-1076-constellation-ceiling",
   "pr-1058-committees-search",
   "pr-1056-exams-eligibility",
+  "documentation-claim-drift",
 ]);
 
 const OBSERVERS = {
@@ -58,6 +64,21 @@ const OBSERVERS = {
     observe: observeCanaryVisibility,
     projectCurrent(spec) {
       return projectCurrentCanaryObservation(spec);
+    },
+  },
+  "tools/documentation_claim_observer.mjs": {
+    // A frozen documentation case carries its audited prose and the facts
+    // derived at the pinned revision, but never its own claim registry: the
+    // replay always runs against the registry in the tree, so narrowing a claim
+    // makes the audited contradiction go missing here.
+    observe(observation) {
+      return observeDocumentationClaims({
+        ...observation,
+        claims: observation.claims ?? loadClaimRegistry().claims,
+      });
+    },
+    projectCurrent(spec) {
+      return projectCurrentDocumentationObservation(spec);
     },
   },
 };
@@ -110,11 +131,38 @@ export function runBacktestCase(entry, loaded, observer) {
   const currentObservation = loaded.current ? observer.projectCurrent(loaded.current) : null;
   const current = currentObservation ? observer.observe(currentObservation) : null;
 
+  // Positive controls. A case may declare observations that must NOT raise a
+  // finding, so a guard cannot pass this backtest by rejecting wording it
+  // dislikes: the corrected documents, the explicit target-policy language, the
+  // exact migration exceptions, and the same audited wording replayed against a
+  // configuration that makes it true all have to stay clean.
+  const controlReports = {};
+  for (const [id, control] of Object.entries(loaded.controls || {})) {
+    const expectedStatus = control.status || "healthy";
+    const report = observer.observe(control);
+    controlReports[id] = {
+      expected_status: expectedStatus,
+      status: report.status,
+      findings: findingTypes(report),
+      held: report.status === expectedStatus,
+    };
+  }
+
   const failedConditions = Object.entries(conditionReports)
     .filter(([, report]) => !report.visible)
     .map(([type]) => type);
-  const currentFailed = current ? current.status !== "healthy" : false;
-  const ok = missing.length === 0 && failedConditions.length === 0 && !currentFailed;
+  const failedControls = Object.entries(controlReports)
+    .filter(([, report]) => !report.held)
+    .map(([id]) => id);
+  // A case whose live projection legitimately carries an unresolved review
+  // obligation declares that status, so semantic uncertainty is asserted rather
+  // than rounded down to a machine green.
+  const expectedCurrent = loaded.current_status || "healthy";
+  const currentFailed = current ? current.status !== expectedCurrent : false;
+  const ok = missing.length === 0
+    && failedConditions.length === 0
+    && failedControls.length === 0
+    && !currentFailed;
 
   return {
     id: entry.id,
@@ -126,8 +174,9 @@ export function runBacktestCase(entry, loaded, observer) {
       missing,
     },
     conditions: conditionReports,
+    controls: controlReports,
     current: current
-      ? { status: current.status, findings: findingTypes(current) }
+      ? { status: current.status, expected_status: expectedCurrent, findings: findingTypes(current) }
       : null,
   };
 }

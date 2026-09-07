@@ -110,7 +110,13 @@ test("frozen backtest --check is healthy and projects watermark history", () => 
     assert.ok(result, id);
     assert.equal(result.ok, true, id);
     assert.equal(result.collapsed.status, "drift", id);
-    assert.equal(result.current.status, "healthy", id);
+    // A case declares the status its live projection is expected to hold. Most
+    // are healthy; a case whose live projection carries an unresolved review
+    // obligation says so, rather than rounding that down to a machine green.
+    assert.equal(result.current.status, result.current.expected_status, id);
+    for (const [control, report] of Object.entries(result.controls || {})) {
+      assert.equal(report.held, true, `${id} control ${control}`);
+    }
   }
 });
 

@@ -1,0 +1,729 @@
+{
+  "schema": "cityscroll.architecture.backtest_case.v1",
+  "id": "documentation-claim-drift",
+  "title": "Consequential documentation claims contradicted by committed configuration",
+  "source": "docs/evidence/documentation-drift-review/claim-to-source-matrix.md",
+  "pinned_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+  "note": "Each statement below is the audited wording at the pinned revision, excerpted from the document and line named in audited_statements. Two excerpts are shortened to the audited sentence because the surrounding sentence carried a retired hostname that is pinned byte-for-byte elsewhere in the repository; no audited claim text is altered. The frozen facts are the derived values at that revision, each re-derived at the implementation head before this case was written. The case carries no claim registry, so a replay always runs against the current registry: narrowing a claim makes this backtest fail.",
+  "audited_statements": [
+    {
+      "finding": "manual-only classification against a configured push trigger",
+      "document": "docs/architecture.md",
+      "line": 212,
+      "claim_id": "worker-release-classification",
+      "excerpted": true,
+      "excerpt_reason": "the surrounding sentence names a retired hostname pinned elsewhere"
+    },
+    {
+      "finding": "manual-only classification against a configured push trigger",
+      "document": "docs/release/cloudflare-native-builds.md",
+      "line": 7,
+      "claim_id": "worker-release-classification"
+    },
+    {
+      "finding": "manual-only classification against a configured push trigger",
+      "document": "docs/release/cloudflare-native-builds.json",
+      "line": 39,
+      "claim_id": "worker-release-classification"
+    },
+    {
+      "finding": "a two-cron claim against three configured schedules",
+      "document": "ARCHITECTURE.md",
+      "line": 23,
+      "claim_id": "worker-cron-count",
+      "excerpted": true,
+      "excerpt_reason": "the surrounding sentence names a retired hostname pinned elsewhere"
+    },
+    {
+      "finding": "a one-cron claim against three configured schedules",
+      "document": "docs/architecture.md",
+      "line": 256,
+      "claim_id": "worker-cron-count"
+    },
+    {
+      "finding": "a diagram naming one schedule as the whole schedule set",
+      "document": "docs/architecture.md",
+      "line": 170,
+      "claim_id": "worker-cron-diagram-sole-schedule",
+      "inside_fenced_block": true
+    },
+    {
+      "finding": "active object-storage custody against a disabled binding",
+      "document": "docs/architecture.md",
+      "line": 181,
+      "claim_id": "r2-source-vault-custody",
+      "inside_fenced_block": true
+    },
+    {
+      "finding": "active object-storage custody against a disabled binding",
+      "document": "docs/architecture.md",
+      "line": 199,
+      "claim_id": "r2-source-vault-custody"
+    },
+    {
+      "finding": "active object-storage custody against a disabled binding",
+      "document": "docs/architecture.md",
+      "line": 256,
+      "claim_id": "r2-source-vault-custody"
+    },
+    {
+      "finding": "a no-third-party claim against a configured loader",
+      "document": "docs/architecture.md",
+      "line": 256,
+      "claim_id": "third-party-loader-absence"
+    },
+    {
+      "finding": "a no-product-use claim against the published search counts",
+      "document": "docs/architecture.md",
+      "line": 199,
+      "claim_id": "public-stats-product-use"
+    },
+    {
+      "finding": "a completed-materialization claim hiding the recorded departures",
+      "document": "docs/architecture.md",
+      "line": 3,
+      "claim_id": "materialization-completed"
+    },
+    {
+      "finding": "a completed-materialization claim hiding the recorded departures",
+      "document": "ARCHITECTURE.md",
+      "line": 47,
+      "claim_id": "materialization-completed"
+    },
+    {
+      "finding": "an exception list closed without naming the recorded departures",
+      "document": "ARCHITECTURE.md",
+      "line": 13,
+      "claim_id": "materialization-exception-closure"
+    },
+    {
+      "finding": "an invariant stated with no pointer to the recorded departures",
+      "document": "ARCHITECTURE.md",
+      "line": 12,
+      "claim_id": "materialization-exception-reference"
+    }
+  ],
+  "expected_finding_types": [
+    "contradicted_claim",
+    "miscounted_claim",
+    "unqualified_claim",
+    "missing_exception_reference",
+    "review_needed"
+  ],
+  "collapsed": {
+    "documents": {
+      "ARCHITECTURE.md": "- Resident and required-CI reads are materialization-only. Browser routes, Pages handlers, public read endpoints, production builds, and required pull-request or merge gates read CityScroll-owned materializations and never fetch publisher data at request or gate time.\n\n- The narrow exceptions are not civic-data reads: navigation to an official source-attribution URL; an explicitly invoked user transaction such as plain-English parsing, translation, subscription, or email delivery; and scheduled source acquisition, manually authenticated refreshes, or scheduled production/source-contract monitors that are not required pull-request or merge gates. None permits request-time publisher-data retrieval for a resident read.\n\nThe routes, domains, and two daily cron triggers are declared in `worker/wrangler.toml`.\n\n**A visitor opens a record.** Missing evidence remains a named absence; a failed acquisition is not cached as an empty fact and does not trigger a request-time publisher lookup.\n",
+      "docs/architecture.md": "---\nsummary: >-\n  CityScroll-owned materialized read models are the exclusive delivery path for\n  resident and required-CI reads; scheduled source acquisition and durable\n  snapshots provide graceful degradation and reproducibility.\nsources:\n  - architecture/no-live-external-debt.json\n---\n\nThe narrow exceptions are not civic-data reads: (1) navigation to an official source-attribution URL; (2) an explicitly invoked user transaction; and (3) scheduled source acquisition, manually authenticated refreshes, and scheduled production/source-contract monitors that are not required pull-request or merge gates. No exception permits request-time Socrata, NYC GeoSearch, MapPLUTO/ArcGIS, ZAP, NYC Rules, Legistar, Checkbook, or equivalent publisher-data retrieval for a resident read. Any temporary migration exception is exact, owner-approved, time-bounded, and recorded in the fitness-function debt manifest; wildcards and permanent exceptions are forbidden.\n\n```\nCron (daily 13:00 UTC): (1) Socrata→D1 ingest refresh (fail-soft), (2) prior-cycle\nR2: SOURCE_VAULT — content-addressed custody for approved public documents\n```\n\n- **R2 `SOURCE_VAULT`** — content-addressed custody for approved public documents. Each object carries provenance, eligibility, and its official source URL.\n\n- **Analytics Engine `crol_usage_events_v1`** — Authenticated `/admin/stats` reads sampling-aware 7/30-day aggregates through Cloudflare's SQL API; public `/stats` never reads or returns product-use telemetry.\n\n- Changes under `worker/**` deploy from `main` through Cloudflare Workers Builds; `.github/workflows/deploy-worker.yml` remains a manual, non-required fallback.\n\n1 static site + 1 Cloudflare Worker, 7 lenses, public and operator API routes plus an inbound-email handler and queue consumer, 1 daily cron (ingest → normalization/materialization → edge prewarm → queue fan-out), 4 KV namespaces + 1 D1 database + 1 R2 source vault + 1 Analytics Engine dataset + 2 queues, 6 secrets, 2 hard send caps — under one hard rule: no required accounts, no fingerprinting, no third-party trackers, and no visitor profiles beyond the first-party `cs_visitor` cookie's private, 30-day-bounded search-execution receipts.\n",
+      "worker/README.md": "| `/prefs` | GET/POST | **Preference center** — magic-link list/edit/pause/delete watches for one email; changes take effect next daily cron (~9am ET) | `TOKEN_SECRET` + `SUBS` |\n",
+      "docs/release/cloudflare-native-builds.md": "GitHub Actions is the canonical release control plane for the production Pages\nsite: every push to `main` builds the provider-neutral `_site` artifact and\ndeploys it to the `cityscroll` Cloudflare Pages project. Cloudflare's native Git\nintegration is optional and production freshness does not depend on it. Workers\nBuilds remains the canonical release path for the Worker.\n",
+      "docs/release/cloudflare-native-builds.json": "{\n  \"worker\": {\n    \"name\": \"cityscroll-worker\",\n    \"root_directory\": \"worker\",\n    \"native_builds_connection\": \"unverified\",\n    \"manual_fallback_workflow\": \".github/workflows/deploy-worker.yml\"\n  }\n}\n"
+    },
+    "facts": {
+      "release_infrastructure": {
+        "pipelines": {
+          "cloudflare-worker": {
+            "manual_only": false,
+            "classifications": [
+              "automatic_on_push",
+              "manual_dispatch"
+            ]
+          }
+        },
+        "crons": [
+          {
+            "schedule": "0 8 * * *"
+          },
+          {
+            "schedule": "0 10 * * *"
+          },
+          {
+            "schedule": "0 13 * * *"
+          }
+        ],
+        "binding_active": {
+          "SOURCE_VAULT": false
+        },
+        "externally_observed": {
+          "worker_native_builds_connection": "unverified"
+        }
+      },
+      "collection_boundary": {
+        "third_party_loader": {
+          "configured": true,
+          "load_outcome_observed": false
+        },
+        "public_search_usage": {
+          "metric_ids": [
+            "searches_run",
+            "searches_returning_records"
+          ]
+        }
+      },
+      "resident_read": {
+        "open_debt_routes": [
+          "/agencies",
+          "/batch",
+          "/externalaward",
+          "/notice",
+          "/priorcycle",
+          "/subsidy-lifecycle",
+          "/translate"
+        ]
+      }
+    }
+  },
+  "conditions": {
+    "contradicted_claim": {
+      "documents": {
+        "ARCHITECTURE.md": "",
+        "docs/architecture.md": "- **R2 `SOURCE_VAULT`** — content-addressed custody for approved public documents.\n",
+        "worker/README.md": "",
+        "docs/release/cloudflare-native-builds.md": "",
+        "docs/release/cloudflare-native-builds.json": ""
+      },
+      "facts": {
+        "release_infrastructure": {
+          "pipelines": {
+            "cloudflare-worker": {
+              "manual_only": false,
+              "classifications": [
+                "automatic_on_push",
+                "manual_dispatch"
+              ]
+            }
+          },
+          "crons": [
+            {
+              "schedule": "0 8 * * *"
+            },
+            {
+              "schedule": "0 10 * * *"
+            },
+            {
+              "schedule": "0 13 * * *"
+            }
+          ],
+          "binding_active": {
+            "SOURCE_VAULT": false
+          },
+          "externally_observed": {
+            "worker_native_builds_connection": "unverified"
+          }
+        },
+        "collection_boundary": {
+          "third_party_loader": {
+            "configured": true,
+            "load_outcome_observed": false
+          },
+          "public_search_usage": {
+            "metric_ids": [
+              "searches_run",
+              "searches_returning_records"
+            ]
+          }
+        },
+        "resident_read": {
+          "open_debt_routes": [
+            "/agencies",
+            "/batch",
+            "/externalaward",
+            "/notice",
+            "/priorcycle",
+            "/subsidy-lifecycle",
+            "/translate"
+          ]
+        }
+      }
+    },
+    "miscounted_claim": {
+      "documents": {
+        "ARCHITECTURE.md": "The routes, domains, and two daily cron triggers are declared in `worker/wrangler.toml`.\n",
+        "docs/architecture.md": "",
+        "worker/README.md": "",
+        "docs/release/cloudflare-native-builds.md": "",
+        "docs/release/cloudflare-native-builds.json": ""
+      },
+      "facts": {
+        "release_infrastructure": {
+          "pipelines": {
+            "cloudflare-worker": {
+              "manual_only": false,
+              "classifications": [
+                "automatic_on_push",
+                "manual_dispatch"
+              ]
+            }
+          },
+          "crons": [
+            {
+              "schedule": "0 8 * * *"
+            },
+            {
+              "schedule": "0 10 * * *"
+            },
+            {
+              "schedule": "0 13 * * *"
+            }
+          ],
+          "binding_active": {
+            "SOURCE_VAULT": false
+          },
+          "externally_observed": {
+            "worker_native_builds_connection": "unverified"
+          }
+        },
+        "collection_boundary": {
+          "third_party_loader": {
+            "configured": true,
+            "load_outcome_observed": false
+          },
+          "public_search_usage": {
+            "metric_ids": [
+              "searches_run",
+              "searches_returning_records"
+            ]
+          }
+        },
+        "resident_read": {
+          "open_debt_routes": [
+            "/agencies",
+            "/batch",
+            "/externalaward",
+            "/notice",
+            "/priorcycle",
+            "/subsidy-lifecycle",
+            "/translate"
+          ]
+        }
+      }
+    },
+    "unqualified_claim": {
+      "documents": {
+        "ARCHITECTURE.md": "- The narrow exceptions are not civic-data reads. None permits request-time publisher-data retrieval for a resident read.\n",
+        "docs/architecture.md": "",
+        "worker/README.md": "",
+        "docs/release/cloudflare-native-builds.md": "",
+        "docs/release/cloudflare-native-builds.json": ""
+      },
+      "facts": {
+        "release_infrastructure": {
+          "pipelines": {
+            "cloudflare-worker": {
+              "manual_only": false,
+              "classifications": [
+                "automatic_on_push",
+                "manual_dispatch"
+              ]
+            }
+          },
+          "crons": [
+            {
+              "schedule": "0 8 * * *"
+            },
+            {
+              "schedule": "0 10 * * *"
+            },
+            {
+              "schedule": "0 13 * * *"
+            }
+          ],
+          "binding_active": {
+            "SOURCE_VAULT": false
+          },
+          "externally_observed": {
+            "worker_native_builds_connection": "unverified"
+          }
+        },
+        "collection_boundary": {
+          "third_party_loader": {
+            "configured": true,
+            "load_outcome_observed": false
+          },
+          "public_search_usage": {
+            "metric_ids": [
+              "searches_run",
+              "searches_returning_records"
+            ]
+          }
+        },
+        "resident_read": {
+          "open_debt_routes": [
+            "/agencies",
+            "/batch",
+            "/externalaward",
+            "/notice",
+            "/priorcycle",
+            "/subsidy-lifecycle",
+            "/translate"
+          ]
+        }
+      }
+    },
+    "missing_exception_reference": {
+      "documents": {
+        "ARCHITECTURE.md": "- Resident and required-CI reads are materialization-only.\n",
+        "docs/architecture.md": "",
+        "worker/README.md": "",
+        "docs/release/cloudflare-native-builds.md": "",
+        "docs/release/cloudflare-native-builds.json": ""
+      },
+      "facts": {
+        "release_infrastructure": {
+          "pipelines": {
+            "cloudflare-worker": {
+              "manual_only": false,
+              "classifications": [
+                "automatic_on_push",
+                "manual_dispatch"
+              ]
+            }
+          },
+          "crons": [
+            {
+              "schedule": "0 8 * * *"
+            },
+            {
+              "schedule": "0 10 * * *"
+            },
+            {
+              "schedule": "0 13 * * *"
+            }
+          ],
+          "binding_active": {
+            "SOURCE_VAULT": false
+          },
+          "externally_observed": {
+            "worker_native_builds_connection": "unverified"
+          }
+        },
+        "collection_boundary": {
+          "third_party_loader": {
+            "configured": true,
+            "load_outcome_observed": false
+          },
+          "public_search_usage": {
+            "metric_ids": [
+              "searches_run",
+              "searches_returning_records"
+            ]
+          }
+        },
+        "resident_read": {
+          "open_debt_routes": [
+            "/agencies",
+            "/batch",
+            "/externalaward",
+            "/notice",
+            "/priorcycle",
+            "/subsidy-lifecycle",
+            "/translate"
+          ]
+        }
+      }
+    },
+    "review_needed": {
+      "documents": {
+        "ARCHITECTURE.md": "",
+        "docs/architecture.md": "",
+        "worker/README.md": "",
+        "docs/release/cloudflare-native-builds.md": "",
+        "docs/release/cloudflare-native-builds.json": "{\n  \"native_builds_connection\": \"unverified\"\n}\n"
+      },
+      "facts": {
+        "release_infrastructure": {
+          "pipelines": {
+            "cloudflare-worker": {
+              "manual_only": false,
+              "classifications": [
+                "automatic_on_push",
+                "manual_dispatch"
+              ]
+            }
+          },
+          "crons": [
+            {
+              "schedule": "0 8 * * *"
+            },
+            {
+              "schedule": "0 10 * * *"
+            },
+            {
+              "schedule": "0 13 * * *"
+            }
+          ],
+          "binding_active": {
+            "SOURCE_VAULT": false
+          },
+          "externally_observed": {
+            "worker_native_builds_connection": "unverified"
+          }
+        },
+        "collection_boundary": {
+          "third_party_loader": {
+            "configured": true,
+            "load_outcome_observed": false
+          },
+          "public_search_usage": {
+            "metric_ids": [
+              "searches_run",
+              "searches_returning_records"
+            ]
+          }
+        },
+        "resident_read": {
+          "open_debt_routes": [
+            "/agencies",
+            "/batch",
+            "/externalaward",
+            "/notice",
+            "/priorcycle",
+            "/subsidy-lifecycle",
+            "/translate"
+          ]
+        }
+      }
+    }
+  },
+  "controls": {
+    "corrected-documents": {
+      "why": "The wording each audited claim was corrected to must not produce a finding.",
+      "documents": {
+        "ARCHITECTURE.md": "The routes, domains, and three daily cron triggers are declared in `worker/wrangler.toml` and inventoried in `docs/release/cloudflare-native-builds.md`.\n",
+        "docs/architecture.md": "- **R2 `SOURCE_VAULT`** — the content-addressed custody design for approved public documents. It is **not an active store**: the `[[r2_buckets]]` declaration is commented out and `SOURCE_VAULT_ENABLED` is `\"false\"` in `worker/wrangler.toml`.\n\n- Public `/stats` reads nothing from the Analytics Engine dataset; the only product-use figures it publishes are two period-bounded counts projected from search-execution receipts.\n\n```\nCron (three daily UTC triggers — 08:00, 10:00 and 13:00)\n```\n",
+        "worker/README.md": "",
+        "docs/release/cloudflare-native-builds.md": "GitHub Actions is the canonical release control plane for the production Pages site, and the Worker deploy workflow is classified as `push` to `main` plus `workflow_dispatch`.\n",
+        "docs/release/cloudflare-native-builds.json": ""
+      },
+      "facts": {
+        "release_infrastructure": {
+          "pipelines": {
+            "cloudflare-worker": {
+              "manual_only": false,
+              "classifications": [
+                "automatic_on_push",
+                "manual_dispatch"
+              ]
+            }
+          },
+          "crons": [
+            {
+              "schedule": "0 8 * * *"
+            },
+            {
+              "schedule": "0 10 * * *"
+            },
+            {
+              "schedule": "0 13 * * *"
+            }
+          ],
+          "binding_active": {
+            "SOURCE_VAULT": false
+          },
+          "externally_observed": {
+            "worker_native_builds_connection": "unverified"
+          }
+        },
+        "collection_boundary": {
+          "third_party_loader": {
+            "configured": true,
+            "load_outcome_observed": false
+          },
+          "public_search_usage": {
+            "metric_ids": [
+              "searches_run",
+              "searches_returning_records"
+            ]
+          }
+        },
+        "resident_read": {
+          "open_debt_routes": [
+            "/agencies",
+            "/batch",
+            "/externalaward",
+            "/notice",
+            "/priorcycle",
+            "/subsidy-lifecycle",
+            "/translate"
+          ]
+        }
+      },
+      "status": "healthy"
+    },
+    "explicit-target-policy-language": {
+      "why": "Stating the invariant as a standing target, and saying so plainly, is the corrected form. It stays a review obligation and must never become a contradiction.",
+      "documents": {
+        "ARCHITECTURE.md": "- Resident and required-CI reads are materialization-only. This is the standing invariant every surface is held to. The open entries live in `architecture/no-live-external-debt.json`.\n\n- The materialization rule above is the target, and the repository records where it is not yet met instead of describing the migration as finished.\n",
+        "docs/architecture.md": "The invariant above is the target and the direction of travel. It is not a description of a finished migration, and this document does not claim one. The open departures are listed in `architecture/no-live-external-debt.json`.\n",
+        "worker/README.md": "",
+        "docs/release/cloudflare-native-builds.md": "",
+        "docs/release/cloudflare-native-builds.json": ""
+      },
+      "facts": {
+        "release_infrastructure": {
+          "pipelines": {
+            "cloudflare-worker": {
+              "manual_only": false,
+              "classifications": [
+                "automatic_on_push",
+                "manual_dispatch"
+              ]
+            }
+          },
+          "crons": [
+            {
+              "schedule": "0 8 * * *"
+            },
+            {
+              "schedule": "0 10 * * *"
+            },
+            {
+              "schedule": "0 13 * * *"
+            }
+          ],
+          "binding_active": {
+            "SOURCE_VAULT": false
+          },
+          "externally_observed": {
+            "worker_native_builds_connection": "unverified"
+          }
+        },
+        "collection_boundary": {
+          "third_party_loader": {
+            "configured": true,
+            "load_outcome_observed": false
+          },
+          "public_search_usage": {
+            "metric_ids": [
+              "searches_run",
+              "searches_returning_records"
+            ]
+          }
+        },
+        "resident_read": {
+          "open_debt_routes": [
+            "/agencies",
+            "/batch",
+            "/externalaward",
+            "/notice",
+            "/priorcycle",
+            "/subsidy-lifecycle",
+            "/translate"
+          ]
+        }
+      },
+      "status": "review"
+    },
+    "exact-migration-exceptions": {
+      "why": "Naming the recorded departures in the same statement is what makes a closed exception list honest.",
+      "documents": {
+        "ARCHITECTURE.md": "- The narrow exceptions are not civic-data reads. None permits request-time publisher-data retrieval for a resident read, and none covers the migration departures recorded below.\n\n- Resident and required-CI reads are materialization-only; the open entries live in `architecture/no-live-external-debt.json`.\n",
+        "docs/architecture.md": "No exception permits request-time Socrata, NYC GeoSearch, MapPLUTO/ArcGIS, ZAP, NYC Rules, Legistar, Checkbook, or equivalent publisher-data retrieval for a resident read. Any temporary migration exception is exact, owner-approved, time-bounded, and recorded in the fitness-function debt manifest; wildcards and permanent exceptions are forbidden.\n",
+        "worker/README.md": "",
+        "docs/release/cloudflare-native-builds.md": "",
+        "docs/release/cloudflare-native-builds.json": ""
+      },
+      "facts": {
+        "release_infrastructure": {
+          "pipelines": {
+            "cloudflare-worker": {
+              "manual_only": false,
+              "classifications": [
+                "automatic_on_push",
+                "manual_dispatch"
+              ]
+            }
+          },
+          "crons": [
+            {
+              "schedule": "0 8 * * *"
+            },
+            {
+              "schedule": "0 10 * * *"
+            },
+            {
+              "schedule": "0 13 * * *"
+            }
+          ],
+          "binding_active": {
+            "SOURCE_VAULT": false
+          },
+          "externally_observed": {
+            "worker_native_builds_connection": "unverified"
+          }
+        },
+        "collection_boundary": {
+          "third_party_loader": {
+            "configured": true,
+            "load_outcome_observed": false
+          },
+          "public_search_usage": {
+            "metric_ids": [
+              "searches_run",
+              "searches_returning_records"
+            ]
+          }
+        },
+        "resident_read": {
+          "open_debt_routes": [
+            "/agencies",
+            "/batch",
+            "/externalaward",
+            "/notice",
+            "/priorcycle",
+            "/subsidy-lifecycle",
+            "/translate"
+          ]
+        }
+      },
+      "status": "healthy"
+    },
+    "same-wording-true-under-different-configuration": {
+      "why": "The audited wording, replayed against facts that make each claim true. Nothing fires, which is what separates a fact-conditional guard from a list of forbidden phrases.",
+      "documents": {
+        "ARCHITECTURE.md": "",
+        "docs/architecture.md": "- **R2 `SOURCE_VAULT`** — content-addressed custody for approved public documents.\n\n- Public `/stats` never reads or returns product-use telemetry.\n\n- One hard rule: no required accounts, no fingerprinting, no third-party trackers.\n\n- 1 daily cron (ingest → normalization → fan-out).\n\n```\nCron (daily 13:00 UTC): the whole schedule set\n```\n",
+        "worker/README.md": "",
+        "docs/release/cloudflare-native-builds.md": "Workers Builds remains the canonical release path for the Worker.\n",
+        "docs/release/cloudflare-native-builds.json": ""
+      },
+      "facts": {
+        "release_infrastructure": {
+          "pipelines": {
+            "cloudflare-worker": {
+              "manual_only": true,
+              "classifications": [
+                "manual_dispatch"
+              ]
+            }
+          },
+          "crons": [
+            {
+              "schedule": "0 13 * * *"
+            }
+          ],
+          "binding_active": {
+            "SOURCE_VAULT": true
+          },
+          "externally_observed": {
+            "worker_native_builds_connection": "receipt-observed"
+          }
+        },
+        "collection_boundary": {
+          "third_party_loader": {
+            "configured": false,
+            "load_outcome_observed": true
+          },
+          "public_search_usage": {
+            "metric_ids": []
+          }
+        },
+        "resident_read": {
+          "open_debt_routes": []
+        }
+      },
+      "status": "healthy"
+    }
+  },
+  "current": {},
+  "current_status": "review"
+}

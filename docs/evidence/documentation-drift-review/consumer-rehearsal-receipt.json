@@ -1,0 +1,93 @@
+{
+  "schema": "cityscroll.documentation_drift_review_rehearsal.v1",
+  "job_id": "documentation-drift-review",
+  "source": "architecture/backtests/documentation-claim-drift.json",
+  "consumer": {
+    "mechanism": "tools/external_schedule_outbox.mjs",
+    "intent": "none",
+    "note": "The shared outbox is the deduplicating consumer reachable from this repository. The review desk that decides on an assembled batch is not in this repository, so the handoff into it is rehearsed here and stays open until that side can be exercised."
+  },
+  "stages": [
+    {
+      "stage": "first-occurrence",
+      "fixture": "drifted",
+      "run_key": "2026-09-07",
+      "event_id": "f2e7ce1c32e92091042b060bdcb04ed2",
+      "report_status": "drift",
+      "content_hash": "ef458ca92292a26f97879d78e11282dc9de3adfcc3cb1ead70d4e32f079d1130",
+      "finding_count": 16,
+      "new_findings": 16,
+      "unchanged_findings": 0,
+      "resolved_findings": 0,
+      "outbox_events": 1,
+      "outbox_intent": "none",
+      "replay_status": "ok",
+      "replay_errors": []
+    },
+    {
+      "stage": "unchanged-replay-same-slot",
+      "fixture": "drifted",
+      "run_key": "2026-09-07",
+      "event_id": "f2e7ce1c32e92091042b060bdcb04ed2",
+      "report_status": "drift",
+      "content_hash": "ef458ca92292a26f97879d78e11282dc9de3adfcc3cb1ead70d4e32f079d1130",
+      "finding_count": 16,
+      "new_findings": 0,
+      "unchanged_findings": 16,
+      "resolved_findings": 0,
+      "outbox_events": 1,
+      "outbox_intent": "none",
+      "replay_status": "ok",
+      "replay_errors": []
+    },
+    {
+      "stage": "unchanged-replay-next-slot",
+      "fixture": "drifted",
+      "run_key": "2026-09-08",
+      "event_id": "ef3015d59b219a44b1d0fb8277b9a33c",
+      "report_status": "drift",
+      "content_hash": "ef458ca92292a26f97879d78e11282dc9de3adfcc3cb1ead70d4e32f079d1130",
+      "finding_count": 16,
+      "new_findings": 0,
+      "unchanged_findings": 16,
+      "resolved_findings": 0,
+      "outbox_events": 2,
+      "outbox_intent": "none",
+      "replay_status": "ok",
+      "replay_errors": []
+    },
+    {
+      "stage": "resolution",
+      "fixture": "corrected",
+      "run_key": "2026-09-09",
+      "event_id": "9a77fd8bc2c33d4af7a8ebd77f2bfef9",
+      "report_status": "healthy",
+      "content_hash": "1a798dd9b1bec7f4de6fd52c51eec36a65446e2f7e3e69aa560c4c99b403a478",
+      "finding_count": 0,
+      "new_findings": 0,
+      "unchanged_findings": 0,
+      "resolved_findings": 16,
+      "outbox_events": 3,
+      "outbox_intent": "none",
+      "replay_status": "ok",
+      "replay_errors": []
+    },
+    {
+      "stage": "recurrence",
+      "fixture": "drifted",
+      "run_key": "2026-09-10",
+      "event_id": "ec2fc6001aecc560f83ac808379132a8",
+      "report_status": "drift",
+      "content_hash": "ef458ca92292a26f97879d78e11282dc9de3adfcc3cb1ead70d4e32f079d1130",
+      "finding_count": 16,
+      "new_findings": 16,
+      "unchanged_findings": 0,
+      "resolved_findings": 0,
+      "outbox_events": 4,
+      "outbox_intent": "none",
+      "replay_status": "ok",
+      "replay_errors": [],
+      "recurs_under_first_occurrence_identity": true
+    }
+  ]
+}
