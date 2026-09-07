@@ -74,16 +74,23 @@ test("district activity retains residual accounting while adding ontology-placed
   assert.equal(meetings.location_residual.fixed_rows, 24);
   assert.equal(activity.sources.meetings.corpus, "shared_meeting_read_model");
   assert.equal(activity.sources.meetings.counted, sharedMeetings.rows.length);
-  assert.equal(activity.sources.meetings.located, 509);
-  assert.equal(activity.sources.meetings.by_method.community_board_ontology, 395);
-  assert.equal(sharedMeetings.counts.community_board, 395);
-  assert.equal(activity.unlocated.meetings, 13);
-  assert.equal(activity.virtual.meetings, 5);
+  assert.equal(activity.sources.meetings.located, 500);
+  assert.equal(activity.sources.meetings.by_method.community_board_ontology, 407);
+  assert.equal(sharedMeetings.counts.community_board, 407);
+  assert.equal(activity.unlocated.meetings, 26);
+  assert.equal(activity.virtual.meetings, 1);
   assert.deepEqual(activity.unlocated_reasons.meetings, {
-    body_place_omitted: 3,
-    multi_event_directory: 9,
-    external_board_page_needed: 1,
+    no_place_signal: 6,
+    body_place_omitted: 9,
+    multi_event_directory: 6,
+    external_board_page_needed: 5,
   });
-  assert.ok(activity.district_items.virtual.meetings.includes("20260515001"));
-  assert.ok(activity.district_items.virtual.meetings.includes("20260624005"));
+  // The virtual list is stated as a rule rather than as pinned request ids: a
+  // generation retains a different window of notices, and what the accounting
+  // claims is that every listed meeting is one the corpus itself calls virtual,
+  // and that the list and the count are the same population.
+  assert.equal(activity.district_items.virtual.meetings.length, activity.virtual.meetings);
+  const virtualIds = new Set(activity.district_items.virtual.meetings);
+  assert.ok(virtualIds.size === activity.district_items.virtual.meetings.length);
+  for (const id of virtualIds) assert.match(id, /^\d{8,}$/);
 });

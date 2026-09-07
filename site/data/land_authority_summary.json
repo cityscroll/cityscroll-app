@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.land_authority_summary.v1",
   "join_version": "ldp05_authority_summary_v1",
-  "generated_at": "2026-08-23T07:59:14.162Z",
+  "generated_at": "2026-09-06T15:58:50.482Z",
   "source_basis_defaults": {
     "profile": {
       "source_type": "reviewed_static_registry",
@@ -24,7 +24,7 @@
     },
     "publisher": {
       "source_type": "published_hearing",
-      "checked_vintage": "2026-08-23"
+      "checked_vintage": "2026-09-06"
     }
   },
   "legal_basis_by_stage": {
@@ -79,7 +79,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -95,12 +95,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-08-23T07:59:14.162Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-06T15:58:50.482Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -141,7 +141,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -157,12 +157,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-08-23T07:59:14.162Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-06T15:58:50.482Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -213,7 +213,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -238,12 +238,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-08-23T07:59:14.162Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-06T15:58:50.482Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -280,7 +280,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -296,12 +296,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-08-23T07:59:14.162Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-06T15:58:50.482Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -342,7 +342,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -358,12 +358,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-08-23T07:59:14.162Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-06T15:58:50.482Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -404,7 +404,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -420,12 +420,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-08-23T07:59:14.162Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-06T15:58:50.482Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -472,7 +472,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -520,12 +520,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-03T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:13:26.471Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:09:05.719Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -576,7 +576,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": "7cfc36ab-cecd-ef11-b8e9-001dd809b68c",
         "source": "zap-api-milestones",
         "label": "Review Session - Pre-Hearing Review / Post Referral",
@@ -613,41 +613,47 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-02T00:00:00.000",
-          "outcomes_generated_at": "2026-08-16T13:10:49.743Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-08-30T13:12:25.649Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
     "2026K0123": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "unresolved_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2026K0123",
-      "procedure_id": null,
-      "procedure_resolution": "unknown",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
+        "stage_id": "ulurp_197c.application_certification",
         "spine_phase_id": "pre_application",
-        "status": "unknown"
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-planning"
+      ],
+      "current_role": "administrative_certifier",
+      "effect": "Receives and circulates the application, then certifies it as complete for review.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.application_certification",
+          "role": "administrative_certifier"
+        },
         "phase": {
           "current_milestone": "ZM - Review Filed Land Use Application",
           "phase_id": "pre_application",
           "milestone_phase_id": "pre_application"
         },
         "geography": {
-          "status": "unresolved",
-          "profile_version": null
+          "status": "resolved",
+          "profile_version": "2026-08-27.v1"
         },
         "publisher": {
           "source": "zap-api-milestones",
@@ -655,11 +661,15 @@
           "checked": true
         }
       },
-      "expected_next_stage": null,
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.community_board_review",
+        "spine_phase_id": "community_board",
+        "status": "known"
+      },
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": "e4dc27d1-ccb8-f011-bbd3-001dd80340cd",
         "source": "zap-api-milestones",
         "label": "Review Session - Pre-Hearing Review / Post Referral",
@@ -668,48 +678,67 @@
         "phase_id": "cpc",
         "body_ref": "agency:id:city-planning-commission"
       },
-      "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "next_procedural_body": {
+        "body_ref": "agency:id:city-planning-commission",
+        "source_id": "e4dc27d1-ccb8-f011-bbd3-001dd80340cd",
+        "source": "zap-api-milestones"
+      },
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:brooklyn-cb-09",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:brooklyn",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "draft_only",
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-02T00:00:00.000",
-          "outcomes_generated_at": "2026-08-16T13:10:41.946Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-08-30T13:12:17.280Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
     "2024Q0325": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "unresolved_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2024Q0325",
-      "procedure_id": null,
-      "procedure_resolution": "unknown",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
+        "stage_id": "ulurp_197c.application_certification",
         "spine_phase_id": "pre_application",
-        "status": "unknown"
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-planning"
+      ],
+      "current_role": "administrative_certifier",
+      "effect": "Receives and circulates the application, then certifies it as complete for review.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.application_certification",
+          "role": "administrative_certifier"
+        },
         "phase": {
           "current_milestone": "ZM - Review Filed Land Use Application",
           "phase_id": "pre_application",
           "milestone_phase_id": "pre_application"
         },
         "geography": {
-          "status": "unresolved",
-          "profile_version": null
+          "status": "resolved",
+          "profile_version": "2026-08-27.v1"
         },
         "publisher": {
           "source": "zap-api-milestones",
@@ -717,11 +746,15 @@
           "checked": true
         }
       },
-      "expected_next_stage": null,
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.community_board_review",
+        "spine_phase_id": "community_board",
+        "status": "known"
+      },
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": "46ec6068-6ba7-ef11-8a6a-001dd80552a0",
         "source": "zap-api-milestones",
         "label": "Review Session - Pre-Hearing Review / Post Referral",
@@ -730,48 +763,67 @@
         "phase_id": "cpc",
         "body_ref": "agency:id:city-planning-commission"
       },
-      "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "next_procedural_body": {
+        "body_ref": "agency:id:city-planning-commission",
+        "source_id": "46ec6068-6ba7-ef11-8a6a-001dd80552a0",
+        "source": "zap-api-milestones"
+      },
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:queens-cb-14",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:queens",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "draft_only",
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-02T00:00:00.000",
-          "outcomes_generated_at": "2026-08-16T13:07:42.954Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:13:52.285Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
     "2024K0214": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "unresolved_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2024K0214",
-      "procedure_id": null,
-      "procedure_resolution": "unknown",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
+        "stage_id": "ulurp_197c.application_certification",
         "spine_phase_id": "pre_application",
-        "status": "unknown"
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-planning"
+      ],
+      "current_role": "administrative_certifier",
+      "effect": "Receives and circulates the application, then certifies it as complete for review.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.application_certification",
+          "role": "administrative_certifier"
+        },
         "phase": {
           "current_milestone": "Ad-hoc - Review Filed Land Use Application",
           "phase_id": "pre_application",
           "milestone_phase_id": "pre_application"
         },
         "geography": {
-          "status": "unresolved",
-          "profile_version": null
+          "status": "resolved",
+          "profile_version": "2026-08-27.v1"
         },
         "publisher": {
           "source": "zap-api-milestones",
@@ -779,11 +831,15 @@
           "checked": true
         }
       },
-      "expected_next_stage": null,
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.community_board_review",
+        "spine_phase_id": "community_board",
+        "status": "known"
+      },
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": "b598310e-9360-ef11-bfe2-001dd80552a0",
         "source": "zap-api-milestones",
         "label": "City Planning Commission Review",
@@ -792,19 +848,32 @@
         "phase_id": "cpc",
         "body_ref": "agency:id:city-planning-commission"
       },
-      "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "next_procedural_body": {
+        "body_ref": "agency:id:city-planning-commission",
+        "source_id": "b598310e-9360-ef11-bfe2-001dd80552a0",
+        "source": "zap-api-milestones"
+      },
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:brooklyn-cb-05",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:brooklyn",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "draft_only",
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-01T00:00:00.000",
-          "outcomes_generated_at": "2026-08-16T13:10:55.768Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-08-30T13:12:25.594Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -814,7 +883,7 @@
       "status": "unknown",
       "reason": "mixed_procedure",
       "project_id": "2024M0244",
-      "procedure_id": null,
+      "procedure_id": "ulurp_197c",
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
@@ -825,7 +894,9 @@
       "current_role": null,
       "effect": null,
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c"
+        },
         "phase": {
           "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
           "phase_id": "cpc",
@@ -845,7 +916,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -884,41 +955,47 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-01T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:13:27.022Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:09:14.215Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
     "2025M0338": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "unresolved_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2025M0338",
-      "procedure_id": null,
-      "procedure_resolution": "unknown",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
+        "stage_id": "ulurp_197c.application_certification",
         "spine_phase_id": "pre_application",
-        "status": "unknown"
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-planning"
+      ],
+      "current_role": "administrative_certifier",
+      "effect": "Receives and circulates the application, then certifies it as complete for review.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.application_certification",
+          "role": "administrative_certifier"
+        },
         "phase": {
           "current_milestone": "ZS - Review Filed Land Use Application",
           "phase_id": "pre_application",
           "milestone_phase_id": "pre_application"
         },
         "geography": {
-          "status": "unresolved",
-          "profile_version": null
+          "status": "resolved",
+          "profile_version": "2026-08-27.v1"
         },
         "publisher": {
           "source": "zap-api-milestones",
@@ -926,11 +1003,15 @@
           "checked": true
         }
       },
-      "expected_next_stage": null,
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.community_board_review",
+        "spine_phase_id": "community_board",
+        "status": "known"
+      },
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": "72c89b39-4642-f011-877a-001dd806295a",
         "source": "zap-api-milestones",
         "label": "City Planning Commission Review",
@@ -939,19 +1020,32 @@
         "phase_id": "cpc",
         "body_ref": "agency:id:city-planning-commission"
       },
-      "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "next_procedural_body": {
+        "body_ref": "agency:id:city-planning-commission",
+        "source_id": "72c89b39-4642-f011-877a-001dd806295a",
+        "source": "zap-api-milestones"
+      },
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:manhattan-cb-05",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:manhattan",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "draft_only",
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-01T00:00:00.000",
-          "outcomes_generated_at": "2026-08-16T13:07:43.070Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:13:52.588Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -961,7 +1055,7 @@
       "status": "unknown",
       "reason": "mixed_procedure",
       "project_id": "2024K0358",
-      "procedure_id": null,
+      "procedure_id": "ulurp_197c",
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
@@ -972,7 +1066,9 @@
       "current_role": null,
       "effect": null,
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c"
+        },
         "phase": {
           "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
           "phase_id": "cpc",
@@ -992,7 +1088,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -1031,12 +1127,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-01T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:13:40.323Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:09:34.543Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -1046,7 +1142,7 @@
       "status": "unknown",
       "reason": "mixed_procedure",
       "project_id": "2023M0213",
-      "procedure_id": null,
+      "procedure_id": "ulurp_197c",
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
@@ -1057,7 +1153,9 @@
       "current_role": null,
       "effect": null,
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c"
+        },
         "phase": {
           "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
           "phase_id": "cpc",
@@ -1077,7 +1175,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -1116,12 +1214,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-01T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:13:40.707Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:09:34.759Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -1129,10 +1227,10 @@
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
       "status": "unknown",
-      "reason": "mixed_procedure",
+      "reason": "unresolved_procedure",
       "project_id": "2019K0383",
-      "procedure_id": "non_ulurp",
-      "procedure_resolution": "mixed",
+      "procedure_id": null,
+      "procedure_resolution": "unknown",
       "current_stage": {
         "stage_id": null,
         "spine_phase_id": "pre_application",
@@ -1162,7 +1260,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": "396cbbb9-bb87-e911-a988-001dd8308047",
         "source": "zap-api-milestones",
         "label": "City Planning Commission Review",
@@ -1178,12 +1276,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-01T00:00:00.000",
-          "outcomes_generated_at": "2026-08-16T13:10:49.886Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-08-30T13:12:25.665Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -1230,7 +1328,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -1278,12 +1376,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-01T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:13:26.965Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:09:05.611Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -1330,7 +1428,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -1378,12 +1476,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:14:14.568Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:09:59.575Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -1430,7 +1528,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -1478,12 +1576,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:14:28.621Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:10:12.006Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -1530,7 +1628,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -1578,12 +1676,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:14:16.493Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:09:59.524Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -1593,7 +1691,7 @@
       "status": "unknown",
       "reason": "mixed_procedure",
       "project_id": "2024Q0219",
-      "procedure_id": "non_ulurp",
+      "procedure_id": "ulurp_197c",
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
@@ -1604,7 +1702,9 @@
       "current_role": null,
       "effect": null,
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c"
+        },
         "phase": {
           "current_milestone": "EAS - Review Session - Pre-Hearing Review / Post Referral",
           "phase_id": "cpc",
@@ -1612,7 +1712,7 @@
         },
         "geography": {
           "status": "unresolved",
-          "profile_version": null
+          "profile_version": "2026-08-27.v1"
         },
         "publisher": {
           "source": "land_upcoming_hearings",
@@ -1624,7 +1724,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -1663,12 +1763,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:14:02.034Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:09:47.335Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -1715,7 +1815,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -1763,12 +1863,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:13:53.222Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:09:47.188Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -1815,7 +1915,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -1863,12 +1963,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:14:28.754Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:10:13.083Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -1878,7 +1978,7 @@
       "status": "unknown",
       "reason": "mixed_procedure",
       "project_id": "2023X0149",
-      "procedure_id": "non_ulurp",
+      "procedure_id": "ulurp_197c",
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
@@ -1889,7 +1989,9 @@
       "current_role": null,
       "effect": null,
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c"
+        },
         "phase": {
           "current_milestone": "EAS - Review Session - Pre-Hearing Review / Post Referral",
           "phase_id": "cpc",
@@ -1897,7 +1999,7 @@
         },
         "geography": {
           "status": "unresolved",
-          "profile_version": null
+          "profile_version": "2026-08-27.v1"
         },
         "publisher": {
           "source": "land_upcoming_hearings",
@@ -1909,7 +2011,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -1948,12 +2050,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:13:40.329Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:09:35.251Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -1963,26 +2065,28 @@
       "status": "unknown",
       "reason": "mixed_procedure",
       "project_id": "2022K0416",
-      "procedure_id": "non_ulurp",
+      "procedure_id": "ulurp_197c",
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
-        "spine_phase_id": "environmental",
+        "spine_phase_id": "pre_application",
         "status": "unknown"
       },
       "current_actor_refs": [],
       "current_role": null,
       "effect": null,
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c"
+        },
         "phase": {
           "current_milestone": "EAS - Project Readiness",
-          "phase_id": "environmental",
+          "phase_id": "pre_application",
           "milestone_phase_id": "environmental"
         },
         "geography": {
           "status": "unresolved",
-          "profile_version": null
+          "profile_version": "2026-08-27.v1"
         },
         "publisher": {
           "source": "zap-api-milestones",
@@ -1994,7 +2098,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": "54afc836-1624-ef11-840b-001dd8306c80",
         "source": "zap-api-milestones",
         "label": "Review Session - Pre-Hearing Review / Post Referral",
@@ -2010,12 +2114,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-08-16T13:07:53.631Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:14:02.712Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -2025,7 +2129,7 @@
       "status": "unknown",
       "reason": "mixed_procedure",
       "project_id": "2025Q0142",
-      "procedure_id": "non_ulurp",
+      "procedure_id": "ulurp_197c",
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
@@ -2036,7 +2140,9 @@
       "current_role": null,
       "effect": null,
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c"
+        },
         "phase": {
           "current_milestone": "EAS - CPC Public Meeting - Vote",
           "phase_id": "cpc",
@@ -2044,7 +2150,7 @@
         },
         "geography": {
           "status": "unresolved",
-          "profile_version": null
+          "profile_version": "2026-08-27.v1"
         },
         "publisher": {
           "source": "land_upcoming_hearings",
@@ -2056,7 +2162,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -2095,12 +2201,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:13:40.282Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:09:26.148Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -2147,7 +2253,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -2195,12 +2301,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:14:16.052Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:09:59.256Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -2238,8 +2344,8 @@
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source": "zap-api-milestones",
-          "source_id": "08f821bf-7c41-f011-b4cc-001dd80c29f4",
+          "source": "land_upcoming_hearings",
+          "source_id": null,
           "checked": true
         }
       },
@@ -2249,22 +2355,18 @@
         "status": "known"
       },
       "published_next_opportunity": {
-        "status": "published",
+        "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
-        "source_id": "08f821bf-7c41-f011-b4cc-001dd80c29f4",
-        "source": "zap-api-milestones",
-        "label": "Review Session - Pre-Hearing Review / Post Referral",
-        "date": "2026-11-30",
-        "representing": "City Planning Commission",
-        "phase_id": "cpc",
-        "body_ref": "agency:id:city-planning-commission"
+        "checked_vintage": "2026-09-06",
+        "source_id": null,
+        "source": "land_upcoming_hearings",
+        "label": null,
+        "date": null,
+        "representing": null,
+        "phase_id": null,
+        "body_ref": null
       },
-      "next_procedural_body": {
-        "body_ref": "agency:id:city-planning-commission",
-        "source_id": "08f821bf-7c41-f011-b4cc-001dd80c29f4",
-        "source": "zap-api-milestones"
-      },
+      "next_procedural_body": null,
       "affected_actor_refs": [
         {
           "body_ref": "community-board:staten-island-cb-03",
@@ -2276,16 +2378,16 @@
         }
       ],
       "observed": {
-        "status": "draft_only",
+        "status": "no_observation",
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-08-16T13:07:54.004Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:14:02.848Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -2332,7 +2434,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -2380,12 +2482,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:14:16.095Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:09:59.486Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -2432,7 +2534,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -2480,12 +2582,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:13:53.491Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:09:47.168Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -2536,7 +2638,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -2584,12 +2686,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-27T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:14:28.347Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:10:13.260Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -2640,7 +2742,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": "ab7813fc-7166-f011-bec2-001dd806295a",
         "source": "zap-api-milestones",
         "label": "Review Session - Pre-Hearing Review / Post Referral",
@@ -2669,12 +2771,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-26T00:00:00.000",
-          "outcomes_generated_at": "2026-08-16T13:07:53.762Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:14:07.124Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -2684,7 +2786,7 @@
       "status": "unknown",
       "reason": "mixed_procedure",
       "project_id": "2022K0430",
-      "procedure_id": "non_ulurp",
+      "procedure_id": "ulurp_197c",
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
@@ -2695,7 +2797,9 @@
       "current_role": null,
       "effect": null,
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c"
+        },
         "phase": {
           "current_milestone": "EIS - Review Session - Pre-Hearing Review / Post Referral",
           "phase_id": "cpc",
@@ -2703,7 +2807,7 @@
         },
         "geography": {
           "status": "unresolved",
-          "profile_version": null
+          "profile_version": "2026-08-27.v1"
         },
         "publisher": {
           "source": "land_upcoming_hearings",
@@ -2715,7 +2819,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -2743,41 +2847,47 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-26T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:14:29.329Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:10:11.953Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
     "2026K0233": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "unresolved_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2026K0233",
-      "procedure_id": null,
-      "procedure_resolution": "unknown",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
+        "stage_id": "ulurp_197c.application_certification",
         "spine_phase_id": "pre_application",
-        "status": "unknown"
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-planning"
+      ],
+      "current_role": "administrative_certifier",
+      "effect": "Receives and circulates the application, then certifies it as complete for review.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.application_certification",
+          "role": "administrative_certifier"
+        },
         "phase": {
           "current_milestone": "ZM - Prepare Filed Land Use Fee Payment",
           "phase_id": "pre_application",
           "milestone_phase_id": "pre_application"
         },
         "geography": {
-          "status": "unresolved",
-          "profile_version": null
+          "status": "resolved",
+          "profile_version": "2026-08-27.v1"
         },
         "publisher": {
           "source": "zap-api-milestones",
@@ -2785,11 +2895,15 @@
           "checked": true
         }
       },
-      "expected_next_stage": null,
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.community_board_review",
+        "spine_phase_id": "community_board",
+        "status": "known"
+      },
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": "01bdc83a-46a9-f011-bbd3-001dd806295a",
         "source": "zap-api-milestones",
         "label": "Review Session - Pre-Hearing Review / Post Referral",
@@ -2798,19 +2912,32 @@
         "phase_id": "cpc",
         "body_ref": "agency:id:city-planning-commission"
       },
-      "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "next_procedural_body": {
+        "body_ref": "agency:id:city-planning-commission",
+        "source_id": "01bdc83a-46a9-f011-bbd3-001dd806295a",
+        "source": "zap-api-milestones"
+      },
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:brooklyn-cb-02",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:brooklyn",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "no_observation",
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-26T00:00:00.000",
-          "outcomes_generated_at": "2026-08-16T13:08:05.740Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:14:19.142Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -2857,7 +2984,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -2905,74 +3032,97 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-26T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:14:41.703Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:10:29.051Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
     "2023Q0303": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "unresolved_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2023Q0303",
-      "procedure_id": null,
-      "procedure_resolution": "unknown",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
+        "stage_id": "ulurp_197c.application_certification",
         "spine_phase_id": "pre_application",
-        "status": "unknown"
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-planning"
+      ],
+      "current_role": "administrative_certifier",
+      "effect": "Receives and circulates the application, then certifies it as complete for review.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.application_certification",
+          "role": "administrative_certifier"
+        },
         "phase": {
           "current_milestone": "ZM - Review Filed Land Use Application",
           "phase_id": "pre_application",
           "milestone_phase_id": "pre_application"
         },
         "geography": {
-          "status": "unresolved",
-          "profile_version": null
+          "status": "resolved",
+          "profile_version": "2026-08-27.v1"
         },
         "publisher": {
           "source": "zap-api-milestones",
-          "source_id": "bef5352c-6510-ee11-8f6c-001dd8097c36",
+          "source_id": "e4f5352c-6510-ee11-8f6c-001dd8097c36",
           "checked": true
         }
       },
-      "expected_next_stage": null,
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.community_board_review",
+        "spine_phase_id": "community_board",
+        "status": "known"
+      },
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-08-23",
-        "source_id": "bef5352c-6510-ee11-8f6c-001dd8097c36",
+        "checked_vintage": "2026-09-06",
+        "source_id": "e4f5352c-6510-ee11-8f6c-001dd8097c36",
         "source": "zap-api-milestones",
-        "label": "Review Session - Pre-Hearing Review / Post Referral",
-        "date": "2026-11-30",
+        "label": "City Planning Commission Review",
+        "date": "2026-12-12",
         "representing": "City Planning Commission",
         "phase_id": "cpc",
         "body_ref": "agency:id:city-planning-commission"
       },
-      "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "next_procedural_body": {
+        "body_ref": "agency:id:city-planning-commission",
+        "source_id": "e4f5352c-6510-ee11-8f6c-001dd8097c36",
+        "source": "zap-api-milestones"
+      },
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:queens-cb-08",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:queens",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "draft_only",
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-26T00:00:00.000",
-          "outcomes_generated_at": "2026-08-16T13:07:54.094Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:14:02.671Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -3023,7 +3173,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -3060,74 +3210,97 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-25T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:14:41.624Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:10:25.730Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
     "2024K0421": {
       "schema": "cityscroll.land_authority_summary.v1",
       "layer": "tier_a",
-      "status": "unknown",
-      "reason": "unresolved_procedure",
+      "status": "resolved",
+      "reason": null,
       "project_id": "2024K0421",
-      "procedure_id": null,
-      "procedure_resolution": "unknown",
+      "procedure_id": "ulurp_197c",
+      "procedure_resolution": "uniform",
       "current_stage": {
-        "stage_id": null,
+        "stage_id": "ulurp_197c.application_certification",
         "spine_phase_id": "pre_application",
-        "status": "unknown"
+        "status": "known"
       },
-      "current_actor_refs": [],
-      "current_role": null,
-      "effect": null,
+      "current_actor_refs": [
+        "agency:id:city-planning"
+      ],
+      "current_role": "administrative_certifier",
+      "effect": "Receives and circulates the application, then certifies it as complete for review.",
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c",
+          "stage_id": "ulurp_197c.application_certification",
+          "role": "administrative_certifier"
+        },
         "phase": {
           "current_milestone": "ZM - Review Filed Land Use Application",
           "phase_id": "pre_application",
           "milestone_phase_id": "pre_application"
         },
         "geography": {
-          "status": "unresolved",
-          "profile_version": null
+          "status": "resolved",
+          "profile_version": "2026-08-27.v1"
         },
         "publisher": {
           "source": "zap-api-milestones",
-          "source_id": "3acaeaa2-3ba5-f011-bbd3-001dd80340cd",
+          "source_id": "55caeaa2-3ba5-f011-bbd3-001dd80340cd",
           "checked": true
         }
       },
-      "expected_next_stage": null,
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.community_board_review",
+        "spine_phase_id": "community_board",
+        "status": "known"
+      },
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-08-23",
-        "source_id": "3acaeaa2-3ba5-f011-bbd3-001dd80340cd",
+        "checked_vintage": "2026-09-06",
+        "source_id": "55caeaa2-3ba5-f011-bbd3-001dd80340cd",
         "source": "zap-api-milestones",
-        "label": "Review Session - Pre-Hearing Review / Post Referral",
-        "date": "2026-11-30",
+        "label": "City Planning Commission Review",
+        "date": "2026-12-12",
         "representing": "City Planning Commission",
         "phase_id": "cpc",
         "body_ref": "agency:id:city-planning-commission"
       },
-      "next_procedural_body": null,
-      "affected_actor_refs": [],
+      "next_procedural_body": {
+        "body_ref": "agency:id:city-planning-commission",
+        "source_id": "55caeaa2-3ba5-f011-bbd3-001dd80340cd",
+        "source": "zap-api-milestones"
+      },
+      "affected_actor_refs": [
+        {
+          "body_ref": "community-board:brooklyn-cb-18",
+          "role": "affected_community_board"
+        },
+        {
+          "body_ref": "borough-president:brooklyn",
+          "role": "affected_borough_president"
+        }
+      ],
       "observed": {
         "status": "draft_only",
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-25T00:00:00.000",
-          "outcomes_generated_at": "2026-08-16T13:08:05.437Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:14:24.059Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -3137,7 +3310,7 @@
       "status": "unknown",
       "reason": "mixed_procedure",
       "project_id": "2022Q0449",
-      "procedure_id": "non_ulurp",
+      "procedure_id": "ulurp_197c",
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
@@ -3148,7 +3321,9 @@
       "current_role": null,
       "effect": null,
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c"
+        },
         "phase": {
           "current_milestone": "EAS - City Council Review",
           "phase_id": "city_council",
@@ -3156,7 +3331,7 @@
         },
         "geography": {
           "status": "unresolved",
-          "profile_version": null
+          "profile_version": "2026-08-27.v1"
         },
         "publisher": {
           "source": "land_upcoming_hearings",
@@ -3168,7 +3343,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -3207,12 +3382,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-25T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:14:41.749Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:10:28.191Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     },
@@ -3222,7 +3397,7 @@
       "status": "unknown",
       "reason": "mixed_procedure",
       "project_id": "2023K0183",
-      "procedure_id": "non_ulurp",
+      "procedure_id": "ulurp_197c",
       "procedure_resolution": "mixed",
       "current_stage": {
         "stage_id": null,
@@ -3233,7 +3408,9 @@
       "current_role": null,
       "effect": null,
       "source_basis": {
-        "profile": null,
+        "profile": {
+          "procedure_id": "ulurp_197c"
+        },
         "phase": {
           "current_milestone": "EAS - City Council Review",
           "phase_id": "city_council",
@@ -3241,7 +3418,7 @@
         },
         "geography": {
           "status": "unresolved",
-          "profile_version": null
+          "profile_version": "2026-08-27.v1"
         },
         "publisher": {
           "source": "land_upcoming_hearings",
@@ -3253,7 +3430,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-08-23",
+        "checked_vintage": "2026-09-06",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -3292,12 +3469,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-08-23T07:59:14.162Z",
-        "as_of": "2026-08-23T07:59:14.162Z",
+        "generated_at": "2026-09-06T15:58:50.482Z",
+        "as_of": "2026-09-06T15:58:50.482Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-25T00:00:00.000",
-          "outcomes_generated_at": "2026-08-17T13:14:54.439Z",
-          "hearings_generated_at": "2026-08-23T08:51:36.144Z"
+          "outcomes_generated_at": "2026-09-04T13:10:49.976Z",
+          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
         }
       }
     }

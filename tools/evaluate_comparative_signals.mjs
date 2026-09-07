@@ -97,7 +97,7 @@ function checkbookSnapshots(procurement) {
     .filter(Boolean);
 }
 
-function amountChangeShownCases(snapshots) {
+function amountChangeCandidateCases(snapshots) {
   const agencies = new Map(snapshots.map((snapshot) => [snapshot.id, snapshot.agency]));
   return detectAmendments(snapshots).map((change) => ({
     case_id: `registered_amount_change:${change.contract_id}`,
@@ -115,6 +115,39 @@ function amountChangeShownCases(snapshots) {
       agency: agencies.get(change.contract_id) || null,
     },
   }));
+}
+
+/**
+ * Bounded admission for the registered-amount-change pilot.
+ *
+ * The detector runs over the whole committed Checkbook population, but this
+ * pilot shows only subjects the frozen inspection receipt admits. The rest are
+ * admitted and counted, not shown: a case nobody has inspected is not evidence
+ * that the pilot is precise, and publishing it would make the precision
+ * dimension measure its own output. Widening the shown set is an extension of
+ * the inspection sample, which is a human decision this evaluation records
+ * rather than takes.
+ */
+function amountChangeAdmission(snapshots, frozenCases) {
+  const candidates = amountChangeCandidateCases(snapshots);
+  const inspected = new Set((Array.isArray(frozenCases?.reviews) ? frozenCases.reviews : [])
+    .map((review) => String(review?.case_id ?? "").trim())
+    .filter(Boolean));
+  const shown = candidates.filter((entry) => inspected.has(entry.case_id));
+  const unshown = candidates.filter((entry) => !inspected.has(entry.case_id));
+  return {
+    boundary: {
+      metric_family: "within_contract_registered_amount_change",
+      basis: "frozen_inspection_receipt",
+      rule: "a detected change is shown only where the frozen receipt carries an inspection verdict for it",
+      detected: candidates.length,
+      shown: shown.length,
+      admitted_unshown: unshown.length,
+      unshown_reason: "awaiting_extended_inspection_sample",
+    },
+    candidates,
+    shown,
+  };
 }
 
 function canonicalCaseMeasurements(cases) {
@@ -147,7 +180,7 @@ function precisionDimension(shownCases, frozenCases) {
   };
 }
 
-function yieldDimension(awardReceipts, awardCases, snapshots, amountCases) {
+function yieldDimension(awardReceipts, awardCases, snapshots, amountCases, amountBoundary) {
   const positivePairs = snapshots.filter((snapshot) => (
     Number(snapshot.original) > 0 && Number(snapshot.current) > 0
   ));
@@ -161,6 +194,8 @@ function yieldDimension(awardReceipts, awardCases, snapshots, amountCases) {
       denominator_basis: "unique committed Checkbook observations with two positive registered amounts",
       ...ratio(amountCases.length, positivePairs.length),
       source_observation_context: snapshots.length,
+      detected_changes: amountBoundary.detected,
+      admitted_unshown: amountBoundary.admitted_unshown,
     },
   };
   return {
@@ -212,7 +247,7 @@ function stabilityDimension({ awards, sourceContracts, awardReceipts, storySigna
   const reorderedAwardSignals = buildPublishedStorySignalReadModel(rebuiltAwardReceipts.facts);
   const awardStable = JSON.stringify(awardShownCases(reorderedAwardSignals))
     === JSON.stringify(awardShownCases(storySignals));
-  const reversedAmountCases = amountChangeShownCases([...snapshots].reverse());
+  const reversedAmountCases = amountChangeCandidateCases([...snapshots].reverse());
   const amountStable = JSON.stringify(canonicalCaseMeasurements(reversedAmountCases))
     === JSON.stringify(canonicalCaseMeasurements(amountCases));
   const cases = [
@@ -280,10 +315,11 @@ export function buildComparativeSignalEvaluation(inputs) {
 
   const awardCases = awardShownCases(storySignals);
   const snapshots = checkbookSnapshots(procurement);
-  const amountCases = amountChangeShownCases(snapshots);
+  const amountAdmission = amountChangeAdmission(snapshots, frozenCases);
+  const amountCases = amountAdmission.shown;
   const shownCases = [...awardCases, ...amountCases].sort((left, right) => left.case_id.localeCompare(right.case_id));
   const precision = precisionDimension(shownCases, frozenCases);
-  const yieldResult = yieldDimension(awardReceipts, awardCases, snapshots, amountCases);
+  const yieldResult = yieldDimension(awardReceipts, awardCases, snapshots, amountCases, amountAdmission.boundary);
   const diversity = diversityDimension(shownCases);
   const redundancy = redundancyDimension(shownCases);
   const stability = stabilityDimension({
@@ -292,7 +328,7 @@ export function buildComparativeSignalEvaluation(inputs) {
     awardReceipts,
     storySignals,
     snapshots,
-    amountCases,
+    amountCases: amountAdmission.candidates,
   });
   const mnarSafety = mnarSafetyDimension(negativeControl);
   const handoff = handoffDimension(frozenCases.aggregate_handoff_usage);
@@ -323,6 +359,7 @@ export function buildComparativeSignalEvaluation(inputs) {
       positive_pilots: ["source_bounded_award_rank", "within_contract_registered_amount_change"],
       negative_control: "successor_solicitation_absence",
       measurement_mode: "deterministic_committed_inputs_no_llm",
+      admission_boundaries: [amountAdmission.boundary],
     },
     input_fingerprints: {
       awards: fingerprint(awards),
@@ -377,17 +414,25 @@ This is a recommendation for the captain, not an admission decision. No addition
 | Dimension | Numerator / denominator | Result | Reading |
 | --- | ---: | ---: | --- |
 | Precision | ${dimensions.precision.numerator} / ${dimensions.precision.denominator} | ${percent(dimensions.precision.rate)} | Every frozen inspection supports the exact output, but three cases are too few to justify expansion. |
-| Yield | ${dimensions.yield.aggregate.numerator} / ${dimensions.yield.aggregate.denominator} | ${percent(dimensions.yield.aggregate.rate)} | This is an output-per-eligible-input rate, not a signal count. Award rank is 1/1 within its committed allowlist; amount change is 2/1,704 positive amount pairs. |
+| Yield | ${dimensions.yield.aggregate.numerator} / ${dimensions.yield.aggregate.denominator} | ${percent(dimensions.yield.aggregate.rate)} | This is an output-per-eligible-input rate, not a signal count. Award rank is ${dimensions.yield.families.source_bounded_award_rank.numerator}/${dimensions.yield.families.source_bounded_award_rank.denominator} within its committed allowlist; amount change is ${dimensions.yield.families.within_contract_registered_amount_change.numerator}/${dimensions.yield.families.within_contract_registered_amount_change.denominator} positive amount pairs. |
 | Diversity | ${dimensions.diversity.metric_families.count} families, ${dimensions.diversity.source_families.count} sources, ${dimensions.diversity.object_types.count} object types, ${dimensions.diversity.agencies.count} agencies | dominant family ${percent(dimensions.diversity.metric_families.dominant_share.rate)} | The sample is not all large contracts, but it remains procurement-only and tiny. |
 | Redundancy | ${dimensions.redundancy.numerator} / ${dimensions.redundancy.denominator} duplicates | ${percent(dimensions.redundancy.rate)} | No civic event produces cosmetic duplicate outputs in the frozen cases. |
 | Stability | ${dimensions.stability.numerator} / ${dimensions.stability.denominator} pilots | ${percent(dimensions.stability.rate)} | Reversing committed source-row order does not change semantic outputs or their canonical order. |
 | MNAR safety | ${dimensions.mnar_safety.numerator} / ${dimensions.mnar_safety.denominator} tempting negative claims withheld | ${percent(dimensions.mnar_safety.rate)} | The successor-absence control remains \`held_mnar\`; no claim or held reason reaches the public projection. |
 | Investigation handoff | ${dimensions.investigation_handoff.numerator} / ${dimensions.investigation_handoff.denominator} shown opportunities | ${percent(dimensions.investigation_handoff.rate)} | ${dimensions.investigation_handoff.evidence_status === "measured" ? "Aggregate handoff use is measured." : "No exposure denominator is committed yet, so usefulness is unknown—not zero."} |
 
+## Bounded admission
+
+${(evaluation.scope.admission_boundaries || []).map((boundary) => (
+  `- \`${boundary.metric_family}\`: ${boundary.detected} detected, ${boundary.shown} shown, `
+  + `${boundary.admitted_unshown} admitted but not shown. A detected change is shown only where the frozen receipt carries an inspection verdict for it. `
+  + "Widening the shown set means extending the frozen inspection sample, which is a human decision this evaluation records rather than takes."
+)).join("\n")}
+
 ## Pilot-specific findings
 
-- **Award rank:** the shipped private signal reproduces its $53.0M amount, fourth-place rank, 264-row HPD peer set, source, and historical window. Its yield denominator is intentionally the one-subject pilot allowlist; the 8,395 eligible peer rows are context, not 8,395 shown candidates.
-- **Registered-amount change:** the existing lifecycle detector finds two exact-contract changes among 1,704 committed Checkbook observations with positive original and current amounts. Both frozen inspections reproduce the source values and arithmetic. This pilot is not yet carried through the comparative receipt/admission/story-signal boundary, which is the main revision before broader evaluation.
+- **Award rank:** the shipped private signal reproduces its $53.0M amount, fourth-place rank, 264-row HPD peer set, source, and historical window. Its yield denominator is intentionally the one-subject pilot allowlist; the ${dimensions.yield.families.source_bounded_award_rank.peer_population_context} eligible peer rows are context, not that many shown candidates.
+- **Registered-amount change:** the existing lifecycle detector finds ${dimensions.yield.families.within_contract_registered_amount_change.detected_changes} exact-contract changes among ${dimensions.yield.families.within_contract_registered_amount_change.denominator} committed Checkbook observations with positive original and current amounts. This pilot now sits behind a bounded admission: only the ${dimensions.yield.families.within_contract_registered_amount_change.numerator} subjects the frozen receipt inspected are shown, and every frozen inspection reproduces the source values and arithmetic. The remaining ${dimensions.yield.families.within_contract_registered_amount_change.admitted_unshown} are admitted and counted, awaiting an extended inspection sample. Carrying the family through the comparative receipt/story-signal boundary as well remains the main revision before broader evaluation.
 - **MNAR negative control:** “No successor solicitation exists” remains unpublished because the observation contract is not closed-world. The harness fails if it publishes, if \`held_mnar\` changes, or if backstage reasons leak.
 - **Usefulness:** CityScroll already emits aggregate, non-identifying \`investigation_share:add_signal\` when an admitted signal is added to Investigation. This card adds one event, \`comparative_signal_shown:visible\`, as its aggregate opportunity denominator. With 0/0 committed opportunities, the usefulness rate remains unknown.
 

@@ -24,6 +24,9 @@ import {
 const graph = JSON.parse(readFileSync(new URL("../site/data/committee_graph_lookup.json", import.meta.url)));
 const people = JSON.parse(readFileSync(new URL("../site/data/person_hub_lookup.json", import.meta.url)));
 const entitiesSource = readFileSync(new URL("../site/app/entities.mjs", import.meta.url), "utf8");
+const captureManifest = JSON.parse(readFileSync(
+  new URL("../docs/evidence/official-committee-co-service/capture-manifest.json", import.meta.url),
+));
 
 // The committee snapshot's own vintage day. A membership snapshot can only
 // answer for a day it observed, so every corpus case below states it.
@@ -70,7 +73,16 @@ const viewFor = (id, asOf = SNAPSHOT_DAY, options = {}) =>
 
 test("the snapshot day is the one the committed graph was generated for", () => {
   assert.match(SNAPSHOT_DAY, /^\d{4}-\d{2}-\d{2}$/);
-  assert.equal(SNAPSHOT_DAY, "2026-08-12");
+  // Checked against the day the section's own capture recorded, not a literal
+  // typed here. A source refresh moves the graph and the capture together
+  // through the capture's builder, so the two cannot drift apart quietly, and
+  // no hand-edited date stands between them.
+  const captured = new Set(captureManifest.captures.map((entry) => entry.data_vintage.committee_graph_as_of));
+  assert.equal(captured.size, 1, "every capture reads one committee snapshot day");
+  assert.equal(SNAPSHOT_DAY, [...captured][0]);
+  for (const entry of captureManifest.captures) {
+    assert.equal(entry.data_vintage.committee_graph_generated_at, graph.generated_at);
+  }
 });
 
 test("two members sharing exact bodies are reported with their overlapping dates", () => {
@@ -134,7 +146,7 @@ test("the population the profile counts come from is reproducible from the graph
   const allPeople = new Set(graph.public_edges.map((edge) => edge.from));
   assert.equal(allPeople.size, 30);
   assert.equal(graph.nodes.length, 96);
-  assert.equal(graph.public_edges.length, 1142);
+  assert.equal(graph.public_edges.length, 1143);
   assert.equal(viewFor(MARTE).represented_official_count, measured.represented_officials);
 });
 

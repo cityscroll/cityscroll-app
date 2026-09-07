@@ -62,7 +62,13 @@ export function residentOfficialSource({
 } = {}) {
   const system = String(provenanceDisclosureValue(sourceSystem) || "").trim().toLowerCase();
   const recordId = String(provenanceDisclosureValue(sourceRecordId) || "").trim();
-  const fallback = PROVENANCE_DISCLOSURE_SOURCE_DEFAULTS[system] || null;
+  // Source systems are named with either separator across the spine
+  // ("checkbook-contracts" and "checkbook_contracts" are the same publisher),
+  // so the official-source default is looked up on the normalized name. Reading
+  // the raw name left hyphenated systems with no official link at all.
+  const fallback = PROVENANCE_DISCLOSURE_SOURCE_DEFAULTS[system]
+    || PROVENANCE_DISCLOSURE_SOURCE_DEFAULTS[system.replace(/-/g, "_")]
+    || null;
   let href = provenanceDisclosureOfficialHref(sourceHref) || provenanceDisclosureOfficialHref(objectHref);
 
   const noticeId = recordId.match(/(?:^|:)(\d{11})$/)?.[1] || null;

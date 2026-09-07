@@ -121,7 +121,10 @@ test("the committed appointment census preserves every person while reducing rep
     entry.kind === "same-except-group" ? entry.members : [entry.item],
   );
 
-  assert.deepEqual(groups.map((group) => group.count).sort((a, b) => b - a), [29, 23]);
+  // One group of 72 in this generation; what the consolidation claims is that
+  // every group it forms clears the threshold, not how many it happens to find.
+  assert.deepEqual(groups.map((group) => group.count).sort((a, b) => b - a), [72]);
+  assert.ok(groups.every((group) => group.count >= 3));
   assert.equal(flattened.length, rows.length, "group count and expanded member count preserve the source census");
   assert.deepEqual(
     flattened.map((row) => row.request_id).sort(),

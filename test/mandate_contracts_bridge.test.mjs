@@ -181,6 +181,7 @@ test("below-gate mandate-to-contract candidates remain evidence-only shadows", (
   const view = buildMandateContractsBridgeView(HOMELESS_SERVICES, {
     obligationsLookup: obligations,
     intelligenceDossier: intelligence.by_ref["agency:id:homeless-services"],
+    procurementAwards,
     crossSpineGate: {
       gate: {
         mandate_contract: {
@@ -195,7 +196,7 @@ test("below-gate mandate-to-contract candidates remain evidence-only shadows", (
 
   assert.equal(view.status, "empty");
   assert.equal(view.edges.length, 0);
-  assert.equal(view.shadow_edges.length, 1);
+  assert.equal(view.shadow_edges.length, 3);
   assert.equal(view.shadow_edges[0].decision, "evidence_only");
   assert.match(view.shadow_edges[0].mandate, /^mandate:/);
   assert.equal(view.shadow_edges[0].edge_policy.tier, "evidence_only");

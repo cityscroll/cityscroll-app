@@ -21,19 +21,19 @@
     "fiscal_years": [
       2026
     ],
-    "publisher_record_count": 1783465,
-    "source_net_check_amount": 52327564799.68,
+    "publisher_record_count": 1783981,
+    "source_net_check_amount": 52354210337.02,
     "source_receipt": "warehouse/receipts/proof/checkbook_payment_population_latest.json",
     "input": "payments.csv"
   },
   "population": {
-    "source_rows": 1783465,
-    "grouped_rows": 28448,
-    "transaction_count": 1783465,
-    "unique_transaction_count": 1633936,
-    "actual_payment_amount": 52327564799.68,
-    "duplicate_transaction_rows": 149529,
-    "reversal_rows": 1616
+    "source_rows": 1783981,
+    "grouped_rows": 28490,
+    "transaction_count": 1783981,
+    "unique_transaction_count": 1634438,
+    "actual_payment_amount": 52354210337.02,
+    "duplicate_transaction_rows": 149543,
+    "reversal_rows": 1627
   },
   "rows": [
     {
@@ -38928,6 +38928,16 @@
     },
     {
       "agency": "Department for the Aging",
+      "payee_name": "28 Village Restaurant Inc",
+      "fiscal_year": 2026,
+      "transaction_count": 9,
+      "unique_transaction_count": 9,
+      "actual_payment_amount": 249900.25,
+      "contract_count": 1,
+      "contract_id": "CT112520258803862"
+    },
+    {
+      "agency": "Department for the Aging",
       "payee_name": "319 STANHOPE LLC C/O RD MANAGEMENT CORP.",
       "fiscal_year": 2026,
       "transaction_count": 12,
@@ -39275,6 +39285,16 @@
       "actual_payment_amount": 283.51,
       "contract_count": 1,
       "contract_id": "CT112520248803939"
+    },
+    {
+      "agency": "Department for the Aging",
+      "payee_name": "Attending Home Care Services, LLC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 984,
+      "contract_count": 1,
+      "contract_id": "CT112520238800150"
     },
     {
       "agency": "Department for the Aging",
@@ -39960,10 +39980,10 @@
       "agency": "Department for the Aging",
       "payee_name": "CHINESE AMERICAN PLANNING COUNCIL INC",
       "fiscal_year": 2026,
-      "transaction_count": 45,
-      "unique_transaction_count": 45,
-      "actual_payment_amount": 6453441.98,
-      "contract_count": 4,
+      "transaction_count": 53,
+      "unique_transaction_count": 53,
+      "actual_payment_amount": 6658228.7,
+      "contract_count": 5,
       "contract_id": null
     },
     {
@@ -40065,6 +40085,16 @@
       "actual_payment_amount": 134140.64,
       "contract_count": 2,
       "contract_id": null
+    },
+    {
+      "agency": "Department for the Aging",
+      "payee_name": "COMMUNICAR INC.",
+      "fiscal_year": 2026,
+      "transaction_count": 4,
+      "unique_transaction_count": 4,
+      "actual_payment_amount": 2702.69,
+      "contract_count": 1,
+      "contract_id": "CT112520248800817"
     },
     {
       "agency": "Department for the Aging",
@@ -40355,6 +40385,16 @@
       "actual_payment_amount": 200000,
       "contract_count": 1,
       "contract_id": "CT112520268805096"
+    },
+    {
+      "agency": "Department for the Aging",
+      "payee_name": "DAGAN PIZZA CORP",
+      "fiscal_year": 2026,
+      "transaction_count": 19,
+      "unique_transaction_count": 19,
+      "actual_payment_amount": 148693.75,
+      "contract_count": 1,
+      "contract_id": "CT112520258803872"
     },
     {
       "agency": "Department for the Aging",
@@ -42358,6 +42398,16 @@
     },
     {
       "agency": "Department for the Aging",
+      "payee_name": "Ralph Lucenti",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 1250,
+      "contract_count": 1,
+      "contract_id": "CT112520258803936"
+    },
+    {
+      "agency": "Department for the Aging",
       "payee_name": "RANDALLS ISLAND PARK ALLIANCE INC",
       "fiscal_year": 2026,
       "transaction_count": 2,
@@ -42370,10 +42420,10 @@
       "agency": "Department for the Aging",
       "payee_name": "RC STILLWELL LLC",
       "fiscal_year": 2026,
-      "transaction_count": 12,
-      "unique_transaction_count": 12,
-      "actual_payment_amount": 1407931.54,
-      "contract_count": 2,
+      "transaction_count": 19,
+      "unique_transaction_count": 19,
+      "actual_payment_amount": 1460581.54,
+      "contract_count": 3,
       "contract_id": null
     },
     {
@@ -43380,10 +43430,10 @@
       "agency": "Department for the Aging",
       "payee_name": "UNITED JEWISH COUNCIL OF THE EAST SIDE INC",
       "fiscal_year": 2026,
-      "transaction_count": 26,
-      "unique_transaction_count": 26,
-      "actual_payment_amount": 1891617.06,
-      "contract_count": 3,
+      "transaction_count": 35,
+      "unique_transaction_count": 35,
+      "actual_payment_amount": 2046783.21,
+      "contract_count": 4,
       "contract_id": null
     },
     {
@@ -43430,10 +43480,10 @@
       "agency": "Department for the Aging",
       "payee_name": "UNIVERSITY SETTLEMENT SOCIETY OF NEW YORK",
       "fiscal_year": 2026,
-      "transaction_count": 41,
-      "unique_transaction_count": 41,
-      "actual_payment_amount": 4342045.94,
-      "contract_count": 3,
+      "transaction_count": 49,
+      "unique_transaction_count": 49,
+      "actual_payment_amount": 4471260.94,
+      "contract_count": 4,
       "contract_id": null
     },
     {
@@ -43705,6 +43755,16 @@
       "actual_payment_amount": 384.3,
       "contract_count": 1,
       "contract_id": "POD12520262014391"
+    },
+    {
+      "agency": "Department for the Aging",
+      "payee_name": "Wing Hing Seafood Restaurant Inc",
+      "fiscal_year": 2026,
+      "transaction_count": 28,
+      "unique_transaction_count": 28,
+      "actual_payment_amount": 494015,
+      "contract_count": 1,
+      "contract_id": "CT112520258803862"
     },
     {
       "agency": "Department for the Aging",
@@ -44245,6 +44305,16 @@
       "actual_payment_amount": 21000,
       "contract_count": 1,
       "contract_id": "CT181020268802930"
+    },
+    {
+      "agency": "Department of Buildings",
+      "payee_name": "COMPETENT SAFETY LLC",
+      "fiscal_year": 2026,
+      "transaction_count": 4,
+      "unique_transaction_count": 4,
+      "actual_payment_amount": 6903.75,
+      "contract_count": 1,
+      "contract_id": "CT181020248808221"
     },
     {
       "agency": "Department of Buildings",
@@ -46680,9 +46750,9 @@
       "agency": "Department of Citywide Administrative Services",
       "payee_name": "Allen-Stevenson School",
       "fiscal_year": 2026,
-      "transaction_count": 4,
-      "unique_transaction_count": 4,
-      "actual_payment_amount": 54315.71,
+      "transaction_count": 5,
+      "unique_transaction_count": 5,
+      "actual_payment_amount": 38101.81,
       "contract_count": 2,
       "contract_id": null
     },
@@ -53760,9 +53830,9 @@
       "agency": "Department of Consumer & Worker Protection",
       "payee_name": "APC Supplies and Services LLC",
       "fiscal_year": 2026,
-      "transaction_count": 3,
-      "unique_transaction_count": 3,
-      "actual_payment_amount": 1281.23,
+      "transaction_count": 4,
+      "unique_transaction_count": 4,
+      "actual_payment_amount": 657.48,
       "contract_count": 1,
       "contract_id": "POD86620262002618"
     },
@@ -86740,9 +86810,9 @@
       "agency": "Department of Education",
       "payee_name": "Bowlmor Times Square, LLC",
       "fiscal_year": 2026,
-      "transaction_count": 81,
-      "unique_transaction_count": 81,
-      "actual_payment_amount": 237452.22,
+      "transaction_count": 82,
+      "unique_transaction_count": 82,
+      "actual_payment_amount": 235153.22,
       "contract_count": 70,
       "contract_id": null
     },
@@ -97510,9 +97580,9 @@
       "agency": "Department of Education",
       "payee_name": "DAVE AND BUSTERS INC",
       "fiscal_year": 2026,
-      "transaction_count": 25,
-      "unique_transaction_count": 25,
-      "actual_payment_amount": 38843.53,
+      "transaction_count": 26,
+      "unique_transaction_count": 26,
+      "actual_payment_amount": 38091.76,
       "contract_count": 17,
       "contract_id": null
     },
@@ -117780,9 +117850,9 @@
       "agency": "Department of Education",
       "payee_name": "KIRA LEARNING INC",
       "fiscal_year": 2026,
-      "transaction_count": 1,
-      "unique_transaction_count": 1,
-      "actual_payment_amount": 14000,
+      "transaction_count": 2,
+      "unique_transaction_count": 2,
+      "actual_payment_amount": 0,
       "contract_count": 1,
       "contract_id": "POC04020263083679"
     },
@@ -132800,9 +132870,9 @@
       "agency": "Department of Education",
       "payee_name": "ONLY RARE LLC",
       "fiscal_year": 2026,
-      "transaction_count": 6,
-      "unique_transaction_count": 6,
-      "actual_payment_amount": 7300,
+      "transaction_count": 7,
+      "unique_transaction_count": 7,
+      "actual_payment_amount": 6600,
       "contract_count": 6,
       "contract_id": null
     },
@@ -153118,6 +153188,16 @@
     },
     {
       "agency": "Department of Education",
+      "payee_name": "THE KNOWLEDGE COMPLEX LLC",
+      "fiscal_year": 2026,
+      "transaction_count": 3,
+      "unique_transaction_count": 3,
+      "actual_payment_amount": -1215,
+      "contract_count": 1,
+      "contract_id": "POC04020263061053"
+    },
+    {
+      "agency": "Department of Education",
       "payee_name": "THE LAMBDA LITERARY FOUNDATION",
       "fiscal_year": 2026,
       "transaction_count": 1,
@@ -158530,9 +158610,9 @@
       "agency": "Department of Education",
       "payee_name": "URBAN FREQUENCY LLC",
       "fiscal_year": 2026,
-      "transaction_count": 4,
-      "unique_transaction_count": 4,
-      "actual_payment_amount": 16625,
+      "transaction_count": 5,
+      "unique_transaction_count": 5,
+      "actual_payment_amount": 11875,
       "contract_count": 1,
       "contract_id": "CT104020263112045"
     },
@@ -166230,10 +166310,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "AMARACON TESTING & INSPECTIONS LLC",
       "fiscal_year": 2026,
-      "transaction_count": 36,
-      "unique_transaction_count": 36,
-      "actual_payment_amount": 777258.16,
-      "contract_count": 5,
+      "transaction_count": 37,
+      "unique_transaction_count": 37,
+      "actual_payment_amount": 779348.16,
+      "contract_count": 6,
       "contract_id": null
     },
     {
@@ -166490,9 +166570,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "APPLE MAINTENANCE & SERVICES INC",
       "fiscal_year": 2026,
-      "transaction_count": 22,
-      "unique_transaction_count": 22,
-      "actual_payment_amount": 54959.2,
+      "transaction_count": 25,
+      "unique_transaction_count": 25,
+      "actual_payment_amount": 61352.58,
       "contract_count": 3,
       "contract_id": null
     },
@@ -173200,10 +173280,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "Macan Deve Engineers DPC",
       "fiscal_year": 2026,
-      "transaction_count": 31,
-      "unique_transaction_count": 31,
-      "actual_payment_amount": 237304.58,
-      "contract_count": 3,
+      "transaction_count": 40,
+      "unique_transaction_count": 40,
+      "actual_payment_amount": 323005.95,
+      "contract_count": 5,
       "contract_id": null
     },
     {
@@ -173570,10 +173650,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "MCMILLEN JA ENGINEERING PLLC",
       "fiscal_year": 2026,
-      "transaction_count": 7,
-      "unique_transaction_count": 7,
-      "actual_payment_amount": 296090.96,
-      "contract_count": 2,
+      "transaction_count": 8,
+      "unique_transaction_count": 8,
+      "actual_payment_amount": 296113.81,
+      "contract_count": 3,
       "contract_id": null
     },
     {
@@ -175690,9 +175770,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "PREFERRED WASTE SERVICES CORP",
       "fiscal_year": 2026,
-      "transaction_count": 109,
-      "unique_transaction_count": 109,
-      "actual_payment_amount": 1829750.47,
+      "transaction_count": 137,
+      "unique_transaction_count": 137,
+      "actual_payment_amount": 2239184.78,
       "contract_count": 1,
       "contract_id": "CT182620221400032"
     },
@@ -175720,9 +175800,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "Prestige Stone & Pavers Corp",
       "fiscal_year": 2026,
-      "transaction_count": 1,
-      "unique_transaction_count": 1,
-      "actual_payment_amount": 47108.9,
+      "transaction_count": 2,
+      "unique_transaction_count": 2,
+      "actual_payment_amount": 236057.92,
       "contract_count": 1,
       "contract_id": "CT182620211418948"
     },
@@ -182950,9 +183030,9 @@
       "agency": "Department of Health and Mental Hygiene",
       "payee_name": "AFTER HOURS PROJECT INC",
       "fiscal_year": 2026,
-      "transaction_count": 3,
-      "unique_transaction_count": 3,
-      "actual_payment_amount": 1727602,
+      "transaction_count": 4,
+      "unique_transaction_count": 4,
+      "actual_payment_amount": 3399415.45,
       "contract_count": 2,
       "contract_id": null
     },
@@ -183015,6 +183095,16 @@
       "actual_payment_amount": 3188803.19,
       "contract_count": 6,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "AIDS CENTER OF QUEENS COUNTY INC ADVOCACY CENTER OF QUEENS",
+      "fiscal_year": 2026,
+      "transaction_count": 7,
+      "unique_transaction_count": 7,
+      "actual_payment_amount": 4230737.75,
+      "contract_count": 1,
+      "contract_id": "CT181620251403077"
     },
     {
       "agency": "Department of Health and Mental Hygiene",
@@ -183670,10 +183760,10 @@
       "agency": "Department of Health and Mental Hygiene",
       "payee_name": "BAILEY HOUSE, INC",
       "fiscal_year": 2026,
-      "transaction_count": 52,
-      "unique_transaction_count": 52,
-      "actual_payment_amount": 5389190.2,
-      "contract_count": 6,
+      "transaction_count": 53,
+      "unique_transaction_count": 53,
+      "actual_payment_amount": 6483328.2,
+      "contract_count": 7,
       "contract_id": null
     },
     {
@@ -183940,9 +184030,9 @@
       "agency": "Department of Health and Mental Hygiene",
       "payee_name": "BIO-MED DIAGNOSTICS INC",
       "fiscal_year": 2026,
-      "transaction_count": 1,
-      "unique_transaction_count": 1,
-      "actual_payment_amount": 10910.46,
+      "transaction_count": 2,
+      "unique_transaction_count": 2,
+      "actual_payment_amount": 0,
       "contract_count": 1,
       "contract_id": "CT181620261414612"
     },
@@ -184228,6 +184318,16 @@
     },
     {
       "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "BRITTS INDUSTRIES INC",
+      "fiscal_year": 2026,
+      "transaction_count": 21,
+      "unique_transaction_count": 21,
+      "actual_payment_amount": 748335.63,
+      "contract_count": 1,
+      "contract_id": "CT181620210002191"
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
       "payee_name": "BRONX ADDICTION SERVICES INTEGRATED CONCEPTS SYSTEM INC",
       "fiscal_year": 2026,
       "transaction_count": 5,
@@ -184250,11 +184350,21 @@
       "agency": "Department of Health and Mental Hygiene",
       "payee_name": "BRONX PARENT HOUSING NETWORK INC",
       "fiscal_year": 2026,
-      "transaction_count": 3,
-      "unique_transaction_count": 3,
-      "actual_payment_amount": 510198.41,
+      "transaction_count": 4,
+      "unique_transaction_count": 4,
+      "actual_payment_amount": 1133906.3,
+      "contract_count": 2,
+      "contract_id": null
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "BRONX WORKS INC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 468521,
       "contract_count": 1,
-      "contract_id": "CT181620228805435"
+      "contract_id": "CT181620251403077"
     },
     {
       "agency": "Department of Health and Mental Hygiene",
@@ -184470,10 +184580,10 @@
       "agency": "Department of Health and Mental Hygiene",
       "payee_name": "CAMBA INC",
       "fiscal_year": 2026,
-      "transaction_count": 341,
-      "unique_transaction_count": 341,
-      "actual_payment_amount": 34740419.29,
-      "contract_count": 31,
+      "transaction_count": 343,
+      "unique_transaction_count": 343,
+      "actual_payment_amount": 36820902.66,
+      "contract_count": 32,
       "contract_id": null
     },
     {
@@ -185568,6 +185678,16 @@
     },
     {
       "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "CYTECH MERIDIAN INC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 91765.85,
+      "contract_count": 1,
+      "contract_id": "CT181620210002195"
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
       "payee_name": "D EXPOSITO & PARTNERS LLC",
       "fiscal_year": 2026,
       "transaction_count": 12,
@@ -186348,6 +186468,16 @@
     },
     {
       "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "Excelsior Grace",
+      "fiscal_year": 2026,
+      "transaction_count": 9,
+      "unique_transaction_count": 9,
+      "actual_payment_amount": 9395,
+      "contract_count": 1,
+      "contract_id": "CT181620258802556"
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
       "payee_name": "EXECUTIVE ESSENTIALS LLC",
       "fiscal_year": 2026,
       "transaction_count": 1,
@@ -186645,6 +186775,16 @@
       "actual_payment_amount": 8012.5,
       "contract_count": 2,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "FORESTDALE INC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 87203.63,
+      "contract_count": 1,
+      "contract_id": "CT181620228805435"
     },
     {
       "agency": "Department of Health and Mental Hygiene",
@@ -186968,6 +187108,16 @@
     },
     {
       "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "GODS LOVE WE DELIVER INC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 1660007,
+      "contract_count": 1,
+      "contract_id": "CT181620251403077"
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
       "payee_name": "GOLDFARB & GOLDFARB VARSITY MENS SHOP",
       "fiscal_year": 2026,
       "transaction_count": 11,
@@ -187158,6 +187308,16 @@
     },
     {
       "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "HAITIAN CENTERS COUNCIL INC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 666951,
+      "contract_count": 1,
+      "contract_id": "CT181620251403077"
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
       "payee_name": "HAMILTON COMPANY",
       "fiscal_year": 2026,
       "transaction_count": 2,
@@ -187205,6 +187365,16 @@
       "actual_payment_amount": 83000,
       "contract_count": 2,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "HARLEM UNITED COMMUNITY AIDS CENTER, INC.",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 725178,
+      "contract_count": 1,
+      "contract_id": "CT181620251403077"
     },
     {
       "agency": "Department of Health and Mental Hygiene",
@@ -187510,10 +187680,10 @@
       "agency": "Department of Health and Mental Hygiene",
       "payee_name": "HOUSING WORKS INC",
       "fiscal_year": 2026,
-      "transaction_count": 34,
-      "unique_transaction_count": 34,
-      "actual_payment_amount": 2145112.86,
-      "contract_count": 3,
+      "transaction_count": 36,
+      "unique_transaction_count": 36,
+      "actual_payment_amount": 3611096.97,
+      "contract_count": 4,
       "contract_id": null
     },
     {
@@ -187915,6 +188085,16 @@
       "actual_payment_amount": 2111993.4,
       "contract_count": 3,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "Isabelle Valme",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 1900,
+      "contract_count": 1,
+      "contract_id": "CT181620258802556"
     },
     {
       "agency": "Department of Health and Mental Hygiene",
@@ -188438,13 +188618,23 @@
     },
     {
       "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "LA CASA DE SALUD",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 404664,
+      "contract_count": 1,
+      "contract_id": "CT181620251403077"
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
       "payee_name": "LA NUEVA ESPERANZA INC",
       "fiscal_year": 2026,
-      "transaction_count": 3,
-      "unique_transaction_count": 3,
-      "actual_payment_amount": 55794.2,
-      "contract_count": 1,
-      "contract_id": "CT181620238803312"
+      "transaction_count": 5,
+      "unique_transaction_count": 5,
+      "actual_payment_amount": 1478979.01,
+      "contract_count": 2,
+      "contract_id": null
     },
     {
       "agency": "Department of Health and Mental Hygiene",
@@ -188998,6 +189188,16 @@
     },
     {
       "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "MANHATTAN LEGAL SERVICES",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 479865.37,
+      "contract_count": 1,
+      "contract_id": "CT181620251403077"
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
       "payee_name": "MARCO EUGENE REALTY LLC",
       "fiscal_year": 2026,
       "transaction_count": 45,
@@ -189128,6 +189328,16 @@
     },
     {
       "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "Medmatics LLC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 75000,
+      "contract_count": 1,
+      "contract_id": "CT181620210002191"
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
       "payee_name": "MEDSPHERE SYSTEMS CORPORATION",
       "fiscal_year": 2026,
       "transaction_count": 27,
@@ -189135,6 +189345,16 @@
       "actual_payment_amount": 170994.4,
       "contract_count": 1,
       "contract_id": "CT181620211407592"
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "Meeks skin Unique LLC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 630,
+      "contract_count": 1,
+      "contract_id": "CT181620258802556"
     },
     {
       "agency": "Department of Health and Mental Hygiene",
@@ -189850,10 +190070,10 @@
       "agency": "Department of Health and Mental Hygiene",
       "payee_name": "NEW YORK AND PRESBYTERIAN HOSPITAL",
       "fiscal_year": 2026,
-      "transaction_count": 22,
-      "unique_transaction_count": 22,
-      "actual_payment_amount": 1760304.33,
-      "contract_count": 6,
+      "transaction_count": 23,
+      "unique_transaction_count": 23,
+      "actual_payment_amount": 2228242.96,
+      "contract_count": 7,
       "contract_id": null
     },
     {
@@ -189885,6 +190105,16 @@
       "actual_payment_amount": 3000,
       "contract_count": 1,
       "contract_id": "CT181620250001651"
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "NEW YORK COUNCIL ON ADOPTABLE CHILDREN INC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 196897,
+      "contract_count": 1,
+      "contract_id": "CT181620251403077"
     },
     {
       "agency": "Department of Health and Mental Hygiene",
@@ -190265,6 +190495,16 @@
       "actual_payment_amount": 303431.28,
       "contract_count": 1,
       "contract_id": "CT181620121403466"
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "OnPoint NYC Inc",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 468522,
+      "contract_count": 1,
+      "contract_id": "CT181620251403077"
     },
     {
       "agency": "Department of Health and Mental Hygiene",
@@ -190880,10 +191120,10 @@
       "agency": "Department of Health and Mental Hygiene",
       "payee_name": "PROJECT HOSPITALITY INC",
       "fiscal_year": 2026,
-      "transaction_count": 90,
-      "unique_transaction_count": 90,
-      "actual_payment_amount": 3903509.25,
-      "contract_count": 12,
+      "transaction_count": 94,
+      "unique_transaction_count": 94,
+      "actual_payment_amount": 6407343.28,
+      "contract_count": 13,
       "contract_id": null
     },
     {
@@ -191178,6 +191418,16 @@
     },
     {
       "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "RED WALL PRODUCTIONS",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 15000,
+      "contract_count": 1,
+      "contract_id": "CT181620268804317"
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
       "payee_name": "REES SCIENTIFIC",
       "fiscal_year": 2026,
       "transaction_count": 3,
@@ -191285,6 +191535,16 @@
       "actual_payment_amount": 46888.7,
       "contract_count": 2,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "RESEARCH FOUNDATION OF THE STATE UNIVERSITY OF NEW YORK",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 468522,
+      "contract_count": 1,
+      "contract_id": "CT181620251403077"
     },
     {
       "agency": "Department of Health and Mental Hygiene",
@@ -191758,6 +192018,16 @@
     },
     {
       "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "Seyran Printing & Graphics",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 18997.11,
+      "contract_count": 1,
+      "contract_id": "CT181620210002195"
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
       "payee_name": "SHARDA PAPER INC",
       "fiscal_year": 2026,
       "transaction_count": 5,
@@ -191775,6 +192045,16 @@
       "actual_payment_amount": 259990.45,
       "contract_count": 1,
       "contract_id": "CT181620248806650"
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "SHEISNAYILAH LLC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 400,
+      "contract_count": 1,
+      "contract_id": "CT181620258802556"
     },
     {
       "agency": "Department of Health and Mental Hygiene",
@@ -192158,6 +192438,16 @@
     },
     {
       "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "ST JOHN'S RIVERSIDE HOSPITAL",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 300141,
+      "contract_count": 1,
+      "contract_id": "CT181620251403077"
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
       "payee_name": "ST LUKE'S-ROOSEVELT HOSPITAL CENTER",
       "fiscal_year": 2026,
       "transaction_count": 31,
@@ -192170,9 +192460,9 @@
       "agency": "Department of Health and Mental Hygiene",
       "payee_name": "ST LUKES-ROOSEVELT HOSPITAL CENTER",
       "fiscal_year": 2026,
-      "transaction_count": 1,
-      "unique_transaction_count": 1,
-      "actual_payment_amount": 1499117,
+      "transaction_count": 2,
+      "unique_transaction_count": 2,
+      "actual_payment_amount": 1886582,
       "contract_count": 1,
       "contract_id": "CT181620251403077"
     },
@@ -192665,6 +192955,16 @@
       "actual_payment_amount": 273309.71,
       "contract_count": 1,
       "contract_id": "CT181620248807676"
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
+      "payee_name": "THE FAMILY CENTER INC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 197000,
+      "contract_count": 1,
+      "contract_id": "CT181620251403077"
     },
     {
       "agency": "Department of Health and Mental Hygiene",
@@ -193350,10 +193650,10 @@
       "agency": "Department of Health and Mental Hygiene",
       "payee_name": "URBAN HEALTH PLAN INC",
       "fiscal_year": 2026,
-      "transaction_count": 35,
-      "unique_transaction_count": 35,
-      "actual_payment_amount": 1644001.79,
-      "contract_count": 4,
+      "transaction_count": 36,
+      "unique_transaction_count": 36,
+      "actual_payment_amount": 1665108.59,
+      "contract_count": 5,
       "contract_id": null
     },
     {
@@ -208710,9 +209010,9 @@
       "agency": "Department of Sanitation",
       "payee_name": "ALS GROUP USA CORP",
       "fiscal_year": 2026,
-      "transaction_count": 37,
-      "unique_transaction_count": 37,
-      "actual_payment_amount": 45750.48,
+      "transaction_count": 45,
+      "unique_transaction_count": 45,
+      "actual_payment_amount": 55167.19,
       "contract_count": 1,
       "contract_id": "CT182720268801000"
     },
@@ -208795,6 +209095,16 @@
       "actual_payment_amount": 9550,
       "contract_count": 3,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Sanitation",
+      "payee_name": "AMERICAN PALLET RECYCLING LLC",
+      "fiscal_year": 2026,
+      "transaction_count": 9,
+      "unique_transaction_count": 9,
+      "actual_payment_amount": 39916.8,
+      "contract_count": 1,
+      "contract_id": "CT182720248800611"
     },
     {
       "agency": "Department of Sanitation",
@@ -209538,6 +209848,16 @@
     },
     {
       "agency": "Department of Sanitation",
+      "payee_name": "CHOICE DISTRIBUTION INC.",
+      "fiscal_year": 2026,
+      "transaction_count": 28,
+      "unique_transaction_count": 28,
+      "actual_payment_amount": 33847.56,
+      "contract_count": 1,
+      "contract_id": "CT182720248800611"
+    },
+    {
+      "agency": "Department of Sanitation",
       "payee_name": "CITIVIEW AUDIO VISUAL, LTD.",
       "fiscal_year": 2026,
       "transaction_count": 1,
@@ -209910,9 +210230,9 @@
       "agency": "Department of Sanitation",
       "payee_name": "DIAL A BUG PEST CONTROL OF NY INC",
       "fiscal_year": 2026,
-      "transaction_count": 16,
-      "unique_transaction_count": 16,
-      "actual_payment_amount": 1209.63,
+      "transaction_count": 20,
+      "unique_transaction_count": 20,
+      "actual_payment_amount": 1549.25,
       "contract_count": 1,
       "contract_id": "CT182720268801000"
     },
@@ -209985,6 +210305,16 @@
       "actual_payment_amount": 953271.78,
       "contract_count": 1,
       "contract_id": "CT182720268800283"
+    },
+    {
+      "agency": "Department of Sanitation",
+      "payee_name": "Double A Ventures LLC",
+      "fiscal_year": 2026,
+      "transaction_count": 22,
+      "unique_transaction_count": 22,
+      "actual_payment_amount": 9710.7,
+      "contract_count": 1,
+      "contract_id": "CT182720248800611"
     },
     {
       "agency": "Department of Sanitation",
@@ -210108,6 +210438,16 @@
     },
     {
       "agency": "Department of Sanitation",
+      "payee_name": "ECKENFELDER ENGINEERING PC",
+      "fiscal_year": 2026,
+      "transaction_count": 5,
+      "unique_transaction_count": 5,
+      "actual_payment_amount": 14456.16,
+      "contract_count": 2,
+      "contract_id": null
+    },
+    {
+      "agency": "Department of Sanitation",
       "payee_name": "Edge Electronics Inc",
       "fiscal_year": 2026,
       "transaction_count": 130,
@@ -210215,6 +210555,16 @@
       "actual_payment_amount": 13896,
       "contract_count": 2,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Sanitation",
+      "payee_name": "ENVIRONMENTAL DESIGN & RESEARCH P.C.",
+      "fiscal_year": 2026,
+      "transaction_count": 13,
+      "unique_transaction_count": 13,
+      "actual_payment_amount": 68944,
+      "contract_count": 1,
+      "contract_id": "CT182720248800611"
     },
     {
       "agency": "Department of Sanitation",
@@ -210365,6 +210715,16 @@
       "actual_payment_amount": 29619.2,
       "contract_count": 1,
       "contract_id": "CT182720268804931"
+    },
+    {
+      "agency": "Department of Sanitation",
+      "payee_name": "FOLEY INC",
+      "fiscal_year": 2026,
+      "transaction_count": 24,
+      "unique_transaction_count": 24,
+      "actual_payment_amount": 96306.69,
+      "contract_count": 1,
+      "contract_id": "CT182720248800611"
     },
     {
       "agency": "Department of Sanitation",
@@ -211888,6 +212248,16 @@
     },
     {
       "agency": "Department of Sanitation",
+      "payee_name": "No Sweat Service Group Inc",
+      "fiscal_year": 2026,
+      "transaction_count": 4,
+      "unique_transaction_count": 4,
+      "actual_payment_amount": 25250,
+      "contract_count": 1,
+      "contract_id": "CT182720248800611"
+    },
+    {
+      "agency": "Department of Sanitation",
       "payee_name": "NOFELCO SERVICE CORP",
       "fiscal_year": 2026,
       "transaction_count": 13,
@@ -212670,11 +213040,11 @@
       "agency": "Department of Sanitation",
       "payee_name": "S&V ELECTRIC CORP",
       "fiscal_year": 2026,
-      "transaction_count": 26,
-      "unique_transaction_count": 26,
-      "actual_payment_amount": 44782.5,
-      "contract_count": 1,
-      "contract_id": "CT182720268801000"
+      "transaction_count": 31,
+      "unique_transaction_count": 31,
+      "actual_payment_amount": 54687.5,
+      "contract_count": 2,
+      "contract_id": null
     },
     {
       "agency": "Department of Sanitation",
@@ -213048,13 +213418,23 @@
     },
     {
       "agency": "Department of Sanitation",
+      "payee_name": "SUSTAINABLE GENERATION LLC",
+      "fiscal_year": 2026,
+      "transaction_count": 7,
+      "unique_transaction_count": 7,
+      "actual_payment_amount": 77615.07,
+      "contract_count": 1,
+      "contract_id": "CT182720248800611"
+    },
+    {
+      "agency": "Department of Sanitation",
       "payee_name": "T & R EXTERMINATORS, INC.",
       "fiscal_year": 2026,
-      "transaction_count": 4,
-      "unique_transaction_count": 4,
-      "actual_payment_amount": 1320,
-      "contract_count": 1,
-      "contract_id": "POD82720262001025"
+      "transaction_count": 48,
+      "unique_transaction_count": 48,
+      "actual_payment_amount": 12480,
+      "contract_count": 2,
+      "contract_id": null
     },
     {
       "agency": "Department of Sanitation",
@@ -213195,6 +213575,16 @@
       "actual_payment_amount": 11667.37,
       "contract_count": 1,
       "contract_id": "POD82720262027706"
+    },
+    {
+      "agency": "Department of Sanitation",
+      "payee_name": "Timber Ridge Equipment LLC",
+      "fiscal_year": 2026,
+      "transaction_count": 26,
+      "unique_transaction_count": 26,
+      "actual_payment_amount": 322474.6,
+      "contract_count": 1,
+      "contract_id": "CT182720248800611"
     },
     {
       "agency": "Department of Sanitation",
@@ -213355,6 +213745,16 @@
       "actual_payment_amount": 55650.19,
       "contract_count": 5,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Sanitation",
+      "payee_name": "UNITED FUEL SERVICE LLC",
+      "fiscal_year": 2026,
+      "transaction_count": 84,
+      "unique_transaction_count": 84,
+      "actual_payment_amount": 648540.14,
+      "contract_count": 1,
+      "contract_id": "CT182720248800611"
     },
     {
       "agency": "Department of Sanitation",
@@ -213755,6 +214155,16 @@
       "actual_payment_amount": 82299.64,
       "contract_count": 10,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Sanitation",
+      "payee_name": "YABOO FENCE COMPANY INC",
+      "fiscal_year": 2026,
+      "transaction_count": 2,
+      "unique_transaction_count": 2,
+      "actual_payment_amount": 9576,
+      "contract_count": 1,
+      "contract_id": "CT182720248800611"
     },
     {
       "agency": "Department of Sanitation",
@@ -248495,6 +248905,16 @@
       "actual_payment_amount": 322355,
       "contract_count": 1,
       "contract_id": "DO185720262623501"
+    },
+    {
+      "agency": "Fire Department",
+      "payee_name": "SamaraTech LLC",
+      "fiscal_year": 2026,
+      "transaction_count": 7,
+      "unique_transaction_count": 7,
+      "actual_payment_amount": 125394.5,
+      "contract_count": 1,
+      "contract_id": "CT105720248807180"
     },
     {
       "agency": "Fire Department",

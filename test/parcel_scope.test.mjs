@@ -159,9 +159,14 @@ test("LL48 suitability is an exact-BBL evidence group with measured coverage", (
   assert.equal(view.sections.ll48.status, "observed");
   assert.equal(view.sections.ll48.items[0].source, "NYC Open Data · LL48 suitability");
   assert.equal(view.sections.ll48.items[0].method, "exact_bbl_v1");
-  assert.equal(view.sections.ll48.coverage.eligible, 320);
-  assert.equal(view.sections.ll48.coverage.linked, 23);
-  assert.equal(view.sections.ll48.coverage.rate, 0.0719);
+  assert.equal(view.sections.ll48.coverage.eligible, 319);
+  assert.equal(view.sections.ll48.coverage.linked, 22);
+  // The rate is the measurement, not an independent pin: it is linked over
+  // eligible, rounded as the builder rounds it.
+  assert.equal(
+    view.sections.ll48.coverage.rate,
+    Number((view.sections.ll48.coverage.linked / view.sections.ll48.coverage.eligible).toFixed(4)),
+  );
   assert.match(view.sections.ll48.note || "", /^$/);
 });
 

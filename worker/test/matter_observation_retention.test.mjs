@@ -29,10 +29,16 @@ import {
 } from "../src/lib/matter_observation_journal.mjs";
 import { renderMatterObservationOperatorHtml } from "../src/lib/matter_observation_operator_view.mjs";
 import { matterJournalDatabase } from "./helpers/matter_observation_d1.mjs";
+import { observedSnapshot } from "../../site/matter_coverage_recovery.mjs";
 
-const snapshot = JSON.parse(
+const rawSnapshot = JSON.parse(
   readFileSync(new URL("../../site/data/meeting_outcomes_snapshot.json", import.meta.url), "utf8"),
 );
+
+// Retain the snapshot as of its own vintage: meetings scheduled after it carry
+// a placeholder action and no votes, so they are not outcomes to retain. This
+// is the same rule the frozen coverage oracle applies.
+const snapshot = observedSnapshot(rawSnapshot);
 
 const ACQUIRED = "2026-08-10T13:08:13.019Z";
 
@@ -67,13 +73,13 @@ test("bootstrap retains every snapshot matter and hearing with coarse identity a
   const { sqlite, DB } = matterJournalDatabase();
   const result = await retainSnapshotMatterObservations({ DB }, snapshot, { acquiredAt: ACQUIRED });
   assert.equal(result.failed, false);
-  assert.equal(oracle.matter_count, 66);
-  assert.equal(oracle.appearance_count, 76);
-  assert.equal(result.after.matter_count, 66);
-  assert.equal(result.after.appearance_count, 76);
+  assert.equal(oracle.matter_count, 64);
+  assert.equal(oracle.appearance_count, 79);
+  assert.equal(result.after.matter_count, 64);
+  assert.equal(result.after.appearance_count, 79);
 
   const rows = await readJournalRows({ DB });
-  assert.equal(rows.length, 76);
+  assert.equal(rows.length, 79);
   assert.ok(rows.every((row) => row.identity_granularity === MATTER_IDENTITY_GRANULARITY.coarse));
   assert.ok(rows.every((row) => row.native_event_item_id == null));
   assert.ok(rows.every((row) => row.source_record_ref.startsWith(`${MATTER_BOOTSTRAP_SOURCE_SYSTEM}/`)));
@@ -96,7 +102,7 @@ test("bootstrap retains every snapshot matter and hearing with coarse identity a
   assert.ok(provenance.subject_links.every((link) => link.type === "about_notice"));
 
   const raw = sqlite.prepare("SELECT COUNT(*) AS n FROM source_records WHERE source_system = ?").get(MATTER_BOOTSTRAP_SOURCE_SYSTEM);
-  assert.equal(raw.n, 76);
+  assert.equal(raw.n, 79);
   sqlite.close();
 });
 
@@ -121,7 +127,7 @@ test("empty, partial, or failed replacement cannot delete retained history", asy
 
   const replay = await retainSnapshotMatterObservations(env, snapshot, { acquiredAt: "2026-08-12T00:00:00.000Z" });
   assert.deepEqual(replay.after.observation_ids, first.observation_ids);
-  assert.equal(replay.after.appearance_count, 76);
+  assert.equal(replay.after.appearance_count, 79);
 
   const repairs = await readRepairRows(env);
   assert.equal(repairs.length, 3);
@@ -275,7 +281,7 @@ test("interrupted transactions keep last-good state and one deduplicated repair"
   assert.equal(Number(repairs[0].occurrence_count) >= 2, true);
 
   const aged = await retainSnapshotMatterObservations(env, snapshot, { acquiredAt: "2027-02-10T00:00:00.000Z" });
-  assert.equal(aged.after.appearance_count, 76);
+  assert.equal(aged.after.appearance_count, 79);
   sqlite.close();
 });
 
@@ -320,7 +326,7 @@ test("operator projection names last-good retention, coarse identity, and repair
     matterId: "79200",
     route: "/operator/matter-observations/last-good/",
   });
-  assert.match(html, /Last-good journal holds 66 matters/);
+  assert.match(html, /Last-good journal holds 64 matters/);
   assert.match(html, /Coarse bootstrap appearance/);
   assert.match(html, /empty-replacement/);
   assert.match(html, /cannot delete these rows/);

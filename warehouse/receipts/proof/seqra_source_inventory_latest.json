@@ -21,11 +21,11 @@
     "verified_agency_or_party_announcements: No single documented interface; verified case-by-case. Not probed in SEQRA-01."
   ],
   "existing_reconciliation_baseline": {
-    "exact_match_rate": 0.942584,
-    "exact_project_joins": 197,
-    "joined_milestone_rows": 502,
+    "exact_match_rate": 0.942029,
+    "exact_project_joins": 195,
+    "joined_milestone_rows": 497,
     "note": "Cited from the existing CEQR/ZAP reconciliation receipt for context only. Not a current source count produced by this inventory; verify against warehouse/receipts/proof/ceqr_project_milestone_reconciliation_latest.json.",
-    "projects_with_incremental_milestones": 182,
+    "projects_with_incremental_milestones": 180,
     "resident_ingestion_committed": false,
     "source_receipt": "warehouse/receipts/proof/ceqr_project_milestone_reconciliation_latest.json"
   },

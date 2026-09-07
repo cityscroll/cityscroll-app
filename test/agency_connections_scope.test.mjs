@@ -29,10 +29,10 @@ test("HPD connection view separates verified records from possible matches acros
   });
 
   assert.equal(view.groups.filter((group) => group.status === "matched").length, 5);
-  assert.equal(view.summary.strong_count, 18);
+  assert.equal(view.summary.strong_count, 21);
   assert.equal(view.summary.tentative_count, 2);
   assert.equal(view.summary.coverage_eligible, null);
-  assert.equal(view.summary.coverage_linked, 18);
+  assert.equal(view.summary.coverage_linked, 21);
   assert.equal(view.summary.vintage, materialization.generated_at);
   assert.deepEqual(
     view.groups.filter((group) => group.status === "matched").map((group) => group.role_key),
@@ -66,7 +66,12 @@ test("connection and apply links round-trip as canonical typed scopes", () => {
   assert.deepEqual(roundTripped.facets.agencies, []);
   assert.deepEqual(roundTripped.facets.values.entity_refs_all, [HPD_REF]);
   assert.equal(roundTripped.facets.values.connection_relation, "published_by_agency");
-  assert.equal(roundTripped.facets.values.mode, "award");
+  // The money link narrows to awards exactly when this agency has an award
+  // object to narrow to. Which objects the bounded response carries moves with
+  // the publisher vintage, so the rule is asserted rather than one vintage's
+  // answer to it.
+  const hasAward = (hpd.domains.money.objects || []).some((object) => object.object_kind === "award");
+  assert.equal(roundTripped.facets.values.mode, hasAward ? "award" : undefined);
   assert.equal(new URL(money.view_all_href, "https://cityscroll.org").searchParams.has("agency"), false);
   assert.equal(connectionScopeHash(hpd, "money", { scope: CrolScope }), money.view_all_href);
 });

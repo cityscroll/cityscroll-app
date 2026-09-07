@@ -1,16 +1,16 @@
 {
   "coverage": {
-    "eligible_rows": 78,
-    "matched": 32,
+    "eligible_rows": 102,
+    "matched": 63,
     "rejected": 0,
     "rejected_reasons": {},
-    "unresolved": 46,
+    "unresolved": 39,
     "unresolved_reasons": {
-      "no_exact_land_key": 46
+      "no_exact_land_key": 39
     }
   },
   "gate": {
-    "rationale": "32 of 78 eligible Council matter appearances (41.03%) carry a retained exact land identifier.",
+    "rationale": "63 of 102 eligible Council matter appearances (61.76%) carry a retained exact land identifier.",
     "resident_ingestion_committed": false,
     "result": "GO",
     "thresholds": {
@@ -23,9 +23,9 @@
   "join_measurement": {
     "rates": {
       "exact_land_identifier": {
-        "joined": 32,
-        "rate": 0.410256,
-        "total": 78
+        "joined": 63,
+        "rate": 0.617647,
+        "total": 102
       }
     },
     "strategy": "exact_ulurp_token | exact_zap_project_id",
@@ -33,6 +33,2208 @@
     "verdict": "Above usefulness threshold (>=30%). Ship Council matter edge materialization."
   },
   "materialized_edges": [
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Committee"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79331"
+          }
+        ],
+        "event": {
+          "date": "2026-09-09",
+          "event_id": "22617",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0127-2026",
+          "matter_id": "79331",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79331",
+          "title": "Zoning, 21-31 46th Ave Rezoning, Queens (C 250125 ZMQ)."
+        },
+        "outcome": "Committee",
+        "votes": null
+      },
+      "from": "legistar-event:22617:matter:79331",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2023Q0125",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "250125ZMQ",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-09-09",
+        "project_id": "2023Q0125",
+        "retained_identifier": "250125ZMQ",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79331",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79331",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2023Q0125"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Committee"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79332"
+          }
+        ],
+        "event": {
+          "date": "2026-09-09",
+          "event_id": "22617",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0128-2026",
+          "matter_id": "79332",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79332",
+          "title": "Zoning, 21-31 46th Ave Rezoning, Queens (N 250126 ZRQ)."
+        },
+        "outcome": "Committee",
+        "votes": null
+      },
+      "from": "legistar-event:22617:matter:79332",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2023Q0125",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "250126ZRQ",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-09-09",
+        "project_id": "2023Q0125",
+        "retained_identifier": "250126ZRQ",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79332",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79332",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2023Q0125"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Committee"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79292"
+          }
+        ],
+        "event": {
+          "date": "2026-09-09",
+          "event_id": "22617",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0120-2026",
+          "matter_id": "79292",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79292",
+          "title": "Zoning, 815 Hutchinson River Parkway Rezoning, Bronx (C 240161 ZMX)."
+        },
+        "outcome": "Committee",
+        "votes": null
+      },
+      "from": "legistar-event:22617:matter:79292",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2021X0247",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "240161ZMX",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-09-09",
+        "project_id": "2021X0247",
+        "retained_identifier": "240161ZMX",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79292",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79292",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2021X0247"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Committee"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79293"
+          }
+        ],
+        "event": {
+          "date": "2026-09-09",
+          "event_id": "22617",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0121-2026",
+          "matter_id": "79293",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79293",
+          "title": "Zoning, 862-868 Kent Avenue, Brooklyn (C 240283 ZMK)."
+        },
+        "outcome": "Committee",
+        "votes": null
+      },
+      "from": "legistar-event:22617:matter:79293",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2019K0190",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "240283ZMK",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-09-09",
+        "project_id": "2019K0190",
+        "retained_identifier": "240283ZMK",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79293",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79293",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2019K0190"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Committee"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79294"
+          }
+        ],
+        "event": {
+          "date": "2026-09-09",
+          "event_id": "22617",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0122-2026",
+          "matter_id": "79294",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79294",
+          "title": "Zoning, 862-868 Kent Avenue, Brooklyn (N 240284 ZRK)."
+        },
+        "outcome": "Committee",
+        "votes": null
+      },
+      "from": "legistar-event:22617:matter:79294",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2019K0190",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "240284ZRK",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-09-09",
+        "project_id": "2019K0190",
+        "retained_identifier": "240284ZRK",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79294",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79294",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2019K0190"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Committee"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79295"
+          }
+        ],
+        "event": {
+          "date": "2026-09-09",
+          "event_id": "22617",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0123-2026",
+          "matter_id": "79295",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79295",
+          "title": "Zoning, 158-06 Northern Boulevard Rezoning, Queens (C 260171 ZMQ)."
+        },
+        "outcome": "Committee",
+        "votes": null
+      },
+      "from": "legistar-event:22617:matter:79295",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2025Q0155",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260171ZMQ",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-09-09",
+        "project_id": "2025Q0155",
+        "retained_identifier": "260171ZMQ",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79295",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79295",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2025Q0155"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Committee"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79296"
+          }
+        ],
+        "event": {
+          "date": "2026-09-09",
+          "event_id": "22617",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0124-2026",
+          "matter_id": "79296",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79296",
+          "title": "Zoning, 158-06 Northern Boulevard Rezoning, Queens (N 260172 ZRQ)."
+        },
+        "outcome": "Committee",
+        "votes": null
+      },
+      "from": "legistar-event:22617:matter:79296",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2025Q0155",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260172ZRQ",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-09-09",
+        "project_id": "2025Q0155",
+        "retained_identifier": "260172ZRQ",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79296",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79296",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2025Q0155"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Committee"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79297"
+          }
+        ],
+        "event": {
+          "date": "2026-09-09",
+          "event_id": "22617",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0125-2026",
+          "matter_id": "79297",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79297",
+          "title": "Zoning, 132 Melrose Street Rezoning, Brooklyn (C 260135 ZMK)."
+        },
+        "outcome": "Committee",
+        "votes": null
+      },
+      "from": "legistar-event:22617:matter:79297",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2024K0196",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260135ZMK",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-09-09",
+        "project_id": "2024K0196",
+        "retained_identifier": "260135ZMK",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79297",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79297",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2024K0196"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Committee"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79298"
+          }
+        ],
+        "event": {
+          "date": "2026-09-09",
+          "event_id": "22617",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0126-2026",
+          "matter_id": "79298",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79298",
+          "title": "Zoning, 132 Melrose Street Rezoning, Brooklyn (N 260136 ZRK)."
+        },
+        "outcome": "Committee",
+        "votes": null
+      },
+      "from": "legistar-event:22617:matter:79298",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2024K0196",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260136ZRK",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-09-09",
+        "project_id": "2024K0196",
+        "retained_identifier": "260136ZRK",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79298",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79298",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2024K0196"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Introduced"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79452"
+          }
+        ],
+        "event": {
+          "date": "2026-09-09",
+          "event_id": "22617",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "T2026-2499",
+          "matter_id": "79452",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79452",
+          "title": "Zoning, Fort Hamilton Mews Rezoning, Brooklyn (C 260238 ZMK)."
+        },
+        "outcome": "Introduced",
+        "votes": null
+      },
+      "from": "legistar-event:22617:matter:79452",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2025K0284",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260238ZMK",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-09-09",
+        "project_id": "2025K0284",
+        "retained_identifier": "260238ZMK",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79452",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79452",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2025K0284"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Introduced"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79453"
+          }
+        ],
+        "event": {
+          "date": "2026-09-09",
+          "event_id": "22617",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "T2026-2500",
+          "matter_id": "79453",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79453",
+          "title": "Zoning, Fort Hamilton Mews Rezoning, Brooklyn (N 260239 ZRK)."
+        },
+        "outcome": "Introduced",
+        "votes": null
+      },
+      "from": "legistar-event:22617:matter:79453",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2025K0284",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260239ZRK",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-09-09",
+        "project_id": "2025K0284",
+        "retained_identifier": "260239ZRK",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79453",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79453",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2025K0284"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Introduced"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79454"
+          }
+        ],
+        "event": {
+          "date": "2026-09-09",
+          "event_id": "22617",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "T2026-2501",
+          "matter_id": "79454",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79454",
+          "title": "Zoning, Park Avenue Brooklyn Rezoning, Brooklyn (C 240218 ZMK)."
+        },
+        "outcome": "Introduced",
+        "votes": null
+      },
+      "from": "legistar-event:22617:matter:79454",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2022K0430",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "240218ZMK",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-09-09",
+        "project_id": "2022K0430",
+        "retained_identifier": "240218ZMK",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79454",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79454",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2022K0430"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Introduced"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79455"
+          }
+        ],
+        "event": {
+          "date": "2026-09-09",
+          "event_id": "22617",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "T2026-2502",
+          "matter_id": "79455",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79455",
+          "title": "Zoning, Park Avenue Brooklyn Rezoning, Brooklyn (N 240219 ZRK)."
+        },
+        "outcome": "Introduced",
+        "votes": null
+      },
+      "from": "legistar-event:22617:matter:79455",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2022K0430",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "240219ZRK",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-09-09",
+        "project_id": "2022K0430",
+        "retained_identifier": "240219ZRK",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79455",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79455",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2022K0430"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Introduced"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79456"
+          }
+        ],
+        "event": {
+          "date": "2026-09-09",
+          "event_id": "22617",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "T2026-2503",
+          "matter_id": "79456",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79456",
+          "title": "Zoning, Sojourner Truth – Mapes Rezoning, Bronx (C 240206 ZMX)."
+        },
+        "outcome": "Introduced",
+        "votes": null
+      },
+      "from": "legistar-event:22617:matter:79456",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2023X0149",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "240206ZMX",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-09-09",
+        "project_id": "2023X0149",
+        "retained_identifier": "240206ZMX",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79456",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79456",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2023X0149"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Introduced"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79457"
+          }
+        ],
+        "event": {
+          "date": "2026-09-09",
+          "event_id": "22617",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "T2026-2504",
+          "matter_id": "79457",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79457",
+          "title": "Zoning, Sojourner Truth – Mapes Rezoning, Bronx (N 240207 ZRX)."
+        },
+        "outcome": "Introduced",
+        "votes": null
+      },
+      "from": "legistar-event:22617:matter:79457",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2023X0149",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "240207ZRX",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-09-09",
+        "project_id": "2023X0149",
+        "retained_identifier": "240207ZRX",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79457",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79457",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2023X0149"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Introduced"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79458"
+          }
+        ],
+        "event": {
+          "date": "2026-09-09",
+          "event_id": "22617",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "T2026-2505",
+          "matter_id": "79458",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79458",
+          "title": "Zoning, 69-67 108th Street Rezoning, Queens (C 260186 ZMQ)."
+        },
+        "outcome": "Introduced",
+        "votes": null
+      },
+      "from": "legistar-event:22617:matter:79458",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2025Q0247",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260186ZMQ",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-09-09",
+        "project_id": "2025Q0247",
+        "retained_identifier": "260186ZMQ",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79458",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79458",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2025Q0247"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Introduced"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79459"
+          }
+        ],
+        "event": {
+          "date": "2026-09-09",
+          "event_id": "22617",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "T2026-2506",
+          "matter_id": "79459",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79459",
+          "title": "Zoning, 69-67 108th Street Rezoning, Queens (N 260187 ZRQ)."
+        },
+        "outcome": "Introduced",
+        "votes": null
+      },
+      "from": "legistar-event:22617:matter:79459",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2025Q0247",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260187ZRQ",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-09-09",
+        "project_id": "2025Q0247",
+        "retained_identifier": "260187ZRQ",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79459",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79459",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2025Q0247"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Introduced"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79460"
+          }
+        ],
+        "event": {
+          "date": "2026-09-09",
+          "event_id": "22617",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "T2026-2507",
+          "matter_id": "79460",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79460",
+          "title": "Zoning, 289 Kent Avenue Rezoning, Brooklyn (C 260087 ZMK)."
+        },
+        "outcome": "Introduced",
+        "votes": null
+      },
+      "from": "legistar-event:22617:matter:79460",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2024K0240",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260087ZMK",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-09-09",
+        "project_id": "2024K0240",
+        "retained_identifier": "260087ZMK",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79460",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79460",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2024K0240"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Introduced"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22617_A_Subcommittee_on_Zoning_and_Franchises_26-09-09_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79461"
+          }
+        ],
+        "event": {
+          "date": "2026-09-09",
+          "event_id": "22617",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "T2026-2508",
+          "matter_id": "79461",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79461",
+          "title": "Zoning, 289 Kent Avenue Rezoning, Brooklyn (N 260088 ZRK)."
+        },
+        "outcome": "Introduced",
+        "votes": null
+      },
+      "from": "legistar-event:22617:matter:79461",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2024K0240",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260088ZRK",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-09-09",
+        "project_id": "2024K0240",
+        "retained_identifier": "260088ZRK",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79461",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79461",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2024K0240"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Hearing on P-C Item by Comm",
+          "P-C Item Laid Over by Comm"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_A_Subcommittee_on_Zoning_and_Franchises_26-08-12_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_M_Subcommittee_on_Zoning_and_Franchises_26-08-12_Meeting_Minutes.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79292"
+          }
+        ],
+        "event": {
+          "date": "2026-08-12",
+          "event_id": "22528",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0120-2026",
+          "matter_id": "79292",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79292",
+          "title": "Zoning, 815 Hutchinson River Parkway Rezoning, Bronx (C 240161 ZMX)."
+        },
+        "outcome": "P-C Item Laid Over by Comm",
+        "votes": null
+      },
+      "from": "legistar-event:22528:matter:79292",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2021X0247",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "240161ZMX",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-08-12",
+        "project_id": "2021X0247",
+        "retained_identifier": "240161ZMX",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79292",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79292",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2021X0247"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Hearing on P-C Item by Comm",
+          "P-C Item Laid Over by Comm"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_A_Subcommittee_on_Zoning_and_Franchises_26-08-12_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_M_Subcommittee_on_Zoning_and_Franchises_26-08-12_Meeting_Minutes.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79293"
+          }
+        ],
+        "event": {
+          "date": "2026-08-12",
+          "event_id": "22528",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0121-2026",
+          "matter_id": "79293",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79293",
+          "title": "Zoning, 862-868 Kent Avenue, Brooklyn (C 240283 ZMK)."
+        },
+        "outcome": "P-C Item Laid Over by Comm",
+        "votes": null
+      },
+      "from": "legistar-event:22528:matter:79293",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2019K0190",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "240283ZMK",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-08-12",
+        "project_id": "2019K0190",
+        "retained_identifier": "240283ZMK",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79293",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79293",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2019K0190"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Hearing on P-C Item by Comm",
+          "P-C Item Laid Over by Comm"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_A_Subcommittee_on_Zoning_and_Franchises_26-08-12_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_M_Subcommittee_on_Zoning_and_Franchises_26-08-12_Meeting_Minutes.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79294"
+          }
+        ],
+        "event": {
+          "date": "2026-08-12",
+          "event_id": "22528",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0122-2026",
+          "matter_id": "79294",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79294",
+          "title": "Zoning, 862-868 Kent Avenue, Brooklyn (N 240284 ZRK)."
+        },
+        "outcome": "P-C Item Laid Over by Comm",
+        "votes": null
+      },
+      "from": "legistar-event:22528:matter:79294",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2019K0190",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "240284ZRK",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-08-12",
+        "project_id": "2019K0190",
+        "retained_identifier": "240284ZRK",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79294",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79294",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2019K0190"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Hearing on P-C Item by Comm",
+          "P-C Item Laid Over by Comm"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_A_Subcommittee_on_Zoning_and_Franchises_26-08-12_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_M_Subcommittee_on_Zoning_and_Franchises_26-08-12_Meeting_Minutes.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79295"
+          }
+        ],
+        "event": {
+          "date": "2026-08-12",
+          "event_id": "22528",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0123-2026",
+          "matter_id": "79295",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79295",
+          "title": "Zoning, 158-06 Northern Boulevard Rezoning, Queens (C 260171 ZMQ)."
+        },
+        "outcome": "P-C Item Laid Over by Comm",
+        "votes": null
+      },
+      "from": "legistar-event:22528:matter:79295",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2025Q0155",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260171ZMQ",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-08-12",
+        "project_id": "2025Q0155",
+        "retained_identifier": "260171ZMQ",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79295",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79295",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2025Q0155"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Hearing on P-C Item by Comm",
+          "P-C Item Laid Over by Comm"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_A_Subcommittee_on_Zoning_and_Franchises_26-08-12_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_M_Subcommittee_on_Zoning_and_Franchises_26-08-12_Meeting_Minutes.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79296"
+          }
+        ],
+        "event": {
+          "date": "2026-08-12",
+          "event_id": "22528",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0124-2026",
+          "matter_id": "79296",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79296",
+          "title": "Zoning, 158-06 Northern Boulevard Rezoning, Queens (N 260172 ZRQ)."
+        },
+        "outcome": "P-C Item Laid Over by Comm",
+        "votes": null
+      },
+      "from": "legistar-event:22528:matter:79296",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2025Q0155",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260172ZRQ",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-08-12",
+        "project_id": "2025Q0155",
+        "retained_identifier": "260172ZRQ",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79296",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79296",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2025Q0155"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Hearing on P-C Item by Comm",
+          "P-C Item Laid Over by Comm"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_A_Subcommittee_on_Zoning_and_Franchises_26-08-12_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_M_Subcommittee_on_Zoning_and_Franchises_26-08-12_Meeting_Minutes.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79297"
+          }
+        ],
+        "event": {
+          "date": "2026-08-12",
+          "event_id": "22528",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0125-2026",
+          "matter_id": "79297",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79297",
+          "title": "Zoning, 132 Melrose Street Rezoning, Brooklyn (C 260135 ZMK)."
+        },
+        "outcome": "P-C Item Laid Over by Comm",
+        "votes": null
+      },
+      "from": "legistar-event:22528:matter:79297",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2024K0196",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260135ZMK",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-08-12",
+        "project_id": "2024K0196",
+        "retained_identifier": "260135ZMK",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79297",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79297",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2024K0196"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Hearing on P-C Item by Comm",
+          "P-C Item Laid Over by Comm"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_A_Subcommittee_on_Zoning_and_Franchises_26-08-12_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_M_Subcommittee_on_Zoning_and_Franchises_26-08-12_Meeting_Minutes.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79298"
+          }
+        ],
+        "event": {
+          "date": "2026-08-12",
+          "event_id": "22528",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0126-2026",
+          "matter_id": "79298",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79298",
+          "title": "Zoning, 132 Melrose Street Rezoning, Brooklyn (N 260136 ZRK)."
+        },
+        "outcome": "P-C Item Laid Over by Comm",
+        "votes": null
+      },
+      "from": "legistar-event:22528:matter:79298",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2024K0196",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260136ZRK",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-08-12",
+        "project_id": "2024K0196",
+        "retained_identifier": "260136ZRK",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79298",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79298",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2024K0196"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Hearing Held by Committee",
+          "Approved by Subcommittee with Modifications and Referred to CPC"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_A_Subcommittee_on_Zoning_and_Franchises_26-08-12_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_M_Subcommittee_on_Zoning_and_Franchises_26-08-12_Meeting_Minutes.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79201"
+          }
+        ],
+        "event": {
+          "date": "2026-08-12",
+          "event_id": "22528",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0115-2026",
+          "matter_id": "79201",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79201",
+          "title": "Zoning, 200 Kent Avenue Rezoning, Brooklyn (C 260149 ZMK)."
+        },
+        "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
+        "votes": {
+          "abstain": 2,
+          "by_person": [
+            {
+              "person_id": "7785",
+              "person_name": "Farah N. Louis",
+              "vote_bucket": "abstain"
+            },
+            {
+              "person_id": "7833",
+              "person_name": "David M. Carr",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7895",
+              "person_name": "Elsie Encarnación",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7810",
+              "person_name": "Amanda C. Farías",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "5289",
+              "person_name": "Simcha Felder",
+              "vote_bucket": "abstain"
+            },
+            {
+              "person_id": "7866",
+              "person_name": "Yusef Salaam",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7897",
+              "person_name": "Justin E. Sanchez",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7818",
+              "person_name": "Lynn C. Schulman",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7898",
+              "person_name": "Shanel Thomas-Henry",
+              "vote_bucket": "aye"
+            }
+          ],
+          "no": 0,
+          "person_count": 9,
+          "result": "Passed",
+          "vote_identity": "roll_call",
+          "yes": 7
+        }
+      },
+      "from": "legistar-event:22528:matter:79201",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2024K0286",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260149ZMK",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-08-12",
+        "project_id": "2024K0286",
+        "retained_identifier": "260149ZMK",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79201",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79201",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2024K0286"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Hearing Held by Committee",
+          "Approved by Subcommittee with Modifications and Referred to CPC"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_A_Subcommittee_on_Zoning_and_Franchises_26-08-12_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_M_Subcommittee_on_Zoning_and_Franchises_26-08-12_Meeting_Minutes.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79202"
+          }
+        ],
+        "event": {
+          "date": "2026-08-12",
+          "event_id": "22528",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0116-2026",
+          "matter_id": "79202",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79202",
+          "title": "Zoning, 200 Kent Avenue Rezoning, Brooklyn (N 260150 ZRK)."
+        },
+        "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
+        "votes": {
+          "abstain": 2,
+          "by_person": [
+            {
+              "person_id": "7785",
+              "person_name": "Farah N. Louis",
+              "vote_bucket": "abstain"
+            },
+            {
+              "person_id": "7833",
+              "person_name": "David M. Carr",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7895",
+              "person_name": "Elsie Encarnación",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7810",
+              "person_name": "Amanda C. Farías",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "5289",
+              "person_name": "Simcha Felder",
+              "vote_bucket": "abstain"
+            },
+            {
+              "person_id": "7866",
+              "person_name": "Yusef Salaam",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7897",
+              "person_name": "Justin E. Sanchez",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7818",
+              "person_name": "Lynn C. Schulman",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7898",
+              "person_name": "Shanel Thomas-Henry",
+              "vote_bucket": "aye"
+            }
+          ],
+          "no": 0,
+          "person_count": 9,
+          "result": "Passed",
+          "vote_identity": "roll_call",
+          "yes": 7
+        }
+      },
+      "from": "legistar-event:22528:matter:79202",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2024K0286",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260150ZRK",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-08-12",
+        "project_id": "2024K0286",
+        "retained_identifier": "260150ZRK",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79202",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79202",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2024K0286"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Hearing Held by Committee",
+          "Approved by Subcommittee"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_A_Subcommittee_on_Zoning_and_Franchises_26-08-12_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_M_Subcommittee_on_Zoning_and_Franchises_26-08-12_Meeting_Minutes.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79203"
+          }
+        ],
+        "event": {
+          "date": "2026-08-12",
+          "event_id": "22528",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0117-2026",
+          "matter_id": "79203",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79203",
+          "title": "Zoning, Flatiron NoMad Major Concessions, Manhattan (C 260123 MCM)."
+        },
+        "outcome": "Approved by Subcommittee",
+        "votes": {
+          "abstain": 2,
+          "by_person": [
+            {
+              "person_id": "7785",
+              "person_name": "Farah N. Louis",
+              "vote_bucket": "abstain"
+            },
+            {
+              "person_id": "7833",
+              "person_name": "David M. Carr",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7895",
+              "person_name": "Elsie Encarnación",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7810",
+              "person_name": "Amanda C. Farías",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "5289",
+              "person_name": "Simcha Felder",
+              "vote_bucket": "abstain"
+            },
+            {
+              "person_id": "7866",
+              "person_name": "Yusef Salaam",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7897",
+              "person_name": "Justin E. Sanchez",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7818",
+              "person_name": "Lynn C. Schulman",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7898",
+              "person_name": "Shanel Thomas-Henry",
+              "vote_bucket": "aye"
+            }
+          ],
+          "no": 0,
+          "person_count": 9,
+          "result": "Passed",
+          "vote_identity": "roll_call",
+          "yes": 7
+        }
+      },
+      "from": "legistar-event:22528:matter:79203",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2025M0252",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260123MCM",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-08-12",
+        "project_id": "2025M0252",
+        "retained_identifier": "260123MCM",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79203",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79203",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2025M0252"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Hearing Held by Committee",
+          "Approved by Subcommittee with Modifications and Referred to CPC"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_A_Subcommittee_on_Zoning_and_Franchises_26-08-12_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_M_Subcommittee_on_Zoning_and_Franchises_26-08-12_Meeting_Minutes.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79204"
+          }
+        ],
+        "event": {
+          "date": "2026-08-12",
+          "event_id": "22528",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0118-2026",
+          "matter_id": "79204",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79204",
+          "title": "Zoning, 47-03 108th Street Rezoning, Queens (C 260147 ZMQ)."
+        },
+        "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
+        "votes": {
+          "abstain": 2,
+          "by_person": [
+            {
+              "person_id": "7785",
+              "person_name": "Farah N. Louis",
+              "vote_bucket": "abstain"
+            },
+            {
+              "person_id": "7833",
+              "person_name": "David M. Carr",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7895",
+              "person_name": "Elsie Encarnación",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7810",
+              "person_name": "Amanda C. Farías",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "5289",
+              "person_name": "Simcha Felder",
+              "vote_bucket": "abstain"
+            },
+            {
+              "person_id": "7866",
+              "person_name": "Yusef Salaam",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7897",
+              "person_name": "Justin E. Sanchez",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7818",
+              "person_name": "Lynn C. Schulman",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7898",
+              "person_name": "Shanel Thomas-Henry",
+              "vote_bucket": "aye"
+            }
+          ],
+          "no": 0,
+          "person_count": 9,
+          "result": "Passed",
+          "vote_identity": "roll_call",
+          "yes": 7
+        }
+      },
+      "from": "legistar-event:22528:matter:79204",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2025Q0142",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260147ZMQ",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-08-12",
+        "project_id": "2025Q0142",
+        "retained_identifier": "260147ZMQ",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79204",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79204",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2025Q0142"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Hearing Held by Committee",
+          "Approved by Subcommittee with Modifications and Referred to CPC"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_A_Subcommittee_on_Zoning_and_Franchises_26-08-12_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/8/22528_M_Subcommittee_on_Zoning_and_Franchises_26-08-12_Meeting_Minutes.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79205"
+          }
+        ],
+        "event": {
+          "date": "2026-08-12",
+          "event_id": "22528",
+          "name": "Subcommittee on Zoning and Franchises",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0119-2026",
+          "matter_id": "79205",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79205",
+          "title": "Zoning, 47-03 108th Street Rezoning, Queens (N 260148 ZRQ)."
+        },
+        "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
+        "votes": {
+          "abstain": 2,
+          "by_person": [
+            {
+              "person_id": "7785",
+              "person_name": "Farah N. Louis",
+              "vote_bucket": "abstain"
+            },
+            {
+              "person_id": "7833",
+              "person_name": "David M. Carr",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7895",
+              "person_name": "Elsie Encarnación",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7810",
+              "person_name": "Amanda C. Farías",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "5289",
+              "person_name": "Simcha Felder",
+              "vote_bucket": "abstain"
+            },
+            {
+              "person_id": "7866",
+              "person_name": "Yusef Salaam",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7897",
+              "person_name": "Justin E. Sanchez",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7818",
+              "person_name": "Lynn C. Schulman",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7898",
+              "person_name": "Shanel Thomas-Henry",
+              "vote_bucket": "aye"
+            }
+          ],
+          "no": 0,
+          "person_count": 9,
+          "result": "Passed",
+          "vote_identity": "roll_call",
+          "yes": 7
+        }
+      },
+      "from": "legistar-event:22528:matter:79205",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2025Q0142",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260148ZRQ",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-08-12",
+        "project_id": "2025Q0142",
+        "retained_identifier": "260148ZRQ",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79205",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79205",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2025Q0142"
+    },
     {
       "compatibility_relation": "decides_land_project",
       "council_depth": {
@@ -136,7 +2338,61 @@
           "title": "Zoning, 200 Kent Avenue Rezoning, Brooklyn (C 260149 ZMK)."
         },
         "outcome": "Laid Over by Subcommittee",
-        "votes": null
+        "votes": {
+          "abstain": 2,
+          "by_person": [
+            {
+              "person_id": "7785",
+              "person_name": "Farah N. Louis",
+              "vote_bucket": "abstain"
+            },
+            {
+              "person_id": "7833",
+              "person_name": "David M. Carr",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7895",
+              "person_name": "Elsie Encarnación",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7810",
+              "person_name": "Amanda C. Farías",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "5289",
+              "person_name": "Simcha Felder",
+              "vote_bucket": "abstain"
+            },
+            {
+              "person_id": "7866",
+              "person_name": "Yusef Salaam",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7897",
+              "person_name": "Justin E. Sanchez",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7818",
+              "person_name": "Lynn C. Schulman",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7898",
+              "person_name": "Shanel Thomas-Henry",
+              "vote_bucket": "aye"
+            }
+          ],
+          "no": 0,
+          "person_count": 9,
+          "result": "Passed",
+          "vote_identity": "roll_call",
+          "yes": 7
+        }
       },
       "from": "legistar-event:22502:matter:79201",
       "is_decision": false,
@@ -202,7 +2458,61 @@
           "title": "Zoning, Flatiron NoMad Major Concessions, Manhattan (C 260123 MCM)."
         },
         "outcome": "Laid Over by Subcommittee",
-        "votes": null
+        "votes": {
+          "abstain": 2,
+          "by_person": [
+            {
+              "person_id": "7785",
+              "person_name": "Farah N. Louis",
+              "vote_bucket": "abstain"
+            },
+            {
+              "person_id": "7833",
+              "person_name": "David M. Carr",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7895",
+              "person_name": "Elsie Encarnación",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7810",
+              "person_name": "Amanda C. Farías",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "5289",
+              "person_name": "Simcha Felder",
+              "vote_bucket": "abstain"
+            },
+            {
+              "person_id": "7866",
+              "person_name": "Yusef Salaam",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7897",
+              "person_name": "Justin E. Sanchez",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7818",
+              "person_name": "Lynn C. Schulman",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7898",
+              "person_name": "Shanel Thomas-Henry",
+              "vote_bucket": "aye"
+            }
+          ],
+          "no": 0,
+          "person_count": 9,
+          "result": "Passed",
+          "vote_identity": "roll_call",
+          "yes": 7
+        }
       },
       "from": "legistar-event:22502:matter:79203",
       "is_decision": false,
@@ -268,7 +2578,61 @@
           "title": "Zoning, 200 Kent Avenue Rezoning, Brooklyn (N 260150 ZRK)."
         },
         "outcome": "Laid Over by Subcommittee",
-        "votes": null
+        "votes": {
+          "abstain": 2,
+          "by_person": [
+            {
+              "person_id": "7785",
+              "person_name": "Farah N. Louis",
+              "vote_bucket": "abstain"
+            },
+            {
+              "person_id": "7833",
+              "person_name": "David M. Carr",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7895",
+              "person_name": "Elsie Encarnación",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7810",
+              "person_name": "Amanda C. Farías",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "5289",
+              "person_name": "Simcha Felder",
+              "vote_bucket": "abstain"
+            },
+            {
+              "person_id": "7866",
+              "person_name": "Yusef Salaam",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7897",
+              "person_name": "Justin E. Sanchez",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7818",
+              "person_name": "Lynn C. Schulman",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7898",
+              "person_name": "Shanel Thomas-Henry",
+              "vote_bucket": "aye"
+            }
+          ],
+          "no": 0,
+          "person_count": 9,
+          "result": "Passed",
+          "vote_identity": "roll_call",
+          "yes": 7
+        }
       },
       "from": "legistar-event:22502:matter:79202",
       "is_decision": false,
@@ -334,7 +2698,61 @@
           "title": "Zoning, 47-03 108th Street Rezoning, Queens (C 260147 ZMQ)."
         },
         "outcome": "Laid Over by Subcommittee",
-        "votes": null
+        "votes": {
+          "abstain": 2,
+          "by_person": [
+            {
+              "person_id": "7785",
+              "person_name": "Farah N. Louis",
+              "vote_bucket": "abstain"
+            },
+            {
+              "person_id": "7833",
+              "person_name": "David M. Carr",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7895",
+              "person_name": "Elsie Encarnación",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7810",
+              "person_name": "Amanda C. Farías",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "5289",
+              "person_name": "Simcha Felder",
+              "vote_bucket": "abstain"
+            },
+            {
+              "person_id": "7866",
+              "person_name": "Yusef Salaam",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7897",
+              "person_name": "Justin E. Sanchez",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7818",
+              "person_name": "Lynn C. Schulman",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7898",
+              "person_name": "Shanel Thomas-Henry",
+              "vote_bucket": "aye"
+            }
+          ],
+          "no": 0,
+          "person_count": 9,
+          "result": "Passed",
+          "vote_identity": "roll_call",
+          "yes": 7
+        }
       },
       "from": "legistar-event:22502:matter:79204",
       "is_decision": false,
@@ -400,7 +2818,61 @@
           "title": "Zoning, 47-03 108th Street Rezoning, Queens (N 260148 ZRQ)."
         },
         "outcome": "Laid Over by Subcommittee",
-        "votes": null
+        "votes": {
+          "abstain": 2,
+          "by_person": [
+            {
+              "person_id": "7785",
+              "person_name": "Farah N. Louis",
+              "vote_bucket": "abstain"
+            },
+            {
+              "person_id": "7833",
+              "person_name": "David M. Carr",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7895",
+              "person_name": "Elsie Encarnación",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7810",
+              "person_name": "Amanda C. Farías",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "5289",
+              "person_name": "Simcha Felder",
+              "vote_bucket": "abstain"
+            },
+            {
+              "person_id": "7866",
+              "person_name": "Yusef Salaam",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7897",
+              "person_name": "Justin E. Sanchez",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7818",
+              "person_name": "Lynn C. Schulman",
+              "vote_bucket": "aye"
+            },
+            {
+              "person_id": "7898",
+              "person_name": "Shanel Thomas-Henry",
+              "vote_bucket": "aye"
+            }
+          ],
+          "no": 0,
+          "person_count": 9,
+          "result": "Passed",
+          "vote_identity": "roll_call",
+          "yes": 7
+        }
       },
       "from": "legistar-event:22502:matter:79205",
       "is_decision": false,
@@ -2148,104 +4620,104 @@
   ],
   "precision_sample": [
     {
-      "event_id": "22509",
-      "join_key": "260089PCQ",
+      "event_id": "22617",
+      "join_key": "250125ZMQ",
       "join_method": "exact_ulurp_token",
-      "matter_file": "LU 0114-2026",
-      "matter_id": "79200",
-      "project_id": "2025Q0316",
-      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79200"
+      "matter_file": "LU 0127-2026",
+      "matter_id": "79331",
+      "project_id": "2023Q0125",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79331"
     },
     {
-      "event_id": "22502",
-      "join_key": "260149ZMK",
+      "event_id": "22617",
+      "join_key": "250126ZRQ",
       "join_method": "exact_ulurp_token",
-      "matter_file": "LU 0115-2026",
-      "matter_id": "79201",
-      "project_id": "2024K0286",
-      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79201"
+      "matter_file": "LU 0128-2026",
+      "matter_id": "79332",
+      "project_id": "2023Q0125",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79332"
     },
     {
-      "event_id": "22502",
-      "join_key": "260123MCM",
+      "event_id": "22617",
+      "join_key": "240161ZMX",
       "join_method": "exact_ulurp_token",
-      "matter_file": "LU 0117-2026",
-      "matter_id": "79203",
-      "project_id": "2025M0252",
-      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79203"
+      "matter_file": "LU 0120-2026",
+      "matter_id": "79292",
+      "project_id": "2021X0247",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79292"
     },
     {
-      "event_id": "22502",
-      "join_key": "260150ZRK",
+      "event_id": "22617",
+      "join_key": "240283ZMK",
       "join_method": "exact_ulurp_token",
-      "matter_file": "LU 0116-2026",
-      "matter_id": "79202",
-      "project_id": "2024K0286",
-      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79202"
+      "matter_file": "LU 0121-2026",
+      "matter_id": "79293",
+      "project_id": "2019K0190",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79293"
     },
     {
-      "event_id": "22502",
-      "join_key": "260147ZMQ",
+      "event_id": "22617",
+      "join_key": "240284ZRK",
       "join_method": "exact_ulurp_token",
-      "matter_file": "LU 0118-2026",
-      "matter_id": "79204",
-      "project_id": "2025Q0142",
-      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79204"
+      "matter_file": "LU 0122-2026",
+      "matter_id": "79294",
+      "project_id": "2019K0190",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79294"
     },
     {
-      "event_id": "22502",
-      "join_key": "260148ZRQ",
+      "event_id": "22617",
+      "join_key": "260171ZMQ",
       "join_method": "exact_ulurp_token",
-      "matter_file": "LU 0119-2026",
-      "matter_id": "79205",
-      "project_id": "2025Q0142",
-      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79205"
+      "matter_file": "LU 0123-2026",
+      "matter_id": "79295",
+      "project_id": "2025Q0155",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79295"
     },
     {
-      "event_id": "22566",
-      "join_key": "250248ZMK",
+      "event_id": "22617",
+      "join_key": "260172ZRQ",
       "join_method": "exact_ulurp_token",
-      "matter_file": "LU 0100-2026",
-      "matter_id": "79109",
-      "project_id": "2023K0183",
-      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79109"
+      "matter_file": "LU 0124-2026",
+      "matter_id": "79296",
+      "project_id": "2025Q0155",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79296"
     },
     {
-      "event_id": "22566",
-      "join_key": "250249ZRK",
+      "event_id": "22617",
+      "join_key": "260135ZMK",
       "join_method": "exact_ulurp_token",
-      "matter_file": "LU 0101-2026",
-      "matter_id": "79110",
-      "project_id": "2023K0183",
-      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79110"
+      "matter_file": "LU 0125-2026",
+      "matter_id": "79297",
+      "project_id": "2024K0196",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79297"
     },
     {
-      "event_id": "22566",
-      "join_key": "250215ZSK",
+      "event_id": "22617",
+      "join_key": "260136ZRK",
       "join_method": "exact_ulurp_token",
-      "matter_file": "LU 0102-2026",
-      "matter_id": "79111",
-      "project_id": "2023K0183",
-      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79111"
+      "matter_file": "LU 0126-2026",
+      "matter_id": "79298",
+      "project_id": "2024K0196",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79298"
     },
     {
-      "event_id": "22566",
-      "join_key": "250250ZSK",
+      "event_id": "22617",
+      "join_key": "260238ZMK",
       "join_method": "exact_ulurp_token",
-      "matter_file": "LU 0103-2026",
-      "matter_id": "79112",
-      "project_id": "2023K0183",
-      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79112"
+      "matter_file": "T2026-2499",
+      "matter_id": "79452",
+      "project_id": "2025K0284",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79452"
     }
   ],
   "schema": "cityscroll.council_land_bridge_measurement.v1",
   "source_vintage": {
     "meeting_outcomes_snapshot_counts": {
-      "absent_count": 303,
-      "present_count": 16,
-      "record_count": 319
+      "absent_count": 308,
+      "present_count": 17,
+      "record_count": 325
     },
-    "meeting_outcomes_snapshot_generated_at": "2026-08-10T13:08:13.019Z",
-    "zap_projects_warehouse_lookup_materialized_at": "2026-08-23T07:59:09.786Z"
+    "meeting_outcomes_snapshot_generated_at": "2026-09-04T13:09:00.447Z",
+    "zap_projects_warehouse_lookup_materialized_at": "2026-09-06T16:05:05.204Z"
   }
 }

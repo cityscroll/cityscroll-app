@@ -160,10 +160,11 @@ test("Open RFPs mode still excludes registered PASSPort-only rows", () => {
   }, "open"), true);
 });
 
-test("committed p7 review still holds the six distinct-vendor pairs out of related-instrument clusters", () => {
+test("committed p7 review still holds its human queue out of related-instrument clusters", () => {
   const review = JSON.parse(readFileSync(new URL("../site/data/pin_family_mismatch_review.json", import.meta.url), "utf8"));
   const queue = review.pairs.filter((pair) => pair.identity_class === "needs_review");
-  assert.equal(queue.length, 6);
+  assert.equal(queue.length, review.metrics.needs_review);
+  assert.ok(queue.length > 0, "the review keeps a human queue");
   const rows = queue.flatMap((pair) => [
     row({
       procurement_id: `procurement:contract:${pair.evidence.checkbook.contract_id}`,

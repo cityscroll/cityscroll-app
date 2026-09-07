@@ -192,6 +192,24 @@ function writePeopleDoc(peopleRows, seedNotices, retrievedAt, eligibleEventIds =
     event_count: eventIds.length,
     rows: peopleRows,
   };
+  // The people snapshot is published only with a retention receipt that
+  // measured its own events. The dated Legistar audit is a separate, live act;
+  // when this densify reaches events no receipt covers, the last attested
+  // population stands rather than being replaced by one nothing attests. This
+  // is the same rule the roll-call tranche states for its own writes.
+  const retentionReceipt = loadLatestOfficialRetentionReceipt(peopleDoc.source.eligible_event_ids);
+  const attested = new Set((retentionReceipt?.by_event || [])
+    .map((row) => String(row?.event_id || "").trim())
+    .filter(Boolean));
+  const unattested = peopleDoc.source.eligible_event_ids.filter((id) => !attested.has(String(id)));
+  if (unattested.length && existsSync(OUT_PEOPLE)) {
+    console.log(
+      `kept ${path.relative(ROOT, OUT_PEOPLE)}: ${unattested.length} eligible event(s) `
+      + `(${unattested.join(", ")}) carry no roll-call retention receipt; `
+      + "run tools/build_official_roll_call_tranche.mjs to attest them",
+    );
+    return JSON.parse(readFileSync(OUT_PEOPLE, "utf8"));
+  }
   mkdirSync(path.dirname(OUT_PEOPLE), { recursive: true });
   writeFileSync(OUT_PEOPLE, `${JSON.stringify(peopleDoc, null, 2)}\n`);
   console.log(
@@ -199,7 +217,7 @@ function writePeopleDoc(peopleRows, seedNotices, retrievedAt, eligibleEventIds =
   );
   // Person-page index (#official/{id}) — same densify, keyed by person_id.
   const voteLookup = buildPersonVotesLookup(peopleDoc, {
-    retentionReceipt: loadLatestOfficialRetentionReceipt(eventIds),
+    retentionReceipt,
   });
   writeFileSync(OUT_PERSON_VOTES, `${JSON.stringify(voteLookup, null, 2)}\n`);
   console.log(
@@ -321,7 +339,7 @@ function cleanRule(row) {
     hearingArea: hearingArea.scope === "local" ? hearingArea : null,
   });
   const out = {
-    ...normalizeCityRecordMeeting(fullRow),
+    ...withoutSnapshotBodyFields(normalizeCityRecordMeeting(fullRow)),
     request_id: fullRow.request_id,
     agency_name: fullRow.agency_name,
     short_title: shortTitle,
@@ -339,6 +357,24 @@ function cleanRule(row) {
     // Alias for map aggregation (same shape as meetings affected_area).
     out.affected_area = place;
   }
+  return out;
+}
+
+// Publisher free-text the committed domain snapshots must not carry. The shared
+// meeting normalizer retains these for the canonical read model, which is a
+// different consumer; these two snapshots hold bounded stamps derived from the
+// body, so the body itself is dropped on the way out. They were absent from the
+// published rows only while the upstream feed left them empty.
+const SNAPSHOT_BODY_FIELDS = Object.freeze([
+  "additional_description_1", "additional_description_2", "additional_description_3",
+  "other_info_1", "other_info_2", "other_info_3",
+  "printout_1", "printout_2", "printout_3",
+  "email", "phone", "testimony",
+]);
+
+function withoutSnapshotBodyFields(row) {
+  const out = { ...row };
+  for (const field of SNAPSHOT_BODY_FIELDS) delete out[field];
   return out;
 }
 
@@ -385,6 +421,11 @@ function cleanHearing(row) {
   };
   const out = {
     request_id: fullRow.request_id,
+    // The canonical meeting identity every consumer joins on. The committed
+    // snapshot carried it, but this projection had stopped emitting it, so a
+    // rebuild silently dropped it from all 119 rows while the stale committed
+    // copy kept the field alive.
+    meeting_id: normalizeCityRecordMeeting(fullRow).meeting_id,
     agency_name: fullRow.agency_name,
     short_title: shortTitle,
     start_date: fullRow.start_date,
@@ -403,15 +444,12 @@ function cleanHearing(row) {
     state: fullRow.state,
     zip_code: fullRow.zip_code,
     building_name: fullRow.building_name,
-    additional_description_1: fullRow.additional_description_1,
-    additional_description_2: fullRow.additional_description_2,
-    additional_description_3: fullRow.additional_description_3,
-    other_info_1: fullRow.other_info_1,
-    other_info_2: fullRow.other_info_2,
-    other_info_3: fullRow.other_info_3,
-    printout_1: fullRow.printout_1,
-    printout_2: fullRow.printout_2,
-    printout_3: fullRow.printout_3,
+    // The publisher's free-text body fields (additional_description_*,
+    // other_info_*, printout_*) are read from fullRow below to derive the ULURP
+    // and ZAP stamps, and are deliberately not carried here: the committed
+    // snapshot holds the stamps, never the body they were extracted from. They
+    // used to be absent from the published rows only because the upstream feed
+    // left them empty, which hid this from the contract test.
     source_links: fullRow.source_links,
     document_links: fullRow.document_links,
     source_system: "city_record",

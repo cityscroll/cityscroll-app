@@ -13,17 +13,18 @@ test("production shadow census reproduces the committed bridge baseline", () => 
     rules: json("../site/data/rules_domain_observations.json"),
     processConformance: json("../site/data/process_conformance_lookup.json"),
     land: json("../site/data/zap_projects_warehouse_lookup.json"),
+    procurementAwards: json("../site/data/ocp_awards_warehouse_lookup.json"),
     gate: json("../site/data/cross_spine_edge_gate.json"),
   };
   const receipt = buildCrossSpineShadowCensus(sources);
   assert.deepEqual(Object.fromEntries(Object.entries(receipt.relations).map(([key, value]) => [key, value.totals])), {
-    mandate_meeting: { public_inferred: 3, evidence_only: 48 },
+    mandate_meeting: { public_inferred: 3, evidence_only: 60 },
     // PC-04: LPC's 9 landmark-designation obligation/action pairs resolve on
     // the closed action-family identity basis; Housing Preservation and
     // Development's 4 non-land-use "disposition" false positives correctly
     // remain evidence-only for lacking both project identity and phase.
     mandate_land_use: { public_inferred: 9, evidence_only: 4 },
-    mandate_contract: { public_inferred: 1, evidence_only: 0 },
+    mandate_contract: { public_inferred: 3, evidence_only: 0 },
     // Sanitation CWZ mandate_rule public edge after rule-attachment densify.
     mandate_rule: { public_inferred: 1, evidence_only: 0 },
   });
@@ -36,8 +37,8 @@ test("census output is redacted to ids, counts, source names, and enum reasons",
   const receipt = buildCrossSpineShadowCensus();
   const text = JSON.stringify(receipt);
   assert.doesNotMatch(text, /duty_text|source_excerpt|notice body|contact|subject_scope|candidate/i);
-  assert.equal(receipt.relations.mandate_meeting.by_reason.matter_body_subject, 48);
-  assert.equal(receipt.relations.mandate_meeting.by_reason.temporal, 44);
+  assert.equal(receipt.relations.mandate_meeting.by_reason.matter_body_subject, 60);
+  assert.equal(receipt.relations.mandate_meeting.by_reason.temporal, 52);
   assert.equal(receipt.relations.mandate_meeting.totals.public_inferred, 3);
   assert.equal(receipt.relations.mandate_land_use.by_reason.project_identity, 4);
   assert.equal(receipt.relations.mandate_land_use.by_reason.mandate_phase_compatible, 4);

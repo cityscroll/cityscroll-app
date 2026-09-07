@@ -41,6 +41,14 @@ const RETAINED_PROCUREMENTS = (procurementRows.rows || []).filter((row) => (
   civicInstitutionIdForPartyValue("vendor_name", row?.vendor_name)
   && civicInstitutionIdForPartyValue("agency_name", row?.agency_name)
 ));
+// What the Browse scope itself selects: rows naming this institution as the
+// vendor. The retained-role population above additionally requires a reviewed
+// spelling for the publishing agency, which is a condition on the role, not on
+// the scope — a contract received under an agency spelling the register has not
+// reviewed is still a contract this institution received.
+const NYCEDC_RECEIVED_PROCUREMENTS = (procurementRows.rows || []).filter((row) => (
+  civicInstitutionIdForPartyValue("vendor_name", row?.vendor_name) === NYCEDC_CANONICAL_ID
+));
 const RETAINED_PROJECTS = (landProjects.projects || []).filter((row) =>
   civicInstitutionIdForPartyValue("primary_applicant", row?.primary_applicant));
 
@@ -166,7 +174,7 @@ test("A2 the preview, its count, and its Browse-all destination are one query", 
   });
   assert.equal(contract.relation, "named_vendor");
   assert.equal(contract.scope.mode, "applied");
-  assert.equal(contract.total, RETAINED_PROCUREMENTS.length);
+  assert.equal(contract.total, NYCEDC_RECEIVED_PROCUREMENTS.length);
 
   const view = buildInstitutionRecordCapacityView({
     canonicalId: NYCEDC_CANONICAL_ID,
@@ -211,7 +219,7 @@ test("A3 contracts received are never counted or scoped as procurements issued",
   const issued = buildBrowseView("contracts", payload, scope("published_by_agency"), { limit: 1000 });
   const received = buildBrowseView("contracts", payload, scope("named_vendor"), { limit: 1000 });
   assert.equal(issued.total, 0, "this institution publishes no contracts in the retained corpus");
-  assert.equal(received.total, RETAINED_PROCUREMENTS.length);
+  assert.equal(received.total, NYCEDC_RECEIVED_PROCUREMENTS.length);
 
   // The unqualified institution scope keeps its previous meaning exactly: it
   // reads the publishing agency, so a party mapping can never widen it.

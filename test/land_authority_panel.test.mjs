@@ -118,7 +118,12 @@ test("A1 2025M0252 first-paint panel answers CPC stage, role, why, and missing p
   assert.match(html, /data-land-authority-role="decision_maker"/);
   assert.match(html, /data-land-authority-why="1"/);
   assert.match(html, /data-land-authority-published-next="none"/);
-  assert.match(html, /No published next opportunity found as of 2026-08-23/);
+  // The as-of day is the opportunity feed's own vintage, not a fixed date, so
+  // the panel is read against what it published rather than against the day a
+  // previous generation happened to carry.
+  const asOf = String(summary.published_next?.as_of || hearings.generated_at || "").slice(0, 10);
+  assert.match(asOf, /^\d{4}-\d{2}-\d{2}$/);
+  assert.match(html, new RegExp(`No published next opportunity found as of ${asOf}`));
   assert.doesNotMatch(html, /Not found in checked materializations/);
   assert.match(html, /community-board:manhattan-cb-05/);
   assert.equal(html.includes("agency:id:city-planning-commission") && html.includes("data-land-authority-actor"), true);

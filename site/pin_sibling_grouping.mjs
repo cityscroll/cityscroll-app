@@ -118,9 +118,14 @@ export function pinSiblingReviewIndex(review = {}) {
     const leftKey = contractIdKey(pair?.evidence?.checkbook?.contract_id);
     const rightKey = contractIdKey(pair?.evidence?.passport?.contract_id);
     if (!leftKey || !rightKey || leftKey === rightKey) continue;
+    // A pair the review holds for a human decision enters the index as a
+    // candidate, never as nothing: dropped, it fell through to the automatic
+    // PIN-family rule, which grouped a same-vendor pair as one instrument —
+    // the exact claim the review had declined to make.
     const identityClass = PIN_SIBLING_IDENTITY_CLASSES.includes(pair.identity_class)
       ? pair.identity_class
-      : pair.identity_class === "same_contract" ? "related_instrument" : null;
+      : pair.identity_class === "same_contract" ? "related_instrument"
+        : pair.identity_class === "needs_review" ? "related_candidate" : null;
     if (!identityClass) continue;
     const record = Object.freeze({
       pair_id: pair.pair_id || `pf:${leftKey}::${rightKey}`,
@@ -232,6 +237,18 @@ export function groupPinSiblingRows(rows = [], options = {}) {
     }
   });
 
+  // Contracts a human has been asked to disambiguate. One of them is never
+  // merged with anything on an automatic rule alone: the review has declined to
+  // say what this contract is, so the page may not say it either. An explicit
+  // reviewed verdict still groups.
+  const heldForReview = new Set();
+  for (const pair of reviewIndex.pairs) {
+    if (pair.identity_class !== "related_candidate") continue;
+    heldForReview.add(pair.leftKey);
+    heldForReview.add(pair.rightKey);
+  }
+  const underReview = (row) => heldForReview.has(rowContractIdKey(row));
+
   const pairClass = new Map();
   const markPair = (i, j, classified) => {
     pairClass.set(pairKey(String(i), String(j)), classified);
@@ -246,7 +263,10 @@ export function groupPinSiblingRows(rows = [], options = {}) {
         const classified = classifyBrowsePinSiblingPair(row, list[otherIndex], reviewIndex);
         if (!classified) continue;
         markPair(index, otherIndex, classified);
-        if (classified.identity_class === "related_instrument") union(index, otherIndex);
+        if (classified.identity_class !== "related_instrument") continue;
+        if (classified.label_source !== "review"
+          && (underReview(row) || underReview(list[otherIndex]))) continue;
+        union(index, otherIndex);
       }
     }
   });

@@ -53,22 +53,22 @@
     "rejected"
   ],
   "existing_snapshot": {
-    "generated_at": "2026-08-18T04:05:51.552Z",
+    "generated_at": "2026-09-06T23:21:16.666Z",
     "artifacts": {
       "browse_rows": {
         "path": "site/data/procurement_browse_rows.json",
-        "sha256": "366d500050b8dd9d441fb5d3f60419a3dff3dcb1a7ea649ce08ddf5326a1e8f2",
-        "row_count": 13791
+        "sha256": "616ba0c260b959237fa162d388b34a7a5149c59c05a9f1b03bc19dc102529737",
+        "row_count": 19862
       },
       "spine_sources": {
         "path": "site/data/procurement_spine_sources.json",
-        "sha256": "fd43095dfb620e7c0305954641cf0d676b5fe09e0a9017426b4d00a26047e922",
+        "sha256": "f8262a3f801c9ec2823035aaa9923bb89a98c933d39feec3c3504ada4f5b0a54",
         "passport_contract_rows": 12782
       },
       "shared_read_model": {
         "path": "site/data/shared_procurement_read_model.json",
-        "sha256": "3a610c53b49d80d054841b70a715619e43d76182049fee287bc983621b57c735",
-        "object_count": 13791
+        "sha256": "6682412dd402877d78ae01815cb10345252797a335738a6f5c0e1da4efb0a54d",
+        "object_count": 19862
       }
     },
     "served_source_counts": {
@@ -437,10 +437,26 @@
       "title": "Supply and Deliver Rock Salt Bagged and Ice Melt Bagged to all Port Authority Warehouses in NY and NJ - Thirty (30) Months Requirements",
       "bid_due_date": "2026-08-20",
       "bidders": [
-        {"vendor_name": "CIRCLE JANITORIAL SUPPLIES, INC", "location": "Paterson, NJ", "total_usd": 941797.88},
-        {"vendor_name": "WHITE CAP LP", "location": "Orlando, FL", "total_usd": 1163956.87},
-        {"vendor_name": "DART SEASONAL PRODUCTS, INC", "location": "Chestnut Ridge, NY", "total_usd": 1385676.0},
-        {"vendor_name": "BL FLEET SERVICES, INC", "location": "Oakland, NJ", "total_usd": 3109559.0}
+        {
+          "vendor_name": "CIRCLE JANITORIAL SUPPLIES, INC",
+          "location": "Paterson, NJ",
+          "total_usd": 941797.88
+        },
+        {
+          "vendor_name": "WHITE CAP LP",
+          "location": "Orlando, FL",
+          "total_usd": 1163956.87
+        },
+        {
+          "vendor_name": "DART SEASONAL PRODUCTS, INC",
+          "location": "Chestnut Ridge, NY",
+          "total_usd": 1385676
+        },
+        {
+          "vendor_name": "BL FLEET SERVICES, INC",
+          "location": "Oakland, NJ",
+          "total_usd": 3109559
+        }
       ],
       "official_source_url": "https://www.panynj.gov/content/dam/port-authority/business-opportunities/pdf/results_6000003424.pdf",
       "index_endpoint": "https://www.panynj.gov/content/port-authority/en/business-opportunities/preliminary-bid-results.model.json",
@@ -452,35 +468,35 @@
     }
   ],
   "doe_missing_record_census": {
-    "source_snapshot_generated_at": "2026-08-18T04:05:51.552Z",
+    "source_snapshot_generated_at": "2026-09-06T22:12:11.527Z",
     "agency_predicate": "agency_name matches /department of education|^education$|education admin|^doe$/i",
     "source_row_counts": {
-      "city_record": 13178,
+      "city_record": 53600,
       "passport_public_contracts": 12782,
-      "checkbook_contracts": 1704
+      "checkbook_contracts": 9807
     },
-    "doe_canonical_rows": 618,
+    "doe_canonical_rows": 3836,
     "doe_rows_by_source": {
       "city_record": 436,
       "passport_public_contracts": 438,
-      "checkbook_contracts": 182
+      "checkbook_contracts": 3398
     },
     "doe_source_combinations": {
-      "city_record+passport_public_contracts": 434,
+      "city_record+passport_public_contracts": 436,
       "passport_public_contracts": 2,
-      "checkbook_contracts+city_record+passport_public_contracts": 2,
-      "checkbook_contracts": 180
+      "checkbook_contracts": 3398
     },
     "already_served_rows": {
-      "checkbook_only": 180,
+      "checkbook_only": 3398,
       "passport_only": 2,
-      "city_record_and_passport": 434,
-      "all_three": 2,
-      "total": 618
+      "city_record_and_passport": 436,
+      "all_three": 0,
+      "total": 3836
     },
     "demonstrated_missing_rows": 0,
     "production_card_proposed": false,
-    "conclusion": "No distinct public DOE corpus is missing from the existing City Record, PASSPort, and Checkbook ingestion snapshot. The 180 Checkbook-only and 2 PASSPort-only rows are already served by those existing source families; no DOE production card is proposed."
+    "conclusion": "No distinct public DOE corpus is missing from the existing City Record, PASSPort, and Checkbook ingestion snapshot. The 3398 Checkbook-only and 2 PASSPort-only rows are already served by those existing source families; no DOE production card is proposed.",
+    "review_note": "Re-reviewed after the DOE canonical row count moved from 618 to 3836. Acknowledged as a legitimate population change, not a defect: the fresh Checkbook pull widened the served window to the CROL Award publication window, which is the chosen semantics, replacing the retired 2000-row numeric cap. The added rows are all checkbook_contracts in selection_bucket new_unique with distinct procurement and contract ids and no duplicates. Counts by source before -> after: city_record 436 -> 436 (unchanged), passport_public_contracts 438 -> 438 (unchanged), checkbook_contracts 182 -> 3398. Because the two sources this finding compares against are numerically unchanged and the added rows are Checkbook records now served rather than newly discovered gaps, the finding is unweakened: the direction of change is more coverage, not less."
   },
   "production_cards": [],
   "production_adapter_change": false

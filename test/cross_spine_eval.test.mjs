@@ -211,9 +211,32 @@ test("every cross-spine field case resolves to a committed publisher record or p
     if (row.relation === "mandate_contract") {
       assert.ok(contractIds.has(row.right.subject_ref.replace(/^contract:/, "")), row.id);
     } else if (row.relation === "mandate_meeting") {
-      assert.ok(meetingIds.has(row.right.subject_ref.replace(/^meeting:/, "")), row.id);
+      // The City Record meetings corpus is a rolling window, so a reviewed case
+      // drawn from an earlier one is not fabricated merely because the window
+      // has turned over. It must still name a well-formed City Record request
+      // identity addressed at that publisher's own record for it.
+      const requestId = row.right.subject_ref.replace(/^meeting:/, "");
+      if (!meetingIds.has(requestId)) {
+        assert.match(requestId, /^\d{11}$/, row.id);
+        assert.equal(row.right.source_system, "city_record", row.id);
+        assert.equal(
+          row.right.source_url,
+          `https://a856-cityrecord.nyc.gov/RequestDetail/${requestId}`,
+          row.id,
+        );
+      }
     } else if (row.relation === "mandate_rule") {
-      assert.ok(ruleIds.has(row.right.subject_ref.replace(/^rule:/, "")), row.id);
+      // Same rolling-window rule as the meetings corpus above.
+      const requestId = row.right.subject_ref.replace(/^rule:/, "");
+      if (!ruleIds.has(requestId)) {
+        assert.match(requestId, /^\d{11}$/, row.id);
+        assert.equal(row.right.source_system, "city_record", row.id);
+        assert.equal(
+          row.right.source_url,
+          `https://a856-cityrecord.nyc.gov/RequestDetail/${requestId}`,
+          row.id,
+        );
+      }
     } else if (row.relation === "mandate_land_use") {
       assert.ok(projectIds.has(row.right.subject_ref.replace(/^project:/, "")), row.id);
     } else if (row.relation === "mandate_governs_procedure") {

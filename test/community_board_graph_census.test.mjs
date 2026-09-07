@@ -62,16 +62,16 @@ test("meeting measurements distinguish title signals from typed committee identi
     records_without_typed_institution_host: committed.meeting_measurements.records_without_typed_institution_host,
     committee_records_with_unresolved_host_body: committed.meeting_measurements.committee_records_with_unresolved_host_body,
   }, {
-    record_count: 395,
-    boards_with_records: 24,
-    records_explicitly_identifying_committee: 182,
-    records_with_structured_committee_field: 10,
+    record_count: 407,
+    boards_with_records: 22,
+    records_explicitly_identifying_committee: 197,
+    records_with_structured_committee_field: 54,
     records_whose_title_exactly_matches_known_local_committee: 0,
-    full_board_records: 42,
-    explicit_public_hearing_records: 10,
+    full_board_records: 36,
+    explicit_public_hearing_records: 7,
     joint_committee_records: 6,
-    records_without_typed_institution_host: 395,
-    committee_records_with_unresolved_host_body: 182,
+    records_without_typed_institution_host: 407,
+    committee_records_with_unresolved_host_body: 197,
   });
 });
 

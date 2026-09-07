@@ -9,14 +9,25 @@
       "within_contract_registered_amount_change"
     ],
     "negative_control": "successor_solicitation_absence",
-    "measurement_mode": "deterministic_committed_inputs_no_llm"
+    "measurement_mode": "deterministic_committed_inputs_no_llm",
+    "admission_boundaries": [
+      {
+        "metric_family": "within_contract_registered_amount_change",
+        "basis": "frozen_inspection_receipt",
+        "rule": "a detected change is shown only where the frozen receipt carries an inspection verdict for it",
+        "detected": 118,
+        "shown": 2,
+        "admitted_unshown": 116,
+        "unshown_reason": "awaiting_extended_inspection_sample"
+      }
+    ]
   },
   "input_fingerprints": {
     "awards": "01f108bd923c6bfe1a46af6408a4bcd2c6deedc7f29911105a3a34d9d46ee01a",
     "source_contracts": "cb140f07003ac6ac7742f83d70f3dea46592f7a204e340548f631905b6abf418",
     "award_receipts": "e0b92190ad9e371ce6eddca4449cbebc3fc08e30775cea3f7c663e447502b943",
     "story_signals": "df030ac7adc058eae1a45ace7684912563e1dc9161534ae6ca8a6e354ebeeafe",
-    "procurement": "e20f90bf356fdb56f189feacedec5a99cde92830d039ce0123a6e4b0aae59d8e",
+    "procurement": "7e136c78d545c24d558cddf3b93d1f12f994db796e78324b0778c00ce4f04eb3",
     "negative_control": "977d6ba5b8c45ea784a965b21b8fa7a9b142de401e14451d88873cbc6da5b8de",
     "frozen_cases": "5b66dd57ddb81041fc7c66031143d19a904187a6bf64f5b03b7d1c06fd94753d"
   },
@@ -59,8 +70,8 @@
       "definition": "Outputs supported for inspection / eligible inputs actually evaluated by each shipped pilot",
       "aggregate": {
         "numerator": 3,
-        "denominator": 1705,
-        "rate": 0.00176
+        "denominator": 9053,
+        "rate": 0.000331
       },
       "families": {
         "source_bounded_award_rank": {
@@ -73,9 +84,11 @@
         "within_contract_registered_amount_change": {
           "denominator_basis": "unique committed Checkbook observations with two positive registered amounts",
           "numerator": 2,
-          "denominator": 1704,
-          "rate": 0.001174,
-          "source_observation_context": 1704
+          "denominator": 9052,
+          "rate": 0.000221,
+          "source_observation_context": 9055,
+          "detected_changes": 118,
+          "admitted_unshown": 116
         }
       }
     },

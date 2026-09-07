@@ -11,7 +11,11 @@ import { centroidEntry, normalizeBbl } from "../../site/bbl_mappluto_centroids.m
 export const LAND_MAPABILITY_CENSUS_SCHEMA = "cityscroll.land_mapability_census.v1";
 export const LAND_MAPABILITY_JOIN_VERSION = "exact_project_id_wh06_bbl_mappluto_centroid_v1";
 export const LAND_MAPABILITY_DENOMINATOR = 40;
-export const LAND_MAPABILITY_LIST_BYTES = 249323;
+// Byte size of the pinned default Land snapshot the census is measured against.
+// It is a change-detector, not a budget: the denominator-first contract above
+// (40 rows, 11 single-BBL, 22 multi-BBL, 7 unmapped) is the substantive claim,
+// and this figure is restamped whenever a dataset refresh rewrites that snapshot.
+export const LAND_MAPABILITY_LIST_BYTES = 278847;
 
 export const LAND_MAPABILITY_METHODS = Object.freeze({
   SINGLE_BBL_CENTROID: "single_bbl_centroid",

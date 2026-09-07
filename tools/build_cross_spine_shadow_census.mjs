@@ -21,6 +21,7 @@ const INPUTS = Object.freeze({
   rules: "site/data/rules_domain_observations.json",
   processConformance: "site/data/process_conformance_lookup.json",
   land: "site/data/zap_projects_warehouse_lookup.json",
+  procurementAwards: "site/data/ocp_awards_warehouse_lookup.json",
   gate: "site/data/cross_spine_edge_gate.json",
 });
 
@@ -48,7 +49,17 @@ function buildView(relation, id, sources, dossier) {
   const common = { obligationsLookup: sources.obligations, crossSpineGate: sources.gate };
   if (relation === "mandate_meeting") return buildMandateMeetingsView(id, { ...common, meetingsDomain: sources.meetings });
   if (relation === "mandate_land_use") return buildMandateLandUseView(id, { ...common, entityIntelligence: sources.intelligence, landProjects: sources.land });
-  if (relation === "mandate_contract") return buildMandateContractsBridgeView(id, { ...common, intelligenceDossier: dossier });
+  // The dossier keeps a bounded cold preview of the money domain. Every
+  // production consumer of this bridge also hands it the population-backed
+  // award source so notice coverage is not limited by that preview; the census
+  // reads the same inputs, or it measures the preview rather than the bridge.
+  if (relation === "mandate_contract") {
+    return buildMandateContractsBridgeView(id, {
+      ...common,
+      intelligenceDossier: dossier,
+      procurementAwards: sources.procurementAwards,
+    });
+  }
   return buildMandateRulesBridgeView(id, {
     obligationsLookup: sources.obligations,
     rulesItems: sources.rules.rows,

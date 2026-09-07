@@ -312,12 +312,12 @@ test("no advertised local destination in the frozen corpus is absent from the pu
     }
   }
 
-  // The retained corpus, described rather than summarized: 66 distinct matter
-  // identities across 78 appearances, every one of them published locally.
-  assert.equal(appearances, 78);
-  assert.equal(seen.size, 66);
+  // The retained corpus, described rather than summarized: 78 distinct matter
+  // identities across 102 appearances, every one of them published locally.
+  assert.equal(appearances, 102);
+  assert.equal(seen.size, 78);
   assert.deepEqual([...PUBLISHED].sort(), [...seen.keys()].sort());
-  assert.equal(advertisedLocal + advertisedOfficial + unavailable.length, 78);
+  assert.equal(advertisedLocal + advertisedOfficial + unavailable.length, 102);
   assert.equal(advertisedLocal, [...seen.entries()].filter(([id]) => PUBLISHED.has(id)).reduce((sum, [, n]) => sum + n, 0));
   assert.equal(advertisedOfficial, 0, "no retained matter falls back to its publisher record");
   assert.deepEqual(unavailable, [], "every exact matter in this corpus resolves to a destination");

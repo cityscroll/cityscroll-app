@@ -151,8 +151,8 @@
     "body_id": "brooklyn-cb-15"
   },
   "identity_counts": {
-    "matched": 78,
-    "source_only": 36,
+    "matched": 79,
+    "source_only": 35,
     "route_only": 4,
     "alias_route": 16,
     "legitimate_external": 5,
@@ -160,6 +160,6 @@
     "unresolved": 2
   },
   "alias_edge_count": 15,
-  "route_count": 88,
-  "subject_ref_count": 87
+  "route_count": 89,
+  "subject_ref_count": 86
 }

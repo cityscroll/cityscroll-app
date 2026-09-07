@@ -1,11 +1,11 @@
 {
   "bridge": {
-    "eligible_appearances": 78,
+    "eligible_appearances": 102,
     "gate": "GO",
-    "linked_matters": 32,
-    "linked_projects": 15,
-    "matched_appearances": 32,
-    "matched_rate": 0.410256
+    "linked_matters": 51,
+    "linked_projects": 25,
+    "matched_appearances": 63,
+    "matched_rate": 0.617647
   },
   "generated_at": "2026-09-05T00:00:00.000Z",
   "matters": {
@@ -640,8 +640,19 @@
           "event_date": "2026-07-21",
           "event_id": "22502",
           "event_name": "Subcommittee on Zoning and Franchises",
-          "named_votes": null,
+          "named_votes": 9,
           "outcome": "Laid Over by Subcommittee"
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee with Modifications and Referred to CPC"
+          ],
+          "event_date": "2026-08-12",
+          "event_id": "22528",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": 9,
+          "outcome": "Approved by Subcommittee with Modifications and Referred to CPC"
         }
       ],
       "join_key": "ulurp_number",
@@ -663,8 +674,19 @@
           "event_date": "2026-07-21",
           "event_id": "22502",
           "event_name": "Subcommittee on Zoning and Franchises",
-          "named_votes": null,
+          "named_votes": 9,
           "outcome": "Laid Over by Subcommittee"
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee with Modifications and Referred to CPC"
+          ],
+          "event_date": "2026-08-12",
+          "event_id": "22528",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": 9,
+          "outcome": "Approved by Subcommittee with Modifications and Referred to CPC"
         }
       ],
       "join_key": "ulurp_number",
@@ -686,8 +708,19 @@
           "event_date": "2026-07-21",
           "event_id": "22502",
           "event_name": "Subcommittee on Zoning and Franchises",
-          "named_votes": null,
+          "named_votes": 9,
           "outcome": "Laid Over by Subcommittee"
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee"
+          ],
+          "event_date": "2026-08-12",
+          "event_id": "22528",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": 9,
+          "outcome": "Approved by Subcommittee"
         }
       ],
       "join_key": "ulurp_number",
@@ -709,8 +742,19 @@
           "event_date": "2026-07-21",
           "event_id": "22502",
           "event_name": "Subcommittee on Zoning and Franchises",
-          "named_votes": null,
+          "named_votes": 9,
           "outcome": "Laid Over by Subcommittee"
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee with Modifications and Referred to CPC"
+          ],
+          "event_date": "2026-08-12",
+          "event_id": "22528",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": 9,
+          "outcome": "Approved by Subcommittee with Modifications and Referred to CPC"
         }
       ],
       "join_key": "ulurp_number",
@@ -732,8 +776,19 @@
           "event_date": "2026-07-21",
           "event_id": "22502",
           "event_name": "Subcommittee on Zoning and Franchises",
-          "named_votes": null,
+          "named_votes": 9,
           "outcome": "Laid Over by Subcommittee"
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee with Modifications and Referred to CPC"
+          ],
+          "event_date": "2026-08-12",
+          "event_id": "22528",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": 9,
+          "outcome": "Approved by Subcommittee with Modifications and Referred to CPC"
         }
       ],
       "join_key": "ulurp_number",
@@ -744,9 +799,527 @@
       "project_id": "2025Q0142",
       "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79205",
       "title": "Zoning, 47-03 108th Street Rezoning, Queens (N 260148 ZRQ)."
+    },
+    "79292": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "event_date": "2026-08-12",
+          "event_id": "22528",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-09-09",
+          "event_id": "22617",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Committee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "240161ZMX",
+      "matter_file": "LU 0120-2026",
+      "matter_id": "79292",
+      "project_id": "2021X0247",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79292",
+      "title": "Zoning, 815 Hutchinson River Parkway Rezoning, Bronx (C 240161 ZMX)."
+    },
+    "79293": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "event_date": "2026-08-12",
+          "event_id": "22528",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-09-09",
+          "event_id": "22617",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Committee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "240283ZMK",
+      "matter_file": "LU 0121-2026",
+      "matter_id": "79293",
+      "project_id": "2019K0190",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79293",
+      "title": "Zoning, 862-868 Kent Avenue, Brooklyn (C 240283 ZMK)."
+    },
+    "79294": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "event_date": "2026-08-12",
+          "event_id": "22528",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-09-09",
+          "event_id": "22617",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Committee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "240284ZRK",
+      "matter_file": "LU 0122-2026",
+      "matter_id": "79294",
+      "project_id": "2019K0190",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79294",
+      "title": "Zoning, 862-868 Kent Avenue, Brooklyn (N 240284 ZRK)."
+    },
+    "79295": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "event_date": "2026-08-12",
+          "event_id": "22528",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-09-09",
+          "event_id": "22617",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Committee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260171ZMQ",
+      "matter_file": "LU 0123-2026",
+      "matter_id": "79295",
+      "project_id": "2025Q0155",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79295",
+      "title": "Zoning, 158-06 Northern Boulevard Rezoning, Queens (C 260171 ZMQ)."
+    },
+    "79296": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "event_date": "2026-08-12",
+          "event_id": "22528",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-09-09",
+          "event_id": "22617",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Committee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260172ZRQ",
+      "matter_file": "LU 0124-2026",
+      "matter_id": "79296",
+      "project_id": "2025Q0155",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79296",
+      "title": "Zoning, 158-06 Northern Boulevard Rezoning, Queens (N 260172 ZRQ)."
+    },
+    "79297": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "event_date": "2026-08-12",
+          "event_id": "22528",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-09-09",
+          "event_id": "22617",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Committee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260135ZMK",
+      "matter_file": "LU 0125-2026",
+      "matter_id": "79297",
+      "project_id": "2024K0196",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79297",
+      "title": "Zoning, 132 Melrose Street Rezoning, Brooklyn (C 260135 ZMK)."
+    },
+    "79298": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing on P-C Item by Comm",
+            "P-C Item Laid Over by Comm"
+          ],
+          "event_date": "2026-08-12",
+          "event_id": "22528",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "P-C Item Laid Over by Comm"
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-09-09",
+          "event_id": "22617",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Committee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260136ZRK",
+      "matter_file": "LU 0126-2026",
+      "matter_id": "79298",
+      "project_id": "2024K0196",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79298",
+      "title": "Zoning, 132 Melrose Street Rezoning, Brooklyn (N 260136 ZRK)."
+    },
+    "79331": {
+      "appearances": [
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-09-09",
+          "event_id": "22617",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Committee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "250125ZMQ",
+      "matter_file": "LU 0127-2026",
+      "matter_id": "79331",
+      "project_id": "2023Q0125",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79331",
+      "title": "Zoning, 21-31 46th Ave Rezoning, Queens (C 250125 ZMQ)."
+    },
+    "79332": {
+      "appearances": [
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-09-09",
+          "event_id": "22617",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Committee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "250126ZRQ",
+      "matter_file": "LU 0128-2026",
+      "matter_id": "79332",
+      "project_id": "2023Q0125",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79332",
+      "title": "Zoning, 21-31 46th Ave Rezoning, Queens (N 250126 ZRQ)."
+    },
+    "79452": {
+      "appearances": [
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "event_date": "2026-09-09",
+          "event_id": "22617",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Introduced"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260238ZMK",
+      "matter_file": "T2026-2499",
+      "matter_id": "79452",
+      "project_id": "2025K0284",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79452",
+      "title": "Zoning, Fort Hamilton Mews Rezoning, Brooklyn (C 260238 ZMK)."
+    },
+    "79453": {
+      "appearances": [
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "event_date": "2026-09-09",
+          "event_id": "22617",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Introduced"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260239ZRK",
+      "matter_file": "T2026-2500",
+      "matter_id": "79453",
+      "project_id": "2025K0284",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79453",
+      "title": "Zoning, Fort Hamilton Mews Rezoning, Brooklyn (N 260239 ZRK)."
+    },
+    "79454": {
+      "appearances": [
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "event_date": "2026-09-09",
+          "event_id": "22617",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Introduced"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "240218ZMK",
+      "matter_file": "T2026-2501",
+      "matter_id": "79454",
+      "project_id": "2022K0430",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79454",
+      "title": "Zoning, Park Avenue Brooklyn Rezoning, Brooklyn (C 240218 ZMK)."
+    },
+    "79455": {
+      "appearances": [
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "event_date": "2026-09-09",
+          "event_id": "22617",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Introduced"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "240219ZRK",
+      "matter_file": "T2026-2502",
+      "matter_id": "79455",
+      "project_id": "2022K0430",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79455",
+      "title": "Zoning, Park Avenue Brooklyn Rezoning, Brooklyn (N 240219 ZRK)."
+    },
+    "79456": {
+      "appearances": [
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "event_date": "2026-09-09",
+          "event_id": "22617",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Introduced"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "240206ZMX",
+      "matter_file": "T2026-2503",
+      "matter_id": "79456",
+      "project_id": "2023X0149",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79456",
+      "title": "Zoning, Sojourner Truth – Mapes Rezoning, Bronx (C 240206 ZMX)."
+    },
+    "79457": {
+      "appearances": [
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "event_date": "2026-09-09",
+          "event_id": "22617",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Introduced"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "240207ZRX",
+      "matter_file": "T2026-2504",
+      "matter_id": "79457",
+      "project_id": "2023X0149",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79457",
+      "title": "Zoning, Sojourner Truth – Mapes Rezoning, Bronx (N 240207 ZRX)."
+    },
+    "79458": {
+      "appearances": [
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "event_date": "2026-09-09",
+          "event_id": "22617",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Introduced"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260186ZMQ",
+      "matter_file": "T2026-2505",
+      "matter_id": "79458",
+      "project_id": "2025Q0247",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79458",
+      "title": "Zoning, 69-67 108th Street Rezoning, Queens (C 260186 ZMQ)."
+    },
+    "79459": {
+      "appearances": [
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "event_date": "2026-09-09",
+          "event_id": "22617",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Introduced"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260187ZRQ",
+      "matter_file": "T2026-2506",
+      "matter_id": "79459",
+      "project_id": "2025Q0247",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79459",
+      "title": "Zoning, 69-67 108th Street Rezoning, Queens (N 260187 ZRQ)."
+    },
+    "79460": {
+      "appearances": [
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "event_date": "2026-09-09",
+          "event_id": "22617",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Introduced"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260087ZMK",
+      "matter_file": "T2026-2507",
+      "matter_id": "79460",
+      "project_id": "2024K0240",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79460",
+      "title": "Zoning, 289 Kent Avenue Rezoning, Brooklyn (C 260087 ZMK)."
+    },
+    "79461": {
+      "appearances": [
+        {
+          "actions": [
+            "Introduced"
+          ],
+          "event_date": "2026-09-09",
+          "event_id": "22617",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Introduced"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260088ZRK",
+      "matter_file": "T2026-2508",
+      "matter_id": "79461",
+      "project_id": "2024K0240",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79461",
+      "title": "Zoning, 289 Kent Avenue Rezoning, Brooklyn (N 260088 ZRK)."
     }
   },
   "projects": {
+    "2019K0190": {
+      "matter_ids": [
+        "79293",
+        "79294"
+      ],
+      "project_id": "2019K0190",
+      "project_name": "862-868 Kent Avenue"
+    },
+    "2021X0247": {
+      "matter_ids": [
+        "79292"
+      ],
+      "project_id": "2021X0247",
+      "project_name": "815 Hutchinson River Parkway Rezoning"
+    },
+    "2022K0430": {
+      "matter_ids": [
+        "79454",
+        "79455"
+      ],
+      "project_id": "2022K0430",
+      "project_name": "Park Avenue Brooklyn Rezoning"
+    },
     "2022Q0449": {
       "matter_ids": [
         "79113",
@@ -773,6 +1346,38 @@
       ],
       "project_id": "2023M0213",
       "project_name": "Dewitt Clinton Park North (629 West 54th Street)"
+    },
+    "2023Q0125": {
+      "matter_ids": [
+        "79331",
+        "79332"
+      ],
+      "project_id": "2023Q0125",
+      "project_name": "21-31 46th Ave Rezoning"
+    },
+    "2023X0149": {
+      "matter_ids": [
+        "79456",
+        "79457"
+      ],
+      "project_id": "2023X0149",
+      "project_name": "Sojourner Truth - Mapes Rezoning"
+    },
+    "2024K0196": {
+      "matter_ids": [
+        "79297",
+        "79298"
+      ],
+      "project_id": "2024K0196",
+      "project_name": "132 Melrose Street Rezoning"
+    },
+    "2024K0240": {
+      "matter_ids": [
+        "79460",
+        "79461"
+      ],
+      "project_id": "2024K0240",
+      "project_name": "289 Kent Avenue Rezoning"
     },
     "2024K0286": {
       "matter_ids": [
@@ -840,6 +1445,14 @@
       "project_id": "2025K0154",
       "project_name": "1166 Bedford Avenue Rezoning"
     },
+    "2025K0284": {
+      "matter_ids": [
+        "79452",
+        "79453"
+      ],
+      "project_id": "2025K0284",
+      "project_name": "FORT HAMILTON MEWS REZONING"
+    },
     "2025K0287": {
       "matter_ids": [
         "78876"
@@ -862,6 +1475,22 @@
       "project_id": "2025Q0142",
       "project_name": "47-03 108th Street Rezoning"
     },
+    "2025Q0155": {
+      "matter_ids": [
+        "79295",
+        "79296"
+      ],
+      "project_id": "2025Q0155",
+      "project_name": "158-06 Northern Boulevard Rezoning"
+    },
+    "2025Q0247": {
+      "matter_ids": [
+        "79458",
+        "79459"
+      ],
+      "project_id": "2025Q0247",
+      "project_name": "69-67 108th Street Rezoning"
+    },
     "2025Q0316": {
       "matter_ids": [
         "79200"
@@ -880,11 +1509,11 @@
   "schema": "cityscroll.council_land_matter_links.v1",
   "source_vintage": {
     "meeting_outcomes_snapshot_counts": {
-      "absent_count": 303,
-      "present_count": 16,
-      "record_count": 319
+      "absent_count": 308,
+      "present_count": 17,
+      "record_count": 325
     },
-    "meeting_outcomes_snapshot_generated_at": "2026-08-10T13:08:13.019Z",
-    "zap_projects_warehouse_lookup_materialized_at": "2026-08-23T07:59:09.786Z"
+    "meeting_outcomes_snapshot_generated_at": "2026-09-04T13:09:00.447Z",
+    "zap_projects_warehouse_lookup_materialized_at": "2026-09-06T16:05:05.204Z"
   }
 }

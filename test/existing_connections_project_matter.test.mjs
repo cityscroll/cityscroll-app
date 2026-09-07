@@ -169,10 +169,18 @@ test("recorded actions, source dates and published availability are preserved as
     assert.deepEqual(appearance.actions, edge.council_depth.actions);
     assert.equal(appearance.outcome, edge.council_depth.outcome);
 
-    // No matched record retains a roll call. A missing vote stays missing; it
-    // never becomes a zero, an official, or a disposition.
-    assert.equal(edge.council_depth.votes, null);
-    assert.equal(appearance.named_votes, null);
+    // A missing vote stays missing; it never becomes a zero, an official, or a
+    // disposition. Stated as that rule rather than as one generation's answer:
+    // this corpus now retains a roll call on some matched records, and what the
+    // lookup publishes is the retained count, or null where there is none.
+    const retainedVotes = edge.council_depth.votes;
+    if (retainedVotes === null) {
+      assert.equal(appearance.named_votes, null, `matter ${matterId} invents no roll call`);
+    } else {
+      assert.equal(appearance.named_votes, retainedVotes.by_person.length);
+      assert.equal(appearance.named_votes, retainedVotes.person_count);
+      assert.ok(appearance.named_votes > 0, "a retained roll call is never published as zero");
+    }
   }
   assert.equal(LOOKUP.relation.is_decision, false);
   assert.equal(LOOKUP.relation.canonical, "about_project");

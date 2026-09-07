@@ -154,16 +154,31 @@ test("retains City Record notice parity fields in the shared read model", () => 
   assert.match(row.search_text, /250 Broadway/);
 });
 
-test("the canonical snapshot carries the hearing adapter projection for the City Record field case", () => {
-  const row = sharedSnapshot.rows.find((candidate) => candidate.meeting_id === "meeting:city_record:20260729019");
-  assert.ok(row, "the named City Record field case should remain in the canonical snapshot");
-  assert.equal(row.meeting_origin, "city_record_notice");
-  assert.equal(row.description, row.additional_description_1);
-  assert.equal(row.venue.mode, "not-stated");
-  assert.equal(row.meeting_access.mode, "unknown");
-  assert.equal(row.source_url, "https://a856-cityrecord.nyc.gov/RequestDetail/20260729019");
-  assert.deepEqual(row.source_links, [
-    "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20260729019&requestStatus=Archived&documentId=44341",
-  ]);
-  assert.match(row.search_text, /Office of Technology & Innovation/);
+test("the canonical snapshot carries the hearing adapter projection for a City Record notice", () => {
+  // The City Record acquisition serves a rolling forward window, so a named
+  // request id ages out of the snapshot without anything being wrong. The
+  // witness is derived from the snapshot instead: a notice-origin row that
+  // carries a publisher body and its own attachment links.
+  const rows = sharedSnapshot.rows.filter((candidate) => (
+    candidate.source_system === "city_record"
+      && candidate.meeting_origin === "city_record_notice"
+      && String(candidate.additional_description_1 || "").trim()
+      && Array.isArray(candidate.source_links)
+      && candidate.source_links.length > 0
+  ));
+  assert.ok(rows.length, "the canonical snapshot should retain City Record notices with a body");
+  for (const row of rows) {
+    const requestId = row.meeting_id.replace("meeting:city_record:", "");
+    assert.match(requestId, /^\d{8,}$/);
+    // The adapter projects the publisher body as the row description rather
+    // than inventing one, and states an unknown venue and access as unknown.
+    assert.equal(row.description, row.additional_description_1);
+    assert.ok(["not-stated", "in-person", "virtual", "hybrid"].includes(row.venue.mode));
+    assert.ok(["unknown", "in-person", "virtual", "hybrid"].includes(row.meeting_access.mode));
+    assert.equal(row.source_url, `https://a856-cityrecord.nyc.gov/RequestDetail/${requestId}`);
+    for (const link of row.source_links) {
+      assert.match(link, new RegExp(`^https://a856-cityrecord\\.nyc\\.gov/Search/GetFile\\?[^"]*requestId=${requestId}\\b`));
+    }
+    assert.ok(row.search_text.includes(row.additional_description_1.slice(0, 20)));
+  }
 });

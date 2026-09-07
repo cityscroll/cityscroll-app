@@ -103,7 +103,9 @@ test("registered contracts reproduce independently from the shard the Contracts 
   assert.equal(unit.value, identities.size);
   assert.equal(unit.source_id, "checkbook-contracts");
   assert.equal(unit.route, "/browse/contracts/");
-  assert.equal(unit.evidence_vintage, "2026-08-18T00:00:00.000Z");
+  // The vintage is the day the Checkbook population behind these rows was
+  // pulled, so it moves with each acquisition rather than staying fixed.
+  assert.equal(unit.evidence_vintage, "2026-09-06T00:00:00.000Z");
 });
 
 test("procurement source counts are recounted from served rows, not from declared inputs", () => {

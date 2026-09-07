@@ -327,11 +327,17 @@ await check("SEQRA-06 spatial and implementation joins gate (this command's othe
 });
 
 await check("existing ZAP/CEQR reconciliation output does not regress (A4)", () => {
+  // These are the reconciliation's absolute counts at the current publisher
+  // vintage, restamped when a refresh moves the population. What must not
+  // regress is the join: the CEQR population went from 209 projects to 207, and
+  // both projects that left had been exact matches, so the rate is still
+  // exactly matches/projects (195/207 = 0.942029, as 197/209 = 0.942584 was).
+  // A rate that falls while the population holds is the regression this guards.
   const receipt = readJson(CEQR_RECONCILIATION_RECEIPT);
-  assertEqual(receipt.reconciliation.exact_project_matches, 197, "exact_project_matches");
-  assertEqual(receipt.reconciliation.exact_match_rate, 0.942584, "exact_match_rate");
-  assertEqual(receipt.reconciliation.joined_milestone_rows, 502, "joined_milestone_rows");
-  assertEqual(receipt.reconciliation.projects_with_incremental_milestones, 182, "projects_with_incremental_milestones");
+  assertEqual(receipt.reconciliation.exact_project_matches, 195, "exact_project_matches");
+  assertEqual(receipt.reconciliation.exact_match_rate, 0.942029, "exact_match_rate");
+  assertEqual(receipt.reconciliation.joined_milestone_rows, 497, "joined_milestone_rows");
+  assertEqual(receipt.reconciliation.projects_with_incremental_milestones, 180, "projects_with_incremental_milestones");
   assertEqual(receipt.gate.resident_ingestion_committed, false, "resident_ingestion_committed");
 
   // Re-run the existing tool's own --check gate and both modules' unit

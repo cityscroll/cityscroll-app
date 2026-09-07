@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.committee_gate_receipt.v1",
-  "observed_at": "2026-08-12T14:37:51Z",
+  "observed_at": "2026-09-06T15:47:21Z",
   "sample_plan": {
     "requested": 30,
     "current_term": 20,
@@ -47,20 +47,20 @@
     "error": null
   },
   "review": {
-    "accepted_non_council_non_advocate_rows": 1142,
-    "reviewed_non_council_non_advocate_rows": 1142,
+    "accepted_non_council_non_advocate_rows": 1143,
+    "reviewed_non_council_non_advocate_rows": 1143,
     "exact_key_precision": 1,
     "date_order_failures": 0,
     "unknown_person_ids": 0,
     "missing_required_fields": 0,
     "body_name_mismatches": 0,
     "field_review": {
-      "exact_person_id_rows": 1142,
-      "exact_body_id_rows": 1142,
-      "body_name_rows": 1142,
-      "title_rows": 1142,
-      "date_order_reviewed_rows": 1142,
-      "date_order_valid_rows": 1142
+      "exact_person_id_rows": 1143,
+      "exact_body_id_rows": 1143,
+      "body_name_rows": 1143,
+      "title_rows": 1143,
+      "date_order_reviewed_rows": 1143,
+      "date_order_valid_rows": 1143
     },
     "current_vs_historical_overlap": {
       "current_person_count": 20,
@@ -69,7 +69,7 @@
       "current_and_socrata_person_count": 0,
       "historical_and_socrata_person_count": 0
     },
-    "denominator": 1142
+    "denominator": 1143
   },
   "gate": {
     "exact_key_precision_minimum": 0.95,
@@ -80,7 +80,7 @@
   },
   "sample_acquisition": {
     "complete": true,
-    "retrieved_at": "2026-08-12T14:37:51Z",
+    "retrieved_at": "2026-09-06T15:47:21Z",
     "request_errors": []
   }
 }
