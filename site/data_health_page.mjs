@@ -127,6 +127,7 @@ const PRODUCT_AREA_BY_SOURCE = Object.freeze({
   "dcas-exam-notices": "staffing",
   "nyc-jobs-postings": "staffing",
   "expense-budget": "agencies",
+  "omb-community-board-budget-requests": "agencies",
   "nyc-agencies": "agencies",
   "nyc-geosearch": "places",
 });
