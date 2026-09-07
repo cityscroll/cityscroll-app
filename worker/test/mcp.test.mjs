@@ -70,6 +70,7 @@ test("initialize + tools/list expose retrieval and action tools", async () => {
     "get_land_decision_path",
     "preview_watch",
     "create_watch",
+    "list_capability_gaps",
   ]);
   const cited = list.result.tools.find(({ name }) => name === "retrieve_cited_passages");
   assert.equal(cited.outputSchema.properties.schema.const, "cityscroll.semantic_retrieval.cited_passage_response.v1");
@@ -97,6 +98,45 @@ test("initialize + tools/list expose retrieval and action tools", async () => {
     MCP_TOOL_BINDINGS.find(({ name }) => name === "retrieve_cited_passages").capabilityReference,
     "cited.passages.retrieve@1",
   );
+});
+
+// A declared gap is only useful if the machine surface carries it: an agent that can
+// only read this endpoint must be able to name what it cannot answer. The recipe the
+// integration client publishes is the comparison point — both come from the one
+// declaration in capabilities/declared_gaps.mjs, so they can never disagree quietly.
+test("the declared capability gap and its nearest tools reach the anonymous MCP surface", async () => {
+  const recipe = JSON.parse(readFileSync(new URL("../../integrations/generated-client/recipes/unsupported-question.json", import.meta.url), "utf8"));
+  assert.equal(recipe.gap, "civic.outcome.prediction");
+  const env = { SUBS: new MockKV(), NL_METER: new MockKV() };
+
+  const init = await (await handleMcp(post({ jsonrpc: "2.0", id: 30, method: "initialize" }), env)).json();
+  assert.match(init.result.instructions, /Declared gaps/);
+  assert.ok(init.result.instructions.includes(recipe.gap), "server instructions must name the declared gap");
+
+  const list = await (await handleMcp(post({ jsonrpc: "2.0", id: 31, method: "tools/list" }), env)).json();
+  const tool = list.result.tools.find(({ name }) => name === "list_capability_gaps");
+  assert.ok(tool, "an anonymous listing must carry the capability-gap tool");
+  assert.ok(tool.description.includes(recipe.gap), "the tool description must name the declared gap");
+  assert.equal(tool.annotations.readOnlyHint, true);
+
+  const called = await (await handleMcp(post({
+    jsonrpc: "2.0", id: 32, method: "tools/call",
+    params: { name: "list_capability_gaps", arguments: {} },
+  }), env)).json();
+  const declared = called.result.structuredContent.gaps.find(({ gap }) => gap === recipe.gap);
+  assert.ok(declared, "the declared gap must be returned as structured data");
+  // Exactly what the recipe declares — capability references, and the tools that serve them.
+  assert.deepEqual(declared.nearest_capability_references, recipe.nearest);
+  assert.deepEqual(declared.nearest_tools, ["get_land_project", "get_land_decision_path"]);
+  assert.equal(declared.question, recipe.question);
+  for (const name of declared.nearest_tools) {
+    assert.ok(list.result.tools.some((listed) => listed.name === name), `${name} must be a listed tool`);
+  }
+  // Both the instructions and the tool description must be usable without the other.
+  for (const name of declared.nearest_tools) {
+    assert.ok(init.result.instructions.includes(name), `instructions must name ${name}`);
+    assert.ok(tool.description.includes(name), `the tool description must name ${name}`);
+  }
 });
 
 test("get_meeting delegates to the shared read-model capability and fails closed", async () => {

@@ -406,13 +406,14 @@ test("topology and public MCP catalog are deterministic and committed", () => {
     "get_land_decision_path",
     "preview_watch",
     "create_watch",
+    "list_capability_gaps",
   ]);
   assert.equal(catalog.tools[0].input_schema.type, "object");
   const renderedApi = renderApiCapabilityCatalogHtml(buildApiCapabilityCatalog());
   const embeddedCatalog = renderedApi.match(/<script type="application\/json" id="api-capability-catalog">([\s\S]*)<\/script>/);
   assert.ok(embeddedCatalog, "generated API page must embed its machine-readable catalog");
   assert.deepEqual(JSON.parse(embeddedCatalog[1]), buildApiCapabilityCatalog());
-  assert.equal(renderMcpCatalogHtml(catalog).match(/<li>/g).length, 17);
+  assert.equal(renderMcpCatalogHtml(catalog).match(/<li>/g).length, 18);
 });
 
 test("an undocumented capability operation fails the generated documentation check", () => {

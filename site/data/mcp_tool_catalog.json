@@ -2595,6 +2595,79 @@
         "openWorldHint": true
       },
       "store_access": null
+    },
+    {
+      "name": "list_capability_gaps",
+      "operation_class": "read",
+      "authority_class": null,
+      "description": "List the capability gaps CityScroll declares about itself, so a caller can name what this endpoint does not answer instead of assuming a tool for it exists. Declared gaps: civic.outcome.prediction (What outcome will a public decision definitely produce? — nearest tools: get_land_project, get_land_decision_path). Takes no input, reads no records, and returns only this published declaration.",
+      "schema_reference": "mcp.list_capability_gaps.contract@1",
+      "capability_reference": null,
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "schema",
+          "gaps"
+        ],
+        "properties": {
+          "schema": {
+            "type": "string",
+            "const": "cityscroll.declared_capability_gaps.v1"
+          },
+          "gaps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "gap",
+                "question",
+                "meaning",
+                "nearest_capability_references",
+                "nearest_tools"
+              ],
+              "properties": {
+                "gap": {
+                  "type": "string"
+                },
+                "question": {
+                  "type": "string"
+                },
+                "meaning": {
+                  "type": "string"
+                },
+                "nearest_capability_references": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "nearest_tools": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "bounds": null,
+      "examples": null,
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "store_access": null
     }
   ]
 }

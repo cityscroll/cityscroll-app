@@ -75,7 +75,10 @@ import {
   ORGANIZATIONS_BROWSE_LIMITS,
 } from "../../capabilities/people_organizations.mjs";
 import {
+  declaredCapabilityGapsResult,
+  MCP_DECLARED_CAPABILITY_GAPS,
   MCP_NOTICE_SEARCH_DEFAULT_LIMIT,
+  MCP_SERVER_INSTRUCTIONS,
   MCP_TOOLS,
   MCP_TOOL_BINDINGS,
 } from "../../capabilities/mcp_tool_declarations.mjs";
@@ -92,6 +95,7 @@ export {
   MCP_NOTICE_SEARCH_ADAPTER,
   MCP_PUBLIC_CAPABILITY_TOOL_BINDINGS,
   MCP_PUBLIC_READ_ANNOTATIONS,
+  MCP_SERVER_INSTRUCTIONS,
   MCP_TOOL_BINDINGS,
   MCP_TOOLS,
 } from "../../capabilities/mcp_tool_declarations.mjs";
@@ -467,6 +471,14 @@ async function callTool(env, req, name, args, { federatedProvider = null } = {})
       }
       return text(`Understood as: ${p.label} (${sub.freq}).\nThe watch is active and a welcome email with manage and unsubscribe links was sent to ${sub.email}.\n\n${previewText(p)}`);
     }
+    case "list_capability_gaps": {
+      const result = declaredCapabilityGapsResult();
+      const named = MCP_DECLARED_CAPABILITY_GAPS.map(({ gap }) => gap).join(", ");
+      return structuredResult(
+        result,
+        `This endpoint declares ${result.gaps.length} capability gap${result.gaps.length === 1 ? "" : "s"}: ${named}. Each entry names the nearest tools that do publish something for the question.`,
+      );
+    }
     default:
       return toolError(`Unknown tool: ${name}`);
   }
@@ -548,6 +560,9 @@ export async function handleMcp(req, env, { federatedProvider = null } = {}) {
           protocolVersion: PROTOCOL_VERSION,
           capabilities: { tools: {} },
           serverInfo: { name: "crol-list", version: "1.0.0" },
+          // Public product truth, sent to every caller including anonymous ones: what
+          // the endpoint answers from, and the gaps it declares about itself.
+          instructions: MCP_SERVER_INSTRUCTIONS,
         }));
       case "ping":
         return Response.json(rpc(id, {}));
