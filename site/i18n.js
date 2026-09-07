@@ -2553,6 +2553,7 @@ const STRINGS = {
     committee_shared_more_other: "Show {n} more committees",
     official_provenance_html: "Person-level votes come from NYC Council Legistar records linked to these hearings. Only the declared committed cohort is measured.",
     official_votes_table_caption: "Person-level roll-call votes",
+    official_votes_not_present: "not present",
     official_vote_matter_col: "Matter",
     official_vote_hearing_col: "Hearing",
     official_vote_vote_col: "Vote",

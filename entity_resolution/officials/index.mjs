@@ -40,24 +40,179 @@ export const ENTITY_TYPE_FAMILIES = Object.freeze([
   "person-leader",
 ]);
 
-// NYC Legistar publishes VoteValueName as Affirmative / Negative (not Aye/Nay).
-const VOTE_AYE = /^(aye|yes|yea|y\b|in favor|approve|affirmative)/i;
-const VOTE_NAY = /^(nay|no\b|n\b|against|reject|deny|negative)/i;
+// NYC Legistar publishes VoteValueName as Affirmative / Negative (not Aye/Nay),
+// and the publisher's own `VoteTypes` table is the authority on what each label
+// means. Every row of that table carries two machine-readable fields:
+//
+//   VoteTypeResult   1 = affirmative, 2 = negative, 0 = neither
+//   VoteTypeUsedFor  1 = attendance roll, 2 = a cast vote, 3 = a recorded absence
+//
+// The table is reproduced below from the live publisher vocabulary rather than
+// guessed, because the distinction it draws is the whole point: "Absent",
+// "Bereavement", "Jury Duty" and "Medical" are recorded *absences*, not votes,
+// and folding them into "abstain" turns a member who was not there into a
+// member who was there and declined to take a position. Those are different
+// claims about a person's participation, and only one of them is true.
+//
+// Source: https://webapi.legistar.com/v1/nyc/VoteTypes (client `nyc`),
+// retained as site/data/legistar_sources/vote_types.json.
+const PUBLISHER_VOTE_TYPES = Object.freeze([
+  { name: "Present", result: 0, used_for: 1 },
+  { name: "Affirmative", result: 1, used_for: 2 },
+  { name: "Negative", result: 2, used_for: 2 },
+  { name: "Abstain", result: 0, used_for: 2 },
+  { name: "Recused", result: 0, used_for: 2 },
+  { name: "Non-voting", result: 0, used_for: 2 },
+  { name: "Absent", result: 0, used_for: 3 },
+  { name: "Excused", result: 0, used_for: 3 },
+  { name: "Bereavement", result: 0, used_for: 3 },
+  { name: "Medical", result: 0, used_for: 3 },
+  { name: "Maternity", result: 0, used_for: 3 },
+  { name: "Paternity", result: 0, used_for: 3 },
+  { name: "Parental", result: 0, used_for: 3 },
+  { name: "Jury Duty", result: 0, used_for: 3 },
+  { name: "Suspended", result: 0, used_for: 3 },
+  { name: "Conflict", result: 0, used_for: 3 },
+  { name: "Simultaneous", result: 0, used_for: 3 },
+]);
+
+/**
+ * The classification a vote row is placed in. `vote_value` always keeps the
+ * publisher's own label; this is only the machine-comparable class.
+ *
+ *   aye / nay        a substantive position on the question
+ *   abstain          present and explicitly recorded as abstaining
+ *   recused          present and withdrawn from the question
+ *   non_voting       present and recorded as not voting
+ *   present          an attendance roll entry, not a vote on a question
+ *   absent           a recorded absence, whatever reason the publisher gave
+ *   unknown          a label this classifier does not recognise
+ */
+export const VOTE_BUCKETS = Object.freeze([
+  "aye",
+  "nay",
+  "abstain",
+  "recused",
+  "non_voting",
+  "present",
+  "absent",
+  "unknown",
+]);
+
+/** Buckets that state a position on the question being decided. */
+export const SUBSTANTIVE_VOTE_BUCKETS = Object.freeze(["aye", "nay"]);
+
+/** Buckets in which the member took part in the roll without stating a position. */
+export const PARTICIPATING_NON_POSITION_BUCKETS = Object.freeze([
+  "abstain",
+  "recused",
+  "non_voting",
+  "present",
+]);
+
+/**
+ * Coarse participation class, for counting and for copy that must not describe
+ * an absence as a vote.
+ *
+ *   voted     aye / nay
+ *   declined  present for the roll, no position recorded
+ *   absent    a recorded absence
+ *   unknown   an unrecognised or missing label
+ */
+export const VOTE_PARTICIPATION = Object.freeze({
+  aye: "voted",
+  nay: "voted",
+  abstain: "declined",
+  recused: "declined",
+  non_voting: "declined",
+  present: "declined",
+  absent: "absent",
+  unknown: "unknown",
+});
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 
+const normalizeVoteLabel = (value) => clean(value).toLowerCase().replace(/[\s_-]+/g, " ");
+
+const PUBLISHER_BUCKET_BY_LABEL = new Map(PUBLISHER_VOTE_TYPES.map((type) => {
+  const bucket = type.result === 1
+    ? "aye"
+    : type.result === 2
+      ? "nay"
+      : type.used_for === 3
+        ? "absent"
+        : type.name === "Recused"
+          ? "recused"
+          : type.name === "Non-voting"
+            ? "non_voting"
+            : type.name === "Present"
+              ? "present"
+              : "abstain";
+  return [normalizeVoteLabel(type.name), bucket];
+}));
+
+// Conservative synonyms for publishers and fixtures that do not use the NYC
+// vocabulary. Anything not matched here stays `unknown` with its label intact —
+// an unrecognised label is a gap in this table, never an assumed abstention.
+const VOTE_AYE = /^(aye|yes|yea|y|in favor|approve|approved|affirmative)$/i;
+const VOTE_NAY = /^(nay|no|n|against|reject|rejected|deny|denied|negative)$/i;
+const VOTE_ABSTAIN = /^(abstain|abstains|abstained|abstention|abstaining)$/i;
+const VOTE_RECUSED = /^(recuse|recused|recusal)$/i;
+const VOTE_NON_VOTING = /^(non voting|not voting|no vote|did not vote)$/i;
+const VOTE_PRESENT = /^(present)$/i;
+const VOTE_ABSENT = /^(absent|excused|bereavement|medical|maternity|paternity|parental|jury duty|suspended|conflict|simultaneous|leave of absence)$/i;
+
 /**
- * Bucket a publisher vote value into aye | nay | abstain.
- * Accepts Aye/Nay-style labels and Legistar VoteValueName (Affirmative/Negative).
+ * Classify a publisher vote label. The raw label is never discarded by callers;
+ * this only says which comparable class it belongs to.
+ *
+ * A missing or unrecognised label returns "unknown". It deliberately does not
+ * return "abstain": an abstention is something a member did, and inferring one
+ * from a blank field would publish a participation claim the source never made.
+ *
  * @param {string} value
- * @returns {"aye"|"nay"|"abstain"}
+ * @returns {typeof VOTE_BUCKETS[number]}
  */
 export function voteBucket(value) {
-  const text = clean(value);
-  if (!text) return "abstain";
+  const text = normalizeVoteLabel(value);
+  if (!text) return "unknown";
+  const published = PUBLISHER_BUCKET_BY_LABEL.get(text);
+  if (published) return published;
   if (VOTE_AYE.test(text)) return "aye";
   if (VOTE_NAY.test(text)) return "nay";
-  return "abstain";
+  if (VOTE_ABSTAIN.test(text)) return "abstain";
+  if (VOTE_RECUSED.test(text)) return "recused";
+  if (VOTE_NON_VOTING.test(text)) return "non_voting";
+  if (VOTE_PRESENT.test(text)) return "present";
+  if (VOTE_ABSENT.test(text)) return "absent";
+  return "unknown";
+}
+
+/**
+ * Coarse participation class for one bucket (or one raw publisher label).
+ * @param {string} bucketOrValue
+ * @returns {"voted"|"declined"|"absent"|"unknown"}
+ */
+export function voteParticipation(bucketOrValue) {
+  const key = clean(bucketOrValue).toLowerCase().replace(/[\s-]+/g, "_");
+  return VOTE_PARTICIPATION[key] || VOTE_PARTICIPATION[voteBucket(bucketOrValue)] || "unknown";
+}
+
+/** Whether this bucket states a position on the question. */
+export function isSubstantiveVote(bucket) {
+  return SUBSTANTIVE_VOTE_BUCKETS.includes(clean(bucket).toLowerCase());
+}
+
+/** Whether this bucket records that the member was not there. */
+export function isRecordedAbsence(bucket) {
+  return voteParticipation(bucket) === "absent";
+}
+
+/** A zeroed count bag with every bucket present, so a bucket is never implied by omission. */
+export function emptyVoteCounts() {
+  const counts = {};
+  for (const bucket of VOTE_BUCKETS) counts[bucket] = 0;
+  return counts;
 }
 
 /**
@@ -142,7 +297,8 @@ export function readVoteValueLabel(raw = {}) {
  *   person_id: string|null,
  *   person_name: string|null,
  *   vote_value: string,
- *   vote_bucket: "aye"|"nay"|"abstain",
+ *   vote_bucket: typeof VOTE_BUCKETS[number],
+ *   vote_participation: "voted"|"declined"|"absent"|"unknown",
  *   official: { id: string, entity_type: string, display_name: string },
  * }}
  */
@@ -155,11 +311,15 @@ export function normalizeVotePersonRow(raw = {}) {
   const displayName = personName || (personId ? `Official ${personId}` : null);
   if (!displayName) return null;
 
+  const bucket = voteBucket(voteValue);
   return {
     person_id: personId,
     person_name: personName,
+    // The publisher's own label, kept verbatim. A reader is shown this, not a
+    // bucket name, wherever the source's own wording is the honest thing to say.
     vote_value: voteValue,
-    vote_bucket: voteBucket(voteValue),
+    vote_bucket: bucket,
+    vote_participation: VOTE_PARTICIPATION[bucket] || "unknown",
     official: {
       id: officialId,
       entity_type: OFFICIAL_ENTITY_TYPE,
@@ -173,12 +333,14 @@ export function normalizeVotePersonRow(raw = {}) {
  * Target prefers matter id, then agenda item / event item id.
  *
  * @param {Array<object>} persons — normalizeVotePersonRow results
- * @param {{ matterId?: string|null, agendaItemId?: string|null, eventItemId?: string|null }} target
+ * @param {{ matterId?: string|null, agendaItemId?: string|null, eventItemId?: string|null, eventId?: string|null }} target
  * @returns {Array<object>}
  */
 export function buildVotesOnEdges(persons = [], target = {}) {
   const matterId = clean(target.matterId);
+  const eventItemId = clean(target.eventItemId ?? target.agendaItemId);
   const agendaItemId = clean(target.agendaItemId ?? target.eventItemId);
+  const eventId = clean(target.eventId);
   let to = null;
   let toType = null;
   if (matterId) {
@@ -195,7 +357,10 @@ export function buildVotesOnEdges(persons = [], target = {}) {
   for (const person of Array.isArray(persons) ? persons : []) {
     const from = clean(person?.official?.id);
     if (!from) continue;
-    const key = `${from}\0${to}\0${person.vote_bucket}`;
+    // The same official can vote on the same matter at more than one meeting,
+    // and on more than one action at one meeting. Event and event-item identity
+    // are part of the edge key, so a later row never stands in for an earlier one.
+    const key = `${from}\0${to}\0${eventId}\0${eventItemId}\0${person.vote_bucket}`;
     if (seen.has(key)) continue;
     seen.add(key);
     edges.push({
@@ -203,7 +368,12 @@ export function buildVotesOnEdges(persons = [], target = {}) {
       from,
       to,
       to_type: toType,
+      event_id: eventId || null,
+      event_item_id: eventItemId || null,
       vote_bucket: person.vote_bucket,
+      vote_participation: person.vote_participation
+        || VOTE_PARTICIPATION[person.vote_bucket]
+        || "unknown",
       vote_value: person.vote_value || null,
       official: person.official,
       person_id: person.person_id,
@@ -233,10 +403,10 @@ export function classifyVoteIdentity(summary) {
  * official objects + votes_on edges.
  *
  * @param {Array<object>} rows
- * @param {{ matterId?: string|null, agendaItemId?: string|null, eventItemId?: string|null }} target
+ * @param {{ matterId?: string|null, agendaItemId?: string|null, eventItemId?: string|null, eventId?: string|null }} target
  * @returns {null|{
  *   result: string|null,
- *   counts: { aye: number, nay: number, abstain: number },
+ *   counts: Record<typeof VOTE_BUCKETS[number], number>,
  *   person_count: number,
  *   by_person: Array<object>,
  *   officials: Array<object>,
@@ -250,16 +420,25 @@ export function summarizePersonVotes(rows = [], target = {}) {
   const list = Array.isArray(rows) ? rows : [];
   if (!list.length) return null;
 
-  const counts = { aye: 0, nay: 0, abstain: 0 };
+  const counts = emptyVoteCounts();
+  const participation = { voted: 0, declined: 0, absent: 0, unknown: 0 };
+  const labels = new Map();
   const byPerson = [];
   for (const row of list) {
     const value = readVoteValueLabel(row || {});
     const bucket = voteBucket(value);
     counts[bucket] += 1;
+    participation[VOTE_PARTICIPATION[bucket] || "unknown"] += 1;
+    // Exact publisher wording and its own count, so "41 Absent" and
+    // "5 Bereavement" stay two distinct facts rather than one rounded one.
+    const label = clean(value) || "(no label published)";
+    labels.set(label, (labels.get(label) || 0) + 1);
     const person = normalizeVotePersonRow(row || {});
     if (person) byPerson.push(person);
   }
 
+  // The outcome is decided by the positions taken. A recorded absence is not a
+  // position, so it can neither carry nor defeat a question.
   const result = counts.aye > counts.nay
     ? "Passed"
     : counts.nay > counts.aye
@@ -282,6 +461,15 @@ export function summarizePersonVotes(rows = [], target = {}) {
   const summary = {
     result,
     counts,
+    participation,
+    published_vote_values: [...labels.entries()]
+      .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
+      .map(([vote_value, rows_count]) => ({ vote_value, rows: rows_count })),
+    // Which publisher event and event item this roll call belongs to. Without
+    // these a summary is unattributable and can be applied to the wrong meeting.
+    event_id: clean(target.eventId) || null,
+    event_item_id: clean(target.eventItemId ?? target.agendaItemId) || null,
+    matter_id: clean(target.matterId) || null,
     person_count: total,
     by_person: byPerson,
     officials: [...officialById.values()],

@@ -1583,7 +1583,8 @@ export function observationFromPeopleRow(row, opts = {}) {
   );
   if (!personId || !personName) return null;
   const matterId = clean(row.matter_id || row.MatterId);
-  const eventId = clean(row.event_id || row.EventId || row.VoteEventItemId);
+  const eventId = clean(row.event_id || row.EventId);
+  const eventItemId = clean(row.event_item_id || row.EventItemId || row.VoteEventItemId);
   const requestId = clean(row.request_id || row.notice_id);
   // Legistar person-level votes on City Council hearings default to City Council
   // when the publisher row omits agency_name (typical for Votes nested under Event).
@@ -1605,7 +1606,9 @@ export function observationFromPeopleRow(row, opts = {}) {
     domain: "people",
     object_kind: "vote",
     source_system: sourceSystem,
-    source_record_id: `${sourceSystem}:person:${personId}${matterId ? `:matter:${matterId}` : ""}${eventId ? `:event:${eventId}` : ""}`,
+    // Identity runs down to the agenda item. Without it, two actions on one
+    // matter at one meeting share an id and the second silently replaces the first.
+    source_record_id: `${sourceSystem}:person:${personId}${matterId ? `:matter:${matterId}` : ""}${eventId ? `:event:${eventId}` : ""}${eventItemId ? `:item:${eventItemId}` : ""}`,
     native_key: personId,
     person_id: personId,
     person_name: personName,
@@ -1619,6 +1622,9 @@ export function observationFromPeopleRow(row, opts = {}) {
     matter_file: matterFile,
     matter_title: clean(row.matter_title) || null,
     event_id: eventId || null,
+    event_item_id: eventItemId || null,
+    action: clean(row.action) || null,
+    vote_participation: clean(row.vote_participation) || null,
     request_id: requestId || null,
   };
 }
@@ -1722,6 +1728,7 @@ export function observationsFromPeopleMaterialization(viewOrRows, opts = {}) {
         (Array.isArray(item?.matters) ? item.matters : []).map((m) => ({
           ...m,
           agenda_number: item.agenda_number,
+          agenda_item_id: m.agenda_item_id ?? item.agenda_item_id ?? null,
         }))
       )
       : Array.isArray(rec.matters)
@@ -1745,10 +1752,13 @@ export function observationsFromPeopleMaterialization(viewOrRows, opts = {}) {
               person?.person_name || person?.official?.display_name,
             vote: person?.vote_value || person?.vote || vote?.result,
             vote_bucket: person?.vote_bucket,
+            vote_participation: person?.vote_participation,
             matter_id: matterId,
             matter_file: clean(matter?.matter_file),
             matter_title: clean(matter?.title),
             event_id: eventId,
+            event_item_id: clean(vote?.event_item_id || matter?.agenda_item_id),
+            action: clean(matter?.outcome),
             request_id: requestId,
             agency_name: agencyName,
             event_date: eventDate,

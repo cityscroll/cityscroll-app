@@ -34,49 +34,77 @@ function outcomeBucket(value) {
   return "other";
 }
 
+function countOf(value) {
+  return Number.isFinite(Number(value)) ? Number(value) : null;
+}
+
 /**
  * Normalize publisher vote tallies. Live Legistar summaries use aye/nay;
  * older fixtures may use yes/no. Map both into the first-paint yes/no keys.
  * Retain a bounded by_person sample so roll-call chips paint before the live
  * enhancement fetch — never invent persons when the publisher omitted them.
+ *
+ * Recorded absences are carried as their own count and their own per-person
+ * label. They were previously folded into the abstain tally, which reads to a
+ * resident as "was there and declined to take a position" — a claim about a
+ * member's participation that the source does not make.
  */
 export function compactVotes(votes, { maxPeople = 12 } = {}) {
   const row = Array.isArray(votes) ? votes.at(-1) : (votes && typeof votes === "object" ? votes : null);
   if (!row) return null;
   const counts = row.counts || {};
-  const yesRaw = counts.yes ?? counts.aye;
-  const noRaw = counts.no ?? counts.nay;
-  const abstainRaw = counts.abstain;
-  const yes = Number.isFinite(Number(yesRaw)) ? Number(yesRaw) : null;
-  const no = Number.isFinite(Number(noRaw)) ? Number(noRaw) : null;
-  const abstain = Number.isFinite(Number(abstainRaw)) ? Number(abstainRaw) : null;
+  const yes = countOf(counts.yes ?? counts.aye);
+  const no = countOf(counts.no ?? counts.nay);
+  const abstain = countOf(counts.abstain);
+  const absent = countOf(counts.absent);
+  const recused = countOf(counts.recused);
+  const nonVoting = countOf(counts.non_voting);
+  const unknown = countOf(counts.unknown);
   const peopleIn = Array.isArray(row.by_person) ? row.by_person : [];
   const people = peopleIn
     .map((person) => {
       const personId = clean(person?.person_id || person?.PersonId || person?.VotePersonId);
       const personName = clean(person?.person_name || person?.PersonName || person?.VotePersonName);
       if (!personId || !personName) return null;
+      const publisherLabel = clean(person?.vote_value || person?.VoteValueName || person?.VoteValue);
       return {
         person_id: personId,
         person_name: personName.slice(0, 80),
-        vote_bucket: clean(person?.vote_bucket || person?.vote_value || person?.VoteValueName) || null,
+        vote_bucket: clean(person?.vote_bucket) || publisherLabel || null,
+        // The publisher's own word for this row, so the page can show "Absent"
+        // or "Bereavement" rather than a class name that flattens them.
+        vote_value: publisherLabel || null,
+        vote_participation: clean(person?.vote_participation) || null,
       };
     })
     .filter(Boolean)
     .slice(0, Math.max(0, Number(maxPeople) || 0));
   const voteIdentity = clean(row.vote_identity)
     || (people.length ? "roll_call" : null);
+  const publishedValues = (Array.isArray(row.published_vote_values) ? row.published_vote_values : [])
+    .map((entry) => ({
+      vote_value: clean(entry?.vote_value),
+      rows: countOf(entry?.rows) ?? 0,
+    }))
+    .filter((entry) => entry.vote_value);
   const result = {
     result: clean(row.result || row.action || row.vote_result) || null,
     yes,
     no,
     abstain,
+    absent,
+    recused,
+    non_voting: nonVoting,
+    unknown,
+    published_vote_values: publishedValues,
+    event_id: clean(row.event_id) || null,
+    event_item_id: clean(row.event_item_id) || null,
     vote_identity: voteIdentity || null,
     person_count: people.length
       || (Number.isFinite(Number(row.person_count)) ? Number(row.person_count) : 0),
     by_person: people,
   };
-  const hasTally = [result.result, result.yes, result.no, result.abstain]
+  const hasTally = [result.result, result.yes, result.no, result.abstain, result.absent]
     .some((value) => value != null && value !== "");
   if (!hasTally && !people.length) return null;
   return result;
@@ -99,13 +127,27 @@ export function compactMeetingOutcomeRecord(record) {
       const id = clean(matter?.matter_id || matter?.matter_file);
       if (!id) continue;
       const key = clean(matter.matter_file || matter.matter_id);
-      const prior = matters.get(key) || { actions: [], documents: [] };
+      const prior = matters.get(key) || { actions: [], documents: [], item_actions: [] };
       const outcome = clean(matter.outcome || matter.passed || matter.status);
       if (outcome && !prior.actions.includes(outcome)) prior.actions.push(outcome);
       const matterDocuments = (matter.documents || []).map((doc) => ({
         name: clean(doc?.name || "Matter document"),
         url: safeHttps(doc?.url),
       })).filter((doc) => doc.url);
+      // One meeting can take more than one action on one matter — a hearing and
+      // a layover, or a hearing and an approval. Each is its own agenda item and
+      // has its own roll call, or none. They are kept apart here so a vote taken
+      // on one action is never shown against the other.
+      const agendaItemId = clean(matter.agenda_item_id || item?.agenda_item_id);
+      const itemVotes = compactVotes(matter.votes);
+      if (agendaItemId && !prior.item_actions.some((row) => row.agenda_item_id === agendaItemId)) {
+        prior.item_actions.push({
+          agenda_item_id: agendaItemId,
+          action: outcome || null,
+          vote_state: itemVotes ? "roll_call_recorded" : "no_roll_call_recorded",
+          votes: itemVotes,
+        });
+      }
       matters.set(key, {
         ...prior,
         matter_id: clean(matter.matter_id) || null,
@@ -113,7 +155,7 @@ export function compactMeetingOutcomeRecord(record) {
         matter_url: safeHttps(matter.matter_url),
         title: clean(matter.title || item.title) || key,
         outcome: outcome || prior.outcome || null,
-        votes: compactVotes(matter.votes) || prior.votes || null,
+        votes: itemVotes || prior.votes || null,
         documents: [...prior.documents, ...matterDocuments]
           .filter((doc, index, rows) => rows.findIndex((other) => other.url === doc.url) === index)
           .slice(0, 6),
@@ -181,11 +223,20 @@ export function renderMeetingOutcomesFirstPaint(snapshotOrRecord, requestId) {
   const matters = (record.matters || []).map((matter) => {
     const label = clean(matter.outcome || matter.actions?.at(-1));
     const votes = matter.votes || null;
-    const hasTally = votes && [votes.yes, votes.no, votes.abstain].some((n) => n != null);
+    const hasTally = votes && [votes.yes, votes.no, votes.abstain, votes.absent].some((n) => n != null);
     const people = Array.isArray(votes?.by_person) ? votes.by_person : [];
     const rollCall = votes?.vote_identity === "roll_call" || people.length > 0;
+    // Absences are counted and named separately from abstentions. A member who
+    // was not there did not abstain, and a tally that says otherwise is wrong
+    // about that member rather than merely imprecise.
+    const notVoting = [
+      votes?.abstain ? `${votes.abstain} abstain` : "",
+      votes?.absent ? `${votes.absent} absent` : "",
+      votes?.recused ? `${votes.recused} recused` : "",
+      votes?.non_voting ? `${votes.non_voting} not voting` : "",
+    ].filter(Boolean).join(" · ");
     const tally = hasTally
-      ? `<p class="meeting-sub">${votes.yes ?? "—"} yes · ${votes.no ?? "—"} no · ${votes.abstain ?? "—"} abstain</p>`
+      ? `<p class="meeting-sub">${votes.yes ?? "—"} yes · ${votes.no ?? "—"} no${notVoting ? ` · ${esc(notVoting)}` : ""}</p>`
       : "";
     const names = people.slice(0, 6).map((person) => esc(person.person_name)).filter(Boolean);
     const more = Math.max(0, (Number(votes?.person_count) || people.length) - names.length);

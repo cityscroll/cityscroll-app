@@ -144,6 +144,27 @@ function sameLabels(left, right) {
  * Several of these can describe one appearance; `coalesceAppearance` folds them
  * without discarding any reference.
  */
+/**
+ * The separate actions one meeting took on this matter, each with the roll call
+ * recorded on it or an explicit statement that none was.
+ *
+ * A meeting that hears a matter and then lays it over takes two actions on two
+ * agenda items. Only one of them may have a recorded vote, and a projection that
+ * carries a single vote for the whole appearance cannot say which. Keeping the
+ * items apart is what lets the page attribute a vote to the action it was cast on.
+ */
+function itemActions(matter) {
+  return (Array.isArray(matter?.item_actions) ? matter.item_actions : [])
+    .map((row) => ({
+      event_item_id: clean(row?.agenda_item_id || row?.event_item_id, 80),
+      action: clean(row?.action, 240) || null,
+      vote_state: clean(row?.vote_state, 40)
+        || (row?.votes ? "roll_call_recorded" : "no_roll_call_recorded"),
+      votes: row?.votes ?? null,
+    }))
+    .filter((row) => row.event_item_id);
+}
+
 function observationFor(requestId, record, matter) {
   return {
     request_id: clean(requestId, 80),
@@ -154,6 +175,7 @@ function observationFor(requestId, record, matter) {
       .filter(Boolean),
     outcome: clean(matter?.outcome, 240) || null,
     votes: matter?.votes ?? null,
+    item_actions: itemActions(matter),
   };
 }
 
@@ -172,7 +194,23 @@ function coalesceAppearance(matterId, canonical, observations, snapshotGenerated
   const primary = ordered[0];
   const actions = [...new Set(ordered.flatMap((observation) => observation.actions))];
   const outcome = ordered.map((observation) => observation.outcome).find(Boolean) || null;
-  const votes = ordered.map((observation) => observation.votes).find((value) => value != null) || null;
+  // One appearance's actions, deduplicated by publisher event item. Two notices
+  // announcing one meeting describe the same items, so they fold; two items at
+  // one meeting do not.
+  const itemActionRows = [];
+  for (const observation of ordered) {
+    for (const row of observation.item_actions) {
+      if (itemActionRows.some((existing) => existing.event_item_id === row.event_item_id)) continue;
+      itemActionRows.push(row);
+    }
+  }
+  // The vote shown for this appearance is the one recorded on one of its own
+  // items. An appearance whose items recorded none keeps null — a later
+  // meeting's roll call is not evidence about this one.
+  const votes = itemActionRows.map((row) => row.votes).find((value) => value != null)
+    || (itemActionRows.length
+      ? null
+      : ordered.map((observation) => observation.votes).find((value) => value != null) || null);
   const labels = ordered[ordered.length - 1].labels;
   const event = primary.event;
   const notices = ordered.map((observation) => ({
@@ -197,11 +235,13 @@ function coalesceAppearance(matterId, canonical, observations, snapshotGenerated
     matter_type: labels.matter_type,
     matter_status: labels.matter_status,
     votes,
+    item_actions: itemActionRows,
     source_receipt: {
       source_system: SOURCE_SYSTEM,
       request_id: primary.request_id,
       request_ids: notices.map((notice) => notice.request_id),
       event_id: event.event_id,
+      event_item_ids: itemActionRows.map((row) => row.event_item_id),
       source_url: event.url,
       input_artifact: INPUT_ARTIFACT,
       snapshot_generated_at: clean(snapshotGeneratedAt || "", 80) || null,

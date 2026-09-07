@@ -33,7 +33,7 @@ import { retainNativeMatterObservations } from "./matter_observation_journal.mjs
 import { linksFromMeetingRecord } from "./subject_registry.mjs";
 
 /** Bump when vote/person mapping or spine assembly changes so young-but-stale KV rebuilds. */
-export const MEETING_OUTCOMES_VIEW_VERSION = 3;
+export const MEETING_OUTCOMES_VIEW_VERSION = 4;
 export const MEETING_OUTCOMES_KV_KEY = "meeting-outcomes:materialized:v2";
 export const MAX_AGE_MS = 36 * 60 * 60 * 1000;
 
@@ -189,7 +189,7 @@ function normalizeCouncilEvent(raw = {}) {
  * (EventItemActionName / EventItemPassedFlagName), so a single item row is both
  * the agenda line and its matter in one.
  */
-function normalizeCouncilAgendaItem(raw = {}) {
+export function normalizeCouncilAgendaItem(raw = {}) {
   const matterId = readFirst(raw, ["EventItemMatterId", "MatterId", "MatterID", "Matter_ID"]);
   return {
     agenda_item_id: readFirst(raw, ["EventItemId", "AgendaItemId", "AgendaItemID"]),
@@ -219,6 +219,8 @@ function eventDocuments(event) {
 
 /**
  * Project a vote summary (counts + retained persons) onto the agenda matter card.
+ * The summary projected here is the one recorded on this agenda item; the
+ * caller resolves that, and a card with no roll call keeps an empty list.
  * Person-level rows and votes_on edges are first-class when the publisher
  * retained VotePersonId/VotePersonName (or PersonId/PersonName); aggregate
  * tallies always remain. vote_identity is roll_call vs tally_only.
@@ -231,6 +233,16 @@ function projectVoteSummary(voteSummary, item) {
   return [{
     result: voteSummary.result || item.passed_flag || item.action_name || null,
     counts: voteSummary.counts,
+    // Coarse participation split and the publisher's own labels with their own
+    // counts, so a surface can say "one member absent" without inferring it
+    // from a bucket that also means "abstained".
+    participation: voteSummary.participation || null,
+    published_vote_values: Array.isArray(voteSummary.published_vote_values)
+      ? voteSummary.published_vote_values
+      : [],
+    // Which meeting and which agenda item this roll call is evidence of.
+    event_id: voteSummary.event_id ?? item.event_id ?? null,
+    event_item_id: voteSummary.event_item_id ?? item.agenda_item_id ?? null,
     person_count: voteSummary.person_count ?? byPerson.length,
     by_person: byPerson,
     officials,
@@ -418,20 +430,111 @@ export function measureMeetingVoteSpineCompleteness(records = []) {
 }
 
 /**
- * Build matter cards from one event's normalized items, attaching the
- * best-effort roll-call vote summary and per-item attachments (plus event docs).
+ * Index roll-call summaries by the agenda item they were recorded on.
+ *
+ * A matter is heard more than once — a hearing in March and an approval in
+ * April, or two actions at one meeting — and each of those is a separate roll
+ * call, or no roll call at all. Keying summaries by matter alone made the last
+ * one observed stand in for every appearance, which shows a reader one meeting's
+ * vote under another meeting's date, and turns "no roll call was taken here"
+ * into a full roster that was never cast.
+ *
+ * Resolution is therefore by exact publisher identity:
+ *   1. the event item the votes were fetched from;
+ *   2. failing that, the event and matter together;
+ *   3. and for a summary that carries neither, only when that matter appears on
+ *      exactly one item in the whole input, so an unattributable summary can
+ *      never be copied across meetings.
+ *
+ * @param {object[]} voteRows summaries from collectVoteSummaries (or a caller's fixtures)
+ * @param {object[]} items normalized agenda items across every event
  */
-function assembleAgenda(items, voteByMatter, docsByItem = new Map()) {
+export function indexVoteSummaries(voteRows = [], items = []) {
+  const clean = (value) => String(value ?? "").trim();
+  const byEventItem = new Map();
+  const byEventMatter = new Map();
+  const unbound = new Map();
+
+  const itemCountByMatter = new Map();
+  const itemCountByEventMatter = new Map();
+  const knownItemIds = new Set();
+  for (const item of items || []) {
+    const agendaItemId = clean(item?.agenda_item_id);
+    if (agendaItemId) knownItemIds.add(agendaItemId);
+    const matterId = clean(item?.matter_id);
+    if (!matterId) continue;
+    itemCountByMatter.set(matterId, (itemCountByMatter.get(matterId) || 0) + 1);
+    const eventId = clean(item?.event_id);
+    if (!eventId) continue;
+    const key = `${eventId}\u0000${matterId}`;
+    itemCountByEventMatter.set(key, (itemCountByEventMatter.get(key) || 0) + 1);
+  }
+
+  for (const summary of voteRows || []) {
+    if (!summary) continue;
+    const eventItemId = clean(summary.event_item_id ?? summary.agenda_item_id);
+    const eventId = clean(summary.event_id);
+    const matterId = clean(summary.matter_id);
+    if (eventItemId) byEventItem.set(eventItemId, summary);
+    // An item id this input does not carry cannot address anything, so the
+    // coarser keys stay available for a summary stamped by an older generation.
+    if (eventItemId && knownItemIds.has(eventItemId)) continue;
+    if (eventId && matterId) {
+      byEventMatter.set(`${eventId}\u0000${matterId}`, summary);
+      continue;
+    }
+    if (matterId) unbound.set(matterId, summary);
+  }
+
+  return {
+    /**
+     * The roll call recorded on this agenda item, or null when none was.
+     * @param {object} item normalized agenda item
+     */
+    resolve(item) {
+      const agendaItemId = clean(item?.agenda_item_id);
+      if (agendaItemId && byEventItem.has(agendaItemId)) return byEventItem.get(agendaItemId);
+      const eventId = clean(item?.event_id);
+      const matterId = clean(item?.matter_id);
+      // Event and matter together address one appearance only while that
+      // meeting acted on the matter once. A meeting that heard it and then
+      // laid it over acted twice, and only one of those may carry a roll call.
+      if (eventId && matterId && itemCountByEventMatter.get(`${eventId}\u0000${matterId}`) === 1) {
+        const hit = byEventMatter.get(`${eventId}\u0000${matterId}`);
+        if (hit) return hit;
+      }
+      // An unattributed summary is attachable only where attachment is
+      // unambiguous. Two appearances of one matter make it ambiguous, and an
+      // ambiguous summary is dropped rather than duplicated.
+      if (matterId && itemCountByMatter.get(matterId) === 1) {
+        const hit = unbound.get(matterId);
+        if (hit) return hit;
+      }
+      return null;
+    },
+  };
+}
+
+/**
+ * Build matter cards from one event's normalized items, attaching the
+ * roll-call vote summary recorded on that item and per-item attachments (plus
+ * event docs).
+ */
+export function assembleAgenda(items, voteIndex, docsByItem = new Map()) {
   const rows = [];
   for (const item of items) {
     const itemDocs = docsByItem.get(String(item.agenda_item_id)) || [];
     const matters = [];
     if (item.matter_id) {
-      const voteSummary = voteByMatter.get(String(item.matter_id));
+      const voteSummary = voteIndex.resolve(item);
       const votes = projectVoteSummary(voteSummary, item);
       matters.push({
         matter_id: item.matter_id,
         matter_file: item.matter_file,
+        // The agenda item and event this card is a projection of. Identity
+        // travels with the evidence rather than being re-derived downstream.
+        agenda_item_id: item.agenda_item_id ?? null,
+        event_id: item.event_id ?? null,
         // Deep outbound when MatterId is numeric (Gateway M=L); null for non-numeric ids.
         matter_url: matterDetailUrl(item.matter_id),
         title: item.matter_name || item.title,
@@ -446,6 +549,8 @@ function assembleAgenda(items, voteByMatter, docsByItem = new Map()) {
     } else {
       matters.push({
         matter_id: null,
+        agenda_item_id: item.agenda_item_id ?? null,
+        event_id: item.event_id ?? null,
         title: item.title,
         body_text: item.body_text,
         status: null,
@@ -478,17 +583,14 @@ function assembleAgenda(items, voteByMatter, docsByItem = new Map()) {
  * @param {object[]} noticeRows   — raw City Record (SODA) notice rows
  * @param {object[]} eventRows    — raw authenticated Legistar Event rows
  * @param {object[]} eventItemRows— raw Legistar EventItem rows (inline matters)
- * @param {object[]} voteRows     — roll-call summaries [{matter_id,result,counts,by_person?,officials?,votes_on?}]
+ * @param {object[]} voteRows     — roll-call summaries [{matter_id,event_id,event_item_id,result,counts,by_person?,officials?,votes_on?}]
  * @param {object[]} attachmentRows — [{agenda_item_id, documents: [{url,name,category}]}]
  */
 export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteRows, attachmentRows = []) {
   const notices = (noticeRows || []).map(normalizeNoticeForOutcomes).filter((n) => n.request_id);
   const events = (eventRows || []).map(normalizeCouncilEvent).filter((e) => e.event_id);
   const items = (eventItemRows || []).map(normalizeCouncilAgendaItem).filter((i) => i.event_id);
-  const voteByMatter = new Map();
-  for (const v of (voteRows || [])) {
-    if (v && v.matter_id) voteByMatter.set(String(v.matter_id), v);
-  }
+  const voteIndex = indexVoteSummaries(voteRows, items);
   const docsByItem = new Map();
   for (const row of (attachmentRows || [])) {
     if (!row?.agenda_item_id) continue;
@@ -545,7 +647,7 @@ export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteR
     const docs = eventDocuments(event);
     const eventItems = itemsByEvent.get(String(event.event_id)) || [];
     const agenda = eventItems.length
-      ? assembleAgenda(eventItems, voteByMatter, docsByItem)
+      ? assembleAgenda(eventItems, voteIndex, docsByItem)
       : [{
         agenda_item_id: null,
         title: null,
@@ -721,9 +823,18 @@ async function collectVoteSummaries({ eventItemRows, token, fetchImpl }) {
           matterId: String(it.EventItemMatterId),
           agendaItemId: String(it.EventItemId),
           eventItemId: it.EventItemId,
+          eventId: it.EventItemEventId,
         });
         if (summary) {
-          summaries.push({ matter_id: String(it.EventItemMatterId), ...summary });
+          // A roll call belongs to one agenda item at one meeting. Carrying that
+          // identity out of collection is what stops one meeting's vote from
+          // being shown against another appearance of the same matter.
+          summaries.push({
+            matter_id: String(it.EventItemMatterId),
+            event_id: String(it.EventItemEventId ?? ""),
+            event_item_id: String(it.EventItemId ?? ""),
+            ...summary,
+          });
         }
       } catch {
         // Best-effort: a single vote fetch failure is non-fatal.

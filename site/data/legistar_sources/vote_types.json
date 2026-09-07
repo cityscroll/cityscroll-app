@@ -1,0 +1,150 @@
+{
+  "schema": "cityscroll.legistar_vote_types.v1",
+  "title": "NYC Council Legistar published vote-value vocabulary",
+  "description": "The publisher’s own VoteTypes table. VoteTypeResult is 1 for affirmative, 2 for negative and 0 for neither; VoteTypeUsedFor is 1 for an attendance roll, 2 for a cast vote and 3 for a recorded absence. This is the authority behind the vote classifier in entity_resolution/officials/index.mjs: it is why Absent, Bereavement, Jury Duty and Medical are recorded absences rather than abstentions.",
+  "source": {
+    "system": "legistar",
+    "client": "nyc",
+    "endpoint": "https://webapi.legistar.com/v1/nyc/VoteTypes",
+    "access": "authenticated"
+  },
+  "type_count": 17,
+  "vote_types": [
+    {
+      "id": 4,
+      "name": "Excused",
+      "plural_name": "Excused",
+      "result": 0,
+      "used_for": 3,
+      "sort": 4
+    },
+    {
+      "id": 9,
+      "name": "Non-voting",
+      "plural_name": "Non-voting",
+      "result": 0,
+      "used_for": 2,
+      "sort": 7
+    },
+    {
+      "id": 11,
+      "name": "Abstain",
+      "plural_name": "Abstain",
+      "result": 0,
+      "used_for": 2,
+      "sort": 5
+    },
+    {
+      "id": 12,
+      "name": "Negative",
+      "plural_name": "Negative",
+      "result": 2,
+      "used_for": 2,
+      "sort": 3
+    },
+    {
+      "id": 13,
+      "name": "Present",
+      "plural_name": "Present",
+      "result": 0,
+      "used_for": 1,
+      "sort": 1
+    },
+    {
+      "id": 14,
+      "name": "Recused",
+      "plural_name": "Recused",
+      "result": 0,
+      "used_for": 2,
+      "sort": 6
+    },
+    {
+      "id": 15,
+      "name": "Affirmative",
+      "plural_name": "Affirmative",
+      "result": 1,
+      "used_for": 2,
+      "sort": 2
+    },
+    {
+      "id": 16,
+      "name": "Absent",
+      "plural_name": "Absent",
+      "result": 0,
+      "used_for": 3,
+      "sort": 8
+    },
+    {
+      "id": 22,
+      "name": "Maternity",
+      "plural_name": "Maternity",
+      "result": 0,
+      "used_for": 3,
+      "sort": 9
+    },
+    {
+      "id": 23,
+      "name": "Suspended",
+      "plural_name": "Suspended",
+      "result": 0,
+      "used_for": 3,
+      "sort": 10
+    },
+    {
+      "id": 43,
+      "name": "Conflict",
+      "plural_name": "Conflict",
+      "result": 0,
+      "used_for": 3,
+      "sort": 11
+    },
+    {
+      "id": 44,
+      "name": "Paternity",
+      "plural_name": "Paternity",
+      "result": 0,
+      "used_for": 3,
+      "sort": 12
+    },
+    {
+      "id": 45,
+      "name": "Jury Duty",
+      "plural_name": "Jury Duty",
+      "result": 0,
+      "used_for": 3,
+      "sort": 13
+    },
+    {
+      "id": 46,
+      "name": "Medical",
+      "plural_name": "Medical",
+      "result": 0,
+      "used_for": 3,
+      "sort": 14
+    },
+    {
+      "id": 64,
+      "name": "Simultaneous",
+      "plural_name": "Simultaneous",
+      "result": 0,
+      "used_for": 3,
+      "sort": 15
+    },
+    {
+      "id": 65,
+      "name": "Bereavement",
+      "plural_name": "Bereavement",
+      "result": 0,
+      "used_for": 3,
+      "sort": 16
+    },
+    {
+      "id": 66,
+      "name": "Parental ",
+      "plural_name": "Parental ",
+      "result": 0,
+      "used_for": 3,
+      "sort": 17
+    }
+  ]
+}

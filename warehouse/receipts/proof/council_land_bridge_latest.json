@@ -1673,57 +1673,95 @@
         },
         "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
         "votes": {
-          "abstain": 2,
+          "absent": 2,
+          "abstain": 0,
           "by_person": [
             {
               "person_id": "7785",
               "person_name": "Farah N. Louis",
-              "vote_bucket": "abstain"
+              "vote_bucket": "absent",
+              "vote_participation": "absent",
+              "vote_value": "Bereavement"
             },
             {
               "person_id": "7833",
               "person_name": "David M. Carr",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7895",
               "person_name": "Elsie Encarnación",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7810",
               "person_name": "Amanda C. Farías",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "5289",
               "person_name": "Simcha Felder",
-              "vote_bucket": "abstain"
+              "vote_bucket": "absent",
+              "vote_participation": "absent",
+              "vote_value": "Medical"
             },
             {
               "person_id": "7866",
               "person_name": "Yusef Salaam",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7897",
               "person_name": "Justin E. Sanchez",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7818",
               "person_name": "Lynn C. Schulman",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7898",
               "person_name": "Shanel Thomas-Henry",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             }
           ],
+          "event_id": "22528",
+          "event_item_id": "441071",
           "no": 0,
+          "non_voting": 0,
           "person_count": 9,
+          "published_vote_values": [
+            {
+              "rows": 7,
+              "vote_value": "Affirmative"
+            },
+            {
+              "rows": 1,
+              "vote_value": "Bereavement"
+            },
+            {
+              "rows": 1,
+              "vote_value": "Medical"
+            }
+          ],
+          "recused": 0,
           "result": "Passed",
+          "unknown": 0,
           "vote_identity": "roll_call",
           "yes": 7
         }
@@ -1793,57 +1831,95 @@
         },
         "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
         "votes": {
-          "abstain": 2,
+          "absent": 2,
+          "abstain": 0,
           "by_person": [
             {
               "person_id": "7785",
               "person_name": "Farah N. Louis",
-              "vote_bucket": "abstain"
+              "vote_bucket": "absent",
+              "vote_participation": "absent",
+              "vote_value": "Bereavement"
             },
             {
               "person_id": "7833",
               "person_name": "David M. Carr",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7895",
               "person_name": "Elsie Encarnación",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7810",
               "person_name": "Amanda C. Farías",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "5289",
               "person_name": "Simcha Felder",
-              "vote_bucket": "abstain"
+              "vote_bucket": "absent",
+              "vote_participation": "absent",
+              "vote_value": "Medical"
             },
             {
               "person_id": "7866",
               "person_name": "Yusef Salaam",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7897",
               "person_name": "Justin E. Sanchez",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7818",
               "person_name": "Lynn C. Schulman",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7898",
               "person_name": "Shanel Thomas-Henry",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             }
           ],
+          "event_id": "22528",
+          "event_item_id": "441072",
           "no": 0,
+          "non_voting": 0,
           "person_count": 9,
+          "published_vote_values": [
+            {
+              "rows": 7,
+              "vote_value": "Affirmative"
+            },
+            {
+              "rows": 1,
+              "vote_value": "Bereavement"
+            },
+            {
+              "rows": 1,
+              "vote_value": "Medical"
+            }
+          ],
+          "recused": 0,
           "result": "Passed",
+          "unknown": 0,
           "vote_identity": "roll_call",
           "yes": 7
         }
@@ -1913,57 +1989,95 @@
         },
         "outcome": "Approved by Subcommittee",
         "votes": {
-          "abstain": 2,
+          "absent": 2,
+          "abstain": 0,
           "by_person": [
             {
               "person_id": "7785",
               "person_name": "Farah N. Louis",
-              "vote_bucket": "abstain"
+              "vote_bucket": "absent",
+              "vote_participation": "absent",
+              "vote_value": "Bereavement"
             },
             {
               "person_id": "7833",
               "person_name": "David M. Carr",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7895",
               "person_name": "Elsie Encarnación",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7810",
               "person_name": "Amanda C. Farías",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "5289",
               "person_name": "Simcha Felder",
-              "vote_bucket": "abstain"
+              "vote_bucket": "absent",
+              "vote_participation": "absent",
+              "vote_value": "Medical"
             },
             {
               "person_id": "7866",
               "person_name": "Yusef Salaam",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7897",
               "person_name": "Justin E. Sanchez",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7818",
               "person_name": "Lynn C. Schulman",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7898",
               "person_name": "Shanel Thomas-Henry",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             }
           ],
+          "event_id": "22528",
+          "event_item_id": "441068",
           "no": 0,
+          "non_voting": 0,
           "person_count": 9,
+          "published_vote_values": [
+            {
+              "rows": 7,
+              "vote_value": "Affirmative"
+            },
+            {
+              "rows": 1,
+              "vote_value": "Bereavement"
+            },
+            {
+              "rows": 1,
+              "vote_value": "Medical"
+            }
+          ],
+          "recused": 0,
           "result": "Passed",
+          "unknown": 0,
           "vote_identity": "roll_call",
           "yes": 7
         }
@@ -2033,57 +2147,95 @@
         },
         "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
         "votes": {
-          "abstain": 2,
+          "absent": 2,
+          "abstain": 0,
           "by_person": [
             {
               "person_id": "7785",
               "person_name": "Farah N. Louis",
-              "vote_bucket": "abstain"
+              "vote_bucket": "absent",
+              "vote_participation": "absent",
+              "vote_value": "Bereavement"
             },
             {
               "person_id": "7833",
               "person_name": "David M. Carr",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7895",
               "person_name": "Elsie Encarnación",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7810",
               "person_name": "Amanda C. Farías",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "5289",
               "person_name": "Simcha Felder",
-              "vote_bucket": "abstain"
+              "vote_bucket": "absent",
+              "vote_participation": "absent",
+              "vote_value": "Medical"
             },
             {
               "person_id": "7866",
               "person_name": "Yusef Salaam",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7897",
               "person_name": "Justin E. Sanchez",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7818",
               "person_name": "Lynn C. Schulman",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7898",
               "person_name": "Shanel Thomas-Henry",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             }
           ],
+          "event_id": "22528",
+          "event_item_id": "441070",
           "no": 0,
+          "non_voting": 0,
           "person_count": 9,
+          "published_vote_values": [
+            {
+              "rows": 7,
+              "vote_value": "Affirmative"
+            },
+            {
+              "rows": 1,
+              "vote_value": "Bereavement"
+            },
+            {
+              "rows": 1,
+              "vote_value": "Medical"
+            }
+          ],
+          "recused": 0,
           "result": "Passed",
+          "unknown": 0,
           "vote_identity": "roll_call",
           "yes": 7
         }
@@ -2153,57 +2305,95 @@
         },
         "outcome": "Approved by Subcommittee with Modifications and Referred to CPC",
         "votes": {
-          "abstain": 2,
+          "absent": 2,
+          "abstain": 0,
           "by_person": [
             {
               "person_id": "7785",
               "person_name": "Farah N. Louis",
-              "vote_bucket": "abstain"
+              "vote_bucket": "absent",
+              "vote_participation": "absent",
+              "vote_value": "Bereavement"
             },
             {
               "person_id": "7833",
               "person_name": "David M. Carr",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7895",
               "person_name": "Elsie Encarnación",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7810",
               "person_name": "Amanda C. Farías",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "5289",
               "person_name": "Simcha Felder",
-              "vote_bucket": "abstain"
+              "vote_bucket": "absent",
+              "vote_participation": "absent",
+              "vote_value": "Medical"
             },
             {
               "person_id": "7866",
               "person_name": "Yusef Salaam",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7897",
               "person_name": "Justin E. Sanchez",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7818",
               "person_name": "Lynn C. Schulman",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             },
             {
               "person_id": "7898",
               "person_name": "Shanel Thomas-Henry",
-              "vote_bucket": "aye"
+              "vote_bucket": "aye",
+              "vote_participation": "voted",
+              "vote_value": "Affirmative"
             }
           ],
+          "event_id": "22528",
+          "event_item_id": "441069",
           "no": 0,
+          "non_voting": 0,
           "person_count": 9,
+          "published_vote_values": [
+            {
+              "rows": 7,
+              "vote_value": "Affirmative"
+            },
+            {
+              "rows": 1,
+              "vote_value": "Bereavement"
+            },
+            {
+              "rows": 1,
+              "vote_value": "Medical"
+            }
+          ],
+          "recused": 0,
           "result": "Passed",
+          "unknown": 0,
           "vote_identity": "roll_call",
           "yes": 7
         }
@@ -2338,61 +2528,7 @@
           "title": "Zoning, 200 Kent Avenue Rezoning, Brooklyn (C 260149 ZMK)."
         },
         "outcome": "Laid Over by Subcommittee",
-        "votes": {
-          "abstain": 2,
-          "by_person": [
-            {
-              "person_id": "7785",
-              "person_name": "Farah N. Louis",
-              "vote_bucket": "abstain"
-            },
-            {
-              "person_id": "7833",
-              "person_name": "David M. Carr",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7895",
-              "person_name": "Elsie Encarnación",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7810",
-              "person_name": "Amanda C. Farías",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "5289",
-              "person_name": "Simcha Felder",
-              "vote_bucket": "abstain"
-            },
-            {
-              "person_id": "7866",
-              "person_name": "Yusef Salaam",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7897",
-              "person_name": "Justin E. Sanchez",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7818",
-              "person_name": "Lynn C. Schulman",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7898",
-              "person_name": "Shanel Thomas-Henry",
-              "vote_bucket": "aye"
-            }
-          ],
-          "no": 0,
-          "person_count": 9,
-          "result": "Passed",
-          "vote_identity": "roll_call",
-          "yes": 7
-        }
+        "votes": null
       },
       "from": "legistar-event:22502:matter:79201",
       "is_decision": false,
@@ -2458,61 +2594,7 @@
           "title": "Zoning, Flatiron NoMad Major Concessions, Manhattan (C 260123 MCM)."
         },
         "outcome": "Laid Over by Subcommittee",
-        "votes": {
-          "abstain": 2,
-          "by_person": [
-            {
-              "person_id": "7785",
-              "person_name": "Farah N. Louis",
-              "vote_bucket": "abstain"
-            },
-            {
-              "person_id": "7833",
-              "person_name": "David M. Carr",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7895",
-              "person_name": "Elsie Encarnación",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7810",
-              "person_name": "Amanda C. Farías",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "5289",
-              "person_name": "Simcha Felder",
-              "vote_bucket": "abstain"
-            },
-            {
-              "person_id": "7866",
-              "person_name": "Yusef Salaam",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7897",
-              "person_name": "Justin E. Sanchez",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7818",
-              "person_name": "Lynn C. Schulman",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7898",
-              "person_name": "Shanel Thomas-Henry",
-              "vote_bucket": "aye"
-            }
-          ],
-          "no": 0,
-          "person_count": 9,
-          "result": "Passed",
-          "vote_identity": "roll_call",
-          "yes": 7
-        }
+        "votes": null
       },
       "from": "legistar-event:22502:matter:79203",
       "is_decision": false,
@@ -2578,61 +2660,7 @@
           "title": "Zoning, 200 Kent Avenue Rezoning, Brooklyn (N 260150 ZRK)."
         },
         "outcome": "Laid Over by Subcommittee",
-        "votes": {
-          "abstain": 2,
-          "by_person": [
-            {
-              "person_id": "7785",
-              "person_name": "Farah N. Louis",
-              "vote_bucket": "abstain"
-            },
-            {
-              "person_id": "7833",
-              "person_name": "David M. Carr",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7895",
-              "person_name": "Elsie Encarnación",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7810",
-              "person_name": "Amanda C. Farías",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "5289",
-              "person_name": "Simcha Felder",
-              "vote_bucket": "abstain"
-            },
-            {
-              "person_id": "7866",
-              "person_name": "Yusef Salaam",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7897",
-              "person_name": "Justin E. Sanchez",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7818",
-              "person_name": "Lynn C. Schulman",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7898",
-              "person_name": "Shanel Thomas-Henry",
-              "vote_bucket": "aye"
-            }
-          ],
-          "no": 0,
-          "person_count": 9,
-          "result": "Passed",
-          "vote_identity": "roll_call",
-          "yes": 7
-        }
+        "votes": null
       },
       "from": "legistar-event:22502:matter:79202",
       "is_decision": false,
@@ -2698,61 +2726,7 @@
           "title": "Zoning, 47-03 108th Street Rezoning, Queens (C 260147 ZMQ)."
         },
         "outcome": "Laid Over by Subcommittee",
-        "votes": {
-          "abstain": 2,
-          "by_person": [
-            {
-              "person_id": "7785",
-              "person_name": "Farah N. Louis",
-              "vote_bucket": "abstain"
-            },
-            {
-              "person_id": "7833",
-              "person_name": "David M. Carr",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7895",
-              "person_name": "Elsie Encarnación",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7810",
-              "person_name": "Amanda C. Farías",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "5289",
-              "person_name": "Simcha Felder",
-              "vote_bucket": "abstain"
-            },
-            {
-              "person_id": "7866",
-              "person_name": "Yusef Salaam",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7897",
-              "person_name": "Justin E. Sanchez",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7818",
-              "person_name": "Lynn C. Schulman",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7898",
-              "person_name": "Shanel Thomas-Henry",
-              "vote_bucket": "aye"
-            }
-          ],
-          "no": 0,
-          "person_count": 9,
-          "result": "Passed",
-          "vote_identity": "roll_call",
-          "yes": 7
-        }
+        "votes": null
       },
       "from": "legistar-event:22502:matter:79204",
       "is_decision": false,
@@ -2818,61 +2792,7 @@
           "title": "Zoning, 47-03 108th Street Rezoning, Queens (N 260148 ZRQ)."
         },
         "outcome": "Laid Over by Subcommittee",
-        "votes": {
-          "abstain": 2,
-          "by_person": [
-            {
-              "person_id": "7785",
-              "person_name": "Farah N. Louis",
-              "vote_bucket": "abstain"
-            },
-            {
-              "person_id": "7833",
-              "person_name": "David M. Carr",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7895",
-              "person_name": "Elsie Encarnación",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7810",
-              "person_name": "Amanda C. Farías",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "5289",
-              "person_name": "Simcha Felder",
-              "vote_bucket": "abstain"
-            },
-            {
-              "person_id": "7866",
-              "person_name": "Yusef Salaam",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7897",
-              "person_name": "Justin E. Sanchez",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7818",
-              "person_name": "Lynn C. Schulman",
-              "vote_bucket": "aye"
-            },
-            {
-              "person_id": "7898",
-              "person_name": "Shanel Thomas-Henry",
-              "vote_bucket": "aye"
-            }
-          ],
-          "no": 0,
-          "person_count": 9,
-          "result": "Passed",
-          "vote_identity": "roll_call",
-          "yes": 7
-        }
+        "votes": null
       },
       "from": "legistar-event:22502:matter:79205",
       "is_decision": false,
