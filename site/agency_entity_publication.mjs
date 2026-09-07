@@ -34,21 +34,20 @@ export const AGENCY_ENTITY_PUBLICATION_SCHEMA = "cityscroll.agency_entity_public
 export const AGENCY_ENTITY_PUBLICATION_METHOD = "agency_entity_publication_v1";
 export const AGENCY_ENTITY_TYPE = "agency";
 
-/** The three answers the published record can give about who leads an agency.
+/** The two answers a published record can give about who leads an agency.
  *
  * A reader asking who runs an agency needs the officer, and needs the two ways
  * an officer can be missing kept apart. "Published" carries the person, the
  * dataset the name came from and the date that dataset reports its rows were
- * last updated. "Not recorded" says the registered sources name no officer for
- * this agency, which is a statement about the record rather than a failure to
- * read it. The third answer, "unreadable", is never produced here: it belongs
- * to the reader, which reports a stored statement it cannot use as exactly
- * that instead of as an absent officer or an empty leader.
+ * last updated. "Not recorded" says the registered datasets carry no officer
+ * for this agency, which describes the record itself. A third answer,
+ * "unreadable", belongs to the reader alone: only the reader knows it failed to
+ * use a stored statement, and it says so instead of reporting an absent officer
+ * or an empty leader.
  */
 export const AGENCY_OFFICER_STATUS = Object.freeze({
   PUBLISHED: "published",
   NOT_RECORDED: "not_recorded",
-  UNREADABLE: "unreadable",
 });
 
 /** The columns an officer statement is allowed to be built from. */
