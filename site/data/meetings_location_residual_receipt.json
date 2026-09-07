@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.meetings_location_residual.v1",
-  "observed_on": "2026-08-05",
+  "observed_on": "2026-09-07",
   "source": {
     "system": "city_record",
     "dataset_id": "dg92-zbpx",

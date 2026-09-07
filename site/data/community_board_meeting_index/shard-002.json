@@ -25727,6 +25727,1715 @@
       ]
     ],
     [
+      "manhattan-cb-05",
+      [
+        {
+          "object_type": "meeting",
+          "schema": "cityscroll.meeting_object.v1",
+          "meeting_id": "meeting:community_board:https://cb5.org/event/executive-committee-20/",
+          "source_keys": [
+            {
+              "source_system": "community_board",
+              "key_type": "publisher_event_id",
+              "value": "https://cb5.org/event/executive-committee-20/"
+            }
+          ],
+          "publisher_identifier": "https://cb5.org/event/executive-committee-20/",
+          "title": "Executive Committee",
+          "event_date": "2026-01-06T18:00:00-05:00",
+          "event_end": "2026-01-06T18:00:00-05:00",
+          "meeting_family": "community_board_meeting_v0",
+          "venue": null,
+          "participation": {
+            "links": [
+              {
+                "label": "Meeting information",
+                "url": "https://cb5.org/event/executive-committee-20/"
+              }
+            ],
+            "remote_join_url": null,
+            "emails": [],
+            "phones": [],
+            "source_url": "https://cb5.org/event/executive-committee-20/"
+          },
+          "committee": null,
+          "agency": null,
+          "board_name": "Manhattan Community Board 5",
+          "description": "Location: CB5 District Office, 450 7th Ave, Ste 2109. Public may also attend by Zoom Click here to attend by Zoom Agenda: \\n",
+          "search_text": "Executive Committee Location: CB5 District Office, 450 7th Ave, Ste 2109. Public may also attend by Zoom Click here to attend by Zoom Agenda: \\n",
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "community_boards": [
+              "manhattan-cb-05"
+            ],
+            "community_districts": [
+              "M05"
+            ],
+            "neighborhoods": [],
+            "addresses": []
+          },
+          "meeting_documents": [],
+          "source_url": "https://cb5.org/event/executive-committee-20/",
+          "source_system": "community_board",
+          "meeting_origin": "community_board_source_observed",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb5.org/events/",
+            "observed_at": "2026-01-17T21:49:15.000Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 284380,
+            "parser": "html_pdf_v1",
+            "reason": null
+          },
+          "join_status": "unknown",
+          "institution_refs": {
+            "agency_ref": null,
+            "board_ref": "community-board:manhattan-cb-05"
+          },
+          "compatibility": {
+            "legacy_notice_href": null,
+            "legacy_fragment_href": null,
+            "publisher_href": "https://cb5.org/event/executive-committee-20/"
+          },
+          "request_id": null,
+          "source_record_id": "https://cb5.org/event/executive-committee-20/",
+          "board_id": "manhattan-cb-05",
+          "record_kind": "event",
+          "record_id": "https://cb5.org/event/executive-committee-20/",
+          "record_url": "https://cb5.org/event/executive-committee-20/",
+          "date": "2026-01-06",
+          "start_at": "2026-01-06T18:00:00-05:00",
+          "end_at": "2026-01-06T18:00:00-05:00",
+          "category": "upcoming_meetings",
+          "format": "html",
+          "publisher_identifiers": [
+            "https://cb5.org/event/executive-committee-20/"
+          ],
+          "source_role": "upcoming_meetings",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb5.org/events/",
+            "observed_at": "2026-01-17T21:49:15.000Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 284380,
+            "parser": "html_pdf_v1",
+            "reason": null
+          },
+          "short_title": "Executive Committee",
+          "start_date": "2026-09-07T13:14:16.382Z",
+          "type_of_notice_description": "upcoming_meetings",
+          "section_name": "Community Board Meetings",
+          "meeting_join": {
+            "schema": "cityscroll.community_board_source_join.v1",
+            "status": "unknown",
+            "official": false,
+            "reason": "no_city_record_notice",
+            "board_id": "manhattan-cb-05",
+            "meeting_date": "2026-01-06",
+            "source_url": "https://cb5.org/event/executive-committee-20/",
+            "source_record_id": "https://cb5.org/event/executive-committee-20/",
+            "join": {
+              "matched": false,
+              "method": "exact_board_date_publisher_identifier",
+              "reason": "no_city_record_notice"
+            },
+            "provenance": {
+              "schema": "cityscroll.community_board_meeting_provenance.v1",
+              "source_url": "https://cb5.org/event/executive-committee-20/",
+              "source_record_id": "https://cb5.org/event/executive-committee-20/",
+              "source_index_url": "https://cb5.org/events/",
+              "observed_receipt": {
+                "schema": "cityscroll.community_board_source_receipt.v1",
+                "source_url": "https://cb5.org/events/",
+                "observed_at": "2026-01-17T21:49:15.000Z",
+                "status": "ok",
+                "fetch_status": "200",
+                "content_type": "text/html; charset=UTF-8",
+                "content_length": 284380,
+                "parser": "html_pdf_v1",
+                "reason": null
+              },
+              "adapter": "html_pdf_v1"
+            }
+          },
+          "source_provenance": {
+            "schema": "cityscroll.community_board_meeting_provenance.v1",
+            "source_url": "https://cb5.org/event/executive-committee-20/",
+            "source_record_id": "https://cb5.org/event/executive-committee-20/",
+            "source_index_url": "https://cb5.org/events/",
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://cb5.org/events/",
+              "observed_at": "2026-01-17T21:49:15.000Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html; charset=UTF-8",
+              "content_length": 284380,
+              "parser": "html_pdf_v1",
+              "reason": null
+            },
+            "adapter": "html_pdf_v1"
+          },
+          "entity_refs_all": [
+            "community-board:manhattan-cb-05",
+            "meeting:community_board:https://cb5.org/event/executive-committee-20/"
+          ],
+          "institution_edges": [
+            {
+              "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+              "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+              "edge_type": "hosts_meeting",
+              "relation": "hosts_meeting",
+              "status": "held",
+              "promoted": false,
+              "reason": "source_stale",
+              "from": "community-board:manhattan-cb-05",
+              "to": "meeting:community_board:https://cb5.org/event/executive-committee-20/",
+              "target_kind": "meeting",
+              "target_id": "meeting:community_board:https://cb5.org/event/executive-committee-20/",
+              "target_name": "Executive Committee",
+              "canonical_href": null,
+              "href": null,
+              "board_href": "/community-boards/manhattan-cb-05/",
+              "institution_refs": {
+                "board_ref": "community-board:manhattan-cb-05"
+              },
+              "source_url": "https://cb5.org/events/",
+              "source_record_id": "https://cb5.org/event/executive-committee-20/",
+              "source_receipt": {
+                "schema": "cityscroll.community_board_source_receipt.v1",
+                "source_url": "https://cb5.org/events/",
+                "observed_at": "2026-01-17T21:49:15.000Z",
+                "status": "ok",
+                "fetch_status": "200",
+                "content_type": "text/html; charset=UTF-8",
+                "content_length": 284380,
+                "parser": "html_pdf_v1",
+                "reason": null
+              },
+              "provenance": {
+                "observed_receipt": {
+                  "schema": "cityscroll.community_board_source_receipt.v1",
+                  "source_url": "https://cb5.org/events/",
+                  "observed_at": "2026-01-17T21:49:15.000Z",
+                  "status": "ok",
+                  "fetch_status": "200",
+                  "content_type": "text/html; charset=UTF-8",
+                  "content_length": 284380,
+                  "parser": "html_pdf_v1",
+                  "reason": null
+                }
+              },
+              "join": {
+                "matched": false,
+                "method": "exact_board_date_publisher_identifier",
+                "reason": "source_stale"
+              },
+              "evidence": []
+            }
+          ]
+        },
+        {
+          "object_type": "meeting",
+          "schema": "cityscroll.meeting_object.v1",
+          "meeting_id": "meeting:community_board:https://cb5.org/event/public-hearing-full-board-meeting-17/",
+          "source_keys": [
+            {
+              "source_system": "community_board",
+              "key_type": "publisher_event_id",
+              "value": "https://cb5.org/event/public-hearing-full-board-meeting-17/"
+            }
+          ],
+          "publisher_identifier": "https://cb5.org/event/public-hearing-full-board-meeting-17/",
+          "title": "Public Hearing & Full Board Meeting",
+          "event_date": "2026-01-08T18:00:00-05:00",
+          "event_end": "2026-01-08T21:00:00-05:00",
+          "meeting_family": "community_board_meeting_v0",
+          "venue": null,
+          "participation": {
+            "links": [
+              {
+                "label": "Meeting information",
+                "url": "https://cb5.org/event/public-hearing-full-board-meeting-17/"
+              }
+            ],
+            "remote_join_url": null,
+            "emails": [],
+            "phones": [],
+            "source_url": "https://cb5.org/event/public-hearing-full-board-meeting-17/"
+          },
+          "committee": null,
+          "agency": null,
+          "board_name": "Manhattan Community Board 5",
+          "description": "Location: Keenan Commons at Xavier High School, 31 West 15th St. Entrance on 15th St between 5th-6th Ave, Fernandez Duminco Hall. Public may also attend by Zoom - Click here to attend by Zoom Public Hearing, Yaran Noti-Victor, 1st Vice-Chair The public is encouraged to attend and comment on a Hearing Agenda topic, 2 min per speaker. All items listed [&hellip;] \\n",
+          "search_text": "Public Hearing & Full Board Meeting Location: Keenan Commons at Xavier High School, 31 West 15th St. Entrance on 15th St between 5th-6th Ave, Fernandez Duminco Hall. Public may also attend by Zoom - Click here to attend by Zoom Public Hearing, Yaran Noti-Victor, 1st Vice-Chair The public is encouraged to attend and comment on a Hearing Agenda topic, 2 min per speaker. All items listed [&hellip;] \\n",
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "community_boards": [
+              "manhattan-cb-05"
+            ],
+            "community_districts": [
+              "M05"
+            ],
+            "neighborhoods": [],
+            "addresses": []
+          },
+          "meeting_documents": [],
+          "source_url": "https://cb5.org/event/public-hearing-full-board-meeting-17/",
+          "source_system": "community_board",
+          "meeting_origin": "community_board_source_observed",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb5.org/events/",
+            "observed_at": "2026-01-17T21:49:15.000Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 284380,
+            "parser": "html_pdf_v1",
+            "reason": null
+          },
+          "join_status": "unknown",
+          "institution_refs": {
+            "agency_ref": null,
+            "board_ref": "community-board:manhattan-cb-05"
+          },
+          "compatibility": {
+            "legacy_notice_href": null,
+            "legacy_fragment_href": null,
+            "publisher_href": "https://cb5.org/event/public-hearing-full-board-meeting-17/"
+          },
+          "request_id": null,
+          "source_record_id": "https://cb5.org/event/public-hearing-full-board-meeting-17/",
+          "board_id": "manhattan-cb-05",
+          "record_kind": "event",
+          "record_id": "https://cb5.org/event/public-hearing-full-board-meeting-17/",
+          "record_url": "https://cb5.org/event/public-hearing-full-board-meeting-17/",
+          "date": "2026-01-08",
+          "start_at": "2026-01-08T18:00:00-05:00",
+          "end_at": "2026-01-08T21:00:00-05:00",
+          "category": "upcoming_meetings",
+          "format": "html",
+          "publisher_identifiers": [
+            "https://cb5.org/event/public-hearing-full-board-meeting-17/"
+          ],
+          "source_role": "upcoming_meetings",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb5.org/events/",
+            "observed_at": "2026-01-17T21:49:15.000Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 284380,
+            "parser": "html_pdf_v1",
+            "reason": null
+          },
+          "short_title": "Public Hearing & Full Board Meeting",
+          "start_date": "2026-09-07T13:14:16.382Z",
+          "type_of_notice_description": "upcoming_meetings",
+          "section_name": "Community Board Meetings",
+          "meeting_join": {
+            "schema": "cityscroll.community_board_source_join.v1",
+            "status": "unknown",
+            "official": false,
+            "reason": "no_city_record_notice",
+            "board_id": "manhattan-cb-05",
+            "meeting_date": "2026-01-08",
+            "source_url": "https://cb5.org/event/public-hearing-full-board-meeting-17/",
+            "source_record_id": "https://cb5.org/event/public-hearing-full-board-meeting-17/",
+            "join": {
+              "matched": false,
+              "method": "exact_board_date_publisher_identifier",
+              "reason": "no_city_record_notice"
+            },
+            "provenance": {
+              "schema": "cityscroll.community_board_meeting_provenance.v1",
+              "source_url": "https://cb5.org/event/public-hearing-full-board-meeting-17/",
+              "source_record_id": "https://cb5.org/event/public-hearing-full-board-meeting-17/",
+              "source_index_url": "https://cb5.org/events/",
+              "observed_receipt": {
+                "schema": "cityscroll.community_board_source_receipt.v1",
+                "source_url": "https://cb5.org/events/",
+                "observed_at": "2026-01-17T21:49:15.000Z",
+                "status": "ok",
+                "fetch_status": "200",
+                "content_type": "text/html; charset=UTF-8",
+                "content_length": 284380,
+                "parser": "html_pdf_v1",
+                "reason": null
+              },
+              "adapter": "html_pdf_v1"
+            }
+          },
+          "source_provenance": {
+            "schema": "cityscroll.community_board_meeting_provenance.v1",
+            "source_url": "https://cb5.org/event/public-hearing-full-board-meeting-17/",
+            "source_record_id": "https://cb5.org/event/public-hearing-full-board-meeting-17/",
+            "source_index_url": "https://cb5.org/events/",
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://cb5.org/events/",
+              "observed_at": "2026-01-17T21:49:15.000Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html; charset=UTF-8",
+              "content_length": 284380,
+              "parser": "html_pdf_v1",
+              "reason": null
+            },
+            "adapter": "html_pdf_v1"
+          },
+          "entity_refs_all": [
+            "community-board:manhattan-cb-05",
+            "meeting:community_board:https://cb5.org/event/public-hearing-full-board-meeting-17/"
+          ],
+          "institution_edges": [
+            {
+              "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+              "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+              "edge_type": "hosts_meeting",
+              "relation": "hosts_meeting",
+              "status": "held",
+              "promoted": false,
+              "reason": "source_stale",
+              "from": "community-board:manhattan-cb-05",
+              "to": "meeting:community_board:https://cb5.org/event/public-hearing-full-board-meeting-17/",
+              "target_kind": "meeting",
+              "target_id": "meeting:community_board:https://cb5.org/event/public-hearing-full-board-meeting-17/",
+              "target_name": "Public Hearing & Full Board Meeting",
+              "canonical_href": null,
+              "href": null,
+              "board_href": "/community-boards/manhattan-cb-05/",
+              "institution_refs": {
+                "board_ref": "community-board:manhattan-cb-05"
+              },
+              "source_url": "https://cb5.org/events/",
+              "source_record_id": "https://cb5.org/event/public-hearing-full-board-meeting-17/",
+              "source_receipt": {
+                "schema": "cityscroll.community_board_source_receipt.v1",
+                "source_url": "https://cb5.org/events/",
+                "observed_at": "2026-01-17T21:49:15.000Z",
+                "status": "ok",
+                "fetch_status": "200",
+                "content_type": "text/html; charset=UTF-8",
+                "content_length": 284380,
+                "parser": "html_pdf_v1",
+                "reason": null
+              },
+              "provenance": {
+                "observed_receipt": {
+                  "schema": "cityscroll.community_board_source_receipt.v1",
+                  "source_url": "https://cb5.org/events/",
+                  "observed_at": "2026-01-17T21:49:15.000Z",
+                  "status": "ok",
+                  "fetch_status": "200",
+                  "content_type": "text/html; charset=UTF-8",
+                  "content_length": 284380,
+                  "parser": "html_pdf_v1",
+                  "reason": null
+                }
+              },
+              "join": {
+                "matched": false,
+                "method": "exact_board_date_publisher_identifier",
+                "reason": "source_stale"
+              },
+              "evidence": []
+            }
+          ]
+        },
+        {
+          "object_type": "meeting",
+          "schema": "cityscroll.meeting_object.v1",
+          "meeting_id": "meeting:community_board:https://cb5.org/event/state-licenses-permits-committee-20/",
+          "source_keys": [
+            {
+              "source_system": "community_board",
+              "key_type": "publisher_event_id",
+              "value": "https://cb5.org/event/state-licenses-permits-committee-20/"
+            }
+          ],
+          "publisher_identifier": "https://cb5.org/event/state-licenses-permits-committee-20/",
+          "title": "State Licenses & Permits Committee",
+          "event_date": "2026-01-20T18:00:00-05:00",
+          "event_end": "2026-01-20T20:00:00-05:00",
+          "meeting_family": "community_board_meeting_v0",
+          "venue": null,
+          "participation": {
+            "links": [
+              {
+                "label": "Meeting information",
+                "url": "https://cb5.org/event/state-licenses-permits-committee-20/"
+              }
+            ],
+            "remote_join_url": null,
+            "emails": [],
+            "phones": [],
+            "source_url": "https://cb5.org/event/state-licenses-permits-committee-20/"
+          },
+          "committee": null,
+          "agency": null,
+          "board_name": "Manhattan Community Board 5",
+          "description": "Location: CB5 District Office, 450 7th Ave, Ste 2109. Public may also attend by Zoom Click here to attend by Zoom Agenda: - 48 W 21st St, 48 W 21st St Corp DBA Taj: An application for a method of operation change to a liquor license. The restaurant seeks indoor hours of 4:00pm-4:00am Monday-Friday and [&hellip;] \\n",
+          "search_text": "State Licenses & Permits Committee Location: CB5 District Office, 450 7th Ave, Ste 2109. Public may also attend by Zoom Click here to attend by Zoom Agenda: - 48 W 21st St, 48 W 21st St Corp DBA Taj: An application for a method of operation change to a liquor license. The restaurant seeks indoor hours of 4:00pm-4:00am Monday-Friday and [&hellip;] \\n",
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "community_boards": [
+              "manhattan-cb-05"
+            ],
+            "community_districts": [
+              "M05"
+            ],
+            "neighborhoods": [],
+            "addresses": []
+          },
+          "meeting_documents": [],
+          "source_url": "https://cb5.org/event/state-licenses-permits-committee-20/",
+          "source_system": "community_board",
+          "meeting_origin": "community_board_source_observed",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb5.org/events/",
+            "observed_at": "2026-01-17T21:49:15.000Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 284380,
+            "parser": "html_pdf_v1",
+            "reason": null
+          },
+          "join_status": "unknown",
+          "institution_refs": {
+            "agency_ref": null,
+            "board_ref": "community-board:manhattan-cb-05"
+          },
+          "compatibility": {
+            "legacy_notice_href": null,
+            "legacy_fragment_href": null,
+            "publisher_href": "https://cb5.org/event/state-licenses-permits-committee-20/"
+          },
+          "request_id": null,
+          "source_record_id": "https://cb5.org/event/state-licenses-permits-committee-20/",
+          "board_id": "manhattan-cb-05",
+          "record_kind": "event",
+          "record_id": "https://cb5.org/event/state-licenses-permits-committee-20/",
+          "record_url": "https://cb5.org/event/state-licenses-permits-committee-20/",
+          "date": "2026-01-20",
+          "start_at": "2026-01-20T18:00:00-05:00",
+          "end_at": "2026-01-20T20:00:00-05:00",
+          "category": "upcoming_meetings",
+          "format": "html",
+          "publisher_identifiers": [
+            "https://cb5.org/event/state-licenses-permits-committee-20/"
+          ],
+          "source_role": "upcoming_meetings",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb5.org/events/",
+            "observed_at": "2026-01-17T21:49:15.000Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 284380,
+            "parser": "html_pdf_v1",
+            "reason": null
+          },
+          "short_title": "State Licenses & Permits Committee",
+          "start_date": "2026-09-07T13:14:16.382Z",
+          "type_of_notice_description": "upcoming_meetings",
+          "section_name": "Community Board Meetings",
+          "meeting_join": {
+            "schema": "cityscroll.community_board_source_join.v1",
+            "status": "unknown",
+            "official": false,
+            "reason": "no_city_record_notice",
+            "board_id": "manhattan-cb-05",
+            "meeting_date": "2026-01-20",
+            "source_url": "https://cb5.org/event/state-licenses-permits-committee-20/",
+            "source_record_id": "https://cb5.org/event/state-licenses-permits-committee-20/",
+            "join": {
+              "matched": false,
+              "method": "exact_board_date_publisher_identifier",
+              "reason": "no_city_record_notice"
+            },
+            "provenance": {
+              "schema": "cityscroll.community_board_meeting_provenance.v1",
+              "source_url": "https://cb5.org/event/state-licenses-permits-committee-20/",
+              "source_record_id": "https://cb5.org/event/state-licenses-permits-committee-20/",
+              "source_index_url": "https://cb5.org/events/",
+              "observed_receipt": {
+                "schema": "cityscroll.community_board_source_receipt.v1",
+                "source_url": "https://cb5.org/events/",
+                "observed_at": "2026-01-17T21:49:15.000Z",
+                "status": "ok",
+                "fetch_status": "200",
+                "content_type": "text/html; charset=UTF-8",
+                "content_length": 284380,
+                "parser": "html_pdf_v1",
+                "reason": null
+              },
+              "adapter": "html_pdf_v1"
+            }
+          },
+          "source_provenance": {
+            "schema": "cityscroll.community_board_meeting_provenance.v1",
+            "source_url": "https://cb5.org/event/state-licenses-permits-committee-20/",
+            "source_record_id": "https://cb5.org/event/state-licenses-permits-committee-20/",
+            "source_index_url": "https://cb5.org/events/",
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://cb5.org/events/",
+              "observed_at": "2026-01-17T21:49:15.000Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html; charset=UTF-8",
+              "content_length": 284380,
+              "parser": "html_pdf_v1",
+              "reason": null
+            },
+            "adapter": "html_pdf_v1"
+          },
+          "entity_refs_all": [
+            "community-board:manhattan-cb-05",
+            "meeting:community_board:https://cb5.org/event/state-licenses-permits-committee-20/"
+          ],
+          "institution_edges": [
+            {
+              "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+              "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+              "edge_type": "hosts_meeting",
+              "relation": "hosts_meeting",
+              "status": "held",
+              "promoted": false,
+              "reason": "source_stale",
+              "from": "community-board:manhattan-cb-05",
+              "to": "meeting:community_board:https://cb5.org/event/state-licenses-permits-committee-20/",
+              "target_kind": "meeting",
+              "target_id": "meeting:community_board:https://cb5.org/event/state-licenses-permits-committee-20/",
+              "target_name": "State Licenses & Permits Committee",
+              "canonical_href": null,
+              "href": null,
+              "board_href": "/community-boards/manhattan-cb-05/",
+              "institution_refs": {
+                "board_ref": "community-board:manhattan-cb-05"
+              },
+              "source_url": "https://cb5.org/events/",
+              "source_record_id": "https://cb5.org/event/state-licenses-permits-committee-20/",
+              "source_receipt": {
+                "schema": "cityscroll.community_board_source_receipt.v1",
+                "source_url": "https://cb5.org/events/",
+                "observed_at": "2026-01-17T21:49:15.000Z",
+                "status": "ok",
+                "fetch_status": "200",
+                "content_type": "text/html; charset=UTF-8",
+                "content_length": 284380,
+                "parser": "html_pdf_v1",
+                "reason": null
+              },
+              "provenance": {
+                "observed_receipt": {
+                  "schema": "cityscroll.community_board_source_receipt.v1",
+                  "source_url": "https://cb5.org/events/",
+                  "observed_at": "2026-01-17T21:49:15.000Z",
+                  "status": "ok",
+                  "fetch_status": "200",
+                  "content_type": "text/html; charset=UTF-8",
+                  "content_length": 284380,
+                  "parser": "html_pdf_v1",
+                  "reason": null
+                }
+              },
+              "join": {
+                "matched": false,
+                "method": "exact_board_date_publisher_identifier",
+                "reason": "source_stale"
+              },
+              "evidence": []
+            }
+          ]
+        },
+        {
+          "object_type": "meeting",
+          "schema": "cityscroll.meeting_object.v1",
+          "meeting_id": "meeting:community_board:https://cb5.org/event/land-use-housing-zoning-committee-16/",
+          "source_keys": [
+            {
+              "source_system": "community_board",
+              "key_type": "publisher_event_id",
+              "value": "https://cb5.org/event/land-use-housing-zoning-committee-16/"
+            }
+          ],
+          "publisher_identifier": "https://cb5.org/event/land-use-housing-zoning-committee-16/",
+          "title": "Land Use, Housing & Zoning Committee",
+          "event_date": "2026-01-21T18:00:00-05:00",
+          "event_end": "2026-01-21T20:00:00-05:00",
+          "meeting_family": "community_board_meeting_v0",
+          "venue": null,
+          "participation": {
+            "links": [
+              {
+                "label": "Meeting information",
+                "url": "https://cb5.org/event/land-use-housing-zoning-committee-16/"
+              }
+            ],
+            "remote_join_url": null,
+            "emails": [],
+            "phones": [],
+            "source_url": "https://cb5.org/event/land-use-housing-zoning-committee-16/"
+          },
+          "committee": null,
+          "agency": null,
+          "board_name": "Manhattan Community Board 5",
+          "description": "Location: CB5 District Office, 450 7th Ave, Ste 2109. Public may also attend by Zoom Click here to attend by Zoom Agenda: \\n",
+          "search_text": "Land Use, Housing & Zoning Committee Location: CB5 District Office, 450 7th Ave, Ste 2109. Public may also attend by Zoom Click here to attend by Zoom Agenda: \\n",
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "community_boards": [
+              "manhattan-cb-05"
+            ],
+            "community_districts": [
+              "M05"
+            ],
+            "neighborhoods": [],
+            "addresses": []
+          },
+          "meeting_documents": [],
+          "source_url": "https://cb5.org/event/land-use-housing-zoning-committee-16/",
+          "source_system": "community_board",
+          "meeting_origin": "community_board_source_observed",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb5.org/events/",
+            "observed_at": "2026-01-17T21:49:15.000Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 284380,
+            "parser": "html_pdf_v1",
+            "reason": null
+          },
+          "join_status": "unknown",
+          "institution_refs": {
+            "agency_ref": null,
+            "board_ref": "community-board:manhattan-cb-05"
+          },
+          "compatibility": {
+            "legacy_notice_href": null,
+            "legacy_fragment_href": null,
+            "publisher_href": "https://cb5.org/event/land-use-housing-zoning-committee-16/"
+          },
+          "request_id": null,
+          "source_record_id": "https://cb5.org/event/land-use-housing-zoning-committee-16/",
+          "board_id": "manhattan-cb-05",
+          "record_kind": "event",
+          "record_id": "https://cb5.org/event/land-use-housing-zoning-committee-16/",
+          "record_url": "https://cb5.org/event/land-use-housing-zoning-committee-16/",
+          "date": "2026-01-21",
+          "start_at": "2026-01-21T18:00:00-05:00",
+          "end_at": "2026-01-21T20:00:00-05:00",
+          "category": "upcoming_meetings",
+          "format": "html",
+          "publisher_identifiers": [
+            "https://cb5.org/event/land-use-housing-zoning-committee-16/"
+          ],
+          "source_role": "upcoming_meetings",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb5.org/events/",
+            "observed_at": "2026-01-17T21:49:15.000Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 284380,
+            "parser": "html_pdf_v1",
+            "reason": null
+          },
+          "short_title": "Land Use, Housing & Zoning Committee",
+          "start_date": "2026-09-07T13:14:16.382Z",
+          "type_of_notice_description": "upcoming_meetings",
+          "section_name": "Community Board Meetings",
+          "meeting_join": {
+            "schema": "cityscroll.community_board_source_join.v1",
+            "status": "unknown",
+            "official": false,
+            "reason": "no_city_record_notice",
+            "board_id": "manhattan-cb-05",
+            "meeting_date": "2026-01-21",
+            "source_url": "https://cb5.org/event/land-use-housing-zoning-committee-16/",
+            "source_record_id": "https://cb5.org/event/land-use-housing-zoning-committee-16/",
+            "join": {
+              "matched": false,
+              "method": "exact_board_date_publisher_identifier",
+              "reason": "no_city_record_notice"
+            },
+            "provenance": {
+              "schema": "cityscroll.community_board_meeting_provenance.v1",
+              "source_url": "https://cb5.org/event/land-use-housing-zoning-committee-16/",
+              "source_record_id": "https://cb5.org/event/land-use-housing-zoning-committee-16/",
+              "source_index_url": "https://cb5.org/events/",
+              "observed_receipt": {
+                "schema": "cityscroll.community_board_source_receipt.v1",
+                "source_url": "https://cb5.org/events/",
+                "observed_at": "2026-01-17T21:49:15.000Z",
+                "status": "ok",
+                "fetch_status": "200",
+                "content_type": "text/html; charset=UTF-8",
+                "content_length": 284380,
+                "parser": "html_pdf_v1",
+                "reason": null
+              },
+              "adapter": "html_pdf_v1"
+            }
+          },
+          "source_provenance": {
+            "schema": "cityscroll.community_board_meeting_provenance.v1",
+            "source_url": "https://cb5.org/event/land-use-housing-zoning-committee-16/",
+            "source_record_id": "https://cb5.org/event/land-use-housing-zoning-committee-16/",
+            "source_index_url": "https://cb5.org/events/",
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://cb5.org/events/",
+              "observed_at": "2026-01-17T21:49:15.000Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html; charset=UTF-8",
+              "content_length": 284380,
+              "parser": "html_pdf_v1",
+              "reason": null
+            },
+            "adapter": "html_pdf_v1"
+          },
+          "entity_refs_all": [
+            "community-board:manhattan-cb-05",
+            "meeting:community_board:https://cb5.org/event/land-use-housing-zoning-committee-16/"
+          ],
+          "institution_edges": [
+            {
+              "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+              "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+              "edge_type": "hosts_meeting",
+              "relation": "hosts_meeting",
+              "status": "held",
+              "promoted": false,
+              "reason": "source_stale",
+              "from": "community-board:manhattan-cb-05",
+              "to": "meeting:community_board:https://cb5.org/event/land-use-housing-zoning-committee-16/",
+              "target_kind": "meeting",
+              "target_id": "meeting:community_board:https://cb5.org/event/land-use-housing-zoning-committee-16/",
+              "target_name": "Land Use, Housing & Zoning Committee",
+              "canonical_href": null,
+              "href": null,
+              "board_href": "/community-boards/manhattan-cb-05/",
+              "institution_refs": {
+                "board_ref": "community-board:manhattan-cb-05"
+              },
+              "source_url": "https://cb5.org/events/",
+              "source_record_id": "https://cb5.org/event/land-use-housing-zoning-committee-16/",
+              "source_receipt": {
+                "schema": "cityscroll.community_board_source_receipt.v1",
+                "source_url": "https://cb5.org/events/",
+                "observed_at": "2026-01-17T21:49:15.000Z",
+                "status": "ok",
+                "fetch_status": "200",
+                "content_type": "text/html; charset=UTF-8",
+                "content_length": 284380,
+                "parser": "html_pdf_v1",
+                "reason": null
+              },
+              "provenance": {
+                "observed_receipt": {
+                  "schema": "cityscroll.community_board_source_receipt.v1",
+                  "source_url": "https://cb5.org/events/",
+                  "observed_at": "2026-01-17T21:49:15.000Z",
+                  "status": "ok",
+                  "fetch_status": "200",
+                  "content_type": "text/html; charset=UTF-8",
+                  "content_length": 284380,
+                  "parser": "html_pdf_v1",
+                  "reason": null
+                }
+              },
+              "join": {
+                "matched": false,
+                "method": "exact_board_date_publisher_identifier",
+                "reason": "source_stale"
+              },
+              "evidence": []
+            }
+          ]
+        },
+        {
+          "object_type": "meeting",
+          "schema": "cityscroll.meeting_object.v1",
+          "meeting_id": "meeting:community_board:https://cb5.org/event/parks-public-spaces-environment-committee/",
+          "source_keys": [
+            {
+              "source_system": "community_board",
+              "key_type": "publisher_event_id",
+              "value": "https://cb5.org/event/parks-public-spaces-environment-committee/"
+            }
+          ],
+          "publisher_identifier": "https://cb5.org/event/parks-public-spaces-environment-committee/",
+          "title": "Parks, Public Spaces & Environment Committee",
+          "event_date": "2026-01-22T18:00:00-05:00",
+          "event_end": "2026-01-22T21:00:00-05:00",
+          "meeting_family": "community_board_meeting_v0",
+          "venue": null,
+          "participation": {
+            "links": [
+              {
+                "label": "Meeting information",
+                "url": "https://cb5.org/event/parks-public-spaces-environment-committee/"
+              }
+            ],
+            "remote_join_url": null,
+            "emails": [],
+            "phones": [],
+            "source_url": "https://cb5.org/event/parks-public-spaces-environment-committee/"
+          },
+          "committee": null,
+          "agency": null,
+          "board_name": "Manhattan Community Board 5",
+          "description": "Location: CB5 District Office, 450 7th Ave, Ste 2109. Public may also attend by Zoom Click here to attend by Zoom Agenda: \\n",
+          "search_text": "Parks, Public Spaces & Environment Committee Location: CB5 District Office, 450 7th Ave, Ste 2109. Public may also attend by Zoom Click here to attend by Zoom Agenda: \\n",
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "community_boards": [
+              "manhattan-cb-05"
+            ],
+            "community_districts": [
+              "M05"
+            ],
+            "neighborhoods": [],
+            "addresses": []
+          },
+          "meeting_documents": [],
+          "source_url": "https://cb5.org/event/parks-public-spaces-environment-committee/",
+          "source_system": "community_board",
+          "meeting_origin": "community_board_source_observed",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb5.org/events/",
+            "observed_at": "2026-01-17T21:49:15.000Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 284380,
+            "parser": "html_pdf_v1",
+            "reason": null
+          },
+          "join_status": "unknown",
+          "institution_refs": {
+            "agency_ref": null,
+            "board_ref": "community-board:manhattan-cb-05"
+          },
+          "compatibility": {
+            "legacy_notice_href": null,
+            "legacy_fragment_href": null,
+            "publisher_href": "https://cb5.org/event/parks-public-spaces-environment-committee/"
+          },
+          "request_id": null,
+          "source_record_id": "https://cb5.org/event/parks-public-spaces-environment-committee/",
+          "board_id": "manhattan-cb-05",
+          "record_kind": "event",
+          "record_id": "https://cb5.org/event/parks-public-spaces-environment-committee/",
+          "record_url": "https://cb5.org/event/parks-public-spaces-environment-committee/",
+          "date": "2026-01-22",
+          "start_at": "2026-01-22T18:00:00-05:00",
+          "end_at": "2026-01-22T21:00:00-05:00",
+          "category": "upcoming_meetings",
+          "format": "html",
+          "publisher_identifiers": [
+            "https://cb5.org/event/parks-public-spaces-environment-committee/"
+          ],
+          "source_role": "upcoming_meetings",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb5.org/events/",
+            "observed_at": "2026-01-17T21:49:15.000Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 284380,
+            "parser": "html_pdf_v1",
+            "reason": null
+          },
+          "short_title": "Parks, Public Spaces & Environment Committee",
+          "start_date": "2026-09-07T13:14:16.382Z",
+          "type_of_notice_description": "upcoming_meetings",
+          "section_name": "Community Board Meetings",
+          "meeting_join": {
+            "schema": "cityscroll.community_board_source_join.v1",
+            "status": "unknown",
+            "official": false,
+            "reason": "no_city_record_notice",
+            "board_id": "manhattan-cb-05",
+            "meeting_date": "2026-01-22",
+            "source_url": "https://cb5.org/event/parks-public-spaces-environment-committee/",
+            "source_record_id": "https://cb5.org/event/parks-public-spaces-environment-committee/",
+            "join": {
+              "matched": false,
+              "method": "exact_board_date_publisher_identifier",
+              "reason": "no_city_record_notice"
+            },
+            "provenance": {
+              "schema": "cityscroll.community_board_meeting_provenance.v1",
+              "source_url": "https://cb5.org/event/parks-public-spaces-environment-committee/",
+              "source_record_id": "https://cb5.org/event/parks-public-spaces-environment-committee/",
+              "source_index_url": "https://cb5.org/events/",
+              "observed_receipt": {
+                "schema": "cityscroll.community_board_source_receipt.v1",
+                "source_url": "https://cb5.org/events/",
+                "observed_at": "2026-01-17T21:49:15.000Z",
+                "status": "ok",
+                "fetch_status": "200",
+                "content_type": "text/html; charset=UTF-8",
+                "content_length": 284380,
+                "parser": "html_pdf_v1",
+                "reason": null
+              },
+              "adapter": "html_pdf_v1"
+            }
+          },
+          "source_provenance": {
+            "schema": "cityscroll.community_board_meeting_provenance.v1",
+            "source_url": "https://cb5.org/event/parks-public-spaces-environment-committee/",
+            "source_record_id": "https://cb5.org/event/parks-public-spaces-environment-committee/",
+            "source_index_url": "https://cb5.org/events/",
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://cb5.org/events/",
+              "observed_at": "2026-01-17T21:49:15.000Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html; charset=UTF-8",
+              "content_length": 284380,
+              "parser": "html_pdf_v1",
+              "reason": null
+            },
+            "adapter": "html_pdf_v1"
+          },
+          "entity_refs_all": [
+            "community-board:manhattan-cb-05",
+            "meeting:community_board:https://cb5.org/event/parks-public-spaces-environment-committee/"
+          ],
+          "institution_edges": [
+            {
+              "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+              "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+              "edge_type": "hosts_meeting",
+              "relation": "hosts_meeting",
+              "status": "held",
+              "promoted": false,
+              "reason": "source_stale",
+              "from": "community-board:manhattan-cb-05",
+              "to": "meeting:community_board:https://cb5.org/event/parks-public-spaces-environment-committee/",
+              "target_kind": "meeting",
+              "target_id": "meeting:community_board:https://cb5.org/event/parks-public-spaces-environment-committee/",
+              "target_name": "Parks, Public Spaces & Environment Committee",
+              "canonical_href": null,
+              "href": null,
+              "board_href": "/community-boards/manhattan-cb-05/",
+              "institution_refs": {
+                "board_ref": "community-board:manhattan-cb-05"
+              },
+              "source_url": "https://cb5.org/events/",
+              "source_record_id": "https://cb5.org/event/parks-public-spaces-environment-committee/",
+              "source_receipt": {
+                "schema": "cityscroll.community_board_source_receipt.v1",
+                "source_url": "https://cb5.org/events/",
+                "observed_at": "2026-01-17T21:49:15.000Z",
+                "status": "ok",
+                "fetch_status": "200",
+                "content_type": "text/html; charset=UTF-8",
+                "content_length": 284380,
+                "parser": "html_pdf_v1",
+                "reason": null
+              },
+              "provenance": {
+                "observed_receipt": {
+                  "schema": "cityscroll.community_board_source_receipt.v1",
+                  "source_url": "https://cb5.org/events/",
+                  "observed_at": "2026-01-17T21:49:15.000Z",
+                  "status": "ok",
+                  "fetch_status": "200",
+                  "content_type": "text/html; charset=UTF-8",
+                  "content_length": 284380,
+                  "parser": "html_pdf_v1",
+                  "reason": null
+                }
+              },
+              "join": {
+                "matched": false,
+                "method": "exact_board_date_publisher_identifier",
+                "reason": "source_stale"
+              },
+              "evidence": []
+            }
+          ]
+        },
+        {
+          "object_type": "meeting",
+          "schema": "cityscroll.meeting_object.v1",
+          "meeting_id": "meeting:community_board:https://cb5.org/event/transportation-committee-3/",
+          "source_keys": [
+            {
+              "source_system": "community_board",
+              "key_type": "publisher_event_id",
+              "value": "https://cb5.org/event/transportation-committee-3/"
+            }
+          ],
+          "publisher_identifier": "https://cb5.org/event/transportation-committee-3/",
+          "title": "Transportation Committee",
+          "event_date": "2026-01-26T18:00:00-05:00",
+          "event_end": "2026-01-26T21:00:00-05:00",
+          "meeting_family": "community_board_meeting_v0",
+          "venue": null,
+          "participation": {
+            "links": [
+              {
+                "label": "Meeting information",
+                "url": "https://cb5.org/event/transportation-committee-3/"
+              }
+            ],
+            "remote_join_url": null,
+            "emails": [],
+            "phones": [],
+            "source_url": "https://cb5.org/event/transportation-committee-3/"
+          },
+          "committee": null,
+          "agency": null,
+          "board_name": "Manhattan Community Board 5",
+          "description": "Location: CB5 District Office, 450 7th Ave, Ste 2109. Public may also attend by Zoom Click here to attend by Zoom Agenda: in progress \\n",
+          "search_text": "Transportation Committee Location: CB5 District Office, 450 7th Ave, Ste 2109. Public may also attend by Zoom Click here to attend by Zoom Agenda: in progress \\n",
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "community_boards": [
+              "manhattan-cb-05"
+            ],
+            "community_districts": [
+              "M05"
+            ],
+            "neighborhoods": [],
+            "addresses": []
+          },
+          "meeting_documents": [],
+          "source_url": "https://cb5.org/event/transportation-committee-3/",
+          "source_system": "community_board",
+          "meeting_origin": "community_board_source_observed",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb5.org/events/",
+            "observed_at": "2026-01-17T21:49:15.000Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 284380,
+            "parser": "html_pdf_v1",
+            "reason": null
+          },
+          "join_status": "unknown",
+          "institution_refs": {
+            "agency_ref": null,
+            "board_ref": "community-board:manhattan-cb-05"
+          },
+          "compatibility": {
+            "legacy_notice_href": null,
+            "legacy_fragment_href": null,
+            "publisher_href": "https://cb5.org/event/transportation-committee-3/"
+          },
+          "request_id": null,
+          "source_record_id": "https://cb5.org/event/transportation-committee-3/",
+          "board_id": "manhattan-cb-05",
+          "record_kind": "event",
+          "record_id": "https://cb5.org/event/transportation-committee-3/",
+          "record_url": "https://cb5.org/event/transportation-committee-3/",
+          "date": "2026-01-26",
+          "start_at": "2026-01-26T18:00:00-05:00",
+          "end_at": "2026-01-26T21:00:00-05:00",
+          "category": "upcoming_meetings",
+          "format": "html",
+          "publisher_identifiers": [
+            "https://cb5.org/event/transportation-committee-3/"
+          ],
+          "source_role": "upcoming_meetings",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb5.org/events/",
+            "observed_at": "2026-01-17T21:49:15.000Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 284380,
+            "parser": "html_pdf_v1",
+            "reason": null
+          },
+          "short_title": "Transportation Committee",
+          "start_date": "2026-09-07T13:14:16.382Z",
+          "type_of_notice_description": "upcoming_meetings",
+          "section_name": "Community Board Meetings",
+          "meeting_join": {
+            "schema": "cityscroll.community_board_source_join.v1",
+            "status": "unknown",
+            "official": false,
+            "reason": "no_city_record_notice",
+            "board_id": "manhattan-cb-05",
+            "meeting_date": "2026-01-26",
+            "source_url": "https://cb5.org/event/transportation-committee-3/",
+            "source_record_id": "https://cb5.org/event/transportation-committee-3/",
+            "join": {
+              "matched": false,
+              "method": "exact_board_date_publisher_identifier",
+              "reason": "no_city_record_notice"
+            },
+            "provenance": {
+              "schema": "cityscroll.community_board_meeting_provenance.v1",
+              "source_url": "https://cb5.org/event/transportation-committee-3/",
+              "source_record_id": "https://cb5.org/event/transportation-committee-3/",
+              "source_index_url": "https://cb5.org/events/",
+              "observed_receipt": {
+                "schema": "cityscroll.community_board_source_receipt.v1",
+                "source_url": "https://cb5.org/events/",
+                "observed_at": "2026-01-17T21:49:15.000Z",
+                "status": "ok",
+                "fetch_status": "200",
+                "content_type": "text/html; charset=UTF-8",
+                "content_length": 284380,
+                "parser": "html_pdf_v1",
+                "reason": null
+              },
+              "adapter": "html_pdf_v1"
+            }
+          },
+          "source_provenance": {
+            "schema": "cityscroll.community_board_meeting_provenance.v1",
+            "source_url": "https://cb5.org/event/transportation-committee-3/",
+            "source_record_id": "https://cb5.org/event/transportation-committee-3/",
+            "source_index_url": "https://cb5.org/events/",
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://cb5.org/events/",
+              "observed_at": "2026-01-17T21:49:15.000Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html; charset=UTF-8",
+              "content_length": 284380,
+              "parser": "html_pdf_v1",
+              "reason": null
+            },
+            "adapter": "html_pdf_v1"
+          },
+          "entity_refs_all": [
+            "community-board:manhattan-cb-05",
+            "meeting:community_board:https://cb5.org/event/transportation-committee-3/"
+          ],
+          "institution_edges": [
+            {
+              "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+              "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+              "edge_type": "hosts_meeting",
+              "relation": "hosts_meeting",
+              "status": "held",
+              "promoted": false,
+              "reason": "source_stale",
+              "from": "community-board:manhattan-cb-05",
+              "to": "meeting:community_board:https://cb5.org/event/transportation-committee-3/",
+              "target_kind": "meeting",
+              "target_id": "meeting:community_board:https://cb5.org/event/transportation-committee-3/",
+              "target_name": "Transportation Committee",
+              "canonical_href": null,
+              "href": null,
+              "board_href": "/community-boards/manhattan-cb-05/",
+              "institution_refs": {
+                "board_ref": "community-board:manhattan-cb-05"
+              },
+              "source_url": "https://cb5.org/events/",
+              "source_record_id": "https://cb5.org/event/transportation-committee-3/",
+              "source_receipt": {
+                "schema": "cityscroll.community_board_source_receipt.v1",
+                "source_url": "https://cb5.org/events/",
+                "observed_at": "2026-01-17T21:49:15.000Z",
+                "status": "ok",
+                "fetch_status": "200",
+                "content_type": "text/html; charset=UTF-8",
+                "content_length": 284380,
+                "parser": "html_pdf_v1",
+                "reason": null
+              },
+              "provenance": {
+                "observed_receipt": {
+                  "schema": "cityscroll.community_board_source_receipt.v1",
+                  "source_url": "https://cb5.org/events/",
+                  "observed_at": "2026-01-17T21:49:15.000Z",
+                  "status": "ok",
+                  "fetch_status": "200",
+                  "content_type": "text/html; charset=UTF-8",
+                  "content_length": 284380,
+                  "parser": "html_pdf_v1",
+                  "reason": null
+                }
+              },
+              "join": {
+                "matched": false,
+                "method": "exact_board_date_publisher_identifier",
+                "reason": "source_stale"
+              },
+              "evidence": []
+            }
+          ]
+        },
+        {
+          "object_type": "meeting",
+          "schema": "cityscroll.meeting_object.v1",
+          "meeting_id": "meeting:community_board:https://cb5.org/event/landmarks-committee-19/",
+          "source_keys": [
+            {
+              "source_system": "community_board",
+              "key_type": "publisher_event_id",
+              "value": "https://cb5.org/event/landmarks-committee-19/"
+            }
+          ],
+          "publisher_identifier": "https://cb5.org/event/landmarks-committee-19/",
+          "title": "Landmarks Committee",
+          "event_date": "2026-01-27T18:00:00-05:00",
+          "event_end": "2026-01-27T21:00:00-05:00",
+          "meeting_family": "community_board_meeting_v0",
+          "venue": null,
+          "participation": {
+            "links": [
+              {
+                "label": "Meeting information",
+                "url": "https://cb5.org/event/landmarks-committee-19/"
+              }
+            ],
+            "remote_join_url": null,
+            "emails": [],
+            "phones": [],
+            "source_url": "https://cb5.org/event/landmarks-committee-19/"
+          },
+          "committee": null,
+          "agency": null,
+          "board_name": "Manhattan Community Board 5",
+          "description": "Location: TBA Public may also attend by Zoom Click here to attend by Zoom Agenda: TBA \\n",
+          "search_text": "Landmarks Committee Location: TBA Public may also attend by Zoom Click here to attend by Zoom Agenda: TBA \\n",
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "community_boards": [
+              "manhattan-cb-05"
+            ],
+            "community_districts": [
+              "M05"
+            ],
+            "neighborhoods": [],
+            "addresses": []
+          },
+          "meeting_documents": [],
+          "source_url": "https://cb5.org/event/landmarks-committee-19/",
+          "source_system": "community_board",
+          "meeting_origin": "community_board_source_observed",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb5.org/events/",
+            "observed_at": "2026-01-17T21:49:15.000Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 284380,
+            "parser": "html_pdf_v1",
+            "reason": null
+          },
+          "join_status": "unknown",
+          "institution_refs": {
+            "agency_ref": null,
+            "board_ref": "community-board:manhattan-cb-05"
+          },
+          "compatibility": {
+            "legacy_notice_href": null,
+            "legacy_fragment_href": null,
+            "publisher_href": "https://cb5.org/event/landmarks-committee-19/"
+          },
+          "request_id": null,
+          "source_record_id": "https://cb5.org/event/landmarks-committee-19/",
+          "board_id": "manhattan-cb-05",
+          "record_kind": "event",
+          "record_id": "https://cb5.org/event/landmarks-committee-19/",
+          "record_url": "https://cb5.org/event/landmarks-committee-19/",
+          "date": "2026-01-27",
+          "start_at": "2026-01-27T18:00:00-05:00",
+          "end_at": "2026-01-27T21:00:00-05:00",
+          "category": "upcoming_meetings",
+          "format": "html",
+          "publisher_identifiers": [
+            "https://cb5.org/event/landmarks-committee-19/"
+          ],
+          "source_role": "upcoming_meetings",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb5.org/events/",
+            "observed_at": "2026-01-17T21:49:15.000Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 284380,
+            "parser": "html_pdf_v1",
+            "reason": null
+          },
+          "short_title": "Landmarks Committee",
+          "start_date": "2026-09-07T13:14:16.382Z",
+          "type_of_notice_description": "upcoming_meetings",
+          "section_name": "Community Board Meetings",
+          "meeting_join": {
+            "schema": "cityscroll.community_board_source_join.v1",
+            "status": "unknown",
+            "official": false,
+            "reason": "no_city_record_notice",
+            "board_id": "manhattan-cb-05",
+            "meeting_date": "2026-01-27",
+            "source_url": "https://cb5.org/event/landmarks-committee-19/",
+            "source_record_id": "https://cb5.org/event/landmarks-committee-19/",
+            "join": {
+              "matched": false,
+              "method": "exact_board_date_publisher_identifier",
+              "reason": "no_city_record_notice"
+            },
+            "provenance": {
+              "schema": "cityscroll.community_board_meeting_provenance.v1",
+              "source_url": "https://cb5.org/event/landmarks-committee-19/",
+              "source_record_id": "https://cb5.org/event/landmarks-committee-19/",
+              "source_index_url": "https://cb5.org/events/",
+              "observed_receipt": {
+                "schema": "cityscroll.community_board_source_receipt.v1",
+                "source_url": "https://cb5.org/events/",
+                "observed_at": "2026-01-17T21:49:15.000Z",
+                "status": "ok",
+                "fetch_status": "200",
+                "content_type": "text/html; charset=UTF-8",
+                "content_length": 284380,
+                "parser": "html_pdf_v1",
+                "reason": null
+              },
+              "adapter": "html_pdf_v1"
+            }
+          },
+          "source_provenance": {
+            "schema": "cityscroll.community_board_meeting_provenance.v1",
+            "source_url": "https://cb5.org/event/landmarks-committee-19/",
+            "source_record_id": "https://cb5.org/event/landmarks-committee-19/",
+            "source_index_url": "https://cb5.org/events/",
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://cb5.org/events/",
+              "observed_at": "2026-01-17T21:49:15.000Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html; charset=UTF-8",
+              "content_length": 284380,
+              "parser": "html_pdf_v1",
+              "reason": null
+            },
+            "adapter": "html_pdf_v1"
+          },
+          "entity_refs_all": [
+            "community-board:manhattan-cb-05",
+            "meeting:community_board:https://cb5.org/event/landmarks-committee-19/"
+          ],
+          "institution_edges": [
+            {
+              "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+              "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+              "edge_type": "hosts_meeting",
+              "relation": "hosts_meeting",
+              "status": "held",
+              "promoted": false,
+              "reason": "source_stale",
+              "from": "community-board:manhattan-cb-05",
+              "to": "meeting:community_board:https://cb5.org/event/landmarks-committee-19/",
+              "target_kind": "meeting",
+              "target_id": "meeting:community_board:https://cb5.org/event/landmarks-committee-19/",
+              "target_name": "Landmarks Committee",
+              "canonical_href": null,
+              "href": null,
+              "board_href": "/community-boards/manhattan-cb-05/",
+              "institution_refs": {
+                "board_ref": "community-board:manhattan-cb-05"
+              },
+              "source_url": "https://cb5.org/events/",
+              "source_record_id": "https://cb5.org/event/landmarks-committee-19/",
+              "source_receipt": {
+                "schema": "cityscroll.community_board_source_receipt.v1",
+                "source_url": "https://cb5.org/events/",
+                "observed_at": "2026-01-17T21:49:15.000Z",
+                "status": "ok",
+                "fetch_status": "200",
+                "content_type": "text/html; charset=UTF-8",
+                "content_length": 284380,
+                "parser": "html_pdf_v1",
+                "reason": null
+              },
+              "provenance": {
+                "observed_receipt": {
+                  "schema": "cityscroll.community_board_source_receipt.v1",
+                  "source_url": "https://cb5.org/events/",
+                  "observed_at": "2026-01-17T21:49:15.000Z",
+                  "status": "ok",
+                  "fetch_status": "200",
+                  "content_type": "text/html; charset=UTF-8",
+                  "content_length": 284380,
+                  "parser": "html_pdf_v1",
+                  "reason": null
+                }
+              },
+              "join": {
+                "matched": false,
+                "method": "exact_board_date_publisher_identifier",
+                "reason": "source_stale"
+              },
+              "evidence": []
+            }
+          ]
+        },
+        {
+          "object_type": "meeting",
+          "schema": "cityscroll.meeting_object.v1",
+          "meeting_id": "meeting:community_board:https://cb5.org/event/city-services-quality-of-life/",
+          "source_keys": [
+            {
+              "source_system": "community_board",
+              "key_type": "publisher_event_id",
+              "value": "https://cb5.org/event/city-services-quality-of-life/"
+            }
+          ],
+          "publisher_identifier": "https://cb5.org/event/city-services-quality-of-life/",
+          "title": "City Services & Quality of Life",
+          "event_date": "2026-01-28T18:00:00-05:00",
+          "event_end": "2026-01-28T20:00:00-05:00",
+          "meeting_family": "community_board_meeting_v0",
+          "venue": null,
+          "participation": {
+            "links": [
+              {
+                "label": "Meeting information",
+                "url": "https://cb5.org/event/city-services-quality-of-life/"
+              }
+            ],
+            "remote_join_url": null,
+            "emails": [],
+            "phones": [],
+            "source_url": "https://cb5.org/event/city-services-quality-of-life/"
+          },
+          "committee": null,
+          "agency": null,
+          "board_name": "Manhattan Community Board 5",
+          "description": "Location: CB5 District Office, 450 7th Ave, Ste 2109. Public may also attend by Zoom Click here to attend by Zoom – TBA Agenda: tba \\n",
+          "search_text": "City Services & Quality of Life Location: CB5 District Office, 450 7th Ave, Ste 2109. Public may also attend by Zoom Click here to attend by Zoom – TBA Agenda: tba \\n",
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "community_boards": [
+              "manhattan-cb-05"
+            ],
+            "community_districts": [
+              "M05"
+            ],
+            "neighborhoods": [],
+            "addresses": []
+          },
+          "meeting_documents": [],
+          "source_url": "https://cb5.org/event/city-services-quality-of-life/",
+          "source_system": "community_board",
+          "meeting_origin": "community_board_source_observed",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb5.org/events/",
+            "observed_at": "2026-01-17T21:49:15.000Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 284380,
+            "parser": "html_pdf_v1",
+            "reason": null
+          },
+          "join_status": "unknown",
+          "institution_refs": {
+            "agency_ref": null,
+            "board_ref": "community-board:manhattan-cb-05"
+          },
+          "compatibility": {
+            "legacy_notice_href": null,
+            "legacy_fragment_href": null,
+            "publisher_href": "https://cb5.org/event/city-services-quality-of-life/"
+          },
+          "request_id": null,
+          "source_record_id": "https://cb5.org/event/city-services-quality-of-life/",
+          "board_id": "manhattan-cb-05",
+          "record_kind": "event",
+          "record_id": "https://cb5.org/event/city-services-quality-of-life/",
+          "record_url": "https://cb5.org/event/city-services-quality-of-life/",
+          "date": "2026-01-28",
+          "start_at": "2026-01-28T18:00:00-05:00",
+          "end_at": "2026-01-28T20:00:00-05:00",
+          "category": "upcoming_meetings",
+          "format": "html",
+          "publisher_identifiers": [
+            "https://cb5.org/event/city-services-quality-of-life/"
+          ],
+          "source_role": "upcoming_meetings",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb5.org/events/",
+            "observed_at": "2026-01-17T21:49:15.000Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 284380,
+            "parser": "html_pdf_v1",
+            "reason": null
+          },
+          "short_title": "City Services & Quality of Life",
+          "start_date": "2026-09-07T13:14:16.382Z",
+          "type_of_notice_description": "upcoming_meetings",
+          "section_name": "Community Board Meetings",
+          "meeting_join": {
+            "schema": "cityscroll.community_board_source_join.v1",
+            "status": "unknown",
+            "official": false,
+            "reason": "no_city_record_notice",
+            "board_id": "manhattan-cb-05",
+            "meeting_date": "2026-01-28",
+            "source_url": "https://cb5.org/event/city-services-quality-of-life/",
+            "source_record_id": "https://cb5.org/event/city-services-quality-of-life/",
+            "join": {
+              "matched": false,
+              "method": "exact_board_date_publisher_identifier",
+              "reason": "no_city_record_notice"
+            },
+            "provenance": {
+              "schema": "cityscroll.community_board_meeting_provenance.v1",
+              "source_url": "https://cb5.org/event/city-services-quality-of-life/",
+              "source_record_id": "https://cb5.org/event/city-services-quality-of-life/",
+              "source_index_url": "https://cb5.org/events/",
+              "observed_receipt": {
+                "schema": "cityscroll.community_board_source_receipt.v1",
+                "source_url": "https://cb5.org/events/",
+                "observed_at": "2026-01-17T21:49:15.000Z",
+                "status": "ok",
+                "fetch_status": "200",
+                "content_type": "text/html; charset=UTF-8",
+                "content_length": 284380,
+                "parser": "html_pdf_v1",
+                "reason": null
+              },
+              "adapter": "html_pdf_v1"
+            }
+          },
+          "source_provenance": {
+            "schema": "cityscroll.community_board_meeting_provenance.v1",
+            "source_url": "https://cb5.org/event/city-services-quality-of-life/",
+            "source_record_id": "https://cb5.org/event/city-services-quality-of-life/",
+            "source_index_url": "https://cb5.org/events/",
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://cb5.org/events/",
+              "observed_at": "2026-01-17T21:49:15.000Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html; charset=UTF-8",
+              "content_length": 284380,
+              "parser": "html_pdf_v1",
+              "reason": null
+            },
+            "adapter": "html_pdf_v1"
+          },
+          "entity_refs_all": [
+            "community-board:manhattan-cb-05",
+            "meeting:community_board:https://cb5.org/event/city-services-quality-of-life/"
+          ],
+          "institution_edges": [
+            {
+              "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+              "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+              "edge_type": "hosts_meeting",
+              "relation": "hosts_meeting",
+              "status": "held",
+              "promoted": false,
+              "reason": "source_stale",
+              "from": "community-board:manhattan-cb-05",
+              "to": "meeting:community_board:https://cb5.org/event/city-services-quality-of-life/",
+              "target_kind": "meeting",
+              "target_id": "meeting:community_board:https://cb5.org/event/city-services-quality-of-life/",
+              "target_name": "City Services & Quality of Life",
+              "canonical_href": null,
+              "href": null,
+              "board_href": "/community-boards/manhattan-cb-05/",
+              "institution_refs": {
+                "board_ref": "community-board:manhattan-cb-05"
+              },
+              "source_url": "https://cb5.org/events/",
+              "source_record_id": "https://cb5.org/event/city-services-quality-of-life/",
+              "source_receipt": {
+                "schema": "cityscroll.community_board_source_receipt.v1",
+                "source_url": "https://cb5.org/events/",
+                "observed_at": "2026-01-17T21:49:15.000Z",
+                "status": "ok",
+                "fetch_status": "200",
+                "content_type": "text/html; charset=UTF-8",
+                "content_length": 284380,
+                "parser": "html_pdf_v1",
+                "reason": null
+              },
+              "provenance": {
+                "observed_receipt": {
+                  "schema": "cityscroll.community_board_source_receipt.v1",
+                  "source_url": "https://cb5.org/events/",
+                  "observed_at": "2026-01-17T21:49:15.000Z",
+                  "status": "ok",
+                  "fetch_status": "200",
+                  "content_type": "text/html; charset=UTF-8",
+                  "content_length": 284380,
+                  "parser": "html_pdf_v1",
+                  "reason": null
+                }
+              },
+              "join": {
+                "matched": false,
+                "method": "exact_board_date_publisher_identifier",
+                "reason": "source_stale"
+              },
+              "evidence": []
+            }
+          ]
+        }
+      ]
+    ],
+    [
       "manhattan-cb-06",
       [
         {

@@ -71,7 +71,7 @@
       "vintage_field": "sources.city_record.generated_at",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 522,
+      "value": 530,
       "reason": null
     },
     {
@@ -82,7 +82,7 @@
       "vintage_field": "generated_at",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 403,
+      "value": 411,
       "reason": null
     },
     {
@@ -621,7 +621,7 @@
           {
             "unit_id": "public-meetings",
             "route": "/browse/meetings/",
-            "served_records": 522,
+            "served_records": 530,
             "evidence_vintage": "2026-09-07T13:15:46.599Z"
           },
           {
@@ -980,7 +980,7 @@
           {
             "unit_id": "board-meetings",
             "route": "/browse/meetings/",
-            "served_records": 403,
+            "served_records": 411,
             "evidence_vintage": "2026-09-07T13:14:16.382Z"
           }
         ]

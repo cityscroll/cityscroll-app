@@ -18,6 +18,7 @@ import {
 import { buildCommunityBoardInstitutionEdges } from "../site/community_board_institution_edges.mjs";
 import { buildCommunityBoardMeetingIndexShardArtifacts } from "../site/community_board_meeting_index_shards.mjs";
 import { readCommunityBoardMeetingIndex } from "./lib/community_board_meeting_index_io.mjs";
+import { readRetainedCommunityBoardSnapshots } from "./acquire_community_board_retained_snapshot.mjs";
 
 const ROOT = join(import.meta.dirname, "..");
 const INVENTORY = join(ROOT, "site/data/non_council_outcome_sources/board_source_inventory.json");
@@ -69,13 +70,14 @@ function committeeFromRecord(record) {
   }
   return null;
 }
-function sourceDescriptors(inventory, registry) {
+function sourceDescriptors(inventory, registry, retainedSnapshots = new Map()) {
   const boardNames = new Map((registry.sources || [])
     .filter((row) => row.body_type === "community_board")
     .map((row) => [row.body_id, row.name]));
   return (inventory.boards || []).flatMap((board) => {
     return SOURCE_ROLES.map((role) => {
       const source = role === "upcoming_meetings" ? board.upcoming : board.minutes;
+      const retained = retainedSnapshots.get(`${board.id}:${role}`) || null;
       return {
         ...(source || {}),
         role,
@@ -83,9 +85,38 @@ function sourceDescriptors(inventory, registry) {
         board_id: board.id,
         body_id: board.id,
         body_name: boardNames.get(board.id) || board.name,
+        retained_snapshot: retained,
       };
     });
   });
+}
+
+/**
+ * A retained snapshot stands in for the publisher fetch this build cannot make.
+ * It carries the publisher's own records, the capture that holds them and the
+ * time that capture was taken, so the role is read rather than skipped and the
+ * observation date downstream is the capture's, never the build's.
+ */
+function retainedSnapshotResult(descriptor) {
+  const snapshot = descriptor?.retained_snapshot;
+  if (!snapshot) return null;
+  return {
+    records: (snapshot.source_records || []).map((record) => ({ ...record })),
+    receipt: snapshot.observed_receipt,
+  };
+}
+
+function retainedSnapshotProvenance(descriptor) {
+  const snapshot = descriptor?.retained_snapshot;
+  if (!snapshot?.retention) return null;
+  return {
+    service: snapshot.retention.service,
+    service_name: snapshot.retention.service_name,
+    snapshot_url: snapshot.retention.snapshot_url,
+    captured_at: snapshot.retention.captured_at,
+    content_sha256: snapshot.retention.content_sha256,
+    retention_reason: snapshot.retention_reason || null,
+  };
 }
 
 function sourceReceipt(descriptor, observedAt, result = null) {
@@ -94,7 +125,12 @@ function sourceReceipt(descriptor, observedAt, result = null) {
     observed_at: observedAt,
     status: "unknown",
     fetch_status: descriptor.verification?.fetchability === "browser_required" ? "browser-required" : null,
-    reason: descriptor.url ? "source_not_checked" : "no_explicit_source_observed",
+    // A source the publisher serves only to an interactive browser was never
+    // "not checked": the build declined to read it for a stated reason, and a
+    // reader deserves that reason rather than an unexplained blank.
+    reason: descriptor.verification?.fetchability === "browser_required"
+      ? "source_serves_browsers_only"
+      : (descriptor.url ? "source_not_checked" : "no_explicit_source_observed"),
     parser: communityBoardSourceAdapterId(descriptor),
   }, descriptor);
 }
@@ -103,7 +139,7 @@ function sourceState(descriptor, result, records, observedAt) {
   if (!descriptor.url) return "not-yet-checked";
   if (!sourceAdapterContract(descriptor)) return "unsupported-format";
   if (descriptor.status === "stale" || descriptor.verification?.status === "stale") return "stale";
-  if (descriptor.verification?.fetchability === "browser_required") return "unavailable";
+  if (descriptor.verification?.fetchability === "browser_required" && !descriptor.retained_snapshot) return "unavailable";
   const receipt = result?.receipt || {};
   if (receipt.reason === "source_stale") return "stale";
   if (receipt.status !== "ok") return "unavailable";
@@ -129,10 +165,70 @@ function sourceRoleReceipt(descriptor, result, records, observedAt) {
     state,
     state_reason: receipt.reason || (state === "checked-empty" ? "no_explicit_records" : null),
     observed_receipt: receipt,
+    retained_snapshot: retainedSnapshotProvenance(descriptor),
     inventory_receipt: descriptor.verification || null,
     record_count: records.length,
     materialized_record_count: materialized.length,
   };
+}
+
+const BOARD_COVERAGE_STATES = Object.freeze(["indexed", "checked-empty", "unreadable", "not-registered"]);
+export const COMMUNITY_BOARD_COVERAGE_STATES = BOARD_COVERAGE_STATES;
+
+function boardCoverageState(sourceState) {
+  if (sourceState === "indexed") return "indexed";
+  if (sourceState === "checked-empty") return "checked-empty";
+  if (sourceState === "unavailable" || sourceState === "stale" || sourceState === "unsupported-format") {
+    return "unreadable";
+  }
+  return "not-registered";
+}
+
+/**
+ * One coverage row per inventoried board, one entry per source role.
+ *
+ * The aggregate counts already say how much of the corpus is populated. They
+ * cannot say why one named board is missing from it, so a question about that
+ * board reads as though the lens holds no boards at all. These rows keep the
+ * cases apart: a board whose source was read, a board whose source was read
+ * and published nothing, a board whose published source could not be read, and
+ * a board with no published source at all each keep their own state, reason,
+ * source and observation date.
+ */
+function boardCoverageRows(inventory, receipts, materializedRows) {
+  const receiptsByBoard = new Map();
+  for (const receipt of receipts) {
+    if (!receiptsByBoard.has(receipt.board_id)) receiptsByBoard.set(receipt.board_id, []);
+    receiptsByBoard.get(receipt.board_id).push(receipt);
+  }
+  const meetingCounts = new Map();
+  for (const row of materializedRows) {
+    meetingCounts.set(row.board_id, (meetingCounts.get(row.board_id) || 0) + 1);
+  }
+  const roleCoverage = (boardReceipts, role) => {
+    const receipt = boardReceipts.find((row) => row.role === role) || null;
+    return {
+      state: boardCoverageState(receipt?.state),
+      source_role_state: receipt?.state || "not-yet-checked",
+      reason: receipt?.state_reason || null,
+      source_url: receipt?.source_url || null,
+      observed_at: receipt?.observed_receipt?.observed_at || null,
+      record_count: receipt?.materialized_record_count ?? 0,
+      retained_snapshot: receipt?.retained_snapshot || null,
+    };
+  };
+  return (inventory.boards || []).map((board) => {
+    const boardReceipts = receiptsByBoard.get(board.id) || [];
+    return {
+      board_id: board.id,
+      board_name: board.name,
+      borough: board.borough,
+      community_district: boardCommunityDistrict(board),
+      meeting_record_count: meetingCounts.get(board.id) || 0,
+      meetings: roleCoverage(boardReceipts, "upcoming_meetings"),
+      minutes: roleCoverage(boardReceipts, "minutes"),
+    };
+  }).sort((left, right) => left.board_id.localeCompare(right.board_id));
 }
 
 function assertNoDuplicatePublisherIdentifiers(records) {
@@ -302,7 +398,7 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
   const registry = readJson(REGISTRY);
   const committeeRegistry = readJson(COMMITTEE_REGISTRY);
   const boardById = new Map((inventory.boards || []).map((board) => [board.id, board]));
-  const descriptors = sourceDescriptors(inventory, registry);
+  const descriptors = sourceDescriptors(inventory, registry, readRetainedCommunityBoardSnapshots());
   const byBoard = {};
   const sourceRecordsByBoard = {};
   const receipts = [];
@@ -311,24 +407,26 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
   const allRecords = [];
   for (const descriptor of descriptors) {
     const contract = sourceAdapterContract(descriptor);
-    const shouldFetch = Boolean(descriptor.url)
+    const retained = retainedSnapshotResult(descriptor);
+    const shouldFetch = !retained
+      && Boolean(descriptor.url)
       && Boolean(contract)
       && descriptor.verification?.fetchability !== "browser_required";
-    const result = shouldFetch
+    const result = retained || (shouldFetch
       ? await fetchCommunityBoardSource(descriptor, {
         fetchImpl,
         observedAt,
         extractPdfText: extractPdfCalendarText,
         committeeRegistry,
       })
-      : { records: [], receipt: sourceReceipt(descriptor, observedAt) };
+      : { records: [], receipt: sourceReceipt(descriptor, observedAt) });
     if (shouldFetch) fetched += 1;
     let records = result.records.map((record) => ({
       ...record,
       source_role: descriptor.source_role,
       source_url: record.source_url || descriptor.url || null,
     }));
-    if (descriptor.source_role === "upcoming_meetings") {
+    if (descriptor.source_role === "upcoming_meetings" && !retained) {
       const enriched = [];
       for (const record of records) {
         const next = await enrichEventRecord(record, descriptor, fetchImpl, observedAt);
@@ -434,6 +532,7 @@ export function assembleCommunityBoardMeetingIndex({
       source_roles_stale: receipts.filter((row) => row.state === "stale").length,
       source_roles_not_yet_checked: receipts.filter((row) => row.state === "not-yet-checked").length,
     },
+    board_coverage: boardCoverageRows(inventory, receipts, materializedRows),
     institution_edges: institutionEdges,
     receipts,
     source_records_by_board: sourceRecordsByBoard,
@@ -452,10 +551,29 @@ export function assembleCommunityBoardMeetingIndex({
  */
 export function rematerializeCommunityBoardMeetingIndex() {
   const inventory = readJson(INVENTORY);
+  const registry = readJson(REGISTRY);
   const committeeRegistry = readJson(COMMITTEE_REGISTRY);
   const boardById = new Map((inventory.boards || []).map((board) => [board.id, board]));
   const committed = readCommunityBoardMeetingIndex(OUTPUT);
-  const sourceRecordsByBoard = committed.source_records_by_board || {};
+  const retainedSnapshots = readRetainedCommunityBoardSnapshots();
+  const descriptors = sourceDescriptors(inventory, registry, retainedSnapshots);
+  const sourceRecordsByBoard = mergeRetainedSourceRecords(
+    committed.source_records_by_board || {},
+    retainedSnapshots,
+  );
+  const receipts = descriptors.map((descriptor) => {
+    const retained = retainedSnapshotResult(descriptor);
+    if (retained) return sourceRoleReceipt(descriptor, retained, retained.records, committed.generated_at);
+    const committedReceipt = (committed.receipts || []).find((row) => (
+      row.board_id === descriptor.board_id && row.role === descriptor.source_role
+    ));
+    // A role the build never fetched has no observation to preserve, so its
+    // receipt is re-derived from the descriptor rather than carried forward.
+    if (!committedReceipt || committedReceipt.state === "unavailable" || committedReceipt.state === "not-yet-checked") {
+      return sourceRoleReceipt(descriptor, null, [], committed.generated_at);
+    }
+    return { ...committedReceipt, retained_snapshot: committedReceipt.retained_snapshot ?? null };
+  });
   const observedAt = committed.generated_at;
   const byBoard = {};
   const allRecords = [];
@@ -473,11 +591,31 @@ export function rematerializeCommunityBoardMeetingIndex() {
     byBoard,
     sourceRecordsByBoard,
     allRecords,
-    receipts: committed.receipts || [],
+    receipts,
     fetched: committed.coverage?.source_urls_checked || 0,
     eventDetailsFetched: committed.coverage?.event_details_checked || 0,
     observedAt,
   });
+}
+
+/**
+ * Fold retained snapshots into the committed observations.
+ *
+ * The retained records replace that board role's committed records outright:
+ * a capture is one observation of one page, so merging it record by record
+ * would leave a stale entry behind with no observation to stand on.
+ */
+function mergeRetainedSourceRecords(committedByBoard, retainedSnapshots) {
+  const merged = Object.fromEntries(Object.entries(committedByBoard)
+    .map(([boardId, records]) => [boardId, [...records]]));
+  for (const snapshot of retainedSnapshots.values()) {
+    const kept = (merged[snapshot.board_id] || [])
+      .filter((record) => (record.source_role || "upcoming_meetings") !== snapshot.source_role);
+    const next = [...kept, ...(snapshot.source_records || [])];
+    if (next.length) merged[snapshot.board_id] = next;
+    else delete merged[snapshot.board_id];
+  }
+  return Object.fromEntries(Object.entries(merged).sort(([left], [right]) => left.localeCompare(right)));
 }
 
 const check = process.argv.includes("--check");

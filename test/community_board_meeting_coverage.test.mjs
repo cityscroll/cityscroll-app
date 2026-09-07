@@ -81,9 +81,13 @@ function responseFor(url, { duplicate = false } = {}) {
 }
 
 test("the coverage builder accounts for both roles across all 59 boards", async () => {
+  const requested = [];
   const index = await buildCommunityBoardMeetingIndex({
     observedAt: "2026-08-14T12:00:00Z",
-    fetchImpl: async (url) => responseFor(url),
+    fetchImpl: async (url) => {
+      requested.push(String(url));
+      return responseFor(url);
+    },
   });
 
   assert.equal(index.coverage.boards_in_inventory, 59);
@@ -95,8 +99,18 @@ test("the coverage builder accounts for both roles across all 59 boards", async 
       counts[row.state] = (counts[row.state] || 0) + 1;
       return counts;
     }, {}),
-    { indexed: 46, "checked-empty": 49, unavailable: 8, "not-yet-checked": 15 },
+    { indexed: 47, "checked-empty": 49, unavailable: 7, "not-yet-checked": 15 },
   );
+  // A role covered by a retained snapshot is read from that snapshot. The build
+  // must not reach for the publisher page the snapshot exists because of.
+  const retained = index.receipts.filter((row) => row.retained_snapshot);
+  assert.ok(retained.length >= 1);
+  for (const row of retained) {
+    assert.equal(row.state, "indexed");
+    assert.equal(row.observed_receipt.observed_at, row.retained_snapshot.captured_at);
+    assert.ok(!requested.includes(row.source_url), `${row.source_url} was not fetched`);
+    assert.ok(!requested.includes(row.retained_snapshot.snapshot_url), "the retained capture is not refetched either");
+  }
   assert.equal(index.coverage.records_indexed, index.rows.length);
   assert.ok(index.rows.every((row) => row.source_role === "upcoming_meetings"));
   assert.ok(Object.values(index.source_records_by_board).flat().some((row) => row.source_role === "minutes"));

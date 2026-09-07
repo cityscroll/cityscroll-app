@@ -85,6 +85,11 @@ function sourceEnvelope({ source, generatedAt, now, maxAgeMs, rows, index, reaso
     row_count: rows.length,
     reason: reason || (!index && source === "community_board" ? "snapshot_missing" : null),
     coverage: index?.coverage || null,
+    // Per-board coverage travels with the envelope so a reader asking about one
+    // board can be told whether that board's source was read, read and empty,
+    // unreadable, or never published — rather than inferring any of those from
+    // an empty result set.
+    board_coverage: Array.isArray(index?.board_coverage) ? index.board_coverage : null,
   };
 }
 
