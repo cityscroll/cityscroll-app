@@ -167,6 +167,38 @@ test("lab evidence is separate and cannot emit field candidates", () => {
   assert.equal(buildCandidates(overlay).length, 0);
 });
 
+test("the scheduled probe group is reported beside the resident group, never inside it", () => {
+  // The probe visits a fixed page list under a fixed device and network profile,
+  // so its distribution answers an engineering question about the deployed
+  // surface. It is not resident experience and cannot open a resident candidate.
+  const synthetic = snapshotFor({ p75: 6000, p95: 12000 });
+  synthetic.query.filters.traffic_class = "synthetic";
+  const overlay = buildDriftOverlay(snapshotFor({ p75: 2000, p95: 4000 }), {
+    syntheticSnapshot: synthetic,
+    now: new Date("2026-08-25T00:00:00.000Z"),
+  });
+
+  assert.equal(overlay.field.measurement_group, "resident");
+  assert.equal(overlay.field.label, "resident");
+  assert.equal(overlay.field.combined_with_synthetic, false);
+  assert.equal(overlay.synthetic.measurement_group, "synthetic");
+  assert.equal(overlay.synthetic.label, "synthetic");
+  assert.equal(overlay.synthetic.traffic_class, "synthetic");
+  assert.equal(overlay.synthetic.measurement_origin, "scheduled-probe");
+  assert.equal(overlay.synthetic.combined_with_field, false);
+  assert.equal(overlay.synthetic.sample_floor, 30);
+
+  // Every metric row inside each section names the class it was read under, and
+  // a failing synthetic row leaves the resident section and its candidates alone.
+  const residentHome = overlay.surfaces.find((surface) => surface.surface_id === "home");
+  const syntheticHome = overlay.synthetic.surfaces.find((surface) => surface.surface_id === "home");
+  assert.equal(residentHome.metrics.content_ready_ms.traffic_class, "production");
+  assert.equal(residentHome.metrics.content_ready_ms.slo_state, "good");
+  assert.equal(syntheticHome.metrics.content_ready_ms.traffic_class, "synthetic");
+  assert.equal(syntheticHome.metrics.content_ready_ms.slo_state, "fail");
+  assert.equal(buildCandidates(overlay).length, 0);
+});
+
 test("the live CLI stays successful on an unavailable read and the workflow is once daily", async () => {
   await withTempDir("performance-drift", async (out) => {
     const env = { ...process.env };

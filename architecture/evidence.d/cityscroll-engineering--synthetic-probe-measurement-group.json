@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/synthetic-probe-measurement-group",
+  "status": "implemented",
+  "fingerprint": "synthetic-probe-measurement-group.v1",
+  "updated_at": "2026-09-07T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "measurement-group-contract",
+      "path": "tools/lib/rum_measurement_groups.mjs"
+    },
+    {
+      "id": "single-group-read-back",
+      "path": "tools/read_rum_measurement_group.mjs"
+    },
+    {
+      "id": "scheduled-probe",
+      "path": "tools/run_notice_synthetic_probe.py"
+    },
+    {
+      "id": "committed-page-list",
+      "path": "data/performance/notice-synthetic-probe-pages.json"
+    },
+    {
+      "id": "measurement-group-test",
+      "path": "test/rum_measurement_groups.test.mjs"
+    },
+    {
+      "id": "scheduled-probe-test",
+      "path": "test/notice_synthetic_probe.test.mjs"
+    }
+  ]
+}

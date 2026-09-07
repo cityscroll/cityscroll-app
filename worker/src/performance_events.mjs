@@ -3,7 +3,12 @@
 import performanceAllowlist from "./data/performance-validation-allowlist.v1.json" with { type: "json" };
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
 import { bumpStat } from "./lib/stats.mjs";
-import { isRumProductionOrigin } from "../../site/rum_production.mjs";
+import {
+  RUM_MARKED_TRAFFIC_CLASSES,
+  RUM_RESIDENT_TRAFFIC_CLASS,
+  RUM_TRAFFIC_CLASSES as RUM_TRAFFIC_CLASS_VALUES,
+  isRumProductionOrigin,
+} from "../../site/rum_production.mjs";
 
 export const RUM_BATCH_SCHEMA = "cityscroll.rum.batch.v1";
 export const RUM_OBSERVATION_SCHEMA = "cityscroll.performance_observation.v1";
@@ -11,7 +16,10 @@ export const RUM_MAX_BATCH_SIZE = 16;
 export const RUM_MAX_REQUEST_BYTES = 8 * 1024;
 export const RUM_DEV_HEADER = "X-CROL-Analytics-Dev";
 export const RUM_TRAFFIC_CLASS_QUERY = "traffic_class";
-export const RUM_TRAFFIC_CLASSES = Object.freeze(["production", "lab"]);
+// The retained measurement groups. `production` is resident traffic and is the
+// value an unmarked request gets; `lab` and `synthetic` are only ever reached by
+// a measuring client naming itself on the delivery flag.
+export const RUM_TRAFFIC_CLASSES = RUM_TRAFFIC_CLASS_VALUES;
 
 // These are transport corruption bounds, not speed thresholds. They prevent a malformed
 // observation from consuming an unbounded numeric domain while preserving generous headroom.
@@ -310,7 +318,7 @@ export function normalizeRumBatch(input) {
   return { ok: true, observations };
 }
 
-export function rumDataPoint(observation, trafficClass = "production") {
+export function rumDataPoint(observation, trafficClass = RUM_RESIDENT_TRAFFIC_CLASS) {
   return {
     blobs: [
       observation.schema,
@@ -339,11 +347,13 @@ export function rumDataPoint(observation, trafficClass = "production") {
 
 function requestTrafficClass(req) {
   try {
-    return new URL(req.url).searchParams.get(RUM_TRAFFIC_CLASS_QUERY) === "lab"
-      ? "lab"
-      : "production";
+    const declared = new URL(req.url).searchParams.get(RUM_TRAFFIC_CLASS_QUERY);
+    // Only a client that names a marked class gets one. Every other request —
+    // including one carrying an unknown or misspelled value — is resident
+    // traffic, so no request property is ever used to guess a class.
+    return RUM_MARKED_TRAFFIC_CLASSES.includes(declared) ? declared : RUM_RESIDENT_TRAFFIC_CLASS;
   } catch {
-    return "production";
+    return RUM_RESIDENT_TRAFFIC_CLASS;
   }
 }
 

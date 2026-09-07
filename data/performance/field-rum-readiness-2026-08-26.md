@@ -31,6 +31,84 @@ least 30 observations are retained; otherwise it is recorded as
 `insufficient_sample`, never rounded up to a pass. Measured values are labeled
 measured; estimates stay estimates.
 
+### Amendment: two measurement groups, read separately
+
+The retained dataset now holds two populations that can answer a Notice
+performance question, and they are never mixed.
+
+| | Resident | Synthetic |
+| --- | --- | --- |
+| Retained as | `traffic_class = production` | `traffic_class = synthetic` |
+| Population | People using the deployed site | A scheduled probe on a fixed page list |
+| Sample floor | 30 | 30 |
+| Window anchor | The delivery merge that opened the read-back | The first probe slot after the job is installed |
+| Label in every output | `resident` | `synthetic` |
+
+**Why the second group exists.** The Notice surface retains roughly a third of an
+observation per day for the primary content-readiness group, so a 30-observation
+floor takes about ninety days to fill. That is real traffic volume, not a
+sampling setting and not a collector defect: there is nothing to loosen. The site
+owner approved a labelled second group so the engineering question — did the
+delivered change shorten readiness on the deployed surface — can be answered in
+about a week. The resident group keeps its own floor, its own anchor, and its own
+declared date; nothing about it changes.
+
+**What synthetic measures.** What the deployed production surface does for the
+committed page list in `data/performance/notice-synthetic-probe-pages.json`,
+visited with a cold cache, one visit per page per slot, under one fixed mobile
+device profile and one fixed network throttle.
+
+**What synthetic cannot claim.** It is not resident experience. It carries no
+device or network distribution, because the profile is fixed. It carries no
+page-popularity weighting, because every listed page is visited equally often. A
+synthetic percentile is never presented as what residents experienced, and a
+synthetic and a resident percentile are never combined into one distribution —
+`compareMeasurementGroups` in `tools/lib/rum_measurement_groups.mjs` refuses a
+cross-group comparison by name rather than producing one with a caveat.
+
+**The marker.** The probe client sets the marker itself: it installs
+`CROL_RUM_TRAFFIC_CLASS = "synthetic"` in the page context before any document
+script runs, the shipped bootstrap records it, and the delivery leg carries it to
+the collector as an explicit `traffic_class=synthetic` query flag which the
+collector retains. Nothing infers a class from a user agent, an address, or any
+other request property, so an observation with no marker is resident traffic by
+construction. The marker is deliberately not carried on the page URL: the Notice
+route rewrites an unrecognised hash and a query string changes the edge cache
+key, either of which would alter the response being measured.
+
+**How a verdict cites a group.** A verdict names the group, its floor, its
+anchor, and its window, in that order — for example, "synthetic group, floor 30,
+anchor 2026-09-14T02:07Z, complete 7d window". A verdict that cites the synthetic
+group states in the same breath that it is a probe measurement of the deployed
+surface and not a resident-experience result. A verdict about resident experience
+can only cite the resident group.
+
+**Reading one group.** The single-group entry point applies that group's own
+floor and anchor and labels every row:
+
+```bash
+ANALYTICS_ACCOUNT_ID=<from worker/wrangler.toml> \
+ANALYTICS_READ_TOKEN=<from the logged-in wrangler OAuth session> \
+RUM_ANALYTICS_DATASET=crol_rum_observations_v1 \
+node tools/read_rum_measurement_group.mjs \
+  --group synthetic --metric content_ready_ms --surface notice --component none \
+  --window 7d
+```
+
+Substituting `--group resident` reads the resident group under the same
+procedure. There is no argument that reads both at once. A window that begins
+before the group's anchor is recorded as `window_precedes_anchor` and its
+percentiles are withheld, so the synthetic group cannot borrow a window it was
+not measuring in. `tools/read_rum_drift.mjs` reads each group on its own query
+and reports them as separate labelled sections of the daily overlay.
+
+**Where synthetic observations come from.** The `notice-synthetic-probe` job in
+`tools/external_schedule_jobs.json` runs four slots a day on the operator's
+independent scheduler. It records what it visited, how many observations it
+emitted, and what it could not reach, and files an issue only when the probe
+itself has failed on three consecutive slots. A slow page is the measurement, not
+a fault.
+
 ## Notice-context
 
 Primary metric: `component_ready_ms`, surface `notice`, component

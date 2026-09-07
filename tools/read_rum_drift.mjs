@@ -43,7 +43,12 @@ function parseArgs(argv) {
     else if (arg === "--now") args.now = new Date(argv[++i]);
     else if (arg === "--source-run") args.sourceRun = argv[++i];
     else if (arg === "--help" || arg === "-h") {
-      console.log("Usage: node tools/read_rum_drift.mjs [--out dir] [--baseline path] [--ledger path] [--now ISO]");
+      console.log([
+        "Usage: node tools/read_rum_drift.mjs [--out dir] [--baseline path] [--ledger path] [--now ISO]",
+        "",
+        "Reads each retained measurement group separately and reports them separately.",
+        "To read one group on its own, use tools/read_rum_measurement_group.mjs --group <resident|synthetic>.",
+      ].join("\n"));
       process.exit(0);
     } else throw new Error(`unknown argument: ${arg}`);
   }
@@ -90,14 +95,18 @@ async function main(argv = process.argv.slice(2)) {
   const args = parseArgs(argv);
   mkdirSync(args.out, { recursive: true });
   const baseline = readJson(args.baseline, null);
-  const [snapshot, labSnapshot] = await Promise.all([
+  // Each measurement group is read on its own query, filtered to its own traffic
+  // class. There is no read here that spans two of them.
+  const [snapshot, labSnapshot, syntheticSnapshot] = await Promise.all([
     readSnapshot(args.now, "production"),
     readSnapshot(args.now, "lab"),
+    readSnapshot(args.now, "synthetic"),
   ]);
   const generation = readJson(args.generation, null);
   const overlay = buildDriftOverlay(snapshot, {
     baseline,
     labSnapshot,
+    syntheticSnapshot,
     generation,
     now: args.now,
     sourceRun: args.sourceRun,
@@ -131,6 +140,7 @@ async function main(argv = process.argv.slice(2)) {
     source_run: overlay.source_run,
     query_status: overlay.query_status,
     lab_query_status: overlay.lab?.query_status || "unavailable",
+    synthetic_query_status: overlay.synthetic?.query_status || "unavailable",
     generation_verdict: overlay.generation?.verdict || "unavailable",
     evidence_hash: overlay.evidence_hash,
     query_hash: overlay.query_hash,

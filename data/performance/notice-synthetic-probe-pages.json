@@ -1,0 +1,91 @@
+{
+  "schema": "cityscroll.notice_synthetic_probe_pages.v1",
+  "surface_id": "notice",
+  "traffic_class": "synthetic",
+  "purpose": "The fixed page list the scheduled Notice performance probe visits. The list is committed so that every synthetic observation comes from the same pages under the same profile, and so a change to what is measured is a reviewed change rather than a drifting sample.",
+  "selection_rationale": "Eight Notice documents chosen to spread the client work a Notice page can carry rather than to represent what residents read. The spread covers both published notice kinds (award and solicitation) and the four client owners that dominate a Notice page's readiness: a land-use meeting agenda, a rule text, an attachment table, and procurement context enrichment. Two anchors bound the range: the heaviest and the lightest document measured on the list. Popularity is deliberately not a selection input, because an equal-visit probe carries no popularity weighting and must not be read as though it did.",
+  "maintenance": "Publisher windows roll, so a listed notice can stop resolving. The probe reports an unreachable page per slot instead of failing the run, and a page that has been unreachable across consecutive slots is replaced by a reviewed edit to this file. The probe never substitutes a page of its own.",
+  "document_bytes_measured_at": "2026-09-07",
+  "document_bytes_note": "Measured response bytes for the served document on the date above. A single measured observation for the size spread, not a budget and not a latency claim.",
+  "device_profile": {
+    "id": "mobile-390x844",
+    "viewport": { "width": 390, "height": 844 },
+    "device_scale_factor": 3,
+    "is_mobile": true,
+    "has_touch": true,
+    "rationale": "A mid-range phone viewport. The readiness budget is set for slow devices, so the probe measures the harder profile rather than a desktop one."
+  },
+  "network_profile": {
+    "id": "throttled-4g",
+    "download_throughput_bytes_per_second": 1638400,
+    "upload_throughput_bytes_per_second": 768000,
+    "latency_ms": 150,
+    "rationale": "A fixed throttle so a change in the measured distribution is a change in the deployed surface rather than a change in the network the probe happened to get."
+  },
+  "visit_policy": {
+    "cold_cache_per_visit": true,
+    "visits_per_page_per_slot": 1,
+    "settle_ms": 12000,
+    "page_timeout_ms": 60000,
+    "run_budget_ms": 600000,
+    "rationale": "One cold visit per page per slot. A repeat visit inside a slot would measure a warm cache and a warm connection, which is a different question, and a shared browser context would carry state between pages."
+  },
+  "pages": [
+    {
+      "path": "/notices/20260707021/",
+      "notice_kind": "land-use meeting",
+      "weight_class": "heaviest",
+      "document_bytes": 309774,
+      "rationale": "A subcommittee meeting notice carrying an agenda of land-use items. The largest document on the list and the one with the most client-rendered rows."
+    },
+    {
+      "path": "/notices/20260804030/",
+      "notice_kind": "rulemaking",
+      "weight_class": "heavy",
+      "document_bytes": 297534,
+      "rationale": "An emergency rule amendment. Exercises the rule-text owner, which is deferred and must never gate primary readiness."
+    },
+    {
+      "path": "/notices/20260729027/",
+      "notice_kind": "award",
+      "weight_class": "heavy",
+      "document_bytes": 298048,
+      "rationale": "An award notice with structured attachment tables. Exercises the attachment-metadata owner."
+    },
+    {
+      "path": "/notices/20240515016/",
+      "notice_kind": "award",
+      "weight_class": "medium",
+      "document_bytes": 297460,
+      "rationale": "The one notice with precomputed related-attachment edges, so the related-document path is measured on at least one page per slot."
+    },
+    {
+      "path": "/notices/20260714015/",
+      "notice_kind": "solicitation",
+      "weight_class": "medium",
+      "document_bytes": 298013,
+      "rationale": "A solicitation already loaded by the controlled generator, so the synthetic group and the lab group share at least one page and a difference between them is not a difference in what was visited."
+    },
+    {
+      "path": "/notices/20260828020/",
+      "notice_kind": "solicitation",
+      "weight_class": "medium",
+      "document_bytes": 296130,
+      "rationale": "A current solicitation inside the resident procurement window, so the procurement-context enrichment owner has data to render."
+    },
+    {
+      "path": "/notices/20260716009/",
+      "notice_kind": "public hearing",
+      "weight_class": "medium",
+      "document_bytes": 300928,
+      "rationale": "A public hearing notice. The third published section on the list, so the spread is not two kinds wide."
+    },
+    {
+      "path": "/notices/20260805001/",
+      "notice_kind": "public meeting",
+      "weight_class": "lightest",
+      "document_bytes": 293692,
+      "rationale": "A short public meeting notice. The smallest document on the list and the lower bound of the size spread."
+    }
+  ]
+}

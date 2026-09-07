@@ -210,6 +210,38 @@ test("controlled lab intake is retained and tagged separately from field traffic
   assert.equal(points[1].blobs[9], "lab");
 });
 
+test("the scheduled probe's marker reaches the retained dataset, and nothing else can", async () => {
+  const points = [];
+  async function postWithQuery(query) {
+    return handlePerformanceEvents(new Request(
+      `https://api.cityscroll.org/performance-events${query}`,
+      {
+        method: "POST",
+        headers: { Origin: "https://cityscroll.org", "Content-Type": "application/json" },
+        body: JSON.stringify(batch()),
+      },
+    ), {
+      RUM_ANALYTICS: analyticsBinding(points),
+      RUM_INGEST_ENABLED: "true",
+      ANALYTICS_ENVIRONMENT: "production",
+    }, { nowMs: NOW_MS });
+  }
+
+  // The probe names itself on the delivery flag and the class is retained on
+  // blob10, which is the dimension a read-back partitions the two groups on.
+  assert.equal((await postWithQuery("?traffic_class=synthetic")).status, 204);
+  assert.equal(points[0].blobs[9], "synthetic");
+
+  // Every other request is resident traffic. A misspelled, unknown, or absent
+  // value is never promoted into a marked group, and no request property — user
+  // agent included — can reach one.
+  for (const query of ["?traffic_class=syntetic", "?traffic_class=", "?traffic_class=production", ""]) {
+    const before = points.length;
+    assert.equal((await postWithQuery(query)).status, 204);
+    assert.equal(points[before].blobs[9], "production", `${query || "(no query)"} was not retained as resident traffic`);
+  }
+});
+
 test("strict batch validation rejects private, unknown, incompatible, and corrupt data without writes", async (t) => {
   const cases = [
     ["forbidden nested key", batch([{ ...observation(), metadata: { visitor_id: "private" } }]), "forbidden_key"],

@@ -3,7 +3,11 @@
 // receives Analytics Engine credentials or SQL.
 
 import performanceAllowlist from "../data/performance-validation-allowlist.v1.json" with { type: "json" };
-import { RUM_HEALTH_REASONS, RUM_OBSERVATION_SCHEMA } from "../performance_events.mjs";
+import {
+  RUM_HEALTH_REASONS,
+  RUM_OBSERVATION_SCHEMA,
+  RUM_TRAFFIC_CLASSES,
+} from "../performance_events.mjs";
 import {
   PERFORMANCE_ATTRIBUTION_PHASES,
   PERFORMANCE_COVERAGE_METRICS,
@@ -86,7 +90,10 @@ const deviceClasses = new Set(performanceAllowlist.collector?.device_classes || 
 const navigationTypes = new Set(performanceAllowlist.collector?.navigation_types || []);
 const deliveryClasses = new Set(performanceAllowlist.delivery_classes || []);
 const resultStates = new Set(performanceAllowlist.result_states || []);
-const trafficClasses = new Set(["production", "lab"]);
+// A read may be scoped to exactly one retained measurement group. There is no
+// filter value that spans two of them, so a single query can never return a
+// distribution pooled across resident and marked traffic.
+const trafficClasses = new Set(RUM_TRAFFIC_CLASSES);
 const RELEASE_ID = /^[a-f0-9]{40}$/;
 
 const REJECTION_REASONS = RUM_HEALTH_REASONS.filter((reason) => ![

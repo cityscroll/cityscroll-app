@@ -243,6 +243,7 @@ function worstDataStatus(metrics) {
 export function buildDriftOverlay(snapshot, {
   baseline = null,
   labSnapshot = null,
+  syntheticSnapshot = null,
   generation = null,
   now = new Date(),
   sourceRun = null,
@@ -290,14 +291,21 @@ export function buildDriftOverlay(snapshot, {
     sampling: snapshot?.sampling || null,
     data_health: snapshot?.data_health || null,
     field: {
+      measurement_group: "resident",
+      label: "resident",
       traffic_class: "production",
       measurement_origin: "field",
+      combined_with_synthetic: false,
     },
     coverage: snapshot?.coverage_lattice || buildPerformanceCoverageLattice({
       sampleFloor: snapshot?.sample_floor || PERFORMANCE_SAMPLE_FLOOR,
       readStatus: snapshot?.status === "unavailable" ? "unavailable" : "not_read",
     }),
     lab: buildLabEvidence(labSnapshot, now),
+    // The scheduled probe group. Read and reported beside the resident field
+    // group, never folded into it: the two measure different populations and
+    // each carries its own floor, window, and label.
+    synthetic: buildSyntheticEvidence(syntheticSnapshot, now),
     generation: generation || null,
     surfaces,
     enforcement: {
@@ -310,6 +318,43 @@ export function buildDriftOverlay(snapshot, {
   return {
     ...overlayBody,
     evidence_hash: hashEvidence(overlayBody),
+  };
+}
+
+function buildSyntheticEvidence(snapshot, now) {
+  const window = currentWindow(snapshot, now);
+  const surfaces = performanceInventory.surfaces.map((surface) => {
+    const instrumented = surface.lifecycle_state === "instrumented";
+    const metrics = PERFORMANCE_METRICS.map((metricId) => metricEvidence({
+      snapshot,
+      series: findSeries(snapshot, surface.surface_id, metricId),
+      baseline: null,
+      surface,
+      metricId,
+      instrumented,
+      window,
+      trafficClass: "synthetic",
+      measurementOrigin: "scheduled-probe",
+    }));
+    return {
+      surface_id: surface.surface_id,
+      operator_label: surface.operator_label,
+      lifecycle_state: surface.lifecycle_state,
+      data_status: worstDataStatus(metrics),
+      slo_state: worstSlo(metrics),
+      metrics: Object.fromEntries(metrics.map((metric) => [metric.metric_id, metric])),
+    };
+  });
+  return {
+    measurement_group: "synthetic",
+    label: "synthetic",
+    traffic_class: "synthetic",
+    measurement_origin: "scheduled-probe",
+    combined_with_field: false,
+    query_status: snapshot?.status || "unavailable",
+    sample_floor: snapshot?.sample_floor || PERFORMANCE_SAMPLE_FLOOR,
+    window,
+    surfaces,
   };
 }
 

@@ -1,6 +1,14 @@
+import { RUM_MARKED_TRAFFIC_CLASSES } from "./rum_production.mjs";
+
 const DEFAULT_API_ORIGIN = "https://api.cityscroll.org";
 const DEV_HEADER = "X-CROL-Analytics-Dev";
 
+/**
+ * Resident delivery carries no marker at all; a measuring client's declared class
+ * travels as an explicit query flag the collector reads and retains. An unknown
+ * value is dropped rather than forwarded, so the flag can only ever name one of
+ * the classes the collector already accepts.
+ */
 function performanceEndpoint(endpoint, runtime, trafficClass) {
   if (endpoint) return endpoint;
   const configured = runtime?.CROL_API_ORIGIN || runtime?.window?.CROL_API_ORIGIN;
@@ -8,7 +16,9 @@ function performanceEndpoint(endpoint, runtime, trafficClass) {
     ? configured.replace(/\/+$/, "")
     : DEFAULT_API_ORIGIN;
   const target = `${origin}/performance-events`;
-  return trafficClass === "lab" ? `${target}?traffic_class=lab` : target;
+  return RUM_MARKED_TRAFFIC_CLASSES.includes(trafficClass)
+    ? `${target}?traffic_class=${trafficClass}`
+    : target;
 }
 
 /**
