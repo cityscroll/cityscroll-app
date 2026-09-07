@@ -29,11 +29,30 @@ test("the evaluator measures every required dimension with explicit denominators
     review_coverage: { numerator: 3, denominator: 3, rate: 1 },
     cases: result.dimensions.precision.cases,
   });
+  // The eligible-input denominator grew with the committed Checkbook
+  // population; the shown numerator did not, because the amount-change pilot
+  // shows only what the frozen inspection receipt admits.
   assert.deepEqual(result.dimensions.yield.aggregate, {
     numerator: 3,
-    denominator: 1705,
-    rate: 0.00176,
+    denominator: 9053,
+    rate: 0.000331,
   });
+  const amountFamily = result.dimensions.yield.families.within_contract_registered_amount_change;
+  assert.equal(amountFamily.numerator, 2);
+  assert.equal(amountFamily.detected_changes, 118);
+  assert.equal(amountFamily.admitted_unshown, 116);
+  assert.deepEqual(result.scope.admission_boundaries, [{
+    metric_family: "within_contract_registered_amount_change",
+    basis: "frozen_inspection_receipt",
+    rule: "a detected change is shown only where the frozen receipt carries an inspection verdict for it",
+    detected: 118,
+    shown: 2,
+    admitted_unshown: 116,
+    unshown_reason: "awaiting_extended_inspection_sample",
+  }]);
+  // Every shown case is one the frozen receipt inspected: the pilot never
+  // measures its own uninspected output.
+  assert.equal(result.dimensions.precision.cases.every((entry) => entry.inspection_verdict !== "missing"), true);
   assert.equal(result.dimensions.diversity.metric_families.count, 2);
   assert.equal(result.dimensions.diversity.source_families.count, 2);
   assert.equal(result.dimensions.diversity.object_types.count, 2);
