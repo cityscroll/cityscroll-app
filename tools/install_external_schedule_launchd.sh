@@ -46,9 +46,17 @@ if [ ! -f "$key_file" ]; then
   echo "  install it with: umask 177 && printf %s \"\$ADMIN_KEY\" > $key_file" >&2
 fi
 
+# Configuring a path is not installing a credential, and this script never
+# checks one. It reports what it can see about the file so the operator is not
+# left inferring readiness from the fact that the trigger names a path.
 if [ ! -f "$gh_token_file" ]; then
-  echo "warning: $gh_token_file is absent; the cycle will report outbox delivery offline and record intents without delivering them" >&2
+  echo "warning: no delivery credential file is present at the configured path; the cycle will report outbox delivery offline and record intents without delivering them" >&2
   echo "  install it with: umask 177 && printf %s \"\$GH_TOKEN\" > $gh_token_file" >&2
+elif [ -n "$(find "$gh_token_file" -perm +077 2>/dev/null)" ]; then
+  # A token any local account can read is not a machine identity, so the cycle
+  # refuses it outright rather than using it.
+  echo "warning: the delivery credential file is readable by more than its owner; the cycle will refuse it and report outbox delivery offline" >&2
+  echo "  tighten it with: chmod 600 $gh_token_file" >&2
 fi
 
 if [ -z "$repair_command" ]; then
@@ -58,3 +66,4 @@ fi
 launchctl unload "$target" 2>/dev/null || true
 launchctl load "$target"
 echo "loaded $label; state is $state_dir; credential file is $key_file; delivery token file is $gh_token_file; interpreter is $node_bin"
+echo "these are configured paths, not verified credentials: the cycle reports outbox delivery offline until it can read the delivery token, and the bot identity is confirmed by the read-only checks in docs/external-schedule-outbox.md" >&2

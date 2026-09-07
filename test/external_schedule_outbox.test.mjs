@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile, writeFile } from "node:fs/promises";
+import { chmod, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import test from "node:test";
 import {
@@ -9,7 +9,17 @@ import {
   replayOutbox,
 } from "../tools/external_schedule_outbox.mjs";
 import { auditSchedulerOwnership } from "../tools/audit_scheduler_ownership.mjs";
-import { SCHEDULER_WORKFLOW, githubToken, publishHeartbeat, resolveCredential, runScheduledJob, schedulerRunId } from "../tools/external_schedule_runner.mjs";
+import {
+  SCHEDULER_WORKFLOW,
+  githubToken,
+  githubTokenResolution,
+  outboxDeliveryReason,
+  publishHeartbeat,
+  resolveCredential,
+  resolveCredentialSource,
+  runScheduledJob,
+  schedulerRunId,
+} from "../tools/external_schedule_runner.mjs";
 import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 function fakeGithub() {
@@ -94,6 +104,13 @@ test("targeted scheduled ownership is independent of GitHub Actions", async () =
   assert.equal(audit.ok, true, audit.errors.join("; "));
   assert.deepEqual(audit.targets, ["action-links-live", "source-contracts-live", "digest-shadow-monitor"]);
 });
+
+/** Install a credential file the way the operator ceremony does: owner-only. */
+async function writeCredentialFile(path, contents, mode = 0o600) {
+  await writeFile(path, contents, { encoding: "utf8", mode });
+  await chmod(path, mode);
+  return path;
+}
 
 const RUN_ID = "2026-08-31T12-00:runner-7:4821";
 const REVISION = "dd4b708b6fe39bf8b2ea635ef3d4f493c4751ace";
@@ -246,10 +263,12 @@ test("the digest shadow probe reports a missing credential instead of an anonymo
   });
 });
 
-// The issue loop had no delivery identity: the runner read a token only from an
-// inline export, while the trigger passes every credential as a file path. Every
-// cycle therefore replayed "offline" and monitor findings never became issues,
-// with pending intents sitting at attempts 0 and no error to act on.
+// The issue loop's delivery identity is a dedicated machine account, installed
+// as a mode-0600 file the trigger only names. The failure that matters is not a
+// missing file: it is a broken file being papered over by whatever other
+// identity the host happens to carry, which would file or close monitor issues
+// under a person. Explicit file configuration therefore fails closed, and these
+// cases pin every way it can fail.
 async function withTokenEnv(env, run) {
   const keys = ["GH_TOKEN", "GITHUB_TOKEN", "GH_TOKEN_FILE", "GITHUB_TOKEN_FILE"];
   const saved = Object.fromEntries(keys.map((key) => [key, process.env[key]]));
@@ -265,18 +284,14 @@ async function withTokenEnv(env, run) {
 
 test("the delivery token resolves from the file the trigger names, and an intent is delivered", async () => {
   await withTempDir("crol-outbox-token", async (stateDir) => {
-    const tokenPath = join(stateDir, "github-token");
-    await writeFile(tokenPath, "file-resident-token\n", "utf8");
+    const tokenPath = await writeCredentialFile(join(stateDir, "github-token"), "file-resident-token\n");
     const token = await withTokenEnv({ GH_TOKEN_FILE: tokenPath }, () => githubToken());
     assert.equal(token, "file-resident-token");
-
     // The alias the operator process may use instead resolves identically.
     assert.equal(await withTokenEnv({ GITHUB_TOKEN_FILE: tokenPath }, () => githubToken()), "file-resident-token");
-    // An inline export still wins over the file.
-    assert.equal(
-      await withTokenEnv({ GH_TOKEN: "inline-token", GH_TOKEN_FILE: tokenPath }, () => githubToken()),
-      "inline-token",
-    );
+    // An inline export is honoured only where no file is configured, so a
+    // workstation rehearsal still runs.
+    assert.equal(await withTokenEnv({ GH_TOKEN: "inline-token" }, () => githubToken()), "inline-token");
 
     const requests = [];
     const github = createGitHubClient({
@@ -309,35 +324,104 @@ test("the delivery token resolves from the file the trigger names, and an intent
   });
 });
 
-test("an unreadable or empty token file resolves to no token instead of failing the cycle", async () => {
+test("an explicitly configured credential file that cannot be used resolves to nothing, whatever the failure", async () => {
   await withTempDir("crol-outbox-token-bad", async (stateDir) => {
-    const logged = [];
-    const empty = join(stateDir, "empty-token");
-    await writeFile(empty, "   \n", "utf8");
-    assert.equal(
-      resolveCredential({ fileVars: ["GH_TOKEN_FILE"], env: { GH_TOKEN_FILE: empty }, log: (line) => logged.push(line) }),
-      null,
-    );
-    assert.equal(
-      resolveCredential({
+    const cases = [
+      ["absent", join(stateDir, "absent-token")],
+      ["empty", await writeCredentialFile(join(stateDir, "empty-token"), "   \n")],
+      // A token any local account can read is not a machine identity.
+      ["insecure-permissions", await writeCredentialFile(join(stateDir, "loose-token"), "loose\n", 0o644)],
+      ["insecure-permissions", await writeCredentialFile(join(stateDir, "group-token"), "group\n", 0o640)],
+      ["not-a-file", stateDir],
+    ];
+    for (const [failure, path] of cases) {
+      const resolution = resolveCredentialSource({
+        inlineVars: ["GH_TOKEN", "GITHUB_TOKEN"],
         fileVars: ["GH_TOKEN_FILE"],
-        env: { GH_TOKEN_FILE: join(stateDir, "absent-token") },
-        log: (line) => logged.push(line),
-      }),
-      null,
-    );
-    // One line per unusable file, naming the variable the operator must fix.
-    assert.equal(logged.length, 2);
-    for (const line of logged) assert.match(line, /GH_TOKEN_FILE/);
+        env: { GH_TOKEN_FILE: path },
+        requireOwnerOnly: true,
+      });
+      assert.equal(resolution.value, null, `${failure} must resolve to no credential`);
+      assert.equal(resolution.failure, failure);
+      assert.equal(resolution.variable, "GH_TOKEN_FILE");
+    }
+
+    // A file the process genuinely cannot read is reported as unreadable rather
+    // than mistaken for an absent one, because the two need different repairs.
+    const unreadable = resolveCredentialSource({
+      fileVars: ["GH_TOKEN_FILE"],
+      env: { GH_TOKEN_FILE: join(stateDir, "denied-token") },
+      statFile: () => ({ isFile: () => true, mode: 0o600 }),
+      readTextFile: () => { const error = new Error("permission denied"); error.code = "EACCES"; throw error; },
+    });
+    assert.equal(unreadable.value, null);
+    assert.equal(unreadable.failure, "unreadable");
   });
 });
 
-test("a cycle with no delivery token reports outbox delivery offline with the reason", async () => {
-  await withTempDir("crol-outbox-offline", async (stateDir) => {
-    assert.equal(await withTokenEnv({}, () => githubToken()), null);
-    assert.equal(createGitHubClient({ token: null, owner: "cityscroll", repo: "cityscroll-app" }), null);
+test("a broken credential file never falls back to another identity", async () => {
+  await withTempDir("crol-outbox-token-closed", async (stateDir) => {
+    const empty = await writeCredentialFile(join(stateDir, "empty-token"), "\n");
+    const loose = await writeCredentialFile(join(stateDir, "loose-token"), "loose-token\n", 0o644);
+    // Every one of these environments carries a usable inline export. None of
+    // them may be used: the file was named, so the file decides.
+    for (const env of [
+      { GH_TOKEN: "personal-token", GH_TOKEN_FILE: join(stateDir, "absent-token") },
+      { GITHUB_TOKEN: "personal-token", GH_TOKEN_FILE: empty },
+      { GH_TOKEN: "personal-token", GITHUB_TOKEN: "other-token", GH_TOKEN_FILE: loose },
+      { GH_TOKEN: "personal-token", GITHUB_TOKEN_FILE: join(stateDir, "absent-token") },
+    ]) {
+      assert.equal(await withTokenEnv(env, () => githubToken()), null, `${Object.keys(env).join("+")} fell back to an inline identity`);
+    }
 
-    await persistScheduleResult({
+    // Nothing in the delivery path can reach a GitHub CLI session either: the
+    // client is built from the resolved token alone and is null without one.
+    assert.equal(createGitHubClient({ token: null, owner: "cityscroll", repo: "cityscroll-app" }), null);
+    const runnerSource = await readFile(new URL("../tools/external_schedule_runner.mjs", import.meta.url), "utf8");
+    const outboxSource = await readFile(new URL("../tools/external_schedule_outbox.mjs", import.meta.url), "utf8");
+    for (const source of [runnerSource, outboxSource]) {
+      assert.equal(/\bgh\s+(auth|api|issue)\b/.test(source), false, "the delivery path shells out to the GitHub CLI");
+    }
+  });
+});
+
+test("a failed credential resolution reports the variable and failure class and nothing else", async () => {
+  await withTempDir("crol-outbox-token-receipt", async (stateDir) => {
+    const secret = "s3cr3t-delivery-token";
+    const loose = await writeCredentialFile(join(stateDir, "loose-token"), `${secret}\n`, 0o644);
+    const logged = [];
+    const value = resolveCredential({
+      fileVars: ["GH_TOKEN_FILE"],
+      env: { GH_TOKEN_FILE: loose },
+      requireOwnerOnly: true,
+      log: (line) => logged.push(line),
+    });
+    assert.equal(value, null);
+    // Exactly one line, naming what to fix and nothing that must not travel.
+    assert.equal(logged.length, 1);
+    assert.match(logged[0], /GH_TOKEN_FILE/);
+    assert.match(logged[0], /readable by more than its owner/);
+    assert.equal(logged[0].includes(secret), false, "the receipt carries the credential");
+    assert.equal(logged[0].includes(loose), false, "the receipt carries the credential's path");
+
+    // The heartbeat reason is the same redacted pair.
+    assert.equal(
+      outboxDeliveryReason(resolveCredentialSource({ fileVars: ["GH_TOKEN_FILE"], env: { GH_TOKEN_FILE: loose }, requireOwnerOnly: true })),
+      "GH_TOKEN_FILE:insecure-permissions",
+    );
+    assert.equal(outboxDeliveryReason(resolveCredentialSource({ inlineVars: ["GH_TOKEN"], env: {} })), "github-token-unconfigured");
+    assert.equal(outboxDeliveryReason({ value: "token", failure: null }), null);
+  });
+});
+
+test("a cycle with no usable credential keeps every pending intent retryable and says why", async () => {
+  await withTempDir("crol-outbox-offline", async (stateDir) => {
+    const loose = await writeCredentialFile(join(stateDir, "loose-token"), "loose-token\n", 0o644);
+    const resolution = await withTokenEnv({ GH_TOKEN: "personal-token", GH_TOKEN_FILE: loose }, () => githubTokenResolution());
+    assert.equal(resolution.value, null);
+    const reason = outboxDeliveryReason(resolution);
+
+    const { eventPath } = await persistScheduleResult({
       stateDir,
       jobId: "action-link-monitor",
       runKey: "2026-09-06T11:00",
@@ -347,11 +431,18 @@ test("a cycle with no delivery token reports outbox delivery offline with the re
 
     // Previously this reported pending 0 with no reason, so an undeliverable
     // backlog was indistinguishable from an empty one.
-    const summary = await replayOutbox({ stateDir, github: null });
+    const summary = await replayOutbox({ stateDir, github: null, offlineReason: reason });
     assert.equal(summary.status, "offline");
-    assert.equal(summary.reason, "github-token-missing");
+    assert.equal(summary.reason, "GH_TOKEN_FILE:insecure-permissions");
     assert.equal(summary.delivered, 0);
     assert.equal(summary.pending, 1);
+
+    // The intent is untouched: still pending, still at attempt zero, so the
+    // cycle that follows a repaired credential delivers it unchanged.
+    const event = JSON.parse(await readFile(eventPath, "utf8"));
+    assert.equal(event.status, "pending");
+    assert.equal(event.attempts, 0);
+    assert.equal(event.last_error, undefined);
 
     const priorKey = process.env.CITYSCROLL_ADMIN_KEY;
     process.env.CITYSCROLL_ADMIN_KEY = "secret";
@@ -360,15 +451,55 @@ test("a cycle with no delivery token reports outbox delivery offline with the re
         runId: RUN_ID,
         sourceRevision: REVISION,
         outboxDelivery: "offline",
+        outboxDeliveryReason: reason,
         fetchImpl: async () => ({ ok: false, status: 503 }),
       });
       assert.equal(heartbeat.outbox_delivery, "offline");
-      assert.equal(
-        JSON.parse(await readFile(join(stateDir, "heartbeat", "latest.json"), "utf8")).outbox_delivery,
-        "offline",
-      );
+      assert.equal(heartbeat.outbox_delivery_reason, reason);
+      const persisted = JSON.parse(await readFile(join(stateDir, "heartbeat", "latest.json"), "utf8"));
+      assert.equal(persisted.outbox_delivery, "offline");
+      assert.equal(persisted.outbox_delivery_reason, reason);
+      // The receipt is publishable: it names a variable and a class, never a path.
+      assert.equal(JSON.stringify(persisted).includes(loose), false);
     } finally {
       if (priorKey == null) delete process.env.CITYSCROLL_ADMIN_KEY; else process.env.CITYSCROLL_ADMIN_KEY = priorKey;
     }
+  });
+});
+
+test("a loaded credential is reported as credentialed, never as installed or operational", async () => {
+  await withTempDir("crol-outbox-credentialed", async (stateDir) => {
+    // The heartbeat vocabulary states only that a credential was loaded. A
+    // deployment must not read live delivery out of a configured path.
+    const priorKey = process.env.CITYSCROLL_ADMIN_KEY;
+    process.env.CITYSCROLL_ADMIN_KEY = "secret";
+    try {
+      const heartbeat = await publishHeartbeat(stateDir, new Date("2026-09-06T11:00:00.000Z"), [], {
+        runId: RUN_ID,
+        sourceRevision: REVISION,
+        outboxDelivery: "credentialed",
+        fetchImpl: async () => ({ ok: false, status: 503 }),
+      });
+      assert.equal(heartbeat.outbox_delivery, "credentialed");
+      assert.equal(heartbeat.outbox_delivery_reason, null);
+    } finally {
+      if (priorKey == null) delete process.env.CITYSCROLL_ADMIN_KEY; else process.env.CITYSCROLL_ADMIN_KEY = priorKey;
+    }
+
+    const docs = await readFile(new URL("../docs/external-schedule-outbox.md", import.meta.url), "utf8");
+    const installer = await readFile(new URL("../tools/install_external_schedule_launchd.sh", import.meta.url), "utf8");
+    // The operator procedure exists and is gated on a verified identity rather
+    // than on a path or a submitted credential.
+    assert.match(docs, /## Activating issue delivery/);
+    assert.match(docs, /read-only/);
+    assert.match(docs, /credential-waiting/);
+    assert.match(installer, /configured paths, not verified credentials/);
+    // Neither surface may treat a configured path or a submitted credential as
+    // readiness: each says outright that it is not one.
+    assert.match(docs, /naming a path, or holding a submitted credential, is never evidence that the identity is installed, correct, or accepted/);
+    assert.match(docs, /Neither the path nor the warning is evidence of a working credential/);
+    assert.match(installer, /Configuring a path is not installing a credential/);
+    const template = await readFile(new URL("../ops/launchd/com.cityscroll.external-schedules.plist.template", import.meta.url), "utf8");
+    assert.match(template, /naming a path neither installs nor verifies the credential/);
   });
 });

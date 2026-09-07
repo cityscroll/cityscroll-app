@@ -199,6 +199,11 @@ export function schedulerHeartbeatEvidenceFindings(heartbeat = {}) {
   return findings;
 }
 
+// A cycle either loaded a delivery credential or it did not. Neither value
+// claims the issue loop works; that is what the pending count and the replay
+// outcomes are for.
+export const SCHEDULER_OUTBOX_DELIVERY_STATES = ["credentialed", "offline"];
+
 export async function recordSchedulerHeartbeat(env, heartbeat = {}, now = new Date()) {
   const rejected = schedulerHeartbeatEvidenceFindings(heartbeat);
   if (rejected.length) return { accepted: false, rejected, heartbeat: null };
@@ -210,11 +215,18 @@ export async function recordSchedulerHeartbeat(env, heartbeat = {}, now = new Da
     result: trimmed(heartbeat.result),
     observed_at: now.toISOString(),
     pending_outbox: Number(heartbeat.pending_outbox) || 0,
-    // Whether the cycle had a delivery identity at all. A pending intent with a
+    // Whether the cycle held a delivery identity at all. A pending intent with a
     // cycle that could not deliver is a configuration gap, not a flaky API.
-    outbox_delivery: heartbeat.outbox_delivery === "online" || heartbeat.outbox_delivery === "offline"
+    // "credentialed" is deliberately not "operational": it records that a
+    // credential was loaded, never that the account is the intended one or that
+    // GitHub accepts it. Only a delivery attempt can say that.
+    outbox_delivery: SCHEDULER_OUTBOX_DELIVERY_STATES.includes(heartbeat.outbox_delivery)
       ? heartbeat.outbox_delivery
       : null,
+    // Which configured credential variable failed and how, when the cycle had
+    // no identity. The scheduler sends a variable name and a failure class, so
+    // this stays readable without carrying a path or a secret.
+    outbox_delivery_reason: trimmed(heartbeat.outbox_delivery_reason).slice(0, 120) || null,
     due_jobs: Array.isArray(heartbeat.due_jobs) ? heartbeat.due_jobs.slice(0, 30) : [],
     run_key: heartbeat.run_key || null,
     // rel-12: whether this cycle can actually run a bounded repair task. A
@@ -654,8 +666,9 @@ export async function schedulerWatchdogSnapshot(env, { now = new Date(), maxAgeM
     }
   }
   if (heartbeat?.pending_outbox > 0) {
+    const offlineDetail = heartbeat.outbox_delivery_reason ? ` (${heartbeat.outbox_delivery_reason})` : "";
     schedulerFindings.push(heartbeat.outbox_delivery === "offline"
-      ? `scheduler outbox has ${heartbeat.pending_outbox} pending item(s) and delivery is offline for lack of a configured token`
+      ? `scheduler outbox has ${heartbeat.pending_outbox} pending item(s) and delivery is offline for lack of a usable token${offlineDetail}`
       : `scheduler outbox has ${heartbeat.pending_outbox} pending item(s)`);
   }
   const publication = deskPublicationWatchdogFindings(publicationHeartbeat, { now });

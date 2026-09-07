@@ -25,7 +25,9 @@
     <key>CITYSCROLL_ADMIN_KEY_FILE</key>
     <string>__CITYSCROLL_ADMIN_KEY_FILE__</string>
     <!-- The issue loop's delivery identity, read from a mode-0600 file the
-         same way as the admin credential. Only the path appears here. -->
+         same way as the admin credential. Only the path appears here, and
+         naming a path neither installs nor verifies the credential: the cycle
+         reports delivery offline until it can read the file. -->
     <key>GH_TOKEN_FILE</key>
     <string>__GH_TOKEN_FILE__</string>
     <key>CITYSCROLL_SCHEDULER_HEARTBEAT_URL</key>
