@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/collection-and-publication-boundary",
+  "status": "implemented",
+  "fingerprint": "collection-and-publication-boundary.v1",
+  "updated_at": "2026-09-07T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "collection-and-publication-reference",
+      "path": "docs/collection-and-publication-boundary.md"
+    },
+    {
+      "id": "collection-boundary-facts",
+      "path": "tools/collection_boundary_facts.mjs"
+    },
+    {
+      "id": "collection-boundary-facts-tests",
+      "path": "test/collection_boundary_facts.test.mjs"
+    },
+    {
+      "id": "collection-claim-to-code-matrix",
+      "path": "docs/evidence/collection-and-publication-boundary/claim-to-code-matrix.md"
+    }
+  ]
+}
