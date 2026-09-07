@@ -584,7 +584,7 @@
       },
       "status": "board_not_covered",
       "reason": "no_meeting_source_is_published_for_this_board",
-      "statement": "Brooklyn Community Board 2 is not covered by this meetings corpus: no meeting source is published for it here. This is a coverage gap, not a finding that no meeting was held."
+      "statement": "Brooklyn Community Board 2 publishes no meeting source that this corpus reads, so when it last met in full session is unknown here. The board's own meeting calendar carries its full board meetings."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -758,7 +758,7 @@
       },
       "status": "board_not_covered",
       "reason": "no_meeting_source_is_published_for_this_board",
-      "statement": "Brooklyn Community Board 6 is not covered by this meetings corpus: no meeting source is published for it here. This is a coverage gap, not a finding that no meeting was held."
+      "statement": "Brooklyn Community Board 6 publishes no meeting source that this corpus reads, so when it last met in full session is unknown here. The board's own meeting calendar carries its full board meetings."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -1067,7 +1067,7 @@
       },
       "status": "board_not_covered",
       "reason": "no_meeting_source_is_published_for_this_board",
-      "statement": "Brooklyn Community Board 13 is not covered by this meetings corpus: no meeting source is published for it here. This is a coverage gap, not a finding that no meeting was held."
+      "statement": "Brooklyn Community Board 13 publishes no meeting source that this corpus reads, so when it last met in full session is unknown here. The board's own meeting calendar carries its full board meetings."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -1206,7 +1206,7 @@
       },
       "status": "board_not_covered",
       "reason": "no_meeting_source_is_published_for_this_board",
-      "statement": "Brooklyn Community Board 16 is not covered by this meetings corpus: no meeting source is published for it here. This is a coverage gap, not a finding that no meeting was held."
+      "statement": "Brooklyn Community Board 16 publishes no meeting source that this corpus reads, so when it last met in full session is unknown here. The board's own meeting calendar carries its full board meetings."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -1821,7 +1821,7 @@
       },
       "status": "board_source_unreadable",
       "reason": "source_serves_browsers_only",
-      "statement": "Manhattan Community Board 8 publishes a meeting source that this corpus could not read, so when it last met in full session is unknown here. This is an unreadable source, not a finding that no meeting was held."
+      "statement": "Manhattan Community Board 8 publishes a meeting source that this corpus could not read, so when it last met in full session is unknown here. The board's own meeting calendar carries its full board meetings."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -2222,7 +2222,7 @@
       },
       "status": "board_source_unreadable",
       "reason": "source_serves_browsers_only",
-      "statement": "Queens Community Board 3 publishes a meeting source that this corpus could not read, so when it last met in full session is unknown here. This is an unreadable source, not a finding that no meeting was held."
+      "statement": "Queens Community Board 3 publishes a meeting source that this corpus could not read, so when it last met in full session is unknown here. The board's own meeting calendar carries its full board meetings."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",

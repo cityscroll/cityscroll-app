@@ -118,7 +118,7 @@ test("a board outside the covered set says it is not covered", () => {
     assert.equal(result.status, "board_not_covered");
     assert.equal(result.meeting, null);
     assert.equal(result.board.id, row.board_id);
-    assert.match(result.statement, /coverage gap/);
+    assert.match(result.statement, /publishes no meeting source/);
     assert.ok(!/\b0\b/.test(result.statement), "an uncovered board is never reported as a zero");
   }
   const absent = communityBoardFullBoardMeetingAnswer({ readModel, query: "Manhattan Community Board 44", asOf: AS_OF });

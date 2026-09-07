@@ -306,7 +306,7 @@ export function communityBoardFullBoardMeetingAnswer({ readModel = null, query =
       ...answered,
       status: "board_source_unreadable",
       reason: board.meetings.reason || "meeting_source_could_not_be_read",
-      statement: `${board.board_name} publishes a meeting source that this corpus could not read, so when it last met in full session is unknown here. This is an unreadable source, not a finding that no meeting was held.`,
+      statement: `${board.board_name} publishes a meeting source that this corpus could not read, so when it last met in full session is unknown here. The board's own meeting calendar carries its full board meetings.`,
     });
   }
   if (board.meetings?.state === "not-registered") {
@@ -314,7 +314,7 @@ export function communityBoardFullBoardMeetingAnswer({ readModel = null, query =
       ...answered,
       status: "board_not_covered",
       reason: "no_meeting_source_is_published_for_this_board",
-      statement: `${board.board_name} is not covered by this meetings corpus: no meeting source is published for it here. This is a coverage gap, not a finding that no meeting was held.`,
+      statement: `${board.board_name} publishes no meeting source that this corpus reads, so when it last met in full session is unknown here. The board's own meeting calendar carries its full board meetings.`,
     });
   }
   const boardMeetings = readModel.rows
