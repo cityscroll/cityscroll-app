@@ -59,7 +59,8 @@ test("the dispatcher's exit codes are exactly the outcomes the cycle maps them t
   assert.equal(repairOutcomeFromExit(exitCodeFor("repaired"), null), "repaired");
   assert.equal(repairOutcomeFromExit(exitCodeFor("judgment"), null), "judgment");
   assert.equal(repairOutcomeFromExit(exitCodeFor("failed"), null), "failed");
-  assert.deepEqual(EXIT_CODES, { repaired: 0, failed: 1, judgment: 2 });
+  assert.equal(repairOutcomeFromExit(exitCodeFor("unkeyable"), null), "unkeyable");
+  assert.deepEqual(EXIT_CODES, { repaired: 0, failed: 1, judgment: 2, unkeyable: 3 });
   // Anything the registry did not produce is treated as a failure, never as a
   // silent success.
   assert.equal(exitCodeFor("something-else"), EXIT_CODES.failed);
@@ -318,4 +319,28 @@ test("the installed trigger points at the dispatcher rather than leaving the rai
     const disabled = readFileSync(join(home, "Library", "LaunchAgents", "com.cityscroll.external-schedules.plist"), "utf8");
     assert.equal(/<key>CITYSCROLL_REPAIR_DISPATCH_COMMAND<\/key>\s*<string>([^<]*)<\/string>/.exec(disabled)[1], "");
   }));
+});
+
+test("an unreadable signature exits unkeyable, while a readable one with no playbook is still judgment", async () => {
+  await withTempDir("crol-repair-dispatch", async (stateDir) => {
+    // The two look alike from inside the queue and are nothing alike to a
+    // reader. The first names a real failure class somebody has to decide
+    // about; the second is a record this rail cannot read, and no repeat or
+    // retry would ever make it readable.
+    const declared = runDispatcher(item({ signature: "monitor:action-links-live:action-link-degraded" }), stateDir);
+    assert.equal(declared.status, EXIT_CODES.judgment);
+    assert.match(declared.stdout, /deliberately left to a person/);
+
+    for (const signature of [
+      "scheduler outbox has 3 pending item(s)",
+      "2026-09-05:shadow receipt is DEGRADED|enqueued digest has zero accepted sends (skipped)",
+      "4566039a017757ed1791c6e25d9450a19779e2227fd4bc96ab4f2fff57ef342c",
+    ]) {
+      const unreadable = runDispatcher(item({ signature }), stateDir);
+      assert.equal(unreadable.status, EXIT_CODES.unkeyable, `${signature} was not reported as unkeyable`);
+      assert.equal(unreadable.stdout.trim().split("\n").length, 1);
+      assert.match(unreadable.stdout, /monitor:class/);
+      assert.equal(repairOutcomeFromExit(unreadable.status, null), "unkeyable");
+    }
+  });
 });

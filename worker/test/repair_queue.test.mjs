@@ -20,6 +20,7 @@ import {
   normalizeRepairItem,
   readRepairItem,
   readRepairQueue,
+  recoverRepairItem,
   repairItemKey,
   repairPickupState,
   upsertRepairItem,
@@ -752,4 +753,126 @@ test("A2 a parked item is not retried by a repeat on the same day, and reopens t
     const retry = await dispatchRepairQueue({ ALERT_STATE }, { now: at("2026-09-02T09:01:00Z"), runId: CYCLE.run_id });
     assert.equal(retry.items.length, 1);
   } finally { mail.restore(); }
+});
+
+test("A5 an identity the rail cannot key on retires on its first offer instead of parking", async () => {
+  const ALERT_STATE = kv();
+  await liveCycle(ALERT_STATE);
+  const mail = captureSends();
+  try {
+    // The alert path keys on a canonical digest of the finding, which is not the
+    // monitor:class[:subject] identity the dispatcher selects a playbook from.
+    // Before this outcome existed, the dispatcher refused such an item as
+    // judgment, which parked it, mailed the owner, and reopened it the next day
+    // to ask the same unanswerable question again.
+    const alert = await emitOpsAlertOnce({ ALERT_STATE, RESEND_API_KEY: "rk" }, {
+      ...FINDING, first_seen: "2026-09-01T12:00:20Z", last_seen: "2026-09-01T12:00:20Z", now: at("2026-09-01T12:00:20Z"),
+    });
+    assert.equal(mail.sent.length, 1);
+    const pickup = await dispatchRepairQueue({ ALERT_STATE }, { now: at("2026-09-01T12:01:00Z"), runId: CYCLE.run_id });
+    assert.equal(pickup.items.length, 1);
+
+    const reported = await reportRepairResults({ ALERT_STATE, RESEND_API_KEY: "rk" }, [{
+      signature: alert.signature,
+      lease_id: pickup.items[0].lease.lease_id,
+      outcome: "unkeyable",
+      summary: "the signature is not in the monitor:class[:subject] form this rail keys on",
+    }], { now: at("2026-09-01T12:02:00Z") });
+    assert.equal(reported.applied[0].accepted, true);
+    assert.equal(reported.applied[0].state, "repaired");
+    // Retiring an unreadable record is not a decision anybody has to be told about.
+    assert.deepEqual(reported.judgment_alerts, []);
+    assert.equal(mail.sent.length, 1);
+
+    const retired = (await readRepairItem({ ALERT_STATE }, alert.signature)).item;
+    assert.equal(retired.state, "repaired");
+    assert.equal(retired.result.outcome, "unkeyable");
+    assert.equal(retired.judgment_reason, null);
+
+    const queue = await readRepairQueue({ ALERT_STATE }, { now: at("2026-09-01T12:02:01Z") });
+    assert.equal(queue.open, 0);
+    assert.equal(queue.needs_judgment, 0);
+    const after = await dispatchRepairQueue({ ALERT_STATE }, { now: at("2026-09-01T12:03:00Z"), runId: CYCLE.run_id });
+    assert.deepEqual(after.items, []);
+  } finally { mail.restore(); }
+});
+
+test("A5 a signature retired as unkeyable is never queued again, on the same day or the next", async () => {
+  const ALERT_STATE = kv();
+  await liveCycle(ALERT_STATE);
+  const mail = captureSends();
+  try {
+    const alert = await emitOpsAlertOnce({ ALERT_STATE, RESEND_API_KEY: "rk" }, {
+      ...FINDING, first_seen: "2026-09-01T12:00:20Z", last_seen: "2026-09-01T12:00:20Z", now: at("2026-09-01T12:00:20Z"),
+    });
+    const pickup = await dispatchRepairQueue({ ALERT_STATE }, { now: at("2026-09-01T12:01:00Z"), runId: CYCLE.run_id });
+    await reportRepairResults({ ALERT_STATE, RESEND_API_KEY: "rk" }, [{
+      signature: alert.signature,
+      lease_id: pickup.items[0].lease.lease_id,
+      outcome: "unkeyable",
+      summary: "the signature is not in the monitor:class[:subject] form this rail keys on",
+    }], { now: at("2026-09-01T12:02:00Z") });
+
+    // The condition is still happening, so the alert path keeps firing. Every
+    // other retirement reopens on a repeat, because a repeat is fresh evidence
+    // about the condition. This one does not: the repeat says nothing new about
+    // the identity, which is what the rail could not read.
+    const repeats = ["2026-09-01T12:30:00Z", "2026-09-01T18:00:00Z", "2026-09-02T09:00:10Z"];
+    for (const stamp of repeats) {
+      await liveCycle(ALERT_STATE, stamp);
+      const repeat = await emitOpsAlertOnce({ ALERT_STATE, RESEND_API_KEY: "rk" }, {
+        ...FINDING, first_seen: "2026-09-01T12:00:20Z", last_seen: stamp, now: at(stamp),
+      });
+      assert.equal(repeat.queue.skipped, true, `queued again at ${stamp}`);
+      assert.equal(repeat.queue.reason, "signature-not-repairable");
+      // The alert record carries no repair mechanics, so the mail cannot promise
+      // a pickup that would only conclude the same thing again.
+      assert.equal(repeat.record.queue, null);
+      const offered = await dispatchRepairQueue({ ALERT_STATE }, { now: at(stamp), runId: CYCLE.run_id });
+      assert.deepEqual(offered.items, [], `leased again at ${stamp}`);
+    }
+    // The first alert, before the dispatcher had read the signature, promised a
+    // pickup. Nothing mailed after the retirement promises one again.
+    assert.match(alertBodies(mail.sent.slice(0, 1)), /Queued for automatic repair/);
+    assert.doesNotMatch(alertBodies(mail.sent.slice(1)), /Queued for automatic repair/);
+    assert.ok(mail.sent.length > 1);
+
+    const stored = (await readRepairItem({ ALERT_STATE }, alert.signature)).item;
+    assert.equal(stored.state, "repaired");
+    assert.equal(stored.result.outcome, "unkeyable");
+    const queue = await readRepairQueue({ ALERT_STATE }, { now: at("2026-09-02T09:01:00Z") });
+    assert.equal(queue.open, 0);
+    assert.equal(queue.needs_judgment, 0);
+  } finally { mail.restore(); }
+});
+
+test("A5 the monitor's own words still retire and reopen exactly as they did", async () => {
+  // `unkeyable` is about the record; `recovered` and a repeat are about the
+  // condition. Narrowing one must not narrow the others.
+  const ALERT_STATE = kv();
+  const env = { ALERT_STATE };
+  const heartbeat = await liveCycle(ALERT_STATE);
+  const signature = "monitor:source-contracts-live:source-contract-stale:dsny-district-boundaries";
+  const write = await upsertRepairItem(env, {
+    signature, guard: "source-contracts-live", stage: "live-contract",
+    findings: ["the retained snapshot is behind the publisher"],
+    last_seen: "2026-09-01T12:00:20Z",
+  }, { now: at("2026-09-01T12:00:20Z"), heartbeat });
+  assert.equal(write.ok, true);
+  assert.equal(write.item.state, "queued");
+
+  const closed = await recoverRepairItem(env, signature, { now: at("2026-09-01T13:00:00Z") });
+  assert.equal(closed.ok, true);
+  assert.equal(closed.item.result.outcome, "recovered");
+
+  // The condition comes back. A recovered item reopens; an unkeyable one would not.
+  const again = await upsertRepairItem(env, {
+    signature, guard: "source-contracts-live", stage: "live-contract",
+    findings: ["the retained snapshot is behind the publisher"],
+    last_seen: "2026-09-01T14:00:00Z",
+  }, { now: at("2026-09-01T14:00:00Z"), heartbeat });
+  assert.equal(again.ok, true);
+  assert.equal(again.item.state, "queued");
+  assert.equal(again.item.repeat_count, 2);
+  assert.equal(again.item.first_seen, "2026-09-01T12:00:20.000Z");
 });

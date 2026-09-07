@@ -56,6 +56,7 @@ test("a dispatcher exit code maps to exactly one queue outcome", () => {
   assert.equal(repairOutcomeFromExit(0, null), "repaired");
   assert.equal(repairOutcomeFromExit(2, null), "judgment");
   assert.equal(repairOutcomeFromExit(1, null), "failed");
+  assert.equal(repairOutcomeFromExit(3, null), "unkeyable");
   assert.equal(repairOutcomeFromExit(0, "SIGKILL"), "failed");
 });
 

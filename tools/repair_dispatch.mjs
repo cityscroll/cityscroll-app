@@ -12,11 +12,20 @@
  *   0  repaired  — a scripted remedy ran and the monitor's own check now passes
  *   2  judgment  — nothing deterministic can close it; the summary says what would
  *   1  failed    — a remedy ran and did not work; the queue may retry it
+ *   3  unkeyable — the signature is not an identity this rail reads at all
  *
  * There is no model in this path and no budget to spend: every decision is a
  * committed playbook and a re-run of a check that already existed. A finding no
  * playbook matches is judgment rather than failure, so an unknown class reaches
  * a person with its name on it instead of burning three silent attempts first.
+ *
+ * The last code separates two things that look alike from inside a queue and are
+ * nothing alike to a reader. A parseable signature whose class has no playbook is
+ * a real condition somebody has to decide about. A signature that is not in the
+ * `monitor:<monitor>:<class>[:<subject>]` form is not a condition at all from
+ * here — it is a record this rail cannot read, and no repeat, retry or day
+ * passing will make it readable. The queue retires those instead of asking a
+ * person the same unanswerable question every day.
  *
  * The prose summary is the last thing written to stdout, because the cycle
  * keeps the tail of the output as the sentence it reports back.
@@ -49,7 +58,7 @@ export const REPAIR_SCOPE_EXPECTED = "diagnose-and-propose";
 /** A read-only local command, never an ingestion; bounded so it cannot hang a dispatch. */
 export const LOCAL_COMMAND_TIMEOUT_MS = 20 * 1000;
 
-export const EXIT_CODES = Object.freeze({ repaired: 0, failed: 1, judgment: 2 });
+export const EXIT_CODES = Object.freeze({ repaired: 0, failed: 1, judgment: 2, unkeyable: 3 });
 
 /**
  * Which scheduled job publishes the evidence a freshness reason is about. A
@@ -283,7 +292,15 @@ export async function dispatchRepairItem(item, options = {}) {
 
   const selection = selectRepairPlaybook(signature);
   if (!selection.playbook) {
-    return record({ outcome: "judgment", summary: selection.reason, verification: null }, null);
+    // A signature that parsed names a real class, so a person can act on it. One
+    // that did not parse names nothing this rail understands, and reporting it as
+    // a decision would put an unanswerable question in front of an owner on every
+    // cycle for as long as the record exists.
+    return record({
+      outcome: selection.parsed ? "judgment" : "unkeyable",
+      summary: selection.reason,
+      verification: null,
+    }, null);
   }
   const { playbook, parsed } = selection;
   const context = options.context || createDispatchContext({
