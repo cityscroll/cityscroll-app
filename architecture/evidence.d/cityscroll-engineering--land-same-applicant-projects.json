@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/land-same-applicant-projects",
+  "status": "implemented",
+  "fingerprint": "land-same-applicant-projects.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-same-applicant-projects-contract",
+      "path": "site/land_same_applicant_projects.mjs"
+    },
+    {
+      "id": "land-same-applicant-projects-tests",
+      "path": "test/existing_connections_applicants.test.mjs"
+    }
+  ]
+}
