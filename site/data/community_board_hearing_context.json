@@ -1,0 +1,1312 @@
+{
+  "schema": "cityscroll.community_board_hearing_context.v1",
+  "method": "published_agenda_with_previous_cycle_context_v1",
+  "negative_rule": "A previous-cycle request and its published answer are the record of an earlier fiscal year. Neither is an item on the coming agenda, a commitment that the board will raise it again, funding, or delivery. A document retained here without usable extracted text has not been read, and a recorded vote to send a letter is not evidence of what the letter says.",
+  "observed_at": "2026-09-07T18:12:14.249Z",
+  "boards": [
+    {
+      "board_id": "brooklyn-cb-14",
+      "board_name": "Brooklyn Community Board 14",
+      "publisher": "Brooklyn Community Board 14",
+      "observed_at": "2026-09-07T18:12:14.250Z",
+      "hearing": {
+        "meeting_id": "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+        "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+        "title": "September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028",
+        "promoted": true,
+        "meeting_date": "2026-09-14",
+        "time_zone": "America/New_York",
+        "source_url": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+        "source_sha256": "bf29cfcaa67b2d1dd825ddd80a1ab212803c1e46d849ff982f0e46a074db4a5a",
+        "segments": [
+          {
+            "order": 1,
+            "start_time": "18:30",
+            "kind": "public_hearing",
+            "title": "Public Hearing on Retail Cannabis Application: 461 Coney Island Avenue",
+            "fiscal_year": null,
+            "budget_classes": [],
+            "detail": [
+              "Ruben Rangini DBA OC Dispensary has submitted an application to the Office of Cannabis Management to open a retail dispensary. Applicant representative: Ruben Rangini, (347) 223-7446."
+            ]
+          },
+          {
+            "order": 2,
+            "start_time": "18:45",
+            "kind": "public_hearing",
+            "title": "Public Hearing on Community Budget Recommendations for NYC Capital and Expense Budgets for Fiscal Year 2028",
+            "fiscal_year": 2028,
+            "budget_classes": [
+              "capital",
+              "expense"
+            ],
+            "detail": []
+          },
+          {
+            "order": 3,
+            "start_time": "19:00",
+            "kind": "regular_meeting",
+            "title": "Regular Monthly Meeting of Brooklyn Community Board 14",
+            "fiscal_year": null,
+            "budget_classes": [],
+            "detail": []
+          }
+        ],
+        "participation": {
+          "speaking_registration_url": "https://airtable.com/app1RjYKMlyOTLNPS/pagXaTG7U6Yzd1Uxl/form",
+          "speaking_registration_heading": "Pre-register to speak and provide comments",
+          "speaking_passages": [
+            "To attend a CB14 in-person meeting you do not need to register but we ask that you register if you would like to speak or make an announcement. Use the form below to register to speak at this meeting.",
+            "To speak at the public session: Please complete the appropriate section. The public session at the end of our board meeting is reserved for announcements of civic interest. No political appeals or for-profit announcements are allowed. If there is an issue in the community that you want to report, require assistance or information, please contact the District Office where we are better equipped to assist.",
+            "To provide testimony at a public hearing, please complete the appropriate section of the form and indicate in the comments field which public hearing you would like to speak at. If you are unable to attend, you may submit written testimony to be included into the record.",
+            "Ifyou have trouble with the form below, use this link or contact the District Office to sign up."
+          ],
+          "written_testimony_passage": "To provide testimony at a public hearing, please complete the appropriate section of the form and indicate in the comments field which public hearing you would like to speak at. If you are unable to attend, you may submit written testimony to be included into the record.",
+          "watch_urls": [
+            "https://www.youtube.com/@BrooklynCommunityBoard14"
+          ],
+          "watch_heading": "Watch the meeting online"
+        }
+      },
+      "previous_cycle": {
+        "fiscal_year": 2027,
+        "worked_example_tracking_code": "214202702C",
+        "register_request_count": 59,
+        "documents": [
+          {
+            "id": "needs-statement",
+            "kind": "needs_statement",
+            "title": "Statement of Community District Needs and Community Board Budget Requests, Fiscal Year 2027",
+            "fiscal_year": 2027,
+            "source_url": "https://cb14brooklyn.com/wp-content/uploads/2025/12/FY2027_Statement-of-Community-District-Needs-and-CB-Requests_BK14.pdf",
+            "content_sha256": "db69d0d72545ddb43d847dbeba71ee2a5bc918aa0af3f39e1e0c1225a818e5c3",
+            "content_length": 2524096,
+            "extraction": {
+              "state": "extracted",
+              "characters": 148257,
+              "quality_state": "high",
+              "reasons": [],
+              "ocr_attempted": false
+            }
+          },
+          {
+            "id": "preliminary-register",
+            "kind": "budget_register",
+            "title": "Register of Community Board Budget Requests for the Preliminary Budget, Fiscal Year 2027",
+            "fiscal_year": 2027,
+            "source_url": "https://cb14brooklyn.com/wp-content/uploads/2026/02/CB14-Register-of-Budget-Requests-for-Preliminary-Budget-FY2027.pdf",
+            "content_sha256": "19709769a4410e4239e8f0570b6a289fc1a1cc0524deee43ea0426f676021f5c",
+            "content_length": 398525,
+            "extraction": {
+              "state": "extracted",
+              "characters": 117620,
+              "quality_state": "high",
+              "reasons": [],
+              "ocr_attempted": false
+            }
+          },
+          {
+            "id": "adopted-register",
+            "kind": "budget_register",
+            "title": "Register of Community Board Budget Requests for the Adopted Budget, Fiscal Year 2027",
+            "fiscal_year": 2027,
+            "source_url": "https://cb14brooklyn.com/wp-content/uploads/2026/07/FY2027_CB14-Adopted-Budget-Register-CB14.pdf",
+            "content_sha256": "529f8256e2b56608577ebef8674cc219a4ad53674815901b622412ddbe8e344b",
+            "content_length": 351662,
+            "extraction": {
+              "state": "extracted",
+              "characters": 97923,
+              "quality_state": "high",
+              "reasons": [],
+              "ocr_attempted": false
+            }
+          },
+          {
+            "id": "comment-letter",
+            "kind": "comment_letter",
+            "title": "Brooklyn Community Board 14 letter of comment on the Fiscal Year 2027 preliminary budget",
+            "fiscal_year": 2027,
+            "source_url": "https://cb14brooklyn.com/wp-content/uploads/2026/04/FY2027-BK-CB14-Ltr-of-Comment.pdf",
+            "content_sha256": "a1e96ce19284a3590fd5bdbc7259311eedd2c14e8aae53fe37868003000e2e10",
+            "content_length": 19077351,
+            "extraction": {
+              "state": "not_extracted",
+              "characters": 0,
+              "quality_state": "low",
+              "reasons": [
+                "extracted text is empty"
+              ],
+              "ocr_attempted": false
+            }
+          },
+          {
+            "id": "ratified-minutes",
+            "kind": "minutes",
+            "title": "Ratified minutes of the March 9, 2026 board meeting",
+            "fiscal_year": 2027,
+            "source_url": "https://cb14brooklyn.com/wp-content/uploads/2026/02/2026-03-09_Board-Meeting-Minutes_Addendum-ratified.pdf",
+            "meeting_date": "2026-03-09",
+            "content_sha256": "8db1f725552dc2087b18cf7041568b587078b29280735a9763afb18eb0f0c710",
+            "content_length": 1792845,
+            "extraction": {
+              "state": "extracted",
+              "characters": 12436,
+              "quality_state": "high",
+              "reasons": [],
+              "ocr_attempted": false
+            }
+          }
+        ],
+        "document_failures": [],
+        "statement_passages": [
+          {
+            "budget_class": "capital",
+            "statement_agency_label": "Brooklyn Public Library",
+            "agency_abbreviation": "BPL",
+            "rank_value": "01",
+            "rank_of": 2,
+            "title": "Create a new, or renovate or upgrade an existing public library",
+            "request_class_label": "Create a new, or renovate or upgrade an existing public library",
+            "passage": "Ensure that all capital improvements are needed at our local libraries: Cortelyou Branch; Flatbush Branch; Midwood Branch; and Kensington Branch are met.",
+            "tracking_code": "214202701C",
+            "fiscal_year": 2027,
+            "agency_label": "Brooklyn Public Library",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Administration for Children's Services",
+            "agency_abbreviation": "ACS",
+            "rank_value": "01",
+            "rank_of": 1,
+            "title": "Other foster care and child welfare requests",
+            "request_class_label": "Other foster care and child welfare requests",
+            "passage": "When asked by survey to rank public safety priorities, 85% of respondents ranked support for cure violence groups, number one. ACS's Division of Youth and Family Justice and the efforts to support violence disrupters programs and organizations is a high priority from a youth service and a public safety perspective. There are several programs that ACS has introduced or grown in recent years. CD14 organizations have applied to the RFP for Family Enrichment Program. We hope they will be awarded. As for foster care and casework, the agency has made positive strides in reducing caseloads and fostered youth is at an all-time low.",
+            "tracking_code": "214202701E",
+            "fiscal_year": 2027,
+            "agency_label": "Administration for Children's Services",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "capital",
+            "statement_agency_label": "Brooklyn Public Library",
+            "agency_abbreviation": "BPL",
+            "rank_value": "02",
+            "rank_of": 2,
+            "title": "Cortelyou Branch expansion",
+            "request_class_label": "Create a new, or renovate or upgrade an existing public library",
+            "passage": "Consider a building rehabilitation and expansion of the Cortelyou Road branch to increase space and opportunities to expand programming. The fact that this branch is a one-story building with a deep set back, suggests that there is developable space. In fact, CB14 notes this location in a HPD request suggesting a coordinated exploration of this site for both a library rehab and co-located housing (the Brooklyn Heights library is an example of such mixed use development).",
+            "tracking_code": "214202702C",
+            "fiscal_year": 2027,
+            "agency_label": "Brooklyn Public Library",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Brooklyn Public Library",
+            "agency_abbreviation": "BPL",
+            "rank_value": "01",
+            "rank_of": 1,
+            "title": "Extend library hours or expand and enhance library programs",
+            "request_class_label": "Extend library hours or expand and enhance library programs",
+            "passage": "The Community Board supports the continuation and expansion of programs that are so valuable in connecting our community members to literacy and culture. From small children, to teens, adults and older adults, the breadth of library programming is impressive and invaluable. We are grateful that branch managers and program directors are so active with the board and always willing to share and update us regarding new programs and services.",
+            "tracking_code": "214202702E",
+            "fiscal_year": 2027,
+            "agency_label": "Brooklyn Public Library",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "capital",
+            "statement_agency_label": "Department of City Planning",
+            "agency_abbreviation": "DCP",
+            "rank_value": "01",
+            "rank_of": 1,
+            "title": "Process",
+            "request_class_label": "Other capital request for DCP",
+            "passage": "Please note that the following needs are in the order of the District Needs Statement narrative. Health and Human Services are first; followed by Youth, Education and Children's Services; Public Safety and Emergency Response; Core Infrastructure, City Services and Resiliency; Housing, Land Use and Economic Development; Transportation; Parks and then Other. DCP's process requires CBs to list community needs in a misleading priority order. It has been stated in the District Needs Statement that we believe that needs are intertwined within and across agencies and do not believe it serves a purpose to have needs for parks to face off against needs for libraries (for example). What all agencies need at this time is an increase in their respective and collective capacity and ability to coordinate better within and with other sister city agencies. That's priority one across the board.",
+            "tracking_code": "214202703C",
+            "fiscal_year": 2027,
+            "agency_label": "Department of City Planning",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department for Homeless Services",
+            "agency_abbreviation": "DHS",
+            "rank_value": "01",
+            "rank_of": 2,
+            "title": "Improve safety at homeless shelters",
+            "request_class_label": "Improve safety at homeless shelters",
+            "passage": "The men's shelter that opened in CD14 in 2023 has created a number of community concerns. Security, including perimeter patrols are not addressing the complaint that individuals are entering private property, defecating in the street, engaging in substance use. Interactions between shelter residents and residents of the adjacent supportive housing facility have not been positive for the clients or the community. The Community Advisory Board has not reassured residents. The impacts of this shelter are far worse than anticipated and funding to ensure adequate support, programing and safety is urgently needed. There is now another men's shelter in the district and the contract is held by a Staten Island organization with no track record running such a shelter. There was only a four day notification and no word on when the shelter will be at full census. There is reasonable concern that the clients within are not being well-served. There is very little reason to be confident that the city is awarding performance and merit-based contracts. Homelessness has been a crises for a long time. The shelter system seems to be in a crises of its own. The women's shelter in the district has not held a CAB meeting in over a year. This is supposed to be a contracted obligation.",
+            "tracking_code": "214202703E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Homeless Services",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "capital",
+            "statement_agency_label": "Department of Environmental Protection",
+            "agency_abbreviation": "DEP",
+            "rank_value": "01",
+            "rank_of": 1,
+            "title": "Evaluate a public location or property for green infrastructure, e.g. rain gardens,",
+            "request_class_label": "stormwater greenstreets, green playgrounds",
+            "passage": "Evaluate a public location or property for green infrastructure, e.g. rain gardens, stormwater greenstreets, green playgrounds There are several locations in the district that flood chronically in rainstorms. These locations have all been brought to DEP's attention. It is difficult to identify what and where speficially capaital projects are needed. They were apparently needed in the several locations where DEP had to make emergency repairs. We ask DEP to respond to the requests pending and ADVISE as to where upgrades and repairs are needed. During City of Yes for housing public hearing testimony, several community members and their council representatives decried flooding issues throughout the city. What does it say about DEPs capacity and coordination abilities that this was such a widespread concern and that it had to be expressed at a zoning hearing? Where is the DEP platform proactively upgrading infrastructure before we get to emergency repairs? There have been five recent emergency sewer repair jobs in the district just in the past months. These emergencies take months to fix and rely on other agencies and utilities for timely coordination. Furthermore, since they are \"emergency\" projects there is no Community Liaison assigned to keep the neighbors apprised. If this isn't indicative of the need for proactive maintenance, what is? DEP must provide solutions because property, businesses and public areas should not have to withstand chronic flooding. What capital projects would help in these various locations: bioswales, catch basins, permeable surface additions, holding tanks?",
+            "tracking_code": "214202704C",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Environmental Protection",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department for Homeless Services",
+            "agency_abbreviation": "DHS",
+            "rank_value": "02",
+            "rank_of": 2,
+            "title": "Expand street outreach",
+            "request_class_label": "Expand street outreach",
+            "passage": "Over the years, we have been told by the Department of Homeless Services that it takes an average of 250 encounters with unsheltered individuals to convince them to accept services. This suggests that services offered are not in line with the needs of those living unsheltered. More robust teams with specialized services including those to address addictions, and mental health issues must augment street outreach. Innovative approaches such as the SHAP program must be expanded in Brooklyn. This program recruits volunteers, many of whom are formally \"street homeless\" persons and thus, more often trusted messengers for street outreach and their success rate is outstanding. In their second year, of 454 encounters, they placed 226 individuals. The increased capacity afforded to Breaking Ground last year should be coordinated with innovative outreach strategies that are already out there! For those on the street, mobile hygiene and health services should be expanded both for the immediate needs of unsheltered people and for the investment in building trust these services promote.",
+            "tracking_code": "214202704E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Homeless Services",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "capital",
+            "statement_agency_label": "Department of Parks and Recreation",
+            "agency_abbreviation": "DPR",
+            "rank_value": "01",
+            "rank_of": 3,
+            "title": "New public parks",
+            "request_class_label": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+            "passage": "CD14 is about the lowest ranking community board citywide for access to public green space. There are few locations to devleop parks but they should be explored. A CB14 Fund for the City of New York Planning Fellow, made recommendations in 2017, some of which are no longer viable. The agency response to this is to ask local elected officials, which raises the overalll concern about agency capacity and coordination. DPR should have a capital budget capacity that is adequate to meet capital needs based on objective community assessments rather than the vagaries of overlapping, term-limited political borders.",
+            "tracking_code": "214202705C",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Parks and Recreation",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department for the Aging",
+            "agency_abbreviation": "DFTA",
+            "rank_value": "01",
+            "rank_of": 2,
+            "title": "Increase staffing for homebound adult programs",
+            "request_class_label": "Increase staffing for homebound adult programs",
+            "passage": "Case management, home care, legal services, and transportation services are generally intertwined. There is no way to prioritize the needs of one senior citizen over those of another and it would be folly to provide transportation over home care for a senior who is need of both. The funding of these services must be designed with the approach that support services are inextricable.",
+            "tracking_code": "214202705E",
+            "fiscal_year": 2027,
+            "agency_label": "Department for the Aging",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "capital",
+            "statement_agency_label": "Department of Parks and Recreation",
+            "agency_abbreviation": "DPR",
+            "rank_value": "02",
+            "rank_of": 3,
+            "title": "Other capital budget request for DPR",
+            "request_class_label": "Other capital budget request for DPR",
+            "passage": "The Lakeshore project is a multi-million-dollar green infrastructure project that would create marshland, utilize storm water for the benefit of the park and mitigate damaging flood conditions that affect homes, businesses, and other city assets such as the Parade Ground, the SRG Precinct, bus stops and more. It is a project that would increase access to the parks for mobility limited individuals. Funding this project addresses several capacity and coordination goals. Last year the agency responded that this project is funded. That is not so. This is at least a $20 million project and in FY 25, $5million was allocated to the second phase. This project must be fully funded, supported and expedited.",
+            "tracking_code": "214202706C",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Parks and Recreation",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department for the Aging",
+            "agency_abbreviation": "DFTA",
+            "rank_value": "02",
+            "rank_of": 2,
+            "title": "Funding for a new senior center program",
+            "request_class_label": "Funding for a new senior center program",
+            "passage": "Engage in reimagining an RFP for senior centers. The population of persons 65 years old and up in CD14 has increased from 10% in 2010 to 17% in 2021.",
+            "tracking_code": "214202706E",
+            "fiscal_year": 2027,
+            "agency_label": "Department for the Aging",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "capital",
+            "statement_agency_label": "Department of Parks and Recreation",
+            "agency_abbreviation": "DPR",
+            "rank_value": "03",
+            "rank_of": 3,
+            "title": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+            "request_class_label": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+            "passage": "The Hot Spot Tot Lot on Campus Road is the only DPR asset that has not had a capital upgrade in over a decade. DPR should have greater control of capital purse strings to maintain parks and playgrounds in communities according to conditions and time between upgrades rather than relying on elected officials for capital funds. Usually those making the allocations will be term limited before the ribbon cutting. Please don't reply, \"ask your elected officials.\" At least provide the scope estimate and support for this request. CS Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field) DPR Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field) Location: Bedford Avenue - Church Avenue The Flatbush African Burial Ground will be constructed as a memorial through the Department of Parks and Recreation. We understand that capital funding is in place. This is a continued support request assuming capital is adequate as told. CB14 highly prioritizes funding that is adequate to fully realize a vision of this important, sacred and historic site that is informed by community engagement with priority on the descendent community. We will also support expense funded to maintain and program if/as appropriate. CS Develop the Shirley Chisholm Welcome Center at Prospect Park DPR Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field) A monument to community and national shero Shriley Chisholm is to be installed at the Ocean Avenue-Parkside entrance to Prospect Park. A full welcome center, with historic and memorial installation and a comfort station has been envisioned as well. This project should be funded. DPR should have its own capital budget to support such community investments. Instead, we anticipate the reply that the community should seek funding from Council. This is a DPR request but there should be a mechanism to choose DPR and DCLA since it is also cultural in nature.",
+            "tracking_code": "214202707C",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Parks and Recreation",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of Buildings",
+            "agency_abbreviation": "DOB",
+            "rank_value": "01",
+            "rank_of": 2,
+            "title": "Address illegal conversions and uses of buildings",
+            "request_class_label": "Address illegal conversions and uses of buildings",
+            "passage": "There is need for more DOB action on illegal conversions in what would be single family homes and in multifamily buildings. Enforcement on illegal curb cuts and parking pads would move the city toward carbon neutrality. Rather than using the tools we have, there is a new zoning text amendment. Short term rentals are not enforced. Some air bnbs have been reported in the already scarce affordable units in the district.",
+            "tracking_code": "214202707E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Buildings",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "capital",
+            "statement_agency_label": "Department of Transportation",
+            "agency_abbreviation": "DOT",
+            "rank_value": "01",
+            "rank_of": 3,
+            "title": "Rehabilitate bridges",
+            "request_class_label": "Rehabilitate bridges",
+            "passage": "The Beverley Road bridge and the Caton Road bridge both require rehabilitation. The Newkirk Avenue Road bridge is also in need of repair but due to purview complications related to Newkrik Plaza, DOT cannot add the bridge to a component contract, which will delay repairs.",
+            "tracking_code": "214202708C",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Transportation",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of Buildings",
+            "agency_abbreviation": "DOB",
+            "rank_value": "02",
+            "rank_of": 2,
+            "title": "Assign additional building inspectors (including expanding training programs)",
+            "request_class_label": "Assign additional building inspectors (including expanding training programs)",
+            "passage": "DOB is operating with a 15% deficit in human resources. Many of these unfulfilled positions are inspectors. With the continued growing rate of new construction in the district, this is an urgent priority. Too many complaints are closed out due to lack of access while unpermitted work continues to the point of completion. Better timing of inspections, additional attempts and more detailed follow ups would assist in the ability to enforcement myriad violations.",
+            "tracking_code": "214202708E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Buildings",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "capital",
+            "statement_agency_label": "Department of Transportation",
+            "agency_abbreviation": "DOT",
+            "rank_value": "02",
+            "rank_of": 3,
+            "title": "Roadway maintenance (resurfacing, trench restoration, etc.)",
+            "request_class_label": "Roadway maintenance (resurfacing, trench restoration, etc.)",
+            "passage": "Six years ago, DOT identified $60 million for trench repair but none of it was allocated to CD14, despite worsening conditions. We have been told that this funding was never applied to a repair and there is no funding for trench restoration. There must be an increase in the budget for road and street infrastructure repair. Seven locations have been submitted to DOT. 564 East 29th Street; 1781 Ocean Avenue/SE corner of Avenue M; 715 Ocean Parkway Service Road; Waldorf Court between East 17 and Dead End; Hillel Place and Kenilworth Place intersection; 464-476 East 16th Street; and East 16th Street between Avenue H and the dead end. DOT addresses these complaints by filling in the depressions with asphalt. Bus pads at the East 18th and Church Avenue station are in disrepair. Delineators are constantly strewn in streets, intersections and sidewalks. The constant need for repair should raise questions about efficiency. Can't DOT do better?",
+            "tracking_code": "214202709C",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Transportation",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of City Planning",
+            "agency_abbreviation": "DCP",
+            "rank_value": "01",
+            "rank_of": 1,
+            "title": "Process",
+            "request_class_label": "Other expense request for DCP",
+            "passage": "Please note that the following needs are in the order of the District Needs Statement narrative. Health and Human Services are first; followed by Youth, Education and Children's Services; Public Safety and Emergency Response; Core Infrastructure, City Services and Resiliency; Housing, Land Use and Economic Development; Transportation; Parks and then Other. DCP's process requires CBs to list community needs in a misleading priority order. It has been stated in the District Needs Statement that we believe that needs are intertwined within and across agencies and do not believe it serves a purpose to have needs for parks to face off against needs for libraries (for example). What all agencies need at this time is an increase in their respective and collective capacity and ability to coordinate better within and with other sister city agencies. That's priority one across the board.",
+            "tracking_code": "214202709E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of City Planning",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "capital",
+            "statement_agency_label": "Department of Transportation",
+            "agency_abbreviation": "DOT",
+            "rank_value": "03",
+            "rank_of": 3,
+            "title": "Other transportation infrastructure requests",
+            "request_class_label": "Other transportation infrastructure requests",
+            "passage": "Ensure that sidewalks, curbs, street and bus pads are maintained at all bus stops. The bus stop at Church Avenue and East 18th street, which is a heavily utilized connection to the Brighton Line at the Church Avenue station is hazardous in both directions. The sidewalks require repair, the curbs are dilapidated and the streets have waving and pot holes. DOT installed an express lane on this stop and should have ensured bus pad, sidewalk and street maintenance along each stop during that project. School Construction Authority",
+            "tracking_code": "214202710C",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Transportation",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of Consumer and Worker Protection",
+            "agency_abbreviation": "DCWP",
+            "rank_value": "01",
+            "rank_of": 1,
+            "title": "Other expense budget request for DCA",
+            "request_class_label": "Other expense budget request for DCA",
+            "passage": "DCWP is the licensing and main enforcement agency for the sale of tobacco and e-cigarettes. The pace of inspections is slow, and the enforcement mechanisms is inadequate. More stores sell these items without a license than with one. Report of sales to minors and sales of flavored vapes are prevalent. A significant investment must be made in adding and training inspectors. At the state level, OCM is stepping into cannabis enforcement. The Sheriff's office has had impact on some enforcement. NYPD has been marginalized but remains involved where possible. This is an inefficient and ineffective approach.",
+            "tracking_code": "214202710E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Consumer and Worker Protection",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "capital",
+            "statement_agency_label": "Fire Department of New York",
+            "agency_abbreviation": "FDNY",
+            "rank_value": "01",
+            "rank_of": 1,
+            "title": "Rehabilitate or renovate existing fire houses or EMS stations",
+            "request_class_label": "Rehabilitate or renovate existing fire houses or EMS stations",
+            "passage": "Fund station house renovations and upgrades at Engine 255/Ladder 157; Engine 281/Ladder 147 and Engine 250 firehouses. Including the addition of a station house generator at one of these fire stations. There are no firehouses in CD 14 with a generator.",
+            "tracking_code": "214202711C",
+            "fiscal_year": 2027,
+            "agency_label": "Fire Department",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of Environmental Protection",
+            "agency_abbreviation": "DEP",
+            "rank_value": "01",
+            "rank_of": 1,
+            "title": "Clean catch basins",
+            "request_class_label": "Clean catch basins",
+            "passage": "There are several locations in the district that flood chronically that have all been brought to DEP's attention. It seems that the issues can only be resolved with capital investments and that is the second highest request on CB14 capital list. In the meantime, catch basin cleaning and maintenance, courtesy flushes, rain barrels, backflow valve education, and other short term mitigation strategies are needed.",
+            "tracking_code": "214202711E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Environmental Protection",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "capital",
+            "statement_agency_label": "Housing Preservation and Development",
+            "agency_abbreviation": "HPD",
+            "rank_value": "01",
+            "rank_of": 2,
+            "title": "More affordable housing for low and extremely low income households",
+            "request_class_label": "Provide more housing for extremely low and low income households",
+            "passage": "In HPD's own Mayor's Management Report, it was stated in the capital budget section that, \"HPD must work to restore lost affordable housing capacity.\" Affordable housing is dropping as a share of housing in CD 14. Low and extremely low-income housing is always the smallest percentage of new developments, and they tend to be smaller units such as studios and 1 bedroom, making low-income housing for families nearly nonexistent. There are also pressing needs for senior housing and supportive housing in the community. HPD reported a $9.25 billion 5-year capital fund but no additional capital was budgeted at the time due to headcount constraints prohibiting projects from moving forward. This must be remedied to ensure that the $250 million infrastructure funds to support housing and training technology, new supportive housing builds, capital preservation, and In Rem capital projects can be funded to meet community needs. In CB14 there are 800 housing code violations for every 1000 units. HPD must improve capacity and coordinate within and with other agencies to meet this urgent need.",
+            "tracking_code": "214202712C",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Housing Preservation & Development",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of Health and Mental Hygiene",
+            "agency_abbreviation": "DOHMH",
+            "rank_value": "01",
+            "rank_of": 4,
+            "title": "Create or promote programs to de-stigmatize mental health needs and encourage",
+            "request_class_label": "treatment",
+            "passage": "Create or promote programs to de-stigmatize mental health needs and encourage treatment Nearly one in 25 New Yorkers has experienced mental illness. About 280,000 have major disorders such as schizophrenia. Forty percent of those in city shelters and 53% of those in city jails experience mental illness. From March to December of 2020, more than 17,000 calls were made for mental health assistance. This was 85 times more than the same period in 2019. The city must continue to expand mobile crises teams, and intensive mobile teams as well as HOMESTAT outreach to unsheltered homeless individuals experiencing mental illness. A Support and Connection Center should be provided in Brooklyn.",
+            "tracking_code": "214202712E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Health and Mental Hygiene",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "capital",
+            "statement_agency_label": "Housing Preservation and Development",
+            "agency_abbreviation": "HPD",
+            "rank_value": "02",
+            "rank_of": 2,
+            "title": "Low income, supportive and senior housing",
+            "request_class_label": "Provide more housing for extremely low and low income households",
+            "passage": "The need for senior housing, supportive housing and increasing low and extremely low income housing will likely see greater pressures depending on how City of Yes for housing passes. There are few mandates to create housing that generates less process and is dependent on support programs, such as vouchers. CB14 has lost housing at 30% AMI as a share of housing overall. There are very few public lots in CB14 but HPD must work creatively to identify potential sites for 100% affordable developments. There is one municipal parking lot, a DOE building on Avenue M and Ocean Avenue and our libraries are one and two story buildings. These sites should be explored and HPD should be able to explain the reasons if they are not feasible for truly affordable housing projects.",
+            "tracking_code": "214202713C",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Housing Preservation & Development",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of Health and Mental Hygiene",
+            "agency_abbreviation": "DOHMH",
+            "rank_value": "02",
+            "rank_of": 4,
+            "title": "Create or promote programs to de-stigmatize substance misuse and encourage",
+            "request_class_label": "treatment",
+            "passage": "Create or promote programs to de-stigmatize substance misuse and encourage treatment Street outreach teams, NYPD, and human services organizations report that many people who appear to be unsheltered often have homes but congregate where they can access and use substances. There are few programs available to them unless they are in fact homeless or choose to seek care. This is a woeful and dangerous approach, or lack thereof. Community Mobile and Intesive Mobile teams should be expanded in Brooklyn.",
+            "tracking_code": "214202713E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Health and Mental Hygiene",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "capital",
+            "statement_agency_label": "New York City Transit Authority",
+            "agency_abbreviation": "NYCTA",
+            "rank_value": "01",
+            "rank_of": 2,
+            "title": "Repair or upgrade subway stations or other transit infrastructure",
+            "request_class_label": "Repair or upgrade subway stations or other transit infrastructure",
+            "passage": "Location: Church Ave and E 18 St Church Avenue is the most heavily utilized station in the district and is in disrepair. A public private partnership is in place to install an elevator to make the station ADA compliant. Other upgrades and additional security cameras must accompany this project, especially given that this will be more heavily utilized by vulnerable community members.",
+            "tracking_code": "214202714C",
+            "fiscal_year": 2027,
+            "agency_label": "Transit Authority",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of Health and Mental Hygiene",
+            "agency_abbreviation": "DOHMH",
+            "rank_value": "03",
+            "rank_of": 4,
+            "title": "Other programs to address public health issues requests",
+            "request_class_label": "Other programs to address public health issues requests",
+            "passage": "Public health programs that address health disparities with an urgent focus on maternal health are of the highest priorities. Ongoing infection disease concerns, barriers to vaccines whether they be knowledge and understanding based, cultural practices based, language access, etc. must be thoughtfully addressed. Access to quality housing, healthy food choices and outdoor space all contribute systemically to health outcomes and thus cannot be considered singularly, let alone in competition with one another.",
+            "tracking_code": "214202714E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Health and Mental Hygiene",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "capital",
+            "statement_agency_label": "New York City Transit Authority",
+            "agency_abbreviation": "NYCTA",
+            "rank_value": "02",
+            "rank_of": 2,
+            "title": "Improve accessibility of transit infrastructure, by providing elevators, escalators, etc.",
+            "request_class_label": "Improve accessibility of transit infrastructure, by providing elevators, escalators, etc.",
+            "passage": "The 18th Avenue Stop on the Culver Line is on the same block as the United Cerebral Palsey complex. This stop was recently upgraded. It's unfortunate that accessibility was not one of the improvements.",
+            "tracking_code": "214202715C",
+            "fiscal_year": 2027,
+            "agency_label": "Transit Authority",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of Health and Mental Hygiene",
+            "agency_abbreviation": "DOHMH",
+            "rank_value": "04",
+            "rank_of": 4,
+            "title": "Animal and pest control requests including reducing rat and mosquito populations",
+            "request_class_label": "Animal and pest control requests including reducing rat and mosquito populations",
+            "passage": "Rodent complaints have risen throughout the city, While DOHMH continues to increase the number of inspections performed annually, these efforts are outpaced by conditions contributing to rodent infestations. DOT's Open Streets for restaurant policy, DOB's abatement rules for construction sites should have better storage and collection policies. DSNY should be better equipped to address illegal drop offs and dumping. A better public education plan so that people understand the downside of feeding feral cats and birds is needed.",
+            "tracking_code": "214202715E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Health and Mental Hygiene",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "capital",
+            "statement_agency_label": "New York Police Department",
+            "agency_abbreviation": "NYPD",
+            "rank_value": "01",
+            "rank_of": 3,
+            "title": "Renovate or upgrade existing precinct houses",
+            "request_class_label": "Renovate or upgrade existing precinct houses",
+            "passage": "While NYPD continues the search for an appropriate location for a new precinct house, the current precinct house floods and leaks and does not have adequate lockers, storage, parking, nor is it handicap accessible. We have hesitated to prioritize capital dollars for a precinct house that should be replaced but as conditions worsen, there's a more urgent concern. There should not be a need for volunteer community assistance to maintain a precinct house. Work orders should be addressed quickly but at this point, many work orders are putting band aids on hemorrhages. NYPD should offer to buyout and help relocate Adapt Community Network in order to build on the block. In addition, the vacant lot on the block should be explored as a potential parking facility for the 70th Precinct.",
+            "tracking_code": "214202716C",
+            "fiscal_year": 2027,
+            "agency_label": "Police Department",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of Parks and Recreation",
+            "agency_abbreviation": "DPR",
+            "rank_value": "01",
+            "rank_of": 3,
+            "title": "Forestry services, including street tree maintenance",
+            "request_class_label": "Forestry services, including street tree maintenance",
+            "passage": "Flatbush and Midwood boast 11,237 street trees, including 121 different species according to DPR's census. Argyle Road is considered the \"leafiest\" in Brooklyn. A more robust pruning cycle is still necessary. Requests for emergency pruning and fallen branches are increasing in the District. Fallen limbs, branches and entire trees too often were reported for pruning but not addressed. Paying claims instead of service is poor policy. DPR needs a better funded and more robust contracting practice in addition to an increase in the budget to bring the work in house.",
+            "tracking_code": "214202716E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Parks and Recreation",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "capital",
+            "statement_agency_label": "New York Police Department",
+            "agency_abbreviation": "NYPD",
+            "rank_value": "02",
+            "rank_of": 3,
+            "title": "Capital investments in Towing capacity",
+            "request_class_label": "Other NYPD facilities and equipment requests",
+            "passage": "Every day there is a community request to have a vehicle towed. There are also trucks and trailers-some attached, some not. When they have plates or a later model and/or luxury vehicles and can only be towed by NYPD, it can take several weeks and more. PD notes that there is a shortage of large tow vehicles. Last year they asked CBs to request a new tow pound and then responded that they did not support the request. We strongly urge capital expenditures to increase the number of large tow vehicles and identify an additional tow pound as needed.",
+            "tracking_code": "214202717C",
+            "fiscal_year": 2027,
+            "agency_label": "Police Department",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of Parks and Recreation",
+            "agency_abbreviation": "DPR",
+            "rank_value": "02",
+            "rank_of": 3,
+            "title": "Plant new street trees",
+            "request_class_label": "Plant new street trees",
+            "passage": "There is a lack of enforcement when it comes to developers and planting requirements. Elected officials have used reso funds to plant trees where it was a developers responsibility. Where planting is the city's responsibility it should be properly funded and then adequately pruned.",
+            "tracking_code": "214202717E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Parks and Recreation",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "capital",
+            "statement_agency_label": "New York Police Department",
+            "agency_abbreviation": "NYPD",
+            "rank_value": "03",
+            "rank_of": 3,
+            "title": "Renovate or upgrade existing precinct houses",
+            "request_class_label": "Renovate or upgrade existing precinct houses",
+            "passage": "The time is now. The history of efforts to relocate this aging facility goes back three decades. In 2006, DCAS began property acquisition at 1326 Ocean Avenue and NYPD set aside $30 million for the property, and OMB stated its commitment to identify additional funding. Construction was set to begin in 2013. It did not and the site was lost to a market rate housing development. A $1 million scoping study to asses the feasibility of building a new precinct house on site acknowledges the locational challenges that the current site presents. OMB approved a site search to no avail. Relocating the precinct house remains a priority. NYPD must shift pressure on OMB into high gear for the sake of the MOS at the precinct level. No more shrugging as they pass the buck. Take responsibility.",
+            "tracking_code": "214202718C",
+            "fiscal_year": 2027,
+            "agency_label": "Police Department",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of Parks and Recreation",
+            "agency_abbreviation": "DPR",
+            "rank_value": "03",
+            "rank_of": 3,
+            "title": "Community Tree Pruning",
+            "request_class_label": "Forestry services, including street tree maintenance",
+            "passage": "While DPR struggles to build enough capacity to address tree pruning needs, there should be an effort to better coordinate the Community Tree Pruners program. Reportedly, residents who would like to become qualified to become tree pruners, cannot get into the program. If DPR doesn't have the capacity to accept help expanding capacity, that's a real problem!",
+            "tracking_code": "214202718E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Parks and Recreation",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of Sanitation",
+            "agency_abbreviation": "DSNY",
+            "rank_value": "01",
+            "rank_of": 5,
+            "title": "Other cleaning requests",
+            "request_class_label": "Other cleaning requests",
+            "passage": "Please restore MLP in the baseline budget. There are 5 overlapping council members in CD14. Those overlaps vary in size and the council members vary in their willingness to give council member allocations back to city agencies, and that's understandable. These funds are supposed to supplement, not supplant agency responsibility. There are 1200 road segments in CD 14. Given the number of dead ends, overpasses, and road bridges, cleaning is a persistent need. The evisceration of MLP was ill advised. Asking council members to refund DSNY with Clean NYC or reso funds does not ensure equal distribution of services across the district and is financially inefficient. Baseline services should come from the baseline budget. Restore full funding for MLP so the district can be cleaned efficiently and equitably.",
+            "tracking_code": "214202719E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Sanitation",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of Sanitation",
+            "agency_abbreviation": "DSNY",
+            "rank_value": "02",
+            "rank_of": 5,
+            "title": "Increase enforcement of street vending",
+            "request_class_label": "Increase enforcement of street vending",
+            "passage": "The addition of vendor enforcement has not been adequately resourced. There are not enough San Police and they don't cover specific areas. There is not a transparent reporting system in place. The problem has only exacerbated since shifting enforcement to DSNY. This is a failed policy and while it's in these budget priorities, it might not be a good idea to continue funding a failed policy. This one needs a paradigm shift that is balanced with fair permitting for vendors. That would take interagency coordination. As of now, we have chronic locations that are expanding and ironically creating litter and other sanitation issues.",
+            "tracking_code": "214202720E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Sanitation",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of Sanitation",
+            "agency_abbreviation": "DSNY",
+            "rank_value": "03",
+            "rank_of": 5,
+            "title": "Provide or expand NYC organics collection program",
+            "request_class_label": "Provide or expand NYC organics collection program",
+            "passage": "Reinstate community compost sites to complement once-a-week curbside collection.",
+            "tracking_code": "214202721E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Sanitation",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of Sanitation",
+            "agency_abbreviation": "DSNY",
+            "rank_value": "04",
+            "rank_of": 5,
+            "title": "Targeted enforcement",
+            "request_class_label": "Increase enforcement of illegal dumping laws",
+            "passage": "The drop down menu on this report platform lists 10 \"increase enforcement\" options. This board is loathe to ask for more enforcement when DSNY demonstrates an inability to aim violations at the actual offender. DSNY is failing to enforce vendor rules but then penalizes brick and morter businesses by serving violations for the litter that vendors left behind. DSNY has not restored MLP and then issues violations to homeowners who are victims of illegal drop offs. DSNY went on a ticket writing blitz and wrote tickets for early set out at 7:30 on Fridays in a Jewish Orthodox community. We don't want more enforcment, we want appropriately targeted enforcement. An increase in cameras at locations where chronic drop offs occur, is a good place to start. An increase in stakeouts, would be helpful. The ability to open bags and increase according to addressed contents within, might help as well. These approaches seem more likely to mitigate the behavior of offenders in a manner that is more targeted than gimmicky \"hall of shame\" photos that only show us where but not who.",
+            "tracking_code": "214202722E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Sanitation",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of Sanitation",
+            "agency_abbreviation": "DSNY",
+            "rank_value": "05",
+            "rank_of": 5,
+            "title": "Commercial containers",
+            "request_class_label": "Provide more on-street trash cans and recycling containers",
+            "passage": "DSNY should not expect BIDs to pay for containers. BIDs were created to supplement, not supplant city services. If DSNY is going to mandate containers, they should be provided in the same way corner baskets were provided. Please don't pass this responsibility off to elected officials either. This is DSNY's program and should be in DSNY's baseline budget.",
+            "tracking_code": "214202723E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Sanitation",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of Small Business Services",
+            "agency_abbreviation": "SBS",
+            "rank_value": "01",
+            "rank_of": 1,
+            "title": "Provide commercial lease support for business owners",
+            "request_class_label": "Provide commercial lease support for business owners",
+            "passage": "Supporting venues that generate social capital and drive economic development is key to post pandemic recovery. Kings Theater was an EDC project that is owned and managed by a private entity and is a for profit enterprise. The city then enacted several policy decisions in the area that undermined the original multi-million-dollar investment in the theater as an economic driver.",
+            "tracking_code": "214202724E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Small Business Services",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of Transportation",
+            "agency_abbreviation": "DOT",
+            "rank_value": "01",
+            "rank_of": 2,
+            "title": "Other expense budget request for DOT",
+            "request_class_label": "Other expense budget request for DOT",
+            "passage": "New York City must recognize ownership of the Plaza. The clearest solution we see is for Newkirk Plaza to become a formal participant in the DOT's Pedestrian Plaza Program. The City's inability to determine jurisdiction over Newkirk Plaza has left several chronic issues unresolved, including a serious rodent infestation, sanitation maintenance concerns, disrepair of the brick plaza surface, and growing street homelessness challenges. The New York City Police Department, the Department of Sanitation, the Department of Buildings, and the Department of Health and Mental Hygiene, have all been called upon to deal with myriad issues on the Plaza. Many community stakeholders, including business owners, civic and community-based organizations, and local government entities, continue to struggle",
+            "tracking_code": "214202725E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Transportation",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of Transportation",
+            "agency_abbreviation": "DOT",
+            "rank_value": "02",
+            "rank_of": 2,
+            "title": "Address traffic congestion",
+            "request_class_label": "Address traffic congestion",
+            "passage": "The need to address freight mobility, including trucking, waterways, light rail and last mile trucking concerns are increasingly urgent. A review of truck routes is a task that DOT has started and stopped over the years. In CD 14 Caton Avenue to Linden Blvd is a truck route. Just south of Caton is Church Avenue - also a truck route. Traffic is gridlocked on Caton nearly endlessly in both directions. There is an express bus lane has been added to Church Avenue, eliminating truck delivery windows. These conditions have pushed more traffic onto sidestreets. The proliferation of 53' trucks on our streets is dangerous testement to the city's inability to coordinate interagency issues. We have turned to DOT, NYPD, and NYS DOT for relief, to no avail.",
+            "tracking_code": "214202726E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Transportation",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Department of Youth and Community Development",
+            "agency_abbreviation": "DYCD",
+            "rank_value": "01",
+            "rank_of": 1,
+            "title": "Provide, expand, or enhance the Summer Youth Employment Program",
+            "request_class_label": "Provide, expand, or enhance the Summer Youth Employment Program",
+            "passage": "According to our Youth Conference attendees survey, the biggest draw for the 500 youth who attended out annual conference was jobs. It is imperative that DYCD jobs programs be expanded and dependably funded. Additional focus on building capacity at the CBO level to expand programming into underserved communities is imperative. Cure violence programs depend on significant alternatives. DYCD is poised to support new models of curing violence and expanding opportunities for future leaders. All DYCD programs should include a component on fraud prevention and financial literacy.",
+            "tracking_code": "214202727E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Youth & Community Development",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Fire Department of New York",
+            "agency_abbreviation": "FDNY",
+            "rank_value": "01",
+            "rank_of": 2,
+            "title": "Provide more firefighters or EMS workers",
+            "request_class_label": "Provide more firefighters or EMS workers",
+            "passage": "Fund adequate new firefighter, Marshall, EMS and inspector hires. Given the pace of development and the density that is adding to our community, it is imperative that we ensure that staffing remain optimal and that the addition of a 5th firefight on the truck is expanded to firehouses serving our community. The number of firefighters fully trained for all inspections should be at 100%.",
+            "tracking_code": "214202728E",
+            "fiscal_year": 2027,
+            "agency_label": "Fire Department",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Fire Department of New York",
+            "agency_abbreviation": "FDNY",
+            "rank_value": "02",
+            "rank_of": 2,
+            "title": "Lifeguard training and management",
+            "request_class_label": "Expand funding for fire prevention and life safety initiatives",
+            "passage": "The City should transfer the responsibility for lifeguard training and management from the Dept of Parks and Recreation to FDNY. These jobs are life safety initiatives and could provide a pathway to career emergency services. This is a proposal that was studied by IBO and is supported by some councilmembers. In addition, FDNY personnel should be able to \"moonlight\" as lifeguards. This was a practice in the past that the city paused for budgetary reasons. Fund the payroll to ensure public safety at city beaches.",
+            "tracking_code": "214202729E",
+            "fiscal_year": 2027,
+            "agency_label": "Fire Department",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Health and Hospitals Corporation",
+            "agency_abbreviation": "HHC",
+            "rank_value": "01",
+            "rank_of": 1,
+            "title": "Maternal Health Disparities",
+            "request_class_label": "Other expense budget request for HHC",
+            "passage": "Develop programs and outreach to address maternal health care disparities through community outreach and medical care services.",
+            "tracking_code": "214202730E",
+            "fiscal_year": 2027,
+            "agency_label": "Health and Hospitals Corporation",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Housing Preservation and Development",
+            "agency_abbreviation": "HPD",
+            "rank_value": "01",
+            "rank_of": 2,
+            "title": "Provide more housing for extremely low and low income households",
+            "request_class_label": "Provide more housing for extremely low and low income households",
+            "passage": "Ensuring that there is affordable housing for CD14's community members at lower strata of the AMI, for seniors and those in need of supportive housing rely on HPD fully implementing Housing Our Neighbors and all components of the Housing Blueprint plan including fighting tenant harassment. These programs seem to be falling short. Our community is left vulnerable to HPD's inability to increase agency headcount and thus capacity. Interagency coordination should be put into place such that DOB will not issue permits in buildings with HPD violations unless needed to address those very violations.",
+            "tracking_code": "214202731E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Housing Preservation & Development",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Housing Preservation and Development",
+            "agency_abbreviation": "HPD",
+            "rank_value": "02",
+            "rank_of": 2,
+            "title": "Provide, expand, or enhance programs for housing inspections to correct code violations",
+            "request_class_label": "Provide, expand, or enhance programs for housing inspections to correct code violations",
+            "passage": "CD14 has one of the highest serious housing code violations per 1000 units of housing in the city and it is getting worse. HPD must be granted enforcement authority that makes a difference. Inspector training and technology, fully implementing Housing Our Neighbors and all components of the Housing Blueprint plan and fighting tenant harassment are all programs that seem to be falling short. Our community is left vulnerable to HPD's inability to increase agency capacity. Interagency coordination should be put into place such that DOB will not issue permits in buildings with HPD violations unless needed to address those very violations.",
+            "tracking_code": "214202732E",
+            "fiscal_year": 2027,
+            "agency_label": "Department of Housing Preservation & Development",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Human Resources Administration",
+            "agency_abbreviation": "HRA",
+            "rank_value": "01",
+            "rank_of": 1,
+            "title": "Provide, expand, or enhance rental assistance programs/vouchers for permanent",
+            "request_class_label": "housing",
+            "passage": "Provide, expand, or enhance rental assistance programs/vouchers for permanent housing Community District 14 ranks high in the percentage of severely rent burdened households, which is to say that they pay 50% or more of their monthly income on housing. Overall, 29% of households are severely rent burdened. This is down from a recent high of 35%. For low-income households, 44% are severely rent burdened. The share of units available at 30% AMI has decreased again. When we say that we need affordable housing, not just housing, this is the basis. The District ranks 3rd in Brooklyn and is in the top 10 citywide in the percent of renter households that are severely overcrowded. These are pressures that lend themselves to homelessness and continued expansion of prevention programs is warranted. Emergency rental assistance, one-shot deals, FEPS, CityFEPs, and the HOMEBASE program must be fully funded and the capacity of HRA to provide outreach and technical assistance must be increased. Greater coordination between programs such as WeCare to address housing vulnerabilities related to mental health needs and further support for those transition into permanent housing are needed as well.",
+            "tracking_code": "214202733E",
+            "fiscal_year": 2027,
+            "agency_label": "Human Resources Administration",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "New York City Transit Authority",
+            "agency_abbreviation": "NYCTA",
+            "rank_value": "01",
+            "rank_of": 2,
+            "title": "Address overcrowded buses",
+            "request_class_label": "Expand bus service frequency or hours of operation",
+            "passage": "Assess use of busses and add to routes, especially morning commutes.",
+            "tracking_code": "214202734E",
+            "fiscal_year": 2027,
+            "agency_label": "Transit Authority",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "New York City Transit Authority",
+            "agency_abbreviation": "NYCTA",
+            "rank_value": "02",
+            "rank_of": 2,
+            "title": "Newkirk Plaza",
+            "request_class_label": "Improve subway station or train cleanliness, safety and maintenance",
+            "passage": "It took years to convince DOT to accept Newkirk Plaza into the pedestrian plaza program. It took another year for DOT lawyers and MTA lawyers to compose an agreement. It has now taken another year for MTA to conduct the necessary engineering study prior to implementing the agreement. It's a slap in the face of the community that the MTA is simultaneously trying to engage in support of the IBX plan. Additionally, MTA would not let a local CBO improve the Newkirk Plaza station house with a mural because they claimed that station houses have to be identifiable as such. However, the station house is filthy and covered in graffiti - why would this be considered more identifiable. If MTA is not taking care of the assets currently in our community, why would they expect the community to welcome the new assets that come along with the IBX? They should expect a great deal of skepticism if not anger and dismay.",
+            "tracking_code": "214202735E",
+            "fiscal_year": 2027,
+            "agency_label": "Transit Authority",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "New York Police Department",
+            "agency_abbreviation": "NYPD",
+            "rank_value": "01",
+            "rank_of": 1,
+            "title": "Hire additional crossing guards",
+            "request_class_label": "Hire additional crossing guards",
+            "passage": "Additional crossing guards is an ever increasing request. New schools have opened, new developments are in the pipeline. The Community Board defers to the Police Precinct to assign additional crossing guards to new locations. It is our understanding that these positions are difficult to fill. Therefore, we request that the city demonstrates that it cares about student safety by either increasing pay to meet the labor pool or by posting NYPD or Traffic officers to augment the crossing guard labor pool as it stands. Funding should also cover substitute crossing guards so that intersections are not without this important safety measure when a crossing guard is out for any period of time. In the past NYPD would fill a vacant position with a police officer until the crossing guard returned or the spot was filled. This practice should be reinstituted.",
+            "tracking_code": "214202736E",
+            "fiscal_year": 2027,
+            "agency_label": "Police Department",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Office of Management and Budget",
+            "agency_abbreviation": "OMB",
+            "rank_value": "01",
+            "rank_of": 2,
+            "title": "Provide more community board staff",
+            "request_class_label": "Provide more community board staff",
+            "passage": "Every year we manage hundreds of service delivery requests, a youth conference, a nonprofit roundtable. We've added a lunch and learn series, and a YLC. Increasing responsibilities have been assigned and hiring staff and specialists, such as planners, policy analysts, IT assistance, would help to introduce more initiatives and develop longer range projects. As the most local city agency, we give voice to the individuals who make up our communities. To support serving communities equitably, it is imperative that the city fund and provide language access services at the CB level.",
+            "tracking_code": "214202737E",
+            "fiscal_year": 2027,
+            "agency_label": "Mayor's Office of Management and Budget",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          },
+          {
+            "budget_class": "expense",
+            "statement_agency_label": "Office of Management and Budget",
+            "agency_abbreviation": "OMB",
+            "rank_value": "02",
+            "rank_of": 2,
+            "title": "Other expense request",
+            "request_class_label": "Other expense request",
+            "passage": "DCP and OMB - improve DNS and budget process.",
+            "tracking_code": "214202738E",
+            "fiscal_year": 2027,
+            "agency_label": "Mayor's Office of Management and Budget",
+            "identity_keys": [
+              "board_id",
+              "fiscal_year",
+              "responsible_agency",
+              "budget_class",
+              "board_priority"
+            ]
+          }
+        ],
+        "statement_passages_unattached_count": 1,
+        "responses_compared": 59,
+        "response_source_disagreements": [
+          {
+            "tracking_code": "214202707E",
+            "publication": "20260630",
+            "board_document_id": "adopted-register",
+            "board_document_response": "The agency does not understand the request as written Explanation: Airbnb is under the jurisdiction Mayor's Office of Special Enforcement.",
+            "register_response": "The agency does not understand the request as written and requires more clarification. Explanation: Airbnb is under the jurisdiction Mayor's Office of Special Enforcement.",
+            "board_document_title": "Register of Community Board Budget Requests for the Adopted Budget, Fiscal Year 2027",
+            "board_document_url": "https://cb14brooklyn.com/wp-content/uploads/2026/07/FY2027_CB14-Adopted-Budget-Register-CB14.pdf"
+          }
+        ],
+        "ratified_resolution": {
+          "document_id": "ratified-minutes",
+          "tally": {
+            "in_favor": 25,
+            "opposed": 0,
+            "abstaining": 1
+          },
+          "tally_text": "25-0-1",
+          "action": "to send a Letter of Comment to the Department of City Planning and the Office of Management and Budget similar to the letter sent for FY2026",
+          "document_title": "Ratified minutes of the March 9, 2026 board meeting",
+          "document_url": "https://cb14brooklyn.com/wp-content/uploads/2026/02/2026-03-09_Board-Meeting-Minutes_Addendum-ratified.pdf",
+          "meeting_date": "2026-03-09"
+        }
+      }
+    }
+  ]
+}

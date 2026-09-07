@@ -38,7 +38,16 @@
 export const BUDGET_REQUEST_BOOT_ATTRIBUTE = "data-budget-request";
 export const BUDGET_REQUEST_BOOT_LABELS_ATTRIBUTE = "data-budget-request-labels";
 export const BUDGET_REQUEST_BOOT_READY_ATTRIBUTE = "data-budget-requests-ready";
-export const BUDGET_REQUEST_BOOT_SECTION_SELECTOR = "[data-community-board-budget-requests], [data-agency-budget-requests]";
+/**
+ * Every section that renders a request row.
+ *
+ * The hearing preparation section renders one request with this same row
+ * markup and carries the same labels, so it binds through this one behaviour
+ * rather than a second copy of it. One inspect implementation means the record
+ * a reader opens from the worked example and the record they open from the
+ * list below it behave identically, because they are the same code.
+ */
+export const BUDGET_REQUEST_BOOT_SECTION_SELECTOR = "[data-community-board-budget-requests], [data-agency-budget-requests], [data-community-board-hearing-context]";
 export const BUDGET_REQUEST_BOOT_DIALOG_ID = "budget-request-inspect";
 export const BUDGET_REQUEST_BOOT_TITLE_ID = "budget-request-inspect-title";
 export const BUDGET_REQUEST_BOOT_LABELS_VERSION = 1;

@@ -73,6 +73,10 @@ import {
   communityBoardBudgetRequestsForBoard,
   renderCommunityBoardBudgetRequestsSection,
 } from "./community_board_budget_requests.mjs";
+import {
+  communityBoardHearingContextForBoard,
+  renderCommunityBoardHearingContextSection,
+} from "./community_board_hearing_context.mjs";
 
 export const COMMUNITY_BOARD_CONSTELLATION_SCHEMA = "cityscroll.community_board_constellation.v1";
 export const COMMUNITY_BOARD_CONSTELLATION_METHOD = "community_board_constellation_v1";
@@ -587,6 +591,15 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     sources.communityBoardBudgetRequests?.[requested] || sources.budgetRequests?.[requested],
     requested,
   );
+  // The hearing reading is given the register reading rather than the raw
+  // register, so the request it teaches from and the requests listed below it
+  // are the same objects. Two independent readings of one record could drift
+  // apart on the same page, which is the one thing a worked example must not do.
+  const hearingContext = communityBoardHearingContextForBoard(
+    sources.communityBoardHearingContext || sources.hearingContext,
+    requested,
+    { budgetRequests },
+  );
   const appointmentAuthority = requested === BROOKLYN_CB15_BODY_ID
     ? boroughOfficeRolesForBoard(requested, sources.boroughOffice || sources.boroughOfficeSources || {})
     : null;
@@ -643,6 +656,10 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     // board the register holds no request for says so about the register, and a
     // register that could not be read says that instead of rendering silence.
     ...(budgetRequests ? { budget_requests: budgetRequests } : {}),
+    // Present only for the boards this reading covers. A board with no entry
+    // carries no section rather than an empty one, because an empty one would
+    // read as a board that holds no budget hearing.
+    ...(hearingContext ? { hearing_context: hearingContext } : {}),
     // The bounded decision reading covers two boards. Every other board carries
     // no section at all rather than an empty one that reads as "this board
     // decided nothing".
@@ -951,11 +968,11 @@ function renderAboutBoardSection(view) {
  */
 function embeddablePayload(view) {
   const requests = view.budget_requests;
-  if (!requests) return view;
-  const { groups, ...summary } = requests;
-  return {
-    ...view,
-    budget_requests: {
+  const hearing = view.hearing_context;
+  const payload = { ...view };
+  if (requests) {
+    const { groups, ...summary } = requests;
+    payload.budget_requests = {
       ...summary,
       agencies: (groups || []).map((group) => ({
         slug: group.slug,
@@ -964,8 +981,28 @@ function embeddablePayload(view) {
         request_count: group.request_count,
         changed_answer_count: group.changed_answer_count,
       })),
-    },
-  };
+    };
+  }
+  // The hearing reading keeps the same shape of promise for the same reason.
+  // Its agenda, its documents and its counts are the object; the statement
+  // passages, the two versions of every disagreeing answer and the worked
+  // example's own request row are all rendered above and are all restatements
+  // of records the payload or the page already carries.
+  if (hearing) {
+    const {
+      passages, worked_example: workedExample, worked_example_request: workedRequest, disagreements, ...previous
+    } = hearing.previous_cycle || {};
+    payload.hearing_context = {
+      ...hearing,
+      previous_cycle: {
+        ...previous,
+        statement_passage_count: (passages || []).length,
+        worked_example_tracking_code: workedExample?.tracking_code || null,
+        disagreement_tracking_codes: (disagreements || []).map((row) => row.tracking_code),
+      },
+    };
+  }
+  return payload;
 }
 
 export function renderCommunityBoardConstellationDocument(view, options = {}) {
@@ -1016,7 +1053,7 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
 ${renderNodeBack({ href: "/community-boards/", label: "Back to community board sources", extraClass: "civic-object-back" })}
 <header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">Community board</p><h1>${esc(title)}</h1><p class="node-lede">A local advisory body, its district, committees, proceedings, people, and official source coverage.</p><p class="node-pivot civic-object-pivot"><a href="${esc(place?.view_all_href || "/near-you/")}">Open this board’s place view</a> · <a href="${esc(institution)}">Open this board institution</a> · <a href="${esc(output)}">Open the source directory</a></p></header>
 ${renderRelatedPublicBodiesFor(view.body_id)}
-  ${renderAboutBoardSection(view)}${renderCommunityBoardDecisionsSection(view.board_decisions, { lang: options.lang })}${renderCommunityBoardLandPositionsSection(view.land_positions, { lang: options.lang })}${renderCommunityBoardBudgetRequestsSection(view.budget_requests, { lang: options.lang })}${renderCommunityBoardDistrictProjectsSection(view.district_projects, { lang: options.lang })}${renderCommunityBoardParticipationSection(view)}${renderCommunityBoardMoneyCard(view.money)}${renderCommunityBoardPayrollContext(view.payroll)}${renderCommunityBoardBylawPanel(view.governance)}${renderBoroughOfficeAppointmentSection(view.appointment_authority)}${renderEmptyCoverageNote(emptyCoverageCategories)}${renderedCategories.map((category) => renderCategory(category, view)).join("")}${edgeRail}${local}${actions}${renderUnjoinedSourceSection(view.source_records)}
+  ${renderAboutBoardSection(view)}${renderCommunityBoardHearingContextSection(view.hearing_context, { lang: options.lang })}${renderCommunityBoardDecisionsSection(view.board_decisions, { lang: options.lang })}${renderCommunityBoardLandPositionsSection(view.land_positions, { lang: options.lang })}${renderCommunityBoardBudgetRequestsSection(view.budget_requests, { lang: options.lang })}${renderCommunityBoardDistrictProjectsSection(view.district_projects, { lang: options.lang })}${renderCommunityBoardParticipationSection(view)}${renderCommunityBoardMoneyCard(view.money)}${renderCommunityBoardPayrollContext(view.payroll)}${renderCommunityBoardBylawPanel(view.governance)}${renderBoroughOfficeAppointmentSection(view.appointment_authority)}${renderEmptyCoverageNote(emptyCoverageCategories)}${renderedCategories.map((category) => renderCategory(category, view)).join("")}${edgeRail}${local}${actions}${renderUnjoinedSourceSection(view.source_records)}
 </main>${renderNodeFooter({ extraClass: "civic-object-footer" })}
 <script id="civic-object-payload" type="application/json">${payload}</script><script defer src="${esc(`${prefix}export_workflows.js`)}"></script>${renderCalendarEventPreviewScript(assetPrefix)}<script type="module" src="${esc(`${prefix}community_board_land_positions_boot.mjs`)}"></script><script type="module" src="${esc(`${prefix}community_board_budget_requests_boot.mjs`)}"></script>
 </body></html>`;

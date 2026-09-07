@@ -87,6 +87,17 @@ function sourceRows() {
     communityBoardBudgetRegister = { error: `community_board_budget_register unreadable: ${error.message}` };
     communityBoardBudgetRequests = {};
   }
+  // The hearing preparation reading covers only the boards someone has
+  // confirmed publish an agenda with times. It degrades rather than failing the
+  // build, for the same reason the enrichments above do: a board page that
+  // could not read this artifact says so, and a board the artifact does not
+  // cover simply carries no such section.
+  let communityBoardHearingContext;
+  try {
+    communityBoardHearingContext = readJson("site/data/community_board_hearing_context.json");
+  } catch (error) {
+    communityBoardHearingContext = { error: `community_board_hearing_context unreadable: ${error.message}` };
+  }
   const institutionEdges = {};
   const edgeKeys = new Set();
   const retainEdge = (edge) => {
@@ -160,6 +171,7 @@ function sourceRows() {
     communityBoardResolutionPilot,
     communityBoardBudgetRegister,
     communityBoardBudgetRequests,
+    communityBoardHearingContext,
   };
 }
 

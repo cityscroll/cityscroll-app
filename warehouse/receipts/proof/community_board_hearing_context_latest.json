@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.source_acquisition_receipt.v1",
+  "source_contract_id": "non-council-board-minutes",
+  "status": "succeeded",
+  "started_at": "2026-09-07T18:12:14.249Z",
+  "observed_at": "2026-09-07T18:12:14.249Z",
+  "boards": [
+    "brooklyn-cb-14"
+  ],
+  "error": null
+}

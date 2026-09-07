@@ -63,6 +63,7 @@ site/data/community_board_constellation_lookup.json
 site/data/community_board_district_projects.json
 site/data/community_board_financial_identity_crosswalk.json
 site/data/community_board_geography/verification_receipts/overlay_2026-08-12.json
+site/data/community_board_hearing_context.json
 site/data/community_board_land_positions.json
 site/data/community_board_minutes_gap.json
 site/data/community_board_minutes_scorecard.json

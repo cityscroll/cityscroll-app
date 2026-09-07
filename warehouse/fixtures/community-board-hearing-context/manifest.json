@@ -1,0 +1,15 @@
+{
+  "schema": "cityscroll.community_board_hearing_context_fixtures.v1",
+  "observed_at": "2026-09-07T18:12:14.249Z",
+  "boards": [
+    {
+      "board_id": "brooklyn-cb-14",
+      "fixture": "brooklyn-cb-14.json",
+      "sha256": "e0cc32fa9e3768a3cdfa06fdad7d894a9a5feebf9d1ed981dcadd1d2f5d4bcc0",
+      "observed_at": "2026-09-07T18:12:14.250Z",
+      "hearing_date": "2026-09-14",
+      "segment_count": 3,
+      "document_count": 5
+    }
+  ]
+}

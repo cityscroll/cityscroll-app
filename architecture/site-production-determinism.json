@@ -180,6 +180,7 @@
     "site/community_board_financial_identity.mjs",
     "site/community_board_full_board_lens.mjs",
     "site/community_board_geography.mjs",
+    "site/community_board_hearing_context.mjs",
     "site/community_board_institution_edges.mjs",
     "site/community_board_land_positions_boot.mjs",
     "site/community_board_land_positions.mjs",
