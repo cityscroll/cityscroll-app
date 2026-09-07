@@ -199,6 +199,7 @@
 /site/agency_directory.mjs
 /site/agency_directory_contract.mjs
 /site/agency_directory_runtime.mjs
+/site/agency_entity_publication.mjs
 /site/agency_fiscal_context.mjs
 /site/agency_identity.mjs
 /site/agency_identity_evidence.mjs
@@ -874,6 +875,7 @@
 /worker/src/confirm.mjs
 /worker/src/contracts.mjs
 /worker/src/data/agency_crosswalk.json
+/worker/src/data/agency_entity_publication.json
 /worker/src/data/attachment_metadata_lookup.json
 /worker/src/data/attachment_related_notices.json
 /worker/src/data/city_record_pin_chain_warehouse_lookup.json

@@ -223,6 +223,7 @@ integrations/cloudflare-os-code-mode/src/experiment.mjs
 integrations/cloudflare-os-code-mode/src/sandbox.mjs
 integrations/cloudflare-os-entity-research/deployment.json
 integrations/cloudflare-os-entity-research/src/gadget.mjs
+integrations/generated-client/recipes/unsupported-question.json
 ontology/action_path_coverage.mjs
 ontology/actionability_sample.mjs
 ontology/card_queue.mjs
@@ -1984,6 +1985,7 @@ worker/src/cited_retrieval.mjs
 worker/src/confirm.mjs
 worker/src/contracts.mjs
 worker/src/data/agency_crosswalk.json
+worker/src/data/agency_entity_publication.json
 worker/src/data/attachment_metadata_lookup.json
 worker/src/data/attachment_related_notices.json
 worker/src/data/city_record_pin_chain_warehouse_lookup.json
@@ -2181,6 +2183,7 @@ worker/src/lib/property_list.mjs
 worker/src/lib/property_phase_spine.mjs
 worker/src/lib/property_saved_watch.mjs
 worker/src/lib/public_search_usage.mjs
+worker/src/lib/published_agency_entity.mjs
 worker/src/lib/regulatory_agenda.mjs
 worker/src/lib/repair_queue.mjs
 worker/src/lib/report_adjudication.mjs
