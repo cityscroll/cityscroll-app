@@ -17,6 +17,21 @@ node tools/audit_scheduler_ownership.mjs --check
 
 The heartbeat has exactly one producer, so a trigger that cannot start, cannot read its credential, or cannot run often enough presents only as a missing heartbeat with nothing else to act on. `test/external_schedule_trigger.test.mjs` holds the trigger to that contract: it must publish at least twice inside the watchdog's heartbeat window, name the state directory, credential file, and heartbeat route it cannot inherit from a login shell, and declare no placeholder the installer does not substitute.
 
+## Scheduled slots and the slot ledger
+
+The trigger polls on an interval rather than firing at a wall-clock instant, so the clock a cycle samples is not the clock a slot is promised at. A cycle starts a fixed interval after the previous one exited, which means its sample slides forward by however long that cycle took; once the slide crosses a minute boundary an entire wall-clock minute passes with no cycle in it. Deciding due-ness by matching a cron expression against that single sample therefore lost whole slots: a daily job whose only slot fell in the skipped minute did not run, wrote no result, and left nothing behind saying it had been owed one.
+
+Each job now keeps a ledger at `<state-dir>/jobs/<job-id>/schedule.json` naming the last slot it settled. A cycle asks which of the job's slots have passed since then and accounts for every one:
+
+- The newest outstanding slot runs, keyed by the slot rather than by the minute the cycle woke up, so a late run settles the promise instead of opening a second event for it.
+- Every older slot is written to `<state-dir>/missed/<job-id>/<slot>.json` with `reason: superseded-by-a-later-slot`. Only the newest runs, because these are monitors and a later observation subsumes an earlier one; replaying each skipped slot would report the same present state repeatedly and comment on the same issue twice.
+- A ledger further behind than `SLOT_CATCH_UP_MINUTES` (26 hours) records `outside-the-catch-up-window` naming the stretch it declined to evaluate, then catches up to the newest slot in one run.
+- A runner that throws records `runner-error` with the redacted reason and the cycle continues. Before the ledger, an exception in one job ended the whole cycle, so the remaining jobs, the outbox replay and the liveness heartbeat never happened and one broken job presented as a dead scheduler.
+
+Whatever a cycle settled without running also travels on the heartbeat as `missed_slots` and is stored with it, so a reader of the reliability endpoint can tell "nothing was due" from "something was due and never happened".
+
+A job with no ledger adopts the newest slot strictly before now and runs nothing. A fresh state directory therefore neither fires every job at once nor claims slots the trigger was not installed for. `--job <id>` still runs immediately and deliberately leaves the ledger alone: an operator rehearsal observes the world now, and neither claims nor consumes a scheduled slot.
+
 ## The GitHub App delivery identity
 
 The site owner has chosen a GitHub App, not a machine user, as the identity the issue loop writes under. A machine user is an account: it has a password, a session, a recovery address, a seat, and a person who is ultimately responsible for it, and every one of those is a thing to secure and to hand over. An App installed on this repository alone is none of them. Its authority is an installation rather than an account, its permissions are declared once and repeated in the response to every mint, and the credential that actually authorizes a request is an installation token that expires in about an hour — so a leaked log line or a stale copy stops being useful without anyone having to revoke anything. The long-lived secret stays a private key on the scheduler host, is never transmitted, and only signs the short assertion the runner exchanges for a token.

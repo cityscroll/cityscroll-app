@@ -269,3 +269,31 @@ test("a rejected write leaves the prior heartbeat untouched rather than half-upd
     assert.equal(stored.observed_at, "2026-09-02T00:45:00.000Z");
   } finally { kit.restore(); }
 });
+
+test("a cycle that skipped a promised slot says so on the record it leaves", async () => {
+  // A daily job whose slot the poll never observed used to leave nothing behind
+  // at all, so an operator reading this endpoint could not tell "nothing was
+  // due" from "something was due and never happened". The slots the cycle
+  // settled without running travel with the heartbeat and are stored with it.
+  const backing = store();
+  const env = { ADMIN_KEY: "secret", ALERT_STATE: backing.binding() };
+  const now = new Date("2026-09-07T10:31:22.310Z");
+  const write = await recordSchedulerHeartbeat(env, {
+    ...CYCLE,
+    due_jobs: [],
+    missed_slots: [
+      { id: "source-freshness-watchdog", slot: "2026-09-07T10-30", reason: "superseded-by-a-later-slot" },
+    ],
+  }, now);
+  assert.equal(write.accepted, true);
+  assert.deepEqual(write.heartbeat.missed_slots, [
+    { id: "source-freshness-watchdog", slot: "2026-09-07T10-30", reason: "superseded-by-a-later-slot" },
+  ]);
+  const stored = JSON.parse(backing.map.get(SCHEDULER_HEARTBEAT_KEY));
+  assert.deepEqual(stored.missed_slots, write.heartbeat.missed_slots);
+
+  // A cycle that owed nothing reports an empty list rather than an absent one,
+  // so the two states stay distinguishable on the wire.
+  const quiet = await recordSchedulerHeartbeat(env, { ...CYCLE, due_jobs: [] }, now);
+  assert.deepEqual(quiet.heartbeat.missed_slots, []);
+});

@@ -555,7 +555,18 @@ export function buildSourceHealthObservations(registry, inputs = {}) {
 
   const acquisitions = [
     ...(inputs.warehouseReceipts || []).map((row) => ({ ...row, evidence_kind: "warehouse-acquisition-receipt" })),
-    ...(inputs.scheduleObservations || []).map((row) => ({ ...row, evidence_kind: "external-schedule-receipt" })),
+    // The scheduled probe emits receipts in the acquisition-receipt shape, which
+    // names its subject source_contract_id. Everything downstream keys on
+    // source_id, so a receipt that arrives without that alias is unattributable
+    // and the projection refuses it — which is what a state directory holding
+    // real probe receipts used to turn into: a watchdog that threw instead of
+    // reporting. The alias is applied here, next to the worker receipts that
+    // already need the same one.
+    ...(inputs.scheduleObservations || []).map((row) => ({
+      ...row,
+      source_id: row.source_id || row.source_contract_id,
+      evidence_kind: "external-schedule-receipt",
+    })),
     ...(inputs.workerAcquisitionReceipts || []).map((row) => ({
       ...row,
       source_id: row.source_id || row.source_contract_id,
@@ -925,7 +936,8 @@ export function sourceIdsWithAcquisitionOrServeEvidence(inputs = {}) {
     if (row?.source_id && validAt(row.at)) ids.add(row.source_id);
   }
   for (const row of inputs.scheduleObservations || []) {
-    if (row?.source_id && validAt(row.observed_at)) ids.add(row.source_id);
+    const id = row?.source_id || row?.source_contract_id;
+    if (id && validAt(row.observed_at)) ids.add(id);
   }
   return ids;
 }
