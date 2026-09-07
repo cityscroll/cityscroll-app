@@ -326,6 +326,7 @@
 /site/community_board_people_search_producer.mjs
 /site/community_board_proceeding_hosts.mjs
 /site/community_board_relations.mjs
+/site/community_board_resolution_pilot.mjs
 /site/community_board_scope_links.mjs
 /site/community_board_search.mjs
 /site/community_board_source_adapters.mjs
@@ -367,6 +368,7 @@
 /site/data/community_board_meeting_index.json
 /site/data/community_board_meeting_index/
 /site/data/community_board_people.json
+/site/data/community_board_resolution_pilot.json
 /site/data/comparative_story_signals.json
 /site/data/council_land_matter_links.json
 /site/data/district_activity.json
@@ -881,6 +883,7 @@
 /worker/src/data/city_record_pin_chain_warehouse_lookup.json
 /worker/src/data/community_board_districts.json
 /worker/src/data/community_board_geography_lookup.json
+/worker/src/data/community_board_resolution_review_queue.json
 /worker/src/data/district_boundaries.json
 /worker/src/data/doing_business_warehouse_lookup.json
 /worker/src/data/entity_intelligence_lookup.json
