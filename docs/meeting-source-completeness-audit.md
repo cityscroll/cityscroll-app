@@ -61,9 +61,40 @@ community-board source-record fields, and 37 Legistar fields.
   but it cannot mint an institution identity without an exact identity seam.
 - Missing, stale, unsupported, browser-required, and checked-empty community-board
   sources retain their existing typed states. None triggers a live page-load
-  lookup.
+  lookup. A browser-required role may instead be read from a retained snapshot:
+  an immutable public capture of the board's own page, acquired once by
+  [`tools/acquire_community_board_retained_snapshot.mjs`](../tools/acquire_community_board_retained_snapshot.mjs)
+  and committed under
+  [`site/data/non_council_outcome_sources/retained_snapshots/`](../site/data/non_council_outcome_sources/retained_snapshots/)
+  with the capture URL, capture time and content digest. The index reads that
+  artifact, never the archive or the board, and the capture time — not the build
+  time — is the observation date every downstream field carries. A
+  browser-required role with no retained snapshot stays `unavailable` and now
+  says why (`source_serves_browsers_only`) instead of reading as unchecked.
 - `EventVideoStatus` is retained inside Legistar normalization but does not
   become a recording link without a publisher URL.
+
+## Board coverage and the full-board answer
+
+The index carries one `board_coverage` row per inventoried board, and the shared
+read model passes it through on the `community_board` source envelope. Each row
+states, per source role, whether the source was read (`indexed`), read and empty
+(`checked-empty`), could not be read (`unreadable`), or is not published at all
+(`not-registered`), with its URL and observation date.
+
+[`site/community_board_full_board_lens.mjs`](../site/community_board_full_board_lens.mjs)
+turns that into one answer to "when did this board last meet in full session?".
+The convening body comes from the publisher's own meeting title and any committee
+the meeting is joined to, so a committee, subcommittee or task-force meeting is
+never returned in place of a full board one, and a board number without a borough
+resolves to no board rather than a neighbour's. Every answer is one of the
+declared states — a dated meeting, no full board meeting recorded, an unreadable
+source, an uncovered board, an unresolved question, or an unreadable lens — and
+none of them is an empty record or a zero.
+[`tools/build_community_board_full_board_meetings.mjs`](../tools/build_community_board_full_board_meetings.mjs)
+materializes one answer per board into
+`site/data/community_board_full_board_meetings.json` so public reads never
+compute it at request time.
 
 ## Verification
 
@@ -73,6 +104,7 @@ node --test \
   test/shared_meeting_read_model.test.mjs \
   test/meeting_document_links.test.mjs \
   test/community_board_meeting_lens_parity.test.mjs \
+  test/community_board_full_board_lens.test.mjs \
   test/legistar_join.test.mjs
 ```
 

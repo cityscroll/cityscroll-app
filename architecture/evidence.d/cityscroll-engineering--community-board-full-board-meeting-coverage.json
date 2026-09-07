@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/community-board-full-board-meeting-coverage",
+  "status": "implemented",
+  "fingerprint": "community-board-full-board-meeting-coverage.v1",
+  "updated_at": "2026-09-07T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "community-board-full-board-answer-contract",
+      "path": "site/community_board_full_board_lens.mjs"
+    },
+    {
+      "id": "community-board-full-board-answer-materialization",
+      "path": "tools/build_community_board_full_board_meetings.mjs"
+    },
+    {
+      "id": "community-board-retained-snapshot-acquisition",
+      "path": "tools/acquire_community_board_retained_snapshot.mjs"
+    },
+    {
+      "id": "community-board-evaluated-board-derivation",
+      "path": "tools/build_meeting_lens_evaluation_boards.mjs"
+    },
+    {
+      "id": "community-board-full-board-answer-tests",
+      "path": "test/community_board_full_board_lens.test.mjs"
+    },
+    {
+      "id": "community-board-retained-snapshot-record",
+      "path": "site/data/non_council_outcome_sources/retained_snapshots/manhattan-cb-05.upcoming_meetings.json"
+    },
+    {
+      "id": "community-board-full-board-answer-artifact",
+      "path": "site/data/community_board_full_board_meetings.json"
+    }
+  ]
+}
