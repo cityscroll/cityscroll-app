@@ -292,6 +292,7 @@
 /site/code_provision_watch.mjs
 /site/code_provision_watch_scope.mjs
 /site/code_version_materialization.mjs
+/site/committee_coservice.mjs
 /site/committee_document.mjs
 /site/committee_graph.mjs
 /site/committee_memberships.mjs

@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/official-committee-co-service",
+  "status": "implemented",
+  "fingerprint": "official-committee-co-service.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "dated-committee-co-service-projection",
+      "path": "site/committee_coservice.mjs"
+    },
+    {
+      "id": "dated-committee-co-service-tests",
+      "path": "test/existing_connections_colleagues.test.mjs"
+    },
+    {
+      "id": "dated-committee-co-service-capture",
+      "path": "tools/capture_official_colleagues.py"
+    },
+    {
+      "id": "dated-committee-co-service-served-evidence",
+      "path": "docs/evidence/official-committee-co-service/README.md"
+    }
+  ]
+}

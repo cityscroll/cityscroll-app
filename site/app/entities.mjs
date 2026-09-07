@@ -259,6 +259,14 @@ async function showOfficial(personId, opts){
     vintage: committeeGraph?.generated_at || null,
     reverse_edges: committeeModule.committeeReverseEdgesForId(committeeGraph, id),
   };
+  // Co-service reads the committee graph this page already loaded, so it adds
+  // no publisher request. The as-of day is the snapshot's own vintage: a
+  // membership snapshot can only answer for a day it observed.
+  const coserviceModule = await import("../committee_coservice.mjs");
+  const coserviceView = coserviceModule.buildCommitteeCoServiceView(committeeGraph || {}, id, {
+    asOf: String(committeeGraph?.generated_at || "").slice(0, 10) || null,
+    people: await loadPersonHubLookup(),
+  });
   const event = (record && record.council_event) || {};
   const resolvedEventId = eventId || event.event_id || (scopedVotes[0] && scopedVotes[0].event_id) || "";
   const backHref = noticeId ? `#notice/${encodeURIComponent(noticeId)}` : "#meetings";
@@ -310,6 +318,7 @@ async function showOfficial(personId, opts){
       ${eventLine}
       ${recentVotes.length || scopedVotes.length ? officialConnections.renderOfficialCoverageHTML(officialView, { translate:t }) : ""}
       ${committeeModule.renderCommitteeMembershipsHTML(committeeBag, { translate:t, escapeHtml:escUiHtml })}
+      ${coserviceModule.renderCommitteeCoServiceHTML(coserviceView, { translate:t, translateCount:tn, escapeHtml:escUiHtml })}
       ${committeeModule.renderOfficialLocalConstellationHTML(officialView, committeeBag, id, name)}
       ${influenceModule ? influenceModule.renderLobbyInfluenceHTML(lobbyBag, { escapeHtml:escUiHtml, translate:t }) : ""}
       ${influenceModule ? influenceModule.renderCfbInfluenceHTML(cfbBag, {
