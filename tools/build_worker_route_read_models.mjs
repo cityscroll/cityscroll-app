@@ -5,7 +5,7 @@
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_OUT = join(ROOT, "worker/.route-read-models");
@@ -159,20 +159,49 @@ function buildNearYou(activity, geography, version) {
   };
 }
 
-function buildMeetings(meetings, version) {
+/**
+ * The vintage envelope a reader needs to answer for one meeting served from
+ * these slices: the source model's schema, its generated_at, its freshness
+ * block and its per-source coverage. `board_coverage` is deliberately dropped —
+ * it is a per-board table of the whole corpus, it dwarfs the rest of the
+ * manifest, and it says nothing about the single meeting a reader asked for.
+ */
+function readModelEnvelope(meetings) {
+  const sources = {};
+  for (const [name, envelope] of Object.entries(meetings.sources || {})) {
+    const { board_coverage: _boardCoverage, ...rest } = envelope || {};
+    sources[name] = rest;
+  }
+  return {
+    schema: meetings.schema || null,
+    generated_at: meetings.generated_at || null,
+    freshness: meetings.freshness || null,
+    sources,
+  };
+}
+
+// A meeting the source publishes without an event date has no month to browse
+// under, but it still has an exact identity a reader can ask for. It is
+// published in its own slice, which is reachable through `id_to_slice` and
+// deliberately absent from `slices`, so month browsing sees exactly what it saw
+// before while an exact lookup can still reach every committed meeting.
+const UNDATED_MEETING_SLICE = "undated";
+
+export function buildMeetings(meetings, version) {
   const grouped = new Map();
   const idToSlice = {};
   for (const row of meetings.rows || []) {
+    if (!row?.meeting_id) continue;
     const month = String(row.event_date || "").slice(0, 7);
-    if (!/^\d{4}-\d{2}$/.test(month) || !row.meeting_id) continue;
-    if (!grouped.has(month)) grouped.set(month, []);
-    grouped.get(month).push(row);
+    const bucket = /^\d{4}-\d{2}$/.test(month) ? month : UNDATED_MEETING_SLICE;
+    if (!grouped.has(bucket)) grouped.set(bucket, []);
+    grouped.get(bucket).push(row);
   }
   const entries = [];
   const slices = {};
   for (const [month, rows] of grouped) {
     const key = keyFor(version, "meetings", month);
-    slices[month] = key;
+    if (month !== UNDATED_MEETING_SLICE) slices[month] = key;
     for (const row of rows) idToSlice[row.meeting_id] = key;
     entries.push({ key, value: JSON.stringify({ schema_version: 1, kind: "meetings", version, month, rows }) });
   }
@@ -184,6 +213,7 @@ function buildMeetings(meetings, version) {
       kind: "meetings",
       version,
       source_schema: meetings.schema,
+      read_model: readModelEnvelope(meetings),
       slices,
       id_to_slice: idToSlice,
       canary_meeting_id: canary?.meeting_id || null,
@@ -254,4 +284,6 @@ function main() {
   else console.log(`built ${near.entries.length + meeting.entries.length} route read-model slices (${version})`);
 }
 
-main();
+// Importable so a test can exercise the published slice layout against the
+// committed read model without running the whole build.
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main();

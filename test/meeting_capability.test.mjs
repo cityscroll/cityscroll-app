@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -10,6 +11,7 @@ import {
 import { renderMeetingDocument } from "../site/meeting_document.mjs";
 import { canonicalMeetingsForRender } from "../site/meeting_capability_projection.mjs";
 import { handleHearings, HEARINGS_KV_KEY, workerMeetingGet } from "../worker/src/hearings.mjs";
+import { buildMeetings } from "../tools/build_worker_route_read_models.mjs";
 
 const meeting = {
   object_type: "meeting",
@@ -109,4 +111,111 @@ test("the Worker provider returns the capability's unavailable state without a l
   const result = await workerMeetingGet({ ALERT_STATE: { get: async () => null } }).execute({ meetingId: meeting.meeting_id });
   assert.equal(result.availability, "unavailable");
   assert.equal(result.error, "unavailable");
+});
+
+// --- the served capability path ------------------------------------------
+//
+// meeting.get answers from the daily materialized view. That view is rebuilt by
+// the digest cron, while the versioned meeting route read model is republished
+// with every deployment, so between a deployment and the next cron the view is
+// missing meetings the deployment already serves. These tests hold the
+// capability to the coverage the repository committed, not to the view's age.
+
+const MEETING_MANIFEST_KEY = "route-read-model:meetings:manifest:v1";
+const COMMITTED_READ_MODEL = JSON.parse(
+  readFileSync(new URL("../site/data/shared_meeting_read_model.json", import.meta.url), "utf8"),
+);
+
+function publishedKv(model, extra = {}) {
+  const built = buildMeetings(model, "test-route-version");
+  const values = new Map(built.entries.map((entry) => [entry.key, entry.value]));
+  values.set(MEETING_MANIFEST_KEY, JSON.stringify(built.manifest));
+  for (const [key, value] of Object.entries(extra)) values.set(key, value);
+  // A fresh object per call: the route read-model reader caches by KV identity.
+  return { manifest: built.manifest, ALERT_STATE: { get: async (key) => values.get(key) ?? null } };
+}
+
+const publishedMeeting = {
+  ...meeting,
+  meeting_id: "meeting:community_board:https://example.org/event/full-board-meeting/",
+  source_system: "community_board",
+  source_record_id: "full-board-meeting",
+  request_id: undefined,
+  title: "Public Hearing & Full Board Meeting",
+  event_date: "2026-01-08T18:00:00-05:00",
+  source_record: {
+    source_system: "community_board",
+    identifier: "https://example.org/event/full-board-meeting/",
+    receipt: { status: "ok" },
+  },
+};
+
+test("the published route read model carries the vintage a capability answer needs", () => {
+  const { manifest } = publishedKv(COMMITTED_READ_MODEL);
+  assert.equal(manifest.read_model.schema, COMMITTED_READ_MODEL.schema);
+  assert.equal(manifest.read_model.generated_at, COMMITTED_READ_MODEL.generated_at);
+  assert.ok(manifest.read_model.sources.community_board.row_count > 0);
+  // The per-board table belongs to the coverage lens, not to a single answer.
+  assert.equal(manifest.read_model.sources.community_board.board_coverage, undefined);
+});
+
+test("a meeting this deployment publishes resolves while the daily view still lags", async () => {
+  const env = publishedKv(
+    { ...model([publishedMeeting]), generated_at: "2026-09-07T13:15:46.599Z" },
+    { [HEARINGS_KV_KEY]: JSON.stringify(model()) },
+  );
+  const result = await workerMeetingGet(env).execute({ meetingId: publishedMeeting.meeting_id });
+  assert.equal(result.availability, "available");
+  assert.equal(result.meeting.meeting_id, publishedMeeting.meeting_id);
+  assert.equal(result.source.identifier, "https://example.org/event/full-board-meeting/");
+  assert.equal(result.freshness.as_of, "2026-09-07T13:15:46.599Z");
+  assert.equal(result.error, null);
+});
+
+test("GET /hearings?id serves a published meeting the daily view has not caught up with", async () => {
+  const env = publishedKv(model([publishedMeeting]), { [HEARINGS_KV_KEY]: JSON.stringify(model()) });
+  const response = await handleHearings(
+    new Request(`https://api.cityscroll.org/hearings?id=${encodeURIComponent(publishedMeeting.meeting_id)}`),
+    env,
+  );
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.equal(body.capability.availability, "available");
+  assert.equal(body.capability.meeting.meeting_id, publishedMeeting.meeting_id);
+});
+
+test("an id no store holds is still answered as not materialized", async () => {
+  const env = publishedKv(model([publishedMeeting]), { [HEARINGS_KV_KEY]: JSON.stringify(model()) });
+  const response = await handleHearings(
+    new Request("https://api.cityscroll.org/hearings?id=meeting:community_board:absent"),
+    env,
+  );
+  assert.equal(response.status, 404);
+  assert.equal((await response.json()).reason, "not-materialized");
+});
+
+test("every meeting in the committed coverage is addressable on the served capability path", () => {
+  const { manifest } = publishedKv(COMMITTED_READ_MODEL);
+  const unreachable = COMMITTED_READ_MODEL.rows
+    .filter((row) => !manifest.id_to_slice[row.meeting_id])
+    .map((row) => row.meeting_id);
+  assert.deepEqual(unreachable, [], `committed meetings absent from the published slices: ${unreachable.slice(0, 5).join(", ")}`);
+});
+
+test("a past community-board meeting in the committed coverage resolves through the capability", async () => {
+  const boardMeetings = COMMITTED_READ_MODEL.rows
+    .filter((row) => row.source_system === "community_board" && row.event_date)
+    .sort((left, right) => String(left.event_date).localeCompare(String(right.event_date)));
+  assert.ok(boardMeetings.length, "the committed coverage holds no dated community-board meetings");
+  const earliest = boardMeetings[0];
+  assert.ok(
+    String(earliest.event_date) < String(COMMITTED_READ_MODEL.generated_at),
+    "the committed coverage holds no community-board meeting older than its own vintage",
+  );
+  // The daily view deliberately holds nothing: only the published slices can answer.
+  const env = publishedKv(COMMITTED_READ_MODEL, { [HEARINGS_KV_KEY]: JSON.stringify(model([])) });
+  const result = await workerMeetingGet(env).execute({ meetingId: earliest.meeting_id });
+  assert.equal(result.availability, "available");
+  assert.equal(result.meeting.meeting_id, earliest.meeting_id);
+  assert.equal(result.freshness.as_of, COMMITTED_READ_MODEL.generated_at);
 });

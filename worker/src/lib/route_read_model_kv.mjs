@@ -191,4 +191,30 @@ export async function loadMeetingRecord(env, meetingId) {
   return (slice.rows || []).find((row) => row?.meeting_id === meetingId) || null;
 }
 
+/**
+ * One meeting from the versioned route read model, shaped as a shared meeting
+ * read model so the meeting capability can answer from it without a second
+ * projection. The vintage travels on the manifest the deployment published; an
+ * older manifest without that envelope yields a null generated_at rather than
+ * borrowing an unrelated clock.
+ */
+export async function loadMeetingReadModelForId(env, meetingId) {
+  if (missingBinding(env)) return null;
+  const record = await loadMeetingRecord(env, meetingId);
+  if (!record) return null;
+  const manifest = await manifestFor(env.ALERT_STATE, "meetings");
+  const envelope = manifest.read_model || {};
+  const schema = envelope.schema || manifest.source_schema || null;
+  if (!schema) return null;
+  return {
+    schema,
+    version: ROUTE_READ_MODEL_SCHEMA_VERSION,
+    generated_at: envelope.generated_at || null,
+    freshness: envelope.freshness || null,
+    sources: envelope.sources || null,
+    route_read_model_version: manifest.version || null,
+    rows: [record],
+  };
+}
+
 export { RouteReadModelUnavailable, nearYouSliceIds };

@@ -8,7 +8,7 @@ import { withDistricts } from "./lib/council_district.mjs";
 import { meetingCalendarICS } from "../../site/hearing_attend_pack.mjs";
 import { sourceSignalsFromHtml } from "../../site/hearing_logistics.mjs";
 import { buildSharedMeetingReadModel } from "../../site/shared_meeting_read_model.mjs";
-import { loadMeetingRecord, loadMeetingRows } from "./lib/route_read_model_kv.mjs";
+import { loadMeetingReadModelForId, loadMeetingRecord, loadMeetingRows } from "./lib/route_read_model_kv.mjs";
 import {
   MEETING_GET_CAPABILITY_REFERENCE,
   MEETING_GET_PROVIDER_ID,
@@ -40,6 +40,25 @@ export const CITY_RECORD_MEETING_SOURCE_FIELDS = Object.freeze([
   "selection_method_description",
 ]);
 
+/**
+ * The daily materialized view this provider reads first is rebuilt by the
+ * digest cron, from whichever route read model was published when that cron
+ * ran. A deployment that ships new meeting coverage republishes the versioned
+ * route slices immediately, so between the deploy and the next cron the view is
+ * missing meetings the deployment already serves — and it stays missing for as
+ * long as the cron does not run. Reading those versioned slices by exact id
+ * closes the window: it is the fallback /meeting.ics already relies on, so an
+ * exact, published identity is never answered "not yet public" while another
+ * route on the same deployment can serve it.
+ */
+async function publishedMeetingModel(env, input) {
+  try {
+    return await loadMeetingReadModelForId(env, input.meetingId.trim());
+  } catch {
+    return null;
+  }
+}
+
 /** Explicit provider for the bounded meeting detail capability. */
 export function workerMeetingGet(env, modelOverride = null) {
   return Object.freeze({
@@ -55,7 +74,12 @@ export function workerMeetingGet(env, modelOverride = null) {
           model = null;
         }
       }
-      return meetingGetFromModel(model, input);
+      const result = meetingGetFromModel(model, input);
+      if (result.availability === "available") return result;
+      const published = await publishedMeetingModel(env, input);
+      if (!published) return result;
+      const fromPublished = meetingGetFromModel(published, input);
+      return fromPublished.availability === "available" ? fromPublished : result;
     },
   });
 }
@@ -240,11 +264,26 @@ export async function handleHearings(request, env, _ctx) {
       || hearing?.source_keys?.some((key) => key?.value === requestedId)
   ));
   if (!parsed) return response(JSON.stringify({ ok: false, reason: "snapshot-unavailable" }), 503);
-  if (requestedMissing) return response(JSON.stringify({ ok: false, reason: "not-materialized" }), 404);
   const requestedRecord = requestedId ? materializedMeetingForId(parsed.hearings, requestedId) : null;
-  const capability = requestedRecord
-    ? await executeMeetingGet(workerMeetingGet(env, parsed), { meetingId: requestedRecord.meeting_id })
-    : null;
+  // A canonical id the daily view has not caught up with can still be one this
+  // deployment publishes, so resolve the capability before deciding the id names
+  // nothing. Legacy City Record ids stay adapter compatibility only: they are
+  // never handed to the capability, which accepts exact canonical ids alone.
+  const canonicalId = requestedRecord?.meeting_id
+    || (requestedId?.startsWith("meeting:") && requestedId.length <= 320 && !/[\r\n]/.test(requestedId)
+      ? requestedId
+      : null);
+  let capability = null;
+  if (canonicalId) {
+    try {
+      capability = await executeMeetingGet(workerMeetingGet(env, parsed), { meetingId: canonicalId });
+    } catch {
+      capability = null;
+    }
+  }
+  if (requestedMissing && capability?.availability !== "available") {
+    return response(JSON.stringify({ ok: false, reason: "not-materialized" }), 404);
+  }
   return response(JSON.stringify({
     ...parsed,
     stale: age > MAX_AGE_MS || parsed.source_extraction_version !== HEARINGS_SOURCE_EXTRACTION_VERSION,
