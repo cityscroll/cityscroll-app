@@ -43,7 +43,7 @@
         "meeting_documents_attached": 73,
         "meeting_documents_unlinked": 4356,
         "minutes_documents_ambiguous": 0,
-        "institution_edges_materialized": 461,
+        "institution_edges_materialized": 449,
         "boards_in_inventory": 59,
         "source_roles_total": 118,
         "source_roles_indexed": 61,
@@ -51936,16 +51936,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:manhattan-cb-03",
           "to": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-29:community-board-3-full-board-meeting",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-29:community-board-3-full-board-meeting",
           "target_name": "Community Board 3, Full Board Meeting",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-29%3Acommunity-board-3-full-board-meeting",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-29%3Acommunity-board-3-full-board-meeting",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/manhattan-cb-03/",
           "institution_refs": {
             "board_ref": "community-board:manhattan-cb-03"
@@ -51964,8 +51964,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
-            "source_record_id": "nyc-calendar:manhattan-cb-03:2026-09-29:community-board-3-full-board-meeting",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
@@ -51976,29 +51974,14 @@
               "content_length": 27539,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-03",
-            "event_date": "2026-09-29",
-            "publisher_identifier": "NYC-CALENDAR:MANHATTAN-CB-03:2026-09-29:COMMUNITY-BOARD-3-FULL-BOARD-MEETING",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -52992,16 +52975,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:manhattan-cb-03",
           "to": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-28:transportation-public-safety-sanitation-environment-committee",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-28:transportation-public-safety-sanitation-environment-committee",
           "target_name": "Transportation, Public Safety, Sanitation & Environment Committee",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-28%3Atransportation-public-safety-sanitation-environment-committee",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-28%3Atransportation-public-safety-sanitation-environment-committee",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/manhattan-cb-03/",
           "institution_refs": {
             "board_ref": "community-board:manhattan-cb-03"
@@ -53020,8 +53003,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
-            "source_record_id": "nyc-calendar:manhattan-cb-03:2026-09-28:transportation-public-safety-sanitation-environment-committee",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
@@ -53032,29 +53013,14 @@
               "content_length": 27539,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-03",
-            "event_date": "2026-09-28",
-            "publisher_identifier": "NYC-CALENDAR:MANHATTAN-CB-03:2026-09-28:TRANSPORTATION-PUBLIC-SAFETY-SANITATION-ENVIRONMENT-COMMITTEE",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -54026,16 +53992,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:manhattan-cb-03",
           "to": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-24:by-laws-task-force",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-24:by-laws-task-force",
           "target_name": "By-Laws Task Force",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-24%3Aby-laws-task-force",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-24%3Aby-laws-task-force",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/manhattan-cb-03/",
           "institution_refs": {
             "board_ref": "community-board:manhattan-cb-03"
@@ -54054,8 +54020,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
-            "source_record_id": "nyc-calendar:manhattan-cb-03:2026-09-24:by-laws-task-force",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
@@ -54066,29 +54030,14 @@
               "content_length": 27539,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-03",
-            "event_date": "2026-09-24",
-            "publisher_identifier": "NYC-CALENDAR:MANHATTAN-CB-03:2026-09-24:BY-LAWS-TASK-FORCE",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -54276,16 +54225,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:manhattan-cb-03",
           "to": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-24:executive-committee",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-24:executive-committee",
           "target_name": "Executive Committee",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-24%3Aexecutive-committee",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-24%3Aexecutive-committee",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/manhattan-cb-03/",
           "institution_refs": {
             "board_ref": "community-board:manhattan-cb-03"
@@ -54304,8 +54253,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
-            "source_record_id": "nyc-calendar:manhattan-cb-03:2026-09-24:executive-committee",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
@@ -54316,29 +54263,14 @@
               "content_length": 27539,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-03",
-            "event_date": "2026-09-24",
-            "publisher_identifier": "NYC-CALENDAR:MANHATTAN-CB-03:2026-09-24:EXECUTIVE-COMMITTEE",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -58171,16 +58103,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:queens-cb-01",
           "to": "meeting:community_board:nyc-calendar:queens-cb-01:2026-09-22:full-board-public-hearing-meetings",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:queens-cb-01:2026-09-22:full-board-public-hearing-meetings",
           "target_name": "Full Board / Public Hearing Meetings",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Aqueens-cb-01%3A2026-09-22%3Afull-board-public-hearing-meetings",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Aqueens-cb-01%3A2026-09-22%3Afull-board-public-hearing-meetings",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/queens-cb-01/",
           "institution_refs": {
             "board_ref": "community-board:queens-cb-01"
@@ -58199,8 +58131,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/queenscb1/calendar/calendar.page",
-            "source_record_id": "nyc-calendar:queens-cb-01:2026-09-22:full-board-public-hearing-meetings",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/queenscb1/calendar/calendar.page",
@@ -58211,29 +58141,14 @@
               "content_length": 28402,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "queens-cb-01",
-            "event_date": "2026-09-22",
-            "publisher_identifier": "NYC-CALENDAR:QUEENS-CB-01:2026-09-22:FULL-BOARD-PUBLIC-HEARING-MEETINGS",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -59748,16 +59663,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:manhattan-cb-03",
           "to": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-21:cb-3-public-hearing-fy-2028-budget-priorities",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-21:cb-3-public-hearing-fy-2028-budget-priorities",
           "target_name": "CB 3 Public Hearing - FY 2028 Budget Priorities",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-21%3Acb-3-public-hearing-fy-2028-budget-priorities",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-21%3Acb-3-public-hearing-fy-2028-budget-priorities",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/manhattan-cb-03/",
           "institution_refs": {
             "board_ref": "community-board:manhattan-cb-03"
@@ -59776,8 +59691,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
-            "source_record_id": "nyc-calendar:manhattan-cb-03:2026-09-21:cb-3-public-hearing-fy-2028-budget-priorities",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
@@ -59788,29 +59701,14 @@
               "content_length": 27539,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-03",
-            "event_date": "2026-09-21",
-            "publisher_identifier": "NYC-CALENDAR:MANHATTAN-CB-03:2026-09-21:CB-3-PUBLIC-HEARING-FY-2028-BUDGET-PRIORITIES",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -62979,16 +62877,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:manhattan-cb-03",
           "to": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-17:parks-recreation-waterfront-resiliency-committee",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-17:parks-recreation-waterfront-resiliency-committee",
           "target_name": "Parks, Recreation, Waterfront, & Resiliency Committee",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-17%3Aparks-recreation-waterfront-resiliency-committee",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-17%3Aparks-recreation-waterfront-resiliency-committee",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/manhattan-cb-03/",
           "institution_refs": {
             "board_ref": "community-board:manhattan-cb-03"
@@ -63007,8 +62905,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
-            "source_record_id": "nyc-calendar:manhattan-cb-03:2026-09-17:parks-recreation-waterfront-resiliency-committee",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
@@ -63019,29 +62915,14 @@
               "content_length": 27539,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-03",
-            "event_date": "2026-09-17",
-            "publisher_identifier": "NYC-CALENDAR:MANHATTAN-CB-03:2026-09-17:PARKS-RECREATION-WATERFRONT-RESILIENCY-COMMITTEE",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -66161,16 +66042,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:manhattan-cb-03",
           "to": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-16:land-use-zoning-public-private-housing-committee",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-16:land-use-zoning-public-private-housing-committee",
           "target_name": "Land Use, Zoning, Public & Private Housing Committee",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-16%3Aland-use-zoning-public-private-housing-committee",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-16%3Aland-use-zoning-public-private-housing-committee",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/manhattan-cb-03/",
           "institution_refs": {
             "board_ref": "community-board:manhattan-cb-03"
@@ -66189,8 +66070,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
-            "source_record_id": "nyc-calendar:manhattan-cb-03:2026-09-16:land-use-zoning-public-private-housing-committee",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
@@ -66201,29 +66080,14 @@
               "content_length": 27539,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-03",
-            "event_date": "2026-09-16",
-            "publisher_identifier": "NYC-CALENDAR:MANHATTAN-CB-03:2026-09-16:LAND-USE-ZONING-PUBLIC-PRIVATE-HOUSING-COMMITTEE",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -74260,16 +74124,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:manhattan-cb-03",
           "to": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-14:sla-licensing-outdoor-dining-committee",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-14:sla-licensing-outdoor-dining-committee",
           "target_name": "SLA Licensing & Outdoor Dining Committee",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-14%3Asla-licensing-outdoor-dining-committee",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-14%3Asla-licensing-outdoor-dining-committee",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/manhattan-cb-03/",
           "institution_refs": {
             "board_ref": "community-board:manhattan-cb-03"
@@ -74288,8 +74152,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
-            "source_record_id": "nyc-calendar:manhattan-cb-03:2026-09-14:sla-licensing-outdoor-dining-committee",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
@@ -74300,29 +74162,14 @@
               "content_length": 27539,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-03",
-            "event_date": "2026-09-14",
-            "publisher_identifier": "NYC-CALENDAR:MANHATTAN-CB-03:2026-09-14:SLA-LICENSING-OUTDOOR-DINING-COMMITTEE",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -74506,16 +74353,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:queens-cb-07",
           "to": "meeting:community_board:nyc-calendar:queens-cb-07:2026-09-14:regular-public-hearing-meeting",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:queens-cb-07:2026-09-14:regular-public-hearing-meeting",
           "target_name": "Regular & Public Hearing meeting",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Aqueens-cb-07%3A2026-09-14%3Aregular-public-hearing-meeting",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Aqueens-cb-07%3A2026-09-14%3Aregular-public-hearing-meeting",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/queens-cb-07/",
           "institution_refs": {
             "board_ref": "community-board:queens-cb-07"
@@ -74534,8 +74381,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/queenscb7/meetings/meetings.page",
-            "source_record_id": "nyc-calendar:queens-cb-07:2026-09-14:regular-public-hearing-meeting",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/queenscb7/meetings/meetings.page",
@@ -74546,29 +74391,14 @@
               "content_length": 20926,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "queens-cb-07",
-            "event_date": "2026-09-14",
-            "publisher_identifier": "NYC-CALENDAR:QUEENS-CB-07:2026-09-14:REGULAR-PUBLIC-HEARING-MEETING",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -79146,16 +78976,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:manhattan-cb-03",
           "to": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-10:health-seniors-human-services-youth-education-human-rights-committee",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-10:health-seniors-human-services-youth-education-human-rights-committee",
           "target_name": "Health, Seniors, & Human Services / Youth, Education, & Human Rights Committee",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-10%3Ahealth-seniors-human-services-youth-education-human-rights-committee",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-10%3Ahealth-seniors-human-services-youth-education-human-rights-committee",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/manhattan-cb-03/",
           "institution_refs": {
             "board_ref": "community-board:manhattan-cb-03"
@@ -79174,8 +79004,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
-            "source_record_id": "nyc-calendar:manhattan-cb-03:2026-09-10:health-seniors-human-services-youth-education-human-rights-committee",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
@@ -79186,29 +79014,14 @@
               "content_length": 27539,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-03",
-            "event_date": "2026-09-10",
-            "publisher_identifier": "NYC-CALENDAR:MANHATTAN-CB-03:2026-09-10:HEALTH-SENIORS-HUMAN-SERVICES-YOUTH-EDUCATION-HUMAN-RIGHTS-COMMITTEE",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -118371,16 +118184,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:brooklyn-cb-18",
           "to": "meeting:community_board:nyc-calendar:brooklyn-cb-18:2026-06-17:regular-monthly-board-meeting",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:brooklyn-cb-18:2026-06-17:regular-monthly-board-meeting",
           "target_name": "REGULAR MONTHLY BOARD MEETING",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-18%3A2026-06-17%3Aregular-monthly-board-meeting",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-18%3A2026-06-17%3Aregular-monthly-board-meeting",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/brooklyn-cb-18/",
           "institution_refs": {
             "board_ref": "community-board:brooklyn-cb-18"
@@ -118399,8 +118212,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/brooklyncb18/meetings/calendar.page",
-            "source_record_id": "nyc-calendar:brooklyn-cb-18:2026-06-17:regular-monthly-board-meeting",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/brooklyncb18/meetings/calendar.page",
@@ -118411,29 +118222,14 @@
               "content_length": 23289,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "brooklyn-cb-18",
-            "event_date": "2026-06-17",
-            "publisher_identifier": "NYC-CALENDAR:BROOKLYN-CB-18:2026-06-17:REGULAR-MONTHLY-BOARD-MEETING",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -177415,16 +177211,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:manhattan-cb-03",
           "to": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-29:community-board-3-full-board-meeting",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-29:community-board-3-full-board-meeting",
           "target_name": "Community Board 3, Full Board Meeting",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-29%3Acommunity-board-3-full-board-meeting",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-29%3Acommunity-board-3-full-board-meeting",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/manhattan-cb-03/",
           "institution_refs": {
             "board_ref": "community-board:manhattan-cb-03"
@@ -177443,8 +177239,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
-            "source_record_id": "nyc-calendar:manhattan-cb-03:2026-09-29:community-board-3-full-board-meeting",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
@@ -177455,29 +177249,14 @@
               "content_length": 27539,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-03",
-            "event_date": "2026-09-29",
-            "publisher_identifier": "NYC-CALENDAR:MANHATTAN-CB-03:2026-09-29:COMMUNITY-BOARD-3-FULL-BOARD-MEETING",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -178471,16 +178250,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:manhattan-cb-03",
           "to": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-28:transportation-public-safety-sanitation-environment-committee",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-28:transportation-public-safety-sanitation-environment-committee",
           "target_name": "Transportation, Public Safety, Sanitation & Environment Committee",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-28%3Atransportation-public-safety-sanitation-environment-committee",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-28%3Atransportation-public-safety-sanitation-environment-committee",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/manhattan-cb-03/",
           "institution_refs": {
             "board_ref": "community-board:manhattan-cb-03"
@@ -178499,8 +178278,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
-            "source_record_id": "nyc-calendar:manhattan-cb-03:2026-09-28:transportation-public-safety-sanitation-environment-committee",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
@@ -178511,29 +178288,14 @@
               "content_length": 27539,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-03",
-            "event_date": "2026-09-28",
-            "publisher_identifier": "NYC-CALENDAR:MANHATTAN-CB-03:2026-09-28:TRANSPORTATION-PUBLIC-SAFETY-SANITATION-ENVIRONMENT-COMMITTEE",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -179505,16 +179267,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:manhattan-cb-03",
           "to": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-24:by-laws-task-force",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-24:by-laws-task-force",
           "target_name": "By-Laws Task Force",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-24%3Aby-laws-task-force",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-24%3Aby-laws-task-force",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/manhattan-cb-03/",
           "institution_refs": {
             "board_ref": "community-board:manhattan-cb-03"
@@ -179533,8 +179295,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
-            "source_record_id": "nyc-calendar:manhattan-cb-03:2026-09-24:by-laws-task-force",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
@@ -179545,29 +179305,14 @@
               "content_length": 27539,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-03",
-            "event_date": "2026-09-24",
-            "publisher_identifier": "NYC-CALENDAR:MANHATTAN-CB-03:2026-09-24:BY-LAWS-TASK-FORCE",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -179755,16 +179500,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:manhattan-cb-03",
           "to": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-24:executive-committee",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-24:executive-committee",
           "target_name": "Executive Committee",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-24%3Aexecutive-committee",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-24%3Aexecutive-committee",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/manhattan-cb-03/",
           "institution_refs": {
             "board_ref": "community-board:manhattan-cb-03"
@@ -179783,8 +179528,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
-            "source_record_id": "nyc-calendar:manhattan-cb-03:2026-09-24:executive-committee",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
@@ -179795,29 +179538,14 @@
               "content_length": 27539,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-03",
-            "event_date": "2026-09-24",
-            "publisher_identifier": "NYC-CALENDAR:MANHATTAN-CB-03:2026-09-24:EXECUTIVE-COMMITTEE",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -183650,16 +183378,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:queens-cb-01",
           "to": "meeting:community_board:nyc-calendar:queens-cb-01:2026-09-22:full-board-public-hearing-meetings",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:queens-cb-01:2026-09-22:full-board-public-hearing-meetings",
           "target_name": "Full Board / Public Hearing Meetings",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Aqueens-cb-01%3A2026-09-22%3Afull-board-public-hearing-meetings",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Aqueens-cb-01%3A2026-09-22%3Afull-board-public-hearing-meetings",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/queens-cb-01/",
           "institution_refs": {
             "board_ref": "community-board:queens-cb-01"
@@ -183678,8 +183406,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/queenscb1/calendar/calendar.page",
-            "source_record_id": "nyc-calendar:queens-cb-01:2026-09-22:full-board-public-hearing-meetings",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/queenscb1/calendar/calendar.page",
@@ -183690,29 +183416,14 @@
               "content_length": 28402,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "queens-cb-01",
-            "event_date": "2026-09-22",
-            "publisher_identifier": "NYC-CALENDAR:QUEENS-CB-01:2026-09-22:FULL-BOARD-PUBLIC-HEARING-MEETINGS",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -185227,16 +184938,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:manhattan-cb-03",
           "to": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-21:cb-3-public-hearing-fy-2028-budget-priorities",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-21:cb-3-public-hearing-fy-2028-budget-priorities",
           "target_name": "CB 3 Public Hearing - FY 2028 Budget Priorities",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-21%3Acb-3-public-hearing-fy-2028-budget-priorities",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-21%3Acb-3-public-hearing-fy-2028-budget-priorities",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/manhattan-cb-03/",
           "institution_refs": {
             "board_ref": "community-board:manhattan-cb-03"
@@ -185255,8 +184966,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
-            "source_record_id": "nyc-calendar:manhattan-cb-03:2026-09-21:cb-3-public-hearing-fy-2028-budget-priorities",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
@@ -185267,29 +184976,14 @@
               "content_length": 27539,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-03",
-            "event_date": "2026-09-21",
-            "publisher_identifier": "NYC-CALENDAR:MANHATTAN-CB-03:2026-09-21:CB-3-PUBLIC-HEARING-FY-2028-BUDGET-PRIORITIES",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -188458,16 +188152,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:manhattan-cb-03",
           "to": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-17:parks-recreation-waterfront-resiliency-committee",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-17:parks-recreation-waterfront-resiliency-committee",
           "target_name": "Parks, Recreation, Waterfront, & Resiliency Committee",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-17%3Aparks-recreation-waterfront-resiliency-committee",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-17%3Aparks-recreation-waterfront-resiliency-committee",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/manhattan-cb-03/",
           "institution_refs": {
             "board_ref": "community-board:manhattan-cb-03"
@@ -188486,8 +188180,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
-            "source_record_id": "nyc-calendar:manhattan-cb-03:2026-09-17:parks-recreation-waterfront-resiliency-committee",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
@@ -188498,29 +188190,14 @@
               "content_length": 27539,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-03",
-            "event_date": "2026-09-17",
-            "publisher_identifier": "NYC-CALENDAR:MANHATTAN-CB-03:2026-09-17:PARKS-RECREATION-WATERFRONT-RESILIENCY-COMMITTEE",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -191640,16 +191317,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:manhattan-cb-03",
           "to": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-16:land-use-zoning-public-private-housing-committee",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-16:land-use-zoning-public-private-housing-committee",
           "target_name": "Land Use, Zoning, Public & Private Housing Committee",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-16%3Aland-use-zoning-public-private-housing-committee",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-16%3Aland-use-zoning-public-private-housing-committee",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/manhattan-cb-03/",
           "institution_refs": {
             "board_ref": "community-board:manhattan-cb-03"
@@ -191668,8 +191345,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
-            "source_record_id": "nyc-calendar:manhattan-cb-03:2026-09-16:land-use-zoning-public-private-housing-committee",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
@@ -191680,29 +191355,14 @@
               "content_length": 27539,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-03",
-            "event_date": "2026-09-16",
-            "publisher_identifier": "NYC-CALENDAR:MANHATTAN-CB-03:2026-09-16:LAND-USE-ZONING-PUBLIC-PRIVATE-HOUSING-COMMITTEE",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -199739,16 +199399,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:manhattan-cb-03",
           "to": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-14:sla-licensing-outdoor-dining-committee",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-14:sla-licensing-outdoor-dining-committee",
           "target_name": "SLA Licensing & Outdoor Dining Committee",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-14%3Asla-licensing-outdoor-dining-committee",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-14%3Asla-licensing-outdoor-dining-committee",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/manhattan-cb-03/",
           "institution_refs": {
             "board_ref": "community-board:manhattan-cb-03"
@@ -199767,8 +199427,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
-            "source_record_id": "nyc-calendar:manhattan-cb-03:2026-09-14:sla-licensing-outdoor-dining-committee",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
@@ -199779,29 +199437,14 @@
               "content_length": 27539,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-03",
-            "event_date": "2026-09-14",
-            "publisher_identifier": "NYC-CALENDAR:MANHATTAN-CB-03:2026-09-14:SLA-LICENSING-OUTDOOR-DINING-COMMITTEE",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -199985,16 +199628,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:queens-cb-07",
           "to": "meeting:community_board:nyc-calendar:queens-cb-07:2026-09-14:regular-public-hearing-meeting",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:queens-cb-07:2026-09-14:regular-public-hearing-meeting",
           "target_name": "Regular & Public Hearing meeting",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Aqueens-cb-07%3A2026-09-14%3Aregular-public-hearing-meeting",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Aqueens-cb-07%3A2026-09-14%3Aregular-public-hearing-meeting",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/queens-cb-07/",
           "institution_refs": {
             "board_ref": "community-board:queens-cb-07"
@@ -200013,8 +199656,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/queenscb7/meetings/meetings.page",
-            "source_record_id": "nyc-calendar:queens-cb-07:2026-09-14:regular-public-hearing-meeting",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/queenscb7/meetings/meetings.page",
@@ -200025,29 +199666,14 @@
               "content_length": 20926,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "queens-cb-07",
-            "event_date": "2026-09-14",
-            "publisher_identifier": "NYC-CALENDAR:QUEENS-CB-07:2026-09-14:REGULAR-PUBLIC-HEARING-MEETING",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -204625,16 +204251,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:manhattan-cb-03",
           "to": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-10:health-seniors-human-services-youth-education-human-rights-committee",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-10:health-seniors-human-services-youth-education-human-rights-committee",
           "target_name": "Health, Seniors, & Human Services / Youth, Education, & Human Rights Committee",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-10%3Ahealth-seniors-human-services-youth-education-human-rights-committee",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-10%3Ahealth-seniors-human-services-youth-education-human-rights-committee",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/manhattan-cb-03/",
           "institution_refs": {
             "board_ref": "community-board:manhattan-cb-03"
@@ -204653,8 +204279,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
-            "source_record_id": "nyc-calendar:manhattan-cb-03:2026-09-10:health-seniors-human-services-youth-education-human-rights-committee",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
@@ -204665,29 +204289,14 @@
               "content_length": 27539,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-03",
-            "event_date": "2026-09-10",
-            "publisher_identifier": "NYC-CALENDAR:MANHATTAN-CB-03:2026-09-10:HEALTH-SENIORS-HUMAN-SERVICES-YOUTH-EDUCATION-HUMAN-RIGHTS-COMMITTEE",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
@@ -243850,16 +243459,16 @@
           "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
           "edge_type": "hosts_meeting",
           "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
+          "status": "held",
+          "promoted": false,
+          "reason": "publisher_identifier_missing",
           "from": "community-board:brooklyn-cb-18",
           "to": "meeting:community_board:nyc-calendar:brooklyn-cb-18:2026-06-17:regular-monthly-board-meeting",
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:brooklyn-cb-18:2026-06-17:regular-monthly-board-meeting",
           "target_name": "REGULAR MONTHLY BOARD MEETING",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-18%3A2026-06-17%3Aregular-monthly-board-meeting",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-18%3A2026-06-17%3Aregular-monthly-board-meeting",
+          "canonical_href": null,
+          "href": null,
           "board_href": "/community-boards/brooklyn-cb-18/",
           "institution_refs": {
             "board_ref": "community-board:brooklyn-cb-18"
@@ -243878,8 +243487,6 @@
             "reason": null
           },
           "provenance": {
-            "source_url": "https://www.nyc.gov/site/brooklyncb18/meetings/calendar.page",
-            "source_record_id": "nyc-calendar:brooklyn-cb-18:2026-06-17:regular-monthly-board-meeting",
             "observed_receipt": {
               "schema": "cityscroll.community_board_source_receipt.v1",
               "source_url": "https://www.nyc.gov/site/brooklyncb18/meetings/calendar.page",
@@ -243890,29 +243497,14 @@
               "content_length": 23289,
               "parser": "nyc_official_calendar_v1",
               "reason": null
-            },
-            "format": "html"
+            }
           },
           "join": {
-            "matched": true,
+            "matched": false,
             "method": "exact_board_date_publisher_identifier",
-            "board_id": "brooklyn-cb-18",
-            "event_date": "2026-06-17",
-            "publisher_identifier": "NYC-CALENDAR:BROOKLYN-CB-18:2026-06-17:REGULAR-MONTHLY-BOARD-MEETING",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
+            "reason": "publisher_identifier_missing"
           },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ]
+          "evidence": []
         }
       ],
       "source_record": {
