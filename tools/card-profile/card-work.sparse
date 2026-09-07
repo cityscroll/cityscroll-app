@@ -306,6 +306,7 @@
 /site/community_board_bylaws.mjs
 /site/community_board_committees.mjs
 /site/community_board_constellation.mjs
+/site/community_board_district_projects.mjs
 /site/community_board_financial_identity.mjs
 /site/community_board_geography.mjs
 /site/community_board_institution_edges.mjs
