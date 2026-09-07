@@ -2,7 +2,7 @@
   "schema_version": 1,
   "title": "Campaign finance recipients bound to person hub",
   "source_contract": "rjkp-yttg",
-  "retrieved_at": "2026-08-11T19:22:17.361Z",
+  "retrieved_at": "2026-09-07T21:21:09.747Z",
   "gate": {
     "usefulness_threshold": 0.3,
     "precision_floor": 0.95,
@@ -81,8 +81,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Urbaez, Lydiara",
-          "donor_key": "URBAEZ LYDIARA",
+          "donor_display": "Del Rosario, Edward",
+          "donor_key": "DEL ROSARIO EDWARD",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -125,8 +125,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Del Rosario, Edward",
-          "donor_key": "DEL ROSARIO EDWARD",
+          "donor_display": "Urbaez, Lydiara",
+          "donor_key": "URBAEZ LYDIARA",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -147,8 +147,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Wallace, Kiwanda",
-          "donor_key": "WALLACE KIWANDA",
+          "donor_display": "Quach, Quyen",
+          "donor_key": "QUACH QUYEN",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -169,20 +169,9 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Quach, Quyen",
-          "donor_key": "QUACH QUYEN",
+          "donor_display": "Wallace, Kiwanda",
+          "donor_key": "WALLACE KIWANDA",
           "amount_total": 175,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Sanchez, Jisell",
-          "donor_key": "SANCHEZ JISELL",
-          "amount_total": 165,
           "contribution_count": 1,
           "provenance": {
             "source": "rjkp-yttg",
@@ -202,9 +191,31 @@
         },
         {
           "type": "campaign_contribution",
+          "donor_display": "Sanchez, Jisell",
+          "donor_key": "SANCHEZ JISELL",
+          "amount_total": 165,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
           "donor_display": "Baldwin, Roberto",
           "donor_key": "BALDWIN ROBERTO",
           "amount_total": 155,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "De Rivera, Juana g",
+          "donor_key": "DE RIVERA JUANA G",
+          "amount_total": 150,
           "contribution_count": 1,
           "provenance": {
             "source": "rjkp-yttg",
@@ -237,17 +248,6 @@
           "type": "campaign_contribution",
           "donor_display": "Niixon, Henry",
           "donor_key": "NIIXON HENRY",
-          "amount_total": 150,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "De Rivera, Juana g",
-          "donor_key": "DE RIVERA JUANA G",
           "amount_total": 150,
           "contribution_count": 1,
           "provenance": {
@@ -323,28 +323,6 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Robles, Jeremiah",
-          "donor_key": "ROBLES JEREMIAH",
-          "amount_total": 90,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Rivera, Angela",
-          "donor_key": "RIVERA ANGELA",
-          "amount_total": 90,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
           "donor_display": "Abreu, Angela",
           "donor_key": "ABREU ANGELA",
           "amount_total": 90,
@@ -369,6 +347,28 @@
           "type": "campaign_contribution",
           "donor_display": "Espadas, Joshua",
           "donor_key": "ESPADAS JOSHUA",
+          "amount_total": 90,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Rivera, Angela",
+          "donor_key": "RIVERA ANGELA",
+          "amount_total": 90,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Robles, Jeremiah",
+          "donor_key": "ROBLES JEREMIAH",
           "amount_total": 90,
           "contribution_count": 1,
           "provenance": {
@@ -673,8 +673,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "The Mary Manning Cleveland Rev",
-          "donor_key": "THE MARY MANNING CLEVELAND REV",
+          "donor_display": "Bernier, Lincoln",
+          "donor_key": "BERNIER LINCOLN",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -684,8 +684,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Tritt, William John",
-          "donor_key": "TRITT WILLIAM JOHN",
+          "donor_display": "Bonilla, Aldrin",
+          "donor_key": "BONILLA ALDRIN",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -695,10 +695,10 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Walker, Jessica",
-          "donor_key": "WALKER JESSICA",
+          "donor_display": "Chong, Laiying",
+          "donor_key": "CHONG LAIYING",
           "amount_total": 250,
-          "contribution_count": 1,
+          "contribution_count": 2,
           "provenance": {
             "source": "rjkp-yttg",
             "join_method": "exact_unique_person_name_key"
@@ -706,8 +706,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Wallace, Edward",
-          "donor_key": "WALLACE EDWARD",
+          "donor_display": "Crowley, Elizabeth",
+          "donor_key": "CROWLEY ELIZABETH",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -880,8 +880,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Transport Workers Union Local",
-          "donor_key": "TRANSPORT WORKERS UNION LOCAL",
+          "donor_display": "Tebele, Charles",
+          "donor_key": "TEBELE CHARLES",
           "amount_total": 1050,
           "contribution_count": 1,
           "provenance": {
@@ -891,8 +891,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Tebele, Charles",
-          "donor_key": "TEBELE CHARLES",
+          "donor_display": "Transport Workers Union Local",
+          "donor_key": "TRANSPORT WORKERS UNION LOCAL",
           "amount_total": 1050,
           "contribution_count": 1,
           "provenance": {
@@ -1098,8 +1098,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Twerski, Yakov",
-          "donor_key": "TWERSKI YAKOV",
+          "donor_display": "Chemtob, David",
+          "donor_key": "CHEMTOB DAVID",
           "amount_total": 350,
           "contribution_count": 2,
           "provenance": {
@@ -1120,8 +1120,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Chemtob, David",
-          "donor_key": "CHEMTOB DAVID",
+          "donor_display": "Twerski, Yakov",
+          "donor_key": "TWERSKI YAKOV",
           "amount_total": 350,
           "contribution_count": 2,
           "provenance": {
@@ -1186,8 +1186,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Wachsman, Chana",
-          "donor_key": "WACHSMAN CHANA",
+          "donor_display": "Beck, Esther",
+          "donor_key": "BECK ESTHER",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -1197,8 +1197,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Wachsman, Boruch",
-          "donor_key": "WACHSMAN BORUCH",
+          "donor_display": "Beck, Mordechai",
+          "donor_key": "BECK MORDECHAI",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -1208,8 +1208,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Twerski, Chana",
-          "donor_key": "TWERSKI CHANA",
+          "donor_display": "Chemtob, Allison",
+          "donor_key": "CHEMTOB ALLISON",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -1219,8 +1219,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Teichman, Meir",
-          "donor_key": "TEICHMAN MEIR",
+          "donor_display": "Chemtob, Elka",
+          "donor_key": "CHEMTOB ELKA",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -1230,8 +1230,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Reiner, Suri",
-          "donor_key": "REINER SURI",
+          "donor_display": "Chemtob, Marc",
+          "donor_key": "CHEMTOB MARC",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -1241,8 +1241,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Rubenstein, Jennifer",
-          "donor_key": "RUBENSTEIN JENNIFER",
+          "donor_display": "Chemtob, Nina",
+          "donor_key": "CHEMTOB NINA",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -1252,8 +1252,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Rubenstein, Josh",
-          "donor_key": "RUBENSTEIN JOSH",
+          "donor_display": "Chueque, David",
+          "donor_key": "CHUEQUE DAVID",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -1263,8 +1263,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Rubenstein, Rayle",
-          "donor_key": "RUBENSTEIN RAYLE",
+          "donor_display": "Chueque, Deborah",
+          "donor_key": "CHUEQUE DEBORAH",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -1274,8 +1274,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Moskowitz, Yitzchok",
-          "donor_key": "MOSKOWITZ YITZCHOK",
+          "donor_display": "Dembitzer, Chanie",
+          "donor_key": "DEMBITZER CHANIE",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -1285,8 +1285,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Kairy, Adina",
-          "donor_key": "KAIRY ADINA",
+          "donor_display": "Dweck, Morris",
+          "donor_key": "DWECK MORRIS",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -1296,8 +1296,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Kairy, Raymond",
-          "donor_key": "KAIRY RAYMOND",
+          "donor_display": "Dweck, Sophia",
+          "donor_key": "DWECK SOPHIA",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -1307,8 +1307,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Kairy, Samuel",
-          "donor_key": "KAIRY SAMUEL",
+          "donor_display": "Dwek, David",
+          "donor_key": "DWEK DAVID",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -1318,8 +1318,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Kairy, Walter",
-          "donor_key": "KAIRY WALTER",
+          "donor_display": "Eisner, Abraham",
+          "donor_key": "EISNER ABRAHAM",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -1329,8 +1329,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Kalish, Yehiel",
-          "donor_key": "KALISH YEHIEL",
+          "donor_display": "Eisner, Nellie",
+          "donor_key": "EISNER NELLIE",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -1340,8 +1340,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Klein, Ettie",
-          "donor_key": "KLEIN ETTIE",
+          "donor_display": "Fleischer, Jacob",
+          "donor_key": "FLEISCHER JACOB",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -1351,8 +1351,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Klein, Shnayer",
-          "donor_key": "KLEIN SHNAYER",
+          "donor_display": "Garfinkel, Menachem",
+          "donor_key": "GARFINKEL MENACHEM",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -1362,8 +1362,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Knobloch, Malkah",
-          "donor_key": "KNOBLOCH MALKAH",
+          "donor_display": "Goldberger, Shea",
+          "donor_key": "GOLDBERGER SHEA",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -1373,8 +1373,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Knobloch, Saul",
-          "donor_key": "KNOBLOCH SAUL",
+          "donor_display": "grunberger, chani",
+          "donor_key": "GRUNBERGER CHANI",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -1384,8 +1384,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Lati, Eileen",
-          "donor_key": "LATI EILEEN",
+          "donor_display": "Grunfeld, Benzion Y",
+          "donor_key": "GRUNFELD BENZION Y",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -1554,8 +1554,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Velez Jr, Alex",
-          "donor_key": "VELEZ JR ALEX",
+          "donor_display": "Jimenez, Alexis",
+          "donor_key": "JIMENEZ ALEXIS",
           "amount_total": 150,
           "contribution_count": 1,
           "provenance": {
@@ -1576,8 +1576,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Jimenez, Alexis",
-          "donor_key": "JIMENEZ ALEXIS",
+          "donor_display": "Velez Jr, Alex",
+          "donor_key": "VELEZ JR ALEX",
           "amount_total": 150,
           "contribution_count": 1,
           "provenance": {
@@ -1587,30 +1587,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Scretchen, Raymond",
-          "donor_key": "SCRETCHEN RAYMOND",
-          "amount_total": 100,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Mohabir, Harry N",
-          "donor_key": "MOHABIR HARRY N",
-          "amount_total": 100,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Lewis, Helen",
-          "donor_key": "LEWIS HELEN",
+          "donor_display": "Frazier JR, Frederick",
+          "donor_key": "FRAZIER JR FREDERICK",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -1642,8 +1620,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Frazier JR, Frederick",
-          "donor_key": "FRAZIER JR FREDERICK",
+          "donor_display": "Lewis, Helen",
+          "donor_key": "LEWIS HELEN",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -1653,8 +1631,19 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Kandakai, George",
-          "donor_key": "KANDAKAI GEORGE",
+          "donor_display": "Mohabir, Harry N",
+          "donor_key": "MOHABIR HARRY N",
+          "amount_total": 100,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Scretchen, Raymond",
+          "donor_key": "SCRETCHEN RAYMOND",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -1675,9 +1664,9 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Newsome, Kim",
-          "donor_key": "NEWSOME KIM",
-          "amount_total": 75,
+          "donor_display": "Kandakai, George",
+          "donor_key": "KANDAKAI GEORGE",
+          "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
             "source": "rjkp-yttg",
@@ -1688,6 +1677,17 @@
           "type": "campaign_contribution",
           "donor_display": "Graham, Ramish",
           "donor_key": "GRAHAM RAMISH",
+          "amount_total": 75,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Newsome, Kim",
+          "donor_key": "NEWSOME KIM",
           "amount_total": 75,
           "contribution_count": 1,
           "provenance": {
@@ -1708,30 +1708,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Steele, Joyce",
-          "donor_key": "STEELE JOYCE",
-          "amount_total": 50,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Mowatt, Vannessa",
-          "donor_key": "MOWATT VANNESSA",
-          "amount_total": 50,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Liverpool, Bjorn",
-          "donor_key": "LIVERPOOL BJORN",
+          "donor_display": "Frazier, Keith",
+          "donor_key": "FRAZIER KEITH",
           "amount_total": 50,
           "contribution_count": 1,
           "provenance": {
@@ -1752,8 +1730,30 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Frazier, Keith",
-          "donor_key": "FRAZIER KEITH",
+          "donor_display": "Liverpool, Bjorn",
+          "donor_key": "LIVERPOOL BJORN",
+          "amount_total": 50,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Mowatt, Vannessa",
+          "donor_key": "MOWATT VANNESSA",
+          "amount_total": 50,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Steele, Joyce",
+          "donor_key": "STEELE JOYCE",
           "amount_total": 50,
           "contribution_count": 1,
           "provenance": {
@@ -1796,8 +1796,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Ullah, Robaith",
-          "donor_key": "ULLAH ROBAITH",
+          "donor_display": "Kellawan, Heemawattie",
+          "donor_key": "KELLAWAN HEEMAWATTIE",
           "amount_total": 10,
           "contribution_count": 1,
           "provenance": {
@@ -1818,8 +1818,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Kellawan, Heemawattie",
-          "donor_key": "KELLAWAN HEEMAWATTIE",
+          "donor_display": "Ullah, Robaith",
+          "donor_key": "ULLAH ROBAITH",
           "amount_total": 10,
           "contribution_count": 1,
           "provenance": {
@@ -1948,17 +1948,6 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Tillman, Clarence",
-          "donor_key": "TILLMAN CLARENCE",
-          "amount_total": 100,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
           "donor_display": "Marable, Clarence",
           "donor_key": "MARABLE CLARENCE",
           "amount_total": 100,
@@ -1970,8 +1959,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Scotland, Kaye",
-          "donor_key": "SCOTLAND KAYE",
+          "donor_display": "Tillman, Clarence",
+          "donor_key": "TILLMAN CLARENCE",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -1983,6 +1972,17 @@
           "type": "campaign_contribution",
           "donor_display": "Miller, Michael",
           "donor_key": "MILLER MICHAEL",
+          "amount_total": 100,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Scotland, Kaye",
+          "donor_key": "SCOTLAND KAYE",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -2025,17 +2025,6 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Richards-Clarke, Candia",
-          "donor_key": "RICHARDS-CLARKE CANDIA",
-          "amount_total": 50,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
           "donor_display": "Farrell, ENEST",
           "donor_key": "FARRELL ENEST",
           "amount_total": 50,
@@ -2058,9 +2047,9 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Smith, Lenora",
-          "donor_key": "SMITH LENORA",
-          "amount_total": 25,
+          "donor_display": "Richards-Clarke, Candia",
+          "donor_key": "RICHARDS-CLARKE CANDIA",
+          "amount_total": 50,
           "contribution_count": 1,
           "provenance": {
             "source": "rjkp-yttg",
@@ -2071,6 +2060,17 @@
           "type": "campaign_contribution",
           "donor_display": "Elliott Barham, Yvonne",
           "donor_key": "ELLIOTT BARHAM YVONNE",
+          "amount_total": 25,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Smith, Lenora",
+          "donor_key": "SMITH LENORA",
           "amount_total": 25,
           "contribution_count": 1,
           "provenance": {
@@ -2113,8 +2113,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Singh, Rita",
-          "donor_key": "SINGH RITA",
+          "donor_display": "GOMEZ, ROBIN",
+          "donor_key": "GOMEZ ROBIN",
           "amount_total": 25,
           "contribution_count": 1,
           "provenance": {
@@ -2124,8 +2124,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "GOMEZ, ROBIN",
-          "donor_key": "GOMEZ ROBIN",
+          "donor_display": "Singh, Rita",
+          "donor_key": "SINGH RITA",
           "amount_total": 25,
           "contribution_count": 1,
           "provenance": {
@@ -2303,8 +2303,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Yoswein, Joni",
-          "donor_key": "YOSWEIN JONI",
+          "donor_display": "Faustin, Daniel",
+          "donor_key": "FAUSTIN DANIEL",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -2325,19 +2325,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Faustin, Daniel",
-          "donor_key": "FAUSTIN DANIEL",
-          "amount_total": 250,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Sussman-Mirocznik, Irit",
-          "donor_key": "SUSSMAN-MIROCZNIK IRIT",
+          "donor_display": "Yoswein, Joni",
+          "donor_key": "YOSWEIN JONI",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -2349,6 +2338,17 @@
           "type": "campaign_contribution",
           "donor_display": "Peers, Randolph",
           "donor_key": "PEERS RANDOLPH",
+          "amount_total": 250,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Sussman-Mirocznik, Irit",
+          "donor_key": "SUSSMAN-MIROCZNIK IRIT",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -2380,6 +2380,17 @@
         },
         {
           "type": "campaign_contribution",
+          "donor_display": "Goodridge, Alishia",
+          "donor_key": "GOODRIDGE ALISHIA",
+          "amount_total": 175,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
           "donor_display": "Selby, Bernadette",
           "donor_key": "SELBY BERNADETTE",
           "amount_total": 175,
@@ -2393,17 +2404,6 @@
           "type": "campaign_contribution",
           "donor_display": "Selby, LaToya",
           "donor_key": "SELBY LATOYA",
-          "amount_total": 175,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Goodridge, Alishia",
-          "donor_key": "GOODRIDGE ALISHIA",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -2457,17 +2457,6 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "PIERRE, ERICKA",
-          "donor_key": "PIERRE ERICKA",
-          "amount_total": 100,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
           "donor_display": "Findlayter, Orlando",
           "donor_key": "FINDLAYTER ORLANDO",
           "amount_total": 100,
@@ -2479,8 +2468,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Twomey, Michael",
-          "donor_key": "TWOMEY MICHAEL",
+          "donor_display": "PIERRE, ERICKA",
+          "donor_key": "PIERRE ERICKA",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -2492,6 +2481,17 @@
           "type": "campaign_contribution",
           "donor_display": "Hermelyn, Edu",
           "donor_key": "HERMELYN EDU",
+          "amount_total": 100,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Twomey, Michael",
+          "donor_key": "TWOMEY MICHAEL",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -2598,17 +2598,6 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Zayas, Germaine",
-          "donor_key": "ZAYAS GERMAINE",
-          "amount_total": 1050,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
           "donor_display": "IUOE Local 30 State PAC",
           "donor_key": "IUOE LOCAL 30 STATE PAC",
           "amount_total": 1050,
@@ -2631,8 +2620,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Tebele, Nancy",
-          "donor_key": "TEBELE NANCY",
+          "donor_display": "Zayas, Germaine",
+          "donor_key": "ZAYAS GERMAINE",
           "amount_total": 1050,
           "contribution_count": 1,
           "provenance": {
@@ -2653,41 +2642,19 @@
         },
         {
           "type": "campaign_contribution",
+          "donor_display": "Tebele, Nancy",
+          "donor_key": "TEBELE NANCY",
+          "amount_total": 1050,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
           "donor_display": "New York Apartment Association",
           "donor_key": "NEW YORK APARTMENT ASSOCIATION",
-          "amount_total": 1000,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Simone, Danielle",
-          "donor_key": "SIMONE DANIELLE",
-          "amount_total": 1000,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Simone, Joseph B",
-          "donor_key": "SIMONE JOSEPH B",
-          "amount_total": 1000,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Simone, Patricia",
-          "donor_key": "SIMONE PATRICIA",
           "amount_total": 1000,
           "contribution_count": 1,
           "provenance": {
@@ -2743,6 +2710,39 @@
           "type": "campaign_contribution",
           "donor_display": "Michael Razewski and Danielle",
           "donor_key": "MICHAEL RAZEWSKI AND DANIELLE",
+          "amount_total": 1000,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Simone, Danielle",
+          "donor_key": "SIMONE DANIELLE",
+          "amount_total": 1000,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Simone, Joseph B",
+          "donor_key": "SIMONE JOSEPH B",
+          "amount_total": 1000,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Simone, Patricia",
+          "donor_key": "SIMONE PATRICIA",
           "amount_total": 1000,
           "contribution_count": 1,
           "provenance": {
@@ -2829,17 +2829,6 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Tallaj, Paul",
-          "donor_key": "TALLAJ PAUL",
-          "amount_total": 250,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
           "donor_display": "Atlas, Craig",
           "donor_key": "ATLAS CRAIG",
           "amount_total": 250,
@@ -2873,8 +2862,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Todd, Sean",
-          "donor_key": "TODD SEAN",
+          "donor_display": "Tallaj, Paul",
+          "donor_key": "TALLAJ PAUL",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -2897,6 +2886,17 @@
           "type": "campaign_contribution",
           "donor_display": "Gigante, Salvatore",
           "donor_key": "GIGANTE SALVATORE",
+          "amount_total": 250,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Todd, Sean",
+          "donor_key": "TODD SEAN",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -2937,10 +2937,10 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "SINGH, DEODAT",
-          "donor_key": "SINGH DEODAT",
+          "donor_display": "Jigarjian, Michi",
+          "donor_key": "JIGARJIAN MICHI",
           "amount_total": 1600,
-          "contribution_count": 2,
+          "contribution_count": 1,
           "provenance": {
             "source": "rjkp-yttg",
             "join_method": "exact_unique_person_name_key"
@@ -2948,10 +2948,10 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Jigarjian, Michi",
-          "donor_key": "JIGARJIAN MICHI",
+          "donor_display": "Singh, Deodat",
+          "donor_key": "SINGH DEODAT",
           "amount_total": 1600,
-          "contribution_count": 1,
+          "contribution_count": 2,
           "provenance": {
             "source": "rjkp-yttg",
             "join_method": "exact_unique_person_name_key"
@@ -3320,6 +3320,17 @@
         },
         {
           "type": "campaign_contribution",
+          "donor_display": "Ghaleb, Adeeba",
+          "donor_key": "GHALEB ADEEBA",
+          "amount_total": 175,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
           "donor_display": "McQueen-Taylor, Crystal",
           "donor_key": "MCQUEEN-TAYLOR CRYSTAL",
           "amount_total": 175,
@@ -3333,17 +3344,6 @@
           "type": "campaign_contribution",
           "donor_display": "Obeid, Yahay",
           "donor_key": "OBEID YAHAY",
-          "amount_total": 175,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Ghaleb, Adeeba",
-          "donor_key": "GHALEB ADEEBA",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -3386,39 +3386,6 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Jimenez, Brehneg",
-          "donor_key": "JIMENEZ BREHNEG",
-          "amount_total": 175,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Jimenez, Jose",
-          "donor_key": "JIMENEZ JOSE",
-          "amount_total": 175,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Gardiner, Dexter",
-          "donor_key": "GARDINER DEXTER",
-          "amount_total": 175,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
           "donor_display": "Acosta, Laura",
           "donor_key": "ACOSTA LAURA",
           "amount_total": 175,
@@ -3443,6 +3410,39 @@
           "type": "campaign_contribution",
           "donor_display": "Alvarez, Stacey",
           "donor_key": "ALVAREZ STACEY",
+          "amount_total": 175,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Gardiner, Dexter",
+          "donor_key": "GARDINER DEXTER",
+          "amount_total": 175,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Jimenez, Brehneg",
+          "donor_key": "JIMENEZ BREHNEG",
+          "amount_total": 175,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Jimenez, Jose",
+          "donor_key": "JIMENEZ JOSE",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -3485,10 +3485,10 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Tuft, Thomas",
-          "donor_key": "TUFT THOMAS",
+          "donor_display": "Casenave, Blandon",
+          "donor_key": "CASENAVE BLANDON",
           "amount_total": 175,
-          "contribution_count": 1,
+          "contribution_count": 2,
           "provenance": {
             "source": "rjkp-yttg",
             "join_method": "exact_unique_person_name_key"
@@ -3496,10 +3496,10 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Casenave, Blandon",
-          "donor_key": "CASENAVE BLANDON",
+          "donor_display": "Tuft, Thomas",
+          "donor_key": "TUFT THOMAS",
           "amount_total": 175,
-          "contribution_count": 2,
+          "contribution_count": 1,
           "provenance": {
             "source": "rjkp-yttg",
             "join_method": "exact_unique_person_name_key"
@@ -3573,8 +3573,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Turmalaj, Angela",
-          "donor_key": "TURMALAJ ANGELA",
+          "donor_display": "Coello, Leonardo",
+          "donor_key": "COELLO LEONARDO",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -3927,8 +3927,8 @@
       "person_id": "7801",
       "person_name": "Christopher Marte",
       "official_id": "official:7801",
-      "contribution_count": 104,
-      "contribution_total": 13668.01,
+      "contribution_count": 105,
+      "contribution_total": 13678.01,
       "donors": [
         {
           "type": "campaign_contribution",
@@ -4009,8 +4009,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "PSC PAC",
-          "donor_key": "PSC PAC",
+          "donor_display": "Genovese, Laura",
+          "donor_key": "GENOVESE LAURA",
           "amount_total": 500,
           "contribution_count": 1,
           "provenance": {
@@ -4020,8 +4020,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Genovese, Laura",
-          "donor_key": "GENOVESE LAURA",
+          "donor_display": "PSC PAC",
+          "donor_key": "PSC PAC",
           "amount_total": 500,
           "contribution_count": 1,
           "provenance": {
@@ -4425,8 +4425,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Shepherd, Lee",
-          "donor_key": "SHEPHERD LEE",
+          "donor_display": "Koffman, Aaron",
+          "donor_key": "KOFFMAN AARON",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -4436,8 +4436,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Koffman, Aaron",
-          "donor_key": "KOFFMAN AARON",
+          "donor_display": "Shepherd, Lee",
+          "donor_key": "SHEPHERD LEE",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -4546,17 +4546,6 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Vaccaro, Steve",
-          "donor_key": "VACCARO STEVE",
-          "amount_total": 50,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
           "donor_display": "Miramey, Darling J.",
           "donor_key": "MIRAMEY DARLING J",
           "amount_total": 50,
@@ -4568,9 +4557,9 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "McAnarney, Kevin P",
-          "donor_key": "MCANARNEY KEVIN P",
-          "amount_total": 25,
+          "donor_display": "Vaccaro, Steve",
+          "donor_key": "VACCARO STEVE",
+          "amount_total": 50,
           "contribution_count": 1,
           "provenance": {
             "source": "rjkp-yttg",
@@ -4581,6 +4570,17 @@
           "type": "campaign_contribution",
           "donor_display": "Chamberlain, John",
           "donor_key": "CHAMBERLAIN JOHN",
+          "amount_total": 25,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "McAnarney, Kevin P",
+          "donor_key": "MCANARNEY KEVIN P",
           "amount_total": 25,
           "contribution_count": 1,
           "provenance": {
@@ -4605,8 +4605,8 @@
       "person_id": "7803",
       "person_name": "Julie Menin",
       "official_id": "official:7803",
-      "contribution_count": 363,
-      "contribution_total": 128047.26,
+      "contribution_count": 362,
+      "contribution_total": 126447.26,
       "donors": [
         {
           "type": "campaign_contribution",
@@ -4676,8 +4676,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Zeckendorf, William",
-          "donor_key": "ZECKENDORF WILLIAM",
+          "donor_display": "Tebele, Leo",
+          "donor_key": "TEBELE LEO",
           "amount_total": 1600,
           "contribution_count": 1,
           "provenance": {
@@ -4687,8 +4687,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Tebele, Leo",
-          "donor_key": "TEBELE LEO",
+          "donor_display": "Zeckendorf, William",
+          "donor_key": "ZECKENDORF WILLIAM",
           "amount_total": 1600,
           "contribution_count": 1,
           "provenance": {
@@ -4764,8 +4764,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Winter, Benjamin J",
-          "donor_key": "WINTER BENJAMIN J",
+          "donor_display": "Meta, Zani",
+          "donor_key": "META ZANI",
           "amount_total": 1600,
           "contribution_count": 1,
           "provenance": {
@@ -4775,8 +4775,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Meta, Zani",
-          "donor_key": "META ZANI",
+          "donor_display": "Winter, Benjamin J",
+          "donor_key": "WINTER BENJAMIN J",
           "amount_total": 1600,
           "contribution_count": 1,
           "provenance": {
@@ -4790,17 +4790,6 @@
           "donor_key": "KEOHANE NAT",
           "amount_total": 1600,
           "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Min, Sarah",
-          "donor_key": "MIN SARAH",
-          "amount_total": 1600,
-          "contribution_count": 3,
           "provenance": {
             "source": "rjkp-yttg",
             "join_method": "exact_unique_person_name_key"
@@ -4863,8 +4852,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Munzer Loeb, Margaret",
-          "donor_key": "MUNZER LOEB MARGARET",
+          "donor_display": "Dabah, Haim",
+          "donor_key": "DABAH HAIM",
           "amount_total": 1600,
           "contribution_count": 1,
           "provenance": {
@@ -4885,19 +4874,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Dabah, Haim",
-          "donor_key": "DABAH HAIM",
-          "amount_total": 1600,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Winter, Alison",
-          "donor_key": "WINTER ALISON",
+          "donor_display": "Munzer Loeb, Margaret",
+          "donor_key": "MUNZER LOEB MARGARET",
           "amount_total": 1600,
           "contribution_count": 1,
           "provenance": {
@@ -4909,6 +4887,17 @@
           "type": "campaign_contribution",
           "donor_display": "Heyman, Gregory",
           "donor_key": "HEYMAN GREGORY",
+          "amount_total": 1600,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Winter, Alison",
+          "donor_key": "WINTER ALISON",
           "amount_total": 1600,
           "contribution_count": 1,
           "provenance": {
@@ -4931,6 +4920,17 @@
           "type": "campaign_contribution",
           "donor_display": "Phillips, Charles",
           "donor_key": "PHILLIPS CHARLES",
+          "amount_total": 1600,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Angelson, Mark",
+          "donor_key": "ANGELSON MARK",
           "amount_total": 1600,
           "contribution_count": 1,
           "provenance": {
@@ -4982,8 +4982,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Reddy, Seema",
-          "donor_key": "REDDY SEEMA",
+          "donor_display": "Lantis, John",
+          "donor_key": "LANTIS JOHN",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -4993,8 +4993,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Lantis, John",
-          "donor_key": "LANTIS JOHN",
+          "donor_display": "Reddy, Seema",
+          "donor_key": "REDDY SEEMA",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -5015,30 +5015,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Vann, Stephen",
-          "donor_key": "VANN STEPHEN",
-          "amount_total": 100,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Schwartz, Louis",
-          "donor_key": "SCHWARTZ LOUIS",
-          "amount_total": 100,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "itzkowitz, erica",
-          "donor_key": "ITZKOWITZ ERICA",
+          "donor_display": "Berson, Neil",
+          "donor_key": "BERSON NEIL",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -5059,8 +5037,30 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Berson, Neil",
-          "donor_key": "BERSON NEIL",
+          "donor_display": "itzkowitz, erica",
+          "donor_key": "ITZKOWITZ ERICA",
+          "amount_total": 100,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Schwartz, Louis",
+          "donor_key": "SCHWARTZ LOUIS",
+          "amount_total": 100,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Vann, Stephen",
+          "donor_key": "VANN STEPHEN",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -5081,8 +5081,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Vansintejan-Glaser, Gilberte",
-          "donor_key": "VANSINTEJAN-GLASER GILBERTE",
+          "donor_display": "Abbott, Catherine",
+          "donor_key": "ABBOTT CATHERINE",
           "amount_total": 50,
           "contribution_count": 1,
           "provenance": {
@@ -5092,8 +5092,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Tilley, Quinton",
-          "donor_key": "TILLEY QUINTON",
+          "donor_display": "Baily, Arlene",
+          "donor_key": "BAILY ARLENE",
           "amount_total": 50,
           "contribution_count": 1,
           "provenance": {
@@ -5103,8 +5103,19 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Sullivan, Rosalie",
-          "donor_key": "SULLIVAN ROSALIE",
+          "donor_display": "Duncan Wilson, Beryl",
+          "donor_key": "DUNCAN WILSON BERYL",
+          "amount_total": 50,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Gibson, Susan",
+          "donor_key": "GIBSON SUSAN",
           "amount_total": 50,
           "contribution_count": 1,
           "provenance": {
@@ -5136,8 +5147,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Gibson, Susan",
-          "donor_key": "GIBSON SUSAN",
+          "donor_display": "Sullivan, Rosalie",
+          "donor_key": "SULLIVAN ROSALIE",
           "amount_total": 50,
           "contribution_count": 1,
           "provenance": {
@@ -5147,8 +5158,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Duncan Wilson, Beryl",
-          "donor_key": "DUNCAN WILSON BERYL",
+          "donor_display": "Tilley, Quinton",
+          "donor_key": "TILLEY QUINTON",
           "amount_total": 50,
           "contribution_count": 1,
           "provenance": {
@@ -5158,41 +5169,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Abbott, Catherine",
-          "donor_key": "ABBOTT CATHERINE",
-          "amount_total": 50,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Baily, Arlene",
-          "donor_key": "BAILY ARLENE",
-          "amount_total": 50,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Scrymser, Sarah",
-          "donor_key": "SCRYMSER SARAH",
-          "amount_total": 50,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Paget, Karen",
-          "donor_key": "PAGET KAREN",
+          "donor_display": "Vansintejan-Glaser, Gilberte",
+          "donor_key": "VANSINTEJAN-GLASER GILBERTE",
           "amount_total": 50,
           "contribution_count": 1,
           "provenance": {
@@ -5235,6 +5213,28 @@
         },
         {
           "type": "campaign_contribution",
+          "donor_display": "Paget, Karen",
+          "donor_key": "PAGET KAREN",
+          "amount_total": 50,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Scrymser, Sarah",
+          "donor_key": "SCRYMSER SARAH",
+          "amount_total": 50,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
           "donor_display": "Vaccaro, Steve",
           "donor_key": "VACCARO STEVE",
           "amount_total": 50,
@@ -5268,8 +5268,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Whitlock, Colette C",
-          "donor_key": "WHITLOCK COLETTE C",
+          "donor_display": "Armstrong, Timothy",
+          "donor_key": "ARMSTRONG TIMOTHY",
           "amount_total": 25,
           "contribution_count": 1,
           "provenance": {
@@ -5519,17 +5519,6 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Fajardo, Flor",
-          "donor_key": "FAJARDO FLOR",
-          "amount_total": 500,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
           "donor_display": "Angeles, Cira E",
           "donor_key": "ANGELES CIRA E",
           "amount_total": 500,
@@ -5543,6 +5532,17 @@
           "type": "campaign_contribution",
           "donor_display": "Cahill, Kelly",
           "donor_key": "CAHILL KELLY",
+          "amount_total": 500,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Fajardo, Flor",
+          "donor_key": "FAJARDO FLOR",
           "amount_total": 500,
           "contribution_count": 1,
           "provenance": {
@@ -5649,8 +5649,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "United Federation of Teachers",
-          "donor_key": "UNITED FEDERATION OF TEACHERS",
+          "donor_display": "Courage to Change",
+          "donor_key": "COURAGE TO CHANGE",
           "amount_total": 1050,
           "contribution_count": 1,
           "provenance": {
@@ -5660,8 +5660,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Courage to Change",
-          "donor_key": "COURAGE TO CHANGE",
+          "donor_display": "United Federation of Teachers",
+          "donor_key": "UNITED FEDERATION OF TEACHERS",
           "amount_total": 1050,
           "contribution_count": 1,
           "provenance": {
@@ -5856,17 +5856,6 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Morris, Gregory J",
-          "donor_key": "MORRIS GREGORY J",
-          "amount_total": 100,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
           "donor_display": "Bloch, Darren",
           "donor_key": "BLOCH DARREN",
           "amount_total": 100,
@@ -5880,6 +5869,17 @@
           "type": "campaign_contribution",
           "donor_display": "Lizardo, Maria",
           "donor_key": "LIZARDO MARIA",
+          "amount_total": 100,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Morris, Gregory J",
+          "donor_key": "MORRIS GREGORY J",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -6008,8 +6008,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Mendoza-Diaz, Karen",
-          "donor_key": "MENDOZA-DIAZ KAREN",
+          "donor_display": "Cespedes, Moamar",
+          "donor_key": "CESPEDES MOAMAR",
           "amount_total": 1500,
           "contribution_count": 1,
           "provenance": {
@@ -6019,8 +6019,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Cespedes, Moamar",
-          "donor_key": "CESPEDES MOAMAR",
+          "donor_display": "Mendoza-Diaz, Karen",
+          "donor_key": "MENDOZA-DIAZ KAREN",
           "amount_total": 1500,
           "contribution_count": 1,
           "provenance": {
@@ -6723,8 +6723,8 @@
       "person_id": "7813",
       "person_name": "Tiffany L. Cabán",
       "official_id": "official:7813",
-      "contribution_count": 266,
-      "contribution_total": 22403.88,
+      "contribution_count": 267,
+      "contribution_total": 22447.88,
       "donors": [
         {
           "type": "campaign_contribution",
@@ -6761,8 +6761,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Reiss, Jon",
-          "donor_key": "REISS JON",
+          "donor_display": "Jacobs, Sam",
+          "donor_key": "JACOBS SAM",
           "amount_total": 1050,
           "contribution_count": 1,
           "provenance": {
@@ -6772,8 +6772,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Jacobs, Sam",
-          "donor_key": "JACOBS SAM",
+          "donor_display": "Reiss, Jon",
+          "donor_key": "REISS JON",
           "amount_total": 1050,
           "contribution_count": 1,
           "provenance": {
@@ -7111,17 +7111,6 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Sweeney, Will",
-          "donor_key": "SWEENEY WILL",
-          "amount_total": 175,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
           "donor_display": "Bae, SoJin",
           "donor_key": "BAE SOJIN",
           "amount_total": 175,
@@ -7177,8 +7166,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "2025, Nantasha",
-          "donor_key": "2025 NANTASHA",
+          "donor_display": "Sweeney, Will",
+          "donor_key": "SWEENEY WILL",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -7188,8 +7177,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Tabassum, Rutba",
-          "donor_key": "TABASSUM RUTBA",
+          "donor_display": "2025, Nantasha",
+          "donor_key": "2025 NANTASHA",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -7210,8 +7199,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Levine, Mark",
-          "donor_key": "LEVINE MARK",
+          "donor_display": "Tabassum, Rutba",
+          "donor_key": "TABASSUM RUTBA",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -7221,8 +7210,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Tsiang, Grace",
-          "donor_key": "TSIANG GRACE",
+          "donor_display": "Levine, Mark",
+          "donor_key": "LEVINE MARK",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -7243,10 +7232,10 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Haran, Kevin",
-          "donor_key": "HARAN KEVIN",
-          "amount_total": 150,
-          "contribution_count": 2,
+          "donor_display": "Tsiang, Grace",
+          "donor_key": "TSIANG GRACE",
+          "amount_total": 175,
+          "contribution_count": 1,
           "provenance": {
             "source": "rjkp-yttg",
             "join_method": "exact_unique_person_name_key"
@@ -7254,10 +7243,10 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Lallman, Kapadia",
-          "donor_key": "LALLMAN KAPADIA",
-          "amount_total": 100,
-          "contribution_count": 1,
+          "donor_display": "Haran, Kevin",
+          "donor_key": "HARAN KEVIN",
+          "amount_total": 150,
+          "contribution_count": 2,
           "provenance": {
             "source": "rjkp-yttg",
             "join_method": "exact_unique_person_name_key"
@@ -7276,8 +7265,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Martin, Marissa",
-          "donor_key": "MARTIN MARISSA",
+          "donor_display": "Lallman, Kapadia",
+          "donor_key": "LALLMAN KAPADIA",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -7289,6 +7278,17 @@
           "type": "campaign_contribution",
           "donor_display": "Chi, Hsuanyu",
           "donor_key": "CHI HSUANYU",
+          "amount_total": 100,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Martin, Marissa",
+          "donor_key": "MARTIN MARISSA",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -7342,8 +7342,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Sturm, Sol",
-          "donor_key": "STURM SOL",
+          "donor_display": "Frye, Laura",
+          "donor_key": "FRYE LAURA",
           "amount_total": 50,
           "contribution_count": 1,
           "provenance": {
@@ -7353,8 +7353,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Frye, Laura",
-          "donor_key": "FRYE LAURA",
+          "donor_display": "Sturm, Sol",
+          "donor_key": "STURM SOL",
           "amount_total": 50,
           "contribution_count": 1,
           "provenance": {
@@ -7538,8 +7538,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Zhou, Yuseng",
-          "donor_key": "ZHOU YUSENG",
+          "donor_display": "Chen, Bao Shun",
+          "donor_key": "CHEN BAO SHUN",
           "amount_total": 300,
           "contribution_count": 1,
           "provenance": {
@@ -7549,30 +7549,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Zhou, Liyu",
-          "donor_key": "ZHOU LIYU",
-          "amount_total": 300,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Zheng, Feng Sheng",
-          "donor_key": "ZHENG FENG SHENG",
-          "amount_total": 300,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Wang, Zhaoxin",
-          "donor_key": "WANG ZHAOXIN",
+          "donor_display": "Chen, Xin He",
+          "donor_key": "CHEN XIN HE",
           "amount_total": 300,
           "contribution_count": 1,
           "provenance": {
@@ -7593,8 +7571,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Chen, Bao Shun",
-          "donor_key": "CHEN BAO SHUN",
+          "donor_display": "Wang, Zhaoxin",
+          "donor_key": "WANG ZHAOXIN",
           "amount_total": 300,
           "contribution_count": 1,
           "provenance": {
@@ -7604,8 +7582,30 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Chen, Xin He",
-          "donor_key": "CHEN XIN HE",
+          "donor_display": "Zheng, Feng Sheng",
+          "donor_key": "ZHENG FENG SHENG",
+          "amount_total": 300,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Zhou, Liyu",
+          "donor_key": "ZHOU LIYU",
+          "amount_total": 300,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Zhou, Yuseng",
+          "donor_key": "ZHOU YUSENG",
           "amount_total": 300,
           "contribution_count": 1,
           "provenance": {
@@ -7703,8 +7703,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Snepar, Jeremy",
-          "donor_key": "SNEPAR JEREMY",
+          "donor_display": "Gilmanova, Albina",
+          "donor_key": "GILMANOVA ALBINA",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -7714,8 +7714,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Gilmanova, Albina",
-          "donor_key": "GILMANOVA ALBINA",
+          "donor_display": "Snepar, Jeremy",
+          "donor_key": "SNEPAR JEREMY",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -7745,8 +7745,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "United Federation of Teachers",
-          "donor_key": "UNITED FEDERATION OF TEACHERS",
+          "donor_display": "Doctors Council SEIU COPE",
+          "donor_key": "DOCTORS COUNCIL SEIU COPE",
           "amount_total": 1050,
           "contribution_count": 1,
           "provenance": {
@@ -7756,8 +7756,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Doctors Council SEIU COPE",
-          "donor_key": "DOCTORS COUNCIL SEIU COPE",
+          "donor_display": "United Federation of Teachers",
+          "donor_key": "UNITED FEDERATION OF TEACHERS",
           "amount_total": 1050,
           "contribution_count": 1,
           "provenance": {
@@ -7919,8 +7919,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Thomas, Paul",
-          "donor_key": "THOMAS PAUL",
+          "donor_display": "Cantone, Scott",
+          "donor_key": "CANTONE SCOTT",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -7952,8 +7952,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Cantone, Scott",
-          "donor_key": "CANTONE SCOTT",
+          "donor_display": "Thomas, Paul",
+          "donor_key": "THOMAS PAUL",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -7985,8 +7985,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Sosa, Danna",
-          "donor_key": "SOSA DANNA",
+          "donor_display": "Cerat, Marie",
+          "donor_key": "CERAT MARIE",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -8007,8 +8007,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Cerat, Marie",
-          "donor_key": "CERAT MARIE",
+          "donor_display": "Sosa, Danna",
+          "donor_key": "SOSA DANNA",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -8062,8 +8062,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Rose, Claire",
-          "donor_key": "ROSE CLAIRE",
+          "donor_display": "Cantone, Tracy",
+          "donor_key": "CANTONE TRACY",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -8073,8 +8073,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Cantone, Tracy",
-          "donor_key": "CANTONE TRACY",
+          "donor_display": "Rose, Claire",
+          "donor_key": "ROSE CLAIRE",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -8159,8 +8159,8 @@
       "donors": [
         {
           "type": "campaign_contribution",
-          "donor_display": "Sullivan, Katherine",
-          "donor_key": "SULLIVAN KATHERINE",
+          "donor_display": "Schwefel, Harry",
+          "donor_key": "SCHWEFEL HARRY",
           "amount_total": 1050,
           "contribution_count": 1,
           "provenance": {
@@ -8170,8 +8170,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Schwefel, Harry",
-          "donor_key": "SCHWEFEL HARRY",
+          "donor_display": "Sullivan, Katherine",
+          "donor_key": "SULLIVAN KATHERINE",
           "amount_total": 1050,
           "contribution_count": 1,
           "provenance": {
@@ -8412,8 +8412,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Mujica, Robert",
-          "donor_key": "MUJICA ROBERT",
+          "donor_display": "avella, michael",
+          "donor_key": "AVELLA MICHAEL",
           "amount_total": 500,
           "contribution_count": 1,
           "provenance": {
@@ -8423,8 +8423,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "avella, michael",
-          "donor_key": "AVELLA MICHAEL",
+          "donor_display": "Mujica, Robert",
+          "donor_key": "MUJICA ROBERT",
           "amount_total": 500,
           "contribution_count": 1,
           "provenance": {
@@ -8553,39 +8553,6 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Zhang, Danni",
-          "donor_key": "ZHANG DANNI",
-          "amount_total": 175,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Shi, Benson",
-          "donor_key": "SHI BENSON",
-          "amount_total": 175,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Vered, Musheyev",
-          "donor_key": "VERED MUSHEYEV",
-          "amount_total": 175,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
           "donor_display": "Chen, Jian Qing",
           "donor_key": "CHEN JIAN QING",
           "amount_total": 175,
@@ -8698,6 +8665,39 @@
           "type": "campaign_contribution",
           "donor_display": "Sarikov, Michal Michelle",
           "donor_key": "SARIKOV MICHAL MICHELLE",
+          "amount_total": 175,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Shi, Benson",
+          "donor_key": "SHI BENSON",
+          "amount_total": 175,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Vered, Musheyev",
+          "donor_key": "VERED MUSHEYEV",
+          "amount_total": 175,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Zhang, Danni",
+          "donor_key": "ZHANG DANNI",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -8892,8 +8892,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Fuchs, Zachary",
-          "donor_key": "FUCHS ZACHARY",
+          "donor_display": "Daly, Elizabeth Rose",
+          "donor_key": "DALY ELIZABETH ROSE",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -8903,8 +8903,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Daly, Elizabeth Rose",
-          "donor_key": "DALY ELIZABETH ROSE",
+          "donor_display": "Fuchs, Zachary",
+          "donor_key": "FUCHS ZACHARY",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -9000,8 +9000,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "United Federation of Teachers",
-          "donor_key": "UNITED FEDERATION OF TEACHERS",
+          "donor_display": "Doctors Council SEIU Cope",
+          "donor_key": "DOCTORS COUNCIL SEIU COPE",
           "amount_total": 1050,
           "contribution_count": 1,
           "provenance": {
@@ -9011,8 +9011,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Doctors Council SEIU Cope",
-          "donor_key": "DOCTORS COUNCIL SEIU COPE",
+          "donor_display": "United Federation of Teachers",
+          "donor_key": "UNITED FEDERATION OF TEACHERS",
           "amount_total": 1050,
           "contribution_count": 1,
           "provenance": {
@@ -9070,8 +9070,8 @@
       "person_id": "7822",
       "person_name": "Crystal Hudson",
       "official_id": "official:7822",
-      "contribution_count": 190,
-      "contribution_total": 42853.75,
+      "contribution_count": 189,
+      "contribution_total": 42728.75,
       "donors": [
         {
           "type": "campaign_contribution",
@@ -9938,8 +9938,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Vaccaro, Steve",
-          "donor_key": "VACCARO STEVE",
+          "donor_display": "Leuthold, John",
+          "donor_key": "LEUTHOLD JOHN",
           "amount_total": 50,
           "contribution_count": 1,
           "provenance": {
@@ -9949,8 +9949,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Leuthold, John",
-          "donor_key": "LEUTHOLD JOHN",
+          "donor_display": "Vaccaro, Steve",
+          "donor_key": "VACCARO STEVE",
           "amount_total": 50,
           "contribution_count": 1,
           "provenance": {
@@ -10030,8 +10030,8 @@
       "person_id": "7826",
       "person_name": "Shahana K. Hanif",
       "official_id": "official:7826",
-      "contribution_count": 116,
-      "contribution_total": 5178.28,
+      "contribution_count": 119,
+      "contribution_total": 5262.28,
       "donors": [
         {
           "type": "campaign_contribution",
@@ -10126,6 +10126,17 @@
           "donor_display": "Arkles, Gabriel",
           "donor_key": "ARKLES GABRIEL",
           "amount_total": 125,
+          "contribution_count": 5,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Stahlberger, Eve",
+          "donor_key": "STAHLBERGER EVE",
+          "amount_total": 100,
           "contribution_count": 5,
           "provenance": {
             "source": "rjkp-yttg",
@@ -10233,8 +10244,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Schor, Stephen",
-          "donor_key": "SCHOR STEPHEN",
+          "donor_display": "Chen, Camilla",
+          "donor_key": "CHEN CAMILLA",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -10244,8 +10255,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Chen, Camilla",
-          "donor_key": "CHEN CAMILLA",
+          "donor_display": "Schor, Stephen",
+          "donor_key": "SCHOR STEPHEN",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -10270,17 +10281,6 @@
           "donor_key": "HANIF SHAHANA",
           "amount_total": 81,
           "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Stahlberger, Eve",
-          "donor_key": "STAHLBERGER EVE",
-          "amount_total": 80,
-          "contribution_count": 4,
           "provenance": {
             "source": "rjkp-yttg",
             "join_method": "exact_unique_person_name_key"
@@ -10572,8 +10572,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Mary, Mahadya",
-          "donor_key": "MARY MAHADYA",
+          "donor_display": "Joseph, Michael",
+          "donor_key": "JOSEPH MICHAEL",
           "amount_total": 255,
           "contribution_count": 2,
           "provenance": {
@@ -10583,8 +10583,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Joseph, Michael",
-          "donor_key": "JOSEPH MICHAEL",
+          "donor_display": "Mary, Mahadya",
+          "donor_key": "MARY MAHADYA",
           "amount_total": 255,
           "contribution_count": 2,
           "provenance": {
@@ -10671,8 +10671,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Williams, Yolette",
-          "donor_key": "WILLIAMS YOLETTE",
+          "donor_display": "Celiba, Gaby",
+          "donor_key": "CELIBA GABY",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -10693,8 +10693,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Celiba, Gaby",
-          "donor_key": "CELIBA GABY",
+          "donor_display": "Desruisseaux, Gina",
+          "donor_key": "DESRUISSEAUX GINA",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -10708,8 +10708,8 @@
       "person_id": "7829",
       "person_name": "Mercedes Narcisse",
       "official_id": "official:7829",
-      "contribution_count": 203,
-      "contribution_total": 25918,
+      "contribution_count": 204,
+      "contribution_total": 26418,
       "donors": [
         {
           "type": "campaign_contribution",
@@ -10781,6 +10781,17 @@
           "type": "campaign_contribution",
           "donor_display": "LOCAL 94-94A-94B IUOE POLITICA",
           "donor_key": "LOCAL 94-94A-94B IUOE POLITICA",
+          "amount_total": 500,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Conolly, James",
+          "donor_key": "CONOLLY JAMES",
           "amount_total": 500,
           "contribution_count": 1,
           "provenance": {
@@ -10900,19 +10911,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Zogaj, Tahir",
-          "donor_key": "ZOGAJ TAHIR",
-          "amount_total": 250,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "PAOLI, Rachelle",
-          "donor_key": "PAOLI RACHELLE",
+          "donor_display": "Deliat, Jacques",
+          "donor_key": "DELIAT JACQUES",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -10933,8 +10933,19 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Deliat, Jacques",
-          "donor_key": "DELIAT JACQUES",
+          "donor_display": "PAOLI, Rachelle",
+          "donor_key": "PAOLI RACHELLE",
+          "amount_total": 250,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Zogaj, Tahir",
+          "donor_key": "ZOGAJ TAHIR",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -11029,17 +11040,6 @@
             "source": "rjkp-yttg",
             "join_method": "exact_unique_person_name_key"
           }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Eze, Chidi",
-          "donor_key": "EZE CHIDI",
-          "amount_total": 200,
-          "contribution_count": 2,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
         }
       ]
     },
@@ -11047,8 +11047,8 @@
       "person_id": "7830",
       "person_name": "Ari Kagan",
       "official_id": "official:7830",
-      "contribution_count": 72,
-      "contribution_total": 6656,
+      "contribution_count": 71,
+      "contribution_total": 6646,
       "donors": [
         {
           "type": "campaign_contribution",
@@ -11085,8 +11085,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Yuen, Lai Kuen",
-          "donor_key": "YUEN LAI KUEN",
+          "donor_display": "Cau, Qing",
+          "donor_key": "CAU QING",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -11096,8 +11096,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Yu, Qiao yun",
-          "donor_key": "YU QIAO YUN",
+          "donor_display": "Chan, Mei",
+          "donor_key": "CHAN MEI",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -11107,8 +11107,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Yan, Ruyu",
-          "donor_key": "YAN RUYU",
+          "donor_display": "Chen, Johnny",
+          "donor_key": "CHEN JOHNNY",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -11118,8 +11118,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Wu, Ze Qiu",
-          "donor_key": "WU ZE QIU",
+          "donor_display": "Chen, Si nu",
+          "donor_key": "CHEN SI NU",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -11129,8 +11129,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Wu, Guozheng",
-          "donor_key": "WU GUOZHENG",
+          "donor_display": "Cheng Bo, Shui Tai",
+          "donor_key": "CHENG BO SHUI TAI",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -11140,8 +11140,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Wah, Wong Pui",
-          "donor_key": "WAH WONG PUI",
+          "donor_display": "Fei, De Huan",
+          "donor_key": "FEI DE HUAN",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -11151,8 +11151,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Tan, Bi Chan",
-          "donor_key": "TAN BI CHAN",
+          "donor_display": "Fu, Wen",
+          "donor_key": "FU WEN",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -11162,8 +11162,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Su, Li Huan",
-          "donor_key": "SU LI HUAN",
+          "donor_display": "Guan, Rui Qiong",
+          "donor_key": "GUAN RUI QIONG",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -11173,8 +11173,118 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Siu, Yuk wah",
-          "donor_key": "SIU YUK WAH",
+          "donor_display": "Guan, Yan Qing",
+          "donor_key": "GUAN YAN QING",
+          "amount_total": 100,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Ho, Kelvin",
+          "donor_key": "HO KELVIN",
+          "amount_total": 100,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Hong, Kang cui",
+          "donor_key": "HONG KANG CUI",
+          "amount_total": 100,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Hong, Liang Wei",
+          "donor_key": "HONG LIANG WEI",
+          "amount_total": 100,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Hu, Yingming",
+          "donor_key": "HU YINGMING",
+          "amount_total": 100,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Hua, Cai shao",
+          "donor_key": "HUA CAI SHAO",
+          "amount_total": 100,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Huang, Liu",
+          "donor_key": "HUANG LIU",
+          "amount_total": 100,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Huang, Yan Feng",
+          "donor_key": "HUANG YAN FENG",
+          "amount_total": 100,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Jiang, Qiong",
+          "donor_key": "JIANG QIONG",
+          "amount_total": 100,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Jinpei, Huang",
+          "donor_key": "JINPEI HUANG",
+          "amount_total": 100,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Juan, Cao",
+          "donor_key": "JUAN CAO",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -11263,116 +11373,6 @@
           "type": "campaign_contribution",
           "donor_display": "Li, Mu Xian",
           "donor_key": "LI MU XIAN",
-          "amount_total": 100,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Li, Qi Hong",
-          "donor_key": "LI QI HONG",
-          "amount_total": 100,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Li, Qian",
-          "donor_key": "LI QIAN",
-          "amount_total": 100,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Li, Shicong",
-          "donor_key": "LI SHICONG",
-          "amount_total": 100,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Li, Winnie",
-          "donor_key": "LI WINNIE",
-          "amount_total": 100,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Li, Xiu Qing",
-          "donor_key": "LI XIU QING",
-          "amount_total": 100,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Liang, Qua",
-          "donor_key": "LIANG QUA",
-          "amount_total": 100,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Liang, Yu Xin",
-          "donor_key": "LIANG YU XIN",
-          "amount_total": 100,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Lin, Shu Ling",
-          "donor_key": "LIN SHU LING",
-          "amount_total": 100,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Lin, Yan",
-          "donor_key": "LIN YAN",
-          "amount_total": 100,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Lin, Yue Ai",
-          "donor_key": "LIN YUE AI",
           "amount_total": 100,
           "contribution_count": 1,
           "provenance": {
@@ -11785,8 +11785,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Quent, James",
-          "donor_key": "QUENT JAMES",
+          "donor_display": "Campoamor, Jesse",
+          "donor_key": "CAMPOAMOR JESSE",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -11796,8 +11796,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Campoamor, Jesse",
-          "donor_key": "CAMPOAMOR JESSE",
+          "donor_display": "Quent, James",
+          "donor_key": "QUENT JAMES",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -11831,39 +11831,6 @@
           "type": "campaign_contribution",
           "donor_display": "UFOA 527 Account",
           "donor_key": "UFOA 527 ACCOUNT",
-          "amount_total": 250,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Zarzano, Sophia",
-          "donor_key": "ZARZANO SOPHIA",
-          "amount_total": 250,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Zarzano, Joseph",
-          "donor_key": "ZARZANO JOSEPH",
-          "amount_total": 250,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Spensieri-Rice, Deana",
-          "donor_key": "SPENSIERI-RICE DEANA",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -11928,8 +11895,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Soren, Karen",
-          "donor_key": "SOREN KAREN",
+          "donor_display": "Spensieri-Rice, Deana",
+          "donor_key": "SPENSIERI-RICE DEANA",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -11939,8 +11906,30 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Restino, Jacob",
-          "donor_key": "RESTINO JACOB",
+          "donor_display": "Zarzano, Joseph",
+          "donor_key": "ZARZANO JOSEPH",
+          "amount_total": 250,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Zarzano, Sophia",
+          "donor_key": "ZARZANO SOPHIA",
+          "amount_total": 250,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Crispi, Alexandria",
+          "donor_key": "CRISPI ALEXANDRIA",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -12002,6 +11991,17 @@
             "source": "rjkp-yttg",
             "join_method": "exact_unique_person_name_key"
           }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "podokshik, nellie",
+          "donor_key": "PODOKSHIK NELLIE",
+          "amount_total": 250,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
         }
       ]
     },
@@ -12025,8 +12025,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Reilly, John",
-          "donor_key": "REILLY JOHN",
+          "donor_display": "Harrison, Timothy",
+          "donor_key": "HARRISON TIMOTHY",
           "amount_total": 500,
           "contribution_count": 1,
           "provenance": {
@@ -12047,8 +12047,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Harrison, Timothy",
-          "donor_key": "HARRISON TIMOTHY",
+          "donor_display": "Reilly, John",
+          "donor_key": "REILLY JOHN",
           "amount_total": 500,
           "contribution_count": 1,
           "provenance": {
@@ -12080,17 +12080,6 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Lauria, Laura",
-          "donor_key": "LAURIA LAURA",
-          "amount_total": 350,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
           "donor_display": "Angiuli, Gary",
           "donor_key": "ANGIULI GARY",
           "amount_total": 350,
@@ -12113,8 +12102,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Bisogno, Patrick",
-          "donor_key": "BISOGNO PATRICK",
+          "donor_display": "Lauria, Laura",
+          "donor_key": "LAURIA LAURA",
           "amount_total": 350,
           "contribution_count": 1,
           "provenance": {
@@ -12124,10 +12113,10 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Hamill, Robert",
-          "donor_key": "HAMILL ROBERT",
-          "amount_total": 250,
-          "contribution_count": 2,
+          "donor_display": "Bisogno, Patrick",
+          "donor_key": "BISOGNO PATRICK",
+          "amount_total": 350,
+          "contribution_count": 1,
           "provenance": {
             "source": "rjkp-yttg",
             "join_method": "exact_unique_person_name_key"
@@ -12146,21 +12135,10 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Rooney, Kathryn",
-          "donor_key": "ROONEY KATHRYN",
+          "donor_display": "Hamill, Robert",
+          "donor_key": "HAMILL ROBERT",
           "amount_total": 250,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Powers, Dianne",
-          "donor_key": "POWERS DIANNE",
-          "amount_total": 250,
-          "contribution_count": 1,
+          "contribution_count": 2,
           "provenance": {
             "source": "rjkp-yttg",
             "join_method": "exact_unique_person_name_key"
@@ -12181,6 +12159,28 @@
           "type": "campaign_contribution",
           "donor_display": "Cerullo, Alfred",
           "donor_key": "CERULLO ALFRED",
+          "amount_total": 250,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Powers, Dianne",
+          "donor_key": "POWERS DIANNE",
+          "amount_total": 250,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Rooney, Kathryn",
+          "donor_key": "ROONEY KATHRYN",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -12256,17 +12256,6 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Seminara, Donna",
-          "donor_key": "SEMINARA DONNA",
-          "amount_total": 175,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
           "donor_display": "maese, john",
           "donor_key": "MAESE JOHN",
           "amount_total": 175,
@@ -12278,8 +12267,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Stillwell, Anne Marie",
-          "donor_key": "STILLWELL ANNE MARIE",
+          "donor_display": "Seminara, Donna",
+          "donor_key": "SEMINARA DONNA",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -12302,6 +12291,17 @@
           "type": "campaign_contribution",
           "donor_display": "Doggett, Jeffrey",
           "donor_key": "DOGGETT JEFFREY",
+          "amount_total": 175,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Stillwell, Anne Marie",
+          "donor_key": "STILLWELL ANNE MARIE",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -12353,8 +12353,8 @@
       "donors": [
         {
           "type": "campaign_contribution",
-          "donor_display": "Oliver, Michael",
-          "donor_key": "OLIVER MICHAEL",
+          "donor_display": "Gonzalez, Evelyn",
+          "donor_key": "GONZALEZ EVELYN",
           "amount_total": 1050,
           "contribution_count": 1,
           "provenance": {
@@ -12364,8 +12364,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Gonzalez, Evelyn",
-          "donor_key": "GONZALEZ EVELYN",
+          "donor_display": "Oliver, Michael",
+          "donor_key": "OLIVER MICHAEL",
           "amount_total": 1050,
           "contribution_count": 1,
           "provenance": {
@@ -12441,17 +12441,6 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Press, Robert",
-          "donor_key": "PRESS ROBERT",
-          "amount_total": 500,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
           "donor_display": "Bonizio, John",
           "donor_key": "BONIZIO JOHN",
           "amount_total": 500,
@@ -12465,6 +12454,17 @@
           "type": "campaign_contribution",
           "donor_display": "Bonizio, Mildred",
           "donor_key": "BONIZIO MILDRED",
+          "amount_total": 500,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Press, Robert",
+          "donor_key": "PRESS ROBERT",
           "amount_total": 500,
           "contribution_count": 1,
           "provenance": {
@@ -12551,10 +12551,10 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Vignali, Frank",
-          "donor_key": "VIGNALI FRANK",
+          "donor_display": "Hooks, Michael",
+          "donor_key": "HOOKS MICHAEL",
           "amount_total": 300,
-          "contribution_count": 1,
+          "contribution_count": 2,
           "provenance": {
             "source": "rjkp-yttg",
             "join_method": "exact_unique_person_name_key"
@@ -12562,10 +12562,10 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Hooks, Michael",
-          "donor_key": "HOOKS MICHAEL",
+          "donor_display": "Vignali, Frank",
+          "donor_key": "VIGNALI FRANK",
           "amount_total": 300,
-          "contribution_count": 2,
+          "contribution_count": 1,
           "provenance": {
             "source": "rjkp-yttg",
             "join_method": "exact_unique_person_name_key"
@@ -12586,50 +12586,6 @@
           "type": "campaign_contribution",
           "donor_display": "Freeman, James",
           "donor_key": "FREEMAN JAMES",
-          "amount_total": 250,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Rickman, Anna",
-          "donor_key": "RICKMAN ANNA",
-          "amount_total": 250,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Simone, Danielle",
-          "donor_key": "SIMONE DANIELLE",
-          "amount_total": 250,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Simone, Joanna",
-          "donor_key": "SIMONE JOANNA",
-          "amount_total": 250,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Simone, Patricia",
-          "donor_key": "SIMONE PATRICIA",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -12674,6 +12630,50 @@
           "type": "campaign_contribution",
           "donor_display": "Contillo, Michael",
           "donor_key": "CONTILLO MICHAEL",
+          "amount_total": 250,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Cosentino, Joseph",
+          "donor_key": "COSENTINO JOSEPH",
+          "amount_total": 250,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Friedman, Steve",
+          "donor_key": "FRIEDMAN STEVE",
+          "amount_total": 250,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Rickman, Anna",
+          "donor_key": "RICKMAN ANNA",
+          "amount_total": 250,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Simone, Danielle",
+          "donor_key": "SIMONE DANIELLE",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -13150,8 +13150,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Sergeants Benevolent Associati",
-          "donor_key": "SERGEANTS BENEVOLENT ASSOCIATI",
+          "donor_display": "Berman, Myron",
+          "donor_key": "BERMAN MYRON",
           "amount_total": 500,
           "contribution_count": 1,
           "provenance": {
@@ -13161,8 +13161,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Berman, Myron",
-          "donor_key": "BERMAN MYRON",
+          "donor_display": "Sergeants Benevolent Associati",
+          "donor_key": "SERGEANTS BENEVOLENT ASSOCIATI",
           "amount_total": 500,
           "contribution_count": 1,
           "provenance": {
@@ -13293,10 +13293,10 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Shea, John",
-          "donor_key": "SHEA JOHN",
+          "donor_display": "Isaacs, Daniel",
+          "donor_key": "ISAACS DANIEL",
           "amount_total": 250,
-          "contribution_count": 2,
+          "contribution_count": 1,
           "provenance": {
             "source": "rjkp-yttg",
             "join_method": "exact_unique_person_name_key"
@@ -13304,10 +13304,10 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Isaacs, Daniel",
-          "donor_key": "ISAACS DANIEL",
+          "donor_display": "Shea, John",
+          "donor_key": "SHEA JOHN",
           "amount_total": 250,
-          "contribution_count": 1,
+          "contribution_count": 2,
           "provenance": {
             "source": "rjkp-yttg",
             "join_method": "exact_unique_person_name_key"
@@ -13588,8 +13588,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Yang, Esther",
-          "donor_key": "YANG ESTHER",
+          "donor_display": "Bing, Jonathan",
+          "donor_key": "BING JONATHAN",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -13599,8 +13599,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Bing, Jonathan",
-          "donor_key": "BING JONATHAN",
+          "donor_display": "Yang, Esther",
+          "donor_key": "YANG ESTHER",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -14048,8 +14048,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Shorenstein, Stuart",
-          "donor_key": "SHORENSTEIN STUART",
+          "donor_display": "Frank, Daniel",
+          "donor_key": "FRANK DANIEL",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -14070,8 +14070,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Frank, Daniel",
-          "donor_key": "FRANK DANIEL",
+          "donor_display": "Shorenstein, Stuart",
+          "donor_key": "SHORENSTEIN STUART",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -14238,7 +14238,7 @@
       "person_name": "Shirley Aldebol",
       "official_id": "official:7896",
       "contribution_count": 501,
-      "contribution_total": 43015.15,
+      "contribution_total": 43090.15,
       "donors": [
         {
           "type": "campaign_contribution",
@@ -14275,8 +14275,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Nederlander, James L",
-          "donor_key": "NEDERLANDER JAMES L",
+          "donor_display": "Kempner, Michael",
+          "donor_key": "KEMPNER MICHAEL",
           "amount_total": 1050,
           "contribution_count": 1,
           "provenance": {
@@ -14286,8 +14286,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Kempner, Michael",
-          "donor_key": "KEMPNER MICHAEL",
+          "donor_display": "Nederlander, James L",
+          "donor_key": "NEDERLANDER JAMES L",
           "amount_total": 1050,
           "contribution_count": 1,
           "provenance": {
@@ -14407,17 +14407,6 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Lewis, Caitlin",
-          "donor_key": "LEWIS CAITLIN",
-          "amount_total": 350,
-          "contribution_count": 2,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
           "donor_display": "Bermas, Linda",
           "donor_key": "BERMAS LINDA",
           "amount_total": 300,
@@ -14453,6 +14442,17 @@
           "type": "campaign_contribution",
           "donor_display": "gjelaj, nikolla",
           "donor_key": "GJELAJ NIKOLLA",
+          "amount_total": 250,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Stonewall Democratic Club of N",
+          "donor_key": "STONEWALL DEMOCRATIC CLUB OF N",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -14539,10 +14539,10 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Nemorin, Dalourny",
-          "donor_key": "NEMORIN DALOURNY",
+          "donor_display": "Campbell, Hugh",
+          "donor_key": "CAMPBELL HUGH",
           "amount_total": 200,
-          "contribution_count": 2,
+          "contribution_count": 1,
           "provenance": {
             "source": "rjkp-yttg",
             "join_method": "exact_unique_person_name_key"
@@ -14550,10 +14550,10 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Campbell, Hugh",
-          "donor_key": "CAMPBELL HUGH",
+          "donor_display": "Nemorin, Dalourny",
+          "donor_key": "NEMORIN DALOURNY",
           "amount_total": 200,
-          "contribution_count": 1,
+          "contribution_count": 2,
           "provenance": {
             "source": "rjkp-yttg",
             "join_method": "exact_unique_person_name_key"
@@ -14576,8 +14576,8 @@
       "person_id": "7897",
       "person_name": "Justin E. Sanchez",
       "official_id": "official:7897",
-      "contribution_count": 139,
-      "contribution_total": 29567.12,
+      "contribution_count": 138,
+      "contribution_total": 29067.12,
       "donors": [
         {
           "type": "campaign_contribution",
@@ -14834,17 +14834,6 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Uniformed Fire Officers Assn.",
-          "donor_key": "UNIFORMED FIRE OFFICERS ASSN",
-          "amount_total": 500,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
           "donor_display": "IBEW New York PAC",
           "donor_key": "IBEW NEW YORK PAC",
           "amount_total": 350,
@@ -14889,6 +14878,17 @@
         },
         {
           "type": "campaign_contribution",
+          "donor_display": "Marte 2025",
+          "donor_key": "MARTE 2025",
+          "amount_total": 250,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
           "donor_display": "Van Bramer, James",
           "donor_key": "VAN BRAMER JAMES",
           "amount_total": 250,
@@ -14900,8 +14900,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Marte 2025",
-          "donor_key": "MARTE 2025",
+          "donor_display": "Giannoulis, Harry",
+          "donor_key": "GIANNOULIS HARRY",
           "amount_total": 250,
           "contribution_count": 1,
           "provenance": {
@@ -15008,28 +15008,6 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Murphy, Krista",
-          "donor_key": "MURPHY KRISTA",
-          "amount_total": 1050,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "O'Connor, Gavin",
-          "donor_key": "O CONNOR GAVIN",
-          "amount_total": 1050,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
           "donor_display": "Comella, Maria",
           "donor_key": "COMELLA MARIA",
           "amount_total": 1050,
@@ -15052,8 +15030,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Vargas, Miguel",
-          "donor_key": "VARGAS MIGUEL",
+          "donor_display": "Murphy, Krista",
+          "donor_key": "MURPHY KRISTA",
           "amount_total": 1050,
           "contribution_count": 1,
           "provenance": {
@@ -15063,19 +15041,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Sullivan, Katherine",
-          "donor_key": "SULLIVAN KATHERINE",
-          "amount_total": 1050,
-          "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Heller, Sandy",
-          "donor_key": "HELLER SANDY",
+          "donor_display": "O'Connor, Gavin",
+          "donor_key": "O CONNOR GAVIN",
           "amount_total": 1050,
           "contribution_count": 1,
           "provenance": {
@@ -15109,6 +15076,39 @@
           "type": "campaign_contribution",
           "donor_display": "Foley, Lawrence",
           "donor_key": "FOLEY LAWRENCE",
+          "amount_total": 1050,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Heller, Sandy",
+          "donor_key": "HELLER SANDY",
+          "amount_total": 1050,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Sullivan, Katherine",
+          "donor_key": "SULLIVAN KATHERINE",
+          "amount_total": 1050,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Vargas, Miguel",
+          "donor_key": "VARGAS MIGUEL",
           "amount_total": 1050,
           "contribution_count": 1,
           "provenance": {
@@ -15254,8 +15254,8 @@
       "person_id": "7900",
       "person_name": "Phil Wong",
       "official_id": "official:7900",
-      "contribution_count": 285,
-      "contribution_total": 31226,
+      "contribution_count": 283,
+      "contribution_total": 31026,
       "donors": [
         {
           "type": "campaign_contribution",
@@ -15369,17 +15369,6 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Moskowitz, Howard",
-          "donor_key": "MOSKOWITZ HOWARD",
-          "amount_total": 200,
-          "contribution_count": 2,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
           "donor_display": "Joseph, Segreti",
           "donor_key": "JOSEPH SEGRETI",
           "amount_total": 200,
@@ -15391,32 +15380,21 @@
         },
         {
           "type": "campaign_contribution",
+          "donor_display": "Moskowitz, Howard",
+          "donor_key": "MOSKOWITZ HOWARD",
+          "amount_total": 200,
+          "contribution_count": 2,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
           "donor_display": "Liu, Qing",
           "donor_key": "LIU QING",
           "amount_total": 200,
           "contribution_count": 1,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Chen, Chun Bin",
-          "donor_key": "CHEN CHUN BIN",
-          "amount_total": 200,
-          "contribution_count": 2,
-          "provenance": {
-            "source": "rjkp-yttg",
-            "join_method": "exact_unique_person_name_key"
-          }
-        },
-        {
-          "type": "campaign_contribution",
-          "donor_display": "Chen, Heng",
-          "donor_key": "CHEN HENG",
-          "amount_total": 200,
-          "contribution_count": 2,
           "provenance": {
             "source": "rjkp-yttg",
             "join_method": "exact_unique_person_name_key"
@@ -15490,8 +15468,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Yan, Xiaoming",
-          "donor_key": "YAN XIAOMING",
+          "donor_display": "Chen, David",
+          "donor_key": "CHEN DAVID",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -15512,8 +15490,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Chen, David",
-          "donor_key": "CHEN DAVID",
+          "donor_display": "Yan, Xiaoming",
+          "donor_key": "YAN XIAOMING",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -15545,8 +15523,8 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Wang, Tiancheng",
-          "donor_key": "WANG TIANCHENG",
+          "donor_display": "Lin, Yu zhen",
+          "donor_key": "LIN YU ZHEN",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -15567,8 +15545,19 @@
         },
         {
           "type": "campaign_contribution",
-          "donor_display": "Lin, Yu zhen",
-          "donor_key": "LIN YU ZHEN",
+          "donor_display": "Wang, Tiancheng",
+          "donor_key": "WANG TIANCHENG",
+          "amount_total": 175,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Haw, Karen",
+          "donor_key": "HAW KAREN",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -15580,6 +15569,17 @@
           "type": "campaign_contribution",
           "donor_display": "Wong, Kim Thai",
           "donor_key": "WONG KIM THAI",
+          "amount_total": 175,
+          "contribution_count": 1,
+          "provenance": {
+            "source": "rjkp-yttg",
+            "join_method": "exact_unique_person_name_key"
+          }
+        },
+        {
+          "type": "campaign_contribution",
+          "donor_display": "Chang, Connie",
+          "donor_key": "CHANG CONNIE",
           "amount_total": 175,
           "contribution_count": 1,
           "provenance": {
@@ -15935,5 +15935,8 @@
     "method": "exact_unique_person_name_key",
     "weak_joins_rendered": false,
     "materialization": "public_edges"
-  }
+  },
+  "checked_at": "2026-09-07T21:21:17.547Z",
+  "publisher_updated_at": "2025-12-19T15:24:13.000Z",
+  "content_fingerprint": "e91da7c89cd3ff4d24245dd3efc59798dcdab6d1d6335ae9776a719270fa440a"
 }

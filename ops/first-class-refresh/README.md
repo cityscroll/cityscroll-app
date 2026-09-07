@@ -95,6 +95,34 @@ merges.
 served read models and the keyword search index coherent with the refreshed
 data.
 
+## A publisher that is quiet by design
+
+Not every publisher files on a calendar. The Campaign Finance Board declares an
+"as needed" update frequency and can go months between filings, so a daily
+refresh that re-read its rows and restamped the artifact would open a pull
+request every morning to say nothing had happened.
+
+`site/data/official_cfb_influence_lookup.json` is refreshed the other way
+round. `tools/acquire_official_cfb_influence.mjs` asks the publisher for its own
+row clock first — Socrata reports `rowsUpdatedAt` for a dataset without
+transferring a row — and reads the rows only when that clock has moved past the
+one the retained artifact records. Repeated runs inside the declared cadence
+window rewrite nothing at all, so the artifact is byte-identical and there is
+nothing to commit.
+
+That makes the artifact's gating vintage a check clock rather than a
+publication clock. `checked_at` says when the publisher was last confirmed;
+`publisher_updated_at` says when the publisher last filed, and is carried for
+disclosure rather than for the gate. A dataset nobody is watching and a dataset
+whose publisher is simply quiet look identical from the publication clock
+alone, and only the first is a failure this repository can fix. The separate
+source-contract drift check still reports the publisher's silence against the
+contract's own 30-day limit.
+
+Adapt the same shape for any other "as needed" publisher: a cheap clock probe,
+a content fingerprint that excludes the stamps, and a cadence long enough that
+recording the check costs one small commit rather than a daily one.
+
 ## Committed read models are refreshed with their inputs
 
 Several read models are derived from the first-class datasets and committed to

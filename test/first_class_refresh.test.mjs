@@ -57,7 +57,17 @@ test("canonical registry covers every first-class Browse, primary-document, Now,
     "site/data/staffing_exams.json",
     "site/data/property_resident_snapshot.json",
     "site/data/money_default_open.json",
+    "site/data/official_cfb_influence_lookup.json",
   ]) assert.ok(declared.has(path), path);
+  // Every scheduled dataset states how it is acquired, which of its own fields
+  // dates it, and when it stops being servable. A dataset registered without
+  // one of those three is registered in name only.
+  for (const row of registry.first_class_artifacts) {
+    assert.ok(row.acquisition_command.length >= 2, `${row.id} must declare an acquisition command`);
+    assert.ok(row.vintage_fields.length, `${row.id} must declare a vintage field`);
+    assert.ok(row.warning_age_hours > 0, `${row.id} must declare a warning age`);
+    assert.ok(row.hard_maximum_age_hours >= row.warning_age_hours, `${row.id} must declare a hard maximum age`);
+  }
 });
 
 test("adding a first-class dataPath without cadence, builder, and maximum-age policy fails completeness", () => {
@@ -255,6 +265,41 @@ test("staffing-exams freshness is measured from the acquisition's own retrieval 
     write({ ...upstream, sources_retrieved_as_of: "2026-07-20" });
     const stale = buildFirstClassFreshnessReport({ first_class_artifacts: definitions }, { root, now });
     assert.equal(stale.surfaces[0].freshness_state, "stale");
+  });
+});
+
+test("official-cfb-influence freshness is measured from the scheduled check, not the publisher's own filing clock", async () => {
+  const registry = canonical();
+  const cfb = registry.first_class_artifacts.find((row) => row.id === "official-cfb-influence");
+  assert.deepEqual(cfb.vintage_fields, ["checked_at", "retrieved_at"]);
+  assert.deepEqual(cfb.acquisition_command, ["node", "tools/acquire_official_cfb_influence.mjs"]);
+  assert.equal(cfb.normal_refresh_cadence_hours, 168);
+
+  await withTempDir("official-cfb-influence", async (root) => {
+    const write = (value) => {
+      const target = join(root, cfb.public_artifact_path);
+      mkdirSync(dirname(target), { recursive: true });
+      writeFileSync(target, JSON.stringify(value));
+    };
+    const now = "2026-09-07T12:00:00.000Z";
+    const definitions = [cfb];
+    // The Campaign Finance Board has filed nothing since 2025-12-19 in every
+    // case below. A publisher that is quiet by design must not read as a
+    // dataset nobody is watching, so only the check clock varies.
+    const upstream = {
+      publisher_updated_at: "2025-12-19T15:24:13.000Z",
+      retrieved_at: "2026-09-01T00:00:00.000Z",
+      edge_count: 1398,
+    };
+
+    write({ ...upstream, checked_at: "2026-09-07T06:00:00.000Z" });
+    const fresh = buildFirstClassFreshnessReport({ first_class_artifacts: definitions }, { root, now });
+    assert.equal(fresh.surfaces[0].freshness_state, "fresh");
+    assert.equal(fresh.surfaces[0].source_vintage, "2026-09-07T06:00:00.000Z");
+
+    write({ ...upstream, checked_at: "2026-07-01T06:00:00.000Z" });
+    const unchecked = buildFirstClassFreshnessReport({ first_class_artifacts: definitions }, { root, now });
+    assert.equal(unchecked.surfaces[0].freshness_state, "stale");
   });
 });
 
