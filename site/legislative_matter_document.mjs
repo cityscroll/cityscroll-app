@@ -9,6 +9,7 @@ import {
   renderNodeProvenance,
   renderNodeSection,
 } from "./civic_document_chrome.mjs";
+import { councilLandMatterContext } from "./council_land_matter_links.mjs";
 import { renderLegalChangeSummary } from "./legal_change_edges.mjs";
 import { publishedMatterHref } from "./legislative_matter_availability.mjs";
 import { councilMatterFollowMarkup } from "./council_matter_watch.mjs";
@@ -148,7 +149,7 @@ function normalizeAppearance(raw = {}) {
   };
 }
 
-export function buildLegislativeMatterDocument(payload = {}, value = "78605") {
+export function buildLegislativeMatterDocument(payload = {}, value = "78605", { landLinks } = {}) {
   const id = numericMatterId(value);
   if (!id || payload?.schema !== "cityscroll.legislative_matter_lookup.v1") return null;
   const source = payload.matters?.[id];
@@ -192,6 +193,11 @@ export function buildLegislativeMatterDocument(payload = {}, value = "78605") {
     latest_official_action: latestAction,
     latest_deciding_body: latest.committee?.label || null,
     approval: approvalLanguage(latestAction),
+    // The land project this matter belongs to, when the accepted Council
+    // land-matter bridge joined it on an exact retained application number.
+    // Null for every matter it did not join, including one whose title merely
+    // resembles a project name.
+    land_project: councilLandMatterContext(id, landLinks ? { lookup: landLinks } : {}),
     appearances,
   };
 }
@@ -300,6 +306,50 @@ function appearanceMarkup(appearance) {
 }
 
 /**
+ * The land use project this matter belongs to, and the other Council matters
+ * filed under the same application.
+ *
+ * A resident reading one LU number has no way to see that three of them are one
+ * application until the page says so. The join is the application number both
+ * records already carry, so the copy names that number rather than implying the
+ * titles were compared. Nothing here is a project outcome: the recorded steps
+ * stay on the appearances below, and this section says plainly that a hearing or
+ * a layover is a step in the review.
+ *
+ * Nothing renders when the bridge did not join this matter. A matter whose title
+ * merely resembles a project name gets no section at all, which is the honest
+ * shape for an absent connection.
+ */
+function landProjectMarkup(view) {
+  const context = view.land_project;
+  if (!context?.project_href || !context.project_id) return "";
+  const projectLabel = context.project_name
+    ? `${context.project_name} (${context.project_id})`
+    : `Land use project ${context.project_id}`;
+  const projectLink = `<a href="${esc(context.project_href)}" data-council-land-project="${esc(context.project_id)}">${esc(projectLabel)}</a>`;
+  const application = context.join?.value
+    ? ` Both records name the same city application number, ${context.join.value}.`
+    : "";
+  const lead = `<p class="matter-land-project">This matter is part of the land use project ${projectLink}.${esc(application)}</p>`;
+  const companions = context.companions.filter((companion) => companion.href);
+  const companionList = companions.length
+    ? `<p class="node-muted matter-land-companion-note">${esc(`${spelled(companions.length).charAt(0).toUpperCase()}${spelled(companions.length).slice(1)} other Council matter${companions.length === 1 ? "" : "s"} name${companions.length === 1 ? "s" : ""} the same project application.`)}</p><ul class="node-record-list matter-land-companion-list">${companions.map((companion) => `<li><a href="${esc(companion.href)}" data-council-land-companion="${esc(companion.matter_id)}">${esc(companion.label)}</a>${companion.when ? ` <span class="node-muted">${esc(companion.when)}</span>` : ""}</li>`).join("")}</ul>`
+    : `<p class="node-muted matter-land-companion-note">No other Council matter in this materialization names the same project application.</p>`;
+  const limit = `<p class="node-muted matter-land-project-limit">The connection is the shared application number, not a match on the titles. A recorded hearing or layover is a step in the review, not a decision on the project.</p>`;
+  return renderNodeSection({
+    heading: "Land use project",
+    headingId: "matter-land-project",
+    body: `${lead}${companionList}${limit}`,
+    exportClass: "matter_land_project",
+    attrs: {
+      "data-council-land-project-id": context.project_id,
+      "data-council-land-companion-count": String(companions.length),
+      "data-council-land-decision": "false",
+    },
+  });
+}
+
+/**
  * What this history covers, said before the records themselves.
  *
  * A matter with one retained appearance and a matter whose last retained
@@ -379,6 +429,7 @@ export function renderLegislativeMatterDocument(view, { currentHref = "", legalC
   // claimed decision: it only renders when the appearances cluster densely
   // enough (CBICS-01 density rule), and it links back to the same evidence
   // as the detailed appearances below rather than restating identity.
+  const landProject = landProjectMarkup(view);
   const appearanceCalendar = renderMatterAppearanceCalendar(buildMatterAppearanceCalendarView(view, { today }));
   const appearanceSection = renderNodeSection({
     heading: "Observed appearances",
@@ -394,6 +445,9 @@ export function renderLegislativeMatterDocument(view, { currentHref = "", legalC
       matterSource ? { html: matterSource } : null,
       view.matter_ref ? `Publisher identity ${view.matter_ref}.` : null,
       view.generation_id ? `Published generation ${view.generation_id}.` : null,
+      view.land_project?.generated_at
+        ? `Land use project connections materialized at ${view.land_project.generated_at}.`
+        : null,
       ...labelRevisionItems(view),
       `Materialized at ${view.generated_at || "an unspecified source vintage"}.`,
     ].filter(Boolean),
@@ -401,5 +455,5 @@ export function renderLegislativeMatterDocument(view, { currentHref = "", legalC
   });
   const back = renderNodeBack({ href: "/browse/meetings/", label: "Browse meetings", currentHref });
   const legalChanges = renderLegalChangeSummary(legalChangeGraph);
-  return gateNodePageRender(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(view.matter_file || view.title)} · CityScroll</title><meta name="description" content="A source-backed City Council matter history with observed meetings, actions, votes, and official records."><link rel="canonical" href="https://cityscroll.org${esc(view.canonical_href)}"><meta property="og:url" content="https://cityscroll.org${esc(view.canonical_href)}">${renderCivicDocumentAssets("/")}<link rel="stylesheet" href="/compact_calendar.css">${renderCalendarEventPreviewScript("/")}</head><body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: "browse", surfaceClass: "matter-document-mast" })}<main id="main" class="node-document civic-object-document legislative-matter-document" data-node-document="1" data-civic-object-kind="legislative-matter" data-matter-id="${esc(view.id)}" data-subject-ref="${esc(view.ref)}" data-matter-ref="${esc(view.matter_ref || "")}" data-matter-generation="${esc(view.generation_id || "")}" data-matter-coverage="${esc(view.coverage_state || "")}"><div class="civic-object-hero">${back}<p class="node-kicker civic-object-kicker">New York City Council legislative matter</p><h1>${esc(view.title)}</h1>${identity}${currentAction}${coverage}${follow}<p class="civic-object-pivot">${matterSource}</p></div>${legalChanges}${appearanceCalendar}${appearanceSection}${provenance}</main>${renderNodeFooter()}</body></html>`);
+  return gateNodePageRender(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(view.matter_file || view.title)} · CityScroll</title><meta name="description" content="A source-backed City Council matter history with observed meetings, actions, votes, and official records."><link rel="canonical" href="https://cityscroll.org${esc(view.canonical_href)}"><meta property="og:url" content="https://cityscroll.org${esc(view.canonical_href)}">${renderCivicDocumentAssets("/")}<link rel="stylesheet" href="/compact_calendar.css">${renderCalendarEventPreviewScript("/")}</head><body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: "browse", surfaceClass: "matter-document-mast" })}<main id="main" class="node-document civic-object-document legislative-matter-document" data-node-document="1" data-civic-object-kind="legislative-matter" data-matter-id="${esc(view.id)}" data-subject-ref="${esc(view.ref)}" data-matter-ref="${esc(view.matter_ref || "")}" data-matter-generation="${esc(view.generation_id || "")}" data-matter-coverage="${esc(view.coverage_state || "")}"><div class="civic-object-hero">${back}<p class="node-kicker civic-object-kicker">New York City Council legislative matter</p><h1>${esc(view.title)}</h1>${identity}${currentAction}${coverage}${follow}<p class="civic-object-pivot">${matterSource}</p></div>${legalChanges}${landProject}${appearanceCalendar}${appearanceSection}${provenance}</main>${renderNodeFooter()}</body></html>`);
 }

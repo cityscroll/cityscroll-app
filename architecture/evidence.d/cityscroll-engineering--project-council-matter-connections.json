@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/project-council-matter-connections",
+  "status": "implemented",
+  "fingerprint": "project-council-matter-connections.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "council-land-matter-links-projection",
+      "path": "warehouse/lib/council_land_matter_links.mjs"
+    },
+    {
+      "id": "council-land-matter-links-builder",
+      "path": "tools/build_council_land_matter_links.mjs"
+    },
+    {
+      "id": "council-land-matter-links-artifact",
+      "path": "site/data/council_land_matter_links.json"
+    },
+    {
+      "id": "council-land-matter-links-read-model",
+      "path": "site/council_land_matter_links.mjs"
+    }
+  ]
+}

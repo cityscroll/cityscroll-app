@@ -1376,6 +1376,7 @@
     project_connections_group_applicant: 'Solicitado por',
     project_connections_group_parcels: 'Abarca parcelas',
     project_connections_group_meetings: 'Considerado por',
+    project_connections_group_council_matters: 'Asuntos del Concejo',
     project_connections_group_decisions: 'Decidido por',
     project_connections_group_notices: 'Avisos publicados relacionados',
     project_connections_group_mih: 'Vivienda inclusiva obligatoria',

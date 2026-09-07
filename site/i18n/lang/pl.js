@@ -1384,6 +1384,7 @@
     project_connections_group_applicant: 'Wnioskodawca',
     project_connections_group_parcels: 'Obejmuje działki',
     project_connections_group_meetings: 'Rozpatrywany przez',
+    project_connections_group_council_matters: 'Sprawy Rady Miasta',
     project_connections_group_decisions: 'Rozstrzygnięty przez',
     project_connections_group_notices: 'Powiązane opublikowane ogłoszenia',
     project_connections_group_mih: 'Obowiązkowe mieszkalnictwo włączające',

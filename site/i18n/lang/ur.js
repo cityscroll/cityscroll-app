@@ -1384,6 +1384,7 @@
     project_connections_group_applicant: 'درخواست گزار',
     project_connections_group_parcels: 'متعلقہ قطعے',
     project_connections_group_meetings: 'غور کرنے والے ادارے',
+    project_connections_group_council_matters: 'سٹی کونسل کے معاملات',
     project_connections_group_decisions: 'فیصلہ کرنے والے ادارے',
     project_connections_group_notices: 'متعلقہ شائع شدہ نوٹس',
     project_connections_group_mih: 'لازمی جامع رہائش',

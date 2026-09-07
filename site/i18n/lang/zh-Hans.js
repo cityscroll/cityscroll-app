@@ -1376,6 +1376,7 @@
     project_connections_group_applicant: '申请方',
     project_connections_group_parcels: '涉及地块',
     project_connections_group_meetings: '审议方',
+    project_connections_group_council_matters: '市议会事项',
     project_connections_group_decisions: '决定方',
     project_connections_group_notices: '相关已发布公告',
     project_connections_group_mih: '强制性包容性住房',

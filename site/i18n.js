@@ -2050,6 +2050,7 @@ const STRINGS = {
     project_connections_group_applicant: "Applied by",
     project_connections_group_parcels: "Touches parcels",
     project_connections_group_meetings: "Considered by",
+    project_connections_group_council_matters: "Council matters",
     project_connections_group_decisions: "Decided by",
     project_connections_group_notices: "Related published notices",
     project_connections_group_mih: "Mandatory Inclusionary Housing",

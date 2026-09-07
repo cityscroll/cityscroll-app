@@ -1384,6 +1384,7 @@
     project_connections_group_applicant: 'مقدم الطلب',
     project_connections_group_parcels: 'القطع التي يشملها',
     project_connections_group_meetings: 'الجهات التي نظرت فيه',
+    project_connections_group_council_matters: 'مسائل مجلس المدينة',
     project_connections_group_decisions: 'الجهات التي قررت بشأنه',
     project_connections_group_notices: 'الإعلانات المنشورة ذات الصلة',
     project_connections_group_mih: 'الإسكان الإلزامي الشامل',

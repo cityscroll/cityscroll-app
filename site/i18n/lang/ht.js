@@ -1375,6 +1375,7 @@
     project_connections_group_applicant: 'Moun ki aplike',
     project_connections_group_parcels: 'Tè li touche',
     project_connections_group_meetings: 'Kò ki egzamine li',
+    project_connections_group_council_matters: 'Zafè Konsèy Minisipal',
     project_connections_group_decisions: 'Kò ki deside li',
     project_connections_group_notices: 'Avi pibliye ki gen rapò',
     project_connections_group_mih: 'Lojman enklizif obligatwa',
