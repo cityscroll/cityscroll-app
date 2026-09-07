@@ -12,6 +12,14 @@
     {
       "id": "land-same-applicant-projects-tests",
       "path": "test/existing_connections_applicants.test.mjs"
+    },
+    {
+      "id": "land-same-applicant-projects-capture",
+      "path": "tools/capture_land_same_applicant_projects.py"
+    },
+    {
+      "id": "land-same-applicant-projects-capture-manifest",
+      "path": "docs/screenshots/land-same-applicant-projects/manifest.json"
     }
   ]
 }

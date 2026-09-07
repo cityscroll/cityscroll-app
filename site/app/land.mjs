@@ -111,30 +111,22 @@ function hydrateLandRecordLinks(record, selection){
   });
 }
 
-/* Other retained projects whose publisher-recorded applicant label is byte-for-byte
-   the one on this record. The grouping runs over the bounded project snapshot the
-   Land route has already loaded, so opening a project never fans out to a publisher. */
+/* Other retained projects whose published applicant label is byte-for-byte this
+   record's. Grouped over the bounded snapshot the route already loaded, so opening
+   a project adds no publisher request; the module owns the grouping and the copy. */
 let sameApplicantToolsPromise=null;
-function ensureSameApplicantTools(){
-  return sameApplicantToolsPromise ||= import("../land_same_applicant_projects.mjs").catch(()=>null);
-}
 async function paintSameApplicantProjects(detail,record,selection){
   const host=detail?.querySelector("#land-same-applicant-host");
   if(!host) return;
   const [tools,projects]=await Promise.all([
-    ensureSameApplicantTools(),
+    sameApplicantToolsPromise||=import("../land_same_applicant_projects.mjs").catch(()=>null),
     loadLandProjectsSnapshot().catch(()=>null),
   ]);
   if(!tools||selection!==landSelectionSeq||!host.isConnected) return;
-  // A snapshot that never arrived stays `null`, so the view reports it as
-  // unavailable rather than as an answered "no other projects".
-  host.innerHTML=tools.landSameApplicantProjectsHTML(tools.sameApplicantProjectsView({
-    projectId:record.project_id,
-    applicantLabel:record.primary_applicant,
-    rows:Array.isArray(projects)?projects:null,
-    vintage:landProjectsSnapshotVintage,
-    scope:"retained_land_project_snapshot",
-  }),{t,tn,escape:escUiHtml,formatDate:fdate});
+  host.innerHTML=tools.landSameApplicantProjectsSectionHTML(
+    {record,projects,vintage:landProjectsSnapshotVintage},
+    {t,tn,escape:escUiHtml,formatDate:fdate},
+  );
 }
 
 const ZAPBBL="https://data.cityofnewyork.us/resource/2iga-a6mk.json";

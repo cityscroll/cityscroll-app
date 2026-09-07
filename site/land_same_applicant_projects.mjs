@@ -221,3 +221,25 @@ export function landSameApplicantProjectsHTML(view, { t, tn, escape, formatDate 
     </details>
   </section>`;
 }
+
+/**
+ * The land renderer's single call site: one project record plus the bounded
+ * project rows the route already loaded, in and rendered markup out.
+ *
+ * The retained land corpus is never legitimately empty, so a rejected load and
+ * an empty merge both mean the input did not arrive. Both become `null` here,
+ * which keeps that an unavailable state rather than an answered "no other
+ * projects".
+ */
+export function landSameApplicantProjectsSectionHTML(
+  { record, projects, vintage } = {},
+  options = {},
+) {
+  return landSameApplicantProjectsHTML(sameApplicantProjectsView({
+    projectId: record?.project_id,
+    applicantLabel: record?.primary_applicant,
+    rows: Array.isArray(projects) && projects.length ? projects : null,
+    vintage,
+    scope: "retained_land_project_snapshot",
+  }), options);
+}
