@@ -17,6 +17,10 @@ import {
   parseWorkspace,
   reconcileArchitecture,
 } from "../tools/reconcile_architecture.mjs";
+import {
+  buildReleaseInfrastructureFacts,
+  verifyReleaseInfrastructureDocumentation,
+} from "../tools/release_infrastructure_facts.mjs";
 
 const modelText = readFileSync(new URL("../architecture/workspace.dsl", import.meta.url), "utf8");
 const residentReadPolicy = JSON.parse(readFileSync(
@@ -305,4 +309,40 @@ test("detects ADR status and supersession references", () => {
   const results = apparentSupersededAdrs([oldAdr, currentAdr, deprecatedAdr]);
   assert.ok(results.some((item) => item.path === oldAdr.path && item.superseded_by === currentAdr.path));
   assert.ok(results.some((item) => item.path === deprecatedAdr.path && item.status === "Superseded"));
+});
+
+test("architecture facts observe three cron triggers and no bound R2 source vault", () => {
+  // The generated architecture facts and the release/infrastructure reference
+  // read the same Wrangler configuration, so a schedule or binding cannot be
+  // true in one and false in the other.
+  const schedules = facts.crons.schedules.map((entry) => entry.schedule);
+  assert.deepEqual(schedules, ["0 8 * * *", "0 10 * * *", "0 13 * * *"]);
+  assert.equal(facts.bindings.environments.production.r2_buckets, null);
+  assert.equal(facts.bindings.environments.production.vars.SOURCE_VAULT_ENABLED.value, "false");
+
+  const release = buildReleaseInfrastructureFacts();
+  assert.deepEqual(release.crons.map((entry) => entry.schedule), schedules);
+  assert.deepEqual(
+    release.bindings.filter((binding) => binding.active).map((binding) => binding.name).sort(),
+    [
+      "ALERT_STATE",
+      "DB",
+      "DIGEST_QUEUE",
+      "FEEDBACK",
+      "NL_METER",
+      "RUM_ANALYTICS",
+      "SUBS",
+      "USAGE_ANALYTICS",
+      "queues.consumers:crol-digests",
+      "queues.consumers:crol-digests-dlq",
+    ],
+  );
+});
+
+test("the Worker release pipeline is automatic on a main push and manually re-runnable", () => {
+  const release = buildReleaseInfrastructureFacts();
+  const worker = release.pipelines["cloudflare-worker"];
+  assert.equal(worker.manual_only, false);
+  assert.deepEqual(worker.classifications, ["automatic_on_push", "manual_dispatch"]);
+  assert.deepEqual(verifyReleaseInfrastructureDocumentation().findings, []);
 });
