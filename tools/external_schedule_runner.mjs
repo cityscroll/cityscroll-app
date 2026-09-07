@@ -1132,6 +1132,10 @@ export function repairOutcomeFromExit(code, signal) {
   // make — a security-sensitive change, a destructive step, an ambiguous root
   // cause. That is the judgment boundary, not a retry.
   if (code === 2) return "judgment";
+  // 3 is the item, not the condition: the signature is not an identity this rail
+  // reads, so there is nothing to retry and nothing to decide. The queue retires
+  // it rather than parking it for a person to answer again tomorrow.
+  if (code === 3) return "unkeyable";
   return "failed";
 }
 

@@ -168,6 +168,7 @@ The loop runs entirely on the heartbeat this cycle already publishes.
 3. **The cycle leases up to three items** on the same heartbeat, spending one attempt each, and runs the dispatcher once per item with a ten-minute bound.
 4. **The dispatcher selects a committed playbook from the signature alone**, runs it, and verifies by re-running the monitor's own check for that one subject. Nothing a queue record carries is ever executed: the item reaches the dispatcher on stdin, and the registry — not the item — decides what runs.
 5. **What no playbook can close is reported as judgment**, which is the one outcome that mails the owner. Queueing, pickup, retry and a successful repair are all silent.
+6. **A record this rail cannot read is retired rather than parked.** A judgment is a question for a person, and it is asked again each day the condition lasts. A signature that is not in the form above is not a question: no playbook could match it, no retry would change that, and no day passing would make it readable. Those retire as `unkeyable` the first time the dispatcher sees them, silently, and the same signature is not queued a second time. The finding itself still reaches its reader through the alert and the issue it always did — what stops is a queue row that could only ever report the same thing.
 
 The slot ledger already accounts for every scheduled slot that passed, so the repair rail does not go looking for missed ones. Of the three ways a slot goes unsettled, only one is repairable: a slot that was attempted and threw recorded nothing and the ledger has already advanced past it, so no later cycle will retry it. A slot recorded as superseded or outside the catch-up window was skipped on purpose — these are monitors, a later observation subsumes an earlier one, and the newest outstanding slot ran in the same cycle — so queueing those would re-report the same present state and re-open the same issue, which is what the ledger exists to prevent. A missed-slot item therefore also carries no recovery scope: the ledger stops reporting the slot immediately, so a scope would close the item before anything could re-run it. It is closed by its own dispatch instead, which reports the slot repaired as soon as it has a recorded result.
 
@@ -179,6 +180,7 @@ The slot ledger already accounts for every scheduled slot that passed, so the re
 | --- | --- | --- |
 | `0` | `repaired` | A scripted remedy ran and the monitor's own check now passes. The item retires silently. |
 | `2` | `judgment` | Nothing deterministic can close it. The item parks at the judgment boundary and mails the owner once, with the summary saying what change or grant would close it. It reopens for one further attempt tomorrow if the condition is still there. |
+| `3` | `unkeyable` | The signature is not in the form above, so no playbook could ever match it. The item retires silently, and that signature is not queued again. |
 | anything else | `failed` | A remedy ran and did not work. The queue retries, up to three attempts, then parks it as judgment. |
 
 The last line the command writes to stdout is the sentence the cycle reports back, bounded to 400 characters and redacted on the way through.
@@ -219,6 +221,8 @@ A failure class with no deterministic local remedy is not given a playbook that 
 | `stats-snapshot-missing` | the daily snapshot did not publish, and the remedy is a change to the publication path in this repository |
 
 ### What judgment means for the operator
+
+`unkeyable` is the one outcome that is about the record rather than the condition, and it is why the signature form is a contract rather than a convention. Findings reach this queue from more than one producer, and a producer that keys on something else — free prose, a digest, a count that changes each time it is observed — writes rows the dispatcher can lease and can never act on. Parking those as judgment mails an owner a question with no answer, once a day, for as long as the record exists; retiring them says the true thing once and stops.
 
 A judgment is one mail, naming what failed, since when, how many attempts were made, what the attempt reported, and the run and receipt to look at. The queue then parks the item and stops retrying it for the rest of the day, so a condition firing every few minutes cannot spin the loop against work somebody has been asked to decide. If it is still happening tomorrow it gets one further bounded attempt, on the same rhythm the alert loop already uses to re-surface a finding that has not gone away.
 

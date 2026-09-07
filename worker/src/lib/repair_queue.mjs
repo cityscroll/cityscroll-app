@@ -53,8 +53,13 @@ export const REPAIR_STATES = Object.freeze([
  * it. It retires the item exactly as a repair does — and it is a separate word
  * from `repaired` on purpose, because an operator reading the queue has to be
  * able to tell a playbook that worked from a condition that went away.
+ *
+ * `unkeyable` is the fourth word, and it is about the ITEM rather than the
+ * condition: the dispatcher read the signature and it is not an identity this
+ * rail can key on, so no playbook could ever match it and no number of further
+ * attempts would change that. It retires too, for the reason below.
  */
-export const REPAIR_RESULT_OUTCOMES = Object.freeze(["repaired", "failed", "judgment", "recovered"]);
+export const REPAIR_RESULT_OUTCOMES = Object.freeze(["repaired", "failed", "judgment", "recovered", "unkeyable"]);
 
 // Alerts about the repair loop itself never re-enter the repair loop, or a
 // failed fix would queue a repair for its own failure notice.
@@ -294,6 +299,18 @@ export async function upsertRepairItem(env, input = {}, { now = new Date(), hear
     malformed = read.malformed;
   } catch { prior = null; }
 
+  // A signature the rail has already established it cannot key on does not come
+  // back. Every other retirement reopens on a repeat, because a repeat is fresh
+  // evidence that the CONDITION is still happening; this one is a fact about the
+  // IDENTITY, and a repeat says nothing new about it. Reopening it would put the
+  // same unrepairable row back in front of the same dispatcher on every cycle,
+  // which is the shape this outcome exists to end. The finding still reaches its
+  // reader through the alert and the issue it always did; it simply stops
+  // claiming a pickup that can only conclude the same thing again.
+  if (prior?.state === "repaired" && prior.result?.outcome === "unkeyable") {
+    return { ok: false, reason: "signature-not-repairable", item: prior, skipped: true };
+  }
+
   const pickup = repairPickupState(heartbeat, now);
   const lastSeen = lastSeenOf(input, now);
   const firstSeen = prior?.first_seen || isoOr(input.first_seen, lastSeen);
@@ -449,7 +466,7 @@ export async function completeRepairItem(env, report = {}, { now = new Date() } 
   }
   // A dispatcher reports only what it did. `recovered` is the monitor's word,
   // never a repair task's, so it is not accepted from this direction.
-  const outcome = ["repaired", "failed", "judgment"].includes(report.outcome) ? report.outcome : "failed";
+  const outcome = ["repaired", "failed", "judgment", "unkeyable"].includes(report.outcome) ? report.outcome : "failed";
   const result = {
     outcome,
     observed_at: now.toISOString(),
@@ -458,7 +475,13 @@ export async function completeRepairItem(env, report = {}, { now = new Date() } 
     receipt_url: sanitizeLink(report.receipt_url),
   };
   const retryable = outcome === "failed" && item.attempts < REPAIR_MAX_ATTEMPTS;
-  const state = outcome === "repaired" ? "repaired" : (retryable ? "queued" : "needs_judgment");
+  // An unkeyable item retires rather than parking at the judgment boundary. A
+  // park is an open question for a person, and it reopens once a day so the
+  // question is asked again while the condition lasts; "this identity is not one
+  // the rail reads" is not a question, and asking it daily is how an item nobody
+  // can act on outlives the condition that produced it.
+  const retire = outcome === "repaired" || outcome === "unkeyable";
+  const state = retire ? "repaired" : (retryable ? "queued" : "needs_judgment");
   const judgmentReason = state === "needs_judgment"
     ? sanitizeText(report.judgment_reason)
       || (outcome === "judgment"
@@ -473,7 +496,7 @@ export async function completeRepairItem(env, report = {}, { now = new Date() } 
     judgment_reason: judgmentReason,
     updated_at: now.toISOString(),
   });
-  await persistItem(env, next, { retire: state === "repaired" });
+  await persistItem(env, next, { retire });
   return {
     ok: true,
     reason: null,
