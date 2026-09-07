@@ -75,7 +75,7 @@ function observation(overrides = {}) {
 
 test("canonical contracts declare structured freshness and public/backstage health policy", () => {
   const registry = loadSourceContracts();
-  assert.equal(registry.contracts.length, 63);
+  assert.equal(registry.contracts.length, 64);
   assert.deepEqual(validateSourceContracts(registry), []);
   for (const source of registry.contracts) {
     assert.ok(source.freshness_contract, source.id);
@@ -427,7 +427,15 @@ test("committed ABO and checkbook-contracts observations carry real receipt cloc
   assert.equal(state.health.clocks.publisher_updated.state, "UNKNOWN");
   assert.equal(state.health.clocks.publisher_updated.at, null);
   const checkbook = projection.observations.find((row) => row.source_id === "checkbook-contracts");
-  assert.equal(checkbook.health.clocks.cityscroll_checked_acquired.at, "2026-08-18T04:05:51.552Z");
+  // The clock has to be the receipt's own, not a placeholder and not a literal
+  // pinned here: the receipt moves every time the source is re-acquired, and a
+  // pinned instant would make this assert the calendar instead of the wiring.
+  const checkbookReceipts = inputs.warehouseReceipts
+    .filter((row) => row.source_id === "checkbook-contracts" && row.observed_at)
+    .map((row) => row.observed_at)
+    .sort();
+  assert.ok(checkbookReceipts.length, "checkbook-contracts must have a dated warehouse receipt");
+  assert.equal(checkbook.health.clocks.cityscroll_checked_acquired.at, checkbookReceipts.at(-1));
 });
 
 test("ABO Worker KV weekly refresh and GET /externalaward are observed as the serve path", () => {

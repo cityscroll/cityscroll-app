@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.source_vintage_observations.v1",
-  "generated_at": "2026-09-06T07:20:20.822Z",
-  "contract_count": 63,
+  "generated_at": "2026-09-07T13:41:05.246Z",
+  "contract_count": 64,
   "observations": [
     {
       "source_id": "abo-local-authorities",
@@ -329,7 +329,7 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-08-18T04:05:51.552Z",
+        "retrieved_at": "2026-09-07T13:02:33.872Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
         "run_id": "warehouse/receipts/proof/checkbook_contracts_population_latest.json"
@@ -980,10 +980,10 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-08-31T15:25:44.983Z",
+        "retrieved_at": "2026-09-07T13:41:05.021Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "doing-business-entities:2026-08-31T15:25:44.983Z"
+        "run_id": "doing-business-entities:2026-09-07T13:41:05.021Z"
       },
       "expected_cadence": "Irregular Open Data refresh (resource Last-Modified 2025-11-21 at recon; metadata updates more often)",
       "expected_lag_tolerance_days": 400,
@@ -1710,6 +1710,37 @@
       },
       "expected_cadence": "Frequent (Open Data metadata)",
       "expected_lag_tolerance_days": 14,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "omb-community-board-budget-requests",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": "2026-06-30T00:00:00.000Z",
+      "publisher_last_update_basis": "warehouse_source_summary",
+      "cityscroll_retrieval": {
+        "status": "succeeded",
+        "retrieved_at": "2026-09-07T11:54:00.629Z",
+        "receipt_ref": null,
+        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
+        "run_id": "omb-community-board-budget-requests:2026-09-07T11:54:00.629Z"
+      },
+      "expected_cadence": "Two or three budget publications a fiscal year",
+      "expected_lag_tolerance_days": 240,
       "current_lag": {
         "value": null,
         "unit": null,

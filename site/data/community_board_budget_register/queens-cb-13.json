@@ -1,0 +1,2607 @@
+{
+  "schema": "cityscroll.community_board_budget_register_document.v1",
+  "method": "omb_register_full_tracking_code_within_cycle_v1",
+  "negative_rule": "A changed response text is a changed written answer and nothing else. It is not funding, a commitment, delivery, or completion, and no request is carried across fiscal cycles by a repeated priority number, a similar facility name, or matching request text.",
+  "board_id": "queens-cb-13",
+  "publications": {
+    "as_of": "2026-09-07",
+    "servable": [
+      "20260512",
+      "20260630"
+    ],
+    "diagnostic_only": [
+      "20270217"
+    ],
+    "latest": "20260630"
+  },
+  "request_count": 30,
+  "requests": [
+    {
+      "tracking_code": "413202701C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade a senior center",
+          "explanation": "Completion of funding for the renovation of the new building of Services Now for Adult Persons (SNAP) on Union Turnpike.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "254-16 Union Turnpike"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade a senior center",
+          "explanation": "Completion of funding for the renovation of the new building of Services Now for Adult Persons (SNAP) on Union Turnpike.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "254-16 Union Turnpike"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Renovate or upgrade a senior center",
+          "explanation": "Completion of funding for the renovation of the new building of Services Now for Adult Persons (SNAP) on Union Turnpike.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "254-16 Union Turnpike"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202701CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Gunn Playground needs its MPAA repaved and adjacent property purchased for park expansion. This is funded and just complted the design phase..",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "GUNN PLAYGROUND, Bellerose, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Gunn Playground needs its MPAA repaved and adjacent property purchased for park expansion. This is funded and just complted the design phase..",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "GUNN PLAYGROUND, Bellerose, NY, USA",
+            "postcode": "11427",
+            "latitude": "40.732451",
+            "longitude": "-73.731747",
+            "bin": "4000000",
+            "bbl": "4079550050",
+            "council_district": "23",
+            "census_tract": "1621",
+            "nta": "QN1302"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Gunn Playground needs its MPAA repaved and adjacent property purchased for park expansion. This is funded and just complted the design phase..",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "GUNN PLAYGROUND, Bellerose, NY, USA",
+            "postcode": "11427",
+            "latitude": "40.732451",
+            "longitude": "-73.731747",
+            "bin": "4000000",
+            "bbl": "4079550050",
+            "council_district": "23",
+            "census_tract": "1621",
+            "nta": "QN1302"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202701E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance educational and recreational programs",
+          "explanation": "Alpha Phi Alpha Senior Center - increase funding for this heavily used center.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance educational and recreational programs",
+          "explanation": "Alpha Phi Alpha Senior Center - increase funding for this heavily used center.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Enhance educational and recreational programs",
+          "explanation": "Alpha Phi Alpha Senior Center - increase funding for this heavily used center.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202702C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "There is a large contingent of dog owners in the district that have been requesting a \"Dog Run\" for many years. The Borough President has promised funding, and Parks Department is working with the community to find an appropriate site within Brookville Park.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "There is a large contingent of dog owners in the district that have been requesting a \"Dog Run\" for many years. The Borough President has promised funding, and Parks Department is working with the community to find an appropriate site within Brookville Park.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "There is a large contingent of dog owners in the district that have been requesting a \"Dog Run\" for many years. The Borough President has promised funding, and Parks Department is working with the community to find an appropriate site within Brookville Park.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202702CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve access to a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "This project is funded and just completed the design phase. We wholly support this important amenity to Idlewild Park.",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve access to a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "This project is funded and just completed the design phase. We wholly support this important amenity to Idlewild Park.",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Improve access to a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "This project is funded and just completed the design phase. We wholly support this important amenity to Idlewild Park.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202702E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance educational and recreational programs",
+          "explanation": "Services Now for Adult Persons (SNAP) needs increased funding for programming.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance educational and recreational programs",
+          "explanation": "Services Now for Adult Persons (SNAP) needs increased funding for programming.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Enhance educational and recreational programs",
+          "explanation": "Services Now for Adult Persons (SNAP) needs increased funding for programming.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202703C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "New equipment for maintenance",
+          "explanation": "Queens District 13 needs one or more of the following: Three (3) Gator Utility vehicles and one (1) Scissor Lift Trailor. This will allow our parks personnel to address the maintenance needs of the heavily used parks, especially Brookville and Springfield Parks.",
+          "response": "Available funds are insufficient for this project. We recommend this project be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "New equipment for maintenance",
+          "explanation": "Queens District 13 needs one or more of the following: Three (3) Gator Utility vehicles and one (1) Scissor Lift Trailor. This will allow our parks personnel to address the maintenance needs of the heavily used parks, especially Brookville and Springfield Parks.",
+          "response": "Available funds are insufficient for this project. We recommend this project be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "New equipment for maintenance",
+          "explanation": "Queens District 13 needs one or more of the following: Three (3) Gator Utility vehicles and one (1) Scissor Lift Trailor. This will allow our parks personnel to address the maintenance needs of the heavily used parks, especially Brookville and Springfield Parks.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202703E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Buildings",
+            "agency_id": "buildings",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Expand code enforcement",
+          "explanation": "More inspectors are needed to enforce building code violations; illegal construction; paved over yards, illegal conversions; work without permits; and unenclosed construction sites.",
+          "response": "The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "SpringGar Civic Association"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Buildings",
+            "agency_id": "buildings",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Expand code enforcement",
+          "explanation": "More inspectors are needed to enforce building code violations; illegal construction; paved over yards, illegal conversions; work without permits; and unenclosed construction sites.",
+          "response": "The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "SpringGar Civic Association"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Buildings",
+            "agency_id": "buildings",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "810",
+          "request": "Expand code enforcement",
+          "explanation": "More inspectors are needed to enforce building code violations; illegal construction; paved over yards, illegal conversions; work without permits; and unenclosed construction sites.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "SpringGar Civic Association"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202704C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DPR",
+          "explanation": "Breininger Park is heavily used but has not had a design upgrade, as most of the other parks in the district. QCB13 wants to direct attention to this park so residents of Bellerose may start to enjoy some of the innovations Parks has made in new designs to older playgrounds..",
+          "response": "Available funds are insufficient for this project. We recommend this project be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DPR",
+          "explanation": "Breininger Park is heavily used but has not had a design upgrade, as most of the other parks in the district. QCB13 wants to direct attention to this park so residents of Bellerose may start to enjoy some of the innovations Parks has made in new designs to older playgrounds..",
+          "response": "Available funds are insufficient for this project. We recommend this project be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Other capital budget request for DPR",
+          "explanation": "Breininger Park is heavily used but has not had a design upgrade, as most of the other parks in the district. QCB13 wants to direct attention to this park so residents of Bellerose may start to enjoy some of the innovations Parks has made in new designs to older playgrounds..",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202704E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other educational programs requests",
+          "explanation": "Elementary schools in Districts 26 & 29 are under-performing. After-school enrichment programming, along with mental health services, are needed so these students can perform at least at their grade level and be prepared to compete when they reach high school.",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other educational programs requests",
+          "explanation": "Elementary schools in Districts 26 & 29 are under-performing. After-school enrichment programming, along with mental health services, are needed so these students can perform at least at their grade level and be prepared to compete when they reach high school.",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Other educational programs requests",
+          "explanation": "Elementary schools in Districts 26 & 29 are under-performing. After-school enrichment programming, along with mental health services, are needed so these students can perform at least at their grade level and be prepared to compete when they reach high school.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202705C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "This newly renovated park has everything but restrooms. Without restrooms, patrons have no place relieve themselves - this creates a problem.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "This newly renovated park has everything but restrooms. Without restrooms, patrons have no place relieve themselves - this creates a problem.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "This newly renovated park has everything but restrooms. Without restrooms, patrons have no place relieve themselves - this creates a problem.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202705E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide better park maintenance",
+          "explanation": "QCB 13 has lots of parks, playgrounds, center medians and grassy areas that are the responsibility of this agency. Adequate numbers of workers need to be assigned during the warm weather months. Additionally, the heavily used parks need more presence from the \"PEP\" officers.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide better park maintenance",
+          "explanation": "QCB 13 has lots of parks, playgrounds, center medians and grassy areas that are the responsibility of this agency. Adequate numbers of workers need to be assigned during the warm weather months. Additionally, the heavily used parks need more presence from the \"PEP\" officers.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Provide better park maintenance",
+          "explanation": "QCB 13 has lots of parks, playgrounds, center medians and grassy areas that are the responsibility of this agency. Adequate numbers of workers need to be assigned during the warm weather months. Additionally, the heavily used parks need more presence from the \"PEP\" officers.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202706C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "Repave/upgrade 147 Avenue between Brookville Boulevard & 237 Street, Rosedale",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DOT will try to accommodate this request with existing resources as they become available.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "Repave/upgrade 147 Avenue between Brookville Boulevard & 237 Street, Rosedale",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DOT will try to accommodate this request with existing resources as they become available.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Reconstruct streets",
+          "explanation": "Repave/upgrade 147 Avenue between Brookville Boulevard & 237 Street, Rosedale",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202706E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DPR",
+          "explanation": "Additional contractors engaged to go along with the funding for the \"Tree & Sidewalk Program\" which repairs uplifted sidewalks resultant to tree roots.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DPR",
+          "explanation": "Additional contractors engaged to go along with the funding for the \"Tree & Sidewalk Program\" which repairs uplifted sidewalks resultant to tree roots.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Other expense budget request for DPR",
+          "explanation": "Additional contractors engaged to go along with the funding for the \"Tree & Sidewalk Program\" which repairs uplifted sidewalks resultant to tree roots.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202707C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "67 Avenue transverses a residential area with very few STOP signs. Consequently, it is an attractive street to speed on when traveling east/west in the Bellerose neighborhood. A speed camera at this location would deny speeding vehicles the opportunity to engage in this dangerous behavior.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: Not a capital budget request. Please log any requests in the webform here: https://www.nyc.gov/html/dot/html/contact/conta ct-form.shtml. DOT will seek to address with existing resources.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "67 Avenue transverses a residential area with very few STOP signs. Consequently, it is an attractive street to speed on when traveling east/west in the Bellerose neighborhood. A speed camera at this location would deny speeding vehicles the opportunity to engage in this dangerous behavior.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: Not a capital budget request. Please log any requests in the webform here: https://www.nyc.gov/html/dot/html/contact/conta ct-form.shtml. DOT will seek to address with existing resources.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "67 Avenue transverses a residential area with very few STOP signs. Consequently, it is an attractive street to speed on when traveling east/west in the Bellerose neighborhood. A speed camera at this location would deny speeding vehicles the opportunity to engage in this dangerous behavior.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202707E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "As \"Climate Change\" has increased the severity of storms, it has also increased the anxiety of our residents with swinging trees and tree branches. QCB13 receives a large number of calls with concern about damaged trees and overhanging tree branches. The contract for tree pruning needs to be increased before there is excessive property damage or personal injury.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "As \"Climate Change\" has increased the severity of storms, it has also increased the anxiety of our residents with swinging trees and tree branches. QCB13 receives a large number of calls with concern about damaged trees and overhanging tree branches. The contract for tree pruning needs to be increased before there is excessive property damage or personal injury.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "As \"Climate Change\" has increased the severity of storms, it has also increased the anxiety of our residents with swinging trees and tree branches. QCB13 receives a large number of calls with concern about damaged trees and overhanging tree branches. The contract for tree pruning needs to be increased before there is excessive property damage or personal injury.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202708C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Roadway maintenance (resurfacing, trench restoration, etc.)",
+          "explanation": "Repave bumpy roadway.",
+          "response": "OMB supports the agency's position as follows: The agency does not understand the request as written and requires more clarification. Explanation: Need more info regarding location - Please log any resurfacing requests in the webform here: https://www.nyc.gov/html/dot/html/contact/conta ct-form.shtml. DOT will seek to address with existing resources.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "North Shore Towers",
+            "Royal Ranch Civic Association"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Roadway maintenance (resurfacing, trench restoration, etc.)",
+          "explanation": "Repave bumpy roadway.",
+          "response": "OMB supports the agency's position as follows: The agency does not understand the request as written and requires more clarification. Explanation: Need more info regarding location - Please log any resurfacing requests in the webform here: https://www.nyc.gov/html/dot/html/contact/conta ct-form.shtml. DOT will seek to address with existing resources.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "North Shore Towers",
+            "Royal Ranch Civic Association"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Roadway maintenance (resurfacing, trench restoration, etc.)",
+          "explanation": "Repave bumpy roadway.",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "North Shore Towers",
+            "Royal Ranch Civic Association"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202708E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other cleaning requests",
+          "explanation": "QCB13 has main roads that have center medians. During the warm weather months, weeds grow and garbage/refuse is collected in the weeds. This is a terrible look for nice neighborhoods where residents are focused on keeping their streets clean and yards groomed.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency supports this request, but funding is not available at this time. DSNY will try to accommodate with existing resources where possible.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other cleaning requests",
+          "explanation": "QCB13 has main roads that have center medians. During the warm weather months, weeds grow and garbage/refuse is collected in the weeds. This is a terrible look for nice neighborhoods where residents are focused on keeping their streets clean and yards groomed.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency supports this request, but funding is not available at this time. DSNY will try to accommodate with existing resources where possible.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Other cleaning requests",
+          "explanation": "QCB13 has main roads that have center medians. During the warm weather months, weeds grow and garbage/refuse is collected in the weeds. This is a terrible look for nice neighborhoods where residents are focused on keeping their streets clean and yards groomed.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202709C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "Repair and reconstruct roadway",
+          "response": "OMB supports the agency's position as follows: The agency does not understand the request as written and requires more clarification. Explanation: Need more information regarding the location - Please log any resurfacing requests in the webform here: https://www.nyc.gov/html/dot/html/contact/conta ct-form.shtml. DOT will seek to address with existing resources.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Federated Blocks of Laurelton"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "Repair and reconstruct roadway",
+          "response": "OMB supports the agency's position as follows: The agency does not understand the request as written and requires more clarification. Explanation: Need more information regarding the location - Please log any resurfacing requests in the webform here: https://www.nyc.gov/html/dot/html/contact/conta ct-form.shtml. DOT will seek to address with existing resources.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Federated Blocks of Laurelton"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Reconstruct streets",
+          "explanation": "Repair and reconstruct roadway",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Federated Blocks of Laurelton"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202709E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase cleaning of dump-out/drop-off locations",
+          "explanation": "Community Board 13 is surrounded by highways. The grassy areas adjacent, and exit/entrance ramps collect garbage as vehicles constantly throw garbage out of their vehicles. The garbage builds up; we are requesting a big cleanup and maintenance going forward.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DSNY will try to accommodate using existing resources where possible.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase cleaning of dump-out/drop-off locations",
+          "explanation": "Community Board 13 is surrounded by highways. The grassy areas adjacent, and exit/entrance ramps collect garbage as vehicles constantly throw garbage out of their vehicles. The garbage builds up; we are requesting a big cleanup and maintenance going forward.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DSNY will try to accommodate using existing resources where possible.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Increase cleaning of dump-out/drop-off locations",
+          "explanation": "Community Board 13 is surrounded by highways. The grassy areas adjacent, and exit/entrance ramps collect garbage as vehicles constantly throw garbage out of their vehicles. The garbage builds up; we are requesting a big cleanup and maintenance going forward.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202710C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "Reconstruct & repave this heavily used portion of Brookville Boulevard",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DOT was awarded a grant to study feasible alternatives for the Snake Road section of Brookville Blvd as a long term capital project. For other segments please log any resurfacing requests in the webform here: https://www.nyc.gov/html/dot/html/contact/conta ct-form.shtml. DOT will seek to address with existing resources.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Rosedale Civic Association"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "Reconstruct & repave this heavily used portion of Brookville Boulevard",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DOT was awarded a grant to study feasible alternatives for the Snake Road section of Brookville Blvd as a long term capital project. For other segments please log any resurfacing requests in the webform here: https://www.nyc.gov/html/dot/html/contact/conta ct-form.shtml. DOT will seek to address with existing resources.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Rosedale Civic Association"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Reconstruct streets",
+          "explanation": "Reconstruct & repave this heavily used portion of Brookville Boulevard",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Rosedale Civic Association"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202710E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DOT",
+          "explanation": "Additional funding to have another DOT crew that can install speed humps - the most requested traffic mitigation by constituents",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DOT will continue to address issues using existing resources.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DOT",
+          "explanation": "Additional funding to have another DOT crew that can install speed humps - the most requested traffic mitigation by constituents",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DOT will continue to address issues using existing resources.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Other expense budget request for DOT",
+          "explanation": "Additional funding to have another DOT crew that can install speed humps - the most requested traffic mitigation by constituents",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202711C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other transportation infrastructure requests",
+          "explanation": "Upgrade Center Median curbs",
+          "response": "Sidewalks are the responsibility of the adjacent property owner. For curb repair, please submit specific locations to the Borough Commissioner for review. For Pedestrian Ramps, the Adopted Budget includes a Citywide allocation. Specific locations are determined by DOT.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other transportation infrastructure requests",
+          "explanation": "Upgrade Center Median curbs",
+          "response": "Agency supports and can accommodate Explanation: DOT will try to accommodate this request with existing resources as they become available.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Other transportation infrastructure requests",
+          "explanation": "Upgrade Center Median curbs",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202711E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other traffic improvement requests",
+          "explanation": "This intersection is not perpendicular and requires awkward movements to turn left both north and southbound on 222 Street to get on to Jamaica Avenue. Additionally, PS/IS 295 is one quarter block away with parents and school children crossing this intersection every school day. The MTA Bus Depot is two blocks away and there are numerous buses all day that need to make a left turn at this location.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DOT will continue to address issues using existing resources.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other traffic improvement requests",
+          "explanation": "This intersection is not perpendicular and requires awkward movements to turn left both north and southbound on 222 Street to get on to Jamaica Avenue. Additionally, PS/IS 295 is one quarter block away with parents and school children crossing this intersection every school day. The MTA Bus Depot is two blocks away and there are numerous buses all day that need to make a left turn at this location.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DOT will continue to address issues using existing resources.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Other traffic improvement requests",
+          "explanation": "This intersection is not perpendicular and requires awkward movements to turn left both north and southbound on 222 Street to get on to Jamaica Avenue. Additionally, PS/IS 295 is one quarter block away with parents and school children crossing this intersection every school day. The MTA Bus Depot is two blocks away and there are numerous buses all day that need to make a left turn at this location.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202712C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Roadway maintenance (resurfacing, trench restoration, etc.)",
+          "explanation": "Repave Roadway.",
+          "response": "OMB supports the agency's position as follows: The agency does not understand the request as written and requires more clarification. Explanation: Need more information regarding location - Please log any resurfacing requests in the webform here: https://www.nyc.gov/html/dot/html/contact/conta ct-form.shtml. DOT will seek to address with existing resources.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Federated Blocks of Laurelton"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Roadway maintenance (resurfacing, trench restoration, etc.)",
+          "explanation": "Repave Roadway.",
+          "response": "OMB supports the agency's position as follows: The agency does not understand the request as written and requires more clarification. Explanation: Need more information regarding location - Please log any resurfacing requests in the webform here: https://www.nyc.gov/html/dot/html/contact/conta ct-form.shtml. DOT will seek to address with existing resources.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Federated Blocks of Laurelton"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Roadway maintenance (resurfacing, trench restoration, etc.)",
+          "explanation": "Repave Roadway.",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Federated Blocks of Laurelton"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202712E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide additional ShotSpotter coverage",
+          "explanation": "243 Street is a vibrant commercial district in Rosedale. A NYPD Surveillance Camera would serve as a deterrent to any potential criminal activity in this area and would have the ability to document any criminal activity that took place.",
+          "response": "The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide additional ShotSpotter coverage",
+          "explanation": "243 Street is a vibrant commercial district in Rosedale. A NYPD Surveillance Camera would serve as a deterrent to any potential criminal activity in this area and would have the ability to document any criminal activity that took place.",
+          "response": "The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Provide additional ShotSpotter coverage",
+          "explanation": "243 Street is a vibrant commercial district in Rosedale. A NYPD Surveillance Camera would serve as a deterrent to any potential criminal activity in this area and would have the ability to document any criminal activity that took place.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202713C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or construct sidewalks, curbs, or pedestrian ramps",
+          "explanation": "The center median curb where people park is crumbling and presents a trip hazard that is dangerous for those getting into and out of their cars.",
+          "response": "Sidewalks are the responsibility of the adjacent property owner. For curb repair, please submit specific locations to the Borough Commissioner for review. For Pedestrian Ramps, the Adopted Budget includes a Citywide allocation. Specific locations are determined by DOT.",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Glen Oaks Village"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or construct sidewalks, curbs, or pedestrian ramps",
+          "explanation": "The center median curb where people park is crumbling and presents a trip hazard that is dangerous for those getting into and out of their cars.",
+          "response": "The agency does not understand the request as written and requires more clarification. Explanation: Require more information as to the location. Please log any requests in the webform here: https://www.nyc.gov/html/dot/html/contact/conta ct-form.shtml. DOT will seek to address with existing resources.",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Glen Oaks Village"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Repair or construct sidewalks, curbs, or pedestrian ramps",
+          "explanation": "The center median curb where people park is crumbling and presents a trip hazard that is dangerous for those getting into and out of their cars.",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Glen Oaks Village"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202714C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or construct sidewalks, curbs, or pedestrian ramps",
+          "explanation": "The center median needs curbing to protect the garden and irrigation system local residents have worked very hard to keep clean and beautify.",
+          "response": "Sidewalks are the responsibility of the adjacent property owner. For curb repair, please submit specific locations to the Borough Commissioner for review. For Pedestrian Ramps, the Adopted Budget includes a Citywide allocation. Specific locations are determined by DOT.",
+          "rank": {
+            "value": "09",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Federated Blocks of Laurelton"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or construct sidewalks, curbs, or pedestrian ramps",
+          "explanation": "The center median needs curbing to protect the garden and irrigation system local residents have worked very hard to keep clean and beautify.",
+          "response": "The agency does not understand the request as written and requires more clarification. Explanation: Need more info regarding location - Please log any requests in the webform here: https://www.nyc.gov/html/dot/html/contact/conta ct-form.shtml. DOT will seek to address with existing resources.",
+          "rank": {
+            "value": "09",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Federated Blocks of Laurelton"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Repair or construct sidewalks, curbs, or pedestrian ramps",
+          "explanation": "The center median needs curbing to protect the garden and irrigation system local residents have worked very hard to keep clean and beautify.",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "09",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Federated Blocks of Laurelton"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202715C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other transit infrastructure requests",
+          "explanation": "A bus shelter at the southbound stop at the western corner (in front of the Dollar Store) of Guy R. Brewer Boulevard (where it intersects with Farmers Boulevard). Four (4) buses stop at this location: Q3; Q111; Q113; Q114.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other transit infrastructure requests",
+          "explanation": "A bus shelter at the southbound stop at the western corner (in front of the Dollar Store) of Guy R. Brewer Boulevard (where it intersects with Farmers Boulevard). Four (4) buses stop at this location: Q3; Q111; Q113; Q114.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "998",
+          "request": "Other transit infrastructure requests",
+          "explanation": "A bus shelter at the southbound stop at the western corner (in front of the Dollar Store) of Guy R. Brewer Boulevard (where it intersects with Farmers Boulevard). Four (4) buses stop at this location: Q3; Q111; Q113; Q114.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "413202716C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-13",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "13",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other NYPD facilities and equipment requests",
+          "explanation": "Additional \"barnacles\" enable NYPD to have the resources to better enforce against illegal truck parking on residential streets in our communities.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other NYPD facilities and equipment requests",
+          "explanation": "Additional \"barnacles\" enable NYPD to have the resources to better enforce against illegal truck parking on residential streets in our communities.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Other NYPD facilities and equipment requests",
+          "explanation": "Additional \"barnacles\" enable NYPD to have the resources to better enforce against illegal truck parking on residential streets in our communities.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    }
+  ]
+}

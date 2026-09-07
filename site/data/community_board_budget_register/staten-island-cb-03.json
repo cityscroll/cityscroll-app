@@ -1,0 +1,776 @@
+{
+  "schema": "cityscroll.community_board_budget_register_document.v1",
+  "method": "omb_register_full_tracking_code_within_cycle_v1",
+  "negative_rule": "A changed response text is a changed written answer and nothing else. It is not funding, a commitment, delivery, or completion, and no request is carried across fiscal cycles by a repeated priority number, a similar facility name, or matching request text.",
+  "board_id": "staten-island-cb-03",
+  "publications": {
+    "as_of": "2026-09-07",
+    "servable": [
+      "20260512",
+      "20260630"
+    ],
+    "diagnostic_only": [
+      "20270217"
+    ],
+    "latest": "20260630"
+  },
+  "request_count": 9,
+  "requests": [
+    {
+      "tracking_code": "503202701C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-03",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "03",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Develop a capital project for specific street segments currently lacking sanitary sewers",
+          "explanation": "The first step in initiating any sewer project is to amend the Department of Environmental Protection's (DEP) drainage map. The following areas must be included: Kreischer Street, Androvette Street, Storer Avenue, Carlin Avenue, Winant Place, and several streets south of Hylan Boulevard between Chelsea Street and Sprague Avenue. The South Shore continues to experience worsening flooding due to insufficient stormwater management. Variations of existing stormwater practices , such as the Bluebelt program , have proven to be effective and cost-saving solutions. The utilization of existing ponds, natural streams, and wetlands must be incorporated into future designs. This area includes a mix of residential and thriving business properties, making proper stormwater planning essential to protect homes, support commerce, and reduce chronic flooding.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Complaint driven"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Develop a capital project for specific street segments currently lacking sanitary sewers",
+          "explanation": "The first step in initiating any sewer project is to amend the Department of Environmental Protection's (DEP) drainage map. The following areas must be included: Kreischer Street, Androvette Street, Storer Avenue, Carlin Avenue, Winant Place, and several streets south of Hylan Boulevard between Chelsea Street and Sprague Avenue. The South Shore continues to experience worsening flooding due to insufficient stormwater management. Variations of existing stormwater practices , such as the Bluebelt program , have proven to be effective and cost-saving solutions. The utilization of existing ponds, natural streams, and wetlands must be incorporated into future designs. This area includes a mix of residential and thriving business properties, making proper stormwater planning essential to protect homes, support commerce, and reduce chronic flooding.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Complaint driven"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "826",
+          "request": "Develop a capital project for specific street segments currently lacking sanitary sewers",
+          "explanation": "The first step in initiating any sewer project is to amend the Department of Environmental Protection's (DEP) drainage map. The following areas must be included: Kreischer Street, Androvette Street, Storer Avenue, Carlin Avenue, Winant Place, and several streets south of Hylan Boulevard between Chelsea Street and Sprague Avenue. The South Shore continues to experience worsening flooding due to insufficient stormwater management. Variations of existing stormwater practices , such as the Bluebelt program , have proven to be effective and cost-saving solutions. The utilization of existing ponds, natural streams, and wetlands must be incorporated into future designs. This area includes a mix of residential and thriving business properties, making proper stormwater planning essential to protect homes, support commerce, and reduce chronic flooding.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Complaint driven"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "503202701CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "staten-island-cb-03",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "03",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "Allocate funding for the reconstruction and widening of Huguenot Avenue between Rathbun Avenue and Drumgoole Road West. This primary north-south corridor connects the Korean War Veterans Parkway and the West Shore Expressway and is heavily used by MTA and school buses, commuters, and local traffic. It also serves as an important route to retail centers, schools, and houses of worship. Refer to: 503198309C",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: In 2019, this was estimated cost of $25M (HWRP2022); however, there are no funds to scope project at this time.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "Allocate funding for the reconstruction and widening of Huguenot Avenue between Rathbun Avenue and Drumgoole Road West. This primary north-south corridor connects the Korean War Veterans Parkway and the West Shore Expressway and is heavily used by MTA and school buses, commuters, and local traffic. It also serves as an important route to retail centers, schools, and houses of worship. Refer to: 503198309C",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: In 2019, this was estimated cost of $25M (HWRP2022); however, there are no funds to scope project at this time.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Reconstruct streets",
+          "explanation": "Allocate funding for the reconstruction and widening of Huguenot Avenue between Rathbun Avenue and Drumgoole Road West. This primary north-south corridor connects the Korean War Veterans Parkway and the West Shore Expressway and is heavily used by MTA and school buses, commuters, and local traffic. It also serves as an important route to retail centers, schools, and houses of worship. Refer to: 503198309C",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "503202701E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "staten-island-cb-03",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "03",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Allocate funds for outreach services to homebound older adults and for programs that allow the elderly to age in place",
+          "explanation": "The South Shore's growing senior population would greatly benefit from expanded programs and services that allow older adults to remain independent and engaged in their communities. Increased funding for senior centers is essential to support aging residents through meal and nutrition programs, health and wellness initiatives, counseling, and social and recreational activities. Programs that help older adults age safely in place , while staying connected to family, neighbors, and community life , are critical to maintaining quality of life and reducing isolation among Staten Island's seniors.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Allocate funds for outreach services to homebound older adults and for programs that allow the elderly to age in place",
+          "explanation": "The South Shore's growing senior population would greatly benefit from expanded programs and services that allow older adults to remain independent and engaged in their communities. Increased funding for senior centers is essential to support aging residents through meal and nutrition programs, health and wellness initiatives, counseling, and social and recreational activities. Programs that help older adults age safely in place , while staying connected to family, neighbors, and community life , are critical to maintaining quality of life and reducing isolation among Staten Island's seniors.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Allocate funds for outreach services to homebound older adults and for programs that allow the elderly to age in place",
+          "explanation": "The South Shore's growing senior population would greatly benefit from expanded programs and services that allow older adults to remain independent and engaged in their communities. Increased funding for senior centers is essential to support aging residents through meal and nutrition programs, health and wellness initiatives, counseling, and social and recreational activities. Programs that help older adults age safely in place , while staying connected to family, neighbors, and community life , are critical to maintaining quality of life and reducing isolation among Staten Island's seniors.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "503202702C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-03",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "03",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "A pump station is urgently needed in the Charleston/Richmond Valley area because of the existing topography and the required minimum sewer grades. As the South Shore continues to experience rapid commercial and residential growth, adequate sewer infrastructure is essential to support future development, protect existing investments, and prevent flooding. Refer to: 503199708C",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "A pump station is urgently needed in the Charleston/Richmond Valley area because of the existing topography and the required minimum sewer grades. As the South Shore continues to experience rapid commercial and residential growth, adequate sewer infrastructure is essential to support future development, protect existing investments, and prevent flooding. Refer to: 503199708C",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "826",
+          "request": "Other capital budget request for DEP",
+          "explanation": "A pump station is urgently needed in the Charleston/Richmond Valley area because of the existing topography and the required minimum sewer grades. As the South Shore continues to experience rapid commercial and residential growth, adequate sewer infrastructure is essential to support future development, protect existing investments, and prevent flooding. Refer to: 503199708C",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "503202702E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "staten-island-cb-03",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "03",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Despite repeated requests, funding for Street Tree Maintenance Programs remains insufficient, and conditions worsen each year. A proactive, real-time strategy is needed for storm-related downed tree removal, stump removal, and sidewalk repairs caused by root damage. Current maintenance practices are reactive and inadequate, creating hazardous conditions for residents and exposing the City to costly liability claims. Establishing a condition-based maintenance program would improve safety, reduce long-term costs, and ensure a more resilient urban environment.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Despite repeated requests, funding for Street Tree Maintenance Programs remains insufficient, and conditions worsen each year. A proactive, real-time strategy is needed for storm-related downed tree removal, stump removal, and sidewalk repairs caused by root damage. Current maintenance practices are reactive and inadequate, creating hazardous conditions for residents and exposing the City to costly liability claims. Establishing a condition-based maintenance program would improve safety, reduce long-term costs, and ensure a more resilient urban environment.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Despite repeated requests, funding for Street Tree Maintenance Programs remains insufficient, and conditions worsen each year. A proactive, real-time strategy is needed for storm-related downed tree removal, stump removal, and sidewalk repairs caused by root damage. Current maintenance practices are reactive and inadequate, creating hazardous conditions for residents and exposing the City to costly liability claims. Establishing a condition-based maintenance program would improve safety, reduce long-term costs, and ensure a more resilient urban environment.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "503202703C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-03",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "03",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Request storm sewer/basin intersection of Albourne & Levenar Avenue. Intersection of Albourne and Lenevar Avenue do not have storm sewers or catch basins. Storm water ponds and floods at this location.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Request storm sewer/basin intersection of Albourne & Levenar Avenue. Intersection of Albourne and Lenevar Avenue do not have storm sewers or catch basins. Storm water ponds and floods at this location.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "826",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Request storm sewer/basin intersection of Albourne & Levenar Avenue. Intersection of Albourne and Lenevar Avenue do not have storm sewers or catch basins. Storm water ponds and floods at this location.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "503202703E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "staten-island-cb-03",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "03",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase enforcement of illegal dumping laws",
+          "explanation": "Illegal dumping remains an ongoing challenge on Staten Island's South Shore and requires sustained, proactive enforcement. Increased funding is needed to expand the use of surveillance cameras in known dumping locations, a strategy that has proven effective in deterring repeat offenders and supporting successful enforcement actions. Consistent monitoring and stronger penalties will help protect our communities, preserve public spaces, and reduce the financial and environmental costs of illegal dumping.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency supports this request, but funding is not available at this time.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase enforcement of illegal dumping laws",
+          "explanation": "Illegal dumping remains an ongoing challenge on Staten Island's South Shore and requires sustained, proactive enforcement. Increased funding is needed to expand the use of surveillance cameras in known dumping locations, a strategy that has proven effective in deterring repeat offenders and supporting successful enforcement actions. Consistent monitoring and stronger penalties will help protect our communities, preserve public spaces, and reduce the financial and environmental costs of illegal dumping.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency supports this request, but funding is not available at this time.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Increase enforcement of illegal dumping laws",
+          "explanation": "Illegal dumping remains an ongoing challenge on Staten Island's South Shore and requires sustained, proactive enforcement. Increased funding is needed to expand the use of surveillance cameras in known dumping locations, a strategy that has proven effective in deterring repeat offenders and supporting successful enforcement actions. Consistent monitoring and stronger penalties will help protect our communities, preserve public spaces, and reduce the financial and environmental costs of illegal dumping.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "503202704C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-03",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "03",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "HWR1140C -Fund the reconstruction and widening of Arthur Kill Road between West Service Road (WSE) and Main Street (Phase III). This project was previously removed following the FY23 OMB response that it could not be funded, but current conditions now make it more critical than ever. Ongoing, large-scale commercial and industrial development along Arthur Kill Road has dramatically increased traffic congestion, raised safety concerns, and accelerated roadway deterioration. This corridor serves as a key connector for manufacturing zones in Rossville, Charleston, and Richmond Valley, supporting both local commerce and regional freight movement. With the unprecedented volume of new construction and expanded commercial activity, the existing roadway infrastructure is no longer sufficient. Reconstructing and widening Arthur Kill Road is essential to maintaining safe traffic flow, supporting continued economic growth, and ensuring the area remains functional for residents, workers, and businesses.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Referred to DDC",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "HWR1140C -Fund the reconstruction and widening of Arthur Kill Road between West Service Road (WSE) and Main Street (Phase III). This project was previously removed following the FY23 OMB response that it could not be funded, but current conditions now make it more critical than ever. Ongoing, large-scale commercial and industrial development along Arthur Kill Road has dramatically increased traffic congestion, raised safety concerns, and accelerated roadway deterioration. This corridor serves as a key connector for manufacturing zones in Rossville, Charleston, and Richmond Valley, supporting both local commerce and regional freight movement. With the unprecedented volume of new construction and expanded commercial activity, the existing roadway infrastructure is no longer sufficient. Reconstructing and widening Arthur Kill Road is essential to maintaining safe traffic flow, supporting continued economic growth, and ensuring the area remains functional for residents, workers, and businesses.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Referred to DDC",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Reconstruct streets",
+          "explanation": "HWR1140C -Fund the reconstruction and widening of Arthur Kill Road between West Service Road (WSE) and Main Street (Phase III). This project was previously removed following the FY23 OMB response that it could not be funded, but current conditions now make it more critical than ever. Ongoing, large-scale commercial and industrial development along Arthur Kill Road has dramatically increased traffic congestion, raised safety concerns, and accelerated roadway deterioration. This corridor serves as a key connector for manufacturing zones in Rossville, Charleston, and Richmond Valley, supporting both local commerce and regional freight movement. With the unprecedented volume of new construction and expanded commercial activity, the existing roadway infrastructure is no longer sufficient. Reconstructing and widening Arthur Kill Road is essential to maintaining safe traffic flow, supporting continued economic growth, and ensuring the area remains functional for residents, workers, and businesses.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "503202705C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-03",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "03",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new NYPD facility, such as a new precinct house or sub-precinct",
+          "explanation": "The 123rd Precinct is over 100 years old and no longer meets the operational or community needs of Staten Island's South Shore. Since its construction, the population within its boundaries has quadrupled, yet the facility has never been expanded. The building is severely overcrowded, with no adequate parking, workspace, or areas for officer wellness. These conditions contribute to high turnover and hinder effective policing. A modern precinct is essential to support public safety and strengthen community trust. The closed Outerbridge Park & Ride site offers an ideal location for a new facility. The City should pursue an agreement with NYS DOT to repurpose this property, providing officers and the public with a safe, functional, and welcoming space that reflects the needs of today's growing community.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new NYPD facility, such as a new precinct house or sub-precinct",
+          "explanation": "The 123rd Precinct is over 100 years old and no longer meets the operational or community needs of Staten Island's South Shore. Since its construction, the population within its boundaries has quadrupled, yet the facility has never been expanded. The building is severely overcrowded, with no adequate parking, workspace, or areas for officer wellness. These conditions contribute to high turnover and hinder effective policing. A modern precinct is essential to support public safety and strengthen community trust. The closed Outerbridge Park & Ride site offers an ideal location for a new facility. The City should pursue an agreement with NYS DOT to repurpose this property, providing officers and the public with a safe, functional, and welcoming space that reflects the needs of today's growing community.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Provide a new NYPD facility, such as a new precinct house or sub-precinct",
+          "explanation": "The 123rd Precinct is over 100 years old and no longer meets the operational or community needs of Staten Island's South Shore. Since its construction, the population within its boundaries has quadrupled, yet the facility has never been expanded. The building is severely overcrowded, with no adequate parking, workspace, or areas for officer wellness. These conditions contribute to high turnover and hinder effective policing. A modern precinct is essential to support public safety and strengthen community trust. The closed Outerbridge Park & Ride site offers an ideal location for a new facility. The City should pursue an agreement with NYS DOT to repurpose this property, providing officers and the public with a safe, functional, and welcoming space that reflects the needs of today's growing community.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    }
+  ]
+}

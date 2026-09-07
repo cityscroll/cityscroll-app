@@ -1,0 +1,2098 @@
+{
+  "schema": "cityscroll.community_board_budget_register_document.v1",
+  "method": "omb_register_full_tracking_code_within_cycle_v1",
+  "negative_rule": "A changed response text is a changed written answer and nothing else. It is not funding, a commitment, delivery, or completion, and no request is carried across fiscal cycles by a repeated priority number, a similar facility name, or matching request text.",
+  "board_id": "bronx-cb-02",
+  "publications": {
+    "as_of": "2026-09-07",
+    "servable": [
+      "20260512",
+      "20260630"
+    ],
+    "diagnostic_only": [
+      "20270217"
+    ],
+    "latest": "20260630"
+  },
+  "request_count": 25,
+  "requests": [
+    {
+      "tracking_code": "102202701C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Reconstruct North Brother Island and allow public access.",
+          "response": "This request is not recommended for funding.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Reconstruct North Brother Island and allow public access.",
+          "response": "This request is not recommended for funding.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Reconstruct North Brother Island and allow public access.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202701E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Clean catch basins",
+          "explanation": "Clean out catch basins to prevent improve drainage.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Clean catch basins",
+          "explanation": "Clean out catch basins to prevent improve drainage.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "826",
+          "request": "Clean catch basins",
+          "explanation": "Clean out catch basins to prevent improve drainage.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202702C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Install a permanent pool at Barretto Point Park.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Install a permanent pool at Barretto Point Park.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Install a permanent pool at Barretto Point Park.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202702E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Create proper outreach coordination with the District of vector surveillance schedule.",
+          "response": "Further investigation is required. Contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Create proper outreach coordination with the District of vector surveillance schedule.",
+          "response": "Further investigation is required. Contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Create proper outreach coordination with the District of vector surveillance schedule.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202703C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide new or increase number of sanitation trucks and other equipment",
+          "explanation": "Increase Snow removal equipment in District.",
+          "response": "Capital Funding was provided to implement a project that addresses this request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide new or increase number of sanitation trucks and other equipment",
+          "explanation": "Increase Snow removal equipment in District.",
+          "response": "Capital Funding was provided to implement a project that addresses this request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Provide new or increase number of sanitation trucks and other equipment",
+          "explanation": "Increase Snow removal equipment in District.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202703E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Plant more trees throughout the District including memorial trees.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Plant more trees throughout the District including memorial trees.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Plant more trees throughout the District including memorial trees.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202704C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Roadway maintenance (resurfacing, trench restoration, etc.)",
+          "explanation": "Resurface local streets on a yearly basis. The District has a high number of vehicles traveling everyday and the roads needs yearly resurfacing.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency can accommodate the request if the Community Board could provide additional information of roadways that need to be resurfaced in the district.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Roadway maintenance (resurfacing, trench restoration, etc.)",
+          "explanation": "Resurface local streets on a yearly basis. The District has a high number of vehicles traveling everyday and the roads needs yearly resurfacing.",
+          "response": "Further investigation is required. Contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Roadway maintenance (resurfacing, trench restoration, etc.)",
+          "explanation": "Resurface local streets on a yearly basis. The District has a high number of vehicles traveling everyday and the roads needs yearly resurfacing.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202704E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance park safety through more security staff (police or parks enforcement)",
+          "explanation": "The District can benefit with more Park Enforcement regarding illegal cooking, and during closure of certain Parks.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance park safety through more security staff (police or parks enforcement)",
+          "explanation": "The District can benefit with more Park Enforcement regarding illegal cooking, and during closure of certain Parks.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Enhance park safety through more security staff (police or parks enforcement)",
+          "explanation": "The District can benefit with more Park Enforcement regarding illegal cooking, and during closure of certain Parks.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202705C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "With the completion of new road construction, the District needs additional traffic signage.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency needs more information for this request. Can the Community Board provide a list of intersections to be studied for possible improvements.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "With the completion of new road construction, the District needs additional traffic signage.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency needs more information for this request. Can the Community Board provide a list of intersections to be studied for possible improvements.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "With the completion of new road construction, the District needs additional traffic signage.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202705E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase enforcement of illegal dumping laws",
+          "explanation": "Increase cameras throughout the Industrial Business Zone to enforce illegal dumping.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase enforcement of illegal dumping laws",
+          "explanation": "Increase cameras throughout the Industrial Business Zone to enforce illegal dumping.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Increase enforcement of illegal dumping laws",
+          "explanation": "Increase cameras throughout the Industrial Business Zone to enforce illegal dumping.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202706C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Fire Department",
+            "agency_id": "fire-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide new facilities such as a firehouse or EMS station",
+          "explanation": "The District can benefit from a new EMS Station.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FDNY is supportive of this request in concept, however the priority remains the maintenance/upkeep of existing facilities. FDNY assesses operational needs on a regular basis and will accommodate needs as best able within existing budget",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Fire Department",
+            "agency_id": "fire-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide new facilities such as a firehouse or EMS station",
+          "explanation": "The District can benefit from a new EMS Station.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FDNY is supportive of this request in concept, however the priority remains the maintenance/upkeep of existing facilities. FDNY assesses operational needs on a regular basis and will accommodate needs as best able within existing budget",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Fire Department",
+            "agency_id": "fire-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "057",
+          "request": "Provide new facilities such as a firehouse or EMS station",
+          "explanation": "The District can benefit from a new EMS Station.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202706E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Conduct BID Feasibility Analysis or support BID Formation Planning for a selected commercial district",
+          "explanation": "The District's Business Improvement District (BID) can greatly benefit in expanding the corridor and would need additional funding.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Conduct BID Feasibility Analysis or support BID Formation Planning for a selected commercial district",
+          "explanation": "The District's Business Improvement District (BID) can greatly benefit in expanding the corridor and would need additional funding.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "801",
+          "request": "Conduct BID Feasibility Analysis or support BID Formation Planning for a selected commercial district",
+          "explanation": "The District's Business Improvement District (BID) can greatly benefit in expanding the corridor and would need additional funding.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202707C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more housing for extremely low and low income households",
+          "explanation": "There is a need for affordable housing for single low income and middle income individuals.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: HPD finances and supports different types of projects. Many projects are 100% affordable, and a portion of those units are ELI/VLI. Some projects contain a majority of ELI/VLI units. While HPD is breaking affordable housing production records, there is more work to be done. HPD will continue to maximize the use of subsidy and Low Income Housing Tax Credits (LIHTC) to projects in our development pipeline throughout the Five Boroughs, including those serving Very Low Income (VLI) and Extremely Low Income (ELI) populations.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more housing for extremely low and low income households",
+          "explanation": "There is a need for affordable housing for single low income and middle income individuals.",
+          "response": "The Adopted Budget includes a city-wide allocation for this work. Specific locations are determined by the Agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "806",
+          "request": "Provide more housing for extremely low and low income households",
+          "explanation": "There is a need for affordable housing for single low income and middle income individuals.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202707E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide or expand occupational skills training programs",
+          "explanation": "Provide job training for local residents for local jobs. The District benefits from an Industrial Business Zone and training should reflect opportunities from the iBZ.",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide or expand occupational skills training programs",
+          "explanation": "Provide job training for local residents for local jobs. The District benefits from an Industrial Business Zone and training should reflect opportunities from the iBZ.",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "801",
+          "request": "Provide or expand occupational skills training programs",
+          "explanation": "Provide job training for local residents for local jobs. The District benefits from an Industrial Business Zone and training should reflect opportunities from the iBZ.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202708C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for HPD",
+          "explanation": "The District can benefit from Affordable Home Ownership subsidies from HPD.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: HPD will continue to fund affordable home ownership opportunities through an expanding HomeFirst Initiative and the OpenDoor project pipeline.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for HPD",
+          "explanation": "The District can benefit from Affordable Home Ownership subsidies from HPD.",
+          "response": "The Executive Budget includes a city-wide allocation for this work. Specific locations are determined by the Agency.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "806",
+          "request": "Other capital budget request for HPD",
+          "explanation": "The District can benefit from Affordable Home Ownership subsidies from HPD.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202708E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve parking operations",
+          "explanation": "Improve overall parking. The District is losing parking due to traffic pedestrian safety improvements. The District needs to replenish the loss parking spaces.",
+          "response": "OMB supports the agency's position as follows: The agency does not understand the request as written and requires more clarification. Explanation: More information is needed to properly address this concern.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve parking operations",
+          "explanation": "Improve overall parking. The District is losing parking due to traffic pedestrian safety improvements. The District needs to replenish the loss parking spaces.",
+          "response": "OMB supports the agency's position as follows: The agency does not understand the request as written and requires more clarification. Explanation: More information is needed to properly address this concern.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Improve parking operations",
+          "explanation": "Improve overall parking. The District is losing parking due to traffic pedestrian safety improvements. The District needs to replenish the loss parking spaces.",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202709C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other transit infrastructure requests",
+          "explanation": "Create a water ferry station at the former DOC barge location.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other transit infrastructure requests",
+          "explanation": "Create a water ferry station at the former DOC barge location.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "998",
+          "request": "Other transit infrastructure requests",
+          "explanation": "Create a water ferry station at the former DOC barge location.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202709E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance Cornerstone and Beacon programs (all ages, including young adults)",
+          "explanation": "Create more After-School programing to decrease at-risk engagement and promote social growth.",
+          "response": "This request has already been completed. Explanation: DYCD has begun a three-year, 20,000 seat expansion of the COMPASS afterschool program.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance Cornerstone and Beacon programs (all ages, including young adults)",
+          "explanation": "Create more After-School programing to decrease at-risk engagement and promote social growth.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DYCD has begun a three-year, 20,000 seat expansion of the COMPASS afterschool program.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "260",
+          "request": "Provide, expand, or enhance Cornerstone and Beacon programs (all ages, including young adults)",
+          "explanation": "Create more After-School programing to decrease at-risk engagement and promote social growth.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202710C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide surveillance (Argus) cameras",
+          "explanation": "Increase Argus cameras throughout the District, including Parks in the District.",
+          "response": "Agency supports but cannot accommodate Explanation: Argus cameras are funded via allocations from elected officials for use within their districts. Specific location recommendations should be provided to the local precinct commander for submission to the Information Technology Bureau once funding is allocated. The NYPD will attempt to accommodate specific location requests whenever funding is provided, but reserves the right to place cameras as appropriate due to current crime trends and operational needs.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide surveillance (Argus) cameras",
+          "explanation": "Increase Argus cameras throughout the District, including Parks in the District.",
+          "response": "Agency supports but cannot accommodate Explanation: Argus cameras are funded via allocations from elected officials for use within their districts. Specific location recommendations should be provided to the local precinct commander for submission to the Information Technology Bureau once funding is allocated. The NYPD will attempt to accommodate specific location requests whenever funding is provided, but reserves the right to place cameras as appropriate due to current crime trends and operational needs.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Provide surveillance (Argus) cameras",
+          "explanation": "Increase Argus cameras throughout the District, including Parks in the District.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202710E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance programs for housing inspections to correct code violations",
+          "explanation": "Provide more oversight to Management Companies who have multiple violations in certain buildings.",
+          "response": "This is not a budget request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance programs for housing inspections to correct code violations",
+          "explanation": "Provide more oversight to Management Companies who have multiple violations in certain buildings.",
+          "response": "This is not a budget request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "806",
+          "request": "Provide, expand, or enhance programs for housing inspections to correct code violations",
+          "explanation": "Provide more oversight to Management Companies who have multiple violations in certain buildings.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202711C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Increase seating capacity in the community board so students won't need to travel via public transportation to attend class.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Community Board located in sub-districts without identified seat need.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Increase seating capacity in the community board so students won't need to travel via public transportation to attend class.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Community Board located in sub-districts without identified seat need.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Increase seating capacity in the community board so students won't need to travel via public transportation to attend class.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202711E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other request for services for vulnerable New Yorkers",
+          "explanation": "The District can benefit from more services providing resources. The District is one of the highest not only in the Bronx, but throughout the City in terms of Obesity, Diabetes and Hypertension. Social and Economic conditions, we rank the as one of the highest in poverty and school absenteeism.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: The Agency serves more than 3 million low-income New Yorkers through a broad range of programs to address poverty and income inequality and prevent homelessness. Defer to DOHMH regarding health disparities and DOE regarding school absenteeism.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other request for services for vulnerable New Yorkers",
+          "explanation": "The District can benefit from more services providing resources. The District is one of the highest not only in the Bronx, but throughout the City in terms of Obesity, Diabetes and Hypertension. Social and Economic conditions, we rank the as one of the highest in poverty and school absenteeism.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: The Agency serves more than 3 million low-income New Yorkers through a broad range of programs to address poverty and income inequality and prevent homelessness. Defer to DOHMH regarding health disparities and DOE regarding school absenteeism.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "096",
+          "request": "Other request for services for vulnerable New Yorkers",
+          "explanation": "The District can benefit from more services providing resources. The District is one of the highest not only in the Bronx, but throughout the City in terms of Obesity, Diabetes and Hypertension. Social and Economic conditions, we rank the as one of the highest in poverty and school absenteeism.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202712E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Hire additional traffic enforcement agents",
+          "explanation": "Increase the 41st precinct's funds for enhanced personnel throughout the entire district due to the increase in foot traffic and vehicle traffic. - Increase funds for enhanced school safety personnel - Increase Park Enforcement Patrol Agents Within Community District #2 (Every community board should have its own deployment unit: 1 Sgt. and 6-8 Officers)",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Hire additional traffic enforcement agents",
+          "explanation": "Increase the 41st precinct's funds for enhanced personnel throughout the entire district due to the increase in foot traffic and vehicle traffic. - Increase funds for enhanced school safety personnel - Increase Park Enforcement Patrol Agents Within Community District #2 (Every community board should have its own deployment unit: 1 Sgt. and 6-8 Officers)",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Hire additional traffic enforcement agents",
+          "explanation": "Increase the 41st precinct's funds for enhanced personnel throughout the entire district due to the increase in foot traffic and vehicle traffic. - Increase funds for enhanced school safety personnel - Increase Park Enforcement Patrol Agents Within Community District #2 (Every community board should have its own deployment unit: 1 Sgt. and 6-8 Officers)",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202713E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Extend library hours, expand library programs, and enhance library collections",
+          "explanation": "The District Public Library can benefit with more programs to offer the influx of residents.",
+          "response": "Further study by the agency of this request is needed. After agency review, if approved, agency will accommodate this request within existing resources.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Extend library hours, expand library programs, and enhance library collections",
+          "explanation": "The District Public Library can benefit with more programs to offer the influx of residents.",
+          "response": "Further study by the agency of this request is needed. After agency review, if approved, agency will accommodate this request within existing resources.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "037",
+          "request": "Extend library hours, expand library programs, and enhance library collections",
+          "explanation": "The District Public Library can benefit with more programs to offer the influx of residents.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "102202714E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-02",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "02",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other community board facilities and staff requests",
+          "explanation": "Increase the Operations Budget for Community Boards.",
+          "response": "As of the FY 2027 Executive Budget, each Community Board's budget is being maintained.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other community board facilities and staff requests",
+          "explanation": "Increase the Operations Budget for Community Boards.",
+          "response": "As of the FY 2027 Adopted Budget, each Community Board's budget is being maintained.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "002",
+          "request": "Other community board facilities and staff requests",
+          "explanation": "Increase the Operations Budget for Community Boards.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/community-board-budget-register",
+  "status": "implemented",
+  "fingerprint": "community-board-budget-register.v1",
+  "updated_at": "2026-09-07T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "community-board-budget-register-read-model",
+      "path": "warehouse/lib/community_board_budget_register.mjs"
+    },
+    {
+      "id": "community-board-budget-register-acquisition",
+      "path": "tools/acquire_community_board_budget_register.mjs"
+    },
+    {
+      "id": "community-board-budget-register-materializer",
+      "path": "tools/build_community_board_budget_register.mjs"
+    }
+  ]
+}

@@ -1,0 +1,3678 @@
+{
+  "schema": "cityscroll.community_board_budget_register_document.v1",
+  "method": "omb_register_full_tracking_code_within_cycle_v1",
+  "negative_rule": "A changed response text is a changed written answer and nothing else. It is not funding, a commitment, delivery, or completion, and no request is carried across fiscal cycles by a repeated priority number, a similar facility name, or matching request text.",
+  "board_id": "staten-island-cb-01",
+  "publications": {
+    "as_of": "2026-09-07",
+    "servable": [
+      "20260512",
+      "20260630"
+    ],
+    "diagnostic_only": [
+      "20270217"
+    ],
+    "latest": "20260630"
+  },
+  "request_count": 44,
+  "requests": [
+    {
+      "tracking_code": "501202701C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DCAS",
+          "explanation": "Place exterior cameras on all City buildings. - For public safety.",
+          "response": "Agency supports but cannot accommodate Explanation: DCAS is actively implementing CCTV systems in our buildings and going through the list as fast as we an. We currently have a CP that has been pending OMB approval and working with them to get it approved so that we can move through our list.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DCAS",
+          "explanation": "Place exterior cameras on all City buildings. - For public safety.",
+          "response": "Agency supports but cannot accommodate Explanation: DCAS is actively implementing CCTV systems in our buildings and going through the list as fast as we an. We currently have a CP that has been pending OMB approval and working with them to get it approved so that we can move through our list.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "856",
+          "request": "Other capital budget request for DCAS",
+          "explanation": "Place exterior cameras on all City buildings. - For public safety.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202701CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "Increase lighting on Bay Street from Clifton Avenue to School Road",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Through a prior Community Budget Request excercise, this request has been approved under our normal scope of work. No capital funding is necessary. Additional lighting will be installed when scheduling permits. Kindly reach out to the Staten Island Borough Commissioner's Office for additional details. Thank you.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "Increase lighting on Bay Street from Clifton Avenue to School Road",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Through a prior Community Budget Request excercise, this request has been approved under our normal scope of work. No capital funding is necessary. Additional lighting will be installed when scheduling permits. Kindly reach out to the Staten Island Borough Commissioner's Office for additional details. Thank you.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Repair or provide new street lights",
+          "explanation": "Increase lighting on Bay Street from Clifton Avenue to School Road",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202701E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Administration for Children's Services",
+            "agency_id": "administration-for-childrens-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance preventive services and community based alternatives for youth",
+          "explanation": "Provide, expand, or enhance preventive services and community based alternatives for youth - provide sufficient funding for youth development and delinquency prevention programs.",
+          "response": "This request has already been completed. Explanation: We appreciate this question and agreed that these programs needed to be expanded due to the large take up by youth. This past year, we invested $163 million in the youth safety and success initiative, for you youth in and transitioning out of foster care and services to help prevent justice involvement. This initiative expands 4 programs and creates one new one: Fair Futures: This first-of-its-kind program already serves more than 4,000 young people by connecting youth in foster care and the juvenile justice system between the ages of 11-26 with tutoring and coaching to build life skills, set academic and career goals and more. This investment will allow an additional 2,000 youth to be served. College Choice: Established in 2022, this program offers college tuition, room and board assistance, individualized support and stipends for young people in foster care. The program had more than 400 students in the fall of 2024 and with this funding can serve over 500 students. Career Choice/Workforce Ready: This new program builds off the success of College Choice and connects young people in foster care who do not go to a two or four-year college but are participating in vocational and job readiness training with financial and social support as vocational and job readiness training. This funding will also allow for an expansion to DYCD’s Advance and Earn program. (40 slots which equate to 80 youth via expansion of DYCD’s Advance and Earn Program & 232 stipends for eligible youth) • Girls JustUs: A highly-successful gender-responsive juvenile justice diversion program that currently operates in Brooklyn will now be expanded to Queens and the Bronx. (24 additional girls will be served via this expansion) • Assertive Community Engagement and Success (ACES): A program that provides evidence-based services to high-risk youth who have been involved with the justice system. The program provides social pathways away from gang and gun violence to young people between the ages of 16-24. This program beginning in FY 27, will now be expanded city wide and will allow over 400 more young people to take part each year.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Administration for Children's Services",
+            "agency_id": "administration-for-childrens-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance preventive services and community based alternatives for youth",
+          "explanation": "Provide, expand, or enhance preventive services and community based alternatives for youth - provide sufficient funding for youth development and delinquency prevention programs.",
+          "response": "This request has already been completed. Explanation: We appreciate this question and agreed that these programs needed to be expanded due to the large take up by youth. This past year, we invested $163 million in the youth safety and success initiative, for you youth in and transitioning out of foster care and services to help prevent justice involvement. This initiative expands 4 programs and creates one new one: Fair Futures: This first-of-its-kind program already serves more than 4,000 young people by connecting youth in foster care and the juvenile justice system between the ages of 11-26 with tutoring and coaching to build life skills, set academic and career goals and more. This investment will allow an additional 2,000 youth to be served. College Choice: Established in 2022, this program offers college tuition, room and board assistance, individualized support and stipends for young people in foster care. The program had more than 400 students in the fall of 2024 and with this funding can serve over 500 students. Career Choice/Workforce Ready: This new program builds off the success of College Choice and connects young people in foster care who do not go to a two or four-year college but are participating in vocational and job readiness training with financial and social support as vocational and job readiness training. This funding will also allow for an expansion to DYCD’s Advance and Earn program. (40 slots which equate to 80 youth via expansion of DYCD’s Advance and Earn Program & 232 stipends for eligible youth) • Girls JustUs: A highly-successful gender-responsive juvenile justice diversion program that currently operates in Brooklyn will now be expanded to Queens and the Bronx. (24 additional girls will be served via this expansion) • Assertive Community Engagement and Success (ACES): A program that provides evidence-based services to high-risk youth who have been involved with the justice system. The program provides social pathways away from gang and gun violence to young people between the ages of 16-24. This program beginning in FY 27, will now be expanded city wide and will allow over 400 more young people to take part each year.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Administration for Children's Services",
+            "agency_id": "administration-for-childrens-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "068",
+          "request": "Provide, expand, or enhance preventive services and community based alternatives for youth",
+          "explanation": "Provide, expand, or enhance preventive services and community based alternatives for youth - provide sufficient funding for youth development and delinquency prevention programs.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202702C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Victory Boulevard storms from Manor to the SIE. - To stop flooding.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Victory Boulevard storms from Manor to the SIE. - To stop flooding.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "826",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Victory Boulevard storms from Manor to the SIE. - To stop flooding.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202702CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or construct sidewalks, curbs, or pedestrian ramps",
+          "explanation": "Install curbs and ensure that the correct pitch of all streets in the district. Many of the streets in West Brighton and Westerleigh are not pitched correctly causing major flooding. The area of Delafield Avenue by Bard Avenue.",
+          "response": "Sidewalks are the responsibility of the adjacent property owner. For curb repair, please submit specific locations to the Borough Commissioner for review. For Pedestrian Ramps, the Adopted Budget includes a Citywide allocation. Specific locations are determined by DOT.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or construct sidewalks, curbs, or pedestrian ramps",
+          "explanation": "Install curbs and ensure that the correct pitch of all streets in the district. Many of the streets in West Brighton and Westerleigh are not pitched correctly causing major flooding. The area of Delafield Avenue by Bard Avenue.",
+          "response": "Sidewalks are the responsibility of the adjacent property owner. For curb repair, please submit specific locations to the Borough Commissioner for review. For Pedestrian Ramps, the Adopted Budget includes a Citywide allocation. Specific locations are determined by DOT.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Repair or construct sidewalks, curbs, or pedestrian ramps",
+          "explanation": "Install curbs and ensure that the correct pitch of all streets in the district. Many of the streets in West Brighton and Westerleigh are not pitched correctly causing major flooding. The area of Delafield Avenue by Bard Avenue.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202702E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance programs for elder abuse victims",
+          "explanation": "Enhance programs for elder abuse victims - Elder abuse is increasing dramatically and this trend must be halted.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance programs for elder abuse victims",
+          "explanation": "Enhance programs for elder abuse victims - Elder abuse is increasing dramatically and this trend must be halted.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Enhance programs for elder abuse victims",
+          "explanation": "Enhance programs for elder abuse victims - Elder abuse is increasing dramatically and this trend must be halted.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202703C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Bailey Place and Northfield Avenue storms - To end flooding and ponding.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: DEP has no proposed Capital Projects in this area at this time. However, DEP Capital Planning engineers is currently reviewing this location and evaluating the issues and capacity. No timeline can be provided at this point, so check in with DEP periodically.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Bailey Place and Northfield Avenue storms - To end flooding and ponding.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: DEP has no proposed Capital Projects in this area at this time. However, DEP Capital Planning engineers is currently reviewing this location and evaluating the issues and capacity. No timeline can be provided at this point, so check in with DEP periodically.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "826",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Bailey Place and Northfield Avenue storms - To end flooding and ponding.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202703E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DFTA",
+          "explanation": "Provide Department of the Aging funding increases to the SI senior centers, a place for respite and companionship.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DFTA",
+          "explanation": "Provide Department of the Aging funding increases to the SI senior centers, a place for respite and companionship.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Other expense budget request for DFTA",
+          "explanation": "Provide Department of the Aging funding increases to the SI senior centers, a place for respite and companionship.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202704C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Forest Avenue storm system , including Broadway Delafield, North Mada and Kissel to Richmond Terrace. and Morrison and Pelton Avenues. To stop property destruction and flooding always to the Emergency Room and other property at RUMC and property owners behind and in all areas mentioned.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The area also is captured in both the Clove Lakes/Palmers Run and Snug Harbor/Harbor Brook sewersheds (drainage areas). DEP is updating the drainage plan for this area, which is an outline for the design of new sewers, outfalls and Bluebelt detention ponds to expand the capacity of the overall system. The Clove Lakes/Palmers Run Drainage Area Plan (see map directly below) will be finished by the end of 2026. The Snug Harbor/Harbor Brook Area Drainage plan is to be determined. Once both drainage plans are finished, we will run a review of the locations and determine how we will phase the projects and establish a timeline. Any capital projects created from these updated drainage plans would likely no begin before the 2030s.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Forest Avenue storm system , including Broadway Delafield, North Mada and Kissel to Richmond Terrace. and Morrison and Pelton Avenues. To stop property destruction and flooding always to the Emergency Room and other property at RUMC and property owners behind and in all areas mentioned.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The area also is captured in both the Clove Lakes/Palmers Run and Snug Harbor/Harbor Brook sewersheds (drainage areas). DEP is updating the drainage plan for this area, which is an outline for the design of new sewers, outfalls and Bluebelt detention ponds to expand the capacity of the overall system. The Clove Lakes/Palmers Run Drainage Area Plan (see map directly below) will be finished by the end of 2026. The Snug Harbor/Harbor Brook Area Drainage plan is to be determined. Once both drainage plans are finished, we will run a review of the locations and determine how we will phase the projects and establish a timeline. Any capital projects created from these updated drainage plans would likely no begin before the 2030s.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "826",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Forest Avenue storm system , including Broadway Delafield, North Mada and Kissel to Richmond Terrace. and Morrison and Pelton Avenues. To stop property destruction and flooding always to the Emergency Room and other property at RUMC and property owners behind and in all areas mentioned.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202704E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Buildings",
+            "agency_id": "buildings",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Address illegal conversions and uses of buildings",
+          "explanation": "Address illegal conversions and uses of buildings. - With land running out, the new approach is to try to increase funding for the BEST squad for buildings to improve enforcement and conversions, especially in R zones which greatly impact zoning performance protections.",
+          "response": "Further investigation of this request is needed. Contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Buildings",
+            "agency_id": "buildings",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Address illegal conversions and uses of buildings",
+          "explanation": "Address illegal conversions and uses of buildings. - With land running out, the new approach is to try to increase funding for the BEST squad for buildings to improve enforcement and conversions, especially in R zones which greatly impact zoning performance protections.",
+          "response": "Further investigation is required. Contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Buildings",
+            "agency_id": "buildings",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "810",
+          "request": "Address illegal conversions and uses of buildings",
+          "explanation": "Address illegal conversions and uses of buildings. - With land running out, the new approach is to try to increase funding for the BEST squad for buildings to improve enforcement and conversions, especially in R zones which greatly impact zoning performance protections.",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202705C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Develop a capital project for specific street segments currently lacking sanitary sewers",
+          "explanation": "Develop capital projects for specific street segments currently lacking sanitary sewers along Forest Avenue from Hart Blvd. to Broadway.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The area also is captured in both the Clove Lakes/Palmers Run and Snug Harbor/Harbor Brook sewersheds. Once both drainage plans are finished, we will run a review of the locations and determine how to phase out the projects and establish a timeline.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Develop a capital project for specific street segments currently lacking sanitary sewers",
+          "explanation": "Develop capital projects for specific street segments currently lacking sanitary sewers along Forest Avenue from Hart Blvd. to Broadway.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The area also is captured in both the Clove Lakes/Palmers Run and Snug Harbor/Harbor Brook sewersheds. Once both drainage plans are finished, we will run a review of the locations and determine how to phase out the projects and establish a timeline.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "826",
+          "request": "Develop a capital project for specific street segments currently lacking sanitary sewers",
+          "explanation": "Develop capital projects for specific street segments currently lacking sanitary sewers along Forest Avenue from Hart Blvd. to Broadway.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202705E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DCLA",
+          "explanation": "Fund On Your Mark and Eden II theater programs - Provide Cultural Affairs funding to these programs for disabled children.",
+          "response": "It is recommended that this request be brought to the attention of your Elected Officials.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DCLA",
+          "explanation": "Fund On Your Mark and Eden II theater programs - Provide Cultural Affairs funding to these programs for disabled children.",
+          "response": "Further study by the agency of this request is needed. Therefore, OMB does not take any position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "126",
+          "request": "Other expense budget request for DCLA",
+          "explanation": "Fund On Your Mark and Eden II theater programs - Provide Cultural Affairs funding to these programs for disabled children.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202706C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Build storm sewers along Jewett Avenue Cortlandt and Driprock Streets down to Castleton Avenue.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: This area is included in the Clove Lakes/Palmers Run Area Drainage Plan . This is a stormwater priority area and will be one of the first locations addressed when a capital project is initiated here. A capital project will be initiated within 5-10 years.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Build storm sewers along Jewett Avenue Cortlandt and Driprock Streets down to Castleton Avenue.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: This area is included in the Clove Lakes/Palmers Run Area Drainage Plan . This is a stormwater priority area and will be one of the first locations addressed when a capital project is initiated here. A capital project will be initiated within 5-10 years.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "826",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Build storm sewers along Jewett Avenue Cortlandt and Driprock Streets down to Castleton Avenue.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202706E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance funding for Child Care and Head Start programs",
+          "explanation": "Provide, expand, or enhance funding for Child Care Programs - Increase by a three-fold factor the number of slots available for day care.",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance funding for Child Care and Head Start programs",
+          "explanation": "Provide, expand, or enhance funding for Child Care Programs - Increase by a three-fold factor the number of slots available for day care.",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Provide, expand, or enhance funding for Child Care and Head Start programs",
+          "explanation": "Provide, expand, or enhance funding for Child Care Programs - Increase by a three-fold factor the number of slots available for day care.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202707C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Build a sewer on Auburn Avenue between Stewart and Willobrook Avenues. - To prevent flooding and property damage.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: This area will be addressed in the Clove Lakes/Palmers Run Area Drainage Plan Drainage Plan. Once the drainage plan is finished, we will run a review of the locations and determine how to phase out the projects and establish a timeline.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Build a sewer on Auburn Avenue between Stewart and Willobrook Avenues. - To prevent flooding and property damage.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: This area will be addressed in the Clove Lakes/Palmers Run Area Drainage Plan Drainage Plan. Once the drainage plan is finished, we will run a review of the locations and determine how to phase out the projects and establish a timeline.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "826",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Build a sewer on Auburn Avenue between Stewart and Willobrook Avenues. - To prevent flooding and property damage.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202707E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other educational programs requests",
+          "explanation": "Other educational programs requests - fund visual arts and performance programming",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other educational programs requests",
+          "explanation": "Other educational programs requests - fund visual arts and performance programming",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Other educational programs requests",
+          "explanation": "Other educational programs requests - fund visual arts and performance programming",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202708C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Upgrade sewers on Gordon Street between Laurel Avenue and Warren Street.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Upgrade sewers on Gordon Street between Laurel Avenue and Warren Street.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "826",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Upgrade sewers on Gordon Street between Laurel Avenue and Warren Street.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202708E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Expand or improve nutritional programs, e.g., school meals",
+          "explanation": "Expand or improve nutritional programs, e.g., school meals - to be sure there are no hungry children in our City.",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Expand or improve nutritional programs, e.g., school meals",
+          "explanation": "Expand or improve nutritional programs, e.g., school meals - to be sure there are no hungry children in our City.",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Expand or improve nutritional programs, e.g., school meals",
+          "explanation": "Expand or improve nutritional programs, e.g., school meals - to be sure there are no hungry children in our City.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202709C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Provide a new or expanded recreational park or playground at the North Shore Greenway. Design and build the North Shore Greenway.",
+          "response": "The agency requires additional information from the community board regarding this request",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Provide a new or expanded recreational park or playground at the North Shore Greenway. Design and build the North Shore Greenway.",
+          "response": "The agency requires additional information from the community board regarding this request",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Provide a new or expanded recreational park or playground at the North Shore Greenway. Design and build the North Shore Greenway.",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202709E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Create or promote programs to de-stigmatize mental health needs and encourage treatment",
+          "explanation": "Create or promote programs for mental health problems and encourage treatment - create programs to provide community education regarding the mental and physical health issues of transgendered youth and for everyone and all groups under the policy of DEI (Diversity, Equity and Inclusion).",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Create or promote programs to de-stigmatize mental health needs and encourage treatment",
+          "explanation": "Create or promote programs for mental health problems and encourage treatment - create programs to provide community education regarding the mental and physical health issues of transgendered youth and for everyone and all groups under the policy of DEI (Diversity, Equity and Inclusion).",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Create or promote programs to de-stigmatize mental health needs and encourage treatment",
+          "explanation": "Create or promote programs for mental health problems and encourage treatment - create programs to provide community education regarding the mental and physical health issues of transgendered youth and for everyone and all groups under the policy of DEI (Diversity, Equity and Inclusion).",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202710C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Upgrade or create new greenways - Improve the streetscape along the greenway with lighting, sidewalks and additions attractive to business development. New York Wheel Site to Gypsum Salt.",
+          "response": "This request is not recommended for funding.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Upgrade or create new greenways - Improve the streetscape along the greenway with lighting, sidewalks and additions attractive to business development. New York Wheel Site to Gypsum Salt.",
+          "response": "This request is not recommended for funding.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Upgrade or create new greenways - Improve the streetscape along the greenway with lighting, sidewalks and additions attractive to business development. New York Wheel Site to Gypsum Salt.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202710E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DPR",
+          "explanation": "Improve access to a building in a park - Staff should be provided to keep bathrooms open as long as each park is open. Include and also maintain green streets, medians and overgrowth.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DPR",
+          "explanation": "Improve access to a building in a park - Staff should be provided to keep bathrooms open as long as each park is open. Include and also maintain green streets, medians and overgrowth.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Other expense budget request for DPR",
+          "explanation": "Improve access to a building in a park - Staff should be provided to keep bathrooms open as long as each park is open. Include and also maintain green streets, medians and overgrowth.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202711C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "Increase lighting on Bay Street from Ferry Terminal to Victory Blvd.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Through a prior Community Budget Request excercise, this request has been approved under our normal scope of work. No capital funding is necessary. Additional lighting will be installed when scheduling permits. Kindly reach out to the Staten Island Borough Commissioner's Office for additional details. Thank you.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "Increase lighting on Bay Street from Ferry Terminal to Victory Blvd.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Through a prior Community Budget Request excercise, this request has been approved under our normal scope of work. No capital funding is necessary. Additional lighting will be installed when scheduling permits. Kindly reach out to the Staten Island Borough Commissioner's Office for additional details. Thank you.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Repair or provide new street lights",
+          "explanation": "Increase lighting on Bay Street from Ferry Terminal to Victory Blvd.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202711E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance the Summer Youth Employment Program",
+          "explanation": "Provide, expand, or enhance the Summer Youth Employment Program - This excellent program needs substantial increases to its funding to allow a larger number of young people to benefit from being able to have a Summer job that not only provides cash but also skills training. The funding needs to go to everyone that signs up instead of a lottery system. Equal opportunity - increase spaces to growing numbers to insure everyone who applies gets a job.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Each summer, NYC supports 100,000 youth jobs through the Summer Youth Employment Program.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance the Summer Youth Employment Program",
+          "explanation": "Provide, expand, or enhance the Summer Youth Employment Program - This excellent program needs substantial increases to its funding to allow a larger number of young people to benefit from being able to have a Summer job that not only provides cash but also skills training. The funding needs to go to everyone that signs up instead of a lottery system. Equal opportunity - increase spaces to growing numbers to insure everyone who applies gets a job.",
+          "response": "Agency supports but cannot accommodate Explanation: Each summer, NYC supports 100,000 youth jobs through the Summer Youth Employment Program.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "260",
+          "request": "Provide, expand, or enhance the Summer Youth Employment Program",
+          "explanation": "Provide, expand, or enhance the Summer Youth Employment Program - This excellent program needs substantial increases to its funding to allow a larger number of young people to benefit from being able to have a Summer job that not only provides cash but also skills training. The funding needs to go to everyone that signs up instead of a lottery system. Equal opportunity - increase spaces to growing numbers to insure everyone who applies gets a job.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202712C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "Increase lighting on Bay Street from Victory Blvd. to Clifton Avenue.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Through a prior Community Budget Request excercise, this request has been approved under our normal scope of work. No capital funding is necessary. Additional lighting will be installed when scheduling permits. Kindly reach out to the Staten Island Borough Commissioner's Office for additional details. Thank you.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "Increase lighting on Bay Street from Victory Blvd. to Clifton Avenue.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Through a prior Community Budget Request excercise, this request has been approved under our normal scope of work. No capital funding is necessary. Additional lighting will be installed when scheduling permits. Kindly reach out to the Staten Island Borough Commissioner's Office for additional details. Thank you.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Repair or provide new street lights",
+          "explanation": "Increase lighting on Bay Street from Victory Blvd. to Clifton Avenue.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202712E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance after school programs for elementary school students (grades K-5)",
+          "explanation": "Expand, or enhance after school programs for elementary school students (grades K-5) - The expansion of after school programs in the elementary grades is a very important service that enhances educational skills as well as enabling parents to work, especially in P.S.31; P.S.19; P.S. 16; P.S.21; P.S.59; P.S.13; P.S. 74; P.S. 18; and, P.S.4.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DYCD has begun a three-year, 20,000 seat expansion of the COMPASS afterschool program.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance after school programs for elementary school students (grades K-5)",
+          "explanation": "Expand, or enhance after school programs for elementary school students (grades K-5) - The expansion of after school programs in the elementary grades is a very important service that enhances educational skills as well as enabling parents to work, especially in P.S.31; P.S.19; P.S. 16; P.S.21; P.S.59; P.S.13; P.S. 74; P.S. 18; and, P.S.4.",
+          "response": "This request has already been completed. Explanation: DYCD has begun a three-year, 20,000 seat expansion of the COMPASS afterschool program.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "260",
+          "request": "Provide, expand, or enhance after school programs for elementary school students (grades K-5)",
+          "explanation": "Expand, or enhance after school programs for elementary school students (grades K-5) - The expansion of after school programs in the elementary grades is a very important service that enhances educational skills as well as enabling parents to work, especially in P.S.31; P.S.19; P.S. 16; P.S.21; P.S.59; P.S.13; P.S. 74; P.S. 18; and, P.S.4.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202713C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "Increase lighting on Bay Street from Clifton Avenue to School Road.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Through a prior Community Budget Request excercise, this request has been approved under our normal scope of work. No capital funding is necessary. Additional lighting will be installed when scheduling permits. Kindly reach out to the Staten Island Borough Commissioner's Office for additional details. Thank you.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "Increase lighting on Bay Street from Clifton Avenue to School Road.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Through a prior Community Budget Request excercise, this request has been approved under our normal scope of work. No capital funding is necessary. Additional lighting will be installed when scheduling permits. Kindly reach out to the Staten Island Borough Commissioner's Office for additional details. Thank you.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Repair or provide new street lights",
+          "explanation": "Increase lighting on Bay Street from Clifton Avenue to School Road.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202713E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance adult literacy programs services",
+          "explanation": "Expand, or enhance adult literacy programs services - Adult literacy is critical to employment and the high unemployment rate in some Board areas due to lack of Adult Literacy Programs. This is a crucial skill and these literacy programs need immediate and sufficient funding.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DYCD funds several adult and adolescent literacy programs in the district.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance adult literacy programs services",
+          "explanation": "Expand, or enhance adult literacy programs services - Adult literacy is critical to employment and the high unemployment rate in some Board areas due to lack of Adult Literacy Programs. This is a crucial skill and these literacy programs need immediate and sufficient funding.",
+          "response": "This request has already been completed. Explanation: DYCD funds several adult and adolescent literacy programs in the district.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "260",
+          "request": "Provide, expand, or enhance adult literacy programs services",
+          "explanation": "Expand, or enhance adult literacy programs services - Adult literacy is critical to employment and the high unemployment rate in some Board areas due to lack of Adult Literacy Programs. This is a crucial skill and these literacy programs need immediate and sufficient funding.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202714C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "Purchase the Augustinian property at Clove and Howard to ease congestion on Clove and provide pedestrian safety on Howard Avenue. - To make it safe for students to walk to school and to ease the terrible congestion on Clove Road.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DOT's Traffic Planning and Management Division conducted a traffic study which showed that the left turn movement from Clove Road to Tioga Street, and from Clove Road to Howard Avenue, were the least-made movements by motorists at both approaches. Consequently, DOT eliminated these turning movements to improve traffic flow and motorist safety. A long-term solution includes land acquisition from Wagner College to build a right-turn only lane on Clove Road to Howard Avenue which would provide adequate width to allow left turns to this intersection.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "Purchase the Augustinian property at Clove and Howard to ease congestion on Clove and provide pedestrian safety on Howard Avenue. - To make it safe for students to walk to school and to ease the terrible congestion on Clove Road.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DOT's Traffic Planning and Management Division conducted a traffic study which showed that the left turn movement from Clove Road to Tioga Street, and from Clove Road to Howard Avenue, were the least-made movements by motorists at both approaches. Consequently, DOT eliminated these turning movements to improve traffic flow and motorist safety. A long-term solution includes land acquisition from Wagner College to build a right-turn only lane on Clove Road to Howard Avenue which would provide adequate width to allow left turns to this intersection.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "Purchase the Augustinian property at Clove and Howard to ease congestion on Clove and provide pedestrian safety on Howard Avenue. - To make it safe for students to walk to school and to ease the terrible congestion on Clove Road.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202714E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide social services for domestic violence survivors (legal services, counseling, referral to supportive services, etc.)",
+          "explanation": "Domestic Violence survivors require enhanced services. The agency should be the DA's office but there is no selection for the DA on the form.",
+          "response": "Further study by the agency of this request is needed. Therefore, OMB does not take any position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide social services for domestic violence survivors (legal services, counseling, referral to supportive services, etc.)",
+          "explanation": "Domestic Violence survivors require enhanced services. The agency should be the DA's office but there is no selection for the DA on the form.",
+          "response": "Further study by the agency of this request is needed. Therefore, OMB does not take any position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "096",
+          "request": "Provide social services for domestic violence survivors (legal services, counseling, referral to supportive services, etc.)",
+          "explanation": "Domestic Violence survivors require enhanced services. The agency should be the DA's office but there is no selection for the DA on the form.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202715C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "Reconfigure the intersection of Innis Street and Nicholas Avenue - There have been multiple pedestrian accidents here. It is dangerous.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Our Signals Engineering Division completed their onsite investigation and found the signals operating properly as designed. They did not observe significant traffic flow issues at the time of their investigation. Therefore, no signal timing changes are recommended at this time. We have forwarded your request to our Intelligent Transportation Systems Unit to take any action if needed.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "Reconfigure the intersection of Innis Street and Nicholas Avenue - There have been multiple pedestrian accidents here. It is dangerous.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Our Signals Engineering Division completed their onsite investigation and found the signals operating properly as designed. They did not observe significant traffic flow issues at the time of their investigation. Therefore, no signal timing changes are recommended at this time. We have forwarded your request to our Intelligent Transportation Systems Unit to take any action if needed.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "Reconfigure the intersection of Innis Street and Nicholas Avenue - There have been multiple pedestrian accidents here. It is dangerous.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202716C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "Install smart lights, sequential signals and turning lanes. - To move traffic safely at major intersections, high pedestrian crossings, schools and business areas. Specific areas: Forest Avenue & Manor Road, Forest Avenue & Clove Road, Forest Avenue & Bard Avenue, Forest Avenue & Hart Blvd., Forest Avenue & Victory Blvd.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Our Signals Engineering Division completed their onsite investigation and found the signals operating properly as designed. They did not observe significant traffic flow issues at the time of their investigation. Therefore, no signal timing changes are recommended at this time. We have forwarded your request to our Intelligent Transportation Systems Unit to take any action if needed.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "Install smart lights, sequential signals and turning lanes. - To move traffic safely at major intersections, high pedestrian crossings, schools and business areas. Specific areas: Forest Avenue & Manor Road, Forest Avenue & Clove Road, Forest Avenue & Bard Avenue, Forest Avenue & Hart Blvd., Forest Avenue & Victory Blvd.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Our Signals Engineering Division completed their onsite investigation and found the signals operating properly as designed. They did not observe significant traffic flow issues at the time of their investigation. Therefore, no signal timing changes are recommended at this time. We have forwarded your request to our Intelligent Transportation Systems Unit to take any action if needed.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "Install smart lights, sequential signals and turning lanes. - To move traffic safely at major intersections, high pedestrian crossings, schools and business areas. Specific areas: Forest Avenue & Manor Road, Forest Avenue & Clove Road, Forest Avenue & Bard Avenue, Forest Avenue & Hart Blvd., Forest Avenue & Victory Blvd.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202717C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DOT",
+          "explanation": "Install smart lights, sequential signals and turning lanes- to move traffic safety at major intersections, high pedestrian crossings, schools and business area. Specific areas: Bay Street & Victory Blvd., Bay Street & Wave Street, Bay Street & Water Street, Bay Street & Canal Street, Bay Street & Vanderbilt Avenue, Bay Street & Hylan Blvd.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Our Signals Engineering Division completed their onsite investigation and found the signals operating properly as designed. They did not observe significant traffic flow issues at the time of their investigation. Therefore, no signal timing changes are recommended at this time. We have forwarded your request to our Intelligent Transportation Systems Unit to take any action if needed.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DOT",
+          "explanation": "Install smart lights, sequential signals and turning lanes- to move traffic safety at major intersections, high pedestrian crossings, schools and business area. Specific areas: Bay Street & Victory Blvd., Bay Street & Wave Street, Bay Street & Water Street, Bay Street & Canal Street, Bay Street & Vanderbilt Avenue, Bay Street & Hylan Blvd.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Our Signals Engineering Division completed their onsite investigation and found the signals operating properly as designed. They did not observe significant traffic flow issues at the time of their investigation. Therefore, no signal timing changes are recommended at this time. We have forwarded your request to our Intelligent Transportation Systems Unit to take any action if needed.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Other capital budget request for DOT",
+          "explanation": "Install smart lights, sequential signals and turning lanes- to move traffic safety at major intersections, high pedestrian crossings, schools and business area. Specific areas: Bay Street & Victory Blvd., Bay Street & Wave Street, Bay Street & Water Street, Bay Street & Canal Street, Bay Street & Vanderbilt Avenue, Bay Street & Hylan Blvd.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202718C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DOT",
+          "explanation": "Install smart lights, sequential signals and turning lanes - To move traffic safety at major intersection, high pedestrian crossings, schools and business areas, Specific areas: Richmond Terrace & South Avenue, Richmond Terrace & Morningstar Road, Richmond Terrace & Jewett Avenue, Richmond Terrace & Clove Road, Richmond Terrace & Davis Avenue, Richmond Terrace & Jersey Street.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Our Signals Engineering Division completed their onsite investigation and found the signals operating properly as designed. They did not observe significant traffic flow issues at the time of their investigation. Therefore, no signal timing changes are recommended at this time. We have forwarded your request to our Intelligent Transportation Systems Unit to take any action if needed.",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DOT",
+          "explanation": "Install smart lights, sequential signals and turning lanes - To move traffic safety at major intersection, high pedestrian crossings, schools and business areas, Specific areas: Richmond Terrace & South Avenue, Richmond Terrace & Morningstar Road, Richmond Terrace & Jewett Avenue, Richmond Terrace & Clove Road, Richmond Terrace & Davis Avenue, Richmond Terrace & Jersey Street.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Our Signals Engineering Division completed their onsite investigation and found the signals operating properly as designed. They did not observe significant traffic flow issues at the time of their investigation. Therefore, no signal timing changes are recommended at this time. We have forwarded your request to our Intelligent Transportation Systems Unit to take any action if needed.",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Other capital budget request for DOT",
+          "explanation": "Install smart lights, sequential signals and turning lanes - To move traffic safety at major intersection, high pedestrian crossings, schools and business areas, Specific areas: Richmond Terrace & South Avenue, Richmond Terrace & Morningstar Road, Richmond Terrace & Jewett Avenue, Richmond Terrace & Clove Road, Richmond Terrace & Davis Avenue, Richmond Terrace & Jersey Street.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202719C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "Construct a left-turn lane at Howard Avenue and Clove Road",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DOT's Traffic Planning and Management Division conducted a traffic study which showed that the left turn movement from Clove Road to Tioga Street, and from Clove Road to Howard Avenue, were the least-made movements by motorists at both approaches. Consequently, DOT eliminated these turning movements to improve traffic flow and motorist safety. A long-term solution includes land acquisition from Wagner College to build a right-turn only lane on Clove Road to Howard Avenue which would provide adequate width to allow left turns to this intersection.",
+          "rank": {
+            "value": "09",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "Construct a left-turn lane at Howard Avenue and Clove Road",
+          "response": "This request has already been completed. Explanation: DOT's Traffic Planning and Management Division conducted a traffic study which showed that the left turn movement from Clove Road to Tioga Street, and from Clove Road to Howard Avenue, were the least-made movements by motorists at both approaches. Consequently, DOT eliminated these turning movements to improve traffic flow and motorist safety. A long-term solution includes land acquisition from Wagner College to build a right-turn only lane on Clove Road to Howard Avenue which would provide adequate width to allow left turns to this intersection.",
+          "rank": {
+            "value": "09",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Reconstruct streets",
+          "explanation": "Construct a left-turn lane at Howard Avenue and Clove Road",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "09",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202720C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other transportation infrastructure requests",
+          "explanation": "Reconstruct Lake Avenue and Walker Street - The streets are deteriorating. Suggest responsible agency should be DEP.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Streets are in good condition and rated high. Portion of Lake Avenue missing sidewalks and curbs (behind ball field) -- privately owned. (Block: 1172/ Lot:90) -- DOT's Sidewalk Inspection team will investigate and issue sidewalk violation if warranted- Referring to DEP indefinetely",
+          "rank": {
+            "value": "10",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other transportation infrastructure requests",
+          "explanation": "Reconstruct Lake Avenue and Walker Street - The streets are deteriorating. Suggest responsible agency should be DEP.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Streets are in good condition and rated high. Portion of Lake Avenue missing sidewalks and curbs (behind ball field) -- privately owned. (Block: 1172/ Lot:90) -- DOT's Sidewalk Inspection team will investigate and issue sidewalk violation if warranted- Referring to DEP indefinetely",
+          "rank": {
+            "value": "10",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Other transportation infrastructure requests",
+          "explanation": "Reconstruct Lake Avenue and Walker Street - The streets are deteriorating. Suggest responsible agency should be DEP.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "10",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202721C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other transportation infrastructure requests",
+          "explanation": "Install curbs and ensure the correct pitch of all streets in the district. Many of the streets in West Brighton and Westerleigh are not pitched correctly causing major flooding. The area of Victory Blvd. to Sheridan and North Mada Avenue to Hoyt Avenue.",
+          "response": "Sidewalks are the responsibility of the adjacent property owner. For curb repair, please submit specific locations to the Borough Commissioner for review. For Pedestrian Ramps, the Adopted Budget includes a Citywide allocation. Specific locations are determined by DOT.",
+          "rank": {
+            "value": "11",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other transportation infrastructure requests",
+          "explanation": "Install curbs and ensure the correct pitch of all streets in the district. Many of the streets in West Brighton and Westerleigh are not pitched correctly causing major flooding. The area of Victory Blvd. to Sheridan and North Mada Avenue to Hoyt Avenue.",
+          "response": "Sidewalks are the responsibility of the adjacent property owner. For curb repair, please submit specific locations to the Borough Commissioner for review. For Pedestrian Ramps, the Adopted Budget includes a Citywide allocation. Specific locations are determined by DOT.",
+          "rank": {
+            "value": "11",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Other transportation infrastructure requests",
+          "explanation": "Install curbs and ensure the correct pitch of all streets in the district. Many of the streets in West Brighton and Westerleigh are not pitched correctly causing major flooding. The area of Victory Blvd. to Sheridan and North Mada Avenue to Hoyt Avenue.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "11",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202722C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for EDC",
+          "explanation": "Repair or replace Pier 1 to accommodate fishing, recreational use, docking, etc.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: Pier 1 restoration project is already funded and underway. Currently in design phase.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for EDC",
+          "explanation": "Repair or replace Pier 1 to accommodate fishing, recreational use, docking, etc.",
+          "response": "OMB supports the agency’s position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "802",
+          "request": "Other capital budget request for EDC",
+          "explanation": "Repair or replace Pier 1 to accommodate fishing, recreational use, docking, etc.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202723C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "Repair or upgrade subway stations or other transit infrastructure - The Stapleton station needs to be made safe with more security cameras and lighting in preparation for the North Shore Action Plan.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "Repair or upgrade subway stations or other transit infrastructure - The Stapleton station needs to be made safe with more security cameras and lighting in preparation for the North Shore Action Plan.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "998",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "Repair or upgrade subway stations or other transit infrastructure - The Stapleton station needs to be made safe with more security cameras and lighting in preparation for the North Shore Action Plan.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202724C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new NYPD facility, such as a new precinct house or sub-precinct",
+          "explanation": "Provide a new NYPD facility, such as a new precinct house or sub-precinct with the proposed Bay Street Corridor Affordable Housing rezoning coupled with the new North Shore residential and commercial redevelopment. The current 120th is no longer adequate for the personnel and equipment and vehicles needed to keep the public safe. The proposed Hill Street Stationhouse needs to be built.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Due to ongoing budget cuts, the NYPD has had significant limitations in its ability to execute capital projects. While this request has been reviewed, current funding for this project is unavailable at this time.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new NYPD facility, such as a new precinct house or sub-precinct",
+          "explanation": "Provide a new NYPD facility, such as a new precinct house or sub-precinct with the proposed Bay Street Corridor Affordable Housing rezoning coupled with the new North Shore residential and commercial redevelopment. The current 120th is no longer adequate for the personnel and equipment and vehicles needed to keep the public safe. The proposed Hill Street Stationhouse needs to be built.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Due to ongoing budget cuts, the NYPD has had significant limitations in its ability to execute capital projects. While this request has been reviewed, current funding for this project is unavailable at this time.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Provide a new NYPD facility, such as a new precinct house or sub-precinct",
+          "explanation": "Provide a new NYPD facility, such as a new precinct house or sub-precinct with the proposed Bay Street Corridor Affordable Housing rezoning coupled with the new North Shore residential and commercial redevelopment. The current 120th is no longer adequate for the personnel and equipment and vehicles needed to keep the public safe. The proposed Hill Street Stationhouse needs to be built.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202725C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for NYPL",
+          "explanation": "Rosebank Library - Rosebank has requested a library for 25 years. The land behind St. Mary's school is available for purchase and a deal should be enacted ASAP. Due to demographics, a library would be beneficial to the welfare of children for programs, education, internet access and DEI (Diversity, Equity & Inclusion).",
+          "response": "It is recommended that this request be brought to the attention of your Elected Officials.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for NYPL",
+          "explanation": "Rosebank Library - Rosebank has requested a library for 25 years. The land behind St. Mary's school is available for purchase and a deal should be enacted ASAP. Due to demographics, a library would be beneficial to the welfare of children for programs, education, internet access and DEI (Diversity, Equity & Inclusion).",
+          "response": "It is recommended that this request be brought to the attention of your Elected Officials.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "037",
+          "request": "Other capital budget request for NYPL",
+          "explanation": "Rosebank Library - Rosebank has requested a library for 25 years. The land behind St. Mary's school is available for purchase and a deal should be enacted ASAP. Due to demographics, a library would be beneficial to the welfare of children for programs, education, internet access and DEI (Diversity, Equity & Inclusion).",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202726C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "Create a new, or renovate or upgrade an existing public library - renovate with ada compliance the Port Richmond, St. George, West New Brighton and Westerleigh libraries. Will only include Port Richmond since it is not completed and additional funds may be needed.",
+          "response": "This request includes more than one proposal. The agency has recommended funding for this request in part. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "Create a new, or renovate or upgrade an existing public library - renovate with ada compliance the Port Richmond, St. George, West New Brighton and Westerleigh libraries. Will only include Port Richmond since it is not completed and additional funds may be needed.",
+          "response": "This request includes more than one proposal. The agency has recommended funding for this request in part. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "037",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "Create a new, or renovate or upgrade an existing public library - renovate with ada compliance the Port Richmond, St. George, West New Brighton and Westerleigh libraries. Will only include Port Richmond since it is not completed and additional funds may be needed.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202727C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expand an existing middle/intermediate school",
+          "explanation": "Provide a new or expand an existing middle/intermediate school - Middle schools have exceeded capacity in Mariners Harbor.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: The agency agrees with this request, will accommodate in part.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expand an existing middle/intermediate school",
+          "explanation": "Provide a new or expand an existing middle/intermediate school - Middle schools have exceeded capacity in Mariners Harbor.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: The agency agrees with this request, will accommodate in part.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Provide a new or expand an existing middle/intermediate school",
+          "explanation": "Provide a new or expand an existing middle/intermediate school - Middle schools have exceeded capacity in Mariners Harbor.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "501202728C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "staten-island-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "5",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expand an existing high school",
+          "explanation": "Provide a new Maritime Junior High School to provide education in the maritime industry,",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: The agency agrees with this request, will accommodate in part.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expand an existing high school",
+          "explanation": "Provide a new Maritime Junior High School to provide education in the maritime industry,",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: The agency agrees with this request, will accommodate in part.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Provide a new or expand an existing high school",
+          "explanation": "Provide a new Maritime Junior High School to provide education in the maritime industry,",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    }
+  ]
+}

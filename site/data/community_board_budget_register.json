@@ -1,0 +1,735 @@
+{
+  "schema": "cityscroll.community_board_budget_register.v1",
+  "method": "omb_register_full_tracking_code_within_cycle_v1",
+  "negative_rule": "A changed response text is a changed written answer and nothing else. It is not funding, a commitment, delivery, or completion, and no request is carried across fiscal cycles by a repeated priority number, a similar facility name, or matching request text.",
+  "acquired_at": "2026-09-07T11:54:00.629Z",
+  "materialized_at": "2026-09-07T11:54:00.629Z",
+  "source": {
+    "publisher": "New York City Office of Management and Budget",
+    "name": "Register of Community Board Budget Requests",
+    "dataset_id": "vn4m-mk4t",
+    "source_url": "https://data.cityofnewyork.us/d/vn4m-mk4t",
+    "borough_code_map": {
+      "1": "bronx",
+      "2": "brooklyn",
+      "3": "manhattan",
+      "4": "queens",
+      "5": "staten-island"
+    },
+    "borough_code_note": "The publisher's borough numbering. It is not the leading digit of a BBL."
+  },
+  "publication_selection": {
+    "as_of": "2026-09-07",
+    "servable": [
+      "20260512",
+      "20260630"
+    ],
+    "diagnostic_only": [
+      "20270217"
+    ],
+    "latest": "20260630"
+  },
+  "comparison_semantics": {
+    "source_text": "Whitespace and letter case neutralized; every other character difference counts.",
+    "boilerplate_removed": "Also removes the publisher's wrapper sentence and the round label that names the publication.",
+    "what_a_difference_means": "The written answer reads differently. It does not establish funding, a commitment, or delivery."
+  },
+  "publications": [
+    {
+      "publication": "20260512",
+      "publication_date": "2026-05-12",
+      "dataset_id": "vn4m-mk4t",
+      "source_url": "https://data.cityofnewyork.us/d/vn4m-mk4t",
+      "retained_fixture": "warehouse/fixtures/community-board-budget-register/publication-20260512.jsonl",
+      "retained_fixture_sha256": "5cfea27c4599faaf3b8669520f22c9652b6c39475706c1d7b1069aa80ae00302",
+      "published_row_count": 3809,
+      "retained_rows": 3809
+    },
+    {
+      "publication": "20260630",
+      "publication_date": "2026-06-30",
+      "dataset_id": "vn4m-mk4t",
+      "source_url": "https://data.cityofnewyork.us/d/vn4m-mk4t",
+      "retained_fixture": "warehouse/fixtures/community-board-budget-register/publication-20260630.jsonl",
+      "retained_fixture_sha256": "9358d40d6a85086649990165c7344cde10e3acc558f116b194828bb00c6249d4",
+      "published_row_count": 3809,
+      "retained_rows": 3809
+    },
+    {
+      "publication": "20270217",
+      "publication_date": "2027-02-17",
+      "dataset_id": "vn4m-mk4t",
+      "source_url": "https://data.cityofnewyork.us/d/vn4m-mk4t",
+      "retained_fixture": "warehouse/fixtures/community-board-budget-register/publication-20270217.jsonl",
+      "retained_fixture_sha256": "02d46bc3f7582d9ae71ba44909789ef69a58116dd0d300f9415b09cd277f73c2",
+      "published_row_count": 3809,
+      "retained_rows": 3809
+    }
+  ],
+  "counts": {
+    "publications": 3,
+    "retained_rows": 11427,
+    "requests": 3809,
+    "boards": 59,
+    "request_classes": {
+      "C": 1752,
+      "E": 1853,
+      "CS": 204
+    },
+    "versions_per_request": [
+      3
+    ],
+    "diagnostic_only_versions": 3809,
+    "unidentified_rows": 0,
+    "rows_without_board_binding": 0,
+    "derived_request_titles": 3,
+    "agency_labels": 35,
+    "agency_labels_bound": 30,
+    "agency_labels_unbound": 5,
+    "agency_observations_bound": 11070,
+    "comparable_version_pairs": 3809,
+    "responses_differing_in_source_text": 444,
+    "responses_differing_after_boilerplate_removed": 293
+  },
+  "agency_bindings": [
+    {
+      "source_label": "Administration for Children's Services",
+      "agency_id": "administration-for-childrens-services",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 60
+    },
+    {
+      "source_label": "Brooklyn Public Library",
+      "agency_id": null,
+      "binding": "unbound",
+      "method": null,
+      "review": "no_existing_institution",
+      "observations": 108
+    },
+    {
+      "source_label": "City University of New York",
+      "agency_id": "city-university",
+      "binding": "bound",
+      "method": "reviewed_exact_publisher_alias",
+      "review": null,
+      "observations": 3
+    },
+    {
+      "source_label": "CITYWIDE EVENT COORDINATION AND MANAGEMENT",
+      "agency_id": null,
+      "binding": "unbound",
+      "method": null,
+      "review": "no_existing_institution",
+      "observations": 3
+    },
+    {
+      "source_label": "Department for the Aging",
+      "agency_id": "aging",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 423
+    },
+    {
+      "source_label": "Department of Buildings",
+      "agency_id": "buildings",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 117
+    },
+    {
+      "source_label": "Department of City Planning",
+      "agency_id": "city-planning",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 123
+    },
+    {
+      "source_label": "Department of Citywide Administrative Services",
+      "agency_id": "citywide-administrative-services",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 78
+    },
+    {
+      "source_label": "Department of Consumer and Worker Protection",
+      "agency_id": "consumer-and-worker-protection",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 9
+    },
+    {
+      "source_label": "Department of Cultural Affairs",
+      "agency_id": "cultural-affairs",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 126
+    },
+    {
+      "source_label": "Department of Education",
+      "agency_id": "education",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 876
+    },
+    {
+      "source_label": "Department of Environmental Protection",
+      "agency_id": "environmental-protection",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 582
+    },
+    {
+      "source_label": "Department of Health and Mental Hygiene",
+      "agency_id": "health-and-mental-hygiene",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 438
+    },
+    {
+      "source_label": "Department of Homeless Services",
+      "agency_id": "homeless-services",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 120
+    },
+    {
+      "source_label": "Department of Housing Preservation & Development",
+      "agency_id": "housing-preservation-and-development",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 417
+    },
+    {
+      "source_label": "Department of Parks and Recreation",
+      "agency_id": "parks-and-recreation",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 2454
+    },
+    {
+      "source_label": "Department of Sanitation",
+      "agency_id": "sanitation",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 618
+    },
+    {
+      "source_label": "Department of Small Business Services",
+      "agency_id": "small-business-services",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 186
+    },
+    {
+      "source_label": "Department of Transportation",
+      "agency_id": "transportation",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 1851
+    },
+    {
+      "source_label": "Department of Youth & Community Development",
+      "agency_id": "youth-and-community-development",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 318
+    },
+    {
+      "source_label": "Dept of Information Technology & Telecommunication",
+      "agency_id": "information-technology-and-telecommunications",
+      "binding": "bound",
+      "method": "reviewed_exact_publisher_alias",
+      "review": null,
+      "observations": 36
+    },
+    {
+      "source_label": "Economic Development Corporation",
+      "agency_id": "economic-development-corporation",
+      "binding": "bound",
+      "method": "reviewed_exact_publisher_alias",
+      "review": null,
+      "observations": 234
+    },
+    {
+      "source_label": "Fire Department",
+      "agency_id": "fire-department",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 231
+    },
+    {
+      "source_label": "Health and Hospitals Corporation",
+      "agency_id": "nyc-health-hospitals",
+      "binding": "bound",
+      "method": "reviewed_exact_publisher_alias",
+      "review": null,
+      "observations": 117
+    },
+    {
+      "source_label": "Housing Authority",
+      "agency_id": "housing-authority",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 216
+    },
+    {
+      "source_label": "Human Resources Administration",
+      "agency_id": "human-resources-administration",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 210
+    },
+    {
+      "source_label": "Landmarks Preservation Commission",
+      "agency_id": "landmarks-preservation-commission",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 30
+    },
+    {
+      "source_label": "Mayor's Office of Criminal Justice",
+      "agency_id": "mayors-office-of-criminal-justice",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 15
+    },
+    {
+      "source_label": "Mayor's Office of Management and Budget",
+      "agency_id": "management-and-budget",
+      "binding": "bound",
+      "method": "reviewed_exact_publisher_alias",
+      "review": null,
+      "observations": 126
+    },
+    {
+      "source_label": "Mayor's Office of Media and Entertainment",
+      "agency_id": null,
+      "binding": "unbound",
+      "method": null,
+      "review": "no_existing_institution",
+      "observations": 6
+    },
+    {
+      "source_label": "New York Public Library",
+      "agency_id": null,
+      "binding": "unbound",
+      "method": null,
+      "review": "no_existing_institution",
+      "observations": 174
+    },
+    {
+      "source_label": "OFFICE OF EMERGENCY MANAGEMENT",
+      "agency_id": "emergency-management",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 9
+    },
+    {
+      "source_label": "Police Department",
+      "agency_id": "police-department",
+      "binding": "bound",
+      "method": "shared_agency_alias_register",
+      "review": null,
+      "observations": 714
+    },
+    {
+      "source_label": "Queens Borough Public Library",
+      "agency_id": null,
+      "binding": "unbound",
+      "method": null,
+      "review": "no_existing_institution",
+      "observations": 66
+    },
+    {
+      "source_label": "Transit Authority",
+      "agency_id": "n-y-c-transit-authority",
+      "binding": "bound",
+      "method": "reviewed_exact_publisher_alias",
+      "review": null,
+      "observations": 333
+    }
+  ],
+  "unidentified_rows": [],
+  "rows_without_board_binding": [],
+  "boards": [
+    {
+      "board_id": "bronx-cb-01",
+      "request_count": 22,
+      "document": "/data/community_board_budget_register/bronx-cb-01.json",
+      "sha256": "4c8c29d392509c324e901a22df16b9a1f393a0890374f278ca20e05a0bf17c0d"
+    },
+    {
+      "board_id": "bronx-cb-02",
+      "request_count": 25,
+      "document": "/data/community_board_budget_register/bronx-cb-02.json",
+      "sha256": "2a1e160cfb615c2180e4388fed4f3ec8bc81c65ec04ace14e9267bafb9774375"
+    },
+    {
+      "board_id": "bronx-cb-03",
+      "request_count": 51,
+      "document": "/data/community_board_budget_register/bronx-cb-03.json",
+      "sha256": "eb85e69809d6485df45e6ba2652eb7c919a07dbe76bf21ee198c1b3553b5f18f"
+    },
+    {
+      "board_id": "bronx-cb-04",
+      "request_count": 77,
+      "document": "/data/community_board_budget_register/bronx-cb-04.json",
+      "sha256": "5992c2740bd16478caa4eaa62e19241d8904f54c4f535889b5b28d0997a22036"
+    },
+    {
+      "board_id": "bronx-cb-05",
+      "request_count": 60,
+      "document": "/data/community_board_budget_register/bronx-cb-05.json",
+      "sha256": "69bb3f63baf1ed9bd607ee757d20c86a1d456ca3659f31857fd53a4b2b9cb007"
+    },
+    {
+      "board_id": "bronx-cb-06",
+      "request_count": 45,
+      "document": "/data/community_board_budget_register/bronx-cb-06.json",
+      "sha256": "d56b4658148677c0c2fc54af811836036089bdea8ac7d00db8f9fe07c570c40e"
+    },
+    {
+      "board_id": "bronx-cb-07",
+      "request_count": 70,
+      "document": "/data/community_board_budget_register/bronx-cb-07.json",
+      "sha256": "40c1a216f0052ce5a6f8f55ed6ea39b9766f59ba35dfb1c16624fd962ed98fc5"
+    },
+    {
+      "board_id": "bronx-cb-08",
+      "request_count": 59,
+      "document": "/data/community_board_budget_register/bronx-cb-08.json",
+      "sha256": "02372e7defa8c66a02205bdb500eac0a0d2fdab7f7ee91944cc2374931527a71"
+    },
+    {
+      "board_id": "bronx-cb-09",
+      "request_count": 110,
+      "document": "/data/community_board_budget_register/bronx-cb-09.json",
+      "sha256": "0161e9b41853fdcaccf9405d42b24a3f4e1dc29bfeca6c6a42cc63068240f796"
+    },
+    {
+      "board_id": "bronx-cb-10",
+      "request_count": 75,
+      "document": "/data/community_board_budget_register/bronx-cb-10.json",
+      "sha256": "556ccfabb0b640bd4fab39471425a811a1774116f2ec126dca32b2cbeaf422d5"
+    },
+    {
+      "board_id": "bronx-cb-11",
+      "request_count": 21,
+      "document": "/data/community_board_budget_register/bronx-cb-11.json",
+      "sha256": "20d1e9b0df670dc717f78f943285956cdfad81bdf182869bfdeacca3f8eb46ae"
+    },
+    {
+      "board_id": "bronx-cb-12",
+      "request_count": 11,
+      "document": "/data/community_board_budget_register/bronx-cb-12.json",
+      "sha256": "fe365653ab23296bdf978d03541a28b0d76241fb4bd008809300c42915589f39"
+    },
+    {
+      "board_id": "brooklyn-cb-01",
+      "request_count": 82,
+      "document": "/data/community_board_budget_register/brooklyn-cb-01.json",
+      "sha256": "6be17832cd7047af8d2ad356909eee2cfb3c9338b8ad6784238e637d6d6f4684"
+    },
+    {
+      "board_id": "brooklyn-cb-02",
+      "request_count": 61,
+      "document": "/data/community_board_budget_register/brooklyn-cb-02.json",
+      "sha256": "6b39b00f4aeec3925b34ecc0ccc0ab2982a521173dd483de1a101a8e68f7955b"
+    },
+    {
+      "board_id": "brooklyn-cb-03",
+      "request_count": 89,
+      "document": "/data/community_board_budget_register/brooklyn-cb-03.json",
+      "sha256": "86e5e35d31514ae341b45174f323541fce8e11b98f0207beb7f3cf779efed883"
+    },
+    {
+      "board_id": "brooklyn-cb-04",
+      "request_count": 38,
+      "document": "/data/community_board_budget_register/brooklyn-cb-04.json",
+      "sha256": "821294daed5651798c683e24afa7989c530006646f54914a446c20f98358553a"
+    },
+    {
+      "board_id": "brooklyn-cb-05",
+      "request_count": 42,
+      "document": "/data/community_board_budget_register/brooklyn-cb-05.json",
+      "sha256": "c4cae887381e65c181c1bd1124c2ed3dd4c603461b23609700a5be17199bbff9"
+    },
+    {
+      "board_id": "brooklyn-cb-06",
+      "request_count": 59,
+      "document": "/data/community_board_budget_register/brooklyn-cb-06.json",
+      "sha256": "4e96d9e0c06fee6e7f8c80bd1ca1f1013876e0421b7530ce664dae0b475612e6"
+    },
+    {
+      "board_id": "brooklyn-cb-07",
+      "request_count": 64,
+      "document": "/data/community_board_budget_register/brooklyn-cb-07.json",
+      "sha256": "cbe830894be6c645364ee994776e8a713b2409399bf83b0cff34ebcbd139d9c7"
+    },
+    {
+      "board_id": "brooklyn-cb-08",
+      "request_count": 86,
+      "document": "/data/community_board_budget_register/brooklyn-cb-08.json",
+      "sha256": "54ec328dcfebfa8279e702235abe698aeba05b523d9fd971baaae00df61e033d"
+    },
+    {
+      "board_id": "brooklyn-cb-09",
+      "request_count": 133,
+      "document": "/data/community_board_budget_register/brooklyn-cb-09.json",
+      "sha256": "5c59914a3508d825143cb7dd9e256bd383d19cec03d3c6b1537b828773342c13"
+    },
+    {
+      "board_id": "brooklyn-cb-10",
+      "request_count": 63,
+      "document": "/data/community_board_budget_register/brooklyn-cb-10.json",
+      "sha256": "a4c6e92958a23a9503c23287a26f84dd5eb8c40957584c98594941f177c791ba"
+    },
+    {
+      "board_id": "brooklyn-cb-11",
+      "request_count": 65,
+      "document": "/data/community_board_budget_register/brooklyn-cb-11.json",
+      "sha256": "b8442275f263a84b83966da1efd6372ee50edbedb675f75730fe4865b3a918b0"
+    },
+    {
+      "board_id": "brooklyn-cb-12",
+      "request_count": 42,
+      "document": "/data/community_board_budget_register/brooklyn-cb-12.json",
+      "sha256": "9c0fe946ca0e37a0c72238749af6939601f40da8d64a495a901baef6c17b1e72"
+    },
+    {
+      "board_id": "brooklyn-cb-13",
+      "request_count": 115,
+      "document": "/data/community_board_budget_register/brooklyn-cb-13.json",
+      "sha256": "d817f56dfd62919cc3e2d40c81e04bd4dd08b34bbff5b0f4d9e509c9e7483b4b"
+    },
+    {
+      "board_id": "brooklyn-cb-14",
+      "request_count": 59,
+      "document": "/data/community_board_budget_register/brooklyn-cb-14.json",
+      "sha256": "6bc1398c8ef2112e120c36c602be2b1b98823e445f84ad79642b872d72b76b68"
+    },
+    {
+      "board_id": "brooklyn-cb-15",
+      "request_count": 54,
+      "document": "/data/community_board_budget_register/brooklyn-cb-15.json",
+      "sha256": "1e48a7e6dbe18fb7d30b36915e597cd6708ff148bd92cdf4004ac8a3f77dcfe9"
+    },
+    {
+      "board_id": "brooklyn-cb-16",
+      "request_count": 81,
+      "document": "/data/community_board_budget_register/brooklyn-cb-16.json",
+      "sha256": "0e5dbd547412795370b7141b1f5b2455fb7294f1321cdc528301bfa04390e64b"
+    },
+    {
+      "board_id": "brooklyn-cb-17",
+      "request_count": 75,
+      "document": "/data/community_board_budget_register/brooklyn-cb-17.json",
+      "sha256": "611cd8bd93bedf49331de6944bbd0167866e097a0501841b1305a2e1ff8788e5"
+    },
+    {
+      "board_id": "brooklyn-cb-18",
+      "request_count": 56,
+      "document": "/data/community_board_budget_register/brooklyn-cb-18.json",
+      "sha256": "6bf0abc356023311a727685b9a7ef3c47cc068ce1c8a0509d91521434c48b672"
+    },
+    {
+      "board_id": "manhattan-cb-01",
+      "request_count": 78,
+      "document": "/data/community_board_budget_register/manhattan-cb-01.json",
+      "sha256": "748e023bc29d2789bc5ceac9e57bdcc43e138eb2fe5628213a391ff58dfc9832"
+    },
+    {
+      "board_id": "manhattan-cb-02",
+      "request_count": 79,
+      "document": "/data/community_board_budget_register/manhattan-cb-02.json",
+      "sha256": "4f4b0c9635f9d768bbf844846647efa4fe07b227e6bf7d3f94b3a519f89a1ea5"
+    },
+    {
+      "board_id": "manhattan-cb-03",
+      "request_count": 49,
+      "document": "/data/community_board_budget_register/manhattan-cb-03.json",
+      "sha256": "0086b268271d5e08936fd43b084cbd7be46bc324e0576dfdca80086cff7fc250"
+    },
+    {
+      "board_id": "manhattan-cb-04",
+      "request_count": 99,
+      "document": "/data/community_board_budget_register/manhattan-cb-04.json",
+      "sha256": "2ef95e5c413c62ff4165395b9b1b7a4f090db05bb16b882ad05c403dfd2cf396"
+    },
+    {
+      "board_id": "manhattan-cb-05",
+      "request_count": 113,
+      "document": "/data/community_board_budget_register/manhattan-cb-05.json",
+      "sha256": "c4e318f853b474be1eb6ffc8380732ed2fcc9f968266fc19265dff7960c9ab55"
+    },
+    {
+      "board_id": "manhattan-cb-06",
+      "request_count": 36,
+      "document": "/data/community_board_budget_register/manhattan-cb-06.json",
+      "sha256": "c2fce79c3ffdc92b53da21a7ef23de8245a3ae8be501742138878b4e517419ff"
+    },
+    {
+      "board_id": "manhattan-cb-07",
+      "request_count": 34,
+      "document": "/data/community_board_budget_register/manhattan-cb-07.json",
+      "sha256": "7223431ece7a9dfe2c02102cf21f8a43fb0075d85bf0cea6430e7ed3d38afbfb"
+    },
+    {
+      "board_id": "manhattan-cb-08",
+      "request_count": 67,
+      "document": "/data/community_board_budget_register/manhattan-cb-08.json",
+      "sha256": "ee597969e8582d1b96275e7145fe0f4ea33c5ed5c129ddc830143fc0236f6cb4"
+    },
+    {
+      "board_id": "manhattan-cb-09",
+      "request_count": 134,
+      "document": "/data/community_board_budget_register/manhattan-cb-09.json",
+      "sha256": "afc3ded3e09188ac8ffbfb7e24464862663e08b69dc84d559323aca8a69e057a"
+    },
+    {
+      "board_id": "manhattan-cb-10",
+      "request_count": 46,
+      "document": "/data/community_board_budget_register/manhattan-cb-10.json",
+      "sha256": "99a1b1532481c998d61b7b550c6522e72427ae93aa745287f6a51fca303acccb"
+    },
+    {
+      "board_id": "manhattan-cb-11",
+      "request_count": 80,
+      "document": "/data/community_board_budget_register/manhattan-cb-11.json",
+      "sha256": "97482ae56da8f1dabc14d3e234b7a8280eec2522a3cced98a97edfc5e170df2b"
+    },
+    {
+      "board_id": "manhattan-cb-12",
+      "request_count": 86,
+      "document": "/data/community_board_budget_register/manhattan-cb-12.json",
+      "sha256": "fcc50b947e92c900902e4125dba4d04dcdefc935b5a024baa6d40af8bc97a9e9"
+    },
+    {
+      "board_id": "queens-cb-01",
+      "request_count": 75,
+      "document": "/data/community_board_budget_register/queens-cb-01.json",
+      "sha256": "a4222e5a21e0be62173488d4630955b1e33e938d0bd6125e876a550583f4455c"
+    },
+    {
+      "board_id": "queens-cb-02",
+      "request_count": 65,
+      "document": "/data/community_board_budget_register/queens-cb-02.json",
+      "sha256": "6fd91d6d1e2304f5d3b790f9f306ac7a1ae7f09145ee508a9402da05aee216df"
+    },
+    {
+      "board_id": "queens-cb-03",
+      "request_count": 110,
+      "document": "/data/community_board_budget_register/queens-cb-03.json",
+      "sha256": "5b14d56c9c83954a6b02b5920ae07d29d2dfdec855c404ea32e5349b995a4935"
+    },
+    {
+      "board_id": "queens-cb-04",
+      "request_count": 108,
+      "document": "/data/community_board_budget_register/queens-cb-04.json",
+      "sha256": "62b44e588e0dbb1781a4177721518d8ea883564064e566b44e224a218e0c1eac"
+    },
+    {
+      "board_id": "queens-cb-05",
+      "request_count": 56,
+      "document": "/data/community_board_budget_register/queens-cb-05.json",
+      "sha256": "e94bfe6070ef6d15649f84609c0a68e373a7ebde0b66ce6c7acf051928bb77dc"
+    },
+    {
+      "board_id": "queens-cb-06",
+      "request_count": 60,
+      "document": "/data/community_board_budget_register/queens-cb-06.json",
+      "sha256": "3aa13fad0edaa4eae8e8f393182004e113b841d6b8a34665a508526dfb29cd04"
+    },
+    {
+      "board_id": "queens-cb-07",
+      "request_count": 58,
+      "document": "/data/community_board_budget_register/queens-cb-07.json",
+      "sha256": "c036daf800369533f1ff8b4268d16ea70b1e52b610a7293b5bc461fbc28e345e"
+    },
+    {
+      "board_id": "queens-cb-08",
+      "request_count": 74,
+      "document": "/data/community_board_budget_register/queens-cb-08.json",
+      "sha256": "3f1f82607fa9c6edd0f4b97b0e0de7cf543f0df2625e960cc6a718ed9a7f1890"
+    },
+    {
+      "board_id": "queens-cb-09",
+      "request_count": 51,
+      "document": "/data/community_board_budget_register/queens-cb-09.json",
+      "sha256": "d3e48160820451de1fbd4c0d77ec0202bc8866549f8706917d32dfad0ba02090"
+    },
+    {
+      "board_id": "queens-cb-10",
+      "request_count": 78,
+      "document": "/data/community_board_budget_register/queens-cb-10.json",
+      "sha256": "8ca7bee07a145eb0f2b9655447336f7872bd93a006200e86ac29e96d9bbbe2af"
+    },
+    {
+      "board_id": "queens-cb-11",
+      "request_count": 48,
+      "document": "/data/community_board_budget_register/queens-cb-11.json",
+      "sha256": "0249ba5291ef15ce7a5804152ff537ae58b82b434c42da0af12ea12d9d50f1b7"
+    },
+    {
+      "board_id": "queens-cb-12",
+      "request_count": 57,
+      "document": "/data/community_board_budget_register/queens-cb-12.json",
+      "sha256": "cacaa8ce2eba0831ea7861c99573eee87e3a5ce6e338bc5cd2efdaca97d24d97"
+    },
+    {
+      "board_id": "queens-cb-13",
+      "request_count": 30,
+      "document": "/data/community_board_budget_register/queens-cb-13.json",
+      "sha256": "51c42e06760869f1856abd904b1fd5208b25de2ab22f6e3ebb28798f165bbca1"
+    },
+    {
+      "board_id": "queens-cb-14",
+      "request_count": 80,
+      "document": "/data/community_board_budget_register/queens-cb-14.json",
+      "sha256": "3629c04318e407db8ee324cb1bffa13e5059705f7c1432ce726f1fd985405fec"
+    },
+    {
+      "board_id": "staten-island-cb-01",
+      "request_count": 44,
+      "document": "/data/community_board_budget_register/staten-island-cb-01.json",
+      "sha256": "f01e4a5b2b2b7b219026ba60b5f47e54827be1e2f8f0385a4de61f83dbefd264"
+    },
+    {
+      "board_id": "staten-island-cb-02",
+      "request_count": 15,
+      "document": "/data/community_board_budget_register/staten-island-cb-02.json",
+      "sha256": "b2b344552968926d50dda97ef58c7cfa6fcc3afd30c12828cef28baacc88ba2b"
+    },
+    {
+      "board_id": "staten-island-cb-03",
+      "request_count": 9,
+      "document": "/data/community_board_budget_register/staten-island-cb-03.json",
+      "sha256": "bdff7c2c3789eb44749ddf0cfd7185dc5700bd074ca9deb1583f2d140961205c"
+    }
+  ],
+  "requests_without_a_board_document": []
+}

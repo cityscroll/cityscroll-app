@@ -3987,6 +3987,61 @@
         "backstage_detail": "receipts-and-errors",
         "relationship_coverage": "separate"
       }
+    },
+    {
+      "id": "omb-community-board-budget-requests",
+      "name": "Register of Community Board Budget Requests",
+      "owner": "New York City Office of Management and Budget",
+      "status": "live",
+      "scope": "runtime",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "vn4m-mk4t",
+      "landing_page": "https://data.cityofnewyork.us/d/vn4m-mk4t",
+      "required_fields": [
+        "publication",
+        "boro",
+        "board",
+        "priority",
+        "tracking_code",
+        "request",
+        "explanation",
+        "response",
+        "responsible_agency"
+      ],
+      "max_stale_days": 240,
+      "publisher_cadence": "Two or three budget publications a fiscal year",
+      "product_freshness": "Each publication is retained as a frozen population and the register is materialized from those, so a resident read never contacts the publisher. A publication dated after the day the publisher was read is retained but cannot become the latest answer.",
+      "used_for": "District budget requests a community board made, the agency response published against each one, and how that response read in each publication of the same fiscal cycle.",
+      "code_references": [
+        {
+          "path": "warehouse/lib/community_board_budget_register.mjs",
+          "contains": "vn4m-mk4t"
+        },
+        {
+          "path": "tools/acquire_community_board_budget_register.mjs",
+          "contains": "community-board-budget-register"
+        }
+      ],
+      "delivery_tier": "edge-materialized",
+      "warehouse_snapshot": {
+        "status": "materialized",
+        "artifact": "site/data/community_board_budget_register.json",
+        "materialized_at": "2026-09-07T11:54:00.629Z",
+        "row_count": 3809
+      },
+      "freshness_contract": {
+        "mode": "periodic",
+        "max_stale_days": 240,
+        "clock_basis": "checked_acquired",
+        "serving_max_age_days": 240,
+        "serve_contract_id": null
+      },
+      "health_policy": {
+        "public_visibility": "public",
+        "backstage_detail": "receipts-and-errors",
+        "relationship_coverage": "separate"
+      }
     }
   ],
   "first_class_artifacts": [
@@ -4583,6 +4638,40 @@
       "resident_stale_behavior": "Do not describe ZAP project coverage as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show ZAP project coverage as unavailable; never infer that no projects exist.",
       "production_evidence_field": "first_class.zap_projects"
+    },
+    {
+      "id": "community-board-budget-register",
+      "public_artifact_path": "site/data/community_board_budget_register.json",
+      "primary_routes": [
+        "/community-boards/"
+      ],
+      "source_contract_id": "omb-community-board-budget-requests",
+      "acquisition_command": [
+        "node",
+        "tools/acquire_community_board_budget_register.mjs"
+      ],
+      "owning_builder": "tools/build_community_board_budget_register.mjs",
+      "builder_command": [
+        "node",
+        "tools/build_community_board_budget_register.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_source_health_observations.mjs"
+      ],
+      "normal_refresh_cadence_hours": 720,
+      "cadence_justification": "The publisher issues two or three budget publications a fiscal year and roughly seven weeks separate the two publications of one cycle, so a monthly acquisition sees every release inside the cycle it belongs to and leaves the retained populations untouched between them.",
+      "warning_age_hours": 2160,
+      "hard_maximum_age_hours": 5040,
+      "vintage_fields": [
+        "acquired_at"
+      ],
+      "population_fields": [
+        "counts.requests"
+      ],
+      "last_known_good_behavior": "Keep serving the last complete acquisition of every retained publication and disclose that the register is behind.",
+      "resident_stale_behavior": "Stop describing the newest retained publication as the current answer once the register passes its hard age, and keep showing every response with the publication it came from.",
+      "resident_unavailable_behavior": "Show budget requests as unavailable. Never report that a board made no requests, and never report a response as unchanged, from missing data.",
+      "production_evidence_field": "first_class.community_board_budget_register"
     }
   ]
 }

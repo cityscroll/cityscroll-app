@@ -2,8 +2,8 @@
   "schema": "cityscroll.served_coverage_census.v1",
   "purpose": "Disposition of every registered source contract against the served product, and the served-population evidence behind each published coverage unit. Not a served artifact: this is the receipt the public snapshot is derived from.",
   "registry": {
-    "reviewed_registry_size": 63,
-    "observed_registry_size": 63,
+    "reviewed_registry_size": 64,
+    "observed_registry_size": 64,
     "changed": false
   },
   "disposition_vocabulary": [
@@ -16,7 +16,7 @@
     "publicly_represented": 18,
     "context_only": 28,
     "not_served": 8,
-    "unresolved": 9
+    "unresolved": 10
   },
   "served_units": [
     {
@@ -1172,6 +1172,19 @@
             "evidence_vintage": "2026-09-05T00:00:00.000Z"
           }
         ]
+      }
+    },
+    {
+      "source_id": "omb-community-board-budget-requests",
+      "name": "Register of Community Board Budget Requests",
+      "disposition": "unresolved",
+      "reason": "The board budget request register is materialized and published per board, but no served record unit counts its requests yet, so no served count is established.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "edge-materialized",
+          "used_for": "District budget requests a community board made, the agency response published against each one, and how that response read in each publication of the same fiscal cycle."
+        }
       }
     },
     {

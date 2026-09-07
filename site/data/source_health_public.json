@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.public_source_health.v1",
-  "generated_at": "2026-09-06T07:20:20.822Z",
+  "generated_at": "2026-09-07T13:41:05.246Z",
   "available": true,
-  "source_count": 59,
+  "source_count": 60,
   "sources": [
     {
       "source_id": "abo-local-authorities",
@@ -478,12 +478,12 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": "2026-08-18T04:05:51.552Z",
+            "at": "2026-09-07T13:02:33.872Z",
             "state": "KNOWN",
             "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": "2026-08-18T04:05:51.552Z",
+            "at": "2026-09-07T13:02:33.872Z",
             "state": "KNOWN",
             "basis": "cityscroll_materialization"
           }
@@ -500,7 +500,7 @@
           "max_date": null
         },
         "publisher_vintage": null,
-        "retrieved_at": "2026-08-18T04:05:51.552Z",
+        "retrieved_at": "2026-09-07T13:02:33.872Z",
         "expected_lag_tolerance_days": 45,
         "current_lag": {
           "value": null,
@@ -1441,12 +1441,12 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": "2026-08-31T15:25:44.983Z",
+            "at": "2026-09-07T13:41:05.021Z",
             "state": "KNOWN",
             "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": "2026-08-31T15:25:45.297Z",
+            "at": "2026-09-07T13:41:05.246Z",
             "state": "KNOWN",
             "basis": "cityscroll_materialization"
           }
@@ -1463,7 +1463,7 @@
           "max_date": null
         },
         "publisher_vintage": null,
-        "retrieved_at": "2026-08-31T15:25:44.983Z",
+        "retrieved_at": "2026-09-07T13:41:05.021Z",
         "expected_lag_tolerance_days": 400,
         "current_lag": {
           "value": null,
@@ -2601,6 +2601,55 @@
       }
     },
     {
+      "source_id": "omb-community-board-budget-requests",
+      "name": "Register of Community Board Budget Requests",
+      "publisher": "New York City Office of Management and Budget",
+      "official_url": "https://data.cityofnewyork.us/d/vn4m-mk4t",
+      "expected_cadence": "Two or three budget publications a fiscal year",
+      "mode": "periodic",
+      "health": {
+        "status": "Healthy",
+        "reason_codes": [],
+        "clocks": {
+          "publisher_updated": {
+            "at": "2026-06-30T00:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "publisher_record"
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-09-07T11:54:00.629Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_acquisition"
+          },
+          "cityscroll_serving": {
+            "at": "2026-09-07T11:54:00.629Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_materialization"
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": "2026-09-07T11:54:00.629Z",
+        "expected_lag_tolerance_days": 240,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
+      }
+    },
+    {
       "source_id": "passport-public-contracts",
       "name": "PASSPort Public contracts",
       "publisher": "NYC Mayor's Office of Contract Services",
@@ -2977,7 +3026,7 @@
             "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": "2026-08-23T07:59:09.786Z",
+            "at": "2026-09-06T16:05:05.204Z",
             "state": "KNOWN",
             "basis": "cityscroll_materialization"
           }

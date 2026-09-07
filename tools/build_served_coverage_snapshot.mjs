@@ -42,7 +42,7 @@ export const SNAPSHOT_SCHEMA = "cityscroll.served_coverage_snapshot.v1";
 export const CENSUS_SCHEMA = "cityscroll.served_coverage_census.v1";
 
 /** The registry size this census was reviewed against. A change is reported, never absorbed. */
-export const REVIEWED_REGISTRY_SIZE = 63;
+export const REVIEWED_REGISTRY_SIZE = 64;
 
 export { SERVED_UNITS, DECLARED_DISPOSITIONS };
 
@@ -280,6 +280,7 @@ const DECLARED_DISPOSITIONS = Object.freeze({
   "nyc-rules-rss": ["context_only", "Rule lifecycle enrichment joined to already served rule records; rules are counted once as their own record unit."],
   "nycida-build-nyc-projects": ["unresolved", "Serves a separate subsidy timeline reader, but no first-class served-population artifact declares this contract as its source, so no served count is established."],
   "ocp-current-solicitations": ["context_only", "Solicitation-stage enrichment joined to already served procurement records."],
+  "omb-community-board-budget-requests": ["unresolved", "The board budget request register is materialized and published per board, but no served record unit counts its requests yet, so no served count is established."],
   "suitability-city-owned-leased-property-ll48": ["context_only", "Suitability evidence on property parcel biographies; properties are counted once as their own record unit."],
   "ulurp-recommendation-pdfs": ["unresolved", "Serves the land recommendation panel behind a usefulness gate, but no first-class served-population artifact declares this contract as its source."],
   "ulurp-recommendations": ["unresolved", "Serves the land recommendation panel behind a usefulness gate, but no first-class served-population artifact declares this contract as its source."],

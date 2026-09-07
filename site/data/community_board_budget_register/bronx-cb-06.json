@@ -1,0 +1,3788 @@
+{
+  "schema": "cityscroll.community_board_budget_register_document.v1",
+  "method": "omb_register_full_tracking_code_within_cycle_v1",
+  "negative_rule": "A changed response text is a changed written answer and nothing else. It is not funding, a commitment, delivery, or completion, and no request is carried across fiscal cycles by a repeated priority number, a similar facility name, or matching request text.",
+  "board_id": "bronx-cb-06",
+  "publications": {
+    "as_of": "2026-09-07",
+    "servable": [
+      "20260512",
+      "20260630"
+    ],
+    "diagnostic_only": [
+      "20270217"
+    ],
+    "latest": "20260630"
+  },
+  "request_count": 45,
+  "requests": [
+    {
+      "tracking_code": "106202701C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other cultural facilities and resources requests",
+          "explanation": "CB6 asks that DCLA use capital funds to maintain the Bronx River Art Center. The back room is prone to flooding due to poor design.",
+          "response": "This item is not eligible for Capital funding. OMB supports the agency's position as follows: Further study by the agency of this request is needed. Contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "1087 EAST TREMONT AVENUE, Bronx, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other cultural facilities and resources requests",
+          "explanation": "CB6 asks that DCLA use capital funds to maintain the Bronx River Art Center. The back room is prone to flooding due to poor design.",
+          "response": "This item is not eligible for Capital funding. OMB supports the agency's position as follows: Further study by the agency of this request is needed. Contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "1087 EAST TREMONT AVENUE, Bronx, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "126",
+          "request": "Other cultural facilities and resources requests",
+          "explanation": "CB6 asks that DCLA use capital funds to maintain the Bronx River Art Center. The back room is prone to flooding due to poor design.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "1087 EAST TREMONT AVENUE, Bronx, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202701E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "City University of New York",
+            "agency_id": "city-university",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense request for CUNY",
+          "explanation": "CB6 asks that CUNY expand it's workforce programs to provide programming in Community District 6.",
+          "response": "For more information, please contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "City University of New York",
+            "agency_id": "city-university",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense request for CUNY",
+          "explanation": "CB6 asks that CUNY expand it's workforce programs to provide programming in Community District 6.",
+          "response": "For more information, please contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "City University of New York",
+            "agency_id": "city-university",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "042",
+          "request": "Other expense request for CUNY",
+          "explanation": "CB6 asks that CUNY expand it's workforce programs to provide programming in Community District 6.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202702C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade an existing cultural facility",
+          "explanation": "The Bronx River Art Center does not have a functioning elevator, we ask that DCLA provide capital funds to repair the elevator.",
+          "response": "This item is not eligible for Capital funding. OMB supports the agency's position as follows: Further study by the agency of this request is needed. Contact the agency.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "1087 EAST TREMONT AVENUE, Bronx, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade an existing cultural facility",
+          "explanation": "The Bronx River Art Center does not have a functioning elevator, we ask that DCLA provide capital funds to repair the elevator.",
+          "response": "This item is not eligible for Capital funding. OMB supports the agency's position as follows: Further study by the agency of this request is needed. Contact the agency.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "1087 EAST TREMONT AVENUE, Bronx, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "126",
+          "request": "Renovate or upgrade an existing cultural facility",
+          "explanation": "The Bronx River Art Center does not have a functioning elevator, we ask that DCLA provide capital funds to repair the elevator.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "1087 EAST TREMONT AVENUE, Bronx, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202702E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other senior center program requests",
+          "explanation": "CB6 asks that DFTA issue an RFP for the full cost of operating the Mt. Carmel Senior Center. Due to an increase in rent, the operator is covering rent costs out of other funds. We ask that DFTA award the total cost of operating this center to the operator.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2405 SOUTHERN BOULEVARD, Bronx, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other senior center program requests",
+          "explanation": "CB6 asks that DFTA issue an RFP for the full cost of operating the Mt. Carmel Senior Center. Due to an increase in rent, the operator is covering rent costs out of other funds. We ask that DFTA award the total cost of operating this center to the operator.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2405 SOUTHERN BOULEVARD, Bronx, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Other senior center program requests",
+          "explanation": "CB6 asks that DFTA issue an RFP for the full cost of operating the Mt. Carmel Senior Center. Due to an increase in rent, the operator is covering rent costs out of other funds. We ask that DFTA award the total cost of operating this center to the operator.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2405 SOUTHERN BOULEVARD, Bronx, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202703C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Evaluate a public location or property for green infrastructure, e.g. rain gardens, stormwater greenstreets, green playgrounds",
+          "explanation": "CB6 asks that DEP consider locations to install porous pavement in areas around the Bronx River to reduce street flooding. We ask that DEP evaluate streets for the best locations for porous pavement in our District.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Evaluate a public location or property for green infrastructure, e.g. rain gardens, stormwater greenstreets, green playgrounds",
+          "explanation": "CB6 asks that DEP consider locations to install porous pavement in areas around the Bronx River to reduce street flooding. We ask that DEP evaluate streets for the best locations for porous pavement in our District.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "826",
+          "request": "Evaluate a public location or property for green infrastructure, e.g. rain gardens, stormwater greenstreets, green playgrounds",
+          "explanation": "CB6 asks that DEP consider locations to install porous pavement in areas around the Bronx River to reduce street flooding. We ask that DEP evaluate streets for the best locations for porous pavement in our District.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202703E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance home care services",
+          "explanation": "CB6 asks that DFTA develop a resource and rights guide for residents receiving home care services. We are concerned that residents with home care services do not understand their rights when dealing with insurance and home care service providers.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance home care services",
+          "explanation": "CB6 asks that DFTA develop a resource and rights guide for residents receiving home care services. We are concerned that residents with home care services do not understand their rights when dealing with insurance and home care service providers.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: NYC Aging does not have the staffing to meet this need.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Enhance home care services",
+          "explanation": "CB6 asks that DFTA develop a resource and rights guide for residents receiving home care services. We are concerned that residents with home care services do not understand their rights when dealing with insurance and home care service providers.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202704C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The playground and benches area in Bathgate Playground need to be upgraded in order to allow for further community use. The field needs renovation so the public can use it.",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "BATHGATE PLAYGROUND, Bronx, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The playground and benches area in Bathgate Playground need to be upgraded in order to allow for further community use. The field needs renovation so the public can use it.",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "BATHGATE PLAYGROUND, Bronx, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The playground and benches area in Bathgate Playground need to be upgraded in order to allow for further community use. The field needs renovation so the public can use it.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "BATHGATE PLAYGROUND, Bronx, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202704E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Support nonprofit cultural organizations",
+          "explanation": "CB6 asks that DCLA provide operating funding so that the Bronx River Art Center can provide free programming to students in our District.",
+          "response": "It is recommended that this request be brought to the attention of your Elected Officials.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "1087 EAST TREMONT AVENUE, Bronx, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Support nonprofit cultural organizations",
+          "explanation": "CB6 asks that DCLA provide operating funding so that the Bronx River Art Center can provide free programming to students in our District.",
+          "response": "It is recommended that this request be brought to the attention of your Elected Officials.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "1087 EAST TREMONT AVENUE, Bronx, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "126",
+          "request": "Support nonprofit cultural organizations",
+          "explanation": "CB6 asks that DCLA provide operating funding so that the Bronx River Art Center can provide free programming to students in our District.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "1087 EAST TREMONT AVENUE, Bronx, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202705C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve access to a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "CB6 asks that DPR investigate potential locations for a new dog run in our District, which has no dog runs. Please provide feasibility on which parks would be the best fit.",
+          "response": "Please contact the relevant Agency/Covered Organization after the release of the Adopted Budget for further details concerning this request.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve access to a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "CB6 asks that DPR investigate potential locations for a new dog run in our District, which has no dog runs. Please provide feasibility on which parks would be the best fit.",
+          "response": "Please contact the relevant Agency/Covered Organization after the release of the Adopted Budget for further details concerning this request.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Improve access to a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "CB6 asks that DPR investigate potential locations for a new dog run in our District, which has no dog runs. Please provide feasibility on which parks would be the best fit.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202705E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other educational programs requests",
+          "explanation": "The DOE has a long history of failing to meet the needs of students with Individual Education Plans, with one third of IEP students receiving mandated services. We request that DOE refer all families in CB6 with an IEP to the Office of People with Developmental Disabilities, in writing. We are concerned that families are not aware of the OPWDD regional office and are not prepared for their students' future needs as adults.",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other educational programs requests",
+          "explanation": "The DOE has a long history of failing to meet the needs of students with Individual Education Plans, with one third of IEP students receiving mandated services. We request that DOE refer all families in CB6 with an IEP to the Office of People with Developmental Disabilities, in writing. We are concerned that families are not aware of the OPWDD regional office and are not prepared for their students' future needs as adults.",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Other educational programs requests",
+          "explanation": "The DOE has a long history of failing to meet the needs of students with Individual Education Plans, with one third of IEP students receiving mandated services. We request that DOE refer all families in CB6 with an IEP to the Office of People with Developmental Disabilities, in writing. We are concerned that families are not aware of the OPWDD regional office and are not prepared for their students' future needs as adults.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202706C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "CB6 asks that DPR install a track around the Quarry Ballfields, using a safety surface instead of the current pavement.",
+          "response": "Agency does not support and cannot accommodate Explanation: This site was recently reconstructed.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "CB6 asks that DPR install a track around the Quarry Ballfields, using a safety surface instead of the current pavement.",
+          "response": "Agency does not support and cannot accommodate Explanation: This site was recently reconstructed.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "CB6 asks that DPR install a track around the Quarry Ballfields, using a safety surface instead of the current pavement.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202706E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Bronx CB6 has among the highest overdose rates in NYC. We request that DOH provide funding to harm reduction programs operating in CB6.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DOHMH can review and sharewhat contracted providers are in your district. A more comprehensive list can be obtained via NY State OASAS and NYS DOH as they license and regulate the actual harm reduction services",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Bronx CB6 has among the highest overdose rates in NYC. We request that DOH provide funding to harm reduction programs operating in CB6.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DOHMH can review and sharewhat contracted providers are in your district. A more comprehensive list can be obtained via NY State OASAS and NYS DOH as they license and regulate the actual harm reduction services",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Bronx CB6 has among the highest overdose rates in NYC. We request that DOH provide funding to harm reduction programs operating in CB6.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202707C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Renovate the outdated play structure in Belmont Playground",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Renovate the outdated play structure in Belmont Playground",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Renovate the outdated play structure in Belmont Playground",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202707E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Families receiving home care services are often unclear on their rights and how to best advocate for themselves. CB6 requests educational programming for families receiving home care.",
+          "response": "The request does not seem to be applicable to the Responsible Agency. OMB cannot make a determination at this time.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Families receiving home care services are often unclear on their rights and how to best advocate for themselves. CB6 requests educational programming for families receiving home care.",
+          "response": "The request does not seem to be applicable to the Responsible Agency. OMB cannot make a determination at this time.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Families receiving home care services are often unclear on their rights and how to best advocate for themselves. CB6 requests educational programming for families receiving home care.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202708C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide new or increase number of sanitation trucks and other equipment",
+          "explanation": "CB6 requests additional sweepers, as the sweepers in our District are often sweeping without water, causing dust clouds.",
+          "response": "Capital Funding was provided to implement a project that addresses this request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide new or increase number of sanitation trucks and other equipment",
+          "explanation": "CB6 requests additional sweepers, as the sweepers in our District are often sweeping without water, causing dust clouds.",
+          "response": "Capital Funding was provided to implement a project that addresses this request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Provide new or increase number of sanitation trucks and other equipment",
+          "explanation": "CB6 requests additional sweepers, as the sweepers in our District are often sweeping without water, causing dust clouds.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202708E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "CB6 is in need of additional tree trimming, and asks that DPR conduct additional oversight over tree trimming contractors. CB6 residents report contracted trimmers are not addressing the needs of trees in our District, performing substandard work and leaving trees overgrown.",
+          "response": "Agency supports and can accommodate Explanation: Parks’ block pruning program provides neighborhood-based, proactive tree maintenance by addressing a portion of the street trees in each CB every year. Parks inspects, then prunes all city-owned street trees above 4\"\" in diameter on a routine 7-year cycle, which is an industry standard. The goals of block pruning are to reduce damage caused during storms, avoid blocking traffic signals, remove dead branches, improve tree health and structure, and encourage growth away from built infrastructure. We are not currently funded for cyclical pruning of trees within parks. If there are individual trees in need of pruning for public safety, we encourage anyone to submit a service request by locating the tree on the NYC Tree Map (and clicking on the “report a problem” tab), calling 311, or using our online tree service request system. Our inspectors will visit the tree and determine the appropriate action in accordance with our Tree Risk Management program. More details can be found on the Parks website: https://www.nycgovparks.org/services/forestry/risk-management\"",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "CB6 is in need of additional tree trimming, and asks that DPR conduct additional oversight over tree trimming contractors. CB6 residents report contracted trimmers are not addressing the needs of trees in our District, performing substandard work and leaving trees overgrown.",
+          "response": "Agency supports and can accommodate Explanation: Parks’ block pruning program provides neighborhood-based, proactive tree maintenance by addressing a portion of the street trees in each CB every year. Parks inspects, then prunes all city-owned street trees above 4\"\" in diameter on a routine 7-year cycle, which is an industry standard. The goals of block pruning are to reduce damage caused during storms, avoid blocking traffic signals, remove dead branches, improve tree health and structure, and encourage growth away from built infrastructure. We are not currently funded for cyclical pruning of trees within parks. If there are individual trees in need of pruning for public safety, we encourage anyone to submit a service request by locating the tree on the NYC Tree Map (and clicking on the “report a problem” tab), calling 311, or using our online tree service request system. Our inspectors will visit the tree and determine the appropriate action in accordance with our Tree Risk Management program. More details can be found on the Parks website: https://www.nycgovparks.org/services/forestry/risk-management\"",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "CB6 is in need of additional tree trimming, and asks that DPR conduct additional oversight over tree trimming contractors. CB6 residents report contracted trimmers are not addressing the needs of trees in our District, performing substandard work and leaving trees overgrown.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202709C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DSNY",
+          "explanation": "Place cameras for illegal dumping enforcement throughout CB6",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DSNY",
+          "explanation": "Place cameras for illegal dumping enforcement throughout CB6",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Other capital budget request for DSNY",
+          "explanation": "Place cameras for illegal dumping enforcement throughout CB6",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202709E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DPR",
+          "explanation": "CB6 is concerned about park and street tree maintenance in our District. In light of this administrations cuts to the Parks Department, we are seeing reduced capacity to pick up trash and maintain parks property.",
+          "response": "The agency does not understand the request as written and requires more clarification. Explanation: Further clarification is needed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DPR",
+          "explanation": "CB6 is concerned about park and street tree maintenance in our District. In light of this administrations cuts to the Parks Department, we are seeing reduced capacity to pick up trash and maintain parks property.",
+          "response": "The agency does not understand the request as written and requires more clarification. Explanation: Further clarification is needed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Other expense budget request for DPR",
+          "explanation": "CB6 is concerned about park and street tree maintenance in our District. In light of this administrations cuts to the Parks Department, we are seeing reduced capacity to pick up trash and maintain parks property.",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202710C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "CB6 asks that DOT work with DDC to facilitate the timely completion of the West Farms Square street redesign (Devoe / E177). We understand that the project requires additional capital funds, and we ask that DOT provide those funds to complete the project.",
+          "response": "This project is ongoing. The Community Board should contact the agency for a status update.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "CB6 asks that DOT work with DDC to facilitate the timely completion of the West Farms Square street redesign (Devoe / E177). We understand that the project requires additional capital funds, and we ask that DOT provide those funds to complete the project.",
+          "response": "This project is ongoing. The Community Board should contact the agency for a status update.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "CB6 asks that DOT work with DDC to facilitate the timely completion of the West Farms Square street redesign (Devoe / E177). We understand that the project requires additional capital funds, and we ask that DOT provide those funds to complete the project.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202710E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more programs in parks or recreational centers",
+          "explanation": "CB6 requests additional programming at parks in our district.",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more programs in parks or recreational centers",
+          "explanation": "CB6 requests additional programming at parks in our district.",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Provide more programs in parks or recreational centers",
+          "explanation": "CB6 requests additional programming at parks in our district.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202711C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "We request DOT undo the bike lane installation along Southern Boulevard, as the lines of school buses parked in front of the Bronx Zoo every day block the bike lane and prevent the intended effect of the project.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: The bike lane is in place to extend the citywide transportation network. It is unclear why School Buses would impede the usefulness of the bike lane if they do not occupy it 24/7.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "We request DOT undo the bike lane installation along Southern Boulevard, as the lines of school buses parked in front of the Bronx Zoo every day block the bike lane and prevent the intended effect of the project.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: The bike lane is in place to extend the citywide transportation network. It is unclear why School Buses would impede the usefulness of the bike lane if they do not occupy it 24/7.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Reconstruct streets",
+          "explanation": "We request DOT undo the bike lane installation along Southern Boulevard, as the lines of school buses parked in front of the Bronx Zoo every day block the bike lane and prevent the intended effect of the project.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202711E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Plant new street trees",
+          "explanation": "CB6 requests that DPR plant additional trees in our District to reduce the urban heat island effect in our neighborhoods.",
+          "response": "Agency does not support but can address the need alternatively Explanation: Trees will be planted throughout CB 6 as part of our Neighborhood Tree Planting approach. More details can be found on the Parks website: https://www.nycgovparks.org/trees/street-tree-planting.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Plant new street trees",
+          "explanation": "CB6 requests that DPR plant additional trees in our District to reduce the urban heat island effect in our neighborhoods.",
+          "response": "Agency does not support but can address the need alternatively Explanation: Trees will be planted throughout CB 6 as part of our Neighborhood Tree Planting approach. More details can be found on the Parks website: https://www.nycgovparks.org/trees/street-tree-planting.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Plant new street trees",
+          "explanation": "CB6 requests that DPR plant additional trees in our District to reduce the urban heat island effect in our neighborhoods.",
+          "response": "Agency does not support but can address the need alternatively",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202712C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Roadway maintenance (resurfacing, trench restoration, etc.)",
+          "explanation": "CB6 asks that DOT repave East Tremont Avenue, many sections between Webster and Boston Road are damaged.",
+          "response": "Further investigation of this request is needed. Contact the agency.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Roadway maintenance (resurfacing, trench restoration, etc.)",
+          "explanation": "CB6 asks that DOT repave East Tremont Avenue, many sections between Webster and Boston Road are damaged.",
+          "response": "Further investigation is required. Contact the agency.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Roadway maintenance (resurfacing, trench restoration, etc.)",
+          "explanation": "CB6 asks that DOT repave East Tremont Avenue, many sections between Webster and Boston Road are damaged.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202712E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more frequent litter basket collection",
+          "explanation": "CB6 is in need of additional DSNY personnel to pick up trash in our District.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more frequent litter basket collection",
+          "explanation": "CB6 is in need of additional DSNY personnel to pick up trash in our District.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Provide more frequent litter basket collection",
+          "explanation": "CB6 is in need of additional DSNY personnel to pick up trash in our District.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202713C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or construct medians, or other street assets",
+          "explanation": "We ask that DOT install bus pads at busy bus stops in CB6 to protect streets from damage from buses.",
+          "response": "Further investigation is required. Contact the agency.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or construct medians, or other street assets",
+          "explanation": "We ask that DOT install bus pads at busy bus stops in CB6 to protect streets from damage from buses.",
+          "response": "Further investigation is required. Contact the agency.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Repair or construct medians, or other street assets",
+          "explanation": "We ask that DOT install bus pads at busy bus stops in CB6 to protect streets from damage from buses.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202713E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide or expand occupational skills training programs",
+          "explanation": "SBS needs to expand the scope and quality of services offered at Workforce 1 centers, focusing on building skills and training for careers.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide or expand occupational skills training programs",
+          "explanation": "SBS needs to expand the scope and quality of services offered at Workforce 1 centers, focusing on building skills and training for careers.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "801",
+          "request": "Provide or expand occupational skills training programs",
+          "explanation": "SBS needs to expand the scope and quality of services offered at Workforce 1 centers, focusing on building skills and training for careers.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202714C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Fire Department",
+            "agency_id": "fire-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other FDNY facilities and equipment requests",
+          "explanation": "E45/L58 firehouse is in need of a kitchen. A cost evaluation done by FDNY suggests a budget of $1,200,000.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FDNY will seek to accommodate within existing resources, although this will depend on availability of funding and overall agency prioritization. The Community Board should continue work with their relevant elected officials to allocate Council/BP capital funding at Budget Adoption.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Fire Department",
+            "agency_id": "fire-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other FDNY facilities and equipment requests",
+          "explanation": "E45/L58 firehouse is in need of a kitchen. A cost evaluation done by FDNY suggests a budget of $1,200,000.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FDNY will seek to accommodate within existing resources, although this will depend on availability of funding and overall agency prioritization. The Community Board should continue work with their relevant elected officials to allocate Council/BP capital funding at Budget Adoption.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Fire Department",
+            "agency_id": "fire-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "057",
+          "request": "Other FDNY facilities and equipment requests",
+          "explanation": "E45/L58 firehouse is in need of a kitchen. A cost evaluation done by FDNY suggests a budget of $1,200,000.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202714E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other workforce development requests",
+          "explanation": "CB6 asks that SBS create Community Advisory Boards for Workforce 1 sites, so local CBO's and employers can engage directly with SBS on hiring and training opportunities.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other workforce development requests",
+          "explanation": "CB6 asks that SBS create Community Advisory Boards for Workforce 1 sites, so local CBO's and employers can engage directly with SBS on hiring and training opportunities.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "801",
+          "request": "Other workforce development requests",
+          "explanation": "CB6 asks that SBS create Community Advisory Boards for Workforce 1 sites, so local CBO's and employers can engage directly with SBS on hiring and training opportunities.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202715C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for HPD",
+          "explanation": "CB6 asks that HPD encourage developers to use the Open Door program to foster cooperative housing development construction in our District.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: HPD will continue to fund affordable home ownership opportunities through the OpenDoor project pipeline.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for HPD",
+          "explanation": "CB6 asks that HPD encourage developers to use the Open Door program to foster cooperative housing development construction in our District.",
+          "response": "The Executive Budget includes a city-wide allocation for this work. Specific locations are determined by the Agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "806",
+          "request": "Other capital budget request for HPD",
+          "explanation": "CB6 asks that HPD encourage developers to use the Open Door program to foster cooperative housing development construction in our District.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202715E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DOT",
+          "explanation": "CB6 asks that DOT find vendors for the kiosks and cafe in Fordham Plaza",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: New tenants for the kiosks are under consideration",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DOT",
+          "explanation": "CB6 asks that DOT find vendors for the kiosks and cafe in Fordham Plaza",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: New tenants for the kiosks are under consideration",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Other expense budget request for DOT",
+          "explanation": "CB6 asks that DOT find vendors for the kiosks and cafe in Fordham Plaza",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202716C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for HPD",
+          "explanation": "Develop more housing for people with disabilities.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: HPD will continue creating affordable supportive housing for groups with special needs",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for HPD",
+          "explanation": "Develop more housing for people with disabilities.",
+          "response": "The Executive Budget includes a city-wide allocation for this work. Specific locations are determined by the Agency.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "806",
+          "request": "Other capital budget request for HPD",
+          "explanation": "Develop more housing for people with disabilities.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202716E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DOT",
+          "explanation": "Fordham Plaza's benches are broken, there is a pool of urine behind the kiosks, the kiosk windows are broken, and the site is full of graffiti. We ask that DOT regularly provide maintenance to the Plaza. DOT reported having graffiti removed earlier this year. It is unclear what is the point of removing two pieces of graffiti when the entire plaza is in dire need of maintenance.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: DOT has a management partner that conducts maintenance and reports issues that need to be addressed on a case by case basis",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DOT",
+          "explanation": "Fordham Plaza's benches are broken, there is a pool of urine behind the kiosks, the kiosk windows are broken, and the site is full of graffiti. We ask that DOT regularly provide maintenance to the Plaza. DOT reported having graffiti removed earlier this year. It is unclear what is the point of removing two pieces of graffiti when the entire plaza is in dire need of maintenance.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: DOT has a management partner that conducts maintenance and reports issues that need to be addressed on a case by case basis",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Other expense budget request for DOT",
+          "explanation": "Fordham Plaza's benches are broken, there is a pool of urine behind the kiosks, the kiosk windows are broken, and the site is full of graffiti. We ask that DOT regularly provide maintenance to the Plaza. DOT reported having graffiti removed earlier this year. It is unclear what is the point of removing two pieces of graffiti when the entire plaza is in dire need of maintenance.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202717C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more housing for seniors",
+          "explanation": "More senior housing",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: HPD will continue to fund the construction of senior housing from the development pipeline to maximize available resources.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more housing for seniors",
+          "explanation": "More senior housing",
+          "response": "The Executive Budget includes a city-wide allocation for this work. Specific locations are determined by the Agency.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "806",
+          "request": "Provide more housing for seniors",
+          "explanation": "More senior housing",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202717E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other youth workforce development requests",
+          "explanation": "Expand funding for Cure Violence programming in CB6. There are large areas of our district suffering from gun violence and do not have a contracted provider.",
+          "response": "This request has already been completed. Explanation: Within the district, the Office of Neighborhood Safety funds CMS Youth Enrichment and CMS Hospital Responder Services.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other youth workforce development requests",
+          "explanation": "Expand funding for Cure Violence programming in CB6. There are large areas of our district suffering from gun violence and do not have a contracted provider.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Within the district, the Office of Neighborhood Safety funds CMS Youth Enrichment and CMS Hospital Responder Services.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "260",
+          "request": "Other youth workforce development requests",
+          "explanation": "Expand funding for Cure Violence programming in CB6. There are large areas of our district suffering from gun violence and do not have a contracted provider.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202718C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Improve accessibility of transit infrastructure, by providing elevators, escalators, etc.",
+          "explanation": "Construct Elevators to make West Farms Square-East Tremont Avenue ADA compliant",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Improve accessibility of transit infrastructure, by providing elevators, escalators, etc.",
+          "explanation": "Construct Elevators to make West Farms Square-East Tremont Avenue ADA compliant",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "998",
+          "request": "Improve accessibility of transit infrastructure, by providing elevators, escalators, etc.",
+          "explanation": "Construct Elevators to make West Farms Square-East Tremont Avenue ADA compliant",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202718E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance the out-of-school youth program for job training and employment services",
+          "explanation": "As most youth in CB6 do not go on to attain a college degree, and several drop out of high school, we ask for more employment services that are aimed at the out of school, out of work population.",
+          "response": "This request has already been completed. Explanation: The Out of School Youth program, now known as Train and Earn, is funded by the federal government through the Workforce Innovation and Opportunity Act. Expansion is dependent on available funds. There is currently a program in CD 6 operated by Phipps Neighborhoods.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance the out-of-school youth program for job training and employment services",
+          "explanation": "As most youth in CB6 do not go on to attain a college degree, and several drop out of high school, we ask for more employment services that are aimed at the out of school, out of work population.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: The Out of School Youth program, now known as Train and Earn, is funded by the federal government through the Workforce Innovation and Opportunity Act. Expansion is dependent on available funds. There is currently a program in CD 6 operated by Phipps Neighborhoods.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "260",
+          "request": "Provide, expand, or enhance the out-of-school youth program for job training and employment services",
+          "explanation": "As most youth in CB6 do not go on to attain a college degree, and several drop out of high school, we ask for more employment services that are aimed at the out of school, out of work population.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202719C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "Tremont Library is in need of a new HVAC system.",
+          "response": "This project has already been funded, but the community board should reach out to the Agency with more detail regarding this request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "Tremont Library is in need of a new HVAC system.",
+          "response": "This project has already been funded, but the community board should reach out to the Agency with more detail regarding this request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "037",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "Tremont Library is in need of a new HVAC system.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202719E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance the out-of-school youth program for job training and employment services",
+          "explanation": "Create career / vocational training programming in Bronx CB6",
+          "response": "This request has already been completed. Explanation: DYCD funds a Train and Earn program in the district, operated by Phipps Neighborhoods.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance the out-of-school youth program for job training and employment services",
+          "explanation": "Create career / vocational training programming in Bronx CB6",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DYCD funds a Train and Earn program in the district, operated by Phipps Neighborhoods.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "260",
+          "request": "Provide, expand, or enhance the out-of-school youth program for job training and employment services",
+          "explanation": "Create career / vocational training programming in Bronx CB6",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202720E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Fire Department",
+            "agency_id": "fire-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for FDNY",
+          "explanation": "CB6 asks that FDNY provide first responders with mental health episode response training. The city's B-Heard program is not responding to all eligible calls, so we ask that FDNY build their capacity to respond to residents experiencing mental health episodes.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Fire Department",
+            "agency_id": "fire-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for FDNY",
+          "explanation": "CB6 asks that FDNY provide first responders with mental health episode response training. The city's B-Heard program is not responding to all eligible calls, so we ask that FDNY build their capacity to respond to residents experiencing mental health episodes.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Fire Department",
+            "agency_id": "fire-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "057",
+          "request": "Other expense budget request for FDNY",
+          "explanation": "CB6 asks that FDNY provide first responders with mental health episode response training. The city's B-Heard program is not responding to all eligible calls, so we ask that FDNY build their capacity to respond to residents experiencing mental health episodes.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202721E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance programs for housing inspections to correct code violations",
+          "explanation": "CB6 has a high rate of C code violations. We ask that HPD increase the number of emergency repairs conducted by the agency and billed back to the owner. An example is the Aquinas Housing portfolio, where buildings have hundreds of open violations dating back years.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance programs for housing inspections to correct code violations",
+          "explanation": "CB6 has a high rate of C code violations. We ask that HPD increase the number of emergency repairs conducted by the agency and billed back to the owner. An example is the Aquinas Housing portfolio, where buildings have hundreds of open violations dating back years.",
+          "response": "The Adopted Budget includes a city-wide allocation for this work. Specific locations are determined by the Agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "806",
+          "request": "Provide, expand, or enhance programs for housing inspections to correct code violations",
+          "explanation": "CB6 has a high rate of C code violations. We ask that HPD increase the number of emergency repairs conducted by the agency and billed back to the owner. An example is the Aquinas Housing portfolio, where buildings have hundreds of open violations dating back years.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202722E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance homeless prevention programs/anti-eviction legal services",
+          "explanation": "Bronx CB6 has the highest residential eviction rate in NYC. We ask that HRA issue an RFP and find providers willing to offer eviction prevention services in CB6. Currently, there are not enough providers offering these services.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Funding is in place to provide legal services for tenants facing eviction.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance homeless prevention programs/anti-eviction legal services",
+          "explanation": "Bronx CB6 has the highest residential eviction rate in NYC. We ask that HRA issue an RFP and find providers willing to offer eviction prevention services in CB6. Currently, there are not enough providers offering these services.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Funding is in place to provide legal services for tenants facing eviction.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "096",
+          "request": "Provide, expand, or enhance homeless prevention programs/anti-eviction legal services",
+          "explanation": "Bronx CB6 has the highest residential eviction rate in NYC. We ask that HRA issue an RFP and find providers willing to offer eviction prevention services in CB6. Currently, there are not enough providers offering these services.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202723E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide additional patrol cars and other vehicles",
+          "explanation": "CB6 / 48th precinct is home to numerous auto repair shops that leave cars on the street in disrepair. The 48 precinct is constantly requesting tow operations and is told there is not capacity. We request that the 48 Precinct be provided their own tow truck to remove abandoned vehicles.",
+          "response": "Agency supports but cannot accommodate Explanation: The NYPD is working with the Mayor's Office of Management and Budget in order to secure additional funds to maintain lifecycle replacement of its current fleet. Supplemental funding would be needed if there was a desire to increase this count even further.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide additional patrol cars and other vehicles",
+          "explanation": "CB6 / 48th precinct is home to numerous auto repair shops that leave cars on the street in disrepair. The 48 precinct is constantly requesting tow operations and is told there is not capacity. We request that the 48 Precinct be provided their own tow truck to remove abandoned vehicles.",
+          "response": "Agency supports but cannot accommodate Explanation: The NYPD is working with the Mayor's Office of Management and Budget in order to secure additional funds to maintain lifecycle replacement of its current fleet. Supplemental funding would be needed if there was a desire to increase this count even further.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Provide additional patrol cars and other vehicles",
+          "explanation": "CB6 / 48th precinct is home to numerous auto repair shops that leave cars on the street in disrepair. The 48 precinct is constantly requesting tow operations and is told there is not capacity. We request that the 48 Precinct be provided their own tow truck to remove abandoned vehicles.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202724E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other NYPD staff resources requests",
+          "explanation": "There is rampant illegal parking on Third Avenue between East 187 and East 184, including parking on sidewalks. CB6 requests NYPD Traffic Enforcement assign officers to enforce parking rules in that area.",
+          "response": "This request has already been completed. Explanation: Each Patrol Borough enforces traffic laws as needed as a result of traffic conditions and community complaints.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other NYPD staff resources requests",
+          "explanation": "There is rampant illegal parking on Third Avenue between East 187 and East 184, including parking on sidewalks. CB6 requests NYPD Traffic Enforcement assign officers to enforce parking rules in that area.",
+          "response": "This request has already been completed. Explanation: Each Patrol Borough enforces traffic laws as needed as a result of traffic conditions and community complaints.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Other NYPD staff resources requests",
+          "explanation": "There is rampant illegal parking on Third Avenue between East 187 and East 184, including parking on sidewalks. CB6 requests NYPD Traffic Enforcement assign officers to enforce parking rules in that area.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202725E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Hire additional uniformed officers",
+          "explanation": "Increase the number of officers in the 48 precinct.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Hire additional uniformed officers",
+          "explanation": "Increase the number of officers in the 48 precinct.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Hire additional uniformed officers",
+          "explanation": "Increase the number of officers in the 48 precinct.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "106202726E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase resources for other crime prevention programs",
+          "explanation": "CB6 asks that NYPD conduct violence prevention programs for youth in CD6.",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase resources for other crime prevention programs",
+          "explanation": "CB6 asks that NYPD conduct violence prevention programs for youth in CD6.",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Increase resources for other crime prevention programs",
+          "explanation": "CB6 asks that NYPD conduct violence prevention programs for youth in CD6.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    }
+  ]
+}

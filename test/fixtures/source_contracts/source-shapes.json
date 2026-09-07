@@ -910,6 +910,24 @@
         "schedule",
         "c_code"
       ]
+    },
+    {
+      "id": "omb-community-board-budget-requests",
+      "kind": "socrata",
+      "identifier": "vn4m-mk4t",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "publication",
+        "boro",
+        "board",
+        "priority",
+        "tracking_code",
+        "request",
+        "explanation",
+        "response",
+        "responsible_agency"
+      ]
     }
   ]
 }

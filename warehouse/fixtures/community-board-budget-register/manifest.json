@@ -1,0 +1,32 @@
+{
+  "schema": "cityscroll.community_board_budget_register_fixtures.v1",
+  "dataset_id": "vn4m-mk4t",
+  "source_url": "https://data.cityofnewyork.us/d/vn4m-mk4t",
+  "publisher": "New York City Office of Management and Budget",
+  "publications": [
+    {
+      "publication": "20260512",
+      "publication_date": "2026-05-12",
+      "rows": 3809,
+      "published_row_count": 3809,
+      "distinct_tracking_codes": 3809,
+      "sha256": "5cfea27c4599faaf3b8669520f22c9652b6c39475706c1d7b1069aa80ae00302"
+    },
+    {
+      "publication": "20260630",
+      "publication_date": "2026-06-30",
+      "rows": 3809,
+      "published_row_count": 3809,
+      "distinct_tracking_codes": 3809,
+      "sha256": "9358d40d6a85086649990165c7344cde10e3acc558f116b194828bb00c6249d4"
+    },
+    {
+      "publication": "20270217",
+      "publication_date": "2027-02-17",
+      "rows": 3809,
+      "published_row_count": 3809,
+      "distinct_tracking_codes": 3809,
+      "sha256": "02d46bc3f7582d9ae71ba44909789ef69a58116dd0d300f9415b09cd277f73c2"
+    }
+  ]
+}
