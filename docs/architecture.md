@@ -1,15 +1,22 @@
 ---
 summary: >-
-  CityScroll-owned materialized read models are the exclusive delivery path for
-  resident and required-CI reads; scheduled source acquisition and durable
-  snapshots provide graceful degradation and reproducibility. The static site (`site/index.html` markup/CSS plus
-  browser-native modules under `site/app/`) plus a Cloudflare
-  Worker backend makes NYC's City Record searchable by interest: seven
+  CityScroll-owned materialized read models are the required delivery path for
+  resident and required-CI reads; the exact departures that remain are registered
+  with owners and expiries in `architecture/no-live-external-debt.json`, and
+  scheduled source acquisition and durable
+  snapshots provide graceful degradation and reproducibility. The site is served by three
+  seams: browser-native modules under `site/app/` loaded from `site/index.html`, a
+  Cloudflare Pages edge handler (`site/_worker.js` re-exporting `site/pages_edge.mjs`)
+  that server-renders a bounded set of canonical document routes, and a Cloudflare
+  Worker backend. Together they make NYC's City Record searchable by interest: seven
   lenses (Money/People/Land/Property/Rules/Meetings plus an alert system) over
   scheduled materialized projections over Socrata open-data sources, with a Wave-5 forecasting layer that estimates
   contract renewals from Checkbook NYC durations,
   and labels separately sourced public-authority awards on agency profiles.
-  The static shell remains deployable without the worker, while ordinary reads use
+  The static shell remains deployable without the worker and the reader surface degrades
+  rather than disappearing, but it is not complete without it: Near You, Following and
+  preferences are Worker zone routes, and edge documents lose whichever Worker projection
+  they hydrate from. Ordinary reads use
   CityScroll-owned projections; the worker adds scheduled Checkbook acquisition and projection reads,
   email alerts, feeds, plain-English search, forecasting, precomputed vendor
   identity headers, resilient public coverage stats, private aggregate first-party usage
@@ -28,7 +35,7 @@ summary: >-
   a Cloudflare Queue (per-subscriber retries, DLQ; daily send caps unchanged).
   The source vault retains approved public documents by content hash and
   preserves their official source links.
-updated: 2026-09-02
+updated: 2026-09-06
 sources:
   - README.md
   - site/index.html
@@ -112,7 +119,7 @@ sources_hash: 595fad1b4566d6eee49943039cdc30cdeb4e37babbf51d35f62b18b11c34ec0e
 
 ## What & why
 
-The NYC City Record publishes every agency contract, hearing, rule change, rezoning, and property disposition — by City Charter §1066 — but the raw record is hard to follow by interest. CityScroll re-stitches it into seven navigable lenses, adds cross-references to Checkbook NYC (contract payments and NYCHA contracts), official NYS Authorities Budget Office award filings, ZAP (rezoning detail), and BBL lookups, delivers standing watches as email digests, and estimates contract-renewal timing from historical Checkbook terms. The constraint is no required accounts, no fingerprinting, and no cross-site tracking; per-visitor state is limited to opt-in email identity, the first-party `cs_visitor` cookie, and private, 30-day-bounded search-execution receipts. CityScroll-owned materialized read models are the exclusive delivery path for resident and required-CI reads; scheduled public-source acquisition and durable snapshots provide graceful degradation and reproducibility.
+The NYC City Record publishes every agency contract, hearing, rule change, rezoning, and property disposition — by City Charter §1066 — but the raw record is hard to follow by interest. CityScroll re-stitches it into seven navigable lenses, adds cross-references to Checkbook NYC (contract payments and NYCHA contracts), official NYS Authorities Budget Office award filings, ZAP (rezoning detail), and BBL lookups, delivers standing watches as email digests, and estimates contract-renewal timing from historical Checkbook terms. The constraint is no required accounts, no fingerprinting, and no cross-site tracking; per-visitor state is limited to opt-in email identity, the first-party `cs_visitor` cookie, and private, 30-day-bounded search-execution receipts. CityScroll-owned materialized read models are the required delivery path for resident and required-CI reads; scheduled public-source acquisition and durable snapshots provide graceful degradation and reproducibility. Where a surface has not finished that migration, the departure is registered exactly and with an expiry rather than described as complete — see [Current recorded exceptions](#current-recorded-exceptions).
 
 ### Resident-read invariant
 
@@ -122,11 +129,59 @@ Resident and required-CI read paths cross a hard acquisition/serving boundary. A
 
 The narrow exceptions are not civic-data reads: (1) navigation to an official source-attribution URL; (2) an explicitly invoked user transaction such as plain-English parsing, translation, subscription, or email delivery, provided the baseline civic record already came from a materialization and the transaction can fail without invalidating that record; and (3) scheduled source acquisition, manually authenticated refreshes, and scheduled production/source-contract monitors that are not required pull-request or merge gates. No exception permits request-time Socrata, NYC GeoSearch, MapPLUTO/ArcGIS, ZAP, NYC Rules, Legistar, Checkbook, or equivalent publisher-data retrieval for a resident read. Any temporary migration exception is exact, owner-approved, time-bounded, and recorded in the fitness-function debt manifest; wildcards and permanent exceptions are forbidden.
 
+#### Current recorded exceptions
+
+The invariant above is the target and the direction of travel. It is not a description of a finished migration, and this document does not claim one. At revision `4e4cacf891099f88d308430a87beaf08c6fc6569`, twenty-one departures are open in [`architecture/no-live-external-debt.json`](../architecture/no-live-external-debt.json) — each with an exact path, line, call signature, origin, owner, migration record, and expiry — and [`architecture/resident-read-policy.json`](../architecture/resident-read-policy.json) lists the first-party routes that still carry one under `first_party_routes.temporary_debt`.
+
+| Entry | Surface | Runtime owner | Origin | Expires |
+|---|---|---|---|---|
+| `no-live-20` | Notice documents | `site/notice-read.mjs:47` — `read()` fallback | `data.cityofnewyork.us` | 2026-09-14 |
+| `no-live-21` | Notice documents | `site/notice-read.mjs:48` — `read()` primary call to `GET /notice` | first-party temporary debt | 2026-09-14 |
+| `no-live-22` | Notice documents | `site/pages_edge.mjs:922` — `noticeRow()` degradation path | `data.cityofnewyork.us` | 2026-09-14 |
+| `no-live-01` · `no-live-03` · `no-live-14` · `no-live-15` · `no-live-18` · `no-live-19` | Batch cross-reference, agency and vendor profiles, notice detail enrichment, notice translation | `/batch`, `/agencies`, `/priorcycle`, `/externalaward`, `/translate`, `/subsidy-lifecycle` callers | first-party temporary debt | 2026-09-14 |
+| `no-live-02` · `no-live-04`–`no-live-12` · `no-live-16` · `no-live-17` | Shared browser data helper, agency and vendor profiles, address and place lookup | `site/app/core.mjs`, `site/app/entities.mjs`, `site/app/rules.mjs` | `data.cityofnewyork.us` | 2026-09-14 |
+
+`node tools/no_live_external_reads.mjs --check` re-derives that manifest against the tree, refuses an entry whose expiry exceeds the manifest expiry, refuses a manifest window longer than `temporary_debt_max_days`, and fails outright once the manifest expiry passes. An expiry is advanced only by the owner of the migration it belongs to; reading this document is not authority to move one. The claim-by-claim audit behind this section, with the before and after wording and the handler branch each claim rests on, is [`docs/evidence/serving-boundary-documentation/claim-to-source-matrix.md`](evidence/serving-boundary-documentation/claim-to-source-matrix.md).
+
+##### The notice read, branch by branch
+
+The notice path is the exception a reader is most likely to meet, so its real sequence is written out rather than implied. `GET /notice?id=<RequestID>` is served by [`worker/src/notice.mjs`](../worker/src/notice.mjs) `handleNotice()` over the `notice.get@1` contract in [`capabilities/notice_get.mjs`](../capabilities/notice_get.mjs):
+
+1. **Edge-cache hit** — `caches.default.match()` on the canonical key returns the stored response unchanged. `prewarmNotices()` bypasses it with `skipCache: true`.
+2. **Materialized D1 row, stale rows included** — `readMaterialized()` reads the `notices` row for the exact `request_id` and returns it even when it is old. `stale` is `true` when `ingested_at` is missing or older than `MATERIALIZED_MAX_AGE_MS` (two days); the response still carries `source: "materialized"`, that `generated_at`, and the `civic_time_events` history. Staleness is labelled, not withheld.
+3. **City Record fallback** — reached only when there is no `DB` binding, no matching row, or the D1 read throws. `readUpstream()` issues one Socrata query against `dg92-zbpx` with `$limit=1`; a hit answers `source: "public-source-fallback"`, `generated_at: null`, and no `civic_time` block. This is the `no-live-21` departure.
+4. **Explicit terminals** — no matching upstream row is `availability: "not_yet_public"` → HTTP 404 `{ok:false, reason:"not-found"}`; a throwing or non-2xx upstream read is `availability: "unavailable"` → HTTP 503 `{ok:false, reason:"unavailable"}`. Neither is cached as an empty notice, and `validateNoticeGetOutput()` refuses to let either carry a notice body.
+
+The two callers diverge on those terminals. [`site/pages_edge.mjs`](../site/pages_edge.mjs) `noticeRow()` treats a Worker 404 as a genuine absence and `handleNotice()` renders a 404 document; any other non-OK status, or a rejected subrequest, falls through to the edge's own City Record read (`no-live-22`), and only when that also fails does the document render with HTTP 503. [`site/notice-read.mjs`](../site/notice-read.mjs) `read()` falls back to a direct browser Socrata query (`no-live-20`) whenever the Worker response carries no `row` or the request rejects. A Worker outage therefore degrades the notice document to a publisher-resolved record rather than blanking it; only a simultaneous publisher failure produces the unavailable document.
+
+The generated `/api` capability metadata for this route is derived from `capabilities/notice_get.mjs` and already states the same freshness owner (`materialized notice mirror with public-source fallback`). It is not edited to agree with prose; prose is corrected to agree with it.
+
 ## System map
 
 ```
-Browser (cityscroll.org — Cloudflare Pages production site with Worker routes)
-  site/index.html  (inline CSS + static markup)
+Reader on cityscroll.org / www.cityscroll.org
+  │
+  ├─ /near-you* · /following* · /prefs*
+  │      └──►  cityscroll-worker on bounded zone routes (worker/wrangler.toml `routes`)
+  │
+  └─ every other path ──► Cloudflare Pages project (site/)
+       site/_worker.js  →  site/pages_edge.mjs   (advanced-mode edge handler; default export `fetch`)
+         · GET/HEAD only (405 otherwise); 503 without an ASSETS binding
+         │
+         ├─ bounded canonical document routes rendered at the edge:
+         │    /notices/<id> · /meetings/<id> · /meeting.ics · /procurements/<id>
+         │    /rules/rulemaking:<id> · /rules/agenda/<item> · /mandates/<id> · /matters/<n>
+         │    /exams/<nnnn> · /committees/<n> · /administrative-code/<id> · /parcels/<bbl>
+         │    /assertions/<id> · /browse[/<facet>] · /agencies|vendors|officials/<id>
+         │    /following/packs/<pack> · /districts/council/<n>/digest
+         │      ├──►  env.ASSETS         committed + built read models under site/data
+         │      └──►  api.cityscroll.org D1/KV projections (e.g. GET /notice)
+         │
+         └─ anything else ──► env.ASSETS: static artifact (site/index.html plus
+              about/api/data/stats/standards/changelog, and the generated
+              /browse, /now, /agencies/*, guide and constellation documents)
+
+Browser (site/index.html: inline CSS + static markup)
   site/app/main.mjs → browser-native feature modules (vanilla JS, no build step)
         ├──►  site/data/* + page-specific materialized read models (resident reads)
         ├──►  api.cityscroll.org (D1/KV projections; snapshot-only public GET handlers)
@@ -150,6 +205,8 @@ Browser (cityscroll.org — Cloudflare Pages production site with Worker routes)
         ├──  /property-locations daily Property view with site evidence + resolved geometry
         ├──  /source-vault/*    eligible public documents (R2; manifest gated)
         ├──  /inv[/<id>]        investigation snapshots + entity forecast metadata
+        ├──  /notice?id=<id>   one City Record notice: D1 row incl. stale, else one City Record
+        │                     query, else explicit 404 not-found / 503 unavailable (no-live-21 debt)
         ├──  /priorcycle/<id>   prior-cycle + near-match sets (D1; legacy miss path is ratcheted debt)
         ├──  /translate/<id>    informal notice translation (on-demand, D1+edge cached, invariant-checked)
         ├──  /stats             public corpus and coverage aggregates
@@ -255,13 +312,13 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 1 static site (`site/index.html` + window-sized `site/app/` modules + `site/data.html`) + 1 Cloudflare Worker, 7 lenses, public and operator API routes plus an inbound-email handler and queue consumer, 1 daily cron (ingest → normalization/materialization → edge prewarm → queue fan-out), 4 KV namespaces + 1 D1 database (notices mirror + prior-cycle cache) + 1 R2 source vault + 1 Analytics Engine dataset + 2 queues, 6 secrets, 2 hard send caps — under one hard rule: no required accounts, no fingerprinting, no third-party trackers, and no visitor profiles beyond the first-party `cs_visitor` cookie's private, 30-day-bounded search-execution receipts; CityScroll-owned materialized read models serve ordinary views, while public-source access and durable snapshots provide graceful degradation and reproducibility.
 
-1. A visitor loads `site/index.html` (inline CSS + markup) and the ordered browser-native modules from `site/app/main.mjs` at canonical `cityscroll.org`, served by Cloudflare Pages — no application backend or build step required.
+1. A visitor's request to canonical `cityscroll.org` enters the Pages edge handler (`site/_worker.js` → `site/pages_edge.mjs`) before any asset is served. A bounded set of canonical document routes is rendered there from static assets plus Worker projections; every other path is passed to `env.ASSETS`, which serves `site/index.html` (inline CSS + markup) and the ordered browser-native modules from `site/app/main.mjs`. The browser modules need no bundler, but the deployed tree is a build output: the Pages release runs the build contract in `docs/release/cloudflare-native-builds.json` and generates `/browse`, `/now`, per-agency and per-community-board documents, and the i18n cache stamp.
 2. Picking a lens consumes page-specific materialized read models and snapshot-only Worker projections. Publisher APIs are confined to scheduled/manual acquisition and non-required source-contract monitors; request-dependent search executes over retained indexes.
 3. Server-only features route to `api.cityscroll.org`: `/nl` (plain English → filters via Claude Haiku, metered by `NL_METER`), `/subscribe`→`/unsubscribe` (immediate enrollment with welcome/manage links; rate-limited and fail-closed without token/send secrets), feeds, `/batch`, `/agencies`, `/inv`, `/stats`, `/feedback` (rate-limited; notifies `feedback@cityscroll.org`), keyed `/admin/*` and `/usage`.
 4. The forecasting layer (`/checkbook` + `/forecast`) parses historical Checkbook NYC contract terms into estimated expirations (`fc:<stem>` in `ALERT_STATE`) and renders them in the profile timeline. Official procurement-plan rows are disabled; the cleanup job removes stale `plan:` keys.
 5. Subscriptions land immediately in KV `SUBS`; legacy aggregate integers accrue in stats counters, while bounded page and interaction events accrue in Analytics Engine without visitor identifiers, and each completed Universal Search leaves one bounded private receipt in KV (first-party `cs_visitor` id, 30-day TTL, read only via keyed `/admin/search-activity`). A Search run while the existing email session recognizes the reader also appends to that account's own bounded recent-search list, which only that account can read through credentialed `/search-history`. The only durable personal data is the subscription email.
 6. The daily cron (13:00 UTC) first refreshes the D1 notices mirror from Socrata (cursored, fail-soft — a failed ingest never blocks alerts), pre-warms prior-cycle match sets for freshly-ingested Award notices, rebuilds the hearings, Property, and versioned whole-profile vendor projections in KV, then replays active subscriptions and forecast milestones, sending digests and early-warning emails via Resend — hard-capped at 25/run, 50/day. Each cache job is fail-soft; Money digests exclude data-entry-error amounts (≥ $10B) and label rolling year-2090 deadlines honestly.
-7. Cloudflare Pages serves the static site from the `main` production branch, and Workers Builds deploys Worker changes from `main`. The Worker mirror's Cloudflare Pages fallback covers the full site; its raw-repository fallback is intentionally limited to `/docs/*` and `/README.md` and may contain unsubstituted build tokens.
+7. Cloudflare Pages serves the built site and its edge handler from the `main` production branch, and Workers Builds deploys Worker changes from `main`. The Worker mirror's Cloudflare Pages fallback covers the full site; its raw-repository fallback is intentionally limited to `/docs/*` and `/README.md` and may contain unsubstituted build tokens.
 
 ## Check yourself
 
