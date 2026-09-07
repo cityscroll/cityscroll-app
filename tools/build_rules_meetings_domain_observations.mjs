@@ -192,6 +192,24 @@ function writePeopleDoc(peopleRows, seedNotices, retrievedAt, eligibleEventIds =
     event_count: eventIds.length,
     rows: peopleRows,
   };
+  // The people snapshot is published only with a retention receipt that
+  // measured its own events. The dated Legistar audit is a separate, live act;
+  // when this densify reaches events no receipt covers, the last attested
+  // population stands rather than being replaced by one nothing attests. This
+  // is the same rule the roll-call tranche states for its own writes.
+  const retentionReceipt = loadLatestOfficialRetentionReceipt(peopleDoc.source.eligible_event_ids);
+  const attested = new Set((retentionReceipt?.by_event || [])
+    .map((row) => String(row?.event_id || "").trim())
+    .filter(Boolean));
+  const unattested = peopleDoc.source.eligible_event_ids.filter((id) => !attested.has(String(id)));
+  if (unattested.length && existsSync(OUT_PEOPLE)) {
+    console.log(
+      `kept ${path.relative(ROOT, OUT_PEOPLE)}: ${unattested.length} eligible event(s) `
+      + `(${unattested.join(", ")}) carry no roll-call retention receipt; `
+      + "run tools/build_official_roll_call_tranche.mjs to attest them",
+    );
+    return JSON.parse(readFileSync(OUT_PEOPLE, "utf8"));
+  }
   mkdirSync(path.dirname(OUT_PEOPLE), { recursive: true });
   writeFileSync(OUT_PEOPLE, `${JSON.stringify(peopleDoc, null, 2)}\n`);
   console.log(
@@ -199,7 +217,7 @@ function writePeopleDoc(peopleRows, seedNotices, retrievedAt, eligibleEventIds =
   );
   // Person-page index (#official/{id}) — same densify, keyed by person_id.
   const voteLookup = buildPersonVotesLookup(peopleDoc, {
-    retentionReceipt: loadLatestOfficialRetentionReceipt(eventIds),
+    retentionReceipt,
   });
   writeFileSync(OUT_PERSON_VOTES, `${JSON.stringify(voteLookup, null, 2)}\n`);
   console.log(
