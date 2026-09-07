@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
-import { generateKeyPairSync, createVerify } from "node:crypto";
+import { createHash, generateKeyPairSync, createVerify } from "node:crypto";
+import { execFile } from "node:child_process";
+import { createServer } from "node:http";
+import { promisify } from "node:util";
 import { chmod, readdir, writeFile } from "node:fs/promises";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -261,6 +264,160 @@ test("a minted installation token is held for the cycle and refreshed before it 
     assert.equal(published.includes("token-two"), false);
     assert.equal(published.includes("PRIVATE KEY"), false);
     assert.equal(published.includes(dir), false);
+  });
+});
+
+/**
+ * One cycle, as launchd actually runs one: a whole process that starts, mints,
+ * and exits. Returns what the cycle could observe about its own identity, and
+ * never the token itself — a fingerprint is enough to tell two apart.
+ */
+const CYCLE_SOURCE = `
+import { createHash } from "node:crypto";
+import { readdirSync } from "node:fs";
+import { resolveGitHubAppCredential, createInstallationTokenSource } from "SOURCE_MODULE";
+
+const resolved = resolveGitHubAppCredential();
+if (resolved.failure) throw new Error(\`credential: \${resolved.variable}:\${resolved.failure}\`);
+const source = createInstallationTokenSource({
+  credential: resolved.credential,
+  owner: "cityscroll",
+  repo: "cityscroll-app",
+  apiBase: process.env.PROBE_API_BASE,
+});
+const token = await source.token();
+process.stdout.write(JSON.stringify({
+  mints: source.mints,
+  failure: source.failure,
+  summary: source.summary(),
+  // A fingerprint, so two cycles can be compared without either token being
+  // written down by the very test that says they never are.
+  token_fingerprint: token ? createHash("sha256").update(token).digest("hex") : null,
+  // Everything this process could see: its whole environment, and every file
+  // in the directory it shares with the cycle before it.
+  env: { ...process.env },
+  visible_files: readdirSync(process.env.PROBE_SHARED_DIR).sort(),
+}));
+`;
+
+const run = promisify(execFile);
+
+test("a new cycle mints its own token and inherits nothing from the cycle before it", async () => {
+  await withTempDir("crol-app-fresh-cycle", async (dir) => {
+    const app = await installedApp(dir);
+    const fingerprint = (value) => createHash("sha256").update(value).digest("hex");
+    // A different token for each exchange, so two cycles sharing one would be
+    // visible rather than merely unproven.
+    const ISSUED = ["ghs-cycle-one-fixture-token", "ghs-cycle-two-fixture-token"];
+    const EXPIRES = ["2026-09-06T12:00:00.000Z", "2026-09-06T13:00:00.000Z"];
+
+    const exchanges = [];
+    const repositoryReads = [];
+    const server = createServer((request, response) => {
+      const authorization = request.headers.authorization || "";
+      if (request.url.includes("/access_tokens")) {
+        const issued = ISSUED[Math.min(exchanges.length, ISSUED.length - 1)];
+        const expires = EXPIRES[Math.min(exchanges.length, EXPIRES.length - 1)];
+        exchanges.push({ assertion: authorization.replace(/^Bearer /, ""), issued });
+        response.writeHead(201, { "Content-Type": "application/json" });
+        response.end(JSON.stringify({
+          token: issued,
+          expires_at: expires,
+          permissions: { issues: "write", metadata: "read" },
+          repository_selection: "selected",
+        }));
+        return;
+      }
+      repositoryReads.push({ presented: authorization.replace(/^Bearer /, "") });
+      response.writeHead(200, { "Content-Type": "application/json" });
+      response.end(JSON.stringify({ total_count: 1, repositories: [{ full_name: "cityscroll/cityscroll-app" }] }));
+    });
+    await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+    const { port } = server.address();
+
+    try {
+      const cyclePath = join(dir, "cycle.mjs");
+      const moduleUrl = new URL("../tools/github_app_identity.mjs", import.meta.url).href;
+      await writeFile(cyclePath, CYCLE_SOURCE.replace("SOURCE_MODULE", moduleUrl), "utf8");
+
+      // The three credential files are all a cycle is given, and both cycles are
+      // given exactly the same thing. Nothing else is carried between them: no
+      // inherited environment, no shared working state, no handle of any kind.
+      const cycleEnv = {
+        ...app,
+        PROBE_API_BASE: `http://127.0.0.1:${port}`,
+        PROBE_SHARED_DIR: dir,
+        PATH: process.env.PATH,
+      };
+      const before = (await readdir(dir)).sort();
+
+      // Run each cycle with this directory as its working directory, so a token
+      // written to a relative path is caught by the sweep below rather than
+      // landing somewhere the test never looks.
+      const options = { env: cycleEnv, cwd: dir };
+      const cycleOne = JSON.parse((await run(process.execPath, [cyclePath], options)).stdout);
+      const between = (await readdir(dir)).sort();
+      const cycleTwo = JSON.parse((await run(process.execPath, [cyclePath], options)).stdout);
+      const after = (await readdir(dir)).sort();
+
+      // Each process performed its own exchange, signing its own assertion.
+      assert.equal(exchanges.length, 2, "each cycle must mint for itself");
+      assert.equal(cycleOne.mints, 1);
+      assert.equal(cycleTwo.mints, 1);
+      // Each exchange presented a real assertion this App's key made. Note that
+      // the two can be byte-identical and that is correct rather than
+      // suspicious: RS256 is deterministic, and two cycles a second apart sign
+      // identical claims. Byte-distinctness is therefore not evidence of a
+      // fresh exchange — the count above and the token provenance below are.
+      for (const exchange of exchanges) {
+        const [header, payload, signature] = exchange.assertion.split(".");
+        assert.equal(exchange.assertion.split(".").length, 3);
+        assert.equal(JSON.parse(Buffer.from(payload, "base64url").toString("utf8")).iss, APP_ID);
+        const verifier = createVerify("RSA-SHA256");
+        verifier.update(`${header}.${payload}`);
+        verifier.end();
+        assert.equal(verifier.verify(PUBLIC_KEY, Buffer.from(signature, "base64url")), true,
+          "each cycle must present an assertion made by the App's own key");
+      }
+
+      // And each used the token from its own exchange, not the other's.
+      assert.equal(cycleOne.token_fingerprint, fingerprint(ISSUED[0]));
+      assert.equal(cycleTwo.token_fingerprint, fingerprint(ISSUED[1]));
+      assert.notEqual(cycleOne.token_fingerprint, cycleTwo.token_fingerprint);
+      assert.equal(cycleOne.summary.token_expires_at, EXPIRES[0]);
+      assert.equal(cycleTwo.summary.token_expires_at, EXPIRES[1], "a new cycle's expiry is its own, not the previous cycle's");
+      assert.deepEqual(repositoryReads.map((read) => read.presented), ISSUED,
+        "each cycle must read its scope back under the token it just minted");
+
+      // Nothing was left behind for a later cycle to find. A token that reached
+      // any file here would be a long-lived credential in all but name, which is
+      // the property this identity exists to avoid.
+      assert.deepEqual(between, before, "a cycle must write nothing beside its credential files");
+      assert.deepEqual(after, before);
+      for (const name of after) {
+        const contents = await readFile(join(dir, name), "utf8");
+        for (const issued of ISSUED) {
+          assert.equal(contents.includes(issued), false, `a minted token was left readable in ${name}`);
+        }
+      }
+
+      // And nothing reached the second cycle through its environment: it began
+      // with the same three paths the first one did, and no token among them.
+      assert.deepEqual(Object.keys(cycleTwo.env).sort(), Object.keys(cycleOne.env).sort());
+      for (const [name, value] of Object.entries(cycleTwo.env)) {
+        for (const issued of ISSUED) {
+          assert.equal(String(value).includes(issued), false, `a token reached the next cycle through ${name}`);
+        }
+      }
+      assert.deepEqual(cycleTwo.visible_files, before,
+        "the second cycle must see nothing the first one did not start with");
+      // The proof depends on the second cycle having actually succeeded.
+      assert.equal(cycleTwo.failure, null);
+      assert.equal(cycleTwo.summary.identity_kind, "app");
+      assert.deepEqual(cycleTwo.summary.repositories, ["cityscroll/cityscroll-app"]);
+    } finally {
+      await new Promise((resolve) => server.close(resolve));
+    }
   });
 });
 
