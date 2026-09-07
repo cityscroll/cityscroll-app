@@ -21,7 +21,7 @@ import {
   summarizeReceipt,
   validatePublicationReceipt,
 } from "../tools/d1_publication_receipt.mjs";
-import { planDelta, snapshotFor, watermarksFromSnapshot } from "../tools/d1_delta_plan.mjs";
+import { liveSnapshot, planDelta, snapshotFor, watermarksFromSnapshot } from "../tools/d1_delta_plan.mjs";
 import { dryRunReport, planBatches, publishBounded } from "../tools/d1_bounded_publisher.mjs";
 import { claimGeneration, createMemoryStateStore } from "../tools/d1_generation_fence.mjs";
 import { loadManifest } from "../tools/d1_manifest.mjs";
@@ -536,4 +536,101 @@ test("the workflow records exactly one D1 publication receipt per run, covering 
     workflow.indexOf("- name: Record published D1 fingerprint") < stepIndex,
     "the receipt step observes the publish-completion step's outcome, so it must run after it",
   );
+});
+
+// The deploy freezes if the receipt refuses the real snapshot: the receipt step
+// runs after the D1 write steps and before the route read models are published,
+// so a receipt that cannot be built stops the deploy with production left on the
+// previous revision. These two tests run the same snapshot builder and the same
+// receipt builder the deploy runs, so an unexpected watermark shape fails on the
+// pull request that introduces it instead.
+test("a receipt for the live publication snapshot validates and carries every partition watermark verbatim", () => {
+  const snapshot = liveSnapshot();
+  const receipt = buildPublicationReceipt({
+    run: { workflow: "Deploy worker", run_id: "9001", attempt: 1 },
+    outcome: "published",
+    reason: "D1 read models were published for this deploy fingerprint",
+    deployFingerprint: FINGERPRINT_A,
+    generation: 1,
+    snapshot,
+    recordedAt: "2026-09-07T00:00:00Z",
+  });
+  validatePublicationReceipt(receipt);
+
+  assert.deepEqual(
+    receipt.models.map((model) => model.model_id),
+    manifest.models.map((model) => model.model_id).sort(),
+    "every model the manifest publishes is named in the receipt",
+  );
+
+  let widest = { model_id: null, partition: null, length: 0 };
+  for (const model of receipt.models) {
+    const partitions = snapshot.models[model.model_id].partitions;
+    const published = new Set(Object.values(partitions)
+      .map((partition) => partition.watermark)
+      .filter((watermark) => typeof watermark === "string" && watermark !== ""));
+    assert.equal(model.watermark_summary.partition_count, Object.keys(partitions).length);
+    for (const bound of ["min_watermark", "max_watermark"]) {
+      const value = model.watermark_summary[bound];
+      if (value === null) {
+        assert.equal(published.size, 0, `${model.model_id}.${bound} is null only when no partition published a watermark`);
+        continue;
+      }
+      // Byte-identical to a watermark the snapshot actually published: a receipt
+      // that truncated or reformatted a vintage would no longer name what shipped.
+      assert.ok(
+        published.has(value),
+        `${model.model_id}.${bound} must be a watermark this snapshot published, not a shortened or reformatted one`,
+      );
+    }
+    for (const [partition, bucket] of Object.entries(partitions)) {
+      const length = typeof bucket.watermark === "string" ? bucket.watermark.length : 0;
+      if (length > widest.length) widest = { model_id: model.model_id, partition, length };
+    }
+  }
+  assert.ok(widest.length > 0, "the live snapshot publishes at least one partition watermark");
+});
+
+test("a partition watermark is bounded as a composite data vintage, and a non-scalar one refuses the receipt", () => {
+  const receiptFor = (watermark) => buildPublicationReceipt({
+    run: { workflow: "Deploy worker", run_id: "9002", attempt: 1 },
+    outcome: "published", reason: "published", deployFingerprint: FINGERPRINT_A,
+    snapshot: {
+      schema: snapshotFor(manifest, baseSources()).schema,
+      manifest_fingerprint: "f".repeat(64),
+      models: { ocp_awards: { model_version: 1, partition: { kind: "none" }, source_snapshot_version: null,
+        partitions: { __model__: { watermark, rows: {} } } } },
+    },
+    recordedAt: "2026-09-07T00:00:00Z",
+  });
+
+  // The published composite form: source vintages joined on "|", the shape
+  // tools/d1_delta_plan.mjs compares component by component. Generated rather
+  // than pasted so the test states the shape instead of a frozen literal.
+  const composite = ["12783", ...Array.from({ length: 18 }, (_, i) => `2026-09-${String(i + 1).padStart(2, "0")}T00:00:00.000Z`)].join("|");
+  assert.ok(composite.length > 120, "the composite form is far wider than a single ISO instant");
+  const built = receiptFor(composite);
+  assert.equal(built.models[0].watermark_summary.min_watermark, composite, "the composite is recorded whole");
+
+  assert.throws(() => receiptFor("2026-09-07T00:00:00.000Z|".repeat(40).slice(0, -1)),
+    /min_watermark must carry at most \d+ "\|"-joined components/);
+  assert.throws(() => receiptFor("x".repeat(2000)), /min_watermark must be at most \d+ characters/);
+  assert.throws(() => receiptFor(`2026-09-07T00:00:00.000Z|${"y".repeat(200)}`),
+    /min_watermark\[1\] must be at most \d+ characters/);
+  // The per-component bound is a widening, never a narrowing: a single-component
+  // watermark that the previous 120-character whole-field bound accepted still
+  // validates unchanged.
+  assert.doesNotThrow(() => receiptFor(`2026-09-07T00:00:00.000Z ${"z".repeat(95)}`));
+
+  // A secret must not reach a receipt through the watermark field either.
+  const denseOpaqueRun = Array.from({ length: 28 }, (_, i) => "Aa1Bb2Cc3Dd4Ee5Ff6"[i % 18]).join("");
+  assert.throws(() => receiptFor(`2026-09-07T00:00:00.000Z|${denseOpaqueRun}`),
+    /looks like a secret or access token, not a data vintage/);
+
+  // An object or list reaching the scalar watermark field is a producer fault:
+  // it refuses the receipt rather than vanishing from the summary.
+  assert.throws(() => receiptFor({ generated_at: "2026-09-07T00:00:00.000Z" }),
+    /snapshot\.models\[ocp_awards\]\.partitions\[__model__\]\.watermark must be a string data vintage or null/);
+  assert.throws(() => receiptFor(["2026-09-07T00:00:00.000Z"]),
+    /watermark must be a string data vintage or null/);
 });

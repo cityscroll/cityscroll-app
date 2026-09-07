@@ -17,10 +17,11 @@
  * the same KV binding the fence uses, under a receipt key prefix.
  *
  * A receipt never carries a secret or a source row: every field is either a
- * closed enum, a bounded count, or a bounded, pattern-restricted identifier.
- * validatePublicationReceipt() enforces that shape and refuses an unknown
- * field, an oversize string, or a token-shaped value before anything is
- * written.
+ * closed enum, a bounded count, a bounded, pattern-restricted identifier, or a
+ * bounded data vintage (a partition watermark, whose bounds are stated with
+ * MAX_WATERMARK_LENGTH below). validatePublicationReceipt() enforces that shape
+ * and refuses an unknown field, an oversize string, or a token-shaped value
+ * before anything is written.
  *
  * Every run (one workflow, run id, and attempt) gets exactly one terminal
  * receipt. A rollback is never a rewrite of a prior receipt: it is a new
@@ -85,6 +86,33 @@ const VERIFICATION_STATUSES = Object.freeze(["not_run", "passed", "failed"]);
 const MAX_IDENTIFIER_LENGTH = 200;
 const MAX_TEXT_LENGTH = 500;
 const MAX_MODELS = 50;
+
+// A partition watermark is the manifest's source snapshot field exactly as the
+// source published it, and that is not always a bare ISO instant.
+// tools/d1_delta_plan.mjs documents the other published form: a `|`-joined
+// token whose components are the vintages of every source that fed one
+// partition, plus the published row count some of those sources carry. The
+// keyword search model's agency families use it so the token stays byte-stable
+// across rebuilds when the inputs are unchanged, and it gains a component
+// whenever that model gains a source; it is 19 components and 419 characters
+// wide today.
+//
+// These bounds are therefore set for the composite form rather than for a
+// single instant. Truncating to a narrower bound would be worse than a wide
+// one: the delta plan compares these tokens component by component to detect a
+// regressed watermark, so a shortened token in a receipt would no longer name
+// the vintage that was actually published. Bounding the component count and
+// each component's width is what keeps this a data vintage rather than a
+// free-text field that happens to be long.
+//
+// The per-component bound is deliberately the 120 characters this field as a
+// whole used to allow, so these bounds are a strict widening: every watermark
+// that validated before still validates. Total width is the binding constraint
+// on a composite.
+const MAX_WATERMARK_LENGTH = 1024;
+const MAX_WATERMARK_COMPONENTS = 32;
+const MAX_WATERMARK_COMPONENT_LENGTH = 120;
+const WATERMARK_COMPONENT_DELIMITER = "|";
 
 const IDENTIFIER_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._:/-]*$/;
 const SHA256_PATTERN = /^[a-f0-9]{64}$/;
@@ -153,6 +181,35 @@ function assertText(value, field, { maxLength = MAX_TEXT_LENGTH, allowEmpty = fa
 function assertNullableText(value, field, opts) {
   if (value === null) return null;
   return assertText(value, field, opts);
+}
+
+/**
+ * A published data vintage: bounded overall, bounded per delimited component,
+ * printable, and still refused if a component smuggles a secret shape. Both the
+ * single-instant and the composite forms above validate here unchanged; only the
+ * bounds differ from ordinary free text.
+ */
+function assertWatermark(value, field) {
+  if (typeof value !== "string" || value.trim() === "") fail(field, "must be a non-empty string");
+  if (value.length > MAX_WATERMARK_LENGTH) fail(field, `must be at most ${MAX_WATERMARK_LENGTH} characters`);
+  if (!PRINTABLE_TEXT_PATTERN.test(value)) fail(field, "must be printable text");
+  const components = value.split(WATERMARK_COMPONENT_DELIMITER);
+  if (components.length > MAX_WATERMARK_COMPONENTS) {
+    fail(field, `must carry at most ${MAX_WATERMARK_COMPONENTS} "${WATERMARK_COMPONENT_DELIMITER}"-joined components`);
+  }
+  components.forEach((component, index) => {
+    const componentField = components.length === 1 ? field : `${field}[${index}]`;
+    if (component.length > MAX_WATERMARK_COMPONENT_LENGTH) {
+      fail(componentField, `must be at most ${MAX_WATERMARK_COMPONENT_LENGTH} characters`);
+    }
+    if (isSecretShaped(component.trim())) fail(componentField, "looks like a secret or access token, not a data vintage");
+  });
+  return value;
+}
+
+function assertNullableWatermark(value, field) {
+  if (value === null) return null;
+  return assertWatermark(value, field);
 }
 
 function assertSha256(value, field) {
@@ -265,8 +322,8 @@ function validateWatermarkSummary(summary, field) {
   requirePlainObject(summary, field);
   requireKnownKeys(summary, WATERMARK_SUMMARY_KEYS, field);
   requireNonNegativeInteger(summary.partition_count, `${field}.partition_count`);
-  assertNullableText(summary.min_watermark, `${field}.min_watermark`, { maxLength: 120 });
-  assertNullableText(summary.max_watermark, `${field}.max_watermark`, { maxLength: 120 });
+  assertNullableWatermark(summary.min_watermark, `${field}.min_watermark`);
+  assertNullableWatermark(summary.max_watermark, `${field}.max_watermark`);
 }
 
 function validateDeltaCounts(counts, field) {
@@ -459,8 +516,21 @@ function runKey(run) {
   return `${run.workflow}:${run.run_id}:${run.attempt}`;
 }
 
-function watermarkSummaryFromSnapshotModel(model) {
+/**
+ * The lexicographic extremes of a model's partition watermarks. A partition may
+ * legitimately carry no watermark at all, so a null one is simply absent from
+ * the summary; a watermark that is present but is not a string is a producer
+ * fault (an object or list reaching a scalar field) and refuses the receipt
+ * here rather than silently disappearing from the published record.
+ */
+function watermarkSummaryFromSnapshotModel(model, modelId) {
   const partitions = model?.partitions || {};
+  for (const [partition, bucket] of Object.entries(partitions)) {
+    const watermark = bucket?.watermark;
+    if (watermark !== null && watermark !== undefined && typeof watermark !== "string") {
+      fail(`snapshot.models[${modelId}].partitions[${partition}].watermark`, "must be a string data vintage or null");
+    }
+  }
   const values = Object.values(partitions)
     .map((partition) => partition?.watermark)
     .filter((watermark) => typeof watermark === "string" && watermark !== "");
@@ -536,7 +606,7 @@ export function summarizeModels({ snapshot = null, batchPlan = null, dryRun = nu
     return {
       model_id: modelId,
       model_version: snapshotModel?.model_version ?? null,
-      watermark_summary: snapshotModel ? watermarkSummaryFromSnapshotModel(snapshotModel) : null,
+      watermark_summary: snapshotModel ? watermarkSummaryFromSnapshotModel(snapshotModel, modelId) : null,
       delta_counts: countsModel?.delta_counts ?? null,
       batch_count: countsModel?.batch_count ?? null,
       estimated_writes: countsModel?.estimated_writes ?? null,
