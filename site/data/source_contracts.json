@@ -3081,7 +3081,7 @@
       "warehouse_snapshot": {
         "status": "materialized",
         "artifact": "site/data/official_cfb_influence_lookup.json",
-        "materialized_at": "2026-08-11T00:00:00.000Z",
+        "materialized_at": "2026-09-07T21:21:17.547Z",
         "row_count": 1398
       },
       "delivery_tier": "edge-materialized",
@@ -4719,6 +4719,42 @@
       "resident_stale_behavior": "Stop describing the newest retained publication as the current answer once the register passes its hard age, and keep showing every response with the publication it came from.",
       "resident_unavailable_behavior": "Show budget requests as unavailable. Never report that a board made no requests, and never report a response as unchanged, from missing data.",
       "production_evidence_field": "first_class.community_board_budget_register"
+    },
+    {
+      "id": "official-cfb-influence",
+      "public_artifact_path": "site/data/official_cfb_influence_lookup.json",
+      "primary_routes": [
+        "/browse/",
+        "/browse/people/"
+      ],
+      "source_contract_id": "cfb-campaign-contributions",
+      "acquisition_command": [
+        "node",
+        "tools/acquire_official_cfb_influence.mjs"
+      ],
+      "owning_builder": "tools/acquire_official_cfb_influence.mjs",
+      "builder_command": [
+        "node",
+        "tools/acquire_official_cfb_influence.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_source_health_observations.mjs"
+      ],
+      "normal_refresh_cadence_hours": 168,
+      "cadence_justification": "The Campaign Finance Board declares an as-needed update frequency and files in bursts around disclosure deadlines, so a weekly check sees a resumed publisher within days of the filings landing while a quiet week costs one metadata request and no commit.",
+      "warning_age_hours": 336,
+      "hard_maximum_age_hours": 720,
+      "vintage_fields": [
+        "checked_at",
+        "retrieved_at"
+      ],
+      "population_fields": [
+        "edge_count"
+      ],
+      "last_known_good_behavior": "Keep serving the retained contribution edges and disclose that the publisher has not been reconfirmed recently.",
+      "resident_stale_behavior": "Stop describing the contribution edges as confirmed once the check clock passes its hard maximum age, and keep naming the filing period each edge came from.",
+      "resident_unavailable_behavior": "Show campaign contributions as unavailable; never report that an official received no contributions because the acquisition failed.",
+      "production_evidence_field": "first_class.official_cfb_influence"
     }
   ]
 }

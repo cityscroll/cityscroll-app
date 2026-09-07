@@ -1,0 +1,12 @@
+{
+  "schema": "cityscroll.source_acquisition_receipt.v1",
+  "source_contract_id": "cfb-campaign-contributions",
+  "dataset_id": "rjkp-yttg",
+  "observed_at": "2026-09-07T21:21:17.547Z",
+  "status": "succeeded",
+  "publisher_updated_at": "2025-12-19T15:24:13.000Z",
+  "rows_read": 12000,
+  "edge_count": 1398,
+  "person_count": 59,
+  "edges_changed": false
+}
