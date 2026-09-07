@@ -202,11 +202,15 @@ test("people domain observations snapshot retains Marte field case", () => {
   const people = JSON.parse(readFileSync(peoplePath, "utf8"));
   assert.equal(people.domain, "people");
   assert.ok(Array.isArray(people.rows) && people.rows.length >= 1);
-  const marte = people.rows.find((r) => String(r.person_id) === "7801");
-  assert.ok(marte, "expected Christopher Marte person_id 7801");
-  assert.match(String(marte.person_name || ""), /Marte/i);
-  assert.equal(String(marte.event_id), "22526");
+  const marteRows = people.rows.filter((r) => String(r.person_id) === "7801");
+  assert.ok(marteRows.length, "expected Christopher Marte person_id 7801");
+  assert.match(String(marteRows[0].person_name || ""), /Marte/i);
+  // The field case is a row at the July 14 Landmarks subcommittee, not a
+  // position in the row order: rows are addressed by event and event item.
+  const marte = marteRows.find((r) => String(r.event_id) === "22526");
+  assert.ok(marte, "expected a retained Marte row at event 22526");
   assert.equal(String(marte.request_id), "20260706036");
+  assert.ok(marte.event_item_id, "every retained row names the agenda item it was cast on");
   assert.ok(marte.agency_name);
 });
 

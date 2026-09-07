@@ -155,7 +155,19 @@ test("the matter that was already published keeps its history unchanged in shape
   assert.deepEqual(entry.appearances.map((appearance) => appearance.event.date), ["2026-04-22", "2026-05-19"]);
   const view = documentFor("78605");
   assert.equal(view.appearances.length, 2);
-  assert.equal(view.appearances[0].vote.person_count, 9);
+  // Each appearance carries only the roll call its own agenda items recorded.
+  // The Council took no roll call on the April 22 actions, and the page says so
+  // rather than repeating the May 19 roster under the earlier date.
+  assert.equal(view.appearances[0].vote.person_count, 0);
+  assert.deepEqual(
+    view.appearances[0].item_actions.map((row) => row.vote_state),
+    ["no_roll_call_recorded", "no_roll_call_recorded"],
+  );
+  assert.equal(view.appearances[1].vote.person_count, 9);
+  assert.deepEqual(
+    view.appearances[1].item_actions.map((row) => row.vote_state),
+    ["no_roll_call_recorded", "roll_call_recorded"],
+  );
 });
 
 // ---------------------------------------------------------------------------

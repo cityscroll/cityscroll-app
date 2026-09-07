@@ -87,10 +87,10 @@ function officialVotesTableHTML(votes, opts){
     const title = v.matter_title
       ? `<div class="official-vote-title" lang="en" dir="ltr">${escUiHtml(v.matter_title)}</div>`
       : "";
-    const bucket = v.vote_bucket || v.vote_value || v.vote || "—";
-    const voteExtra = v.vote_value && v.vote_bucket && v.vote_value !== v.vote_bucket
-      ? ` · ${escUiHtml(String(v.vote_value))}`
-      : (v.vote && v.vote_bucket && v.vote !== v.vote_bucket ? ` · ${escUiHtml(String(v.vote))}` : "");
+    const bucket = v.vote_bucket || "";
+    const participation = v.vote_participation || (bucket === "absent" ? "absent" : "");
+    const published = v.vote_value || v.vote || bucket || "—"; // the Council's own word leads
+    const voteExtra = participation === "absent" ? ` <span class="official-vote-absence">${t("official_votes_not_present")}</span>` : "";
     const hearingCell = showHearing
       ? (() => {
           const date = v.event_date ? fdate(String(v.event_date).slice(0, 10)) : "—";
@@ -100,10 +100,10 @@ function officialVotesTableHTML(votes, opts){
           return `<td lang="en" dir="ltr">${notice}</td>`;
         })()
       : "";
-    return `<tr data-matter-id="${escUiHtml(v.matter_id || "")}" data-event-id="${escUiHtml(v.event_id || "")}" data-notice-id="${escUiHtml(v.request_id || "")}" data-link-confidence="${escUiHtml(v.confidence || "strong")}" data-relation="${escUiHtml(v.relation || "votes_on")}">
+    return `<tr data-matter-id="${escUiHtml(v.matter_id || "")}" data-event-id="${escUiHtml(v.event_id || "")}" data-event-item-id="${escUiHtml(v.event_item_id || "")}" data-notice-id="${escUiHtml(v.request_id || "")}" data-vote-bucket="${escUiHtml(bucket)}" data-vote-participation="${escUiHtml(participation)}" data-link-confidence="${escUiHtml(v.confidence || "strong")}" data-relation="${escUiHtml(v.relation || "votes_on")}">
       <th scope="row">${fileHTML}${title}</th>
       ${hearingCell}
-      <td lang="en" dir="ltr"><span class="official-vote-bucket">${escUiHtml(String(bucket))}${voteExtra}</span></td>
+      <td><span class="official-vote-bucket" lang="en" dir="ltr">${escUiHtml(String(published))}</span>${voteExtra}</td>
     </tr>`;
   }).join("");
   return `<table class="official-vote-table" data-official-vote-count="${list.length}">

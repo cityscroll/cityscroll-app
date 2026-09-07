@@ -75,20 +75,32 @@ function committeeProjection(appearance) {
   };
 }
 
+function countValue(value) {
+  return Number.isFinite(Number(value)) ? Number(value) : null;
+}
+
 function voteProjection(vote, appearance) {
   const raw = vote && typeof vote === "object" ? vote : {};
   const people = Array.isArray(raw.by_person) ? raw.by_person : [];
   return {
     result: clean(raw.result, 120) || null,
-    yes: Number.isFinite(Number(raw.yes)) ? Number(raw.yes) : null,
-    no: Number.isFinite(Number(raw.no)) ? Number(raw.no) : null,
-    abstain: Number.isFinite(Number(raw.abstain)) ? Number(raw.abstain) : null,
+    yes: countValue(raw.yes),
+    no: countValue(raw.no),
+    abstain: countValue(raw.abstain),
+    absent: countValue(raw.absent),
+    recused: countValue(raw.recused),
+    non_voting: countValue(raw.non_voting),
+    event_item_id: clean(raw.event_item_id, 80) || null,
     vote_identity: clean(raw.vote_identity, 40) || (people.length ? "roll_call" : "tally_only"),
     person_count: Number.isFinite(Number(raw.person_count)) ? Number(raw.person_count) : people.length,
     people: people.map((person) => ({
       person_id: clean(person?.person_id, 80) || null,
       person_name: clean(person?.person_name, 180) || null,
       vote_bucket: clean(person?.vote_bucket, 40) || null,
+      // The publisher's own word. It is what a reader is shown, because
+      // "Bereavement" says something a bucket name cannot.
+      vote_value: clean(person?.vote_value, 80) || null,
+      vote_participation: clean(person?.vote_participation, 40) || null,
       official_href: officialVoteHref({
         personId: person?.person_id,
         eventId: appearance?.event?.event_id,
@@ -96,6 +108,24 @@ function voteProjection(vote, appearance) {
       }),
     })).filter((person) => person.person_id && person.person_name),
   };
+}
+
+/**
+ * The separate actions this meeting took on this matter. Each names its own
+ * publisher agenda item, so a vote recorded on one action is never presented as
+ * evidence about another.
+ */
+function itemActionProjection(raw, appearance) {
+  return (Array.isArray(raw) ? raw : [])
+    .map((row) => ({
+      event_item_id: clean(row?.event_item_id, 80),
+      action: clean(row?.action, 240) || null,
+      vote_state: clean(row?.vote_state, 40) === "roll_call_recorded"
+        ? "roll_call_recorded"
+        : "no_roll_call_recorded",
+      vote: row?.votes ? voteProjection(row.votes, appearance) : null,
+    }))
+    .filter((row) => row.event_item_id);
 }
 
 function sourceDocuments(appearance) {
@@ -145,6 +175,7 @@ function normalizeAppearance(raw = {}) {
     outcome: clean(matter.outcome, 240) || null,
     committee,
     vote: voteProjection(matter.votes, { ...raw, event }),
+    item_actions: itemActionProjection(matter.item_actions, { ...raw, event }),
     source_receipt: raw.source_receipt || null,
   };
 }
@@ -226,29 +257,91 @@ function committeeMarkup(committee) {
   return `<span class="matter-committee-label" data-committee-join-state="${esc(committee.join_state)}">${esc(committee.label)}</span><span class="node-muted matter-committee-note">Committee link withheld because this materialization has no explicit BodyId join.</span>`;
 }
 
+/**
+ * How one member's row is described. Voting yes or no is a position; abstaining
+ * is a choice made in the room; being absent is not being there at all. The page
+ * shows the publisher's own word and says which of those three it is, because
+ * calling a bereavement an abstention would describe the member as having taken
+ * part in a vote they were not present for.
+ */
+function personVoteLabel(person) {
+  const published = person.vote_value || person.vote_bucket;
+  if (!published) return `${person.person_name} · vote recorded, value not published`;
+  if (person.vote_participation === "absent" || person.vote_bucket === "absent") {
+    return `${person.person_name} · not present, recorded as ${published}`;
+  }
+  if (person.vote_bucket === "unknown") {
+    return `${person.person_name} · recorded as ${published}, meaning not classified`;
+  }
+  return `${person.person_name} · ${published}`;
+}
+
+/** Counts that are not positions, each named for what it is. */
+function nonPositionTally(vote) {
+  return [
+    vote.abstain ? `${vote.abstain} abstained` : "",
+    vote.recused ? `${vote.recused} recused` : "",
+    vote.non_voting ? `${vote.non_voting} recorded as not voting` : "",
+    vote.absent ? `${vote.absent} not present` : "",
+  ].filter(Boolean).join(" · ");
+}
+
 function voteMarkup(vote) {
-  if (!vote || (vote.yes == null && vote.no == null && vote.abstain == null && !vote.people.length)) return "";
-  const tally = vote.yes != null || vote.no != null || vote.abstain != null
-    ? `<p class="matter-vote-tally"><strong>${esc(vote.result || "Recorded vote")}</strong> · ${vote.yes ?? "—"} yes · ${vote.no ?? "—"} no · ${vote.abstain ?? "—"} abstain</p>`
+  if (!vote) return "";
+  const hasTally = [vote.yes, vote.no, vote.abstain, vote.absent].some((value) => value != null);
+  if (!hasTally && !vote.people.length) return "";
+  const notPositions = nonPositionTally(vote);
+  const tally = hasTally
+    ? `<p class="matter-vote-tally"><strong>${esc(vote.result || "Recorded vote")}</strong> · ${vote.yes ?? "—"} yes · ${vote.no ?? "—"} no${notPositions ? ` · ${esc(notPositions)}` : ""}</p>`
     : "";
   const people = vote.people.length
     ? `<ul class="node-record-list matter-vote-list" data-vote-identity="${esc(vote.vote_identity)}">${vote.people.map((person) => {
-      const label = `${person.person_name} · ${person.vote_bucket || "recorded"}`;
-      return `<li>${person.official_href
+      const label = personVoteLabel(person);
+      const attributes = {
+        "data-pivot-target-kind": "official",
+        "data-pivot-target-id": person.person_id,
+        "data-pivot-relation-label": "votes_on",
+        "data-vote-bucket": person.vote_bucket || "",
+        "data-vote-participation": person.vote_participation || "",
+      };
+      return `<li data-vote-bucket="${esc(person.vote_bucket || "")}" data-vote-participation="${esc(person.vote_participation || "")}">${person.official_href
         ? constellationLink({
           href: person.official_href,
           label,
-          attributes: {
-            "data-pivot-target-kind": "official",
-            "data-pivot-target-id": person.person_id,
-            "data-pivot-relation-label": "votes_on",
-          },
+          attributes,
           escape: esc,
         })
         : esc(label)}</li>`;
     }).join("")}</ul>`
-    : `<p class="node-muted">No named roll-call rows are retained for this appearance.</p>`;
-  return `${tally}<p class="matter-vote-count">${esc(String(vote.person_count))} named vote${vote.person_count === 1 ? "" : "s"} · ${esc(vote.vote_identity)}</p>${people}`;
+    : `<p class="node-muted">No named roll-call rows are retained for this action.</p>`;
+  const absenceNote = vote.absent
+    ? `<p class="node-muted matter-vote-absence-note">A row recorded as an absence is not a vote. It is shown with the reason the Council published and is counted apart from abstentions.</p>`
+    : "";
+  return `${tally}<p class="matter-vote-count">${esc(String(vote.person_count))} recorded row${vote.person_count === 1 ? "" : "s"} · ${esc(vote.vote_identity)}</p>${people}${absenceNote}`;
+}
+
+/**
+ * The actions one meeting took on this matter, each with its own roll call or
+ * an explicit statement that none was recorded on it.
+ *
+ * The explicit statement matters as much as the vote does. An agenda item with
+ * no roll call is a meeting at which no member was recorded voting on that
+ * action, and leaving it blank invites a reader to carry the neighbouring
+ * meeting's roster across.
+ */
+function itemActionsMarkup(appearance) {
+  const rows = appearance.item_actions;
+  if (!rows.length) return `<div class="matter-appearance-vote">${voteMarkup(appearance.vote)}</div>`;
+  return `<ol class="matter-item-actions">${rows.map((row) => {
+    const heading = row.action || "Action not named by the publisher";
+    const body = row.vote_state === "roll_call_recorded" && row.vote
+      ? voteMarkup(row.vote)
+      : `<p class="node-muted matter-item-no-roll-call">No roll call was recorded on this action.</p>`;
+    return `<li class="matter-item-action" data-event-item-id="${esc(row.event_item_id)}" data-vote-state="${esc(row.vote_state)}">
+      <p class="matter-item-action-name">${esc(heading)}</p>
+      <div class="matter-appearance-vote">${body}</div>
+    </li>`;
+  }).join("")}</ol>`;
 }
 
 /**
@@ -293,10 +386,9 @@ function appearanceMarkup(appearance) {
     documents,
   ].filter(Boolean).join(" · ");
   const action = actionMarkup(appearance.actions);
-  const vote = voteMarkup(appearance.vote);
   const sections = [
     action ? renderNodeSection({ heading: "Actions", body: action, headingId: `matter-actions-${appearance.event.event_id}`, exportClass: "matter_actions" }) : "",
-    `<div class="matter-appearance-vote">${vote}</div>`,
+    itemActionsMarkup(appearance),
   ].filter(Boolean).join("");
   return `<article class="matter-appearance" data-matter-appearance="${esc(appearance.event.event_id)}" data-request-id="${esc(appearance.request_id)}" data-notice-reference-count="${esc(String(appearance.notice_references.length))}">
     <header class="matter-appearance-head"><p class="node-kicker">${esc(event.date || "Dated meeting")}</p><h3>${eventSource}</h3><p class="matter-appearance-links">${sourceList}</p>${repeatedNoticeNote(appearance)}</header>

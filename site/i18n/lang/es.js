@@ -1787,6 +1787,7 @@
     official_vote_hearing_col: "Hearing",
     official_vote_matter_col: "Matter",
     official_votes_table_caption: "Person-level roll-call votes",
+    official_votes_not_present: "no presente",
     official_no_recent_html: "No named roll-call votes for {name} are shown yet. CityScroll lists only person-level votes Legistar published — never fabricated tallies.",
     official_recent_lead_html: "{n} named Council roll-call votes shown here from published Legistar records.",
     official_event_group_heading: "Council event {id} · {date}",

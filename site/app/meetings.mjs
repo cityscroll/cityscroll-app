@@ -183,7 +183,9 @@ function collectRollCallPeople(votes){
       const id = officialIdFromPerson(p);
       const name = (p.official && p.official.display_name) || p.person_name || "";
       if(!id || !name) continue;
-      const key = id + "\0" + (p.vote_bucket || p.vote_value || "");
+      // Identity includes the agenda item the row was cast on, so two actions
+      // on one matter at one meeting stay two rows.
+      const key = id + "\0" + (v.event_item_id || "") + "\0" + (p.vote_bucket || p.vote_value || "");
       if(seen.has(key)) continue;
       seen.add(key);
       out.push(p);
@@ -232,7 +234,13 @@ function meetingRollCallTableHTML(people, ctx){
   const rows = people.map(p => {
     const id = officialIdFromPerson(p);
     const name = (p.official && p.official.display_name) || p.person_name || p.person_id || "—";
-    const vote = p.vote_bucket || p.vote_value || "—";
+    // The publisher's own word for this row. A recorded absence is labelled as
+    // one rather than shown in a column that reads as a cast vote.
+    const vote = p.vote_value || p.vote_bucket || "—";
+    const participation = p.vote_participation || (p.vote_bucket === "absent" ? "absent" : "");
+    const absence = participation === "absent"
+      ? ` <span class="meeting-roll-call-absence">${t("official_votes_not_present")}</span>`
+      : "";
     const officialLink = officialHref(id, ctx);
     const typed = globalThis.CrolEntityPivots?.entityChipHTML({
       ref: globalThis.CrolEntityPivots.entityRouteRef("official", id),
@@ -244,9 +252,9 @@ function meetingRollCallTableHTML(people, ctx){
       || (officialLink
       ? `<a class="meeting-official-link" href="${escUiHtml(officialLink)}" data-official-id="${escUiHtml(id)}">${escUiHtml(name)}</a>`
       : escUiHtml(name));
-    return `<tr data-official-id="${escUiHtml(id)}" data-vote-bucket="${escUiHtml(String(p.vote_bucket || ""))}">
+    return `<tr data-official-id="${escUiHtml(id)}" data-vote-bucket="${escUiHtml(String(p.vote_bucket || ""))}" data-vote-participation="${escUiHtml(participation)}">
       <th scope="row" lang="en" dir="ltr" class="meeting-roll-call-person">${nameHTML}</th>
-      <td lang="en" dir="ltr">${escUiHtml(String(vote))}</td>
+      <td><span lang="en" dir="ltr">${escUiHtml(String(vote))}</span>${absence}</td>
     </tr>`;
   }).join("");
   return `<table class="meeting-roll-call-table" data-official-votes data-official-count="${people.length}">

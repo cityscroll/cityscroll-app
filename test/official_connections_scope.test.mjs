@@ -54,12 +54,16 @@ const ELIGIBLE_ROWS = Number.isFinite(Number(RECEIPT_AUDIT.eligible_vote_rows))
   : Number.isFinite(Number(receipt?.audit?.eligible_vote_rows))
     ? Number(receipt.audit.eligible_vote_rows)
     : null;
-const RETAINED_EVENT_IDS = new Set(
-  (Array.isArray(receipt.by_event) ? receipt.by_event : [])
-    .filter((row) => Number(row.retained_person_id_rows || 0) > 0)
-    .map((row) => String(row.event_id || "").trim())
+// Events the committed people artifact actually carries named rows for. It is
+// built from the publisher's item-level records, so an event with no recorded
+// roll call contributes no rows and is not counted as retained.
+const RETAINED_EVENT_ID_SET = new Set(
+  (people.rows || [])
+    .filter((row) => String(row?.person_id || "").trim() && String(row?.person_name || "").trim())
+    .map((row) => String(row?.event_id || "").trim())
     .filter(Boolean),
-).size;
+);
+const RETAINED_EVENT_IDS = RETAINED_EVENT_ID_SET.size;
 const EXPECTED_READER_LABEL =
   (receipt.promotion_gate?.promoted ?? false) ? "official_decision_constellation" : "published_roll_calls_in_this_corpus";
 
@@ -67,8 +71,26 @@ test("official coverage measures the eligible committed cohort and gate outcome 
   const coverage = measureOfficialCoverage(people, receipt);
 
   assert.equal(coverage.cohort, "materialized_legistar_roll_call_events");
-  assert.equal(coverage.eligible_event_count, receipt.source_count?.event_rows_with_retained_by_person || 0);
+  // The eligible cohort is what the people artifact itself declares, because
+  // that artifact is now built from the publisher's item-level records. An
+  // earlier dated receipt counted events as carrying named votes when the read
+  // model had copied another meeting's roster onto them, so its event count is
+  // a record of that measurement rather than the current eligible set.
+  assert.equal(
+    coverage.eligible_event_count,
+    new Set((people.source?.eligible_event_ids || []).map((id) => String(id))).size,
+  );
   assert.equal(coverage.retained_event_count, RETAINED_EVENT_IDS);
+  // Every retained event is still traceable to a dated live retention receipt,
+  // so the cohort is measured rather than asserted by the artifact alone.
+  const receiptEvents = new Set(
+    (Array.isArray(receipt.by_event) ? receipt.by_event : [])
+      .map((row) => String(row?.event_id || "").trim())
+      .filter(Boolean),
+  );
+  for (const eventId of RETAINED_EVENT_ID_SET) {
+    assert.ok(receiptEvents.has(eventId), `event ${eventId} is named in a dated retention receipt`);
+  }
   assert.equal(coverage.event_coverage_rate, Number.isFinite(coverage.retained_event_count)
     && Number.isFinite(coverage.eligible_event_count)
     && coverage.eligible_event_count > 0

@@ -398,13 +398,14 @@ export async function fetchLegistarEventItems({ eventId, token, fetchImpl = fetc
  * VotePersonName (live) or PersonId / PersonName (fixtures / aliases).
  *
  * @param {Array<object>} rows
- * @param {{ matterId?: string|null, agendaItemId?: string|null, eventItemId?: string|null }} [target]
+ * @param {{ matterId?: string|null, agendaItemId?: string|null, eventItemId?: string|null, eventId?: string|null }} [target]
  */
 export function summarizeLegistarVotes(rows, target = {}) {
   return summarizePersonVotes(rows, {
     matterId: target.matterId ?? null,
     agendaItemId: target.agendaItemId ?? target.eventItemId ?? null,
     eventItemId: target.eventItemId ?? null,
+    eventId: target.eventId ?? null,
   });
 }
 
@@ -436,6 +437,7 @@ export async function fetchLegistarItemVotes({
   fetchImpl = fetch,
   matterId = null,
   agendaItemId = null,
+  eventId = null,
 } = {}) {
   if (!token || !itemId) return null;
   const rows = await fetchLegistarItemVoteRows({ itemId, token, fetchImpl });
@@ -444,6 +446,7 @@ export async function fetchLegistarItemVotes({
     matterId,
     agendaItemId: agendaItemId ?? itemId,
     eventItemId: itemId,
+    eventId,
   });
 }
 

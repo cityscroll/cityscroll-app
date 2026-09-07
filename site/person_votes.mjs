@@ -11,7 +11,7 @@
 
 import { measureOfficialCoverage } from "./official_connections.mjs";
 
-export const PERSON_VOTES_LOOKUP_SCHEMA_VERSION = 2;
+export const PERSON_VOTES_LOOKUP_SCHEMA_VERSION = 3;
 export const PERSON_VOTES_DEMO_IDS = Object.freeze(["7801"]); // Christopher Marte field case
 
 function clean(v) {
@@ -53,15 +53,31 @@ export function compactPersonVoteRow(row) {
     person_name: personName,
     vote: vote || null,
     vote_bucket: voteBucket,
+    vote_participation: clean(row.vote_participation) || null,
     matter_id: clean(row.matter_id) || null,
     matter_file: clean(row.matter_file) || null,
     matter_title: clean(row.matter_title) || null,
     event_id: clean(row.event_id) || null,
+    // The publisher agenda item this row was cast on. A matter heard twice, or
+    // acted on twice at one meeting, produces separate rows rather than one row
+    // that has to stand for both.
+    event_item_id: clean(row.event_item_id) || null,
+    action: clean(row.action) || null,
     request_id: clean(row.request_id) || null,
     event_date: clean(row.event_date).slice(0, 10) || null,
     agency_name: clean(row.agency_name) || null,
     source_system: clean(row.source_system) || "legistar",
   };
+}
+
+/** Exact identity of one recorded row: the agenda item it was cast on. */
+function voteIdentityKey(vote) {
+  return [
+    clean(vote?.event_id),
+    clean(vote?.event_item_id),
+    clean(vote?.matter_id) || clean(vote?.matter_file),
+    clean(vote?.vote_bucket) || clean(vote?.vote),
+  ].join("\u0000");
 }
 
 /**
@@ -77,6 +93,9 @@ export function sortPersonVotes(votes) {
     const fa = clean(a?.matter_file) || clean(a?.matter_id);
     const fb = clean(b?.matter_file) || clean(b?.matter_id);
     if (fa !== fb) return fa.localeCompare(fb);
+    const ia = clean(a?.event_item_id);
+    const ib = clean(b?.event_item_id);
+    if (ia !== ib) return ia.localeCompare(ib);
     return clean(a?.request_id).localeCompare(clean(b?.request_id));
   });
 }
@@ -134,20 +153,21 @@ export function buildPersonVotesLookup(peopleDocOrRows, opts = {}) {
       byId.set(v.person_id, bag);
     }
     if (bag.votes.length >= limitPerPerson) continue;
-    // Dedupe same matter + event + vote
-    const key = `${v.event_id || ""}\0${v.matter_id || v.matter_file || ""}\0${v.vote_bucket || v.vote || ""}`;
-    if (bag.votes.some((x) =>
-      `${x.event_id || ""}\0${x.matter_id || x.matter_file || ""}\0${x.vote_bucket || x.vote || ""}` === key
-    )) {
-      continue;
-    }
+    // Dedupe on the exact recorded row — the agenda item, not just the matter.
+    // Two notices announcing one meeting repeat one row; two agenda items at one
+    // meeting are two rows and both are kept.
+    const key = voteIdentityKey(v);
+    if (bag.votes.some((x) => voteIdentityKey(x) === key)) continue;
     bag.votes.push({
       vote: v.vote,
       vote_bucket: v.vote_bucket,
+      vote_participation: v.vote_participation,
       matter_id: v.matter_id,
       matter_file: v.matter_file,
       matter_title: v.matter_title,
       event_id: v.event_id,
+      event_item_id: v.event_item_id,
+      action: v.action,
       request_id: v.request_id,
       event_date: v.event_date,
       agency_name: v.agency_name,
