@@ -2227,6 +2227,7 @@ worker/src/lib/ulurp_recommendation_rows_source_records.mjs
 worker/src/lib/ulurp_recommendation_source_records.mjs
 worker/src/lib/ulurp_recommendations_join.mjs
 worker/src/lib/ulurp_statutory_predictions.mjs
+worker/src/lib/upstream_failure.mjs
 worker/src/lib/usage.mjs
 worker/src/lib/watchlog.mjs
 worker/src/lib/worker_health.mjs
