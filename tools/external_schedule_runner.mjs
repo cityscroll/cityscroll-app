@@ -353,16 +353,131 @@ async function runStatsDailySnapshot(job, context) {
   };
 }
 
+/**
+ * Run one slot of the scheduled Notice synthetic probe and report on the probe.
+ *
+ * The probe measures the deployed surface under a fixed device and network
+ * profile on a committed page list; its observations are marked synthetic and
+ * are read back as their own group. This runner therefore judges the probe, not
+ * the surface: a slow page is the measurement, so only a probe that reached
+ * nothing, emitted an unmarked observation, or could not start is a fault.
+ *
+ * One bad slot is not a fault either. Consecutive failed slots are counted in
+ * the job's own state, and an issue is filed only once the probe has failed
+ * NOTICE_SYNTHETIC_PROBE_ESCALATION times in a row.
+ */
+export const NOTICE_SYNTHETIC_PROBE_ESCALATION = 3;
+export const NOTICE_SYNTHETIC_PROBE_PAGES = "data/performance/notice-synthetic-probe-pages.json";
+const NOTICE_SYNTHETIC_PROBE_SCRIPT = "tools/run_notice_synthetic_probe.py";
+
+export function noticeSyntheticProbeIssueMode(consecutiveFailures, previousConsecutiveFailures) {
+  if (consecutiveFailures >= NOTICE_SYNTHETIC_PROBE_ESCALATION) return "open";
+  if (consecutiveFailures === 0 && previousConsecutiveFailures >= NOTICE_SYNTHETIC_PROBE_ESCALATION) return "close";
+  return "none";
+}
+
+export function noticeSyntheticProbeBody(report, consecutiveFailures) {
+  if (!report) {
+    return `The Notice synthetic probe did not produce a result for ${consecutiveFailures} consecutive slot(s). No synthetic observation was retained for those slots.`;
+  }
+  const lines = [
+    `Notice synthetic probe: ${report.status}.`,
+    `Pages listed ${report.pages_listed}, visited ${report.pages_visited}.`,
+    `Observations emitted ${report.observations_emitted} (marked ${report.traffic_class}).`,
+  ];
+  if (report.unmarked_beacons) {
+    lines.push(`${report.unmarked_beacons} beacon(s) left the probe without the synthetic marker; those observations would be retained as resident traffic.`);
+  }
+  if (report.budget_exhausted) lines.push("The slot ran out of its runtime budget before every page was visited.");
+  for (const failure of report.failures || []) {
+    lines.push(`Unreachable: ${failure.path} (${failure.reason}${failure.http_status ? ` ${failure.http_status}` : ""}).`);
+  }
+  lines.push(`Consecutive failed slots: ${consecutiveFailures}.`);
+  return lines.join("\n");
+}
+
+async function readProbeHealth(path) {
+  try {
+    const parsed = JSON.parse(await readFile(path, "utf8"));
+    const value = Number(parsed?.consecutive_failures);
+    return Number.isSafeInteger(value) && value >= 0 ? value : 0;
+  } catch {
+    return 0;
+  }
+}
+
+async function runNoticeSyntheticProbe(job, context) {
+  const dir = join(context.stateDir, "jobs", job.id);
+  await mkdir(dir, { recursive: true });
+  const resultPath = join(dir, "probe-result.json");
+  const healthPath = join(dir, "probe-health.json");
+  const previousFailures = await readProbeHealth(healthPath);
+
+  // The probe is spawned exactly as it is documented, with no credential: it
+  // visits public pages and the observation path needs no key.
+  const command = context.probeRunner || (() => runProcess(
+    process.env.CROL_NOTICE_SYNTHETIC_PROBE_PYTHON || "python3",
+    [
+      NOTICE_SYNTHETIC_PROBE_SCRIPT,
+      "--pages", job.pages || NOTICE_SYNTHETIC_PROBE_PAGES,
+      "--base", process.env.CITYSCROLL_PUBLIC_BASE || "https://cityscroll.org",
+      "--run-key", context.runKey,
+      "--out", resultPath,
+    ],
+    { cwd: ROOT },
+  ));
+  const run = await command({ resultPath, runKey: context.runKey, job });
+  await writeFile(join(dir, `${context.runKey}.log`), `${run.stdout || ""}${run.stderr || ""}`, "utf8");
+
+  let report = null;
+  try { report = JSON.parse(await readFile(resultPath, "utf8")); } catch { report = null; }
+  const failed = run.code !== 0 || !report || report.status === "failed";
+  const consecutiveFailures = failed ? previousFailures + 1 : 0;
+  await writeFile(healthPath, `${JSON.stringify({
+    schema: "cityscroll.notice_synthetic_probe_health.v1",
+    job_id: job.id,
+    observed_at: context.now.toISOString(),
+    consecutive_failures: consecutiveFailures,
+    escalation_after: NOTICE_SYNTHETIC_PROBE_ESCALATION,
+  }, null, 2)}\n`, "utf8");
+
+  const result = {
+    observed_at: context.now.toISOString(),
+    status: failed ? "degraded" : "healthy",
+    command_exit: run.code,
+    traffic_class: "synthetic",
+    measurement_group: "synthetic",
+    pages_listed: report?.pages_listed ?? null,
+    pages_visited: report?.pages_visited ?? null,
+    observations_emitted: report?.observations_emitted ?? null,
+    unmarked_beacons: report?.unmarked_beacons ?? null,
+    failures: report?.failures || [],
+    consecutive_failures: consecutiveFailures,
+    body: noticeSyntheticProbeBody(report, consecutiveFailures),
+  };
+  return {
+    result,
+    issue: issueIntent(job, context.runKey, result, noticeSyntheticProbeIssueMode(consecutiveFailures, previousFailures)),
+  };
+}
+
 export async function runScheduledJob(job, options = {}) {
   const now = options.now || new Date();
   const stateDir = options.stateDir || process.env.CROL_EXTERNAL_SCHEDULE_STATE_DIR || join(ROOT, ".external-schedule-state");
-  const context = { now, runKey: options.runKey || runKey(now), stateDir, fetchImpl: options.fetchImpl };
+  const context = {
+    now,
+    runKey: options.runKey || runKey(now),
+    stateDir,
+    fetchImpl: options.fetchImpl,
+    probeRunner: options.probeRunner,
+  };
   let output;
   if (job.runner === "action-links") output = await runActionLinks(job, context);
   else if (job.runner === "source-contracts") output = await runSourceContracts(job, context);
   else if (job.runner === "source-freshness") output = await runFreshnessWatchdog(job, context);
   else if (job.runner === "digest-shadow") output = await runDigestShadow(job, context);
   else if (job.runner === "stats-daily-snapshot") output = await runStatsDailySnapshot(job, context);
+  else if (job.runner === "notice-synthetic-probe") output = await runNoticeSyntheticProbe(job, context);
   else throw new Error(`unknown external schedule runner: ${job.runner}`);
   if (output.intents) {
     for (const [index, intent] of output.intents.entries()) await persistScheduleResult({

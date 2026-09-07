@@ -48,6 +48,18 @@
    ],
    "runner": "stats-daily-snapshot",
    "issue_title": "Daily search-use snapshot was not published"
+  },
+  {
+   "id": "notice-synthetic-probe",
+   "schedule": [
+    "07 02 * * *",
+    "07 08 * * *",
+    "07 14 * * *",
+    "07 20 * * *"
+   ],
+   "runner": "notice-synthetic-probe",
+   "pages": "data/performance/notice-synthetic-probe-pages.json",
+   "issue_title": "Notice synthetic performance probe is failing"
   }
  ],
  "follow_up_jobs": [

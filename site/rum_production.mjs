@@ -17,6 +17,44 @@ export const RUM_PRODUCTION_ORIGINS = Object.freeze(
   RUM_PRODUCTION_HOSTS.map((host) => `https://${host}`),
 );
 
+/**
+ * Retained measurement groups, by the traffic class stamped on every observation.
+ *
+ * `production` is resident traffic: people using the site. `lab` is a controlled
+ * generator run against a surface under test. `synthetic` is a scheduled probe
+ * visiting the deployed production surface on a fixed page list. The three are
+ * separate populations and are never pooled by a read-back.
+ *
+ * A non-resident class is only ever set by the measuring client itself. Nothing
+ * on the collector or delivery path infers one from a user agent, an address, or
+ * any other request property, so an observation that carries no explicit marker
+ * is resident traffic by construction rather than by classification.
+ */
+export const RUM_TRAFFIC_CLASSES = Object.freeze(["production", "lab", "synthetic"]);
+export const RUM_RESIDENT_TRAFFIC_CLASS = "production";
+export const RUM_MARKED_TRAFFIC_CLASSES = Object.freeze(["lab", "synthetic"]);
+
+/**
+ * Read the traffic class the measuring client declared for this page context.
+ *
+ * The marker is a page-context global the probe or generator installs before any
+ * document script runs. It is deliberately not read from the page URL: the Notice
+ * route rewrites an unrecognised hash and a query string changes the edge cache
+ * key, so a URL-borne marker would alter the very response being measured. The
+ * marker reaches the collector as the `traffic_class` delivery flag instead.
+ */
+export function resolveRumTrafficClass(runtime = globalThis) {
+  let declared = null;
+  try {
+    declared = runtime?.CROL_RUM_TRAFFIC_CLASS ?? runtime?.window?.CROL_RUM_TRAFFIC_CLASS ?? null;
+  } catch {
+    declared = null;
+  }
+  return RUM_MARKED_TRAFFIC_CLASSES.includes(declared)
+    ? declared
+    : RUM_RESIDENT_TRAFFIC_CLASS;
+}
+
 export function isRumProductionHost(hostname) {
   return RUM_PRODUCTION_HOSTS.includes(String(hostname || "").toLowerCase());
 }
