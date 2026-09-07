@@ -1,0 +1,4814 @@
+{
+  "schema": "cityscroll.community_board_budget_register_document.v1",
+  "method": "omb_register_full_tracking_code_within_cycle_v1",
+  "negative_rule": "A changed response text is a changed written answer and nothing else. It is not funding, a commitment, delivery, or completion, and no request is carried across fiscal cycles by a repeated priority number, a similar facility name, or matching request text.",
+  "board_id": "queens-cb-09",
+  "publications": {
+    "as_of": "2026-09-07",
+    "servable": [
+      "20260512",
+      "20260630"
+    ],
+    "diagnostic_only": [
+      "20270217"
+    ],
+    "latest": "20260630"
+  },
+  "request_count": 51,
+  "requests": [
+    {
+      "tracking_code": "409202701C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital request",
+          "explanation": "DCAS-Capital improvements to DCAS property currently rented by businesses on 100th Street between 103 Avenue and 101st Avenue",
+          "response": "The agency does not understand the request as written and requires more clarification. Explanation: Additional information is required, including the site address.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community Board-Local Businesses and residents"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital request",
+          "explanation": "DCAS-Capital improvements to DCAS property currently rented by businesses on 100th Street between 103 Avenue and 101st Avenue",
+          "response": "The agency does not understand the request as written and requires more clarification. Explanation: Additional information is required, including the site address.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community Board-Local Businesses and residents"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "856",
+          "request": "Other capital request",
+          "explanation": "DCAS-Capital improvements to DCAS property currently rented by businesses on 100th Street between 103 Avenue and 101st Avenue",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community Board-Local Businesses and residents"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202701CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Additional funding to complete ADA compliance for all Overlook Entrances",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "NYC Parks"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Additional funding to complete ADA compliance for all Overlook Entrances",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "NYC Parks"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Additional funding to complete ADA compliance for all Overlook Entrances",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "NYC Parks"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202701E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance educational and recreational programs",
+          "explanation": "Our seniors deserve programs that improve the mental, physical, financial and emotional health. It is importation we increase funding to programs that will greatly improve the quality of life of our senior population.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "Local Senior centers"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance educational and recreational programs",
+          "explanation": "Our seniors deserve programs that improve the mental, physical, financial and emotional health. It is importation we increase funding to programs that will greatly improve the quality of life of our senior population.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "Local Senior centers"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Enhance educational and recreational programs",
+          "explanation": "Our seniors deserve programs that improve the mental, physical, financial and emotional health. It is importation we increase funding to programs that will greatly improve the quality of life of our senior population.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "Local Senior centers"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202702C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Community is requesting painting sidewalk marking on the perimeter sidewalk to promote walking and running",
+          "response": "This item is not eligible for Capital funding. OMB supports the agency's position as follows: Further study by the agency of this request is needed. Contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "PHIL SCOOTER RIZZUTO PARK, Richmond Hill, NY, USA"
+          },
+          "support_by": [
+            "Friends of Phil \"Scooter\" Rizzuto Park"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Community is requesting painting sidewalk marking on the perimeter sidewalk to promote walking and running",
+          "response": "This item is not eligible for Capital funding. OMB supports the agency's position as follows: Further study by the agency of this request is needed. Contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "PHIL SCOOTER RIZZUTO PARK, Richmond Hill, NY, USA",
+            "postcode": "11419",
+            "latitude": "40.694888",
+            "longitude": "-73.82162",
+            "bin": "4000000",
+            "bbl": "4094420001",
+            "council_district": "29",
+            "census_tract": "148",
+            "nta": "QN0903"
+          },
+          "support_by": [
+            "Friends of Phil \"Scooter\" Rizzuto Park"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Community is requesting painting sidewalk marking on the perimeter sidewalk to promote walking and running",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "PHIL SCOOTER RIZZUTO PARK, Richmond Hill, NY, USA",
+            "postcode": "11419",
+            "latitude": "40.694888",
+            "longitude": "-73.82162",
+            "bin": "4000000",
+            "bbl": "4094420001",
+            "council_district": "29",
+            "census_tract": "148",
+            "nta": "QN0903"
+          },
+          "support_by": [
+            "Friends of Phil \"Scooter\" Rizzuto Park"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202702CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Additional funding to complete ADA compliance project for all Overlook entrances",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "NYC Parks"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Additional funding to complete ADA compliance project for all Overlook entrances",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "NYC Parks"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Additional funding to complete ADA compliance project for all Overlook entrances",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "NYC Parks"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202702E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Buildings",
+            "agency_id": "buildings",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense request for DOB",
+          "explanation": "Funding for additional inspectors to address issues resulting from the City of Yes",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Buildings",
+            "agency_id": "buildings",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense request for DOB",
+          "explanation": "Funding for additional inspectors to address issues resulting from the City of Yes",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Buildings",
+            "agency_id": "buildings",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "810",
+          "request": "Other expense request for DOB",
+          "explanation": "Funding for additional inspectors to address issues resulting from the City of Yes",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202703C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Funding to upgrade equipment and park amenities in Jackson Pond Playground",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Funding to upgrade equipment and park amenities in Jackson Pond Playground",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Funding to upgrade equipment and park amenities in Jackson Pond Playground",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202703E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other educational programs requests",
+          "explanation": "Expand 3k program and enrollment opportunities",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other educational programs requests",
+          "explanation": "Expand 3k program and enrollment opportunities",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Other educational programs requests",
+          "explanation": "Expand 3k program and enrollment opportunities",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202704C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "New synthetic turf and running track for Victory Field",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "VICTORY FIELD, Forest Park, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "New synthetic turf and running track for Victory Field",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "VICTORY FIELD, Forest Park, NY, USA",
+            "postcode": "11385",
+            "latitude": "40.701801",
+            "longitude": "-73.854321",
+            "bin": "4000000",
+            "bbl": "4039070900",
+            "council_district": "32",
+            "census_tract": "64102",
+            "nta": "QN8291"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "New synthetic turf and running track for Victory Field",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "VICTORY FIELD, Forest Park, NY, USA",
+            "postcode": "11385",
+            "latitude": "40.701801",
+            "longitude": "-73.854321",
+            "bin": "4000000",
+            "bbl": "4039070900",
+            "council_district": "32",
+            "census_tract": "64102",
+            "nta": "QN8291"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202704E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other educational programs requests",
+          "explanation": "Provide funding for vocational programs in schools",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other educational programs requests",
+          "explanation": "Provide funding for vocational programs in schools",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Other educational programs requests",
+          "explanation": "Provide funding for vocational programs in schools",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202705C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Community is requesting the reconstruction of ballfield/athletic field in Phil Rizzuto Park",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "PHIL SCOOTER RIZZUTO PARK, Richmond Hill, NY, USA"
+          },
+          "support_by": [
+            "Community Board 9",
+            "Residents"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Community is requesting the reconstruction of ballfield/athletic field in Phil Rizzuto Park",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "PHIL SCOOTER RIZZUTO PARK, Richmond Hill, NY, USA",
+            "postcode": "11419",
+            "latitude": "40.694888",
+            "longitude": "-73.82162",
+            "bin": "4000000",
+            "bbl": "4094420001",
+            "council_district": "29",
+            "census_tract": "148",
+            "nta": "QN0903"
+          },
+          "support_by": [
+            "Community Board 9",
+            "Residents"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Community is requesting the reconstruction of ballfield/athletic field in Phil Rizzuto Park",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "PHIL SCOOTER RIZZUTO PARK, Richmond Hill, NY, USA",
+            "postcode": "11419",
+            "latitude": "40.694888",
+            "longitude": "-73.82162",
+            "bin": "4000000",
+            "bbl": "4094420001",
+            "council_district": "29",
+            "census_tract": "148",
+            "nta": "QN0903"
+          },
+          "support_by": [
+            "Community Board 9",
+            "Residents"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202705E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other educational programs requests",
+          "explanation": "PS 161 is requesting funding to support the NYC Children's Theater Program",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "School Faculty"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other educational programs requests",
+          "explanation": "PS 161 is requesting funding to support the NYC Children's Theater Program",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "School Faculty"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Other educational programs requests",
+          "explanation": "PS 161 is requesting funding to support the NYC Children's Theater Program",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "School Faculty"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202706C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve access to a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Additional Funding to complete ADA compliance for all Overlook entrances and install new benches",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community Board",
+            "CM Schulman"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve access to a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Additional Funding to complete ADA compliance for all Overlook entrances and install new benches",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community Board",
+            "CM Schulman"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Improve access to a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Additional Funding to complete ADA compliance for all Overlook entrances and install new benches",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community Board",
+            "CM Schulman"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202706E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Create or promote programs to de-stigmatize mental health needs and encourage treatment",
+          "explanation": "In this technologically advance environment and the use of various social media platforms can cause stress and anxiety in our children and young adults. There should access to mental health programs to help individuals cope with stress and depression.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DOHMH agrees that social media is a major contributor to mental health issues, self esteem, etc among teens. The City, State and Federal government are exploring ways to curb usage",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Create or promote programs to de-stigmatize mental health needs and encourage treatment",
+          "explanation": "In this technologically advance environment and the use of various social media platforms can cause stress and anxiety in our children and young adults. There should access to mental health programs to help individuals cope with stress and depression.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DOHMH agrees that social media is a major contributor to mental health issues, self esteem, etc among teens. The City, State and Federal government are exploring ways to curb usage",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Create or promote programs to de-stigmatize mental health needs and encourage treatment",
+          "explanation": "In this technologically advance environment and the use of various social media platforms can cause stress and anxiety in our children and young adults. There should access to mental health programs to help individuals cope with stress and depression.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202707C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Resurface all interior walkways in Phil \"Scooter\" Rizzuto Park",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Resurface all interior walkways in Phil \"Scooter\" Rizzuto Park",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Resurface all interior walkways in Phil \"Scooter\" Rizzuto Park",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202707E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Create or promote programs to de-stigmatize mental health needs and encourage treatment",
+          "explanation": "Many veterans return to civilian life that require mental health support. Issues can be dealing with PTSD, substance abuse or difficulties returning to civilian life. It is important that we have programs to help our veteran population.",
+          "response": "The request does not seem to be applicable to the Responsible Agency. OMB cannot make a determination at this time.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "Veteran Service Organizations"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Create or promote programs to de-stigmatize mental health needs and encourage treatment",
+          "explanation": "Many veterans return to civilian life that require mental health support. Issues can be dealing with PTSD, substance abuse or difficulties returning to civilian life. It is important that we have programs to help our veteran population.",
+          "response": "The request does not seem to be applicable to the Responsible Agency. OMB cannot make a determination at this time.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "Veteran Service Organizations"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Create or promote programs to de-stigmatize mental health needs and encourage treatment",
+          "explanation": "Many veterans return to civilian life that require mental health support. Issues can be dealing with PTSD, substance abuse or difficulties returning to civilian life. It is important that we have programs to help our veteran population.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "Veteran Service Organizations"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202708C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Reconstruction of Greenhouse Playground",
+          "response": "Available funds are insufficient for this project. We recommend this project be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "NYC Parks"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Reconstruction of Greenhouse Playground",
+          "response": "Available funds are insufficient for this project. We recommend this project be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "NYC Parks"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Reconstruction of Greenhouse Playground",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "NYC Parks"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202708E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance park safety through more security staff (police or parks enforcement)",
+          "explanation": "Fund Park Enforcement Patrol Unit for Forest Park. Forest Park is host to many athletic facilities, recreational programs, and special events. It also has 543 acres of forest, which feature numerous hiking trails and a 4-mile equestrian path. Our park has a high volume of events and activities. Problems such as user conflicts permit violations, crowd control, vandalism, deviant behavior and other enforcement issues are in need of attention. Often, PEP nits are not available to respond to Forest Parks needs due to citywide distribution of their staff, and summer staffing of pools and beaches. This has created a rise in misuse of and vandalism to park facilities, damage to the landscape, criminal activity and mischief.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "FOREST PARK, Forest Park, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance park safety through more security staff (police or parks enforcement)",
+          "explanation": "Fund Park Enforcement Patrol Unit for Forest Park. Forest Park is host to many athletic facilities, recreational programs, and special events. It also has 543 acres of forest, which feature numerous hiking trails and a 4-mile equestrian path. Our park has a high volume of events and activities. Problems such as user conflicts permit violations, crowd control, vandalism, deviant behavior and other enforcement issues are in need of attention. Often, PEP nits are not available to respond to Forest Parks needs due to citywide distribution of their staff, and summer staffing of pools and beaches. This has created a rise in misuse of and vandalism to park facilities, damage to the landscape, criminal activity and mischief.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "FOREST PARK, Forest Park, NY, USA",
+            "postcode": "11385",
+            "latitude": "40.702513",
+            "longitude": "-73.852566",
+            "bin": "4000000",
+            "bbl": "4039071125",
+            "council_district": "32",
+            "census_tract": "64102",
+            "nta": "QN8291"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Enhance park safety through more security staff (police or parks enforcement)",
+          "explanation": "Fund Park Enforcement Patrol Unit for Forest Park. Forest Park is host to many athletic facilities, recreational programs, and special events. It also has 543 acres of forest, which feature numerous hiking trails and a 4-mile equestrian path. Our park has a high volume of events and activities. Problems such as user conflicts permit violations, crowd control, vandalism, deviant behavior and other enforcement issues are in need of attention. Often, PEP nits are not available to respond to Forest Parks needs due to citywide distribution of their staff, and summer staffing of pools and beaches. This has created a rise in misuse of and vandalism to park facilities, damage to the landscape, criminal activity and mischief.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "FOREST PARK, Forest Park, NY, USA",
+            "postcode": "11385",
+            "latitude": "40.702513",
+            "longitude": "-73.852566",
+            "bin": "4000000",
+            "bbl": "4039071125",
+            "council_district": "32",
+            "census_tract": "64102",
+            "nta": "QN8291"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202709C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Community is requesting the installation of a table tennis court in Phil Scooter Rizzuto Park",
+          "response": "This item is not eligible for capital funding.",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Friends of Phil Scooter Rizzuto park"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Community is requesting the installation of a table tennis court in Phil Scooter Rizzuto Park",
+          "response": "This item is not eligible for capital funding.",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Friends of Phil Scooter Rizzuto park"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Community is requesting the installation of a table tennis court in Phil Scooter Rizzuto Park",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Friends of Phil Scooter Rizzuto park"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202709E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Fund Pruning Contract for Forest Park This is now a safety issue. Branches have fallen during park concerts and events. It is only a matter of time before someone is seriously injured or killed. The 543-acre park has large mature trees that are 150 years plus. We desperately need a PIP (Parks Inspection Project) funded along with pruning dollars.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "FOREST PARK, Forest Park, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Fund Pruning Contract for Forest Park This is now a safety issue. Branches have fallen during park concerts and events. It is only a matter of time before someone is seriously injured or killed. The 543-acre park has large mature trees that are 150 years plus. We desperately need a PIP (Parks Inspection Project) funded along with pruning dollars.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "FOREST PARK, Forest Park, NY, USA",
+            "postcode": "11385",
+            "latitude": "40.702513",
+            "longitude": "-73.852566",
+            "bin": "4000000",
+            "bbl": "4039071125",
+            "council_district": "32",
+            "census_tract": "64102",
+            "nta": "QN8291"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Fund Pruning Contract for Forest Park This is now a safety issue. Branches have fallen during park concerts and events. It is only a matter of time before someone is seriously injured or killed. The 543-acre park has large mature trees that are 150 years plus. We desperately need a PIP (Parks Inspection Project) funded along with pruning dollars.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "FOREST PARK, Forest Park, NY, USA",
+            "postcode": "11385",
+            "latitude": "40.702513",
+            "longitude": "-73.852566",
+            "bin": "4000000",
+            "bbl": "4039071125",
+            "council_district": "32",
+            "census_tract": "64102",
+            "nta": "QN8291"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202710C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Install shade structure in Phil Scooter Rizzuto Park",
+          "response": "This item is not eligible for capital funding.",
+          "rank": {
+            "value": "09",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Friends Of Phil Scooter Rizzuto Park"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Install shade structure in Phil Scooter Rizzuto Park",
+          "response": "This item is not eligible for capital funding.",
+          "rank": {
+            "value": "09",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Friends Of Phil Scooter Rizzuto Park"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Install shade structure in Phil Scooter Rizzuto Park",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "09",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Friends Of Phil Scooter Rizzuto Park"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202710E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Increase funding for tree maintenance and pruning for Woodhaven, Ozone Park, Richmond Hill and Kew Gardens.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Increase funding for tree maintenance and pruning for Woodhaven, Ozone Park, Richmond Hill and Kew Gardens.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Increase funding for tree maintenance and pruning for Woodhaven, Ozone Park, Richmond Hill and Kew Gardens.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202711C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Funding to reconstruct comfort station in Phil Scooter Rizzuto Park",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "10",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Friends of Phil Scooter Rizzuto Park"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Funding to reconstruct comfort station in Phil Scooter Rizzuto Park",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "10",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Friends of Phil Scooter Rizzuto Park"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Funding to reconstruct comfort station in Phil Scooter Rizzuto Park",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "10",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Friends of Phil Scooter Rizzuto Park"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202711E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase Graffiti Removal/Cleaning",
+          "explanation": "Graffiti Removal",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DSNY is currently funded for graffiti removal services. Requests for specific removal can be submitted on 311. Additional information can be found on DSNY's website here: https://www.nyc.gov/site/dsny/what-we-do/cleaning/graffiti.page",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase Graffiti Removal/Cleaning",
+          "explanation": "Graffiti Removal",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DSNY is currently funded for graffiti removal services. Requests for specific removal can be submitted on 311. Additional information can be found on DSNY's website here: https://www.nyc.gov/site/dsny/what-we-do/cleaning/graffiti.page",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Increase Graffiti Removal/Cleaning",
+          "explanation": "Graffiti Removal",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202712C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "Jamaica beautification project. Including new lighting on Jamaica Ave from Lefferts Boulevard to Eldert Lane.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: Please contact your elected officials regarding possible funding allocations for distinctive lighting.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Woodhaven Bid, local merchants. community board and residents"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "Jamaica beautification project. Including new lighting on Jamaica Ave from Lefferts Boulevard to Eldert Lane.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: Please contact your elected officials regarding possible funding allocations for distinctive lighting.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Woodhaven Bid, local merchants. community board and residents"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Repair or provide new street lights",
+          "explanation": "Jamaica beautification project. Including new lighting on Jamaica Ave from Lefferts Boulevard to Eldert Lane.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Woodhaven Bid, local merchants. community board and residents"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202712E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other cleaning requests",
+          "explanation": "Power washing sidewalks along Jamaica Avenue",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: DSNY does not currently provide this service.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other cleaning requests",
+          "explanation": "Power washing sidewalks along Jamaica Avenue",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: DSNY does not currently provide this service.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Other cleaning requests",
+          "explanation": "Power washing sidewalks along Jamaica Avenue",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202713C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Upgrade or create new greenways",
+          "explanation": "Incorporate Greenstreet Program on Queens Boulevard. Beautify medians with trees and gardens where appropriate.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: Greenstreets are a Parks program.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Upgrade or create new greenways",
+          "explanation": "Incorporate Greenstreet Program on Queens Boulevard. Beautify medians with trees and gardens where appropriate.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: Greenstreets are a Parks program.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Upgrade or create new greenways",
+          "explanation": "Incorporate Greenstreet Program on Queens Boulevard. Beautify medians with trees and gardens where appropriate.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202713E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other garbage collection and recycling requests",
+          "explanation": "Maintaining and increasing litter basket service",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "DSNY, Community Board"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other garbage collection and recycling requests",
+          "explanation": "Maintaining and increasing litter basket service",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "DSNY, Community Board"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Other garbage collection and recycling requests",
+          "explanation": "Maintaining and increasing litter basket service",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "DSNY, Community Board"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202714C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Upgrade or create new greenways",
+          "explanation": "Incorporate Greenstreets Program on Woodhaven Blvd. Additional tree plantings on Woodhaven Blvd. from Myrtle Ave. to 103 Ave. and gardens where appropriate.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: While Greenstreets is a Parks program, Woodhaven Blvd is slated for capital reconstruction and greenery will be added where feasible and with consultation and comment from NYC Parks.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Upgrade or create new greenways",
+          "explanation": "Incorporate Greenstreets Program on Woodhaven Blvd. Additional tree plantings on Woodhaven Blvd. from Myrtle Ave. to 103 Ave. and gardens where appropriate.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: While Greenstreets is a Parks program, Woodhaven Blvd is slated for capital reconstruction and greenery will be added where feasible and with consultation and comment from NYC Parks.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Upgrade or create new greenways",
+          "explanation": "Incorporate Greenstreets Program on Woodhaven Blvd. Additional tree plantings on Woodhaven Blvd. from Myrtle Ave. to 103 Ave. and gardens where appropriate.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202714E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DSNY",
+          "explanation": "Maintaining and increasing MLP services to address illegal drop off and dump out conditions",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "DSNY, Community Board"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DSNY",
+          "explanation": "Maintaining and increasing MLP services to address illegal drop off and dump out conditions",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "DSNY, Community Board"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Other expense budget request for DSNY",
+          "explanation": "Maintaining and increasing MLP services to address illegal drop off and dump out conditions",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "DSNY, Community Board"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202715C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DOT",
+          "explanation": "Community is requesting the installation of bike racks around the perimeter of Phil \"Scooter\" Rizzuto Park",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: Please submit a request via the agency webform here: https://www.nyc.gov/html/dot/html/contact/contact-form.shtml Contact the Borough office to coordinate the review.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Friends of Phil \"Scooter\" Rizzuto Park"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DOT",
+          "explanation": "Community is requesting the installation of bike racks around the perimeter of Phil \"Scooter\" Rizzuto Park",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: Please submit a request via the agency webform here: https://www.nyc.gov/html/dot/html/contact/contact-form.shtml Contact the Borough office to coordinate the review.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Friends of Phil \"Scooter\" Rizzuto Park"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Other capital budget request for DOT",
+          "explanation": "Community is requesting the installation of bike racks around the perimeter of Phil \"Scooter\" Rizzuto Park",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Friends of Phil \"Scooter\" Rizzuto Park"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202715E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other cleaning requests",
+          "explanation": "Maintaining and cleaning center median",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DSNY will accommodate this request where possible using existing funds for this service. Additional service will require increased funding.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "DSNY. Community Board"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other cleaning requests",
+          "explanation": "Maintaining and cleaning center median",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DSNY will accommodate this request where possible using existing funds for this service. Additional service will require increased funding.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "DSNY. Community Board"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Other cleaning requests",
+          "explanation": "Maintaining and cleaning center median",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "DSNY. Community Board"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202716C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital request",
+          "explanation": "Capital improvements to LIRR property between Babbage and Bessemer Streets, bounded by Hillside and 84th Avenues, and 126th Street and Metropolitan Avenue (security fencing, improved lighting, facade repair and security cameras).",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital request",
+          "explanation": "Capital improvements to LIRR property between Babbage and Bessemer Streets, bounded by Hillside and 84th Avenues, and 126th Street and Metropolitan Avenue (security fencing, improved lighting, facade repair and security cameras).",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "998",
+          "request": "Other capital request",
+          "explanation": "Capital improvements to LIRR property between Babbage and Bessemer Streets, bounded by Hillside and 84th Avenues, and 126th Street and Metropolitan Avenue (security fencing, improved lighting, facade repair and security cameras).",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202716E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase vacant lot cleaning",
+          "explanation": "Maintaining and increasing funding levels for vacant lot cleaning",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "DSNY, Community Board"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase vacant lot cleaning",
+          "explanation": "Maintaining and increasing funding levels for vacant lot cleaning",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "DSNY, Community Board"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Increase vacant lot cleaning",
+          "explanation": "Maintaining and increasing funding levels for vacant lot cleaning",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "DSNY, Community Board"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202717C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade existing precinct houses",
+          "explanation": "The parking lot adjacent to the 102nd Precinct building needs to be resurfaced and repair. This will provide adequate parking for police office and free up street parking in front of residential property",
+          "response": "The agency will accommodate part of this request within existing resources.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "PCT 102, Richmond Hill, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade existing precinct houses",
+          "explanation": "The parking lot adjacent to the 102nd Precinct building needs to be resurfaced and repair. This will provide adequate parking for police office and free up street parking in front of residential property",
+          "response": "The agency will accommodate part of this request within existing resources.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "PCT 102, Richmond Hill, NY, USA",
+            "postcode": "11418",
+            "latitude": "40.698715",
+            "longitude": "-73.831567",
+            "bin": "4195880",
+            "bbl": "4093270021",
+            "council_district": "29",
+            "census_tract": "122",
+            "nta": "QN0902"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Renovate or upgrade existing precinct houses",
+          "explanation": "The parking lot adjacent to the 102nd Precinct building needs to be resurfaced and repair. This will provide adequate parking for police office and free up street parking in front of residential property",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "PCT 102, Richmond Hill, NY, USA",
+            "postcode": "11418",
+            "latitude": "40.698715",
+            "longitude": "-73.831567",
+            "bin": "4195880",
+            "bbl": "4093270021",
+            "council_district": "29",
+            "census_tract": "122",
+            "nta": "QN0902"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202717E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more frequent garbage or recycling pick-up",
+          "explanation": "Maintaining curbside recycling program",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DSNY will maintain the existing level of service. Additional service will require increased funding.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "DSNY, Community Board"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more frequent garbage or recycling pick-up",
+          "explanation": "Maintaining curbside recycling program",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DSNY will maintain the existing level of service. Additional service will require increased funding.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "DSNY, Community Board"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Provide more frequent garbage or recycling pick-up",
+          "explanation": "Maintaining curbside recycling program",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "DSNY, Community Board"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202718C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide surveillance (Argus) cameras",
+          "explanation": "Provide ARGUS cameras in high crime areas",
+          "response": "Agency supports but cannot accommodate Explanation: Argus cameras are funded via allocations from elected officials for use within their districts. Specific location recommendations should be provided to the local precinct commander for submission to the Information Technology Bureau once funding is allocated. The NYPD will attempt to accommodate specific location requests whenever funding is provided, but reserves the right to place cameras as appropriate due to current crime trends and operational needs.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "NYPD"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide surveillance (Argus) cameras",
+          "explanation": "Provide ARGUS cameras in high crime areas",
+          "response": "Agency supports but cannot accommodate Explanation: Argus cameras are funded via allocations from elected officials for use within their districts. Specific location recommendations should be provided to the local precinct commander for submission to the Information Technology Bureau once funding is allocated. The NYPD will attempt to accommodate specific location requests whenever funding is provided, but reserves the right to place cameras as appropriate due to current crime trends and operational needs.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "NYPD"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Provide surveillance (Argus) cameras",
+          "explanation": "Provide ARGUS cameras in high crime areas",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "NYPD"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202718E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Expand opportunities for electronic waste collection and disposal",
+          "explanation": "Restore the Curbside E-Waste collection program",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: DSNY operates a special waste drop off location for Queens in College Point. It is open every Thursday, Friday, and Saturday from 9:00 AM to 5:00 PM (closed legal holidays and during severe weather). It is located on 30th Avenue, between 120th and 122nd Streets at the Northwest corner of DSNY's Queens District 7 garage. DSNY is not currently funded for additional locations, curbside collection, or SAFE events. Additional information can be found on DSNY's website: https://www.nyc.gov/site/dsny/what-we-do/programs/special-waste-drop-off.page",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Expand opportunities for electronic waste collection and disposal",
+          "explanation": "Restore the Curbside E-Waste collection program",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: DSNY operates a special waste drop off location for Queens in College Point. It is open every Thursday, Friday, and Saturday from 9:00 AM to 5:00 PM (closed legal holidays and during severe weather). It is located on 30th Avenue, between 120th and 122nd Streets at the Northwest corner of DSNY's Queens District 7 garage. DSNY is not currently funded for additional locations, curbside collection, or SAFE events. Additional information can be found on DSNY's website: https://www.nyc.gov/site/dsny/what-we-do/programs/special-waste-drop-off.page",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Expand opportunities for electronic waste collection and disposal",
+          "explanation": "Restore the Curbside E-Waste collection program",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202719C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expand an existing elementary school",
+          "explanation": "Funding for school expansion project to help reduce class size",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency does not/cannot give priority to funding this request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "School Faculty"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expand an existing elementary school",
+          "explanation": "Funding for school expansion project to help reduce class size",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency does not/cannot give priority to funding this request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "School Faculty"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Provide a new or expand an existing elementary school",
+          "explanation": "Funding for school expansion project to help reduce class size",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "School Faculty"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202719E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more frequent garbage or recycling pick-up for schools and institutions",
+          "explanation": "Continuation of funds for school truck services, assistance to schools to maximize recycling and assist schools comply with collection schedules",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DSNY is funded for the existing level of school collection frequency. Additional information can be found on DSNY's website here: https://www.nyc.gov/site/dsny/collection/agencies-nonprofits/school-setout.page",
+          "rank": {
+            "value": "09",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "DSNY, Community Board"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more frequent garbage or recycling pick-up for schools and institutions",
+          "explanation": "Continuation of funds for school truck services, assistance to schools to maximize recycling and assist schools comply with collection schedules",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DSNY is funded for the existing level of school collection frequency. Additional information can be found on DSNY's website here: https://www.nyc.gov/site/dsny/collection/agencies-nonprofits/school-setout.page",
+          "rank": {
+            "value": "09",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "DSNY, Community Board"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Provide more frequent garbage or recycling pick-up for schools and institutions",
+          "explanation": "Continuation of funds for school truck services, assistance to schools to maximize recycling and assist schools comply with collection schedules",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "09",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "DSNY, Community Board"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202720C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Renovation of PS 66 playground",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: RESO A PLAYGROUND IN SCOPE.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "85-11 102 STREET, Richmond Hill, NY, USA"
+          },
+          "support_by": [
+            "Community Board 9",
+            "School Community"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Renovation of PS 66 playground",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: RESO A PLAYGROUND IN SCOPE.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "85-11 102 STREET, Richmond Hill, NY, USA",
+            "postcode": "11418",
+            "latitude": "40.697836",
+            "longitude": "-73.846558",
+            "bin": "4191497",
+            "bbl": "4091830001",
+            "council_district": "29",
+            "census_tract": "24",
+            "nta": "QN0902"
+          },
+          "support_by": [
+            "Community Board 9",
+            "School Community"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Renovation of PS 66 playground",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "85-11 102 STREET, Richmond Hill, NY, USA",
+            "postcode": "11418",
+            "latitude": "40.697836",
+            "longitude": "-73.846558",
+            "bin": "4191497",
+            "bbl": "4091830001",
+            "council_district": "29",
+            "census_tract": "24",
+            "nta": "QN0902"
+          },
+          "support_by": [
+            "Community Board 9",
+            "School Community"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202720E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Assist with on-site business compliance with City regulations",
+          "explanation": "Provide assistance to small businesses to comply with awning replacement mandates",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: The NYC Business Express Service Team (BEST) program educates businesses on regulatory requirements and works with them to ensure compliance. Businesses can also be referred to the NYC Business Express Service Team (BEST) by calling our Small Business Hotline at 888-SBS-4NYC (888-727-4692).",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "small business"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Assist with on-site business compliance with City regulations",
+          "explanation": "Provide assistance to small businesses to comply with awning replacement mandates",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: The NYC Business Express Service Team (BEST) program educates businesses on regulatory requirements and works with them to ensure compliance. Businesses can also be referred to the NYC Business Express Service Team (BEST) by calling our Small Business Hotline at 888-SBS-4NYC (888-727-4692).",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "small business"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "801",
+          "request": "Assist with on-site business compliance with City regulations",
+          "explanation": "Provide assistance to small businesses to comply with awning replacement mandates",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "small business"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202721C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate interior building component",
+          "explanation": "Renovation of school gymnasium",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FUNDING NOT AVAILABLE.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "97-25 108 STREET, Richmond Hill, NY, USA"
+          },
+          "support_by": [
+            "Principal/Community"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate interior building component",
+          "explanation": "Renovation of school gymnasium",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FUNDING NOT AVAILABLE.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "97-25 108 STREET, Richmond Hill, NY, USA",
+            "postcode": "11419",
+            "latitude": "40.688577",
+            "longitude": "-73.836162",
+            "bin": "4197909",
+            "bbl": "4094100001",
+            "council_district": "29",
+            "census_tract": "110",
+            "nta": "QN0903"
+          },
+          "support_by": [
+            "Principal/Community"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Renovate interior building component",
+          "explanation": "Renovation of school gymnasium",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "97-25 108 STREET, Richmond Hill, NY, USA",
+            "postcode": "11419",
+            "latitude": "40.688577",
+            "longitude": "-73.836162",
+            "bin": "4197909",
+            "bbl": "4094100001",
+            "council_district": "29",
+            "census_tract": "110",
+            "nta": "QN0903"
+          },
+          "support_by": [
+            "Principal/Community"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202721E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance Cornerstone and Beacon programs (all ages, including young adults)",
+          "explanation": "Continue to fund Beacon Program at Middle School 210 and expand to other district schools. The Beacon Program provides educational, sports and mentoring opportunities outside normal classroom hours. Funding should be maintained or increased.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Beacon programs have received continuing funding. Additionally, DYCD has begun a three-year, 20,000 seat expansion of the COMPASS afterschool program.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance Cornerstone and Beacon programs (all ages, including young adults)",
+          "explanation": "Continue to fund Beacon Program at Middle School 210 and expand to other district schools. The Beacon Program provides educational, sports and mentoring opportunities outside normal classroom hours. Funding should be maintained or increased.",
+          "response": "This request has already been completed. Explanation: Beacon programs have received continuing funding. Additionally, DYCD has begun a three-year, 20,000 seat expansion of the COMPASS afterschool program.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "260",
+          "request": "Provide, expand, or enhance Cornerstone and Beacon programs (all ages, including young adults)",
+          "explanation": "Continue to fund Beacon Program at Middle School 210 and expand to other district schools. The Beacon Program provides educational, sports and mentoring opportunities outside normal classroom hours. Funding should be maintained or increased.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202722C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Auditorium upgrade that includes new seating, audio and lighting systems",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FUNDING NOT AVAILABLE.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "School Faculty"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Auditorium upgrade that includes new seating, audio and lighting systems",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FUNDING NOT AVAILABLE.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "School Faculty"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Auditorium upgrade that includes new seating, audio and lighting systems",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "School Faculty"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202722E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide social services for domestic violence survivors (legal services, counseling, referral to supportive services, etc.)",
+          "explanation": "Domestic violence does not discriminate. Anyone of any race, age, sexual orientation, religion or gender can be a victim - or perpetrator - of domestic violence. It can happen to people who are married, living together or who are dating. It affects people of all socioeconomic backgrounds and education levels. We need programs to help these victims",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: HRA continues to maintain programs for domestic violence survivors in emergency shelter - for example, hotline services, safe and secure housing, supportive services including case management, childcare and education, medical services, transportation, and referrals to other social services supports. The agency also works closely with the Mayor's Office to End Domestic and Gender-Based Violence (ENDGBV).",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Area residents"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide social services for domestic violence survivors (legal services, counseling, referral to supportive services, etc.)",
+          "explanation": "Domestic violence does not discriminate. Anyone of any race, age, sexual orientation, religion or gender can be a victim - or perpetrator - of domestic violence. It can happen to people who are married, living together or who are dating. It affects people of all socioeconomic backgrounds and education levels. We need programs to help these victims",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: HRA continues to maintain programs for domestic violence survivors in emergency shelter - for example, hotline services, safe and secure housing, supportive services including case management, childcare and education, medical services, transportation, and referrals to other social services supports. The agency also works closely with the Mayor's Office to End Domestic and Gender-Based Violence (ENDGBV).",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Area residents"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "096",
+          "request": "Provide social services for domestic violence survivors (legal services, counseling, referral to supportive services, etc.)",
+          "explanation": "Domestic violence does not discriminate. Anyone of any race, age, sexual orientation, religion or gender can be a victim - or perpetrator - of domestic violence. It can happen to people who are married, living together or who are dating. It affects people of all socioeconomic backgrounds and education levels. We need programs to help these victims",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Area residents"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202723C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Funding for new Public Address System to ensure clear communication and improve safety",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FUNDING NOT AVAILABLE.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "School Faculty"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Funding for new Public Address System to ensure clear communication and improve safety",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FUNDING NOT AVAILABLE.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "School Faculty"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Funding for new Public Address System to ensure clear communication and improve safety",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "School Faculty"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202723E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Hire additional uniformed officers",
+          "explanation": "We must receive our fair share of Police Officers. Our district will be home to high-rise community jail and also includes Queens Borough Hall, Forest Park, and a number of churches, synagogues and temples that are in need of constant attention.",
+          "response": "The agency will accommodate part of this request within existing resources.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Hire additional uniformed officers",
+          "explanation": "We must receive our fair share of Police Officers. Our district will be home to high-rise community jail and also includes Queens Borough Hall, Forest Park, and a number of churches, synagogues and temples that are in need of constant attention.",
+          "response": "The agency will accommodate part of this request within existing resources.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Hire additional uniformed officers",
+          "explanation": "We must receive our fair share of Police Officers. Our district will be home to high-rise community jail and also includes Queens Borough Hall, Forest Park, and a number of churches, synagogues and temples that are in need of constant attention.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202724C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide technology upgrade",
+          "explanation": "Funding to purchase ten (10) Lenvo Laptops (Tine Gen 5 model)",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: COMPLETED.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "86-10 114 STREET, Richmond Hill, NY, USA"
+          },
+          "support_by": [
+            "School Faculty"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide technology upgrade",
+          "explanation": "Funding to purchase ten (10) Lenvo Laptops (Tine Gen 5 model)",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: COMPLETED.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "86-10 114 STREET, Richmond Hill, NY, USA",
+            "postcode": "11418",
+            "latitude": "40.69919",
+            "longitude": "-73.835299",
+            "bin": "4192689",
+            "bbl": "4092260057",
+            "council_district": "29",
+            "census_tract": "130",
+            "nta": "QN0902"
+          },
+          "support_by": [
+            "School Faculty"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Provide technology upgrade",
+          "explanation": "Funding to purchase ten (10) Lenvo Laptops (Tine Gen 5 model)",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "86-10 114 STREET, Richmond Hill, NY, USA",
+            "postcode": "11418",
+            "latitude": "40.69919",
+            "longitude": "-73.835299",
+            "bin": "4192689",
+            "bbl": "4092260057",
+            "council_district": "29",
+            "census_tract": "130",
+            "nta": "QN0902"
+          },
+          "support_by": [
+            "School Faculty"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202724E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Hire additional crossing guards",
+          "explanation": "Hire additional crossings and assign to local schools",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "Local schools"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Hire additional crossing guards",
+          "explanation": "Hire additional crossings and assign to local schools",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "Local schools"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Hire additional crossing guards",
+          "explanation": "Hire additional crossings and assign to local schools",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Community",
+            "Local schools"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "409202725C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-09",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "09",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate interior building component",
+          "explanation": "PS 55 gym upgrade",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FUNDING NOT AVAILABLE.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate interior building component",
+          "explanation": "PS 55 gym upgrade",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FUNDING NOT AVAILABLE.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Renovate interior building component",
+          "explanation": "PS 55 gym upgrade",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    }
+  ]
+}

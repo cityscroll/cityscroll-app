@@ -1,0 +1,4327 @@
+{
+  "schema": "cityscroll.community_board_budget_register_document.v1",
+  "method": "omb_register_full_tracking_code_within_cycle_v1",
+  "negative_rule": "A changed response text is a changed written answer and nothing else. It is not funding, a commitment, delivery, or completion, and no request is carried across fiscal cycles by a repeated priority number, a similar facility name, or matching request text.",
+  "board_id": "queens-cb-11",
+  "publications": {
+    "as_of": "2026-09-07",
+    "servable": [
+      "20260512",
+      "20260630"
+    ],
+    "diagnostic_only": [
+      "20270217"
+    ],
+    "latest": "20260630"
+  },
+  "request_count": 48,
+  "requests": [
+    {
+      "tracking_code": "411202701C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "The following locations suffer from poor drainage and require additional storm drain infrastructure: 194 St. and 46 Ave., West Dr. between Park Lane to Bayview Ave., Richmond Rd. at Shore Rd., 223 St. between 37 Ave. and 41 Ave., Marathon Pkwy. between Commonwealth Blvd. and 64 Ave., 34 Rd. between 211 St. and 213 St., 57 Ave. between Marathon Pkwy. and 254 St., 246 Crescent and 57 Dr., 200 St. between 35 Ave. and Francis Lewis Blvd., 215 Place and 216 St. south of 40 Ave., 40 Ave. and Morgan St., 201 St., and 38 Ave. at 201 Street, 204 Street, and 217 Street, and including the entirety of Hillside Ave. in Douglaston. Also 233rd Street to 234th Street and 38th Drive to 41st Avenue. There are non-functioning seepage basins north of Union Turnpike.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "The following locations suffer from poor drainage and require additional storm drain infrastructure: 194 St. and 46 Ave., West Dr. between Park Lane to Bayview Ave., Richmond Rd. at Shore Rd., 223 St. between 37 Ave. and 41 Ave., Marathon Pkwy. between Commonwealth Blvd. and 64 Ave., 34 Rd. between 211 St. and 213 St., 57 Ave. between Marathon Pkwy. and 254 St., 246 Crescent and 57 Dr., 200 St. between 35 Ave. and Francis Lewis Blvd., 215 Place and 216 St. south of 40 Ave., 40 Ave. and Morgan St., 201 St., and 38 Ave. at 201 Street, 204 Street, and 217 Street, and including the entirety of Hillside Ave. in Douglaston. Also 233rd Street to 234th Street and 38th Drive to 41st Avenue. There are non-functioning seepage basins north of Union Turnpike.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "826",
+          "request": "Other capital budget request for DEP",
+          "explanation": "The following locations suffer from poor drainage and require additional storm drain infrastructure: 194 St. and 46 Ave., West Dr. between Park Lane to Bayview Ave., Richmond Rd. at Shore Rd., 223 St. between 37 Ave. and 41 Ave., Marathon Pkwy. between Commonwealth Blvd. and 64 Ave., 34 Rd. between 211 St. and 213 St., 57 Ave. between Marathon Pkwy. and 254 St., 246 Crescent and 57 Dr., 200 St. between 35 Ave. and Francis Lewis Blvd., 215 Place and 216 St. south of 40 Ave., 40 Ave. and Morgan St., 201 St., and 38 Ave. at 201 Street, 204 Street, and 217 Street, and including the entirety of Hillside Ave. in Douglaston. Also 233rd Street to 234th Street and 38th Drive to 41st Avenue. There are non-functioning seepage basins north of Union Turnpike.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202701CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Rehabilitation of the Bayside Hills Malls. Replacement of curbs, restoration of cupolas and landscaping. Funded project, currently in final design.",
+          "response": "This project has already been completed. Please remove from future requests.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Barry Grodenchik"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Rehabilitation of the Bayside Hills Malls. Replacement of curbs, restoration of cupolas and landscaping. Funded project, currently in final design.",
+          "response": "This project has already been completed. Please remove from future requests.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Barry Grodenchik"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Rehabilitation of the Bayside Hills Malls. Replacement of curbs, restoration of cupolas and landscaping. Funded project, currently in final design.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Barry Grodenchik"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202701E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Funding for a new senior center program",
+          "explanation": "Fund a senior center in the western part of the district, in Auburndale. Bayside Senior Center and Korean Community Services is located in the center of the district, and Queens Commonpoint serves the eastern end of the district.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Auburndale Improvement Association"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Funding for a new senior center program",
+          "explanation": "Fund a senior center in the western part of the district, in Auburndale. Bayside Senior Center and Korean Community Services is located in the center of the district, and Queens Commonpoint serves the eastern end of the district.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Auburndale Improvement Association"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Funding for a new senior center program",
+          "explanation": "Fund a senior center in the western part of the district, in Auburndale. Bayside Senior Center and Korean Community Services is located in the center of the district, and Queens Commonpoint serves the eastern end of the district.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Auburndale Improvement Association"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202702C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Replace water mains in Little Neck. Due to topography of area and age of pipes water periodically is brown coming out of the taps.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Replace water mains in Little Neck. Due to topography of area and age of pipes water periodically is brown coming out of the taps.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "826",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Replace water mains in Little Neck. Due to topography of area and age of pipes water periodically is brown coming out of the taps.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202702CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Telephone Playground is adjacent to PS 205 on the corner of 75th Avenue and Bell Boulevard. The playground has not been renovated since 1998 and is a high-traffic park in need of updated play equipment and capital reconstruction.",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Telephone Playground is adjacent to PS 205 on the corner of 75th Avenue and Bell Boulevard. The playground has not been renovated since 1998 and is a high-traffic park in need of updated play equipment and capital reconstruction.",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Telephone Playground is adjacent to PS 205 on the corner of 75th Avenue and Bell Boulevard. The playground has not been renovated since 1998 and is a high-traffic park in need of updated play equipment and capital reconstruction.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202702E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase case management capacity",
+          "explanation": "Additional funding is needed to reduce social worker caseloads currently about 65 cases per worker. Reductions in caseload will improve service delivery to the elderly. SNAP serves Community Boards 8, 11, and 13.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "80-45 WINCHESTER BOULEVARD, Bellerose, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase case management capacity",
+          "explanation": "Additional funding is needed to reduce social worker caseloads currently about 65 cases per worker. Reductions in caseload will improve service delivery to the elderly. SNAP serves Community Boards 8, 11, and 13.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "80-45 WINCHESTER BOULEVARD, Bellerose, NY, USA",
+            "postcode": "11427",
+            "latitude": "40.737685",
+            "longitude": "-73.734021",
+            "bin": "4537294",
+            "bbl": "4078800400",
+            "council_district": "23",
+            "census_tract": "1567",
+            "nta": "QN1302"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Increase case management capacity",
+          "explanation": "Additional funding is needed to reduce social worker caseloads currently about 65 cases per worker. Reductions in caseload will improve service delivery to the elderly. SNAP serves Community Boards 8, 11, and 13.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "80-45 WINCHESTER BOULEVARD, Bellerose, NY, USA",
+            "postcode": "11427",
+            "latitude": "40.737685",
+            "longitude": "-73.734021",
+            "bin": "4537294",
+            "bbl": "4078800400",
+            "council_district": "23",
+            "census_tract": "1567",
+            "nta": "QN1302"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202703C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Acquire the remaining lots in Udall's Cove which is necessary to preserve wetlands from development. The acquisition of these lots is crucial for the protection of freshwater wetlands and the preservation of natural habitats of wildlife. The lots specifically include the following: Block 8114, Lots 227 and half of 122. Block 8112, Lot 170. Block 8116, Lot 170. Half of Block 8114, Lot 339. And Block 8103, Lot 1.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "ALLEY PARK POND, Alley Pond Park, NY, USA"
+          },
+          "support_by": [
+            "Udalls Cove Preservation Committee",
+            "Bayside Historical Society"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Acquire the remaining lots in Udall's Cove which is necessary to preserve wetlands from development. The acquisition of these lots is crucial for the protection of freshwater wetlands and the preservation of natural habitats of wildlife. The lots specifically include the following: Block 8114, Lots 227 and half of 122. Block 8112, Lot 170. Block 8116, Lot 170. Half of Block 8114, Lot 339. And Block 8103, Lot 1.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "ALLEY PARK POND, Alley Pond Park, NY, USA",
+            "postcode": "11362",
+            "latitude": "40.762347",
+            "longitude": "-73.751275",
+            "bin": "4000000",
+            "bbl": "4075700001",
+            "council_district": "19",
+            "census_tract": "138502",
+            "nta": "QN1191"
+          },
+          "support_by": [
+            "Udalls Cove Preservation Committee",
+            "Bayside Historical Society"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Acquire the remaining lots in Udall's Cove which is necessary to preserve wetlands from development. The acquisition of these lots is crucial for the protection of freshwater wetlands and the preservation of natural habitats of wildlife. The lots specifically include the following: Block 8114, Lots 227 and half of 122. Block 8112, Lot 170. Block 8116, Lot 170. Half of Block 8114, Lot 339. And Block 8103, Lot 1.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "ALLEY PARK POND, Alley Pond Park, NY, USA",
+            "postcode": "11362",
+            "latitude": "40.762347",
+            "longitude": "-73.751275",
+            "bin": "4000000",
+            "bbl": "4075700001",
+            "council_district": "19",
+            "census_tract": "138502",
+            "nta": "QN1191"
+          },
+          "support_by": [
+            "Udalls Cove Preservation Committee",
+            "Bayside Historical Society"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202703CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "411201203C - The Underhill Park basketball court on Peck Avenue and 189 Street needs renovation. Baseball fields #4 & 5 located from 189 Street to 192 Street require regrading of the surface. The Basketball courts flood and need renovation, and the splash pads also frequently flood.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "UNDERHILL PLAYGROUND, Fresh Meadows, NY, USA"
+          },
+          "support_by": [
+            "Harding Heights Civic Association",
+            "Auburndale Civic Association"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "411201203C - The Underhill Park basketball court on Peck Avenue and 189 Street needs renovation. Baseball fields #4 & 5 located from 189 Street to 192 Street require regrading of the surface. The Basketball courts flood and need renovation, and the splash pads also frequently flood.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "UNDERHILL PLAYGROUND, Fresh Meadows, NY, USA",
+            "postcode": "11365",
+            "latitude": "40.744763",
+            "longitude": "-73.787791",
+            "bin": "4000000",
+            "bbl": "4056610002",
+            "council_district": "20",
+            "census_tract": "140902",
+            "nta": "QN1101"
+          },
+          "support_by": [
+            "Harding Heights Civic Association",
+            "Auburndale Civic Association"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "411201203C - The Underhill Park basketball court on Peck Avenue and 189 Street needs renovation. Baseball fields #4 & 5 located from 189 Street to 192 Street require regrading of the surface. The Basketball courts flood and need renovation, and the splash pads also frequently flood.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "UNDERHILL PLAYGROUND, Fresh Meadows, NY, USA",
+            "postcode": "11365",
+            "latitude": "40.744763",
+            "longitude": "-73.787791",
+            "bin": "4000000",
+            "bbl": "4056610002",
+            "council_district": "20",
+            "census_tract": "140902",
+            "nta": "QN1101"
+          },
+          "support_by": [
+            "Harding Heights Civic Association",
+            "Auburndale Civic Association"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202703E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase transportation services capacity",
+          "explanation": "The senior centers in the district provide transportation for seniors to go to the centers, get to doctors and hospitals as well as for shopping. The centers need additional funding to provide these services for all who need it.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase transportation services capacity",
+          "explanation": "The senior centers in the district provide transportation for seniors to go to the centers, get to doctors and hospitals as well as for shopping. The centers need additional funding to provide these services for all who need it.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Increase transportation services capacity",
+          "explanation": "The senior centers in the district provide transportation for seniors to go to the centers, get to doctors and hospitals as well as for shopping. The centers need additional funding to provide these services for all who need it.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202704C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "411200902C - PS 130's playground is in poor condition. The asphalt is broken, the safety surface is lifting up, and ball court lines are faded. The broken surfaces are hazardous for children's use.",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "PS 130 PLAYGROUND, Bayside, NY, USA"
+          },
+          "support_by": [
+            "Dept. of Parks and Recreation",
+            "Public School 130Q"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "411200902C - PS 130's playground is in poor condition. The asphalt is broken, the safety surface is lifting up, and ball court lines are faded. The broken surfaces are hazardous for children's use.",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "PS 130 PLAYGROUND, Bayside, NY, USA",
+            "postcode": "11361",
+            "latitude": "40.7605",
+            "longitude": "-73.784077",
+            "bin": "4000000",
+            "bbl": "4062030001",
+            "council_district": "19",
+            "census_tract": "1463",
+            "nta": "QN1101"
+          },
+          "support_by": [
+            "Dept. of Parks and Recreation",
+            "Public School 130Q"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "411200902C - PS 130's playground is in poor condition. The asphalt is broken, the safety surface is lifting up, and ball court lines are faded. The broken surfaces are hazardous for children's use.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "PS 130 PLAYGROUND, Bayside, NY, USA",
+            "postcode": "11361",
+            "latitude": "40.7605",
+            "longitude": "-73.784077",
+            "bin": "4000000",
+            "bbl": "4062030001",
+            "council_district": "19",
+            "census_tract": "1463",
+            "nta": "QN1101"
+          },
+          "support_by": [
+            "Dept. of Parks and Recreation",
+            "Public School 130Q"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202704CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide new or upgrade existing sanitation garages or other sanitation infrastructure",
+          "explanation": "411201601C - The QN11 DSNY garage is funded for renovations due to its inability to handle the load of the collection trucks. We add our continued support to ensure that the project starts.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: This project is funded and DSNY will continue to pursue its completion. DSNY appreciates the Community Board's support.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide new or upgrade existing sanitation garages or other sanitation infrastructure",
+          "explanation": "411201601C - The QN11 DSNY garage is funded for renovations due to its inability to handle the load of the collection trucks. We add our continued support to ensure that the project starts.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: This project is funded and DSNY will continue to pursue its completion. DSNY appreciates the Community Board's support.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Provide new or upgrade existing sanitation garages or other sanitation infrastructure",
+          "explanation": "411201601C - The QN11 DSNY garage is funded for renovations due to its inability to handle the load of the collection trucks. We add our continued support to ensure that the project starts.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202704E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance NORC programs and health services",
+          "explanation": "Funds are needed from the Federal, State and City government to establish additional NORC's. There is one existing NORC's in the district. It is Deepdale Cares at the Deepdale Gardens complex operated by the Commonpoint Queens Sam Field Center. There are other developments in CB 11 that may qualify as NORCs and its residents would benefit from these services. These programs help keep seniors in their homes and prevents institutionalization.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Commonpoint Queens Sam Field Center"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance NORC programs and health services",
+          "explanation": "Funds are needed from the Federal, State and City government to establish additional NORC's. There is one existing NORC's in the district. It is Deepdale Cares at the Deepdale Gardens complex operated by the Commonpoint Queens Sam Field Center. There are other developments in CB 11 that may qualify as NORCs and its residents would benefit from these services. These programs help keep seniors in their homes and prevents institutionalization.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Commonpoint Queens Sam Field Center"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Enhance NORC programs and health services",
+          "explanation": "Funds are needed from the Federal, State and City government to establish additional NORC's. There is one existing NORC's in the district. It is Deepdale Cares at the Deepdale Gardens complex operated by the Commonpoint Queens Sam Field Center. There are other developments in CB 11 that may qualify as NORCs and its residents would benefit from these services. These programs help keep seniors in their homes and prevents institutionalization.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Commonpoint Queens Sam Field Center"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202705C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Improve and repair various green streets and malls on 46th Avenue between 193rd Street and 195th Street. Also on 188th Street between 47th Avenue and 48th Avenue. This also includes 42nd Avenue from 213th Street to the Clearview Expressway Service Road.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Greenstreets are a Parks program. However curb infrastructure for malls and medians will be reviewed.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Improve and repair various green streets and malls on 46th Avenue between 193rd Street and 195th Street. Also on 188th Street between 47th Avenue and 48th Avenue. This also includes 42nd Avenue from 213th Street to the Clearview Expressway Service Road.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Greenstreets are a Parks program. However curb infrastructure for malls and medians will be reviewed.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Improve and repair various green streets and malls on 46th Avenue between 193rd Street and 195th Street. Also on 188th Street between 47th Avenue and 48th Avenue. This also includes 42nd Avenue from 213th Street to the Clearview Expressway Service Road.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202705CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Fire Department",
+            "agency_id": "fire-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other FDNY facilities and equipment requests",
+          "explanation": "Provide generators in all fire houses. 411201009C - Only the Battalion headquarters has its own generator. FDNY is installing them in firehouses and we support the continued funding in order for all of our houses to have one. The three fire houses in CB 11 are E-306, E-313 and E-320. The FDNY priority is for E-313.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FDNY will seek to accommodate within existing resources, although this will depend on availability of funding and overall agency prioritization. The Community Board should continue work with their relevant elected officials to allocate Council/BP funding at Budget Adoption.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "DSNY GARAGE QN 11, Alley Pond Park, NY, USA"
+          },
+          "support_by": [
+            "FDNY"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Fire Department",
+            "agency_id": "fire-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other FDNY facilities and equipment requests",
+          "explanation": "Provide generators in all fire houses. 411201009C - Only the Battalion headquarters has its own generator. FDNY is installing them in firehouses and we support the continued funding in order for all of our houses to have one. The three fire houses in CB 11 are E-306, E-313 and E-320. The FDNY priority is for E-313.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FDNY will seek to accommodate within existing resources, although this will depend on availability of funding and overall agency prioritization. The Community Board should continue work with their relevant elected officials to allocate Council/BP funding at Budget Adoption.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "DSNY GARAGE QN 11, Alley Pond Park, NY, USA"
+          },
+          "support_by": [
+            "FDNY"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Fire Department",
+            "agency_id": "fire-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "057",
+          "request": "Other FDNY facilities and equipment requests",
+          "explanation": "Provide generators in all fire houses. 411201009C - Only the Battalion headquarters has its own generator. FDNY is installing them in firehouses and we support the continued funding in order for all of our houses to have one. The three fire houses in CB 11 are E-306, E-313 and E-320. The FDNY priority is for E-313.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "DSNY GARAGE QN 11, Alley Pond Park, NY, USA"
+          },
+          "support_by": [
+            "FDNY"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202705E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DFTA",
+          "explanation": "DFTA - In order to stay in their homes and maintain them, seniors need a referral program for discounted or free reliable minor home repair service. There is currently only one such program citywide. Seniors are afraid of being victims of scams or unscrupulous repair services.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: NYC Aging has a new HUD grant to increase services for older adults.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DFTA",
+          "explanation": "DFTA - In order to stay in their homes and maintain them, seniors need a referral program for discounted or free reliable minor home repair service. There is currently only one such program citywide. Seniors are afraid of being victims of scams or unscrupulous repair services.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: NYC Aging has a new HUD grant to increase services for older adults.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Other expense budget request for DFTA",
+          "explanation": "DFTA - In order to stay in their homes and maintain them, seniors need a referral program for discounted or free reliable minor home repair service. There is currently only one such program citywide. Seniors are afraid of being victims of scams or unscrupulous repair services.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202706C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "At the Crocheron Park pond- create a boardwalk, repair catch basins, create overlook seating for Little Neck Bay view, repair the pedestrian walk around ball fields, add fencing, and address the runoff into the lake.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "CROCHERON PARK, Bayside, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "At the Crocheron Park pond- create a boardwalk, repair catch basins, create overlook seating for Little Neck Bay view, repair the pedestrian walk around ball fields, add fencing, and address the runoff into the lake.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "CROCHERON PARK, Bayside, NY, USA",
+            "postcode": "11361",
+            "latitude": "40.772121",
+            "longitude": "-73.767041",
+            "bin": "4000000",
+            "bbl": "4061400080",
+            "council_district": "19",
+            "census_tract": "1093",
+            "nta": "QN1102"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "At the Crocheron Park pond- create a boardwalk, repair catch basins, create overlook seating for Little Neck Bay view, repair the pedestrian walk around ball fields, add fencing, and address the runoff into the lake.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "CROCHERON PARK, Bayside, NY, USA",
+            "postcode": "11361",
+            "latitude": "40.772121",
+            "longitude": "-73.767041",
+            "bin": "4000000",
+            "bbl": "4061400080",
+            "council_district": "19",
+            "census_tract": "1093",
+            "nta": "QN1102"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202706CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Queens Borough Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "411200806C- New Little Neck/Douglaston library branch building. The current building is only 10,200 square feet. There is no room for programming events and shelf space is very limited. New libraries are built with about 18,000 sq. ft. A second story addition will double the size to 20,400 square feet.",
+          "response": "This project was funded in a prior fiscal year and the construction contract has been let.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Friends of the Douglaston/Little Neck Library",
+            "Council Member Paul Vallone"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Queens Borough Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "411200806C- New Little Neck/Douglaston library branch building. The current building is only 10,200 square feet. There is no room for programming events and shelf space is very limited. New libraries are built with about 18,000 sq. ft. A second story addition will double the size to 20,400 square feet.",
+          "response": "This project was funded in a prior fiscal year and the construction contract has been let.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Friends of the Douglaston/Little Neck Library",
+            "Council Member Paul Vallone"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Queens Borough Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "039",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "411200806C- New Little Neck/Douglaston library branch building. The current building is only 10,200 square feet. There is no room for programming events and shelf space is very limited. New libraries are built with about 18,000 sq. ft. A second story addition will double the size to 20,400 square feet.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Friends of the Douglaston/Little Neck Library",
+            "Council Member Paul Vallone"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202706E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DFTA",
+          "explanation": "DFTA - As people age they tend to need various legal services to protect themselves and maintain the assets they do have. In Queens, there is only one program that provides legal services to the elderly. More discounted or free services are needed.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DFTA",
+          "explanation": "DFTA - As people age they tend to need various legal services to protect themselves and maintain the assets they do have. In Queens, there is only one program that provides legal services to the elderly. More discounted or free services are needed.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Other expense budget request for DFTA",
+          "explanation": "DFTA - As people age they tend to need various legal services to protect themselves and maintain the assets they do have. In Queens, there is only one program that provides legal services to the elderly. More discounted or free services are needed.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202707C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "411200704C - Rehabilitate Potomagetten Pond located north of the Grand Central Pkwy between Bell Blvd. and Springfield Blvd. This park area had once been an active park with a pond and sitting areas. It has since deteriorated and is unusable. It needs restoration in order to be used as a neighborhood park. Parks Dept. recommended that project is ideal for DEP Bluebelt.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "411200704C - Rehabilitate Potomagetten Pond located north of the Grand Central Pkwy between Bell Blvd. and Springfield Blvd. This park area had once been an active park with a pond and sitting areas. It has since deteriorated and is unusable. It needs restoration in order to be used as a neighborhood park. Parks Dept. recommended that project is ideal for DEP Bluebelt.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "411200704C - Rehabilitate Potomagetten Pond located north of the Grand Central Pkwy between Bell Blvd. and Springfield Blvd. This park area had once been an active park with a pond and sitting areas. It has since deteriorated and is unusable. It needs restoration in order to be used as a neighborhood park. Parks Dept. recommended that project is ideal for DEP Bluebelt.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202707E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Buildings",
+            "agency_id": "buildings",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Address illegal conversions and uses of buildings",
+          "explanation": "Increase the number of support staff for plans examiners, inspectors, and community affairs to improve service delivery.",
+          "response": "The agency has not submitted a proposal to increase funding for this project. Therefore, OMB does not take any position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Buildings",
+            "agency_id": "buildings",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Address illegal conversions and uses of buildings",
+          "explanation": "Increase the number of support staff for plans examiners, inspectors, and community affairs to improve service delivery.",
+          "response": "The agency has not submitted a proposal to increase funding for this project. Therefore, OMB does not take any position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Buildings",
+            "agency_id": "buildings",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "810",
+          "request": "Address illegal conversions and uses of buildings",
+          "explanation": "Increase the number of support staff for plans examiners, inspectors, and community affairs to improve service delivery.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202708C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The Joe Michaels Mile is an important Greenway for pedestrians and bicyclists enjoying the shoreline from Whitestone to Bayside. Unfortunately, this busy area has no water fountains for residents. CB 11 would like to see 3-in-1 hydration stations (water fountain, bottle filler, and dog spout) installed in multiple locations along the park route.",
+          "response": "Available funds are insufficient for this project. We recommend this project be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The Joe Michaels Mile is an important Greenway for pedestrians and bicyclists enjoying the shoreline from Whitestone to Bayside. Unfortunately, this busy area has no water fountains for residents. CB 11 would like to see 3-in-1 hydration stations (water fountain, bottle filler, and dog spout) installed in multiple locations along the park route.",
+          "response": "Available funds are insufficient for this project. We recommend this project be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The Joe Michaels Mile is an important Greenway for pedestrians and bicyclists enjoying the shoreline from Whitestone to Bayside. Unfortunately, this busy area has no water fountains for residents. CB 11 would like to see 3-in-1 hydration stations (water fountain, bottle filler, and dog spout) installed in multiple locations along the park route.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202708E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DCLA",
+          "explanation": "The Bayside Historical Society has been overseeing the Lawrence Cemetery since 1967 and has requested that the City maintain the grounds there. Tours are regularly given there for the community including school groups.",
+          "response": "Further study by the agency of this request is needed. Therefore, OMB does not take any position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "The Bayside Historical Society"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DCLA",
+          "explanation": "The Bayside Historical Society has been overseeing the Lawrence Cemetery since 1967 and has requested that the City maintain the grounds there. Tours are regularly given there for the community including school groups.",
+          "response": "Further study by the agency of this request is needed. Therefore, OMB does not take any position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "The Bayside Historical Society"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "126",
+          "request": "Other expense budget request for DCLA",
+          "explanation": "The Bayside Historical Society has been overseeing the Lawrence Cemetery since 1967 and has requested that the City maintain the grounds there. Tours are regularly given there for the community including school groups.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "The Bayside Historical Society"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202709C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The handball and paddleball courts at Challenge Playground are widely used, and have not been renovated in decades. Currently, the courts are cracked and in need of refurbishment and paint. The fence on top of the handball court wall must also be replaced to prevent balls from going over the wall and interfering with play on the other side.",
+          "response": "Available funds are insufficient for this project. We recommend this project be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The handball and paddleball courts at Challenge Playground are widely used, and have not been renovated in decades. Currently, the courts are cracked and in need of refurbishment and paint. The fence on top of the handball court wall must also be replaced to prevent balls from going over the wall and interfering with play on the other side.",
+          "response": "Available funds are insufficient for this project. We recommend this project be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The handball and paddleball courts at Challenge Playground are widely used, and have not been renovated in decades. Currently, the courts are cracked and in need of refurbishment and paint. The fence on top of the handball court wall must also be replaced to prevent balls from going over the wall and interfering with play on the other side.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202709E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other educational programs requests",
+          "explanation": "Bayside High School has a great athletics program but is underserved by not having a Junior Varsity Soccer Team. Funds should be allocated to the school for this athletic endeavor.",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Northwest Bayside Civic Association"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other educational programs requests",
+          "explanation": "Bayside High School has a great athletics program but is underserved by not having a Junior Varsity Soccer Team. Funds should be allocated to the school for this athletic endeavor.",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Northwest Bayside Civic Association"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Other educational programs requests",
+          "explanation": "Bayside High School has a great athletics program but is underserved by not having a Junior Varsity Soccer Team. Funds should be allocated to the school for this athletic endeavor.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Northwest Bayside Civic Association"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202710C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "New equipment for maintenance",
+          "explanation": "Bayside Fields does not have adequate lighting and remains a frequent target for illegal commercial garbage dumping. Council Member Paladino's office has supported this request for capital prioritization.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Paladino"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "New equipment for maintenance",
+          "explanation": "Bayside Fields does not have adequate lighting and remains a frequent target for illegal commercial garbage dumping. Council Member Paladino's office has supported this request for capital prioritization.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Paladino"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "New equipment for maintenance",
+          "explanation": "Bayside Fields does not have adequate lighting and remains a frequent target for illegal commercial garbage dumping. Council Member Paladino's office has supported this request for capital prioritization.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Paladino"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202710E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Clean catch basins",
+          "explanation": "411201202E - Fund additional crews to clean and maintain catch basins to alleviate backlog of service repair requests.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Clean catch basins",
+          "explanation": "411201202E - Fund additional crews to clean and maintain catch basins to alleviate backlog of service repair requests.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "826",
+          "request": "Clean catch basins",
+          "explanation": "411201202E - Fund additional crews to clean and maintain catch basins to alleviate backlog of service repair requests.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202711C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Install streetscape improvements",
+          "explanation": "Provide a proper NYC Greenway project in the VisionZero corridor between Douglaston Parkway and 223rd St. This landscape and streetscape improvement project will replace the current concrete \"jersey dividers\" along this corridor, with a beautifully designed pedestrian and bicycle recreational pathway, including an expanded curb, trees and plantings, Street lighting, benches, signage, and other amenities. This Greenway will also serve to connect to the new Alley Pond Environmental Center along this path, as well as access points at 233rd and 234th St. to Alley Pond Park. The redesign should also include a study and improvements to the entire Northern Boulevard - Cross Island Parkway interchange to improve safety.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DOT has received funding for a phased approach to this request and will focus on the westernmost portion of the Northern Blvd protected bike lane.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Install streetscape improvements",
+          "explanation": "Provide a proper NYC Greenway project in the VisionZero corridor between Douglaston Parkway and 223rd St. This landscape and streetscape improvement project will replace the current concrete \"jersey dividers\" along this corridor, with a beautifully designed pedestrian and bicycle recreational pathway, including an expanded curb, trees and plantings, Street lighting, benches, signage, and other amenities. This Greenway will also serve to connect to the new Alley Pond Environmental Center along this path, as well as access points at 233rd and 234th St. to Alley Pond Park. The redesign should also include a study and improvements to the entire Northern Boulevard - Cross Island Parkway interchange to improve safety.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DOT has received funding for a phased approach to this request and will focus on the westernmost portion of the Northern Blvd protected bike lane.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Install streetscape improvements",
+          "explanation": "Provide a proper NYC Greenway project in the VisionZero corridor between Douglaston Parkway and 223rd St. This landscape and streetscape improvement project will replace the current concrete \"jersey dividers\" along this corridor, with a beautifully designed pedestrian and bicycle recreational pathway, including an expanded curb, trees and plantings, Street lighting, benches, signage, and other amenities. This Greenway will also serve to connect to the new Alley Pond Environmental Center along this path, as well as access points at 233rd and 234th St. to Alley Pond Park. The redesign should also include a study and improvements to the entire Northern Boulevard - Cross Island Parkway interchange to improve safety.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202711E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Provide adequate, comprehensive and effective funding for epidemiology and control of air-borne, water-borne, and vector (mosquito) diseases.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DOHMH appreciates the continued support on disease survelliance and overall public health",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Provide adequate, comprehensive and effective funding for epidemiology and control of air-borne, water-borne, and vector (mosquito) diseases.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DOHMH appreciates the continued support on disease survelliance and overall public health",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Provide adequate, comprehensive and effective funding for epidemiology and control of air-borne, water-borne, and vector (mosquito) diseases.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202712C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other transportation infrastructure requests",
+          "explanation": "Noise and fumes from the Long Island Expressway causes a detriment to the quality of life for residents living nearest the highway. The construction of sound pads along the service road has been partially done and should be completed in Community Board 11 to Fresh Meadow Lane.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The LIE is a state highway and there is current barrier work taking place.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other transportation infrastructure requests",
+          "explanation": "Noise and fumes from the Long Island Expressway causes a detriment to the quality of life for residents living nearest the highway. The construction of sound pads along the service road has been partially done and should be completed in Community Board 11 to Fresh Meadow Lane.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The LIE is a state highway and there is current barrier work taking place.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Other transportation infrastructure requests",
+          "explanation": "Noise and fumes from the Long Island Expressway causes a detriment to the quality of life for residents living nearest the highway. The construction of sound pads along the service road has been partially done and should be completed in Community Board 11 to Fresh Meadow Lane.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202712E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "411199002E - Street tree pruning is at a 7-year cycle, and must be reduced. Otherwise, the risk of dead limbs and falling trees will cause personal and property damage. The Comptroller's report shows that if the pruning cycle is expanded the number of claims increases. This is especially needed in Parks such as Alley Pond, Crocheron, John Golden, Udalls Cove, Vanderbilt Motor Parkway, and Old Oak Pond.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Auburndale Improvement Association",
+            "Harding Heights Civic Association"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "411199002E - Street tree pruning is at a 7-year cycle, and must be reduced. Otherwise, the risk of dead limbs and falling trees will cause personal and property damage. The Comptroller's report shows that if the pruning cycle is expanded the number of claims increases. This is especially needed in Parks such as Alley Pond, Crocheron, John Golden, Udalls Cove, Vanderbilt Motor Parkway, and Old Oak Pond.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Auburndale Improvement Association",
+            "Harding Heights Civic Association"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "411199002E - Street tree pruning is at a 7-year cycle, and must be reduced. Otherwise, the risk of dead limbs and falling trees will cause personal and property damage. The Comptroller's report shows that if the pruning cycle is expanded the number of claims increases. This is especially needed in Parks such as Alley Pond, Crocheron, John Golden, Udalls Cove, Vanderbilt Motor Parkway, and Old Oak Pond.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Auburndale Improvement Association",
+            "Harding Heights Civic Association"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202713C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "Streets in Douglas Manor, Doug Bay, and Douglaston Hill require a capital project to reconstruct the streets because they have no concrete base and cannot be milled and paved. Especially 244th Street between 43rd Avenue and 44th Avenue.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DOT has milled and paved these roadways over the past several years.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Douglas Manor Association",
+            "Council Member Paul Vallone"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "Streets in Douglas Manor, Doug Bay, and Douglaston Hill require a capital project to reconstruct the streets because they have no concrete base and cannot be milled and paved. Especially 244th Street between 43rd Avenue and 44th Avenue.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DOT has milled and paved these roadways over the past several years.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Douglas Manor Association",
+            "Council Member Paul Vallone"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Reconstruct streets",
+          "explanation": "Streets in Douglas Manor, Doug Bay, and Douglaston Hill require a capital project to reconstruct the streets because they have no concrete base and cannot be milled and paved. Especially 244th Street between 43rd Avenue and 44th Avenue.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Douglas Manor Association",
+            "Council Member Paul Vallone"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202713E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "411198703E - There are about 1,000 tree stumps that still must be removed. They are hazarous obstructions on public property and a standalone citywide stump removal contract is needed.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "411198703E - There are about 1,000 tree stumps that still must be removed. They are hazarous obstructions on public property and a standalone citywide stump removal contract is needed.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "411198703E - There are about 1,000 tree stumps that still must be removed. They are hazarous obstructions on public property and a standalone citywide stump removal contract is needed.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202714C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Roadway maintenance (resurfacing, trench restoration, etc.)",
+          "explanation": "For many years, the City of New York has not had a curb repair project. Community Board 11 is inundated with new and old sidewalks on public and private properties which are not protected by curbs.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Roadway maintenance (resurfacing, trench restoration, etc.)",
+          "explanation": "For many years, the City of New York has not had a curb repair project. Community Board 11 is inundated with new and old sidewalks on public and private properties which are not protected by curbs.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Roadway maintenance (resurfacing, trench restoration, etc.)",
+          "explanation": "For many years, the City of New York has not had a curb repair project. Community Board 11 is inundated with new and old sidewalks on public and private properties which are not protected by curbs.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202714E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other street trees and forestry services requests",
+          "explanation": "411200702E - Tree and Sidewalk Program funding increase. Due to the large number of old city street trees in our district, many sidewalks are lifted by the tree roots. This program has helped to repair these sidewalks and make them safe. A priority system is used and many locations are still not reached with the limit on funds available.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Little Neck Pines Association",
+            "Douglaston Civic Association"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other street trees and forestry services requests",
+          "explanation": "411200702E - Tree and Sidewalk Program funding increase. Due to the large number of old city street trees in our district, many sidewalks are lifted by the tree roots. This program has helped to repair these sidewalks and make them safe. A priority system is used and many locations are still not reached with the limit on funds available.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Little Neck Pines Association",
+            "Douglaston Civic Association"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Other street trees and forestry services requests",
+          "explanation": "411200702E - Tree and Sidewalk Program funding increase. Due to the large number of old city street trees in our district, many sidewalks are lifted by the tree roots. This program has helped to repair these sidewalks and make them safe. A priority system is used and many locations are still not reached with the limit on funds available.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Little Neck Pines Association",
+            "Douglaston Civic Association"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202715C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Install streetscape improvements",
+          "explanation": "Commonwealth Boulevard between Marathon Parkway and 72nd Avenue does not have a sidewalk installed. Sidewalk installation would allow pedestrians to better traverse the neighborhood.",
+          "response": "Sidewalks are the responsibility of the adjacent property owner. For curb repair, please submit specific locations to the Borough Commissioner for review. For Pedestrian Ramps, the Adopted Budget includes a Citywide allocation. Specific locations are determined by DOT.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Install streetscape improvements",
+          "explanation": "Commonwealth Boulevard between Marathon Parkway and 72nd Avenue does not have a sidewalk installed. Sidewalk installation would allow pedestrians to better traverse the neighborhood.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Install streetscape improvements",
+          "explanation": "Commonwealth Boulevard between Marathon Parkway and 72nd Avenue does not have a sidewalk installed. Sidewalk installation would allow pedestrians to better traverse the neighborhood.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202715E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide better park maintenance",
+          "explanation": "411200601E - Provide more park maintenance crews in area parks, as well as increased park enforcement, which is currently understaffed. This includes an allocation for more Urban Parks Rangers, who add wonderful educational programs to the benefit of Parks visitors.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "various civic associations",
+            "Friends of Oakland Lake"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide better park maintenance",
+          "explanation": "411200601E - Provide more park maintenance crews in area parks, as well as increased park enforcement, which is currently understaffed. This includes an allocation for more Urban Parks Rangers, who add wonderful educational programs to the benefit of Parks visitors.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "various civic associations",
+            "Friends of Oakland Lake"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Provide better park maintenance",
+          "explanation": "411200601E - Provide more park maintenance crews in area parks, as well as increased park enforcement, which is currently understaffed. This includes an allocation for more Urban Parks Rangers, who add wonderful educational programs to the benefit of Parks visitors.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "various civic associations",
+            "Friends of Oakland Lake"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202716C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "210th Street between 85th Avenue and Hollis Hills Terrace is in need of reconstruction of the street and pedestrian ramps.",
+          "response": "OMB supports the agency's position as follows: Agency does not support but can address the need alternatively Explanation: This roadway does not require capital reconstruction. Please submit a request via the agency webform for milling/resurfacing. https://www.nyc.gov/html/dot/html/contact/contact-form.shtml",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "210th Street between 85th Avenue and Hollis Hills Terrace is in need of reconstruction of the street and pedestrian ramps.",
+          "response": "OMB supports the agency's position as follows: Agency does not support but can address the need alternatively Explanation: This roadway does not require capital reconstruction. Please submit a request via the agency webform for milling/resurfacing. https://www.nyc.gov/html/dot/html/contact/contact-form.shtml",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Reconstruct streets",
+          "explanation": "210th Street between 85th Avenue and Hollis Hills Terrace is in need of reconstruction of the street and pedestrian ramps.",
+          "response": "Agency does not support but can address the need alternatively",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202716E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Conduct traffic or parking studies",
+          "explanation": "411201401E - Due to the increase in traffic, there are many more requests for traffic studies for signals, stop signs, and speed bumps. Traffic studies are very backlogged and the Board requests increased funding for the hiring of additional traffic engineers to conduct studies.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Conduct traffic or parking studies",
+          "explanation": "411201401E - Due to the increase in traffic, there are many more requests for traffic studies for signals, stop signs, and speed bumps. Traffic studies are very backlogged and the Board requests increased funding for the hiring of additional traffic engineers to conduct studies.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Conduct traffic or parking studies",
+          "explanation": "411201401E - Due to the increase in traffic, there are many more requests for traffic studies for signals, stop signs, and speed bumps. Traffic studies are very backlogged and the Board requests increased funding for the hiring of additional traffic engineers to conduct studies.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202717C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or construct medians, or other street assets",
+          "explanation": "The center median on Bell Boulevard from 73rd Avenue to 77th Avenue in Oakland Gardens is in serious disrepair, causing an unsafe condition in the roadway. This liability must be brought back up to City, State, and Federal safety standards.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or construct medians, or other street assets",
+          "explanation": "The center median on Bell Boulevard from 73rd Avenue to 77th Avenue in Oakland Gardens is in serious disrepair, causing an unsafe condition in the roadway. This liability must be brought back up to City, State, and Federal safety standards.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Repair or construct medians, or other street assets",
+          "explanation": "The center median on Bell Boulevard from 73rd Avenue to 77th Avenue in Oakland Gardens is in serious disrepair, causing an unsafe condition in the roadway. This liability must be brought back up to City, State, and Federal safety standards.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202717E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other traffic improvement requests",
+          "explanation": "411198904E - Increase arterial highway maintenance personnel and scheduled times for cleaning; LIE, Cross Island Parkway, Clearview Expy., Grand Central Pkwy.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other traffic improvement requests",
+          "explanation": "411198904E - Increase arterial highway maintenance personnel and scheduled times for cleaning; LIE, Cross Island Parkway, Clearview Expy., Grand Central Pkwy.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Other traffic improvement requests",
+          "explanation": "411198904E - Increase arterial highway maintenance personnel and scheduled times for cleaning; LIE, Cross Island Parkway, Clearview Expy., Grand Central Pkwy.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202718C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide surveillance (Argus) cameras",
+          "explanation": "Several locations in the District would benefit from an ARGIS NYPD street camera. One location is at the intersection of 194th Street and 46th Avenue. Another intersection in need is 35th Avenue and Bell Boulevard.",
+          "response": "Agency supports but cannot accommodate Explanation: Argus cameras are funded via allocations from elected officials for use within their districts. Specific location recommendations should be provided to the local precinct commander for submission to the Information Technology Bureau once funding is allocated. The NYPD will attempt to accommodate specific location requests whenever funding is provided, but reserves the right to place cameras as appropriate due to current crime trends and operational needs.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide surveillance (Argus) cameras",
+          "explanation": "Several locations in the District would benefit from an ARGIS NYPD street camera. One location is at the intersection of 194th Street and 46th Avenue. Another intersection in need is 35th Avenue and Bell Boulevard.",
+          "response": "Agency supports but cannot accommodate Explanation: Argus cameras are funded via allocations from elected officials for use within their districts. Specific location recommendations should be provided to the local precinct commander for submission to the Information Technology Bureau once funding is allocated. The NYPD will attempt to accommodate specific location requests whenever funding is provided, but reserves the right to place cameras as appropriate due to current crime trends and operational needs.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Provide surveillance (Argus) cameras",
+          "explanation": "Several locations in the District would benefit from an ARGIS NYPD street camera. One location is at the intersection of 194th Street and 46th Avenue. Another intersection in need is 35th Avenue and Bell Boulevard.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202718E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance after school programs for elementary school students (grades K-5)",
+          "explanation": "There is only one after-school programming site in this district. An appropriate aim would be to provide free after-school programs for all schools. At least several locations per school district would be adequate in the short-term.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DYCD has begun a three-year, 20,000 seat expansion of the COMPASS afterschool program.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "CDEC 26"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance after school programs for elementary school students (grades K-5)",
+          "explanation": "There is only one after-school programming site in this district. An appropriate aim would be to provide free after-school programs for all schools. At least several locations per school district would be adequate in the short-term.",
+          "response": "This request has already been completed. Explanation: DYCD has begun a three-year, 20,000 seat expansion of the COMPASS afterschool program.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "CDEC 26"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "260",
+          "request": "Provide, expand, or enhance after school programs for elementary school students (grades K-5)",
+          "explanation": "There is only one after-school programming site in this district. An appropriate aim would be to provide free after-school programs for all schools. At least several locations per school district would be adequate in the short-term.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "CDEC 26"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202719C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Queens Borough Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "Vertical extension or relocation of Bayside Branch Library. Bayside Library is inadequate to continue providing quality services. The building is only 10,300 Sq ft. In contrast, a standard new library is now up to 18,000 sq. ft. Windows and doors need replacement",
+          "response": "Restoring and/or increasing funding is needed for this request. It is recommended that this request be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Residents"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Queens Borough Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "Vertical extension or relocation of Bayside Branch Library. Bayside Library is inadequate to continue providing quality services. The building is only 10,300 Sq ft. In contrast, a standard new library is now up to 18,000 sq. ft. Windows and doors need replacement",
+          "response": "Restoring and/or increasing funding is needed for this request. It is recommended that this request be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Residents"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Queens Borough Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "039",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "Vertical extension or relocation of Bayside Branch Library. Bayside Library is inadequate to continue providing quality services. The building is only 10,300 Sq ft. In contrast, a standard new library is now up to 18,000 sq. ft. Windows and doors need replacement",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Residents"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202719E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance after school programs for middle school students (grades 6-8)",
+          "explanation": "Provide, expand, or enhance after school programs for middle school students. There is only one after-school program in CB 11",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DYCD has begun a three-year, 20,000 seat expansion of the COMPASS afterschool program. In the district, there are already 3 middle school and 3 elementary programs, as well as a Beacon community centers.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance after school programs for middle school students (grades 6-8)",
+          "explanation": "Provide, expand, or enhance after school programs for middle school students. There is only one after-school program in CB 11",
+          "response": "This request has already been completed. Explanation: DYCD has begun a three-year, 20,000 seat expansion of the COMPASS afterschool program. In the district, there are already 3 middle school and 3 elementary programs, as well as a Beacon community centers.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "260",
+          "request": "Provide, expand, or enhance after school programs for middle school students (grades 6-8)",
+          "explanation": "Provide, expand, or enhance after school programs for middle school students. There is only one after-school program in CB 11",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202720E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Hire additional uniformed officers",
+          "explanation": "Due to Officer attrition, the 111th Police Precinct has lost at least 10 uniformed officers to attrition.",
+          "response": "The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Hire additional uniformed officers",
+          "explanation": "Due to Officer attrition, the 111th Police Precinct has lost at least 10 uniformed officers to attrition.",
+          "response": "The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Hire additional uniformed officers",
+          "explanation": "Due to Officer attrition, the 111th Police Precinct has lost at least 10 uniformed officers to attrition.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202721E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Hire additional school safety agents",
+          "explanation": "Due to an increase in the number of high school students and the need to better protect students and monitor all entrances to the schools, there is a need for additional school safety officers. There are three overcrowded high schools in CB 11: Cardozo, Francis Lewis, and Bayside. All could use additional officers.",
+          "response": "The agency will accommodate part of this request within existing resources.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "111 Precinct Community Council"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Hire additional school safety agents",
+          "explanation": "Due to an increase in the number of high school students and the need to better protect students and monitor all entrances to the schools, there is a need for additional school safety officers. There are three overcrowded high schools in CB 11: Cardozo, Francis Lewis, and Bayside. All could use additional officers.",
+          "response": "The agency will accommodate part of this request within existing resources.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "111 Precinct Community Council"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Hire additional school safety agents",
+          "explanation": "Due to an increase in the number of high school students and the need to better protect students and monitor all entrances to the schools, there is a need for additional school safety officers. There are three overcrowded high schools in CB 11: Cardozo, Francis Lewis, and Bayside. All could use additional officers.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "111 Precinct Community Council"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202722E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Hire additional crossing guards",
+          "explanation": "There is a high demand for school crossing guards at all school intersections in the district. Some school locations are near major highway overpasses, such as MS 74, MS 67 and PS 159. It is imperative that crossing guards are available for those locations.",
+          "response": "The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "111th Police Precinct Community Council"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Hire additional crossing guards",
+          "explanation": "There is a high demand for school crossing guards at all school intersections in the district. Some school locations are near major highway overpasses, such as MS 74, MS 67 and PS 159. It is imperative that crossing guards are available for those locations.",
+          "response": "The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "111th Police Precinct Community Council"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Hire additional crossing guards",
+          "explanation": "There is a high demand for school crossing guards at all school intersections in the district. Some school locations are near major highway overpasses, such as MS 74, MS 67 and PS 159. It is imperative that crossing guards are available for those locations.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "111th Police Precinct Community Council"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "411202723E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "queens-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "4",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other NYPD staff resources requests",
+          "explanation": "411199901E - Increase the number of Civilian Personnel at the 111th Precinct. In order to maintain the security we have obtained, the precinct must be staffed adequately. Adding civilian personnel will allow more uniformed officers on the street.",
+          "response": "The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "45-06 215 STREET, Bayside, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other NYPD staff resources requests",
+          "explanation": "411199901E - Increase the number of Civilian Personnel at the 111th Precinct. In order to maintain the security we have obtained, the precinct must be staffed adequately. Adding civilian personnel will allow more uniformed officers on the street.",
+          "response": "The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "45-06 215 STREET, Bayside, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Other NYPD staff resources requests",
+          "explanation": "411199901E - Increase the number of Civilian Personnel at the 111th Precinct. In order to maintain the security we have obtained, the precinct must be staffed adequately. Adding civilian personnel will allow more uniformed officers on the street.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "45-06 215 STREET, Bayside, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    }
+  ]
+}

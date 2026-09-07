@@ -1,0 +1,3255 @@
+{
+  "schema": "cityscroll.community_board_budget_register_document.v1",
+  "method": "omb_register_full_tracking_code_within_cycle_v1",
+  "negative_rule": "A changed response text is a changed written answer and nothing else. It is not funding, a commitment, delivery, or completion, and no request is carried across fiscal cycles by a repeated priority number, a similar facility name, or matching request text.",
+  "board_id": "brooklyn-cb-04",
+  "publications": {
+    "as_of": "2026-09-07",
+    "servable": [
+      "20260512",
+      "20260630"
+    ],
+    "diagnostic_only": [
+      "20270217"
+    ],
+    "latest": "20260630"
+  },
+  "request_count": 38,
+  "requests": [
+    {
+      "tracking_code": "204202701C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "The Dekalb library is in need of an interior renovation, heating cooling, and other infrastructure/safety improvements, and a sustainability project for site drainage.",
+          "response": "Restoring and/or increasing funding is needed for this request. It is recommended that this request be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "790 BUSHWICK AVENUE, Brooklyn, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "The Dekalb library is in need of an interior renovation, heating cooling, and other infrastructure/safety improvements, and a sustainability project for site drainage.",
+          "response": "Restoring and/or increasing funding is needed for this request. It is recommended that this request be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "790 BUSHWICK AVENUE, Brooklyn, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "038",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "The Dekalb library is in need of an interior renovation, heating cooling, and other infrastructure/safety improvements, and a sustainability project for site drainage.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "790 BUSHWICK AVENUE, Brooklyn, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202701CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "The Washington Irving library is in need of an interior renovation and elevator modernization to better accommodate patrons.",
+          "response": "This project was funded in a prior fiscal year and the final design contract has been let.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "360 IRVING AVENUE, Brooklyn, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "The Washington Irving library is in need of an interior renovation and elevator modernization to better accommodate patrons.",
+          "response": "This project was funded in a prior fiscal year and the final design contract has been let.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "360 IRVING AVENUE, Brooklyn, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "038",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "The Washington Irving library is in need of an interior renovation and elevator modernization to better accommodate patrons.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "360 IRVING AVENUE, Brooklyn, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202701E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Expand street outreach",
+          "explanation": "Increase street outreach and support community partnerships at intersections that regularly draw a large homeless and/or at-risk populations, such as, but not limited to Maria Hernandez Park, the Myrtle-Broadway intersection, and the Myrtle-Knickerbocker Plaza.",
+          "response": "Funding and/or headcount was recently added. OMB supports the agency's position as follows:",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Expand street outreach",
+          "explanation": "Increase street outreach and support community partnerships at intersections that regularly draw a large homeless and/or at-risk populations, such as, but not limited to Maria Hernandez Park, the Myrtle-Broadway intersection, and the Myrtle-Knickerbocker Plaza.",
+          "response": "Funding and/or headcount was recently added. OMB supports the agency's position as follows:",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "071",
+          "request": "Expand street outreach",
+          "explanation": "Increase street outreach and support community partnerships at intersections that regularly draw a large homeless and/or at-risk populations, such as, but not limited to Maria Hernandez Park, the Myrtle-Broadway intersection, and the Myrtle-Knickerbocker Plaza.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202702C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Inspect sanitary sewer on specific street segment and repair or replace as needed",
+          "explanation": "Upgrade and/or replace existing infrastructure to improve drainage and prevent backflow or combined sewer overflow.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Inspect sanitary sewer on specific street segment and repair or replace as needed",
+          "explanation": "Upgrade and/or replace existing infrastructure to improve drainage and prevent backflow or combined sewer overflow.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "826",
+          "request": "Inspect sanitary sewer on specific street segment and repair or replace as needed",
+          "explanation": "Upgrade and/or replace existing infrastructure to improve drainage and prevent backflow or combined sewer overflow.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202702CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new, or new expansion to, a building in a park",
+          "explanation": "Upgrade and expand the children's play equipment to include a toddler playground area in Irving Square Park.",
+          "response": "Agency supports and can accommodate Explanation: We have $4 million of funding in place to reconstruct the playground at Irving Square Park and will be hosting a community input meeting for improvements by the end of the fiscal year.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Sandy Nurse"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new, or new expansion to, a building in a park",
+          "explanation": "Upgrade and expand the children's play equipment to include a toddler playground area in Irving Square Park.",
+          "response": "Agency supports and can accommodate Explanation: We have $4 million of funding in place to reconstruct the playground at Irving Square Park and will be hosting a community input meeting for improvements by the end of the fiscal year.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Sandy Nurse"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Provide a new, or new expansion to, a building in a park",
+          "explanation": "Upgrade and expand the children's play equipment to include a toddler playground area in Irving Square Park.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Sandy Nurse"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202702E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance educational and recreational programs",
+          "explanation": "Implement and enhance diverse educational and recreational programming for seniors including the arts, technology, and inter-generational themes",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance educational and recreational programs",
+          "explanation": "Implement and enhance diverse educational and recreational programming for seniors including the arts, technology, and inter-generational themes",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Enhance educational and recreational programs",
+          "explanation": "Implement and enhance diverse educational and recreational programming for seniors including the arts, technology, and inter-generational themes",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202703C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "The comfort station at Maria Hernandez Park is in serious need of an upgrade. There are frequent complaints about the lack of regular maintenance, pooling, and broken restroom equipment from community members, especially during the summertime. Given the high volume of visitors and recreational opportunities in general, a renovated comfort station is needed to better accommodate the public.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "MARIA HERNANDEZ PARK, Brooklyn, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "The comfort station at Maria Hernandez Park is in serious need of an upgrade. There are frequent complaints about the lack of regular maintenance, pooling, and broken restroom equipment from community members, especially during the summertime. Given the high volume of visitors and recreational opportunities in general, a renovated comfort station is needed to better accommodate the public.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "MARIA HERNANDEZ PARK, Brooklyn, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "The comfort station at Maria Hernandez Park is in serious need of an upgrade. There are frequent complaints about the lack of regular maintenance, pooling, and broken restroom equipment from community members, especially during the summertime. Given the high volume of visitors and recreational opportunities in general, a renovated comfort station is needed to better accommodate the public.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "MARIA HERNANDEZ PARK, Brooklyn, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202703CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "Complete the repair of the following roadbeds on the HWK876 project: Weirfield Street between Wyckoff & Irving Avenues.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: HWK876 is scheduled to start construction in 2026. Exact start date will be determined soon and shared with the community.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "Complete the repair of the following roadbeds on the HWK876 project: Weirfield Street between Wyckoff & Irving Avenues.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: HWK876 is scheduled to start construction in 2026. Exact start date will be determined soon and shared with the community.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Reconstruct streets",
+          "explanation": "Complete the repair of the following roadbeds on the HWK876 project: Weirfield Street between Wyckoff & Irving Avenues.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202703E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Buildings",
+            "agency_id": "buildings",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Expand code enforcement",
+          "explanation": "Provide funding for additional building inspectors to respond to code violations. A high volume of building construction and alterations occurs throughout the district in many cases illegally/without the proper permits. Additional inspectors will assist in addressing this issue.",
+          "response": "The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Buildings",
+            "agency_id": "buildings",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Expand code enforcement",
+          "explanation": "Provide funding for additional building inspectors to respond to code violations. A high volume of building construction and alterations occurs throughout the district in many cases illegally/without the proper permits. Additional inspectors will assist in addressing this issue.",
+          "response": "The agency will try to accommodate this issue within existing resources.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Buildings",
+            "agency_id": "buildings",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "810",
+          "request": "Expand code enforcement",
+          "explanation": "Provide funding for additional building inspectors to respond to code violations. A high volume of building construction and alterations occurs throughout the district in many cases illegally/without the proper permits. Additional inspectors will assist in addressing this issue.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202704C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The Green Central Knoll play area, including the equipment, is in need of a complete renovation to bring the space up to modern industry safety and design standards. The area has been prone to flooding issues from a water feature and has a decorative path that takes up space, poses a potentially safety hazard, and is disconnected from the rest of the area. Renovation of the space will greatly improve the playground conditions and potentially alleviate some community concerns over competing uses in other park areas.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "27 EVERGREEN AVENUE, Brooklyn, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The Green Central Knoll play area, including the equipment, is in need of a complete renovation to bring the space up to modern industry safety and design standards. The area has been prone to flooding issues from a water feature and has a decorative path that takes up space, poses a potentially safety hazard, and is disconnected from the rest of the area. Renovation of the space will greatly improve the playground conditions and potentially alleviate some community concerns over competing uses in other park areas.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "27 EVERGREEN AVENUE, Brooklyn, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The Green Central Knoll play area, including the equipment, is in need of a complete renovation to bring the space up to modern industry safety and design standards. The area has been prone to flooding issues from a water feature and has a decorative path that takes up space, poses a potentially safety hazard, and is disconnected from the rest of the area. Renovation of the space will greatly improve the playground conditions and potentially alleviate some community concerns over competing uses in other park areas.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "27 EVERGREEN AVENUE, Brooklyn, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202704CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "Wyckoff Avenue is one of the major commercial and transit corridors in the neighborhood. The high volume of all types of traffic, including delivery trucks and EMS vehicles lead to rapid erosion of the streets and easily congests traffic. The reconstruction of Wyckoff Avenue is an important and capital project for safety of the community. This avenue is also shared with our neighbors in Queens, which would ideally make capital investment more feasible, given the potential for partnership on the project.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: Wyckoff Ave, Flushing to Cooper Ave is included in HWK876 which will be starting construction in 2026. Exact start date will be determined soon and shared with the community.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "Wyckoff Avenue is one of the major commercial and transit corridors in the neighborhood. The high volume of all types of traffic, including delivery trucks and EMS vehicles lead to rapid erosion of the streets and easily congests traffic. The reconstruction of Wyckoff Avenue is an important and capital project for safety of the community. This avenue is also shared with our neighbors in Queens, which would ideally make capital investment more feasible, given the potential for partnership on the project.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: Wyckoff Ave, Flushing to Cooper Ave is included in HWK876 which will be starting construction in 2026. Exact start date will be determined soon and shared with the community.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Reconstruct streets",
+          "explanation": "Wyckoff Avenue is one of the major commercial and transit corridors in the neighborhood. The high volume of all types of traffic, including delivery trucks and EMS vehicles lead to rapid erosion of the streets and easily congests traffic. The reconstruction of Wyckoff Avenue is an important and capital project for safety of the community. This avenue is also shared with our neighbors in Queens, which would ideally make capital investment more feasible, given the potential for partnership on the project.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202704E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Clean catch basins",
+          "explanation": "Hire additional personnel for the repair and maintenance of catch basins and rain gardens prior to storms. The increase in neighborhood population and construction has burdened the current sewer system, especially as the city experiences more extreme weather events.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Clean catch basins",
+          "explanation": "Hire additional personnel for the repair and maintenance of catch basins and rain gardens prior to storms. The increase in neighborhood population and construction has burdened the current sewer system, especially as the city experiences more extreme weather events.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "826",
+          "request": "Clean catch basins",
+          "explanation": "Hire additional personnel for the repair and maintenance of catch basins and rain gardens prior to storms. The increase in neighborhood population and construction has burdened the current sewer system, especially as the city experiences more extreme weather events.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202705C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "Broadway was once the major commercial corridor drawing consumers from all over Brooklyn. In its current state, Broadway is far from the thriving strip of businesses it was in the past. Reconstructing Broadway from Flushing Avenue to Van Sinderen Avenue is the first step in investing in the economic future of the neighborhood. The roadbed of this heavily traveled commercial strip is in a deplorable state. The last time it was repaved was the Broadway Reconstruction Project of 1986. Recent tragic incidents illustrate the need for an enhanced roadway, lighting, and other transit safety features.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency supports this request but funding cannot be determined at this time. DOT has an unfunded capital project to reconstruct Broadway, remove the concrete roadway, and install pedestrian safety improvements.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Sandy Nurse",
+            "Council Member Jennifer Gutierrez"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "Broadway was once the major commercial corridor drawing consumers from all over Brooklyn. In its current state, Broadway is far from the thriving strip of businesses it was in the past. Reconstructing Broadway from Flushing Avenue to Van Sinderen Avenue is the first step in investing in the economic future of the neighborhood. The roadbed of this heavily traveled commercial strip is in a deplorable state. The last time it was repaved was the Broadway Reconstruction Project of 1986. Recent tragic incidents illustrate the need for an enhanced roadway, lighting, and other transit safety features.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency supports this request but funding cannot be determined at this time. DOT has an unfunded capital project to reconstruct Broadway, remove the concrete roadway, and install pedestrian safety improvements.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Sandy Nurse",
+            "Council Member Jennifer Gutierrez"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Reconstruct streets",
+          "explanation": "Broadway was once the major commercial corridor drawing consumers from all over Brooklyn. In its current state, Broadway is far from the thriving strip of businesses it was in the past. Reconstructing Broadway from Flushing Avenue to Van Sinderen Avenue is the first step in investing in the economic future of the neighborhood. The roadbed of this heavily traveled commercial strip is in a deplorable state. The last time it was repaved was the Broadway Reconstruction Project of 1986. Recent tragic incidents illustrate the need for an enhanced roadway, lighting, and other transit safety features.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Sandy Nurse",
+            "Council Member Jennifer Gutierrez"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202705CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for EDC",
+          "explanation": "EDC - Major commercial corridors, such as Broadway, Myrtle, and Wyckoff are in need of investment to revitalize and restore them to their optimal capacity. This should be accomplished through joint efforts between local merchants associations, general stakeholders, and the residents that are in most cases the primary consumers for the businesses. Improvements can include funding for signage, street furniture, and other design elements.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Signage and furniture upgrades are with DOT",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for EDC",
+          "explanation": "EDC - Major commercial corridors, such as Broadway, Myrtle, and Wyckoff are in need of investment to revitalize and restore them to their optimal capacity. This should be accomplished through joint efforts between local merchants associations, general stakeholders, and the residents that are in most cases the primary consumers for the businesses. Improvements can include funding for signage, street furniture, and other design elements.",
+          "response": "OMB supports the agency’s position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "802",
+          "request": "Other capital budget request for EDC",
+          "explanation": "EDC - Major commercial corridors, such as Broadway, Myrtle, and Wyckoff are in need of investment to revitalize and restore them to their optimal capacity. This should be accomplished through joint efforts between local merchants associations, general stakeholders, and the residents that are in most cases the primary consumers for the businesses. Improvements can include funding for signage, street furniture, and other design elements.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202705E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "The Bushwick Neighborhood Health Action Center formerly known as the Bushwick District Public Health Office remains a valuable asset with considerable reach and influence on the culture of health in Bushwick. To date, the center and the various programs appear to lack a clear and cohesive role in the community and would benefit from a comprehensive outreach plan, marketing, and opportunities for community engagement around the future of the site.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Sandy Nurse"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "The Bushwick Neighborhood Health Action Center formerly known as the Bushwick District Public Health Office remains a valuable asset with considerable reach and influence on the culture of health in Bushwick. To date, the center and the various programs appear to lack a clear and cohesive role in the community and would benefit from a comprehensive outreach plan, marketing, and opportunities for community engagement around the future of the site.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Sandy Nurse"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "The Bushwick Neighborhood Health Action Center formerly known as the Bushwick District Public Health Office remains a valuable asset with considerable reach and influence on the culture of health in Bushwick. To date, the center and the various programs appear to lack a clear and cohesive role in the community and would benefit from a comprehensive outreach plan, marketing, and opportunities for community engagement around the future of the site.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Sandy Nurse"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202706C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "Myrtle Avenue from Broadway to Wyckoff Avenue is another major commercial corridor that directly links Queens to Brooklyn. The general traffic infrastructure and equipment is outdated and unreliable. The avenue is also notoriously difficult to traverse, given the overhead elevated M train line. The two-way bus traffic also contributes to the potential dangers of utilizing the corridor. Myrtle Avenue holds great potential to serve as a transportation conduit for the neighborhood and surrounding areas. Prioritizing investment will better prepare the neighborhood for the future.",
+          "response": "Further investigation is required. Contact the agency.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct streets",
+          "explanation": "Myrtle Avenue from Broadway to Wyckoff Avenue is another major commercial corridor that directly links Queens to Brooklyn. The general traffic infrastructure and equipment is outdated and unreliable. The avenue is also notoriously difficult to traverse, given the overhead elevated M train line. The two-way bus traffic also contributes to the potential dangers of utilizing the corridor. Myrtle Avenue holds great potential to serve as a transportation conduit for the neighborhood and surrounding areas. Prioritizing investment will better prepare the neighborhood for the future.",
+          "response": "Further investigation is required. Contact the agency.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Reconstruct streets",
+          "explanation": "Myrtle Avenue from Broadway to Wyckoff Avenue is another major commercial corridor that directly links Queens to Brooklyn. The general traffic infrastructure and equipment is outdated and unreliable. The avenue is also notoriously difficult to traverse, given the overhead elevated M train line. The two-way bus traffic also contributes to the potential dangers of utilizing the corridor. Myrtle Avenue holds great potential to serve as a transportation conduit for the neighborhood and surrounding areas. Prioritizing investment will better prepare the neighborhood for the future.",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202706E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Animal and pest control requests including reducing rat and mosquito populations",
+          "explanation": "Enhance outreach and conduct public education workshops in partnership with the Department of Health for neighborhood residents, businesses, and other stakeholders to combat an increasing rodent population in Bushwick.",
+          "response": "Further investigation is required. Contact the agency.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Animal and pest control requests including reducing rat and mosquito populations",
+          "explanation": "Enhance outreach and conduct public education workshops in partnership with the Department of Health for neighborhood residents, businesses, and other stakeholders to combat an increasing rodent population in Bushwick.",
+          "response": "Further investigation is required. Contact the agency.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Animal and pest control requests including reducing rat and mosquito populations",
+          "explanation": "Enhance outreach and conduct public education workshops in partnership with the Department of Health for neighborhood residents, businesses, and other stakeholders to combat an increasing rodent population in Bushwick.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202707C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Invest in infrastructure that will support growth in commercial business districts",
+          "explanation": "The primary commercial corridors in Bushwick include Broadway, Myrtle, Knickerbocker Avenue, and Wyckoff Avenue. Given the high volume of traffic on these avenues, investment in the infrastructure will improve overall transit safety, the quality of life for all residents and visitors, and provide a solid foundation to support a vibrant and dynamic commercial sector.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: EDC will speak with SBS and DOT",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Invest in infrastructure that will support growth in commercial business districts",
+          "explanation": "The primary commercial corridors in Bushwick include Broadway, Myrtle, Knickerbocker Avenue, and Wyckoff Avenue. Given the high volume of traffic on these avenues, investment in the infrastructure will improve overall transit safety, the quality of life for all residents and visitors, and provide a solid foundation to support a vibrant and dynamic commercial sector.",
+          "response": "OMB supports the agency’s position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "802",
+          "request": "Invest in infrastructure that will support growth in commercial business districts",
+          "explanation": "The primary commercial corridors in Bushwick include Broadway, Myrtle, Knickerbocker Avenue, and Wyckoff Avenue. Given the high volume of traffic on these avenues, investment in the infrastructure will improve overall transit safety, the quality of life for all residents and visitors, and provide a solid foundation to support a vibrant and dynamic commercial sector.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202707E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance park safety through more security staff (police or parks enforcement)",
+          "explanation": "Hire Additional Park Enforcement Patrol (PEP) Staff. District parks are often vandalized; Gang activity is present. PEP officers will provide a sense of security.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance park safety through more security staff (police or parks enforcement)",
+          "explanation": "Hire Additional Park Enforcement Patrol (PEP) Staff. District parks are often vandalized; Gang activity is present. PEP officers will provide a sense of security.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Enhance park safety through more security staff (police or parks enforcement)",
+          "explanation": "Hire Additional Park Enforcement Patrol (PEP) Staff. District parks are often vandalized; Gang activity is present. PEP officers will provide a sense of security.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202708C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more housing for extremely low and low income households",
+          "explanation": "Strongly encourage developers to construct deeply affordable housing that meets the needs of the community, as well as, create one hundred percent affordable housing when feasible, especially for projects on city-owned land. Currently, the majority of new rental apartments are not affordable for residents. This includes the majority of the housing that has been labelled affordable based on the Area Median Income (AMI). Many neighborhood residents continue to struggle in their search to find housing they can afford.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: We agree that your district needs affordable housing and thank you for your request. HPD will make use of all of the tools in our toolbox, including tax exemptions, subsidy and Low Income Housing Tax Credit (LIHTC.) Although the United States Department of Housing and Urban Development (HUD) is responsible for setting AMI, we will work to create affordable housing at all tiers wherever possible.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more housing for extremely low and low income households",
+          "explanation": "Strongly encourage developers to construct deeply affordable housing that meets the needs of the community, as well as, create one hundred percent affordable housing when feasible, especially for projects on city-owned land. Currently, the majority of new rental apartments are not affordable for residents. This includes the majority of the housing that has been labelled affordable based on the Area Median Income (AMI). Many neighborhood residents continue to struggle in their search to find housing they can afford.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "806",
+          "request": "Provide more housing for extremely low and low income households",
+          "explanation": "Strongly encourage developers to construct deeply affordable housing that meets the needs of the community, as well as, create one hundred percent affordable housing when feasible, especially for projects on city-owned land. Currently, the majority of new rental apartments are not affordable for residents. This includes the majority of the housing that has been labelled affordable based on the Area Median Income (AMI). Many neighborhood residents continue to struggle in their search to find housing they can afford.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202708E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide better park maintenance",
+          "explanation": "Fund the Parks department to ensure personnel can adequately maintain park spaces.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide better park maintenance",
+          "explanation": "Fund the Parks department to ensure personnel can adequately maintain park spaces.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Provide better park maintenance",
+          "explanation": "Fund the Parks department to ensure personnel can adequately maintain park spaces.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202709C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more housing for seniors",
+          "explanation": "Truly affordable housing for all remains a city-wide crisis however, seniors and other at-risk populations are among the most vulnerable. Given the long waiting lists and general shortage in senior and supportive housing, increased development and/or inclusion of these projects should be encouraged along with feedback from the Community Board.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: HPD will continue to fund the construction of senior housing from the development pipeline to maximize available resources.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Sandy Nurse",
+            "Council Member Jennifer Gutierrez"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more housing for seniors",
+          "explanation": "Truly affordable housing for all remains a city-wide crisis however, seniors and other at-risk populations are among the most vulnerable. Given the long waiting lists and general shortage in senior and supportive housing, increased development and/or inclusion of these projects should be encouraged along with feedback from the Community Board.",
+          "response": "The Executive Budget includes a city-wide allocation for this work. Specific locations are determined by the Agency.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Sandy Nurse",
+            "Council Member Jennifer Gutierrez"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "806",
+          "request": "Provide more housing for seniors",
+          "explanation": "Truly affordable housing for all remains a city-wide crisis however, seniors and other at-risk populations are among the most vulnerable. Given the long waiting lists and general shortage in senior and supportive housing, increased development and/or inclusion of these projects should be encouraged along with feedback from the Community Board.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Sandy Nurse",
+            "Council Member Jennifer Gutierrez"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202709E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Expand Contracts for Tree Pruning. The industry standard of pruning every 7 years does not accommodate the number of requests. Larger trees in particular are overgrown and potential public safety hazards as they obstruct street lights, interfere with utility lines, and grow toward neighboring properties.",
+          "response": "Agency does not support and cannot accommodate Explanation: Parks’ block pruning program provides neighborhood-based, proactive tree maintenance by addressing a portion of the street trees in each CB every year. If there are individual trees in need of pruning for public safety in between this cycle, including trees that are obstructing traffic signs or signals, we encourage anyone to submit a service request by locating the tree on the NYC Tree Map (and clicking on the “report a problem” tab), calling 311, or using our online tree service request system. Our inspectors will visit the tree and determine the appropriate action in accordance with our Tree Risk Management Program. Trees that are entangled or causing problems with electrical or telecommunications lines should be referred to the utility provider as Parks crews are not authorized to prune around high voltage power lines.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Expand Contracts for Tree Pruning. The industry standard of pruning every 7 years does not accommodate the number of requests. Larger trees in particular are overgrown and potential public safety hazards as they obstruct street lights, interfere with utility lines, and grow toward neighboring properties.",
+          "response": "Agency does not support and cannot accommodate Explanation: Parks’ block pruning program provides neighborhood-based, proactive tree maintenance by addressing a portion of the street trees in each CB every year. If there are individual trees in need of pruning for public safety in between this cycle, including trees that are obstructing traffic signs or signals, we encourage anyone to submit a service request by locating the tree on the NYC Tree Map (and clicking on the “report a problem” tab), calling 311, or using our online tree service request system. Our inspectors will visit the tree and determine the appropriate action in accordance with our Tree Risk Management Program. Trees that are entangled or causing problems with electrical or telecommunications lines should be referred to the utility provider as Parks crews are not authorized to prune around high voltage power lines.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Expand Contracts for Tree Pruning. The industry standard of pruning every 7 years does not accommodate the number of requests. Larger trees in particular are overgrown and potential public safety hazards as they obstruct street lights, interfere with utility lines, and grow toward neighboring properties.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202710C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "Renovate the DeKalb Avenue Station on the Canarsie L Line to include an elevator. The station has experienced an increase in commuter volume over the past several years and is the closest train station to Wyckoff Heights Medical Center. Renovations are also needed to address flooding when it rains. The installation of an elevator would improve the overall function of this station and greatly benefit the surrounding communities that rely on the healthcare services in the area.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "Renovate the DeKalb Avenue Station on the Canarsie L Line to include an elevator. The station has experienced an increase in commuter volume over the past several years and is the closest train station to Wyckoff Heights Medical Center. Renovations are also needed to address flooding when it rains. The installation of an elevator would improve the overall function of this station and greatly benefit the surrounding communities that rely on the healthcare services in the area.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "998",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "Renovate the DeKalb Avenue Station on the Canarsie L Line to include an elevator. The station has experienced an increase in commuter volume over the past several years and is the closest train station to Wyckoff Heights Medical Center. Renovations are also needed to address flooding when it rains. The installation of an elevator would improve the overall function of this station and greatly benefit the surrounding communities that rely on the healthcare services in the area.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202710E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve trash removal and cleanliness",
+          "explanation": "The larger parks in the neighborhood, such as Maria Hernandez Park and Irving Square Park have a high volume of visitors throughout the year, especially during the warmer weather months. Additional garbage collection is need to prevent the encouragement of illegal dumping and to keep the park entrances clear/clean.",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve trash removal and cleanliness",
+          "explanation": "The larger parks in the neighborhood, such as Maria Hernandez Park and Irving Square Park have a high volume of visitors throughout the year, especially during the warmer weather months. Additional garbage collection is need to prevent the encouragement of illegal dumping and to keep the park entrances clear/clean.",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Improve trash removal and cleanliness",
+          "explanation": "The larger parks in the neighborhood, such as Maria Hernandez Park and Irving Square Park have a high volume of visitors throughout the year, especially during the warmer weather months. Additional garbage collection is need to prevent the encouragement of illegal dumping and to keep the park entrances clear/clean.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202711C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "Renovate the Wilson Avenue Station on the L Line to include ADA compliance on the Canarsie bound train, cameras, and additional lighting. The partial renovation of this station has left residents in need of Canarsie bound service at a disadvantage.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "Renovate the Wilson Avenue Station on the L Line to include ADA compliance on the Canarsie bound train, cameras, and additional lighting. The partial renovation of this station has left residents in need of Canarsie bound service at a disadvantage.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "998",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "Renovate the Wilson Avenue Station on the L Line to include ADA compliance on the Canarsie bound train, cameras, and additional lighting. The partial renovation of this station has left residents in need of Canarsie bound service at a disadvantage.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202711E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more frequent garbage or recycling pick-up for schools and institutions",
+          "explanation": "Reinstate 5 day per week garbage collection at neighborhood institutions and community facilities, including, but not limited, to schools, early learn centers/pre-K programs, and senior citizen centers.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more frequent garbage or recycling pick-up for schools and institutions",
+          "explanation": "Reinstate 5 day per week garbage collection at neighborhood institutions and community facilities, including, but not limited, to schools, early learn centers/pre-K programs, and senior citizen centers.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Provide more frequent garbage or recycling pick-up for schools and institutions",
+          "explanation": "Reinstate 5 day per week garbage collection at neighborhood institutions and community facilities, including, but not limited, to schools, early learn centers/pre-K programs, and senior citizen centers.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202712C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other NYPD facilities and equipment requests",
+          "explanation": "Despite a historic decrease in neighborhood crime, statistics show increases in grand larcenies, burglaries, and gang activity in addition to a high volume of quality of life concerns. Additional Argus cameras would serve as a monitor and deterrent for areas with chronic safety issues. In 2025, Council Member Sandy Nurse's office (District 37) worked with the board to fund one of the camera locations even though the agency did not support the request. CB4 welcomes more productive and efficient agency responses to minimize redundant bureaucracy.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Argus cameras are funded via allocations from elected officials for use within their districts. Specific location recommendations should be provided to the local precinct commander for submission to the Information Technology Bureau once funding is allocated. The NYPD will attempt to accommodate specific location requests whenever funding is provided, but reserves the right to place cameras as appropriate due to current crime trends and operational needs.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Sandy Nurse"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other NYPD facilities and equipment requests",
+          "explanation": "Despite a historic decrease in neighborhood crime, statistics show increases in grand larcenies, burglaries, and gang activity in addition to a high volume of quality of life concerns. Additional Argus cameras would serve as a monitor and deterrent for areas with chronic safety issues. In 2025, Council Member Sandy Nurse's office (District 37) worked with the board to fund one of the camera locations even though the agency did not support the request. CB4 welcomes more productive and efficient agency responses to minimize redundant bureaucracy.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Argus cameras are funded via allocations from elected officials for use within their districts. Specific location recommendations should be provided to the local precinct commander for submission to the Information Technology Bureau once funding is allocated. The NYPD will attempt to accommodate specific location requests whenever funding is provided, but reserves the right to place cameras as appropriate due to current crime trends and operational needs.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Sandy Nurse"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Other NYPD facilities and equipment requests",
+          "explanation": "Despite a historic decrease in neighborhood crime, statistics show increases in grand larcenies, burglaries, and gang activity in addition to a high volume of quality of life concerns. Additional Argus cameras would serve as a monitor and deterrent for areas with chronic safety issues. In 2025, Council Member Sandy Nurse's office (District 37) worked with the board to fund one of the camera locations even though the agency did not support the request. CB4 welcomes more productive and efficient agency responses to minimize redundant bureaucracy.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Council Member Sandy Nurse"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202712E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DSNY",
+          "explanation": "Expand community recycling programs to educate residents about all types of recycling at residential buildings, public gathering places, events, and street festivals.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DSNY",
+          "explanation": "Expand community recycling programs to educate residents about all types of recycling at residential buildings, public gathering places, events, and street festivals.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Other expense budget request for DSNY",
+          "explanation": "Expand community recycling programs to educate residents about all types of recycling at residential buildings, public gathering places, events, and street festivals.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202713E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase Graffiti Removal/Cleaning",
+          "explanation": "Expand the graffiti removal program to improve the response time to requests for removal.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase Graffiti Removal/Cleaning",
+          "explanation": "Expand the graffiti removal program to improve the response time to requests for removal.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Increase Graffiti Removal/Cleaning",
+          "explanation": "Expand the graffiti removal program to improve the response time to requests for removal.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202714E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DSNY",
+          "explanation": "Establish public drop-off sites where residents can bring unwanted electronics, textiles, food scraps, and yard waste.",
+          "response": "This request has already been completed. Explanation: DSNY operates a special waste drop off location for Brooklyn in Greenpoint. It is open every Thursday, Friday, and Saturday from 9:00 AM to 5:00 PM (closed legal holidays and during severe weather). It is located at 459 North Henry Street (drop-off site near 530 Kingsland Avenue) with the facility entrance off Kingsland Avenue, north of Greenpoint Avenue. Additional information can be found on DSNY's website: https://www.nyc.gov/site/dsny/what-we-do/programs/special-waste-drop-off.page Yard waste and organics are collected weekly on the same schedule as other recyclables.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DSNY",
+          "explanation": "Establish public drop-off sites where residents can bring unwanted electronics, textiles, food scraps, and yard waste.",
+          "response": "This request has already been completed. Explanation: DSNY operates a special waste drop off location for Brooklyn in Greenpoint. It is open every Thursday, Friday, and Saturday from 9:00 AM to 5:00 PM (closed legal holidays and during severe weather). It is located at 459 North Henry Street (drop-off site near 530 Kingsland Avenue) with the facility entrance off Kingsland Avenue, north of Greenpoint Avenue. Additional information can be found on DSNY's website: https://www.nyc.gov/site/dsny/what-we-do/programs/special-waste-drop-off.page Yard waste and organics are collected weekly on the same schedule as other recyclables.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Other expense budget request for DSNY",
+          "explanation": "Establish public drop-off sites where residents can bring unwanted electronics, textiles, food scraps, and yard waste.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202715E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase enforcement of canine waste laws",
+          "explanation": "The \"Clean Up After Dog\" Law needs additional strategic enforcement via working with local stakeholders, residents, and property owners.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase enforcement of canine waste laws",
+          "explanation": "The \"Clean Up After Dog\" Law needs additional strategic enforcement via working with local stakeholders, residents, and property owners.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Increase enforcement of canine waste laws",
+          "explanation": "The \"Clean Up After Dog\" Law needs additional strategic enforcement via working with local stakeholders, residents, and property owners.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202716E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Support merchant organizing",
+          "explanation": "Several years ago, joint efforts were taken to organize the merchants along the Broadway corridor. Further support and resources are critical to organizing capacity and sustainability.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Support merchant organizing",
+          "explanation": "Several years ago, joint efforts were taken to organize the merchants along the Broadway corridor. Further support and resources are critical to organizing capacity and sustainability.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "801",
+          "request": "Support merchant organizing",
+          "explanation": "Several years ago, joint efforts were taken to organize the merchants along the Broadway corridor. Further support and resources are critical to organizing capacity and sustainability.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202717E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance after school programs for elementary school students (grades K-5)",
+          "explanation": "Additional programming for this population is required, especially for youth enrolled in public schools. Parents have limited options within the district and are often drawn to schools that offer a full day of learning and after school programming.",
+          "response": "This request has already been completed. Explanation: DYCD has begun a three-year, 20,000 seat expansion of the COMPASS afterschool program.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance after school programs for elementary school students (grades K-5)",
+          "explanation": "Additional programming for this population is required, especially for youth enrolled in public schools. Parents have limited options within the district and are often drawn to schools that offer a full day of learning and after school programming.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DYCD has begun a three-year, 20,000 seat expansion of the COMPASS afterschool program.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "260",
+          "request": "Provide, expand, or enhance after school programs for elementary school students (grades K-5)",
+          "explanation": "Additional programming for this population is required, especially for youth enrolled in public schools. Parents have limited options within the district and are often drawn to schools that offer a full day of learning and after school programming.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202718E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Fire Department",
+            "agency_id": "fire-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more firefighters or EMS workers",
+          "explanation": "A staff increase in Fire Marshals will improve their ability to investigate and respond to fires, as well as, meet the growing need for inspections of new businesses; establishments that plan to serve liquor in particular.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FDNY is supportive of this request, however hiring authority above our existing budgeted headcount would require approval by OMB.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Fire Department",
+            "agency_id": "fire-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more firefighters or EMS workers",
+          "explanation": "A staff increase in Fire Marshals will improve their ability to investigate and respond to fires, as well as, meet the growing need for inspections of new businesses; establishments that plan to serve liquor in particular.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FDNY is supportive of this request, however hiring authority above our existing budgeted headcount would require approval by OMB.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Fire Department",
+            "agency_id": "fire-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "057",
+          "request": "Provide more firefighters or EMS workers",
+          "explanation": "A staff increase in Fire Marshals will improve their ability to investigate and respond to fires, as well as, meet the growing need for inspections of new businesses; establishments that plan to serve liquor in particular.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202719E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance programs for housing inspections to correct code violations",
+          "explanation": "Hire code enforcement inspectors. Additional inspectors are needed to respond to a high volume of complaints within the district. Inspectors should be trained to recognize chronic building negligence.",
+          "response": "Funding and/or headcount was recently added. OMB supports the agency's position as follows:",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance programs for housing inspections to correct code violations",
+          "explanation": "Hire code enforcement inspectors. Additional inspectors are needed to respond to a high volume of complaints within the district. Inspectors should be trained to recognize chronic building negligence.",
+          "response": "The Adopted Budget includes a city-wide allocation for this work. Specific locations are determined by the Agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "806",
+          "request": "Provide, expand, or enhance programs for housing inspections to correct code violations",
+          "explanation": "Hire code enforcement inspectors. Additional inspectors are needed to respond to a high volume of complaints within the district. Inspectors should be trained to recognize chronic building negligence.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202720E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Hire additional uniformed officers",
+          "explanation": "Increase manpower at the 83rd Precinct and Transit District 33. Additional patrols and manpower from the Academy are needed in Bushwick.",
+          "response": "OMB supports the agency's recommendation to fund this expense budget request in FY 2026.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Hire additional uniformed officers",
+          "explanation": "Increase manpower at the 83rd Precinct and Transit District 33. Additional patrols and manpower from the Academy are needed in Bushwick.",
+          "response": "OMB supports the agency's recommendation to fund this expense budget request in FY 2026.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Hire additional uniformed officers",
+          "explanation": "Increase manpower at the 83rd Precinct and Transit District 33. Additional patrols and manpower from the Academy are needed in Bushwick.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "204202721E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-04",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "04",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more community board staff",
+          "explanation": "Increase the baseline budget to allow for additional part-time or a full-time hire to support the board and help manage the work load.",
+          "response": "As of the FY 2027 Executive Budget, each Community Board's budget is being maintained.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more community board staff",
+          "explanation": "Increase the baseline budget to allow for additional part-time or a full-time hire to support the board and help manage the work load.",
+          "response": "As of the FY 2027 Adopted Budget, each Community Board's budget is being maintained.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "002",
+          "request": "Provide more community board staff",
+          "explanation": "Increase the baseline budget to allow for additional part-time or a full-time hire to support the board and help manage the work load.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    }
+  ]
+}

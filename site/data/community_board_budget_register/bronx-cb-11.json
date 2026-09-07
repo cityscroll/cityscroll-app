@@ -1,0 +1,1964 @@
+{
+  "schema": "cityscroll.community_board_budget_register_document.v1",
+  "method": "omb_register_full_tracking_code_within_cycle_v1",
+  "negative_rule": "A changed response text is a changed written answer and nothing else. It is not funding, a commitment, delivery, or completion, and no request is carried across fiscal cycles by a repeated priority number, a similar facility name, or matching request text.",
+  "board_id": "bronx-cb-11",
+  "publications": {
+    "as_of": "2026-09-07",
+    "servable": [
+      "20260512",
+      "20260630"
+    ],
+    "diagnostic_only": [
+      "20270217"
+    ],
+    "latest": "20260630"
+  },
+  "request_count": 21,
+  "requests": [
+    {
+      "tracking_code": "111202701C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Our district, like many across the city, has seen a rash of street racing, loud cars and motorcycles, and other loud vehicle use. Our many wide streets encourage fast driving and donuts in intersections, and reporting violations to 311 or calling police is futile; these are, by definition, transient crimes - they are committed while moving. We need automated enforcement to preserve our quiet enjoyment of our neighborhood, and DEP noise cameras would be an excellent tool to advance that goal.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Ryan Barthel, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Our district, like many across the city, has seen a rash of street racing, loud cars and motorcycles, and other loud vehicle use. Our many wide streets encourage fast driving and donuts in intersections, and reporting violations to 311 or calling police is futile; these are, by definition, transient crimes - they are committed while moving. We need automated enforcement to preserve our quiet enjoyment of our neighborhood, and DEP noise cameras would be an excellent tool to advance that goal.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Ryan Barthel, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "826",
+          "request": "Other capital budget request for DEP",
+          "explanation": "Our district, like many across the city, has seen a rash of street racing, loud cars and motorcycles, and other loud vehicle use. Our many wide streets encourage fast driving and donuts in intersections, and reporting violations to 311 or calling police is futile; these are, by definition, transient crimes - they are committed while moving. We need automated enforcement to preserve our quiet enjoyment of our neighborhood, and DEP noise cameras would be an excellent tool to advance that goal.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Ryan Barthel, BxCB11 member"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "111202701E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "People of color have disproportionately high maternal health deaths and complications. We need increased access to help educate mothers about the resources and medical programs available to them and how to advocate effectively for their health.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DOHMH agrees maternal mortality among communities of color continues to be a public health concern and we are looking into ways of expanding services and education",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "People of color have disproportionately high maternal health deaths and complications. We need increased access to help educate mothers about the resources and medical programs available to them and how to advocate effectively for their health.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DOHMH agrees maternal mortality among communities of color continues to be a public health concern and we are looking into ways of expanding services and education",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "People of color have disproportionately high maternal health deaths and complications. We need increased access to help educate mothers about the resources and medical programs available to them and how to advocate effectively for their health.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "111202702C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "The sidewalk connecting Southern Blvd. and Boston Rd. along Pelham Parkway/Fordham Rd. is heavily used but in poor shape and has steep road crossings (far out of compliance with ADA), making it difficult for many people to use this path. In addition, on the eastern end of the northern path, between the Bronx River Parkway onramp and Boston Rd., the sidewalk simply ends feet from a bike lane. Many crossings are over square curbs, making it dangerous for many users (especially those with mobility issues) to cross. The Department of Transportation has advised that this area is managed by Parks, so I ask that it be considered for safety upgrades.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: Please contact the agency directly and promptly for more information.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Ryan Barthel"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "The sidewalk connecting Southern Blvd. and Boston Rd. along Pelham Parkway/Fordham Rd. is heavily used but in poor shape and has steep road crossings (far out of compliance with ADA), making it difficult for many people to use this path. In addition, on the eastern end of the northern path, between the Bronx River Parkway onramp and Boston Rd., the sidewalk simply ends feet from a bike lane. Many crossings are over square curbs, making it dangerous for many users (especially those with mobility issues) to cross. The Department of Transportation has advised that this area is managed by Parks, so I ask that it be considered for safety upgrades.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: Please contact the agency directly and promptly for more information.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Ryan Barthel"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "The sidewalk connecting Southern Blvd. and Boston Rd. along Pelham Parkway/Fordham Rd. is heavily used but in poor shape and has steep road crossings (far out of compliance with ADA), making it difficult for many people to use this path. In addition, on the eastern end of the northern path, between the Bronx River Parkway onramp and Boston Rd., the sidewalk simply ends feet from a bike lane. Many crossings are over square curbs, making it dangerous for many users (especially those with mobility issues) to cross. The Department of Transportation has advised that this area is managed by Parks, so I ask that it be considered for safety upgrades.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Ryan Barthel"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "111202702E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more information and services related to STIs, HIV/AIDS, and family planning",
+          "explanation": "By ensuring PreP (or Pre-Exposure Prophylaxis) & Pep (Post-Exposure Prophylaxis) access and equity - these modern medicinal breakthroughs can end the HIV/AIDS crisis and as such - any and all access to these lifesaving medications and educational information around them are crucial to the district - that as of now has limited to none LGBTQIA+ resources or providers within it - with only one Pride Health Center located nearby at Jacobi Health & Hospitals.",
+          "response": "Further investigation is required. Contact the agency.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Armando AJ Ramos"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more information and services related to STIs, HIV/AIDS, and family planning",
+          "explanation": "By ensuring PreP (or Pre-Exposure Prophylaxis) & Pep (Post-Exposure Prophylaxis) access and equity - these modern medicinal breakthroughs can end the HIV/AIDS crisis and as such - any and all access to these lifesaving medications and educational information around them are crucial to the district - that as of now has limited to none LGBTQIA+ resources or providers within it - with only one Pride Health Center located nearby at Jacobi Health & Hospitals.",
+          "response": "Further investigation is required. Contact the agency.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Armando AJ Ramos"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Provide more information and services related to STIs, HIV/AIDS, and family planning",
+          "explanation": "By ensuring PreP (or Pre-Exposure Prophylaxis) & Pep (Post-Exposure Prophylaxis) access and equity - these modern medicinal breakthroughs can end the HIV/AIDS crisis and as such - any and all access to these lifesaving medications and educational information around them are crucial to the district - that as of now has limited to none LGBTQIA+ resources or providers within it - with only one Pride Health Center located nearby at Jacobi Health & Hospitals.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Armando AJ Ramos"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "111202703C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "Allerton Playground bathrooms need repairs to floors, toilets, and repainting. The park should be refreshed and equitable to other city facilities",
+          "response": "Agency supports but cannot accommodate Explanation: This request requires funding. Please advocate for funding with your respective elected officials.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2715 THROOP AVENUE, Bronx, NY, USA"
+          },
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "Allerton Playground bathrooms need repairs to floors, toilets, and repainting. The park should be refreshed and equitable to other city facilities",
+          "response": "Agency supports but cannot accommodate Explanation: This request requires funding. Please advocate for funding with your respective elected officials.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2715 THROOP AVENUE, Bronx, NY, USA"
+          },
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "Allerton Playground bathrooms need repairs to floors, toilets, and repainting. The park should be refreshed and equitable to other city facilities",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2715 THROOP AVENUE, Bronx, NY, USA"
+          },
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "111202703E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Dept of Information Technology & Telecommunication",
+            "agency_id": "information-technology-and-telecommunications",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Information technology goods and services",
+          "explanation": "Community boards are made up of people representative of the community, and as such often bring together people who might not otherwise meet. This can bring unconscious biases to light and highlight areas where community members could grow, and we need support for this in the form of bias and discrimination training, similar to what many in NYS take already.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Refer to DCAS. Community Boards already have access to trainings.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Ryan Barthel, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Dept of Information Technology & Telecommunication",
+            "agency_id": "information-technology-and-telecommunications",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Information technology goods and services",
+          "explanation": "Community boards are made up of people representative of the community, and as such often bring together people who might not otherwise meet. This can bring unconscious biases to light and highlight areas where community members could grow, and we need support for this in the form of bias and discrimination training, similar to what many in NYS take already.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Refer to DCAS. Community Boards already have access to trainings.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Ryan Barthel, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Dept of Information Technology & Telecommunication",
+            "agency_id": "information-technology-and-telecommunications",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "858",
+          "request": "Information technology goods and services",
+          "explanation": "Community boards are made up of people representative of the community, and as such often bring together people who might not otherwise meet. This can bring unconscious biases to light and highlight areas where community members could grow, and we need support for this in the form of bias and discrimination training, similar to what many in NYS take already.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Ryan Barthel, BxCB11 member"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "111202704C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The playground equipment at Eastchester Playground, in the Eastchester Gardens development, needs upgraded and refreshed.",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "1201 ADEE AVENUE, Bronx, NY, USA"
+          },
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The playground equipment at Eastchester Playground, in the Eastchester Gardens development, needs upgraded and refreshed.",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "1201 ADEE AVENUE, Bronx, NY, USA"
+          },
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The playground equipment at Eastchester Playground, in the Eastchester Gardens development, needs upgraded and refreshed.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "1201 ADEE AVENUE, Bronx, NY, USA"
+          },
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "111202704E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase Graffiti Removal/Cleaning",
+          "explanation": "Sidewalks and buildings along Gun Hill Rd. need cleaning of graffiti and gum/dirt on sidewalks.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency supports this request, but funding is not available at this time. Please submit requests for graffiti cleaning on specific buildings through 311.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase Graffiti Removal/Cleaning",
+          "explanation": "Sidewalks and buildings along Gun Hill Rd. need cleaning of graffiti and gum/dirt on sidewalks.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency supports this request, but funding is not available at this time. Please submit requests for graffiti cleaning on specific buildings through 311.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Increase Graffiti Removal/Cleaning",
+          "explanation": "Sidewalks and buildings along Gun Hill Rd. need cleaning of graffiti and gum/dirt on sidewalks.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "111202705C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Allerton playground needs new equipment and equipment that focuses on STEM learning (e.g. telescope)",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2715 THROOP AVENUE, Bronx, NY, USA"
+          },
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Allerton playground needs new equipment and equipment that focuses on STEM learning (e.g. telescope)",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2715 THROOP AVENUE, Bronx, NY, USA"
+          },
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Allerton playground needs new equipment and equipment that focuses on STEM learning (e.g. telescope)",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2715 THROOP AVENUE, Bronx, NY, USA"
+          },
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "111202705E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance after school programs for elementary school students (grades K-5)",
+          "explanation": "Students in this district need greater access to STEM programs. Schools and students also need more equitable access to technology to make use of these STEM programs.",
+          "response": "This request has already been completed. Explanation: DYCD has begun a three-year, 20,000 seat expansion of the COMPASS afterschool program. All programs are required to incorporate STEAM activities.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance after school programs for elementary school students (grades K-5)",
+          "explanation": "Students in this district need greater access to STEM programs. Schools and students also need more equitable access to technology to make use of these STEM programs.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DYCD has begun a three-year, 20,000 seat expansion of the COMPASS afterschool program. All programs are required to incorporate STEAM activities.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "260",
+          "request": "Provide, expand, or enhance after school programs for elementary school students (grades K-5)",
+          "explanation": "Students in this district need greater access to STEM programs. Schools and students also need more equitable access to technology to make use of these STEM programs.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "111202706C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Greenways (ours include the Bronx River Greenway, Hutchinson River Greenway, and Pelham Parkway Greenway) are touted as places for people who are not in cars to get around, yet most of them are not purposefully lit at all - any light they get is ancillary to what is intended for a road used by cars. This means that greenways, which frequently have tree roots, potholes, sand patches, and other hazards, become substantially more dangerous as the sun goes down, which happens quite early for much of the year. This leaves people without cars with a dilemma: risk a car not seeing or not yielding to us and getting hit on the road or risk a crash and the ensuing injuries on the Greenways. Our greenways need proper lighting and far better care, both in maintaining smooth surface and clearing debris regularly, especially after mowing.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: Please contact the agency directly and promptly for more information.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Ryan Barthel, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Greenways (ours include the Bronx River Greenway, Hutchinson River Greenway, and Pelham Parkway Greenway) are touted as places for people who are not in cars to get around, yet most of them are not purposefully lit at all - any light they get is ancillary to what is intended for a road used by cars. This means that greenways, which frequently have tree roots, potholes, sand patches, and other hazards, become substantially more dangerous as the sun goes down, which happens quite early for much of the year. This leaves people without cars with a dilemma: risk a car not seeing or not yielding to us and getting hit on the road or risk a crash and the ensuing injuries on the Greenways. Our greenways need proper lighting and far better care, both in maintaining smooth surface and clearing debris regularly, especially after mowing.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: Please contact the agency directly and promptly for more information.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Ryan Barthel, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Greenways (ours include the Bronx River Greenway, Hutchinson River Greenway, and Pelham Parkway Greenway) are touted as places for people who are not in cars to get around, yet most of them are not purposefully lit at all - any light they get is ancillary to what is intended for a road used by cars. This means that greenways, which frequently have tree roots, potholes, sand patches, and other hazards, become substantially more dangerous as the sun goes down, which happens quite early for much of the year. This leaves people without cars with a dilemma: risk a car not seeing or not yielding to us and getting hit on the road or risk a crash and the ensuing injuries on the Greenways. Our greenways need proper lighting and far better care, both in maintaining smooth surface and clearing debris regularly, especially after mowing.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Ryan Barthel, BxCB11 member"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "111202706E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Hire additional traffic enforcement agents",
+          "explanation": "Our district is swamped with illegally parked cars. The average response time for a 311 report is over 4 hours, well over the average time in the Bronx as a whole and nearly double the citywide average, meaning any illegally parked car can effectively leave their vehicle where they like for as long as they like with no consequences. This makes our streets and crosswalks less safe, interferes with quality of life due to blocked in drivers honking, makes the few protected bike lanes we have almost unusable as trucks, delivery vehicles, and private vehicles park in them with impunity. We desperately need our traffic laws to be enforced, and we need personnel to do that.",
+          "response": "Agency supports but cannot accommodate Explanation: Based on the latest budget, the NYPD has a specific budgeted headcount. The agency is working on filling vacancies in order to get to that headcount.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Ryan Barthel, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Hire additional traffic enforcement agents",
+          "explanation": "Our district is swamped with illegally parked cars. The average response time for a 311 report is over 4 hours, well over the average time in the Bronx as a whole and nearly double the citywide average, meaning any illegally parked car can effectively leave their vehicle where they like for as long as they like with no consequences. This makes our streets and crosswalks less safe, interferes with quality of life due to blocked in drivers honking, makes the few protected bike lanes we have almost unusable as trucks, delivery vehicles, and private vehicles park in them with impunity. We desperately need our traffic laws to be enforced, and we need personnel to do that.",
+          "response": "Agency supports but cannot accommodate Explanation: Based on the latest budget, the NYPD has a specific budgeted headcount. The agency is working on filling vacancies in order to get to that headcount.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Ryan Barthel, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Hire additional traffic enforcement agents",
+          "explanation": "Our district is swamped with illegally parked cars. The average response time for a 311 report is over 4 hours, well over the average time in the Bronx as a whole and nearly double the citywide average, meaning any illegally parked car can effectively leave their vehicle where they like for as long as they like with no consequences. This makes our streets and crosswalks less safe, interferes with quality of life due to blocked in drivers honking, makes the few protected bike lanes we have almost unusable as trucks, delivery vehicles, and private vehicles park in them with impunity. We desperately need our traffic laws to be enforced, and we need personnel to do that.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Ryan Barthel, BxCB11 member"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "111202707C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "The bus stop under the 2 train Pelham Parkway stop on both sides of White Plains Rd. is very poorly lit, which leads to a dangerous situation. People waiting for the bus could trip and fall into the roadway, may not be seen by drivers, and the low lighting could put people at increased risk for assault or robbery. Upgraded lighting under the subway stop would alleviate these issues.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: This is not a capital request. Please send inquiries to the Bronx Commissioner's office.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "The bus stop under the 2 train Pelham Parkway stop on both sides of White Plains Rd. is very poorly lit, which leads to a dangerous situation. People waiting for the bus could trip and fall into the roadway, may not be seen by drivers, and the low lighting could put people at increased risk for assault or robbery. Upgraded lighting under the subway stop would alleviate these issues.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: This is not a capital request. Please send inquiries to the Bronx Commissioner's office.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Repair or provide new street lights",
+          "explanation": "The bus stop under the 2 train Pelham Parkway stop on both sides of White Plains Rd. is very poorly lit, which leads to a dangerous situation. People waiting for the bus could trip and fall into the roadway, may not be seen by drivers, and the low lighting could put people at increased risk for assault or robbery. Upgraded lighting under the subway stop would alleviate these issues.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "111202708C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "Current lighting is all street-level lighting, which does not effectively illuminate pedestrian areas or adjacent park facilities. Adding lower pedestrian level lighting will enhance safety along the corridor, in the Municipal Parking lot at Bronxdale and Bronx Park East, and allow residents to use areas just inside the park (such as the exercise area between Britton and Arnow Avenues) in fall and winter, when it is dark before 5 PM.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: This is not a capital request. Please send inquiries to the Bronx Commissioner's office.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Bronx Park East Community Association"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "Current lighting is all street-level lighting, which does not effectively illuminate pedestrian areas or adjacent park facilities. Adding lower pedestrian level lighting will enhance safety along the corridor, in the Municipal Parking lot at Bronxdale and Bronx Park East, and allow residents to use areas just inside the park (such as the exercise area between Britton and Arnow Avenues) in fall and winter, when it is dark before 5 PM.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: This is not a capital request. Please send inquiries to the Bronx Commissioner's office.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Bronx Park East Community Association"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Repair or provide new street lights",
+          "explanation": "Current lighting is all street-level lighting, which does not effectively illuminate pedestrian areas or adjacent park facilities. Adding lower pedestrian level lighting will enhance safety along the corridor, in the Municipal Parking lot at Bronxdale and Bronx Park East, and allow residents to use areas just inside the park (such as the exercise area between Britton and Arnow Avenues) in fall and winter, when it is dark before 5 PM.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Bronx Park East Community Association"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "111202709C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "Lighting along Pelham Parkway lights both the roadway and the adjacent greenway, but uses the same lights for each application (while they are not exactly highway Cobra lights, they are similar). As a result, the Greenway gets very little light. Pedestrian level lighting would greatly enhance the usability of the greenway.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: This is not a capital request. Please send inquiries to the Bronx Commissioner's office.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Ryan Barthel, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "Lighting along Pelham Parkway lights both the roadway and the adjacent greenway, but uses the same lights for each application (while they are not exactly highway Cobra lights, they are similar). As a result, the Greenway gets very little light. Pedestrian level lighting would greatly enhance the usability of the greenway.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: This is not a capital request. Please send inquiries to the Bronx Commissioner's office.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Ryan Barthel, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Repair or provide new street lights",
+          "explanation": "Lighting along Pelham Parkway lights both the roadway and the adjacent greenway, but uses the same lights for each application (while they are not exactly highway Cobra lights, they are similar). As a result, the Greenway gets very little light. Pedestrian level lighting would greatly enhance the usability of the greenway.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Ryan Barthel, BxCB11 member"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "111202710C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Upgrade or create new plazas",
+          "explanation": "The Pedestrian Plaza at Bronxdale and Antin Place in front of 2016 Bronxdale Ave is in need of equitable access to the residents in the community. There are boulders placed in the middle of the plaza but benches for residential use is needed. Without the benches and/or tables the plaza is just an empty space and not truly a plaza for pedestrians to enjoy. We are seeking funding from the DOT to upgrade the plaza so that the families in our community may enjoy it. ZOLA shows this land as DoT managed.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: This is not a capital request. Please send inquiries to the Bronx Commissioner's office.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2016 BRONXDALE AVENUE, Bronx, NY, USA"
+          },
+          "support_by": [
+            "Community board 11"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Upgrade or create new plazas",
+          "explanation": "The Pedestrian Plaza at Bronxdale and Antin Place in front of 2016 Bronxdale Ave is in need of equitable access to the residents in the community. There are boulders placed in the middle of the plaza but benches for residential use is needed. Without the benches and/or tables the plaza is just an empty space and not truly a plaza for pedestrians to enjoy. We are seeking funding from the DOT to upgrade the plaza so that the families in our community may enjoy it. ZOLA shows this land as DoT managed.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: This is not a capital request. Please send inquiries to the Bronx Commissioner's office.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2016 BRONXDALE AVENUE, Bronx, NY, USA"
+          },
+          "support_by": [
+            "Community board 11"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Upgrade or create new plazas",
+          "explanation": "The Pedestrian Plaza at Bronxdale and Antin Place in front of 2016 Bronxdale Ave is in need of equitable access to the residents in the community. There are boulders placed in the middle of the plaza but benches for residential use is needed. Without the benches and/or tables the plaza is just an empty space and not truly a plaza for pedestrians to enjoy. We are seeking funding from the DOT to upgrade the plaza so that the families in our community may enjoy it. ZOLA shows this land as DoT managed.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2016 BRONXDALE AVENUE, Bronx, NY, USA"
+          },
+          "support_by": [
+            "Community board 11"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "111202711C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "The intersection at Boston rd and Pelham Parkway is one of the most heavily used in our district and is frequently congested. Additionally, 7 active bus routes traverse this intersection, and 3 of them - Bx12 SBS westbound, and Bx22 (both directions) must cross over 1 or more lanes of traffic in the space of this intersection. This requirement leads to aggressive driving on the part of both buses and cars, creating danger for everyone on and near the roads. Adding bus priority lights - like those that have recently been added to the intersection at Southern Blvd. and Fordham Rd., where buses do not cross over other lanes of travel - to allow buses to safely cross the intersection before private cars would allow them to position themselves in the appropriate lane without fighting cars for space.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: This is not a capital request. Please send inquiries to the Bronx Commissioner's office.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "The intersection at Boston rd and Pelham Parkway is one of the most heavily used in our district and is frequently congested. Additionally, 7 active bus routes traverse this intersection, and 3 of them - Bx12 SBS westbound, and Bx22 (both directions) must cross over 1 or more lanes of traffic in the space of this intersection. This requirement leads to aggressive driving on the part of both buses and cars, creating danger for everyone on and near the roads. Adding bus priority lights - like those that have recently been added to the intersection at Southern Blvd. and Fordham Rd., where buses do not cross over other lanes of travel - to allow buses to safely cross the intersection before private cars would allow them to position themselves in the appropriate lane without fighting cars for space.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: This is not a capital request. Please send inquiries to the Bronx Commissioner's office.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "The intersection at Boston rd and Pelham Parkway is one of the most heavily used in our district and is frequently congested. Additionally, 7 active bus routes traverse this intersection, and 3 of them - Bx12 SBS westbound, and Bx22 (both directions) must cross over 1 or more lanes of traffic in the space of this intersection. This requirement leads to aggressive driving on the part of both buses and cars, creating danger for everyone on and near the roads. Adding bus priority lights - like those that have recently been added to the intersection at Southern Blvd. and Fordham Rd., where buses do not cross over other lanes of travel - to allow buses to safely cross the intersection before private cars would allow them to position themselves in the appropriate lane without fighting cars for space.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "111202712C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Upgrade or create new greenways",
+          "explanation": "Pelham Parkway North has an unused parking lane between Stillwell Ave. and Williamsbridge Ave. Creating a protected bike lane in this space would alleviate some of the congestion and conflict that arises on the Pelham Parkway Greenway and could connect to the protected bike lane at Williamsbridge Ave., connect to the Hutchinson River Greenway at Stillwell Ave, and connect to the upcoming protected bike lane along Eastchester Ave.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: This is not a capital request. Please send inquiries to the Bronx Commissioner's office.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Upgrade or create new greenways",
+          "explanation": "Pelham Parkway North has an unused parking lane between Stillwell Ave. and Williamsbridge Ave. Creating a protected bike lane in this space would alleviate some of the congestion and conflict that arises on the Pelham Parkway Greenway and could connect to the protected bike lane at Williamsbridge Ave., connect to the Hutchinson River Greenway at Stillwell Ave, and connect to the upcoming protected bike lane along Eastchester Ave.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: This is not a capital request. Please send inquiries to the Bronx Commissioner's office.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Upgrade or create new greenways",
+          "explanation": "Pelham Parkway North has an unused parking lane between Stillwell Ave. and Williamsbridge Ave. Creating a protected bike lane in this space would alleviate some of the congestion and conflict that arises on the Pelham Parkway Greenway and could connect to the protected bike lane at Williamsbridge Ave., connect to the Hutchinson River Greenway at Stillwell Ave, and connect to the upcoming protected bike lane along Eastchester Ave.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "111202713C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other transportation infrastructure requests",
+          "explanation": "Morris Park Ave, the heart of the community, needs to have its unprotected bike lanes combined to one side to make a two way protected bike lane. The unprotected bike lane currently has a few problems. First and foremost, it is not a bike lane. It is a parking lane for cars to double park. This is almost understandable as there is no safe and convenient alternative for local trips without a safe place for bikes and scooters. The second is that even when the unprotected bike lane is clear, people on bikes and scooters are at constant risk of getting doored by people exiting their cars AND getting hit by cars with phone distracted drivers who drive into the bike lane. A Morris Park Ave protected bike lane would also provide a closer connection to the Bronx River Greenway, allowing our residents the ability to safely get to Randall's Island and other boroughs.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Cars parking in the bike lane is an enforcement issue with NYPD traffic enforcement.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Gabriel Zeinoun",
+            "Ryan Barthel"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other transportation infrastructure requests",
+          "explanation": "Morris Park Ave, the heart of the community, needs to have its unprotected bike lanes combined to one side to make a two way protected bike lane. The unprotected bike lane currently has a few problems. First and foremost, it is not a bike lane. It is a parking lane for cars to double park. This is almost understandable as there is no safe and convenient alternative for local trips without a safe place for bikes and scooters. The second is that even when the unprotected bike lane is clear, people on bikes and scooters are at constant risk of getting doored by people exiting their cars AND getting hit by cars with phone distracted drivers who drive into the bike lane. A Morris Park Ave protected bike lane would also provide a closer connection to the Bronx River Greenway, allowing our residents the ability to safely get to Randall's Island and other boroughs.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Cars parking in the bike lane is an enforcement issue with NYPD traffic enforcement.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Gabriel Zeinoun",
+            "Ryan Barthel"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Other transportation infrastructure requests",
+          "explanation": "Morris Park Ave, the heart of the community, needs to have its unprotected bike lanes combined to one side to make a two way protected bike lane. The unprotected bike lane currently has a few problems. First and foremost, it is not a bike lane. It is a parking lane for cars to double park. This is almost understandable as there is no safe and convenient alternative for local trips without a safe place for bikes and scooters. The second is that even when the unprotected bike lane is clear, people on bikes and scooters are at constant risk of getting doored by people exiting their cars AND getting hit by cars with phone distracted drivers who drive into the bike lane. A Morris Park Ave protected bike lane would also provide a closer connection to the Bronx River Greenway, allowing our residents the ability to safely get to Randall's Island and other boroughs.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Gabriel Zeinoun",
+            "Ryan Barthel"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "111202714C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DYCD",
+          "explanation": "There is a need for a mental health center/somewhere for youth to seek mental health care in the district. A specialized center would be best, but could also be located in schools.",
+          "response": "Further investigation is required. Contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DYCD",
+          "explanation": "There is a need for a mental health center/somewhere for youth to seek mental health care in the district. A specialized center would be best, but could also be located in schools.",
+          "response": "Further investigation is required. Contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Other capital budget request for DYCD",
+          "explanation": "There is a need for a mental health center/somewhere for youth to seek mental health care in the district. A specialized center would be best, but could also be located in schools.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "Naomi Pemberton, BxCB11 member"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "111202715C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-11",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "11",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "NYPL is seeking capital funding to ensure that our branches contine to be welcoming, modern, and well-equipped spaces for the communities they serve. Anticipated projects range from major renovations to targeted upgrades, including: - heating and cooling system updates - sidewalk and vault work - exterior rehabilitation - new roofs, windows, and doors - fire alarm, security, and technology upgrades - ADA compliance - elevator replacement Priority capital projects in Bronx CB11: - New roof, front facade, windows: $4,000,000 - ADA restroom upgrade: $3,000,000",
+          "response": "This request includes more than one proposal. The agency has recommended funding for this request in part. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2147 BARNES AVENUE, Bronx, NY, USA"
+          },
+          "support_by": [
+            "George Mihaltses",
+            "Amr Kotb"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "NYPL is seeking capital funding to ensure that our branches contine to be welcoming, modern, and well-equipped spaces for the communities they serve. Anticipated projects range from major renovations to targeted upgrades, including: - heating and cooling system updates - sidewalk and vault work - exterior rehabilitation - new roofs, windows, and doors - fire alarm, security, and technology upgrades - ADA compliance - elevator replacement Priority capital projects in Bronx CB11: - New roof, front facade, windows: $4,000,000 - ADA restroom upgrade: $3,000,000",
+          "response": "This request includes more than one proposal. The agency has recommended funding for this request in part. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2147 BARNES AVENUE, Bronx, NY, USA"
+          },
+          "support_by": [
+            "George Mihaltses",
+            "Amr Kotb"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "037",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "NYPL is seeking capital funding to ensure that our branches contine to be welcoming, modern, and well-equipped spaces for the communities they serve. Anticipated projects range from major renovations to targeted upgrades, including: - heating and cooling system updates - sidewalk and vault work - exterior rehabilitation - new roofs, windows, and doors - fire alarm, security, and technology upgrades - ADA compliance - elevator replacement Priority capital projects in Bronx CB11: - New roof, front facade, windows: $4,000,000 - ADA restroom upgrade: $3,000,000",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2147 BARNES AVENUE, Bronx, NY, USA"
+          },
+          "support_by": [
+            "George Mihaltses",
+            "Amr Kotb"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    }
+  ]
+}

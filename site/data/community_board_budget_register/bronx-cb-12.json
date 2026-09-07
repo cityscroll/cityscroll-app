@@ -1,0 +1,939 @@
+{
+  "schema": "cityscroll.community_board_budget_register_document.v1",
+  "method": "omb_register_full_tracking_code_within_cycle_v1",
+  "negative_rule": "A changed response text is a changed written answer and nothing else. It is not funding, a commitment, delivery, or completion, and no request is carried across fiscal cycles by a repeated priority number, a similar facility name, or matching request text.",
+  "board_id": "bronx-cb-12",
+  "publications": {
+    "as_of": "2026-09-07",
+    "servable": [
+      "20260512",
+      "20260630"
+    ],
+    "diagnostic_only": [
+      "20270217"
+    ],
+    "latest": "20260630"
+  },
+  "request_count": 11,
+  "requests": [
+    {
+      "tracking_code": "112202701C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-12",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "12",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate, upgrade or provide new community board facilities and equipment",
+          "explanation": "Community Board 12 is an incredible resource to the community at large. We are fortunate to be a building that has an open space. For the last several years CB12 has poured money into upgrading our technology and facilities. We still require more funding to upgrade our windows and lighting in the Carriage House. We are also asking for DCAS to make the Carriage House a Public Assembly space with the proper DOB permits.",
+          "response": "Agency supports but cannot accommodate Explanation: Submit a space request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "4101 WHITE PLAINS ROAD, Bronx, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate, upgrade or provide new community board facilities and equipment",
+          "explanation": "Community Board 12 is an incredible resource to the community at large. We are fortunate to be a building that has an open space. For the last several years CB12 has poured money into upgrading our technology and facilities. We still require more funding to upgrade our windows and lighting in the Carriage House. We are also asking for DCAS to make the Carriage House a Public Assembly space with the proper DOB permits.",
+          "response": "Agency supports but cannot accommodate Explanation: Submit a space request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "4101 WHITE PLAINS ROAD, Bronx, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "856",
+          "request": "Renovate, upgrade or provide new community board facilities and equipment",
+          "explanation": "Community Board 12 is an incredible resource to the community at large. We are fortunate to be a building that has an open space. For the last several years CB12 has poured money into upgrading our technology and facilities. We still require more funding to upgrade our windows and lighting in the Carriage House. We are also asking for DCAS to make the Carriage House a Public Assembly space with the proper DOB permits.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "4101 WHITE PLAINS ROAD, Bronx, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "112202701E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-12",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "12",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance park safety through more security staff (police or parks enforcement)",
+          "explanation": "Request: Provide Funding for Additional PEP Officers or Transfer money to the NYPD so that they take the roll of the PEP Officers in all NYC Parks. Explanation: Additional PEP officers are needed to patrol our parks and playgrounds. Vandalism has increased and there is a need for additional PEP officers to patrol the parks. It is inconceivable that year after year, park patrons in Community Board #12 have to endure numerous quality of life issues because existing PEP officers are not present. We request that the Department hire more officers in order to protect our parks and their patrons.",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance park safety through more security staff (police or parks enforcement)",
+          "explanation": "Request: Provide Funding for Additional PEP Officers or Transfer money to the NYPD so that they take the roll of the PEP Officers in all NYC Parks. Explanation: Additional PEP officers are needed to patrol our parks and playgrounds. Vandalism has increased and there is a need for additional PEP officers to patrol the parks. It is inconceivable that year after year, park patrons in Community Board #12 have to endure numerous quality of life issues because existing PEP officers are not present. We request that the Department hire more officers in order to protect our parks and their patrons.",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Enhance park safety through more security staff (police or parks enforcement)",
+          "explanation": "Request: Provide Funding for Additional PEP Officers or Transfer money to the NYPD so that they take the roll of the PEP Officers in all NYC Parks. Explanation: Additional PEP officers are needed to patrol our parks and playgrounds. Vandalism has increased and there is a need for additional PEP officers to patrol the parks. It is inconceivable that year after year, park patrons in Community Board #12 have to endure numerous quality of life issues because existing PEP officers are not present. We request that the Department hire more officers in order to protect our parks and their patrons.",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "112202702C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-12",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "12",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Reconstruct or upgrade Shoelace Park and the Bronx River Greenway. The Parks Department has a Master Plan for the reconstruction and modernization of Shoelace Park. Many of the playgrounds and facilities lie in the flood plane of the Bronx River. CB12 is asking for a plan on how best to implement the Master Plan. Considering the project cannot begin unless it is fully funded is it best to parcel the Master Plan into more project ready phases.",
+          "response": "Agency supports but cannot accommodate Explanation: This request requires funding. Please advocate for funding with your respective elected officials.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Reconstruct or upgrade Shoelace Park and the Bronx River Greenway. The Parks Department has a Master Plan for the reconstruction and modernization of Shoelace Park. Many of the playgrounds and facilities lie in the flood plane of the Bronx River. CB12 is asking for a plan on how best to implement the Master Plan. Considering the project cannot begin unless it is fully funded is it best to parcel the Master Plan into more project ready phases.",
+          "response": "Agency supports but cannot accommodate Explanation: This request requires funding. Please advocate for funding with your respective elected officials.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Reconstruct or upgrade Shoelace Park and the Bronx River Greenway. The Parks Department has a Master Plan for the reconstruction and modernization of Shoelace Park. Many of the playgrounds and facilities lie in the flood plane of the Bronx River. CB12 is asking for a plan on how best to implement the Master Plan. Considering the project cannot begin unless it is fully funded is it best to parcel the Master Plan into more project ready phases.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "112202702E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-12",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "12",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more frequent litter basket collection",
+          "explanation": "Request for additional funding for more services like additional Mobile Liter Patrols and Basket Service pick-ups.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more frequent litter basket collection",
+          "explanation": "Request for additional funding for more services like additional Mobile Liter Patrols and Basket Service pick-ups.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Provide more frequent litter basket collection",
+          "explanation": "Request for additional funding for more services like additional Mobile Liter Patrols and Basket Service pick-ups.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "112202703C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-12",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "12",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance park safety through design interventions, e.g. better lighting",
+          "explanation": "Request: Provide Funding for cameras in Seton Falls Park, Shoelace Park and Haffen Park in order to deter crime. Explanation: Community Board 12 believes that installing cameras can act as a deterrent to crimes and provide evidence that could aid law enforcement officials in the prosecution of crime in these parks. The Board asks that the Department of Parks and Recreation purchase these cameras in order to address this significant public safety issue.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Argus cameras are funded via allocations from elected officials for use within their districts. Specific location recommendations should be provided to the local precinct commander for submission to the Information Technology Bureau once funding is allocated. The NYPD will attempt to accommodate specific location requests whenever funding is provided, but reserves the right to place cameras as appropriate due to current crime trends and operational needs.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance park safety through design interventions, e.g. better lighting",
+          "explanation": "Request: Provide Funding for cameras in Seton Falls Park, Shoelace Park and Haffen Park in order to deter crime. Explanation: Community Board 12 believes that installing cameras can act as a deterrent to crimes and provide evidence that could aid law enforcement officials in the prosecution of crime in these parks. The Board asks that the Department of Parks and Recreation purchase these cameras in order to address this significant public safety issue.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Argus cameras are funded via allocations from elected officials for use within their districts. Specific location recommendations should be provided to the local precinct commander for submission to the Information Technology Bureau once funding is allocated. The NYPD will attempt to accommodate specific location requests whenever funding is provided, but reserves the right to place cameras as appropriate due to current crime trends and operational needs.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Enhance park safety through design interventions, e.g. better lighting",
+          "explanation": "Request: Provide Funding for cameras in Seton Falls Park, Shoelace Park and Haffen Park in order to deter crime. Explanation: Community Board 12 believes that installing cameras can act as a deterrent to crimes and provide evidence that could aid law enforcement officials in the prosecution of crime in these parks. The Board asks that the Department of Parks and Recreation purchase these cameras in order to address this significant public safety issue.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "112202703E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-12",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "12",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other cleaning requests",
+          "explanation": "Community Board 12 is asking for increased enforcement of our dirty streets and sidewalks especially around our commercial districts. We are asking for increased services from not for profits like the Doe Fund or FedCap that focus on litter pick up and waste basket patrol all week long including weekends.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other cleaning requests",
+          "explanation": "Community Board 12 is asking for increased enforcement of our dirty streets and sidewalks especially around our commercial districts. We are asking for increased services from not for profits like the Doe Fund or FedCap that focus on litter pick up and waste basket patrol all week long including weekends.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Other cleaning requests",
+          "explanation": "Community Board 12 is asking for increased enforcement of our dirty streets and sidewalks especially around our commercial districts. We are asking for increased services from not for profits like the Doe Fund or FedCap that focus on litter pick up and waste basket patrol all week long including weekends.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "112202704C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-12",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "12",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Housing Authority",
+            "agency_id": "housing-authority",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Install security cameras or make other safety upgrades",
+          "explanation": "Provide funding for cameras throughout Edenwald, Boston Secor, Baychester, NYCHA Developments in order to deter crime. Crime in our N.Y.C.H.A. Housing Developments persists as a major problem and concern. The installation of cameras has only partially taken place in some projects. A complete monitoring system must be installed in each of our N.Y.C.H.A. Developments for the safety of the tenants. It is our understanding that the monies for these projects were allocated. We would like a detailed explanation on when NYCHA plans on getting these cameras installed. The monies were allocated several budget cycles in the past. We want to ensure that these monies are not redirected to other projects.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Camera installation is generously funded by elected officials at the local, state and federal level. NYCHA is happy to work with our partners to install cameras across the portfolio as funding becomes available. Funding has been provided through the PACT program to carry out the requested upgrades.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Housing Authority",
+            "agency_id": "housing-authority",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Install security cameras or make other safety upgrades",
+          "explanation": "Provide funding for cameras throughout Edenwald, Boston Secor, Baychester, NYCHA Developments in order to deter crime. Crime in our N.Y.C.H.A. Housing Developments persists as a major problem and concern. The installation of cameras has only partially taken place in some projects. A complete monitoring system must be installed in each of our N.Y.C.H.A. Developments for the safety of the tenants. It is our understanding that the monies for these projects were allocated. We would like a detailed explanation on when NYCHA plans on getting these cameras installed. The monies were allocated several budget cycles in the past. We want to ensure that these monies are not redirected to other projects.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Camera installation is generously funded by elected officials at the local, state and federal level. NYCHA is happy to work with our partners to install cameras across the portfolio as funding becomes available. Funding has been provided through the PACT program to carry out the requested upgrades.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Housing Authority",
+            "agency_id": "housing-authority",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "996",
+          "request": "Install security cameras or make other safety upgrades",
+          "explanation": "Provide funding for cameras throughout Edenwald, Boston Secor, Baychester, NYCHA Developments in order to deter crime. Crime in our N.Y.C.H.A. Housing Developments persists as a major problem and concern. The installation of cameras has only partially taken place in some projects. A complete monitoring system must be installed in each of our N.Y.C.H.A. Developments for the safety of the tenants. It is our understanding that the monies for these projects were allocated. We would like a detailed explanation on when NYCHA plans on getting these cameras installed. The monies were allocated several budget cycles in the past. We want to ensure that these monies are not redirected to other projects.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "112202704E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-12",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "12",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance the Summer Youth Employment Program",
+          "explanation": "Increase funding for SYEP and look to end the yearly budget dance. Base line the increases so that those participating in the program can build upon their programs to offer better outcomes and services for our youth. We should look to models used in other City's like Philadelphia and work with the private sector to offer more meaningful summer jobs to youth. Use the SYEP program as the doorway to internships that would otherwise not be available to those of us that do not have someone advocating on their behalf. Offer multi-year placements so that our youth have an opportunity to grow with one particular employer. End the lottery system to make sure that once a youth enters the SYEP program they can stay in it. Incentivize the hiring of youth similar to what SBS does.",
+          "response": "This request has already been completed. Explanation: Each summer, NYC supports 100,000 youth jobs through the Summer Youth Employment Program. The Work, Learn, Grow program provides youth employment during the school year. The Advance and Earn program (formerly Young Adult Internship Program) also works with youth during the school year.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance the Summer Youth Employment Program",
+          "explanation": "Increase funding for SYEP and look to end the yearly budget dance. Base line the increases so that those participating in the program can build upon their programs to offer better outcomes and services for our youth. We should look to models used in other City's like Philadelphia and work with the private sector to offer more meaningful summer jobs to youth. Use the SYEP program as the doorway to internships that would otherwise not be available to those of us that do not have someone advocating on their behalf. Offer multi-year placements so that our youth have an opportunity to grow with one particular employer. End the lottery system to make sure that once a youth enters the SYEP program they can stay in it. Incentivize the hiring of youth similar to what SBS does.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Each summer, NYC supports 100,000 youth jobs through the Summer Youth Employment Program. The Work, Learn, Grow program provides youth employment during the school year. The Advance and Earn program (formerly Young Adult Internship Program) also works with youth during the school year.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "260",
+          "request": "Provide, expand, or enhance the Summer Youth Employment Program",
+          "explanation": "Increase funding for SYEP and look to end the yearly budget dance. Base line the increases so that those participating in the program can build upon their programs to offer better outcomes and services for our youth. We should look to models used in other City's like Philadelphia and work with the private sector to offer more meaningful summer jobs to youth. Use the SYEP program as the doorway to internships that would otherwise not be available to those of us that do not have someone advocating on their behalf. Offer multi-year placements so that our youth have an opportunity to grow with one particular employer. End the lottery system to make sure that once a youth enters the SYEP program they can stay in it. Incentivize the hiring of youth similar to what SBS does.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "112202705C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-12",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "12",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other NYPD facilities and equipment requests",
+          "explanation": "Community Board 12 requests that the NYPD equip each patrol vehicle with a sound meter to better facilitate noise complaints. It is our understanding that usually there is only one sound meter assigned to each precinct. Additionally it is often calibrated and cannot be used during this lengthy process. Finally, we understand that each officer should be trained to handle these meters to respond to 311 complaints.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Each Patrol Borough possesses an adequate number of sound level meters along with training personnel in their use. The NYPD has newer sound level meters which measure ambient bass to enforce updated noise laws (July 2007). The Department will continue to purchase and replace sound level meters as necessary.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other NYPD facilities and equipment requests",
+          "explanation": "Community Board 12 requests that the NYPD equip each patrol vehicle with a sound meter to better facilitate noise complaints. It is our understanding that usually there is only one sound meter assigned to each precinct. Additionally it is often calibrated and cannot be used during this lengthy process. Finally, we understand that each officer should be trained to handle these meters to respond to 311 complaints.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Each Patrol Borough possesses an adequate number of sound level meters along with training personnel in their use. The NYPD has newer sound level meters which measure ambient bass to enforce updated noise laws (July 2007). The Department will continue to purchase and replace sound level meters as necessary.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Other NYPD facilities and equipment requests",
+          "explanation": "Community Board 12 requests that the NYPD equip each patrol vehicle with a sound meter to better facilitate noise complaints. It is our understanding that usually there is only one sound meter assigned to each precinct. Additionally it is often calibrated and cannot be used during this lengthy process. Finally, we understand that each officer should be trained to handle these meters to respond to 311 complaints.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "112202705E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-12",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "12",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance food assistance, such as Food Stamps / SNAP",
+          "explanation": "CB12 has served as a satellite facility for HRA's outreach efforts on Food Stamps/SNAP. Every Tuesday and Wednesday CB12's offices become a hub of activity of those seeking HRA's assistance for Food Stamps/SNAP benefits. We encourage an expansion of these services to five days a week and that additional services are offered like APS. In years past HRA has said that further study was required of the agency. We met with officials from HRA and thought we were close to negotiating an expansion of services at our office. Unfortunately, those conversations ended with no change or expansion to the current services. We would like to know what happened.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: HRA encourages those who can use the ACCESS HRA website to take advantage of all it has to offer (including benefit application submissions and case management). Community-Based Organizations also provide help with completing applications and screening applicants for eligibility to the various programs. Some locations can also help with submitting documents to DSS electronically.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance food assistance, such as Food Stamps / SNAP",
+          "explanation": "CB12 has served as a satellite facility for HRA's outreach efforts on Food Stamps/SNAP. Every Tuesday and Wednesday CB12's offices become a hub of activity of those seeking HRA's assistance for Food Stamps/SNAP benefits. We encourage an expansion of these services to five days a week and that additional services are offered like APS. In years past HRA has said that further study was required of the agency. We met with officials from HRA and thought we were close to negotiating an expansion of services at our office. Unfortunately, those conversations ended with no change or expansion to the current services. We would like to know what happened.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: HRA encourages those who can use the ACCESS HRA website to take advantage of all it has to offer (including benefit application submissions and case management). Community-Based Organizations also provide help with completing applications and screening applicants for eligibility to the various programs. Some locations can also help with submitting documents to DSS electronically.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "096",
+          "request": "Provide, expand, or enhance food assistance, such as Food Stamps / SNAP",
+          "explanation": "CB12 has served as a satellite facility for HRA's outreach efforts on Food Stamps/SNAP. Every Tuesday and Wednesday CB12's offices become a hub of activity of those seeking HRA's assistance for Food Stamps/SNAP benefits. We encourage an expansion of these services to five days a week and that additional services are offered like APS. In years past HRA has said that further study was required of the agency. We met with officials from HRA and thought we were close to negotiating an expansion of services at our office. Unfortunately, those conversations ended with no change or expansion to the current services. We would like to know what happened.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "112202706E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-12",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "12",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other community board facilities and staff requests",
+          "explanation": "Please increase funding for Community Boards. We ask that the City baseline the City Council funding. We would go so far as to request that the Boards budget be increased to $350,000 so that Boards will have the adequate resources to provide the Charter-mandated services to their Districts.",
+          "response": "As of the FY 2027 Executive Budget, each Community Board's budget is being maintained.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other community board facilities and staff requests",
+          "explanation": "Please increase funding for Community Boards. We ask that the City baseline the City Council funding. We would go so far as to request that the Boards budget be increased to $350,000 so that Boards will have the adequate resources to provide the Charter-mandated services to their Districts.",
+          "response": "As of the FY 2027 Adopted Budget, each Community Board's budget is being maintained.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "002",
+          "request": "Other community board facilities and staff requests",
+          "explanation": "Please increase funding for Community Boards. We ask that the City baseline the City Council funding. We would go so far as to request that the Boards budget be increased to $350,000 so that Boards will have the adequate resources to provide the Charter-mandated services to their Districts.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1864 @@
+{
+  "schema": "cityscroll.community_board_budget_register_document.v1",
+  "method": "omb_register_full_tracking_code_within_cycle_v1",
+  "negative_rule": "A changed response text is a changed written answer and nothing else. It is not funding, a commitment, delivery, or completion, and no request is carried across fiscal cycles by a repeated priority number, a similar facility name, or matching request text.",
+  "board_id": "bronx-cb-01",
+  "publications": {
+    "as_of": "2026-09-07",
+    "servable": [
+      "20260512",
+      "20260630"
+    ],
+    "diagnostic_only": [
+      "20270217"
+    ],
+    "latest": "20260630"
+  },
+  "request_count": 22,
+  "requests": [
+    {
+      "tracking_code": "101202701C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Provide Funding for the Green Thumb Gardens in the District. To provide all the gardens in CB1 with on-site running water, electricity, modern fencing as well as clean soil, lumber, and other materials needed to operate a functioning garden. (Previous Tracking No: 101201602C)",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Provide Funding for the Green Thumb Gardens in the District. To provide all the gardens in CB1 with on-site running water, electricity, modern fencing as well as clean soil, lumber, and other materials needed to operate a functioning garden. (Previous Tracking No: 101201602C)",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Provide Funding for the Green Thumb Gardens in the District. To provide all the gardens in CB1 with on-site running water, electricity, modern fencing as well as clean soil, lumber, and other materials needed to operate a functioning garden. (Previous Tracking No: 101201602C)",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202701E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Add Funding for Asthma Treatment. Bronx Community District #1 has been designated as part of the Asthma Corridor. The Municipal Hospital in our district. Lincoln Medical & Mental Health Center, handles approximately 50,000 pediatric visits and 45,000 pediatric emergency room visits, 5% of which are Asthma related. Additional funding is needed for Asthma Education and case management assistance.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Add Funding for Asthma Treatment. Bronx Community District #1 has been designated as part of the Asthma Corridor. The Municipal Hospital in our district. Lincoln Medical & Mental Health Center, handles approximately 50,000 pediatric visits and 45,000 pediatric emergency room visits, 5% of which are Asthma related. Additional funding is needed for Asthma Education and case management assistance.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Add Funding for Asthma Treatment. Bronx Community District #1 has been designated as part of the Asthma Corridor. The Municipal Hospital in our district. Lincoln Medical & Mental Health Center, handles approximately 50,000 pediatric visits and 45,000 pediatric emergency room visits, 5% of which are Asthma related. Additional funding is needed for Asthma Education and case management assistance.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202702C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance park safety through design interventions, e.g. better lighting",
+          "explanation": "At St. Mary's Park, policing is required to ensure that the park is not utilized for drug distribution use.",
+          "response": "The agency does not understand the request as written and requires more clarification. Explanation: More specific information is needed as this does not appear to be a capital request.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance park safety through design interventions, e.g. better lighting",
+          "explanation": "At St. Mary's Park, policing is required to ensure that the park is not utilized for drug distribution use.",
+          "response": "The agency does not understand the request as written and requires more clarification. Explanation: More specific information is needed as this does not appear to be a capital request.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Enhance park safety through design interventions, e.g. better lighting",
+          "explanation": "At St. Mary's Park, policing is required to ensure that the park is not utilized for drug distribution use.",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202702E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more information and services related to STIs, HIV/AIDS, and family planning",
+          "explanation": "Add funds for AIDS Education, Teenage Pregnancy and Infant Mortality Programs in CD 1. More of these programs are needed to reach out to our Elementary and High School students as well as to the youth in our Community District.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: We agree that additional funding would be helpful however, teen pregnancy rates have been declining in NYC as are HIV/STD rates among youth. Suggest reconsidering target audience as HIV/STD rates are going up among adults and the elderly population",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more information and services related to STIs, HIV/AIDS, and family planning",
+          "explanation": "Add funds for AIDS Education, Teenage Pregnancy and Infant Mortality Programs in CD 1. More of these programs are needed to reach out to our Elementary and High School students as well as to the youth in our Community District.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: We agree that additional funding would be helpful however, teen pregnancy rates have been declining in NYC as are HIV/STD rates among youth. Suggest reconsidering target audience as HIV/STD rates are going up among adults and the elderly population",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Provide more information and services related to STIs, HIV/AIDS, and family planning",
+          "explanation": "Add funds for AIDS Education, Teenage Pregnancy and Infant Mortality Programs in CD 1. More of these programs are needed to reach out to our Elementary and High School students as well as to the youth in our Community District.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202703C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance park safety through design interventions, e.g. better lighting",
+          "explanation": "Enhance lighting in all district parks and playgrounds so that there will be a year round safe environment for the community to use and enjoy.",
+          "response": "The request does not seem to be applicable to the Responsible Agency. OMB cannot make a determination at this time.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance park safety through design interventions, e.g. better lighting",
+          "explanation": "Enhance lighting in all district parks and playgrounds so that there will be a year round safe environment for the community to use and enjoy.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The Department of Transportation does not design or approve lighting within Parks. This is the responsibility of New York City Park Department.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Enhance park safety through design interventions, e.g. better lighting",
+          "explanation": "Enhance lighting in all district parks and playgrounds so that there will be a year round safe environment for the community to use and enjoy.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202703E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Animal and pest control requests including reducing rat and mosquito populations",
+          "explanation": "Increase funding for Pest Control in CD 1. These are vacant lots infested with rodents and insects in CD 1. In order to provide adequate service, funds are needed to purchase rodenticide and warning posters.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Every property in NYC, whether vacant or occupied has a desginated owner or legally responsible party that must maintain the general upkeep and conditions of that property",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Animal and pest control requests including reducing rat and mosquito populations",
+          "explanation": "Increase funding for Pest Control in CD 1. These are vacant lots infested with rodents and insects in CD 1. In order to provide adequate service, funds are needed to purchase rodenticide and warning posters.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Every property in NYC, whether vacant or occupied has a desginated owner or legally responsible party that must maintain the general upkeep and conditions of that property",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Animal and pest control requests including reducing rat and mosquito populations",
+          "explanation": "Increase funding for Pest Control in CD 1. These are vacant lots infested with rodents and insects in CD 1. In order to provide adequate service, funds are needed to purchase rodenticide and warning posters.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202704C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "Upgrade illumination on existing street lighting in the District. Street lighting throughout the entire District at night does not appear to be providing the proper illumination to support public safety. The Board requests for an upgrade ad increase in foot-candles on the existing lamp poles, including within all pedestrian underpasses in the District.",
+          "response": "Further investigation is required. Contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "Upgrade illumination on existing street lighting in the District. Street lighting throughout the entire District at night does not appear to be providing the proper illumination to support public safety. The Board requests for an upgrade ad increase in foot-candles on the existing lamp poles, including within all pedestrian underpasses in the District.",
+          "response": "Further investigation is required. Contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Repair or provide new street lights",
+          "explanation": "Upgrade illumination on existing street lighting in the District. Street lighting throughout the entire District at night does not appear to be providing the proper illumination to support public safety. The Board requests for an upgrade ad increase in foot-candles on the existing lamp poles, including within all pedestrian underpasses in the District.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202704E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Additional PEP Officers. There exists a need for additional Park Enforcement Officers throughout the Bronx. Additional permanent Officers would allow improved security and better enforcement of quality-of-life concerns throughout the Bronx.",
+          "response": "The request does not seem to be applicable to the Responsible Agency. OMB cannot make a determination at this time.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Additional PEP Officers. There exists a need for additional Park Enforcement Officers throughout the Bronx. Additional permanent Officers would allow improved security and better enforcement of quality-of-life concerns throughout the Bronx.",
+          "response": "The request does not seem to be applicable to the Responsible Agency. OMB cannot make a determination at this time.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Additional PEP Officers. There exists a need for additional Park Enforcement Officers throughout the Bronx. Additional permanent Officers would allow improved security and better enforcement of quality-of-life concerns throughout the Bronx.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202705C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "Fund major improvements including additional lighting at the Major Deegan underpasses at Brook, St. Ann's, Lincoln and Willis Avenues. There is a need for additional lighting at the Major Deegan underpasses at Brook, St. Ann's, Lincoln and Willis Avenues as it is dangerous for residents that have to pass through these locations due to inadequate lighting.",
+          "response": "Further study by the agency of this request is needed. Therefore, OMB does not take any position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "Fund major improvements including additional lighting at the Major Deegan underpasses at Brook, St. Ann's, Lincoln and Willis Avenues. There is a need for additional lighting at the Major Deegan underpasses at Brook, St. Ann's, Lincoln and Willis Avenues as it is dangerous for residents that have to pass through these locations due to inadequate lighting.",
+          "response": "Further study by the agency of this request is needed. Therefore, OMB does not take any position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Repair or provide new street lights",
+          "explanation": "Fund major improvements including additional lighting at the Major Deegan underpasses at Brook, St. Ann's, Lincoln and Willis Avenues. There is a need for additional lighting at the Major Deegan underpasses at Brook, St. Ann's, Lincoln and Willis Avenues as it is dangerous for residents that have to pass through these locations due to inadequate lighting.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202705E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve the quality/staffing of existing programs offered in parks or recreational centers",
+          "explanation": "Continue funding 18 permanent staff at St. Mary's Recreational Center. This newly renovated center requires permanent staffing to maintain and provide services to our youth as well as our adult population.",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve the quality/staffing of existing programs offered in parks or recreational centers",
+          "explanation": "Continue funding 18 permanent staff at St. Mary's Recreational Center. This newly renovated center requires permanent staffing to maintain and provide services to our youth as well as our adult population.",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Improve the quality/staffing of existing programs offered in parks or recreational centers",
+          "explanation": "Continue funding 18 permanent staff at St. Mary's Recreational Center. This newly renovated center requires permanent staffing to maintain and provide services to our youth as well as our adult population.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202706C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "Increase City Park Workers and A.P.S.W's for enhanced park maintenance. In order to increase the level of service in parks and to keep up with new additions to the parks system, additional City Parks Workers and A.P.S.W's are requested to service the parks throughout the borough. These CPW's and CSA's will be fixed posted and be placed on mobile crews as well as cut grass.",
+          "response": "The request does not seem to be applicable to the Responsible Agency. OMB cannot make a determination at this time.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or provide new street lights",
+          "explanation": "Increase City Park Workers and A.P.S.W's for enhanced park maintenance. In order to increase the level of service in parks and to keep up with new additions to the parks system, additional City Parks Workers and A.P.S.W's are requested to service the parks throughout the borough. These CPW's and CSA's will be fixed posted and be placed on mobile crews as well as cut grass.",
+          "response": "The request does not seem to be applicable to the Responsible Agency. OMB cannot make a determination at this time.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Repair or provide new street lights",
+          "explanation": "Increase City Park Workers and A.P.S.W's for enhanced park maintenance. In order to increase the level of service in parks and to keep up with new additions to the parks system, additional City Parks Workers and A.P.S.W's are requested to service the parks throughout the borough. These CPW's and CSA's will be fixed posted and be placed on mobile crews as well as cut grass.",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202706E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DPR",
+          "explanation": "Vehicles to replace aging fleet. The Parks Department relies o vehicles that are constantly out of service and over five-years old. Parks also needs to service larger parks with smaller, safer and more efficient small utility vehicles.",
+          "response": "The agency agrees with this request, but the funding decision follows a different budget process (i.e., RFP, local level decision)",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DPR",
+          "explanation": "Vehicles to replace aging fleet. The Parks Department relies o vehicles that are constantly out of service and over five-years old. Parks also needs to service larger parks with smaller, safer and more efficient small utility vehicles.",
+          "response": "The agency agrees with this request, but the funding decision follows a different budget process (i.e., RFP, local level decision)",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Other expense budget request for DPR",
+          "explanation": "Vehicles to replace aging fleet. The Parks Department relies o vehicles that are constantly out of service and over five-years old. Parks also needs to service larger parks with smaller, safer and more efficient small utility vehicles.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202707C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for NYPL",
+          "explanation": "Increased expense funding, so libraries in every neighborhood can help rebuild a more equitable New York, including technology access for families in all libraries.",
+          "response": "Restoring and/or increasing funding is needed for this request. It is recommended that this request be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for NYPL",
+          "explanation": "Increased expense funding, so libraries in every neighborhood can help rebuild a more equitable New York, including technology access for families in all libraries.",
+          "response": "Restoring and/or increasing funding is needed for this request. It is recommended that this request be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "037",
+          "request": "Other capital budget request for NYPL",
+          "explanation": "Increased expense funding, so libraries in every neighborhood can help rebuild a more equitable New York, including technology access for families in all libraries.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202707E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance park safety through more security staff (police or parks enforcement)",
+          "explanation": "Syringe Removal Program needs more funding to remove syringes more quickly. In order to address conditions more quickly, additional support including staff and and supplies for the Syringe Removal Program such as syringe collection kiosks, sharps collection containers for district crews and PEP Officers, puncture resistant gloves and other equipment are needed.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance park safety through more security staff (police or parks enforcement)",
+          "explanation": "Syringe Removal Program needs more funding to remove syringes more quickly. In order to address conditions more quickly, additional support including staff and and supplies for the Syringe Removal Program such as syringe collection kiosks, sharps collection containers for district crews and PEP Officers, puncture resistant gloves and other equipment are needed.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Enhance park safety through more security staff (police or parks enforcement)",
+          "explanation": "Syringe Removal Program needs more funding to remove syringes more quickly. In order to address conditions more quickly, additional support including staff and and supplies for the Syringe Removal Program such as syringe collection kiosks, sharps collection containers for district crews and PEP Officers, puncture resistant gloves and other equipment are needed.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202708C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Funding for the creation of a library/media room at PS 5 where the children can do homework, study and learn. Funding for cameras at the front entrance and School Safety Agents for the protection of the children.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FUNDING NOT AVAILABLE. PLEASE CHECK WITH ELECTED OFFICALS (BP/CC) FOR RESO A FUNDING.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "564 JACKSON AVENUE, Bronx, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Funding for the creation of a library/media room at PS 5 where the children can do homework, study and learn. Funding for cameras at the front entrance and School Safety Agents for the protection of the children.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FUNDING NOT AVAILABLE. PLEASE CHECK WITH ELECTED OFFICALS (BP/CC) FOR RESO A FUNDING.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "564 JACKSON AVENUE, Bronx, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Funding for the creation of a library/media room at PS 5 where the children can do homework, study and learn. Funding for cameras at the front entrance and School Safety Agents for the protection of the children.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "564 JACKSON AVENUE, Bronx, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202708E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more on-street trash cans and recycling containers",
+          "explanation": "Provide more on-street trash cans and recycling containers throughout the district",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more on-street trash cans and recycling containers",
+          "explanation": "Provide more on-street trash cans and recycling containers throughout the district",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Provide more on-street trash cans and recycling containers",
+          "explanation": "Provide more on-street trash cans and recycling containers throughout the district",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202709C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Funding for the placement of critical air circulation and conditioning system in PS1 located at 335 East 152nd Street, the Courtlandt School. Community Board 1 is within the most profound asthma corridor of our City. We voice our concerns about the current conditions for learning in all of our schools. However, in PS1 the air quality and circulation is extremely poor. Its over heated conditions are not conducive for learning and is having an adverse impact on the learning environment for our children. We advocate for the allocation of Capital funding for construction of an air condition system within the school.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: PROJECT IS IN PROCESS.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "PS 1, Bronx, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Funding for the placement of critical air circulation and conditioning system in PS1 located at 335 East 152nd Street, the Courtlandt School. Community Board 1 is within the most profound asthma corridor of our City. We voice our concerns about the current conditions for learning in all of our schools. However, in PS1 the air quality and circulation is extremely poor. Its over heated conditions are not conducive for learning and is having an adverse impact on the learning environment for our children. We advocate for the allocation of Capital funding for construction of an air condition system within the school.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: PROJECT IS IN PROCESS.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "PS 1, Bronx, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Funding for the placement of critical air circulation and conditioning system in PS1 located at 335 East 152nd Street, the Courtlandt School. Community Board 1 is within the most profound asthma corridor of our City. We voice our concerns about the current conditions for learning in all of our schools. However, in PS1 the air quality and circulation is extremely poor. Its over heated conditions are not conducive for learning and is having an adverse impact on the learning environment for our children. We advocate for the allocation of Capital funding for construction of an air condition system within the school.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "PS 1, Bronx, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202709E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more frequent garbage or recycling pick-up",
+          "explanation": "Maintaining extra collection services at NYCHA sites.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more frequent garbage or recycling pick-up",
+          "explanation": "Maintaining extra collection services at NYCHA sites.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Provide more frequent garbage or recycling pick-up",
+          "explanation": "Maintaining extra collection services at NYCHA sites.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202710E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more frequent garbage or recycling pick-up",
+          "explanation": "There is a need for increased sanitation services throughout the district",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency supports this request, but funding is not available at this time.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more frequent garbage or recycling pick-up",
+          "explanation": "There is a need for increased sanitation services throughout the district",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency supports this request, but funding is not available at this time.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Provide more frequent garbage or recycling pick-up",
+          "explanation": "There is a need for increased sanitation services throughout the district",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202711E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other youth workforce development requests",
+          "explanation": "Fund youth employment during the school year. There is a high rate of unemployment among our youth population. Part-time jobs are needed for students during the winter and spring sessions while attending school.",
+          "response": "This request has already been completed. Explanation: DYCD offers several programs for school-year employment, including Work, Learn and Grow, Advance and Earn, and Learn and Earn.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other youth workforce development requests",
+          "explanation": "Fund youth employment during the school year. There is a high rate of unemployment among our youth population. Part-time jobs are needed for students during the winter and spring sessions while attending school.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DYCD offers several programs for school-year employment, including Work, Learn and Grow, Advance and Earn, and Learn and Earn.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "260",
+          "request": "Other youth workforce development requests",
+          "explanation": "Fund youth employment during the school year. There is a high rate of unemployment among our youth population. Part-time jobs are needed for students during the winter and spring sessions while attending school.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202712E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Hire additional uniformed officers",
+          "explanation": "Provide and assign more Police Officers to the 40th Police Precinct and to the Police Service Area 7 of the Housing Bureau as well as the Transit Police. Due to the proliferation of illegal gun possession and rise in shootings and homicides in our streets and Housing Authority Developments, there is a need for more police presence within the 10 sectors of the 40th Precinct. Additionally, there is a need for more officers to enforce truck traffic and double-parking.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: NYPD's total uniformed staffing levels depend on decisions made in the Preliminary and Executive Budget process. Allocation of uniformed personnel is scheduled by the agency only after graduation of police classes from the Academy.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Hire additional uniformed officers",
+          "explanation": "Provide and assign more Police Officers to the 40th Police Precinct and to the Police Service Area 7 of the Housing Bureau as well as the Transit Police. Due to the proliferation of illegal gun possession and rise in shootings and homicides in our streets and Housing Authority Developments, there is a need for more police presence within the 10 sectors of the 40th Precinct. Additionally, there is a need for more officers to enforce truck traffic and double-parking.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: NYPD's total uniformed staffing levels depend on decisions made in the Preliminary and Executive Budget process. Allocation of uniformed personnel is scheduled by the agency only after graduation of police classes from the Academy.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Hire additional uniformed officers",
+          "explanation": "Provide and assign more Police Officers to the 40th Police Precinct and to the Police Service Area 7 of the Housing Bureau as well as the Transit Police. Due to the proliferation of illegal gun possession and rise in shootings and homicides in our streets and Housing Authority Developments, there is a need for more police presence within the 10 sectors of the 40th Precinct. Additionally, there is a need for more officers to enforce truck traffic and double-parking.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "101202713E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "bronx-cb-01",
+      "board_binding": "bound",
+      "publisher_boro": "1",
+      "publisher_board": "01",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Extend library hours, expand library programs, and enhance library collections",
+          "explanation": "Increase Funding for New York Public Library Services in the District. In order to provide the opportunity for district children and youth to fully participate in the New York Public library's many services, funding for the Mott Haven and Woodstock branches needs to be increased to allow for all libraries to be open six days and at least forty-two hours a week. The New York Public Library and Community Board One request that the City restore funding to provide robust six day service including increased hours, diverse programming, strong collections and sufficient staff to support these functions. In these challenging economic times, the services provided through the Library are needed by New Yorkers more than ever. (Previous Tracking Codes: 101200801E)",
+          "response": "This project has already been funded, but the community board should reach out to the Agency with more detail regarding this request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Extend library hours, expand library programs, and enhance library collections",
+          "explanation": "Increase Funding for New York Public Library Services in the District. In order to provide the opportunity for district children and youth to fully participate in the New York Public library's many services, funding for the Mott Haven and Woodstock branches needs to be increased to allow for all libraries to be open six days and at least forty-two hours a week. The New York Public Library and Community Board One request that the City restore funding to provide robust six day service including increased hours, diverse programming, strong collections and sufficient staff to support these functions. In these challenging economic times, the services provided through the Library are needed by New Yorkers more than ever. (Previous Tracking Codes: 101200801E)",
+          "response": "This project has already been funded, but the community board should reach out to the Agency with more detail regarding this request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "037",
+          "request": "Extend library hours, expand library programs, and enhance library collections",
+          "explanation": "Increase Funding for New York Public Library Services in the District. In order to provide the opportunity for district children and youth to fully participate in the New York Public library's many services, funding for the Mott Haven and Woodstock branches needs to be increased to allow for all libraries to be open six days and at least forty-two hours a week. The New York Public Library and Community Board One request that the City restore funding to provide robust six day service including increased hours, diverse programming, strong collections and sufficient staff to support these functions. In these challenging economic times, the services provided through the Library are needed by New Yorkers more than ever. (Previous Tracking Codes: 101200801E)",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    }
+  ]
+}

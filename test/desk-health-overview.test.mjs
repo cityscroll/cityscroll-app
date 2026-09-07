@@ -132,21 +132,51 @@ test("A1 missing health input never yields zero exceptions or an all-clear", () 
   assert.doesNotMatch(html, /data-denominator="actionable-conditions">0 /);
 });
 
-test("A2 Checkbook 45-day tolerance never implies the daily acquisition ran recently", () => {
-  const graph = JSON.parse(generatedGraphFiles()[JSON_OUTPUT]);
-  const row = graph.operator_overview.rows.find((item) => item.source_id === "checkbook-contracts");
-  assert.ok(row, "checkbook-contracts is in the overview");
+test("A2 a 45-day serving tolerance never implies the daily acquisition ran recently", () => {
+  // Built from a fixture rather than from whichever source happens to be
+  // behind today: a serving tolerance and an acquisition cadence are separate
+  // clocks, and the overview must not let the wide one speak for the tight one.
+  const tolerant = contract({
+    id: "tolerant-fixture",
+    name: "Tolerant Fixture",
+    freshness_contract: { mode: "periodic", max_stale_days: 45, clock_basis: "checked_acquired", serving_max_age_days: 45 },
+  });
+  const acquiredLongAgo = observation("tolerant-fixture", {
+    health: {
+      status: "Healthy",
+      reason_codes: [],
+      clocks: {
+        publisher_updated: { at: null, state: "UNKNOWN", basis: null },
+        cityscroll_checked_acquired: { at: "2026-08-18T04:05:51.552Z", state: "KNOWN", basis: "acquired_at" },
+        cityscroll_serving: { at: "2026-08-18T04:05:51.552Z", state: "KNOWN", basis: "serving" },
+      },
+    },
+  });
+  const built = buildDataSourceGraph({
+    registry: {
+      contracts: [tolerant],
+      first_class_artifacts: [artifact({ source_contract_id: "tolerant-fixture" })],
+    },
+    healthObservations: { generated_at: AS_OF, observations: [acquiredLongAgo] },
+    inputs: [],
+  });
+  const row = built.operator_overview.rows.find((item) => item.source_id === "tolerant-fixture");
+  assert.ok(row, "the fixture source is in the overview");
   assert.equal(row.serving_max_age_days, 45);
   assert.equal(row.cadence_compliance, "overdue");
   assert.ok(["within_tolerance", "measured", "unknown"].includes(row.served_age));
   assert.ok(row.conditions.includes("cadence-noncompliant"));
   assert.ok(row.conditions.includes("unknown-publisher-timestamp"));
+
+  // The rendered surface says the same thing, over whatever the current
+  // populations are: no row turns a serving tolerance into a recency claim.
   const html = generatedGraphFiles()[HTML_OUTPUT];
-  const slice = html.slice(html.indexOf('data-overview-row="checkbook-contracts"'));
-  const rowHtml = slice.slice(0, slice.indexOf("</tr>"));
-  assert.match(rowHtml, /cadence overdue/);
-  assert.doesNotMatch(rowHtml, /ran recently/);
-  assert.ok(!rowHtml.includes("Healthy daily"), "serving tolerance is not a daily-acquisition claim");
+  for (const sourceId of ["checkbook-contracts", "checkbook-spending"]) {
+    const slice = html.slice(html.indexOf(`data-overview-row="${sourceId}"`));
+    const rowHtml = slice.slice(0, slice.indexOf("</tr>"));
+    assert.doesNotMatch(rowHtml, /ran recently/, `${sourceId} makes no recency claim`);
+    assert.ok(!rowHtml.includes("Healthy daily"), `${sourceId}: serving tolerance is not a daily-acquisition claim`);
+  }
 });
 
 test("A2 historical, manual, disabled, candidate, unknown publisher, missing monitoring, and failed acquisition stay distinct", () => {

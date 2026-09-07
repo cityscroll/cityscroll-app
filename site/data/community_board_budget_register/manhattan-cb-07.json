@@ -1,0 +1,2870 @@
+{
+  "schema": "cityscroll.community_board_budget_register_document.v1",
+  "method": "omb_register_full_tracking_code_within_cycle_v1",
+  "negative_rule": "A changed response text is a changed written answer and nothing else. It is not funding, a commitment, delivery, or completion, and no request is carried across fiscal cycles by a repeated priority number, a similar facility name, or matching request text.",
+  "board_id": "manhattan-cb-07",
+  "publications": {
+    "as_of": "2026-09-07",
+    "servable": [
+      "20260512",
+      "20260630"
+    ],
+    "diagnostic_only": [
+      "20270217"
+    ],
+    "latest": "20260630"
+  },
+  "request_count": 34,
+  "requests": [
+    {
+      "tracking_code": "307202701C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Provide funding for new public restrooms and to renovate existing restroom within parks and playgrounds in MCD7. Due to limited financing and the high cost of DPR funded restrooms, users of many parks and playgrounds in MCD7 are deprived of basic, clean, and safe working facilities. This lack of facilities discourages children, youth, and their caregivers and families from utilizing the parks. Creative models of restrooms, like mobile units, should be explored where they are more cost effective.",
+          "response": "Agency supports but cannot accommodate Explanation: The Mayor has announced an initiative to install modular public restrooms in various locations in the city. We will check to see whether any can be located in your district.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Provide funding for new public restrooms and to renovate existing restroom within parks and playgrounds in MCD7. Due to limited financing and the high cost of DPR funded restrooms, users of many parks and playgrounds in MCD7 are deprived of basic, clean, and safe working facilities. This lack of facilities discourages children, youth, and their caregivers and families from utilizing the parks. Creative models of restrooms, like mobile units, should be explored where they are more cost effective.",
+          "response": "Agency supports but cannot accommodate Explanation: The Mayor has announced an initiative to install modular public restrooms in various locations in the city. We will check to see whether any can be located in your district.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Provide funding for new public restrooms and to renovate existing restroom within parks and playgrounds in MCD7. Due to limited financing and the high cost of DPR funded restrooms, users of many parks and playgrounds in MCD7 are deprived of basic, clean, and safe working facilities. This lack of facilities discourages children, youth, and their caregivers and families from utilizing the parks. Creative models of restrooms, like mobile units, should be explored where they are more cost effective.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202701E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Expand street outreach",
+          "explanation": "Provide additional funding for the Manhattan Outreach Consortium (MOC), a multiagency effort established by Goddard Riverside, to provide outreach to those experiencing street homelessness. Goddard Riverside dispatches MOC teams to respond to 311 calls and Goddard's caseload remains high. It can take up to 200 interactions over months or years to develop relationships with those experiencing street homelessness and provide them with access to healthcare, counseling, nutrition, and shelter.",
+          "response": "Funding and/or headcount was recently added. OMB supports the agency's position as follows:",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Expand street outreach",
+          "explanation": "Provide additional funding for the Manhattan Outreach Consortium (MOC), a multiagency effort established by Goddard Riverside, to provide outreach to those experiencing street homelessness. Goddard Riverside dispatches MOC teams to respond to 311 calls and Goddard's caseload remains high. It can take up to 200 interactions over months or years to develop relationships with those experiencing street homelessness and provide them with access to healthcare, counseling, nutrition, and shelter.",
+          "response": "Funding and/or headcount was recently added. OMB supports the agency's position as follows:",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "071",
+          "request": "Expand street outreach",
+          "explanation": "Provide additional funding for the Manhattan Outreach Consortium (MOC), a multiagency effort established by Goddard Riverside, to provide outreach to those experiencing street homelessness. Goddard Riverside dispatches MOC teams to respond to 311 calls and Goddard's caseload remains high. It can take up to 200 interactions over months or years to develop relationships with those experiencing street homelessness and provide them with access to healthcare, counseling, nutrition, and shelter.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202702C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "New equipment for maintenance",
+          "explanation": "Repair or install lighting in Riverside Park as follows: 1. The park interior, between 115th Street and the 119th Street Tennis Courts, the lights need to be replaced as they have been dark for more than six months in a secluded wooded area. 2. There are missing light poles in the park interior at 104th, 115th, and 116th Streets that need to be replaced. 3. The only pole that lights the 102nd Street stairs to the Field House and athletic fields has been without power or even a luminaire for several years. These busy stairs are completely dark at night. 4. None of the lights in the highway underpasses at 92nd and 100th Streets are working, which are important tunnels connecting to the waterfront.",
+          "response": "Agency supports and can accommodate Explanation: The lights between 115th Street and the 119th Street tennis courts should be working. If not, we will talk to DOT about getting them repaired. We have been in touch with DOT about some of the other lights as well and will work with them to try to get them all repaired.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "New equipment for maintenance",
+          "explanation": "Repair or install lighting in Riverside Park as follows: 1. The park interior, between 115th Street and the 119th Street Tennis Courts, the lights need to be replaced as they have been dark for more than six months in a secluded wooded area. 2. There are missing light poles in the park interior at 104th, 115th, and 116th Streets that need to be replaced. 3. The only pole that lights the 102nd Street stairs to the Field House and athletic fields has been without power or even a luminaire for several years. These busy stairs are completely dark at night. 4. None of the lights in the highway underpasses at 92nd and 100th Streets are working, which are important tunnels connecting to the waterfront.",
+          "response": "Agency supports and can accommodate Explanation: The lights between 115th Street and the 119th Street tennis courts should be working. If not, we will talk to DOT about getting them repaired. We have been in touch with DOT about some of the other lights as well and will work with them to try to get them all repaired.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "New equipment for maintenance",
+          "explanation": "Repair or install lighting in Riverside Park as follows: 1. The park interior, between 115th Street and the 119th Street Tennis Courts, the lights need to be replaced as they have been dark for more than six months in a secluded wooded area. 2. There are missing light poles in the park interior at 104th, 115th, and 116th Streets that need to be replaced. 3. The only pole that lights the 102nd Street stairs to the Field House and athletic fields has been without power or even a luminaire for several years. These busy stairs are completely dark at night. 4. None of the lights in the highway underpasses at 92nd and 100th Streets are working, which are important tunnels connecting to the waterfront.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202702E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other senior center program requests",
+          "explanation": "Provide increased funding for congregate meals at all senior centers. Food insecurity is a major problem for seniors living on fixed incomes and congregate meals help ensure healthy outcomes. Food expenses have risen while funds for the meals have not kept up with the costs.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other senior center program requests",
+          "explanation": "Provide increased funding for congregate meals at all senior centers. Food insecurity is a major problem for seniors living on fixed incomes and congregate meals help ensure healthy outcomes. Food expenses have risen while funds for the meals have not kept up with the costs.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Other senior center program requests",
+          "explanation": "Provide increased funding for congregate meals at all senior centers. Food insecurity is a major problem for seniors living on fixed incomes and congregate meals help ensure healthy outcomes. Food expenses have risen while funds for the meals have not kept up with the costs.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202703C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve access to a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "While funds have been allocated for the repair of steps at 108th Street, the paths and sidewalk are badly deteriorated and have suffered from a lack of maintenance. The project needs to include improving drainage and repairing and rebuilding the retaining walls and steps in the area. The interior paths between 104th and 116th Streets are in greatest need of repair.",
+          "response": "This request is partially funded.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve access to a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "While funds have been allocated for the repair of steps at 108th Street, the paths and sidewalk are badly deteriorated and have suffered from a lack of maintenance. The project needs to include improving drainage and repairing and rebuilding the retaining walls and steps in the area. The interior paths between 104th and 116th Streets are in greatest need of repair.",
+          "response": "This request is partially funded.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Improve access to a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "While funds have been allocated for the repair of steps at 108th Street, the paths and sidewalk are badly deteriorated and have suffered from a lack of maintenance. The project needs to include improving drainage and repairing and rebuilding the retaining walls and steps in the area. The interior paths between 104th and 116th Streets are in greatest need of repair.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202703E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DFTA",
+          "explanation": "Provide increased funding for home-delivered meals for homebound seniors. There is a need to ensure that homebound seniors are aware of the program and their eligibility to receive delivered meals.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DFTA",
+          "explanation": "Provide increased funding for home-delivered meals for homebound seniors. There is a need to ensure that homebound seniors are aware of the program and their eligibility to receive delivered meals.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Other expense budget request for DFTA",
+          "explanation": "Provide increased funding for home-delivered meals for homebound seniors. There is a need to ensure that homebound seniors are aware of the program and their eligibility to receive delivered meals.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202704C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Upgrade or provide new Select Bus Service (SBS) routes",
+          "explanation": "Following the installation of the a bus lane along West 96th Street, the M96 bus route needs to upgraded to Select Service. The M96 route is long, slow, and unreliable - trips can take over 30 minutes and are slower than 8 mph leaving commuters to make difficult and time-consuming journeys. The corridor is not well-served by current transit options, has high passenger volume, and a significant potential for ridership improvement to maximize the impact of SBS.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: NYC DOT must consult with the MTA and study the corridor to enhance bus service, making it faster and more reliable. We encourage you to make this request to the MTA as well.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Upgrade or provide new Select Bus Service (SBS) routes",
+          "explanation": "Following the installation of the a bus lane along West 96th Street, the M96 bus route needs to upgraded to Select Service. The M96 route is long, slow, and unreliable - trips can take over 30 minutes and are slower than 8 mph leaving commuters to make difficult and time-consuming journeys. The corridor is not well-served by current transit options, has high passenger volume, and a significant potential for ridership improvement to maximize the impact of SBS.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: NYC DOT must consult with the MTA and study the corridor to enhance bus service, making it faster and more reliable. We encourage you to make this request to the MTA as well.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Upgrade or provide new Select Bus Service (SBS) routes",
+          "explanation": "Following the installation of the a bus lane along West 96th Street, the M96 bus route needs to upgraded to Select Service. The M96 route is long, slow, and unreliable - trips can take over 30 minutes and are slower than 8 mph leaving commuters to make difficult and time-consuming journeys. The corridor is not well-served by current transit options, has high passenger volume, and a significant potential for ridership improvement to maximize the impact of SBS.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202704E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance educational and recreational programs",
+          "explanation": "Provide funding for intergenerational programs that pair teens and young adults with seniors. These programs are beneficial to both age groups.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance educational and recreational programs",
+          "explanation": "Provide funding for intergenerational programs that pair teens and young adults with seniors. These programs are beneficial to both age groups.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Enhance educational and recreational programs",
+          "explanation": "Provide funding for intergenerational programs that pair teens and young adults with seniors. These programs are beneficial to both age groups.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202705C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "Consistent with MCB7's resolution dated September 6, 2022, repair and replace in-kind the red brick crossings on West 94th Street between Amsterdam and Central Park West, and expand traffic-calming treatments to other cross-streets, including West 108th Street, West 93rd Street, West 76th Street and West 60th Street.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: NYC DOT proposed removing the pavers and milling and paving 94th Street; however, residents oppose this plan. The agency can enhance safety in the area by adding asphalt. Additionally, the agency will collaborate with Community Board 7 to implement safety measures at other identified locations using the resources available in our toolkits.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "Consistent with MCB7's resolution dated September 6, 2022, repair and replace in-kind the red brick crossings on West 94th Street between Amsterdam and Central Park West, and expand traffic-calming treatments to other cross-streets, including West 108th Street, West 93rd Street, West 76th Street and West 60th Street.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: NYC DOT proposed removing the pavers and milling and paving 94th Street; however, residents oppose this plan. The agency can enhance safety in the area by adding asphalt. Additionally, the agency will collaborate with Community Board 7 to implement safety measures at other identified locations using the resources available in our toolkits.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "Consistent with MCB7's resolution dated September 6, 2022, repair and replace in-kind the red brick crossings on West 94th Street between Amsterdam and Central Park West, and expand traffic-calming treatments to other cross-streets, including West 108th Street, West 93rd Street, West 76th Street and West 60th Street.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202705E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other educational programs requests",
+          "explanation": "Consistent with MCB7's resolution dated December 5, 2023, expand funding streams to schools receiving new arrivals over the course of the school year, including via additional support for Project Open Arms and Promise NYC.",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other educational programs requests",
+          "explanation": "Consistent with MCB7's resolution dated December 5, 2023, expand funding streams to schools receiving new arrivals over the course of the school year, including via additional support for Project Open Arms and Promise NYC.",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Other educational programs requests",
+          "explanation": "Consistent with MCB7's resolution dated December 5, 2023, expand funding streams to schools receiving new arrivals over the course of the school year, including via additional support for Project Open Arms and Promise NYC.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202706C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more housing for extremely low and low income households",
+          "explanation": "Consistent with MCB7's resolution dated June 18, 2024, support the Homes Now initiative to fund the HPD's recently relaunched Neighborhood Pillars program and the Open Doors program. A particular focus is needed on buildings in Manhattan Valley and on underdeveloped sites that can be converted into permanent on-site affordable housing.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: HPD will continue to fund affordable home ownership opportunities through an expanding HomeFirst Initiative and the OpenDoor project pipeline. Please do not hesitate to continue identifying buildings that would benefit from Neighborhood Pillars.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more housing for extremely low and low income households",
+          "explanation": "Consistent with MCB7's resolution dated June 18, 2024, support the Homes Now initiative to fund the HPD's recently relaunched Neighborhood Pillars program and the Open Doors program. A particular focus is needed on buildings in Manhattan Valley and on underdeveloped sites that can be converted into permanent on-site affordable housing.",
+          "response": "The Executive Budget includes a city-wide allocation for this work. Specific locations are determined by the Agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "806",
+          "request": "Provide more housing for extremely low and low income households",
+          "explanation": "Consistent with MCB7's resolution dated June 18, 2024, support the Homes Now initiative to fund the HPD's recently relaunched Neighborhood Pillars program and the Open Doors program. A particular focus is needed on buildings in Manhattan Valley and on underdeveloped sites that can be converted into permanent on-site affordable housing.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202706E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Assign more non-teaching staff, e.g., to provide social, health and other services",
+          "explanation": "Consistent with MCB7's resolution dated December 5, 2023, dedicate funding for additional social-emotional support for students including but not limited to school psychologists, nurses, and social workers. Nurses are needed in MS54 and PS859. A full time social worker is needed in MS421 and PS859. Additional social workers are needed in PS75, PS84, PS87, PS165, PS165, PS166, PS191, MS2475, MS256, MS291, PS334, MS452, PS859, and MS862.",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Assign more non-teaching staff, e.g., to provide social, health and other services",
+          "explanation": "Consistent with MCB7's resolution dated December 5, 2023, dedicate funding for additional social-emotional support for students including but not limited to school psychologists, nurses, and social workers. Nurses are needed in MS54 and PS859. A full time social worker is needed in MS421 and PS859. Additional social workers are needed in PS75, PS84, PS87, PS165, PS165, PS166, PS191, MS2475, MS256, MS291, PS334, MS452, PS859, and MS862.",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Assign more non-teaching staff, e.g., to provide social, health and other services",
+          "explanation": "Consistent with MCB7's resolution dated December 5, 2023, dedicate funding for additional social-emotional support for students including but not limited to school psychologists, nurses, and social workers. Nurses are needed in MS54 and PS859. A full time social worker is needed in MS421 and PS859. Additional social workers are needed in PS75, PS84, PS87, PS165, PS165, PS166, PS191, MS2475, MS256, MS291, PS334, MS452, PS859, and MS862.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202707C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more housing for extremely low and low income households",
+          "explanation": "SROs threatened with conversion need to be purchased by the City and acquired by non-profit housing providers such as Project Find. Where possible, SROs should be converted into supportive housing to serve the most vulnerable and help reduce the homeless population.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: HPD actively seeks to invest in existing affordable housing to extend its lifespan through renovation and legal protection.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more housing for extremely low and low income households",
+          "explanation": "SROs threatened with conversion need to be purchased by the City and acquired by non-profit housing providers such as Project Find. Where possible, SROs should be converted into supportive housing to serve the most vulnerable and help reduce the homeless population.",
+          "response": "The Executive Budget includes a city-wide allocation for this work. Specific locations are determined by the Agency.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "806",
+          "request": "Provide more housing for extremely low and low income households",
+          "explanation": "SROs threatened with conversion need to be purchased by the City and acquired by non-profit housing providers such as Project Find. Where possible, SROs should be converted into supportive housing to serve the most vulnerable and help reduce the homeless population.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202707E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other educational programs requests",
+          "explanation": "Provide funding to support the expansion of CSD3 language access programs, including dual language schools and language enrichment programs. These programs include U3K, dual language schools and programs, language enrichment programs, and support for English language learners.",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other educational programs requests",
+          "explanation": "Provide funding to support the expansion of CSD3 language access programs, including dual language schools and language enrichment programs. These programs include U3K, dual language schools and programs, language enrichment programs, and support for English language learners.",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Other educational programs requests",
+          "explanation": "Provide funding to support the expansion of CSD3 language access programs, including dual language schools and language enrichment programs. These programs include U3K, dual language schools and programs, language enrichment programs, and support for English language learners.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202708C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Housing Authority",
+            "agency_id": "housing-authority",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade public housing developments",
+          "explanation": "Preserve NYCHA public housing developments as a source of needed affordable housing in MCD7. Implement vertical police patrols and improved cameras and surveillance to improve public safety. Repairs to facilities must be timely made to front doors, elevators, sanitation, heating, electrical, and security systems.",
+          "response": "Agency supports but cannot accommodate Explanation: We would be happy to work with NYPD and elected officials to secure these vital safety and capital needs. The question regarding Increasing patrols should go to NYPD, as NYCHA does not control NYPD's patrol schedule.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Housing Authority",
+            "agency_id": "housing-authority",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade public housing developments",
+          "explanation": "Preserve NYCHA public housing developments as a source of needed affordable housing in MCD7. Implement vertical police patrols and improved cameras and surveillance to improve public safety. Repairs to facilities must be timely made to front doors, elevators, sanitation, heating, electrical, and security systems.",
+          "response": "Agency supports but cannot accommodate Explanation: We would be happy to work with NYPD and elected officials to secure these vital safety and capital needs. The question regarding Increasing patrols should go to NYPD, as NYCHA does not control NYPD's patrol schedule.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Housing Authority",
+            "agency_id": "housing-authority",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "996",
+          "request": "Renovate or upgrade public housing developments",
+          "explanation": "Preserve NYCHA public housing developments as a source of needed affordable housing in MCD7. Implement vertical police patrols and improved cameras and surveillance to improve public safety. Repairs to facilities must be timely made to front doors, elevators, sanitation, heating, electrical, and security systems.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202708E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Assign more non-teaching staff, e.g., to provide social, health and other services",
+          "explanation": "Secure funding to support the programs and specialists that provide services for students with special needs, including in school and after school programs, as well as funds to hire and train staff at UPK and Pre-K programs run by Community Based Organizations to enable staff to make timely referrals for children with special needs.",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Assign more non-teaching staff, e.g., to provide social, health and other services",
+          "explanation": "Secure funding to support the programs and specialists that provide services for students with special needs, including in school and after school programs, as well as funds to hire and train staff at UPK and Pre-K programs run by Community Based Organizations to enable staff to make timely referrals for children with special needs.",
+          "response": "Please contact the Agency directly and promptly for more information (917-455-0513)",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Assign more non-teaching staff, e.g., to provide social, health and other services",
+          "explanation": "Secure funding to support the programs and specialists that provide services for students with special needs, including in school and after school programs, as well as funds to hire and train staff at UPK and Pre-K programs run by Community Based Organizations to enable staff to make timely referrals for children with special needs.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202709C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other transit service requests",
+          "explanation": "MCD7 has the third-highest number of subway riders in the New York City; but service cuts have left fewer trains running and cars, therefore, overcrowded. Restoring more frequent service on all lines - especially the C - will make commuters feel safer, more comfortable, and commutes more reliable.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other transit service requests",
+          "explanation": "MCD7 has the third-highest number of subway riders in the New York City; but service cuts have left fewer trains running and cars, therefore, overcrowded. Restoring more frequent service on all lines - especially the C - will make commuters feel safer, more comfortable, and commutes more reliable.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "998",
+          "request": "Other transit service requests",
+          "explanation": "MCD7 has the third-highest number of subway riders in the New York City; but service cuts have left fewer trains running and cars, therefore, overcrowded. Restoring more frequent service on all lines - especially the C - will make commuters feel safer, more comfortable, and commutes more reliable.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202709E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded health care facility",
+          "explanation": "Provide funding sufficient to allow Ryan Health to operate a full-service school-based health center. Ryan Health previously operated four four school-based health centers that were closed due to budget deficits. School-based health centers help students stay healthy so they can stay in school and learn.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: The health and safety of children in NYC is a top priority. We would invite this organization to review DOHMH request for proposals for contracting opportunities",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded health care facility",
+          "explanation": "Provide funding sufficient to allow Ryan Health to operate a full-service school-based health center. Ryan Health previously operated four four school-based health centers that were closed due to budget deficits. School-based health centers help students stay healthy so they can stay in school and learn.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: The health and safety of children in NYC is a top priority. We would invite this organization to review DOHMH request for proposals for contracting opportunities",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Provide a new or expanded health care facility",
+          "explanation": "Provide funding sufficient to allow Ryan Health to operate a full-service school-based health center. Ryan Health previously operated four four school-based health centers that were closed due to budget deficits. School-based health centers help students stay healthy so they can stay in school and learn.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202710C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate interior building component",
+          "explanation": "Provide air conditioners for all rooms in school in the Joan of Arc Complex (PS 333, MS 256, and MS 258). Children and faculty suffer during the hot days. As climate change accelerates, it is imperative that the City ensure that children have basic amenities that allow them to concentrate on their education.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: School responsibility to fund window AC replacements.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "154 WEST 93 STREET, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate interior building component",
+          "explanation": "Provide air conditioners for all rooms in school in the Joan of Arc Complex (PS 333, MS 256, and MS 258). Children and faculty suffer during the hot days. As climate change accelerates, it is imperative that the City ensure that children have basic amenities that allow them to concentrate on their education.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: School responsibility to fund window AC replacements.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "154 WEST 93 STREET, New York, NY, USA",
+            "postcode": "11209",
+            "latitude": "40.619464",
+            "longitude": "-74.036558",
+            "bin": "3155177",
+            "bbl": "3061050028",
+            "council_district": "47",
+            "census_tract": "5202",
+            "nta": "BK1001"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Renovate interior building component",
+          "explanation": "Provide air conditioners for all rooms in school in the Joan of Arc Complex (PS 333, MS 256, and MS 258). Children and faculty suffer during the hot days. As climate change accelerates, it is imperative that the City ensure that children have basic amenities that allow them to concentrate on their education.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "154 WEST 93 STREET, New York, NY, USA",
+            "postcode": "11209",
+            "latitude": "40.619464",
+            "longitude": "-74.036558",
+            "bin": "3155177",
+            "bbl": "3061050028",
+            "council_district": "47",
+            "census_tract": "5202",
+            "nta": "BK1001"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202710E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Replace or upgrade medical/clinical equipment",
+          "explanation": "Consistent with MCB7's resolution dated March 4, 2025, provide funding to NYC Health & Hospitals/Bellevue to purchase three new CT scanners and a new single-plane interventional radiology machine. The hospital's existing equipment is nearing the end of its useful life and is often out of service, causing treatment delays and compromising patient care.",
+          "response": "The request does not seem to be applicable to the Responsible Agency. OMB cannot make a determination at this time.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "426 FIRST AVENUE, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Replace or upgrade medical/clinical equipment",
+          "explanation": "Consistent with MCB7's resolution dated March 4, 2025, provide funding to NYC Health & Hospitals/Bellevue to purchase three new CT scanners and a new single-plane interventional radiology machine. The hospital's existing equipment is nearing the end of its useful life and is often out of service, causing treatment delays and compromising patient care.",
+          "response": "The request does not seem to be applicable to the Responsible Agency. OMB cannot make a determination at this time.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "426 FIRST AVENUE, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Replace or upgrade medical/clinical equipment",
+          "explanation": "Consistent with MCB7's resolution dated March 4, 2025, provide funding to NYC Health & Hospitals/Bellevue to purchase three new CT scanners and a new single-plane interventional radiology machine. The hospital's existing equipment is nearing the end of its useful life and is often out of service, causing treatment delays and compromising patient care.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "426 FIRST AVENUE, New York, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202711E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide better park maintenance",
+          "explanation": "Restore and baseline funding for essential and basic parks workers - both permanent and seasonal. Apart from coverage in MCD7's two world class large parks (Central Park and Riverside Park), these personnel are needed in all other playgrounds as well. DPR's full time workforce are needed for maintenance and cleanliness (City Park Workers, Associate Park Service Workers and Gardeners). PEP officers are needed to improve safety and address graffiti, other vandalism, littering, skateboarding, electric bikes on paths, homelessness, alcohol, dogs off-leash, smoking, and other quality of life issues. Seasonal workers provide additional services to maintain the parks during peak usage months. Funding cuts have eliminated too many staff in recent years.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide better park maintenance",
+          "explanation": "Restore and baseline funding for essential and basic parks workers - both permanent and seasonal. Apart from coverage in MCD7's two world class large parks (Central Park and Riverside Park), these personnel are needed in all other playgrounds as well. DPR's full time workforce are needed for maintenance and cleanliness (City Park Workers, Associate Park Service Workers and Gardeners). PEP officers are needed to improve safety and address graffiti, other vandalism, littering, skateboarding, electric bikes on paths, homelessness, alcohol, dogs off-leash, smoking, and other quality of life issues. Seasonal workers provide additional services to maintain the parks during peak usage months. Funding cuts have eliminated too many staff in recent years.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Provide better park maintenance",
+          "explanation": "Restore and baseline funding for essential and basic parks workers - both permanent and seasonal. Apart from coverage in MCD7's two world class large parks (Central Park and Riverside Park), these personnel are needed in all other playgrounds as well. DPR's full time workforce are needed for maintenance and cleanliness (City Park Workers, Associate Park Service Workers and Gardeners). PEP officers are needed to improve safety and address graffiti, other vandalism, littering, skateboarding, electric bikes on paths, homelessness, alcohol, dogs off-leash, smoking, and other quality of life issues. Seasonal workers provide additional services to maintain the parks during peak usage months. Funding cuts have eliminated too many staff in recent years.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202712E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Forestry staff are particularly needed in Riverside Park as trees age and senesce, resulting in a spike in large fallen limbs and dangerous conditions. While the Riverside Park Conservancy is doing its part training staff in proper chainsaw operations so that debris may be cleared in many instances, this is no substitute for removing hazardous limbs that require forestry trucks and heavy equipment to remove.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Forestry staff are particularly needed in Riverside Park as trees age and senesce, resulting in a spike in large fallen limbs and dangerous conditions. While the Riverside Park Conservancy is doing its part training staff in proper chainsaw operations so that debris may be cleared in many instances, this is no substitute for removing hazardous limbs that require forestry trucks and heavy equipment to remove.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Forestry staff are particularly needed in Riverside Park as trees age and senesce, resulting in a spike in large fallen limbs and dangerous conditions. While the Riverside Park Conservancy is doing its part training staff in proper chainsaw operations so that debris may be cleared in many instances, this is no substitute for removing hazardous limbs that require forestry trucks and heavy equipment to remove.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202713E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more on-street trash cans and recycling containers",
+          "explanation": "The installation of additional Empire Bins. solar trash compactors, trash cans, and sealed garbage collectors in MCD7 is necessary. Maintenance and repair of several of these compactors is urgently needed, especially within Riverside Park. MCB7 urges the City to conduct an audit of the solar trash compactors within MCD7 and to assess the maintenance contract with the manufacturer to make sure they are serviced and in good working order.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more on-street trash cans and recycling containers",
+          "explanation": "The installation of additional Empire Bins. solar trash compactors, trash cans, and sealed garbage collectors in MCD7 is necessary. Maintenance and repair of several of these compactors is urgently needed, especially within Riverside Park. MCB7 urges the City to conduct an audit of the solar trash compactors within MCD7 and to assess the maintenance contract with the manufacturer to make sure they are serviced and in good working order.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Provide more on-street trash cans and recycling containers",
+          "explanation": "The installation of additional Empire Bins. solar trash compactors, trash cans, and sealed garbage collectors in MCD7 is necessary. Maintenance and repair of several of these compactors is urgently needed, especially within Riverside Park. MCB7 urges the City to conduct an audit of the solar trash compactors within MCD7 and to assess the maintenance contract with the manufacturer to make sure they are serviced and in good working order.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202714E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DSNY",
+          "explanation": "Additional funding is needed for rat mitigation efforts, including expanding the implementation of rat contraceptives.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency supports this request, but funding is not available at this time.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DSNY",
+          "explanation": "Additional funding is needed for rat mitigation efforts, including expanding the implementation of rat contraceptives.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Other expense budget request for DSNY",
+          "explanation": "Additional funding is needed for rat mitigation efforts, including expanding the implementation of rat contraceptives.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202715E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more frequent garbage or recycling pick-up",
+          "explanation": "More frequent garbage pick up and recycling is needed in MCD7, particularly in our parks and in high volume areas. The accumulation of garbage compounds the issues with the rat population being experienced throughout MCD7.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency supports this request, but funding is not available at this time.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more frequent garbage or recycling pick-up",
+          "explanation": "More frequent garbage pick up and recycling is needed in MCD7, particularly in our parks and in high volume areas. The accumulation of garbage compounds the issues with the rat population being experienced throughout MCD7.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency supports this request, but funding is not available at this time.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Provide more frequent garbage or recycling pick-up",
+          "explanation": "More frequent garbage pick up and recycling is needed in MCD7, particularly in our parks and in high volume areas. The accumulation of garbage compounds the issues with the rat population being experienced throughout MCD7.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202716E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide new bike lanes",
+          "explanation": "Consistent with MCB7's resolutions dated September 1, 2020, January 5, 2021, and April 4, 2023, install crosstown protected bike lanes approximately every 10 blocks on major thoroughfares such as 72nd Street, including safe and legal bicycle routes across Central Park. MCB7 has also requested that DOT study the feasibility of allowing cyclists to travel westbound on W. 100th Street, which many now do illegally out of necessity.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: NYC DOT plans to attend the Community Board 7 Transportation and Traffic Committee meeting in early 2026. The agency will present a proposal for a street redesign that includes a protected bike lane on 72nd Street, extending from Riverside Drive to York Avenue. Additionally, the agency will assess the feasibility of allowing cyclists to travel westbound on West 100th Street.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide new bike lanes",
+          "explanation": "Consistent with MCB7's resolutions dated September 1, 2020, January 5, 2021, and April 4, 2023, install crosstown protected bike lanes approximately every 10 blocks on major thoroughfares such as 72nd Street, including safe and legal bicycle routes across Central Park. MCB7 has also requested that DOT study the feasibility of allowing cyclists to travel westbound on W. 100th Street, which many now do illegally out of necessity.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: NYC DOT plans to attend the Community Board 7 Transportation and Traffic Committee meeting in early 2026. The agency will present a proposal for a street redesign that includes a protected bike lane on 72nd Street, extending from Riverside Drive to York Avenue. Additionally, the agency will assess the feasibility of allowing cyclists to travel westbound on West 100th Street.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Provide new bike lanes",
+          "explanation": "Consistent with MCB7's resolutions dated September 1, 2020, January 5, 2021, and April 4, 2023, install crosstown protected bike lanes approximately every 10 blocks on major thoroughfares such as 72nd Street, including safe and legal bicycle routes across Central Park. MCB7 has also requested that DOT study the feasibility of allowing cyclists to travel westbound on W. 100th Street, which many now do illegally out of necessity.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202717E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other traffic improvement requests",
+          "explanation": "Consistent with MCB7's resolution dated March 5, 2024, implement daylighting on all intersections in MCD7 where safe and feasible, including at the multiple sites identified by MCB7. MCB7 has called upon DOT to use planters, boulders, and solid curb extensions to prevent faster turns and the unauthorized use of reserved spaces.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: NYC DOT can evaluate specific locations proposed by the Board.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other traffic improvement requests",
+          "explanation": "Consistent with MCB7's resolution dated March 5, 2024, implement daylighting on all intersections in MCD7 where safe and feasible, including at the multiple sites identified by MCB7. MCB7 has called upon DOT to use planters, boulders, and solid curb extensions to prevent faster turns and the unauthorized use of reserved spaces.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: NYC DOT can evaluate specific locations proposed by the Board.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Other traffic improvement requests",
+          "explanation": "Consistent with MCB7's resolution dated March 5, 2024, implement daylighting on all intersections in MCD7 where safe and feasible, including at the multiple sites identified by MCB7. MCB7 has called upon DOT to use planters, boulders, and solid curb extensions to prevent faster turns and the unauthorized use of reserved spaces.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202718E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DOT",
+          "explanation": "Provide funding for secure on-street bike parking as called for on Page 9 of DOT's Curb Management Action Plan. These curbside enclosures provide a safe alternative to corrals or other bike storage, particularly for residents in walk-ups who otherwise carry bikes indoors/upstairs to avoid theft. Each secure unit can typically fit up to six bicycles where a single car might otherwise park, making this a more efficient and equitable use of curb space.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: The NYC Department of Transportation (DOT) recently announced plans for secure bike parking at 500 locations throughout the city. The agency has selected Tranzito as the top vendor to install and operate a citywide network of secure bike parking structures. A draft contract is currently being developed, and NYC DOT and Tranzito will soon begin negotiations to source and install the necessary bike parking infrastructure. This selection follows a request for proposals (RFP) issued in 2024 and is expected to result in a five-year contract for operation. NYC DOT will prioritize locations and storage designs to: Improve bike parking near major transit hubs Provide options to accommodate e-bikes and cargo bikes Offer long-term storage in residential areas for New Yorkers without space for in-home storage. Potentially incorporate e-bike charging in storage facilities.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DOT",
+          "explanation": "Provide funding for secure on-street bike parking as called for on Page 9 of DOT's Curb Management Action Plan. These curbside enclosures provide a safe alternative to corrals or other bike storage, particularly for residents in walk-ups who otherwise carry bikes indoors/upstairs to avoid theft. Each secure unit can typically fit up to six bicycles where a single car might otherwise park, making this a more efficient and equitable use of curb space.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: The NYC Department of Transportation (DOT) recently announced plans for secure bike parking at 500 locations throughout the city. The agency has selected Tranzito as the top vendor to install and operate a citywide network of secure bike parking structures. A draft contract is currently being developed, and NYC DOT and Tranzito will soon begin negotiations to source and install the necessary bike parking infrastructure. This selection follows a request for proposals (RFP) issued in 2024 and is expected to result in a five-year contract for operation. NYC DOT will prioritize locations and storage designs to: Improve bike parking near major transit hubs Provide options to accommodate e-bikes and cargo bikes Offer long-term storage in residential areas for New Yorkers without space for in-home storage. Potentially incorporate e-bike charging in storage facilities.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Other expense budget request for DOT",
+          "explanation": "Provide funding for secure on-street bike parking as called for on Page 9 of DOT's Curb Management Action Plan. These curbside enclosures provide a safe alternative to corrals or other bike storage, particularly for residents in walk-ups who otherwise carry bikes indoors/upstairs to avoid theft. Each secure unit can typically fit up to six bicycles where a single car might otherwise park, making this a more efficient and equitable use of curb space.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202719E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide new traffic or pedestrian signals",
+          "explanation": "Consistent with MCB7's resolution dated March 2, 2021, install split phase signals where practicable for reasons of safety. MCB7 has consistently asked DOT to identify and address the most dangerous left-turn intersections in MCD7, those where left-turns are allowed and left-turning drivers face oncoming traffic, which present a clear danger to pedestrians.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: NYC DOT Signals Division is evaluating this request. The request received from CB 7 leadership is to examine the feasibility of a left turn signal at the following intersections: West 86th Street and Amsterdam Ave – Feasibility study of a left turn signal in the eastbound direction on West 86th Street onto northbound Amsterdam Avenue. West 96th Street and Amsterdam Avenue - Feasibility study of a left turn signal in the eastbound direction on West 96th Street onto northbound Amsterdam Avenue. West 96th Street and West End Avenue - Feasibility study of a flashing beacon signal for left turn movement onto West End Avenue. West 106th Street and Amsterdam Avenue - Feasibility study of a left turn signal in the eastbound direction on West 106th Street onto northbound Amsterdam Avenue.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide new traffic or pedestrian signals",
+          "explanation": "Consistent with MCB7's resolution dated March 2, 2021, install split phase signals where practicable for reasons of safety. MCB7 has consistently asked DOT to identify and address the most dangerous left-turn intersections in MCD7, those where left-turns are allowed and left-turning drivers face oncoming traffic, which present a clear danger to pedestrians.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: NYC DOT Signals Division is evaluating this request. The request received from CB 7 leadership is to examine the feasibility of a left turn signal at the following intersections: West 86th Street and Amsterdam Ave – Feasibility study of a left turn signal in the eastbound direction on West 86th Street onto northbound Amsterdam Avenue. West 96th Street and Amsterdam Avenue - Feasibility study of a left turn signal in the eastbound direction on West 96th Street onto northbound Amsterdam Avenue. West 96th Street and West End Avenue - Feasibility study of a flashing beacon signal for left turn movement onto West End Avenue. West 106th Street and Amsterdam Avenue - Feasibility study of a left turn signal in the eastbound direction on West 106th Street onto northbound Amsterdam Avenue.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Provide new traffic or pedestrian signals",
+          "explanation": "Consistent with MCB7's resolution dated March 2, 2021, install split phase signals where practicable for reasons of safety. MCB7 has consistently asked DOT to identify and address the most dangerous left-turn intersections in MCD7, those where left-turns are allowed and left-turning drivers face oncoming traffic, which present a clear danger to pedestrians.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202720E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve parking operations",
+          "explanation": "Consistent with MCB7's resolution dated October 2, 2018, implement loading zones on Central Park West and West End Avenue. Considering the sharp uptick in last mile delivery, loading zones ensure those deliveries can be made safely, legally and efficiently. Without loading zones, double parking is a persistent problem, causing traffic congestion, excessive honking, and bottlenecking. Loading zones help alleviate these conditions.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: NYC DOT has installed a total of 51 Neighborhood Loading Zones. The agency will continue to work with CB 7 to identify suitable locations. Please share any specific suggestions for our evaluation.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve parking operations",
+          "explanation": "Consistent with MCB7's resolution dated October 2, 2018, implement loading zones on Central Park West and West End Avenue. Considering the sharp uptick in last mile delivery, loading zones ensure those deliveries can be made safely, legally and efficiently. Without loading zones, double parking is a persistent problem, causing traffic congestion, excessive honking, and bottlenecking. Loading zones help alleviate these conditions.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: NYC DOT has installed a total of 51 Neighborhood Loading Zones. The agency will continue to work with CB 7 to identify suitable locations. Please share any specific suggestions for our evaluation.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Improve parking operations",
+          "explanation": "Consistent with MCB7's resolution dated October 2, 2018, implement loading zones on Central Park West and West End Avenue. Considering the sharp uptick in last mile delivery, loading zones ensure those deliveries can be made safely, legally and efficiently. Without loading zones, double parking is a persistent problem, causing traffic congestion, excessive honking, and bottlenecking. Loading zones help alleviate these conditions.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202721E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other youth workforce development requests",
+          "explanation": "Increase funding for ongoing and additional youth programming, particularly the Summer Youth Employment Program, and programs directed towards youth who reside in NYCHA public housing developments in MCD7. These programs are essential for youth in the community, especially in underserved areas.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: Each summer, NYC supports 100,000 youth jobs through the Summer Youth Employment Program. Applicants who reside in NYCHA developments receive priority for selection.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other youth workforce development requests",
+          "explanation": "Increase funding for ongoing and additional youth programming, particularly the Summer Youth Employment Program, and programs directed towards youth who reside in NYCHA public housing developments in MCD7. These programs are essential for youth in the community, especially in underserved areas.",
+          "response": "This request has already been completed. Explanation: Each summer, NYC supports 100,000 youth jobs through the Summer Youth Employment Program. Applicants who reside in NYCHA developments receive priority for selection.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "260",
+          "request": "Other youth workforce development requests",
+          "explanation": "Increase funding for ongoing and additional youth programming, particularly the Summer Youth Employment Program, and programs directed towards youth who reside in NYCHA public housing developments in MCD7. These programs are essential for youth in the community, especially in underserved areas.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202722E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DYCD",
+          "explanation": "Provide cost of living adjustments for all staff in programs funded by the Department of Youth and Community Development. There have been no cost of living adjustments in many years making it difficult to both hire and retain staff. These programs provide necessary services for children and youth, including day care, after school, and summer programs.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DYCD",
+          "explanation": "Provide cost of living adjustments for all staff in programs funded by the Department of Youth and Community Development. There have been no cost of living adjustments in many years making it difficult to both hire and retain staff. These programs provide necessary services for children and youth, including day care, after school, and summer programs.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "260",
+          "request": "Other expense budget request for DYCD",
+          "explanation": "Provide cost of living adjustments for all staff in programs funded by the Department of Youth and Community Development. There have been no cost of living adjustments in many years making it difficult to both hire and retain staff. These programs provide necessary services for children and youth, including day care, after school, and summer programs.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202723E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance food assistance, such as Food Stamps / SNAP",
+          "explanation": "Provide additional funding for programs that address food insecurity, including West Side Campaign Against Hunger (WSCAH), Meals on Wheels, DOROT, Get Food NYC, Lincoln Square Neighborhood Center, and other food pantries - including, $100,000 for WSCAH's food access programs at its 86th Street distribution hub and $100,000 for Roundtable: Allies for Food Access, to support capacity building and bulk purchasing. MCD7 includes several areas with substantial levels of unmet food needs, including Manhattan Valley, which has a food insecurity rate of almost 18%. Across MCD7, the Supply Gap reflects a four million pound difference between the emergency food supply and the emergency food demand. With stricter SNAP work requirements and benefit cuts taking effect over the next several years, this gap will only grow larger.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: HRA continues to maintain funding for Community Food Connection (CFC; formerly EFAP). Note that, in general, pantries are funded by a wide variety of funding sources. CFC is supplementary program. Pantries generally also get food or funding from: food banks, state programs, as well as CFC and City Council discretionary funding. Generally, pantries do not rely on just one funding stream, they have a variety of funding streams.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance food assistance, such as Food Stamps / SNAP",
+          "explanation": "Provide additional funding for programs that address food insecurity, including West Side Campaign Against Hunger (WSCAH), Meals on Wheels, DOROT, Get Food NYC, Lincoln Square Neighborhood Center, and other food pantries - including, $100,000 for WSCAH's food access programs at its 86th Street distribution hub and $100,000 for Roundtable: Allies for Food Access, to support capacity building and bulk purchasing. MCD7 includes several areas with substantial levels of unmet food needs, including Manhattan Valley, which has a food insecurity rate of almost 18%. Across MCD7, the Supply Gap reflects a four million pound difference between the emergency food supply and the emergency food demand. With stricter SNAP work requirements and benefit cuts taking effect over the next several years, this gap will only grow larger.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: HRA continues to maintain funding for Community Food Connection (CFC; formerly EFAP). Note that, in general, pantries are funded by a wide variety of funding sources. CFC is supplementary program. Pantries generally also get food or funding from: food banks, state programs, as well as CFC and City Council discretionary funding. Generally, pantries do not rely on just one funding stream, they have a variety of funding streams.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "096",
+          "request": "Provide, expand, or enhance food assistance, such as Food Stamps / SNAP",
+          "explanation": "Provide additional funding for programs that address food insecurity, including West Side Campaign Against Hunger (WSCAH), Meals on Wheels, DOROT, Get Food NYC, Lincoln Square Neighborhood Center, and other food pantries - including, $100,000 for WSCAH's food access programs at its 86th Street distribution hub and $100,000 for Roundtable: Allies for Food Access, to support capacity building and bulk purchasing. MCD7 includes several areas with substantial levels of unmet food needs, including Manhattan Valley, which has a food insecurity rate of almost 18%. Across MCD7, the Supply Gap reflects a four million pound difference between the emergency food supply and the emergency food demand. With stricter SNAP work requirements and benefit cuts taking effect over the next several years, this gap will only grow larger.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "307202724E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-07",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "07",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other community board facilities and staff requests",
+          "explanation": "Provide funds for MCB7 to retain land use or housing experts to assist in land use proposals and identifying ways in which more affordable housing can be built in MCD7.",
+          "response": "As of the FY 2027 Executive Budget, each Community Board's budget is being maintained.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other community board facilities and staff requests",
+          "explanation": "Provide funds for MCB7 to retain land use or housing experts to assist in land use proposals and identifying ways in which more affordable housing can be built in MCD7.",
+          "response": "As of the FY 2027 Adopted Budget, each Community Board's budget is being maintained.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "002",
+          "request": "Other community board facilities and staff requests",
+          "explanation": "Provide funds for MCB7 to retain land use or housing experts to assist in land use proposals and identifying ways in which more affordable housing can be built in MCD7.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    }
+  ]
+}

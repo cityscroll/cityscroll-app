@@ -1088,6 +1088,16 @@
       "delivery_tier": "edge-materialized"
     },
     {
+      "id": "omb-community-board-budget-requests",
+      "name": "Register of Community Board Budget Requests",
+      "source_contract_id": "omb-community-board-budget-requests",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/vn4m-mk4t",
+      "delivery_tier": "edge-materialized"
+    },
+    {
       "id": "passport-public-contracts",
       "name": "PASSPort Public registered contracts",
       "source_contract_id": "passport-public-contracts",
@@ -3766,7 +3776,7 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-09-07",
-    "source_contracts_fingerprint": "c2ae7ba852485dcac98b229a565c70437dc709f0573f07c7a8c524c0ea9ff87a",
+    "source_contracts_fingerprint": "033b4389b58e16bede22f963837a29864dedfb7ac79f98cc90fa0dd4b487199d",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 91,
     "class_changes": 0,

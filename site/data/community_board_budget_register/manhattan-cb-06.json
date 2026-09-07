@@ -1,0 +1,3177 @@
+{
+  "schema": "cityscroll.community_board_budget_register_document.v1",
+  "method": "omb_register_full_tracking_code_within_cycle_v1",
+  "negative_rule": "A changed response text is a changed written answer and nothing else. It is not funding, a commitment, delivery, or completion, and no request is carried across fiscal cycles by a repeated priority number, a similar facility name, or matching request text.",
+  "board_id": "manhattan-cb-06",
+  "publications": {
+    "as_of": "2026-09-07",
+    "servable": [
+      "20260512",
+      "20260630"
+    ],
+    "diagnostic_only": [
+      "20270217"
+    ],
+    "latest": "20260630"
+  },
+  "request_count": 36,
+  "requests": [
+    {
+      "tracking_code": "306202701C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade a senior center",
+          "explanation": "Manhattan Community District 6 has a significant senior population, with 18.2% of residents aged 65 or older. The need for community spaces has become increasingly critical, especially in light of the loneliness epidemic exacerbated by the COVID-19 pandemic. We propose the establishment of an intergenerational community center in our district to address these challenges. This new center would provide essential services and programming for seniors while fostering connections across age groups. We request that CD6 be included in the decision-making process for the location and facilities of this new center, and we encourage the exploration of partnerships with existing City-owned facilities such as colleges and schools to maximize resources and programming opportunities.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade a senior center",
+          "explanation": "Manhattan Community District 6 has a significant senior population, with 18.2% of residents aged 65 or older. The need for community spaces has become increasingly critical, especially in light of the loneliness epidemic exacerbated by the COVID-19 pandemic. We propose the establishment of an intergenerational community center in our district to address these challenges. This new center would provide essential services and programming for seniors while fostering connections across age groups. We request that CD6 be included in the decision-making process for the location and facilities of this new center, and we encourage the exploration of partnerships with existing City-owned facilities such as colleges and schools to maximize resources and programming opportunities.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Renovate or upgrade a senior center",
+          "explanation": "Manhattan Community District 6 has a significant senior population, with 18.2% of residents aged 65 or older. The need for community spaces has become increasingly critical, especially in light of the loneliness epidemic exacerbated by the COVID-19 pandemic. We propose the establishment of an intergenerational community center in our district to address these challenges. This new center would provide essential services and programming for seniors while fostering connections across age groups. We request that CD6 be included in the decision-making process for the location and facilities of this new center, and we encourage the exploration of partnerships with existing City-owned facilities such as colleges and schools to maximize resources and programming opportunities.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202701CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "Repair Fountains in Dag Hammarskjold Plaza. Most of the fountain equipment has been under water for more than a decade and is hopelessly corroded. This includes both plumbing and electrical wiring. The Friends of Dag Hammarskjold Plaza takes a custodial interest and will do what it can, but the Plaza should be a world-class park and outstanding neighborhood amenity worthy of funding by the city. We look forward to this work's completion.",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "DAG HAMMARSKJOLD PLAZA, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "Repair Fountains in Dag Hammarskjold Plaza. Most of the fountain equipment has been under water for more than a decade and is hopelessly corroded. This includes both plumbing and electrical wiring. The Friends of Dag Hammarskjold Plaza takes a custodial interest and will do what it can, but the Plaza should be a world-class park and outstanding neighborhood amenity worthy of funding by the city. We look forward to this work's completion.",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "DAG HAMMARSKJOLD PLAZA, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "Repair Fountains in Dag Hammarskjold Plaza. Most of the fountain equipment has been under water for more than a decade and is hopelessly corroded. This includes both plumbing and electrical wiring. The Friends of Dag Hammarskjold Plaza takes a custodial interest and will do what it can, but the Plaza should be a world-class park and outstanding neighborhood amenity worthy of funding by the city. We look forward to this work's completion.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "DAG HAMMARSKJOLD PLAZA, New York, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202701E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other request for services for the homeless",
+          "explanation": "CD6 requests expense funding to expand DHS homeless services that provide critical outreach, case management, and housing navigation support. This funding will allow service providers to connect unsheltered and at-risk individuals with shelter, supportive housing, mental health care, and employment resources. Strengthening these programs will help stabilize vulnerable populations, reduce street homelessness, and promote healthier, safer communities, all of which have increasingly become more acute issues in CD6.",
+          "response": "Funding and/or headcount was recently added. OMB supports the agency's position as follows:",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other request for services for the homeless",
+          "explanation": "CD6 requests expense funding to expand DHS homeless services that provide critical outreach, case management, and housing navigation support. This funding will allow service providers to connect unsheltered and at-risk individuals with shelter, supportive housing, mental health care, and employment resources. Strengthening these programs will help stabilize vulnerable populations, reduce street homelessness, and promote healthier, safer communities, all of which have increasingly become more acute issues in CD6.",
+          "response": "Funding and/or headcount was recently added. OMB supports the agency's position as follows:",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "071",
+          "request": "Other request for services for the homeless",
+          "explanation": "CD6 requests expense funding to expand DHS homeless services that provide critical outreach, case management, and housing navigation support. This funding will allow service providers to connect unsheltered and at-risk individuals with shelter, supportive housing, mental health care, and employment resources. Strengthening these programs will help stabilize vulnerable populations, reduce street homelessness, and promote healthier, safer communities, all of which have increasingly become more acute issues in CD6.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202702C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DCAS",
+          "explanation": "Manhattan Community Board 6 (CB6) currently leases office space under a 10-year agreement that's due to end in September 2028. However, this space cannot accommodate the Board's mandated monthly Full Board meetings under Section 2800(h) of the City Charter. Each month, CB6 convenes 11 public meetings, which require facilities for as many as 100 attendees, yet district venues are either unavailable, cost-prohibitive, or lack the necessary technology for hybrid and accessible participation. As a result, this agency struggles to fulfill its Charter-mandated role of hosting open, accessible meetings for the public. Ideally, CB6 requests a 5,000 sq. ft. office space with a 150-seat public meeting room. Providing a purpose-built civic space would strengthen government transparency, ensure compliance with the City Charter, and improve public participation in the democratic process. Such a space could also serve other agencies that also struggle to find meeting spaces. Recognizing that the request is a long-term solution, CB6 also requests immediate assistance from DCAS in optimizing our existing office space. For example, removing outdated heavy filing cabinets and unused storage units would free up urgently needed square footage and allow us to operate more effectively in the interim.",
+          "response": "Agency supports but cannot accommodate Explanation: 25-0599: DCAS does not have a conceptually approved Space Request for this. Follow up with OMB Task Force.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "211 EAST 43 STREET, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DCAS",
+          "explanation": "Manhattan Community Board 6 (CB6) currently leases office space under a 10-year agreement that's due to end in September 2028. However, this space cannot accommodate the Board's mandated monthly Full Board meetings under Section 2800(h) of the City Charter. Each month, CB6 convenes 11 public meetings, which require facilities for as many as 100 attendees, yet district venues are either unavailable, cost-prohibitive, or lack the necessary technology for hybrid and accessible participation. As a result, this agency struggles to fulfill its Charter-mandated role of hosting open, accessible meetings for the public. Ideally, CB6 requests a 5,000 sq. ft. office space with a 150-seat public meeting room. Providing a purpose-built civic space would strengthen government transparency, ensure compliance with the City Charter, and improve public participation in the democratic process. Such a space could also serve other agencies that also struggle to find meeting spaces. Recognizing that the request is a long-term solution, CB6 also requests immediate assistance from DCAS in optimizing our existing office space. For example, removing outdated heavy filing cabinets and unused storage units would free up urgently needed square footage and allow us to operate more effectively in the interim.",
+          "response": "Agency supports but cannot accommodate Explanation: 25-0599: DCAS does not have a conceptually approved Space Request for this. Follow up with OMB Task Force.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "211 EAST 43 STREET, New York, NY, USA",
+            "postcode": "11203",
+            "latitude": "40.650612",
+            "longitude": "-73.937049",
+            "council_district": "40",
+            "census_tract": "858",
+            "nta": "BK1703"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "856",
+          "request": "Other capital budget request for DCAS",
+          "explanation": "Manhattan Community Board 6 (CB6) currently leases office space under a 10-year agreement that's due to end in September 2028. However, this space cannot accommodate the Board's mandated monthly Full Board meetings under Section 2800(h) of the City Charter. Each month, CB6 convenes 11 public meetings, which require facilities for as many as 100 attendees, yet district venues are either unavailable, cost-prohibitive, or lack the necessary technology for hybrid and accessible participation. As a result, this agency struggles to fulfill its Charter-mandated role of hosting open, accessible meetings for the public. Ideally, CB6 requests a 5,000 sq. ft. office space with a 150-seat public meeting room. Providing a purpose-built civic space would strengthen government transparency, ensure compliance with the City Charter, and improve public participation in the democratic process. Such a space could also serve other agencies that also struggle to find meeting spaces. Recognizing that the request is a long-term solution, CB6 also requests immediate assistance from DCAS in optimizing our existing office space. For example, removing outdated heavy filing cabinets and unused storage units would free up urgently needed square footage and allow us to operate more effectively in the interim.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "211 EAST 43 STREET, New York, NY, USA",
+            "postcode": "11203",
+            "latitude": "40.650612",
+            "longitude": "-73.937049",
+            "council_district": "40",
+            "census_tract": "858",
+            "nta": "BK1703"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202702CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "CB6 requests repair of the underlying structure of the park which has deteriorated with visible sink holes developing. The project is listed as a capital project on the Parks Department Capital Project tracker, with a design completion date of December 2023. We ask that this project be started immediately.",
+          "response": "The agency requires additional information from the community board regarding this request",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "CB6 requests repair of the underlying structure of the park which has deteriorated with visible sink holes developing. The project is listed as a capital project on the Parks Department Capital Project tracker, with a design completion date of December 2023. We ask that this project be started immediately.",
+          "response": "The agency requires additional information from the community board regarding this request",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "CB6 requests repair of the underlying structure of the park which has deteriorated with visible sink holes developing. The project is listed as a capital project on the Parks Department Capital Project tracker, with a design completion date of December 2023. We ask that this project be started immediately.",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202702E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of City Planning",
+            "agency_id": "city-planning",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Study land use and zoning to better provide for future neighborhood needs like affordable housing and job growth",
+          "explanation": "A comprehensive study of coastal resiliency and flood risk is required between E 25th St. and E 42nd St. east of First Avenue. This area houses human services infrastructure critical to the health and safety of Manhattan residents, such as Bellevue and NYU Langone Hospitals, and the 30th Street Men's Intake Shelter. Even a temporary loss of these facilities would put lives at risk and create extensive hardship. There are also residential apartment buildings, schools, medical practice offices, pet shelters, and other services. The DCP Flood Hazard Mapper shows the study area is vulnerable to flooding to varying degrees. The study is urgently required to ensure this area can maintain operations during coastal storms and that CB6 residents do not suffer the loss of essential services.",
+          "response": "This request has already been completed. Explanation: This is a repeat request. DCP's Climate and Sustainability team, Manhattan Office, and DEP's Bureau of Coastal Resilience met with CB 6 in 2025 to explain the city's ongoing efforts to protect Manhattan and mitigate flood risk.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of City Planning",
+            "agency_id": "city-planning",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Study land use and zoning to better provide for future neighborhood needs like affordable housing and job growth",
+          "explanation": "A comprehensive study of coastal resiliency and flood risk is required between E 25th St. and E 42nd St. east of First Avenue. This area houses human services infrastructure critical to the health and safety of Manhattan residents, such as Bellevue and NYU Langone Hospitals, and the 30th Street Men's Intake Shelter. Even a temporary loss of these facilities would put lives at risk and create extensive hardship. There are also residential apartment buildings, schools, medical practice offices, pet shelters, and other services. The DCP Flood Hazard Mapper shows the study area is vulnerable to flooding to varying degrees. The study is urgently required to ensure this area can maintain operations during coastal storms and that CB6 residents do not suffer the loss of essential services.",
+          "response": "This request has already been completed. Explanation: This is a repeat request. DCP's Climate and Sustainability team, Manhattan Office, and DEP's Bureau of Coastal Resilience met with CB 6 in 2025 to explain the city's ongoing efforts to protect Manhattan and mitigate flood risk.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of City Planning",
+            "agency_id": "city-planning",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "030",
+          "request": "Study land use and zoning to better provide for future neighborhood needs like affordable housing and job growth",
+          "explanation": "A comprehensive study of coastal resiliency and flood risk is required between E 25th St. and E 42nd St. east of First Avenue. This area houses human services infrastructure critical to the health and safety of Manhattan residents, such as Bellevue and NYU Langone Hospitals, and the 30th Street Men's Intake Shelter. Even a temporary loss of these facilities would put lives at risk and create extensive hardship. There are also residential apartment buildings, schools, medical practice offices, pet shelters, and other services. The DCP Flood Hazard Mapper shows the study area is vulnerable to flooding to varying degrees. The study is urgently required to ensure this area can maintain operations during coastal storms and that CB6 residents do not suffer the loss of essential services.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202703C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Inspect water main on specific street segment and repair or replace as needed",
+          "explanation": "Lead is poisonous and can irreversibly affect every organ and system in the human body causing health problems for people of all ages. Before 1961, NYC policy was to first encourage, then require, building construction to use lead pipes so 27.4% of all buildings in CB6 continue to have lead service lines. Since the service lines are privately owned under NYC law, property owners should not bear the direct cost of replacing the remaining lead pipes. The Federal Lead and Copper Rule Improvements issued by the Environmental Protection Agency on October 8, 2024, require the removal of all lead service lines by December 31, 2037. The Infrastructure Investment and Jobs Act (IIJA) provide appropriations for the Drinking Water State Revolving Fund (DWSRF) program to finance lead service line identification and replacement projects. The cost of replacing lead pipes is significantly lower in the long run than the cost of healthcare from lead exposure over an individual's lifetime.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Inspect water main on specific street segment and repair or replace as needed",
+          "explanation": "Lead is poisonous and can irreversibly affect every organ and system in the human body causing health problems for people of all ages. Before 1961, NYC policy was to first encourage, then require, building construction to use lead pipes so 27.4% of all buildings in CB6 continue to have lead service lines. Since the service lines are privately owned under NYC law, property owners should not bear the direct cost of replacing the remaining lead pipes. The Federal Lead and Copper Rule Improvements issued by the Environmental Protection Agency on October 8, 2024, require the removal of all lead service lines by December 31, 2037. The Infrastructure Investment and Jobs Act (IIJA) provide appropriations for the Drinking Water State Revolving Fund (DWSRF) program to finance lead service line identification and replacement projects. The cost of replacing lead pipes is significantly lower in the long run than the cost of healthcare from lead exposure over an individual's lifetime.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "826",
+          "request": "Inspect water main on specific street segment and repair or replace as needed",
+          "explanation": "Lead is poisonous and can irreversibly affect every organ and system in the human body causing health problems for people of all ages. Before 1961, NYC policy was to first encourage, then require, building construction to use lead pipes so 27.4% of all buildings in CB6 continue to have lead service lines. Since the service lines are privately owned under NYC law, property owners should not bear the direct cost of replacing the remaining lead pipes. The Federal Lead and Copper Rule Improvements issued by the Environmental Protection Agency on October 8, 2024, require the removal of all lead service lines by December 31, 2037. The Infrastructure Investment and Jobs Act (IIJA) provide appropriations for the Drinking Water State Revolving Fund (DWSRF) program to finance lead service line identification and replacement projects. The cost of replacing lead pipes is significantly lower in the long run than the cost of healthcare from lead exposure over an individual's lifetime.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202703CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "We have been alerted that elevators at Constance Baker Motley Recreation Center need to be renovated and that locker rooms are in need of repair and updating. We are supportive of our recreation centers and among the repairs and renovations we would like to see any improvements that might allow faster re-opening of all or part of the facility if there is a future pandemic or required shut down.",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "348 EAST 54 STREET, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "We have been alerted that elevators at Constance Baker Motley Recreation Center need to be renovated and that locker rooms are in need of repair and updating. We are supportive of our recreation centers and among the repairs and renovations we would like to see any improvements that might allow faster re-opening of all or part of the facility if there is a future pandemic or required shut down.",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "348 EAST 54 STREET, New York, NY, USA",
+            "postcode": "11203",
+            "latitude": "40.649988",
+            "longitude": "-73.926296",
+            "bin": "3103903",
+            "bbl": "3047250009",
+            "council_district": "45",
+            "census_tract": "862",
+            "nta": "BK1703"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "We have been alerted that elevators at Constance Baker Motley Recreation Center need to be renovated and that locker rooms are in need of repair and updating. We are supportive of our recreation centers and among the repairs and renovations we would like to see any improvements that might allow faster re-opening of all or part of the facility if there is a future pandemic or required shut down.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "348 EAST 54 STREET, New York, NY, USA",
+            "postcode": "11203",
+            "latitude": "40.649988",
+            "longitude": "-73.926296",
+            "bin": "3103903",
+            "bbl": "3047250009",
+            "council_district": "45",
+            "census_tract": "862",
+            "nta": "BK1703"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202703E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance park safety through more security staff (police or parks enforcement)",
+          "explanation": "Park Enforcement Patrol (PEP) officer presence reduces illegal or inappropriate behavior and increases the opportunity for peaceful and safe enjoyment of the parks by both children and adults. CB6 would like more frequent patrols in our district. Current levels of roving enforcement are not sufficient to address quality of life issues in our parks which appear to have ramped up during the pandemic; more fixed patrols are needed. In this vein, we support funding of 1 additional sergeant and 8 additional PEP officers for Manhattan South. If additional officers are not possible at this time, we urge that the current level of staffing continue and that the Department of Parks consider patrol routes to address changing needs.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Enhance park safety through more security staff (police or parks enforcement)",
+          "explanation": "Park Enforcement Patrol (PEP) officer presence reduces illegal or inappropriate behavior and increases the opportunity for peaceful and safe enjoyment of the parks by both children and adults. CB6 would like more frequent patrols in our district. Current levels of roving enforcement are not sufficient to address quality of life issues in our parks which appear to have ramped up during the pandemic; more fixed patrols are needed. In this vein, we support funding of 1 additional sergeant and 8 additional PEP officers for Manhattan South. If additional officers are not possible at this time, we urge that the current level of staffing continue and that the Department of Parks consider patrol routes to address changing needs.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Enhance park safety through more security staff (police or parks enforcement)",
+          "explanation": "Park Enforcement Patrol (PEP) officer presence reduces illegal or inappropriate behavior and increases the opportunity for peaceful and safe enjoyment of the parks by both children and adults. CB6 would like more frequent patrols in our district. Current levels of roving enforcement are not sufficient to address quality of life issues in our parks which appear to have ramped up during the pandemic; more fixed patrols are needed. In this vein, we support funding of 1 additional sergeant and 8 additional PEP officers for Manhattan South. If additional officers are not possible at this time, we urge that the current level of staffing continue and that the Department of Parks consider patrol routes to address changing needs.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202704C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The five-block existing area (aka Glick Park) lost power and water after Hurricane Sandy and 11 years later, only the electricity has been restored. Adding water infrastructure along this five-block area would open up opportunities for a wide range of uses including watering of plantings and cleaning that are not feasible at this time and most importantly green this waterfront park.",
+          "response": "Agency supports but cannot accommodate Explanation: We are exploring whether water lines can be included in the upcoming project for the section between 36th-38th Streets or whether it should be a separate project, in which case additional funding will probably be needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The five-block existing area (aka Glick Park) lost power and water after Hurricane Sandy and 11 years later, only the electricity has been restored. Adding water infrastructure along this five-block area would open up opportunities for a wide range of uses including watering of plantings and cleaning that are not feasible at this time and most importantly green this waterfront park.",
+          "response": "Agency supports but cannot accommodate Explanation: We are exploring whether water lines can be included in the upcoming project for the section between 36th-38th Streets or whether it should be a separate project, in which case additional funding will probably be needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The five-block existing area (aka Glick Park) lost power and water after Hurricane Sandy and 11 years later, only the electricity has been restored. Adding water infrastructure along this five-block area would open up opportunities for a wide range of uses including watering of plantings and cleaning that are not feasible at this time and most importantly green this waterfront park.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202704CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The Department of City Planning confirms Manhattan Community District 6 has \"the lowest amount of open space per capita of Manhattan community districts\". To remedy this, three underutilized City-owned sites along the East River should be repurposed as park space. There are prime City-owned waterfront spaces: an 11,000 sq ft property that is currently underutilized and a 60,000 sq ft of City-owned waterfront space (the former Water Club site) at 30th Street that is now vacant and would better serve the community as park space.",
+          "response": "The agency requires additional information from the community board regarding this request",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The Department of City Planning confirms Manhattan Community District 6 has \"the lowest amount of open space per capita of Manhattan community districts\". To remedy this, three underutilized City-owned sites along the East River should be repurposed as park space. There are prime City-owned waterfront spaces: an 11,000 sq ft property that is currently underutilized and a 60,000 sq ft of City-owned waterfront space (the former Water Club site) at 30th Street that is now vacant and would better serve the community as park space.",
+          "response": "The agency requires additional information from the community board regarding this request",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "The Department of City Planning confirms Manhattan Community District 6 has \"the lowest amount of open space per capita of Manhattan community districts\". To remedy this, three underutilized City-owned sites along the East River should be repurposed as park space. There are prime City-owned waterfront spaces: an 11,000 sq ft property that is currently underutilized and a 60,000 sq ft of City-owned waterfront space (the former Water Club site) at 30th Street that is now vacant and would better serve the community as park space.",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202704E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide better park maintenance",
+          "explanation": "Manhattan Community District 6 needs increased staffing at parks, such as a dedicated district gardener, city parks workers, and additional welders. Current levels of maintenance and operations staff are not adequate to maintain our parks, and our landscaping suffers from lack of gardening and accessibility. Also, non-governmental funding (i.e. conservancies) is not available for any parks in our district. The pandemic has resulted in an increase in park usage. And as a district lacking park space, maintaining what little we do have is crucial. We hope to see the budget for the Parks department increased beyond FY2024 levels, making up for the cut in the FY2025 budget.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide better park maintenance",
+          "explanation": "Manhattan Community District 6 needs increased staffing at parks, such as a dedicated district gardener, city parks workers, and additional welders. Current levels of maintenance and operations staff are not adequate to maintain our parks, and our landscaping suffers from lack of gardening and accessibility. Also, non-governmental funding (i.e. conservancies) is not available for any parks in our district. The pandemic has resulted in an increase in park usage. And as a district lacking park space, maintaining what little we do have is crucial. We hope to see the budget for the Parks department increased beyond FY2024 levels, making up for the cut in the FY2025 budget.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Provide better park maintenance",
+          "explanation": "Manhattan Community District 6 needs increased staffing at parks, such as a dedicated district gardener, city parks workers, and additional welders. Current levels of maintenance and operations staff are not adequate to maintain our parks, and our landscaping suffers from lack of gardening and accessibility. Also, non-governmental funding (i.e. conservancies) is not available for any parks in our district. The pandemic has resulted in an increase in park usage. And as a district lacking park space, maintaining what little we do have is crucial. We hope to see the budget for the Parks department increased beyond FY2024 levels, making up for the cut in the FY2025 budget.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202705C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Public safety and environmental health upgrades are needed at Stuyvesant Square, with restoration of park buildings, lighting and electricity repair the park priorities. The east building requires electricity, plumbing, and structure repairs to be used for storage and staffing. ConEd reports that it will not run electrical lines to the east building until building electrical repairs are made. The west building also needs repairs. LED lighting is needed for park lampposts on both sides of the park. The irrigation system and east fountain require repaired electricity. During a drought in 2022, the demise of a tree and many other plants in the park was attributed to the broken irrigation system.",
+          "response": "Agency supports but cannot accommodate Explanation: Our plan to reconstruct the parkhouse on the east side of the park was recently presented to CB 6. We will be seeking funding to reconstruct the building on the west side as well and would appreciate the board's support.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "STUYVESANT SQUARE PARK, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Public safety and environmental health upgrades are needed at Stuyvesant Square, with restoration of park buildings, lighting and electricity repair the park priorities. The east building requires electricity, plumbing, and structure repairs to be used for storage and staffing. ConEd reports that it will not run electrical lines to the east building until building electrical repairs are made. The west building also needs repairs. LED lighting is needed for park lampposts on both sides of the park. The irrigation system and east fountain require repaired electricity. During a drought in 2022, the demise of a tree and many other plants in the park was attributed to the broken irrigation system.",
+          "response": "Agency supports but cannot accommodate Explanation: Our plan to reconstruct the parkhouse on the east side of the park was recently presented to CB 6. We will be seeking funding to reconstruct the building on the west side as well and would appreciate the board's support.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "STUYVESANT SQUARE PARK, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Public safety and environmental health upgrades are needed at Stuyvesant Square, with restoration of park buildings, lighting and electricity repair the park priorities. The east building requires electricity, plumbing, and structure repairs to be used for storage and staffing. ConEd reports that it will not run electrical lines to the east building until building electrical repairs are made. The west building also needs repairs. LED lighting is needed for park lampposts on both sides of the park. The irrigation system and east fountain require repaired electricity. During a drought in 2022, the demise of a tree and many other plants in the park was attributed to the broken irrigation system.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "STUYVESANT SQUARE PARK, New York, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202705CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "The community is in need of significant infrastructure upgrades at the Asser Levy Recreation Center building, including the following. Replace, upgrade, and flood proof the center's windows. Locker room renovations are for the men's & women's locker rooms and handicap restrooms. This remodeling will provide new toilets, hand dryers, showers and sinks. The LED lights are needed for the indoor, intermediate pool. Additional requests include repairing the indoor pool dehumidifier/HVAC system and installing AC throughout the building, and the creation of a multi-purpose room for recreation activities including dance classes.",
+          "response": "This request is partially funded.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "ASSER LEVY RECREATION CENTER, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "The community is in need of significant infrastructure upgrades at the Asser Levy Recreation Center building, including the following. Replace, upgrade, and flood proof the center's windows. Locker room renovations are for the men's & women's locker rooms and handicap restrooms. This remodeling will provide new toilets, hand dryers, showers and sinks. The LED lights are needed for the indoor, intermediate pool. Additional requests include repairing the indoor pool dehumidifier/HVAC system and installing AC throughout the building, and the creation of a multi-purpose room for recreation activities including dance classes.",
+          "response": "This request is partially funded.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "ASSER LEVY RECREATION CENTER, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "The community is in need of significant infrastructure upgrades at the Asser Levy Recreation Center building, including the following. Replace, upgrade, and flood proof the center's windows. Locker room renovations are for the men's & women's locker rooms and handicap restrooms. This remodeling will provide new toilets, hand dryers, showers and sinks. The LED lights are needed for the indoor, intermediate pool. Additional requests include repairing the indoor pool dehumidifier/HVAC system and installing AC throughout the building, and the creation of a multi-purpose room for recreation activities including dance classes.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "ASSER LEVY RECREATION CENTER, New York, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202705E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more frequent litter basket collection",
+          "explanation": "As a consequence of overflowing trash in public trash receptacles, trash ends up in the street creating unsightly and unhygienic conditions. We are requesting an increased frequency of trash collection from public waste receptacles.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency supports this request, but funding is not available at this time.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more frequent litter basket collection",
+          "explanation": "As a consequence of overflowing trash in public trash receptacles, trash ends up in the street creating unsightly and unhygienic conditions. We are requesting an increased frequency of trash collection from public waste receptacles.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: The agency supports this request, but funding is not available at this time.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Provide more frequent litter basket collection",
+          "explanation": "As a consequence of overflowing trash in public trash receptacles, trash ends up in the street creating unsightly and unhygienic conditions. We are requesting an increased frequency of trash collection from public waste receptacles.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202706C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Located adjacent to MS 104 and regularly used by many students and community residents, Peter's Field has long been in need of an upgrade. Community Board Six has received various complaints that the facility is not up to standard and, as such, decreases the enjoyment of the space--especially the basketball courts--and delivers a perception that the community is a victim of urban blight. The upgrade should be anchored by leveling and repainting the damaged, uneven and potentially unsafe court surface. Peter's Field is home to the only NYC Parks basketball facility in the district that has rims that do not allow nets, so regulation basketball rims, backboards, stanchions and nets should be installed.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "PETERS FIELD, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Located adjacent to MS 104 and regularly used by many students and community residents, Peter's Field has long been in need of an upgrade. Community Board Six has received various complaints that the facility is not up to standard and, as such, decreases the enjoyment of the space--especially the basketball courts--and delivers a perception that the community is a victim of urban blight. The upgrade should be anchored by leveling and repainting the damaged, uneven and potentially unsafe court surface. Peter's Field is home to the only NYC Parks basketball facility in the district that has rims that do not allow nets, so regulation basketball rims, backboards, stanchions and nets should be installed.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "PETERS FIELD, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Located adjacent to MS 104 and regularly used by many students and community residents, Peter's Field has long been in need of an upgrade. Community Board Six has received various complaints that the facility is not up to standard and, as such, decreases the enjoyment of the space--especially the basketball courts--and delivers a perception that the community is a victim of urban blight. The upgrade should be anchored by leveling and repainting the damaged, uneven and potentially unsafe court surface. Peter's Field is home to the only NYC Parks basketball facility in the district that has rims that do not allow nets, so regulation basketball rims, backboards, stanchions and nets should be installed.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "PETERS FIELD, New York, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202706CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Upgrade or create new greenways",
+          "explanation": "From 13th to 15th Street, the waterfront esplanade heads north of East River Park past the Con Edison pier. While this section has been reconstructed to allow a wider path for bikers and pedestrians, there is a section of the path that remains narrow and we hear from constituents that have been hit by bikes at this \"pinch point.\" The Blueway Plan outlines an elevated, safer pedestrian and biker bridge that also separates the public from the Con Ed facility. The bridge is currently fully funded with $129M in City capital funds and we advocate for the project's swift progress, as creating a safe space for pedestrians and cyclists is an urgent concern here.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: NYC DOT recommends that the CB 6 discuss this request with Parks and EDC.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Upgrade or create new greenways",
+          "explanation": "From 13th to 15th Street, the waterfront esplanade heads north of East River Park past the Con Edison pier. While this section has been reconstructed to allow a wider path for bikers and pedestrians, there is a section of the path that remains narrow and we hear from constituents that have been hit by bikes at this \"pinch point.\" The Blueway Plan outlines an elevated, safer pedestrian and biker bridge that also separates the public from the Con Ed facility. The bridge is currently fully funded with $129M in City capital funds and we advocate for the project's swift progress, as creating a safe space for pedestrians and cyclists is an urgent concern here.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: NYC DOT recommends that the CB 6 discuss this request with Parks and EDC.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Upgrade or create new greenways",
+          "explanation": "From 13th to 15th Street, the waterfront esplanade heads north of East River Park past the Con Edison pier. While this section has been reconstructed to allow a wider path for bikers and pedestrians, there is a section of the path that remains narrow and we hear from constituents that have been hit by bikes at this \"pinch point.\" The Blueway Plan outlines an elevated, safer pedestrian and biker bridge that also separates the public from the Con Ed facility. The bridge is currently fully funded with $129M in City capital funds and we advocate for the project's swift progress, as creating a safe space for pedestrians and cyclists is an urgent concern here.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202706E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for HPD",
+          "explanation": "CD6 requests funding to identify and develop supportive housing for seniors, homeless, disabled, and other vulnerable populations. We request funding to support a needs assessment, site evaluation of underutilized public land and existing buildings, and partnerships with service providers to integrate health and social services. This investment will create new, accessible, and permanently affordable housing that addresses critical gaps and stabilizes at-risk New Yorkers.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for HPD",
+          "explanation": "CD6 requests funding to identify and develop supportive housing for seniors, homeless, disabled, and other vulnerable populations. We request funding to support a needs assessment, site evaluation of underutilized public land and existing buildings, and partnerships with service providers to integrate health and social services. This investment will create new, accessible, and permanently affordable housing that addresses critical gaps and stabilizes at-risk New Yorkers.",
+          "response": "The Adopted Budget includes a city-wide allocation for this work. Specific locations are determined by the Agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "806",
+          "request": "Other expense budget request for HPD",
+          "explanation": "CD6 requests funding to identify and develop supportive housing for seniors, homeless, disabled, and other vulnerable populations. We request funding to support a needs assessment, site evaluation of underutilized public land and existing buildings, and partnerships with service providers to integrate health and social services. This investment will create new, accessible, and permanently affordable housing that addresses critical gaps and stabilizes at-risk New Yorkers.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202707C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "CB6 requests $2.6 million for renovations to the 55th St. Park in Sutton Place. The Park is in urgent need of repairs and is being subjected to vandalism. Recently a park bench was thrown in the East River. Improvements to the Park would make it more functional and welcoming to the community.",
+          "response": "Agency does not support and cannot accommodate Explanation: The Sutton Place Park Conservancy has asked us to proceed with a more limited project to reconstruct the entranceway the park, providing an accessible ramp in place of the stairs, new fencing and lighting.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "CB6 requests $2.6 million for renovations to the 55th St. Park in Sutton Place. The Park is in urgent need of repairs and is being subjected to vandalism. Recently a park bench was thrown in the East River. Improvements to the Park would make it more functional and welcoming to the community.",
+          "response": "Agency does not support and cannot accommodate Explanation: The Sutton Place Park Conservancy has asked us to proceed with a more limited project to reconstruct the entranceway the park, providing an accessible ramp in place of the stairs, new fencing and lighting.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "CB6 requests $2.6 million for renovations to the 55th St. Park in Sutton Place. The Park is in urgent need of repairs and is being subjected to vandalism. Recently a park bench was thrown in the East River. Improvements to the Park would make it more functional and welcoming to the community.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202707CS",
+      "fiscal_year": 2027,
+      "request_type": "CS",
+      "request_class": "continued-support",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Invest in capital projects to improve access to waterfront",
+          "explanation": "Our waterfront is a significant resource for our city and has for many years been a priority for CB6. Currently our community cannot access large segments of our waterfront because our waterfront esplanade has a significant gaps: from 41st - 54th Street and from 13th-15th Street. In a city where we live in such close quarters, our outdoor spaces, especially our waterfronts, were lifesavers during the pandemic. The Department of City Planning confirms our district has \"the lowest amount of open space per capita of Manhattan community districts\". We urgently need an unbroken and accessible waterfront.",
+          "response": "For more information, please contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Invest in capital projects to improve access to waterfront",
+          "explanation": "Our waterfront is a significant resource for our city and has for many years been a priority for CB6. Currently our community cannot access large segments of our waterfront because our waterfront esplanade has a significant gaps: from 41st - 54th Street and from 13th-15th Street. In a city where we live in such close quarters, our outdoor spaces, especially our waterfronts, were lifesavers during the pandemic. The Department of City Planning confirms our district has \"the lowest amount of open space per capita of Manhattan community districts\". We urgently need an unbroken and accessible waterfront.",
+          "response": "OMB supports the agency’s position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "802",
+          "request": "Invest in capital projects to improve access to waterfront",
+          "explanation": "Our waterfront is a significant resource for our city and has for many years been a priority for CB6. Currently our community cannot access large segments of our waterfront because our waterfront esplanade has a significant gaps: from 41st - 54th Street and from 13th-15th Street. In a city where we live in such close quarters, our outdoor spaces, especially our waterfronts, were lifesavers during the pandemic. The Department of City Planning confirms our district has \"the lowest amount of open space per capita of Manhattan community districts\". We urgently need an unbroken and accessible waterfront.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202707E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new bus service or Select Bus Service",
+          "explanation": "The Science Park and Research Center (\"SPARC\"), soon to be constructed at First Avenue and East 25th Street will employ an estimated 3,100 permanent workers and an estimated additional 12,000 construction workers over the course of its development. Robust and convenient public transit options are necessary to minimize the use of personal vehicles used by this workforce for commuting. The MTA should evaluate and consider additional service and/or service route adjustments on existing bus routes surrounding the SPARC campus.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new bus service or Select Bus Service",
+          "explanation": "The Science Park and Research Center (\"SPARC\"), soon to be constructed at First Avenue and East 25th Street will employ an estimated 3,100 permanent workers and an estimated additional 12,000 construction workers over the course of its development. Robust and convenient public transit options are necessary to minimize the use of personal vehicles used by this workforce for commuting. The MTA should evaluate and consider additional service and/or service route adjustments on existing bus routes surrounding the SPARC campus.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "998",
+          "request": "Provide a new bus service or Select Bus Service",
+          "explanation": "The Science Park and Research Center (\"SPARC\"), soon to be constructed at First Avenue and East 25th Street will employ an estimated 3,100 permanent workers and an estimated additional 12,000 construction workers over the course of its development. Robust and convenient public transit options are necessary to minimize the use of personal vehicles used by this workforce for commuting. The MTA should evaluate and consider additional service and/or service route adjustments on existing bus routes surrounding the SPARC campus.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202708C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DPR",
+          "explanation": "CB6 requests lights for the St. Vartan Park Field.",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DPR",
+          "explanation": "CB6 requests lights for the St. Vartan Park Field.",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Other capital budget request for DPR",
+          "explanation": "CB6 requests lights for the St. Vartan Park Field.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202708E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for NYPL",
+          "explanation": "In previous years we have asked for additional electronic assets for libraries and staffing increases. However, the funding has not been baselined in the budget, making a reliance on future amounts precarious. We ask that the budget for NYPL and particularly for the branches in our district be increased to address upgrades to resources.",
+          "response": "Restoring and/or increasing funding is needed for this request. It is recommended that this request be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for NYPL",
+          "explanation": "In previous years we have asked for additional electronic assets for libraries and staffing increases. However, the funding has not been baselined in the budget, making a reliance on future amounts precarious. We ask that the budget for NYPL and particularly for the branches in our district be increased to address upgrades to resources.",
+          "response": "Restoring and/or increasing funding is needed for this request. It is recommended that this request be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "037",
+          "request": "Other expense budget request for NYPL",
+          "explanation": "In previous years we have asked for additional electronic assets for libraries and staffing increases. However, the funding has not been baselined in the budget, making a reliance on future amounts precarious. We ask that the budget for NYPL and particularly for the branches in our district be increased to address upgrades to resources.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202709C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "CB6 requests that the bluestone sidewalk at Ralph J. Bunche Park be reconstructed. The bluestone pavers have been deteriorating for years and are dangerous to pedestrians and those using walkers and wheelchairs. It poses ADA issues and potential liability issues for the City. We also note that this Park is opposite the south end of the UN property and is viewed by and used by visitors to the UN.",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "CB6 requests that the bluestone sidewalk at Ralph J. Bunche Park be reconstructed. The bluestone pavers have been deteriorating for years and are dangerous to pedestrians and those using walkers and wheelchairs. It poses ADA issues and potential liability issues for the City. We also note that this Park is opposite the south end of the UN property and is viewed by and used by visitors to the UN.",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "CB6 requests that the bluestone sidewalk at Ralph J. Bunche Park be reconstructed. The bluestone pavers have been deteriorating for years and are dangerous to pedestrians and those using walkers and wheelchairs. It poses ADA issues and potential liability issues for the City. We also note that this Park is opposite the south end of the UN property and is viewed by and used by visitors to the UN.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202709E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more community board staff",
+          "explanation": "An analysis of the 12 Manhattan community board (CB) operating budgets (PS and OTPS only, as rent budgets vary from board to board) on July 1, 2025 by Manhattan CB6 revealed considerable variation in budgets among the boards. CB7, with the highest budget at $303,284, has almost $32,000 more to work with than the CB with the lowest budget (CB10). CB6 is 7th out of 12 Manhattan CBs in terms of operating budget. CB operating budgets (PS and OTPS only) should be baselined at $500,000 and be equal in amount among all CBs. Such a budget increase for all community boards, an infinitesimal 0.01% of the City's overall budget, would enable CBs to retain current staff, hire additional personnel, or invest in resources that benefit the community, such as urban planning consulting and current technologies.",
+          "response": "As of the FY 2027 Executive Budget, each Community Board's budget is being maintained.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "211 EAST 43 STREET, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more community board staff",
+          "explanation": "An analysis of the 12 Manhattan community board (CB) operating budgets (PS and OTPS only, as rent budgets vary from board to board) on July 1, 2025 by Manhattan CB6 revealed considerable variation in budgets among the boards. CB7, with the highest budget at $303,284, has almost $32,000 more to work with than the CB with the lowest budget (CB10). CB6 is 7th out of 12 Manhattan CBs in terms of operating budget. CB operating budgets (PS and OTPS only) should be baselined at $500,000 and be equal in amount among all CBs. Such a budget increase for all community boards, an infinitesimal 0.01% of the City's overall budget, would enable CBs to retain current staff, hire additional personnel, or invest in resources that benefit the community, such as urban planning consulting and current technologies.",
+          "response": "As of the FY 2027 Adopted Budget, each Community Board's budget is being maintained.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "211 EAST 43 STREET, New York, NY, USA",
+            "postcode": "11203",
+            "latitude": "40.650612",
+            "longitude": "-73.937049",
+            "council_district": "40",
+            "census_tract": "858",
+            "nta": "BK1703"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "002",
+          "request": "Provide more community board staff",
+          "explanation": "An analysis of the 12 Manhattan community board (CB) operating budgets (PS and OTPS only, as rent budgets vary from board to board) on July 1, 2025 by Manhattan CB6 revealed considerable variation in budgets among the boards. CB7, with the highest budget at $303,284, has almost $32,000 more to work with than the CB with the lowest budget (CB10). CB6 is 7th out of 12 Manhattan CBs in terms of operating budget. CB operating budgets (PS and OTPS only) should be baselined at $500,000 and be equal in amount among all CBs. Such a budget increase for all community boards, an infinitesimal 0.01% of the City's overall budget, would enable CBs to retain current staff, hire additional personnel, or invest in resources that benefit the community, such as urban planning consulting and current technologies.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "211 EAST 43 STREET, New York, NY, USA",
+            "postcode": "11203",
+            "latitude": "40.650612",
+            "longitude": "-73.937049",
+            "council_district": "40",
+            "census_tract": "858",
+            "nta": "BK1703"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202710C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "More than 2500 pickleball and handball players in the St. Vartan Park community are in need of renovated courts in the west end of the park on each side of the handball wall. The four pickleball courts require resurfacing to create regulation-size and level playing surfaces, and appropriate lines for both pickleball and handball. The current courts have cracks and, as such, have been causing player injuries. The surface material currently used for the adjacent basketball courts would be a more appropriate playing surface. As pickleball is the nation's fastest growing sport, there is a significant increase in space and time needed for pickleball players. The addition of more court lights and/or lampposts would allow more community members to use the courts.",
+          "response": "Available funds are insufficient for this project. We recommend this project be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "More than 2500 pickleball and handball players in the St. Vartan Park community are in need of renovated courts in the west end of the park on each side of the handball wall. The four pickleball courts require resurfacing to create regulation-size and level playing surfaces, and appropriate lines for both pickleball and handball. The current courts have cracks and, as such, have been causing player injuries. The surface material currently used for the adjacent basketball courts would be a more appropriate playing surface. As pickleball is the nation's fastest growing sport, there is a significant increase in space and time needed for pickleball players. The addition of more court lights and/or lampposts would allow more community members to use the courts.",
+          "response": "Available funds are insufficient for this project. We recommend this project be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "More than 2500 pickleball and handball players in the St. Vartan Park community are in need of renovated courts in the west end of the park on each side of the handball wall. The four pickleball courts require resurfacing to create regulation-size and level playing surfaces, and appropriate lines for both pickleball and handball. The current courts have cracks and, as such, have been causing player injuries. The surface material currently used for the adjacent basketball courts would be a more appropriate playing surface. As pickleball is the nation's fastest growing sport, there is a significant increase in space and time needed for pickleball players. The addition of more court lights and/or lampposts would allow more community members to use the courts.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202711C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Ralph Bunche Park on First Avenue across the street from the United Nations Headquarters is in need of a water irrigation system for the park's plants. During a drought in 2022, the demise of many plants in the park was attributed to the absence of an irrigation system. The current system of volunteers periodically watering plants through hoses and watering cans is insufficient. With scaffolding in the park having been removed, there is a heightened need for care of sun-impacted plants. In 2022, community residents and visitors to what is known as the city's first peace park were denied a thriving park because of the lack of an irrigation system. Visitors include attendees of September's United Nations General Assembly, the world's largest annual assemblage of world leaders.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Ralph Bunche Park on First Avenue across the street from the United Nations Headquarters is in need of a water irrigation system for the park's plants. During a drought in 2022, the demise of many plants in the park was attributed to the absence of an irrigation system. The current system of volunteers periodically watering plants through hoses and watering cans is insufficient. With scaffolding in the park having been removed, there is a heightened need for care of sun-impacted plants. In 2022, community residents and visitors to what is known as the city's first peace park were denied a thriving park because of the lack of an irrigation system. Visitors include attendees of September's United Nations General Assembly, the world's largest annual assemblage of world leaders.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Other requests for park, building, or access improvements",
+          "explanation": "Ralph Bunche Park on First Avenue across the street from the United Nations Headquarters is in need of a water irrigation system for the park's plants. During a drought in 2022, the demise of many plants in the park was attributed to the absence of an irrigation system. The current system of volunteers periodically watering plants through hoses and watering cans is insufficient. With scaffolding in the park having been removed, there is a heightened need for care of sun-impacted plants. In 2022, community residents and visitors to what is known as the city's first peace park were denied a thriving park because of the lack of an irrigation system. Visitors include attendees of September's United Nations General Assembly, the world's largest annual assemblage of world leaders.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202712C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "There are a lot of issues with the infrastructure, and its dog park needs improvement. It is also adjacent to the FDR Drive so safety design concerns have been raised by several members of the community.",
+          "response": "Available funds are insufficient for this project. We recommend this project be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "09",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "There are a lot of issues with the infrastructure, and its dog park needs improvement. It is also adjacent to the FDR Drive so safety design concerns have been raised by several members of the community.",
+          "response": "Available funds are insufficient for this project. We recommend this project be brought to the attention of your elected officials i.e. Borough President and/or City Council Member.",
+          "rank": {
+            "value": "09",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "There are a lot of issues with the infrastructure, and its dog park needs improvement. It is also adjacent to the FDR Drive so safety design concerns have been raised by several members of the community.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "09",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202713C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "New equipment for maintenance",
+          "explanation": "Restoration of function to the East River Esplanade Park (Glick Park) fountains by replacing the pumps for water circulation and the electrical systems would add considerably to the attractiveness and use of the park. We look forward to seeing design proposals and a fully funded commitment.",
+          "response": "Agency supports but cannot accommodate Explanation: We are exploring whether water lines can be included in the upcoming project for the section between 36th-38th Streets or whether it should be a separate project, in which case additional funding will probably be needed.",
+          "rank": {
+            "value": "10",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "New equipment for maintenance",
+          "explanation": "Restoration of function to the East River Esplanade Park (Glick Park) fountains by replacing the pumps for water circulation and the electrical systems would add considerably to the attractiveness and use of the park. We look forward to seeing design proposals and a fully funded commitment.",
+          "response": "Agency supports but cannot accommodate Explanation: We are exploring whether water lines can be included in the upcoming project for the section between 36th-38th Streets or whether it should be a separate project, in which case additional funding will probably be needed.",
+          "rank": {
+            "value": "10",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "New equipment for maintenance",
+          "explanation": "Restoration of function to the East River Esplanade Park (Glick Park) fountains by replacing the pumps for water circulation and the electrical systems would add considerably to the attractiveness and use of the park. We look forward to seeing design proposals and a fully funded commitment.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "10",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202714C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital request for DPR",
+          "explanation": "Jack and Jill School requests the installation of tree guards on East 16th Street, between Third Avenue and Rutherford Place. This a tree lined street and the tree roots are out of control and thus, accomplishing this project will provide a safer environment for the children. Cost of the project is $15,750.00 and a requirement of a 50% deposit of $7,875.00. It is appropriate to start this project immediately.",
+          "response": "Agency supports but cannot accommodate Explanation: Tree guards can be purchased by individuals, block associations or institutions through our Tree Time affiliate. They can also be paid for through a capital allocation (minimum amount: $50,000).",
+          "rank": {
+            "value": "11",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "209 EAST 16 STREET, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital request for DPR",
+          "explanation": "Jack and Jill School requests the installation of tree guards on East 16th Street, between Third Avenue and Rutherford Place. This a tree lined street and the tree roots are out of control and thus, accomplishing this project will provide a safer environment for the children. Cost of the project is $15,750.00 and a requirement of a 50% deposit of $7,875.00. It is appropriate to start this project immediately.",
+          "response": "Agency supports but cannot accommodate Explanation: Tree guards can be purchased by individuals, block associations or institutions through our Tree Time affiliate. They can also be paid for through a capital allocation (minimum amount: $50,000).",
+          "rank": {
+            "value": "11",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "209 EAST 16 STREET, New York, NY, USA",
+            "postcode": "11226",
+            "latitude": "40.645279",
+            "longitude": "-73.964239",
+            "bin": "3117577",
+            "bbl": "3051200054",
+            "council_district": "40",
+            "census_tract": "512",
+            "nta": "BK1401"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Other capital request for DPR",
+          "explanation": "Jack and Jill School requests the installation of tree guards on East 16th Street, between Third Avenue and Rutherford Place. This a tree lined street and the tree roots are out of control and thus, accomplishing this project will provide a safer environment for the children. Cost of the project is $15,750.00 and a requirement of a 50% deposit of $7,875.00. It is appropriate to start this project immediately.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "11",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "209 EAST 16 STREET, New York, NY, USA",
+            "postcode": "11226",
+            "latitude": "40.645279",
+            "longitude": "-73.964239",
+            "bin": "3117577",
+            "bbl": "3051200054",
+            "council_district": "40",
+            "census_tract": "512",
+            "nta": "BK1401"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202715C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Health and Hospitals Corporation",
+            "agency_id": "nyc-health-hospitals",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Replace or upgrade information technology equipment",
+          "explanation": "Bellevue had more than 875,000 patient encounters (hospital, ambulatory care clinics, ambulatory surgery, and the emergency room) in the past year. Improving the AV system in the Old Medical Library space in buildings C/D of the hospital would enable Bellevue to hold Community Advisory Committee meetings, education and outreach sessions, with the goal of improving health among patients, their visitors, and in the community. With the closure of Mount Sinai Beth Israel hospital, the patient encounters at Bellevue will likely increase. Upgrading the AV system will help with efficiency and improve patient experience and care.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: H+H has provided modern portable AV solutions to Bellevue that allow the facility to accommodate these types of events at various locations. Additionally, Bellevue has other gathering spaces that were renovated relatively recently, including the auditorium in the Amb Care Building and the Atrium.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "462 1 AVENUE, New York, NY, USA"
+          },
+          "support_by": [
+            "Bellevue Hospital Community Advisory Board"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Health and Hospitals Corporation",
+            "agency_id": "nyc-health-hospitals",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Replace or upgrade information technology equipment",
+          "explanation": "Bellevue had more than 875,000 patient encounters (hospital, ambulatory care clinics, ambulatory surgery, and the emergency room) in the past year. Improving the AV system in the Old Medical Library space in buildings C/D of the hospital would enable Bellevue to hold Community Advisory Committee meetings, education and outreach sessions, with the goal of improving health among patients, their visitors, and in the community. With the closure of Mount Sinai Beth Israel hospital, the patient encounters at Bellevue will likely increase. Upgrading the AV system will help with efficiency and improve patient experience and care.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: H+H has provided modern portable AV solutions to Bellevue that allow the facility to accommodate these types of events at various locations. Additionally, Bellevue has other gathering spaces that were renovated relatively recently, including the auditorium in the Amb Care Building and the Atrium.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "462 1 AVENUE, New York, NY, USA"
+          },
+          "support_by": [
+            "Bellevue Hospital Community Advisory Board"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Health and Hospitals Corporation",
+            "agency_id": "nyc-health-hospitals",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "819",
+          "request": "Replace or upgrade information technology equipment",
+          "explanation": "Bellevue had more than 875,000 patient encounters (hospital, ambulatory care clinics, ambulatory surgery, and the emergency room) in the past year. Improving the AV system in the Old Medical Library space in buildings C/D of the hospital would enable Bellevue to hold Community Advisory Committee meetings, education and outreach sessions, with the goal of improving health among patients, their visitors, and in the community. With the closure of Mount Sinai Beth Israel hospital, the patient encounters at Bellevue will likely increase. Upgrading the AV system will help with efficiency and improve patient experience and care.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "462 1 AVENUE, New York, NY, USA"
+          },
+          "support_by": [
+            "Bellevue Hospital Community Advisory Board"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202716C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more housing for extremely low and low income households",
+          "explanation": "The City of New York faces an ongoing housing affordability crisis that requires bold and coordinated investment. We are requesting capital funding to urge City agencies to study, identify, and build on City-owned sites to provide affordable housing, particularly low- and moderate-income households and ask that the City help subsidize new affordable housing with the goal that at least 25% of all new units constructed in CD6 are affordable year over year. According to Population Factfinder on DCP's website, which uses US Census data, between 2010 and 2020, only 4,665 new housing units were constructed in CD6. The NYU Furman Center has identified that 91% of all units constructed in CD6 since 2010 are market rate. The 9% of affordable units constructed in CD6 is lower than the Manhattan average (22%) and Citywide average (27%). In keeping with the Manhattan and Citywide trend, asking that 25% of all new units are affordable would be consistent with the average. We believe this funding will support a comprehensive effort to analyze available sites, engage communities in planning, and deliver high-quality housing developments that are financially accessible and sustainable.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: HPD finances and supports different types of projects. Many projects are 100% affordable, and a portion of those units are ELI/VLI. Some projects contain a majority of ELI/VLI units. While HPD is breaking affordable housing production records, there is more work to be done. HPD will continue to maximize the use of subsidy and Low Income Housing Tax Credits (LIHTC) to projects in our development pipeline throughout the Five Boroughs, including those serving Very Low Income (VLI) and Extremely Low Income (ELI) populations.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more housing for extremely low and low income households",
+          "explanation": "The City of New York faces an ongoing housing affordability crisis that requires bold and coordinated investment. We are requesting capital funding to urge City agencies to study, identify, and build on City-owned sites to provide affordable housing, particularly low- and moderate-income households and ask that the City help subsidize new affordable housing with the goal that at least 25% of all new units constructed in CD6 are affordable year over year. According to Population Factfinder on DCP's website, which uses US Census data, between 2010 and 2020, only 4,665 new housing units were constructed in CD6. The NYU Furman Center has identified that 91% of all units constructed in CD6 since 2010 are market rate. The 9% of affordable units constructed in CD6 is lower than the Manhattan average (22%) and Citywide average (27%). In keeping with the Manhattan and Citywide trend, asking that 25% of all new units are affordable would be consistent with the average. We believe this funding will support a comprehensive effort to analyze available sites, engage communities in planning, and deliver high-quality housing developments that are financially accessible and sustainable.",
+          "response": "The Executive Budget includes a city-wide allocation for this work. Specific locations are determined by the Agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "806",
+          "request": "Provide more housing for extremely low and low income households",
+          "explanation": "The City of New York faces an ongoing housing affordability crisis that requires bold and coordinated investment. We are requesting capital funding to urge City agencies to study, identify, and build on City-owned sites to provide affordable housing, particularly low- and moderate-income households and ask that the City help subsidize new affordable housing with the goal that at least 25% of all new units constructed in CD6 are affordable year over year. According to Population Factfinder on DCP's website, which uses US Census data, between 2010 and 2020, only 4,665 new housing units were constructed in CD6. The NYU Furman Center has identified that 91% of all units constructed in CD6 since 2010 are market rate. The 9% of affordable units constructed in CD6 is lower than the Manhattan average (22%) and Citywide average (27%). In keeping with the Manhattan and Citywide trend, asking that 25% of all new units are affordable would be consistent with the average. We believe this funding will support a comprehensive effort to analyze available sites, engage communities in planning, and deliver high-quality housing developments that are financially accessible and sustainable.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202717C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Improve accessibility of transit infrastructure, by providing elevators, escalators, etc.",
+          "explanation": "Of the six subway stations that have subway entrances in Community District 6, two (59th & Lexington Ave and 14th & 3rd Ave) remain ADA non-compliant. The heavily used 59th & Lexington Ave station was slated for accessibility improvements in the 2020-2024 Capital Plan which got delayed because of the COVID pandemic. We urge that these upgrades be made as soon as possible.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Improve accessibility of transit infrastructure, by providing elevators, escalators, etc.",
+          "explanation": "Of the six subway stations that have subway entrances in Community District 6, two (59th & Lexington Ave and 14th & 3rd Ave) remain ADA non-compliant. The heavily used 59th & Lexington Ave station was slated for accessibility improvements in the 2020-2024 Capital Plan which got delayed because of the COVID pandemic. We urge that these upgrades be made as soon as possible.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "998",
+          "request": "Improve accessibility of transit infrastructure, by providing elevators, escalators, etc.",
+          "explanation": "Of the six subway stations that have subway entrances in Community District 6, two (59th & Lexington Ave and 14th & 3rd Ave) remain ADA non-compliant. The heavily used 59th & Lexington Ave station was slated for accessibility improvements in the 2020-2024 Capital Plan which got delayed because of the COVID pandemic. We urge that these upgrades be made as soon as possible.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202718C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "The East Side of Manhattan is under-served by the transit system. The Lexington Avenue lines are grossly over-crowded; many Eastside residents and commuters walk over a half mile to already overly-congested trains. Phases 3 and 4 of the Second Avenue Subway are expected to benefit Manhattan Community District 6. We eagerly await the completion of this work and ask the City to not delay this work. We understand that federal money and other sources will be challenged for the near term. However, this is an essential infrastructure project that is needed to ensure the vitality of Midtown Manhattan as a business and residential community.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "The East Side of Manhattan is under-served by the transit system. The Lexington Avenue lines are grossly over-crowded; many Eastside residents and commuters walk over a half mile to already overly-congested trains. Phases 3 and 4 of the Second Avenue Subway are expected to benefit Manhattan Community District 6. We eagerly await the completion of this work and ask the City to not delay this work. We understand that federal money and other sources will be challenged for the near term. However, this is an essential infrastructure project that is needed to ensure the vitality of Midtown Manhattan as a business and residential community.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "998",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "The East Side of Manhattan is under-served by the transit system. The Lexington Avenue lines are grossly over-crowded; many Eastside residents and commuters walk over a half mile to already overly-congested trains. Phases 3 and 4 of the Second Avenue Subway are expected to benefit Manhattan Community District 6. We eagerly await the completion of this work and ask the City to not delay this work. We understand that federal money and other sources will be challenged for the near term. However, this is an essential infrastructure project that is needed to ensure the vitality of Midtown Manhattan as a business and residential community.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202719C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "The New York Public Library respectfully requests $5,500,000 in capital funding to replace the old, outdated HVAC system at the Kips Bay Library. This essential infrastructure project will ensure that the branch continues to be a welcoming space for all patrons by modernizing the building's physical plant with a state-of-the-art, energy-efficient heating and cooling system. The current HVAC system struggles to maintain a consistent and comfortable indoor climate, especially during periods of extreme outdoor weather and temperatures. Replacing this system will ensure a comfortable, climate-controlled environment that meets the needs of a diverse and expanding population from pre-school and elementary school children in after-school programs to senior citizens seeking social and educational engagement. The replacement system will serve all areas of the library, which are experiencing increased growth and usage from the community. According to NYPL data, there has been a marked rise in visits from educators and students using curriculum-aligned research materials, and a 100% increase in school field trip attendance. Once completed, this investment will provide for the long-term a comfortable and climatized environment for its thousands of residents and patrons. It will support all patrons of all ages and will reinforce the City's vision of libraries as community sanctuaries that anchor neighborhood camaraderie and deliver measurable educational, cultural, and economic returns for decades to come.",
+          "response": "It is recommended that this request be brought to the attention of your Elected Officials.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "446 3 AVENUE, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "The New York Public Library respectfully requests $5,500,000 in capital funding to replace the old, outdated HVAC system at the Kips Bay Library. This essential infrastructure project will ensure that the branch continues to be a welcoming space for all patrons by modernizing the building's physical plant with a state-of-the-art, energy-efficient heating and cooling system. The current HVAC system struggles to maintain a consistent and comfortable indoor climate, especially during periods of extreme outdoor weather and temperatures. Replacing this system will ensure a comfortable, climate-controlled environment that meets the needs of a diverse and expanding population from pre-school and elementary school children in after-school programs to senior citizens seeking social and educational engagement. The replacement system will serve all areas of the library, which are experiencing increased growth and usage from the community. According to NYPL data, there has been a marked rise in visits from educators and students using curriculum-aligned research materials, and a 100% increase in school field trip attendance. Once completed, this investment will provide for the long-term a comfortable and climatized environment for its thousands of residents and patrons. It will support all patrons of all ages and will reinforce the City's vision of libraries as community sanctuaries that anchor neighborhood camaraderie and deliver measurable educational, cultural, and economic returns for decades to come.",
+          "response": "It is recommended that this request be brought to the attention of your Elected Officials.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "446 3 AVENUE, New York, NY, USA",
+            "postcode": "11215",
+            "latitude": "40.671978",
+            "longitude": "-73.990606",
+            "bin": "3022019",
+            "bbl": "3010020030",
+            "council_district": "39",
+            "census_tract": "121",
+            "nta": "BK0601"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "037",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "The New York Public Library respectfully requests $5,500,000 in capital funding to replace the old, outdated HVAC system at the Kips Bay Library. This essential infrastructure project will ensure that the branch continues to be a welcoming space for all patrons by modernizing the building's physical plant with a state-of-the-art, energy-efficient heating and cooling system. The current HVAC system struggles to maintain a consistent and comfortable indoor climate, especially during periods of extreme outdoor weather and temperatures. Replacing this system will ensure a comfortable, climate-controlled environment that meets the needs of a diverse and expanding population from pre-school and elementary school children in after-school programs to senior citizens seeking social and educational engagement. The replacement system will serve all areas of the library, which are experiencing increased growth and usage from the community. According to NYPL data, there has been a marked rise in visits from educators and students using curriculum-aligned research materials, and a 100% increase in school field trip attendance. Once completed, this investment will provide for the long-term a comfortable and climatized environment for its thousands of residents and patrons. It will support all patrons of all ages and will reinforce the City's vision of libraries as community sanctuaries that anchor neighborhood camaraderie and deliver measurable educational, cultural, and economic returns for decades to come.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "446 3 AVENUE, New York, NY, USA",
+            "postcode": "11215",
+            "latitude": "40.671978",
+            "longitude": "-73.990606",
+            "bin": "3022019",
+            "bbl": "3010020030",
+            "council_district": "39",
+            "census_tract": "121",
+            "nta": "BK0601"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "306202720C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-06",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "06",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expand an existing elementary school",
+          "explanation": "Hydration Station: installation of five Elkay EZH20 filtered, touchless water bottle filling stations to improve hydration throughout the building. Rooftop Synthetic Turf: Conversion of the school's rooftop into a cushioned, durable play space for recess, PE and outdoor learning with high-durability artificial grass, impact-reducing padding and drainage support. Details for both available upon request.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Funding Not Available. Capital work for SCA.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "425 EAST 35 STREET, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expand an existing elementary school",
+          "explanation": "Hydration Station: installation of five Elkay EZH20 filtered, touchless water bottle filling stations to improve hydration throughout the building. Rooftop Synthetic Turf: Conversion of the school's rooftop into a cushioned, durable play space for recess, PE and outdoor learning with high-durability artificial grass, impact-reducing padding and drainage support. Details for both available upon request.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Funding Not Available. Capital work for SCA.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "425 EAST 35 STREET, New York, NY, USA",
+            "postcode": "11203",
+            "latitude": "40.644761",
+            "longitude": "-73.944085",
+            "bin": "3110938",
+            "bbl": "3049350055",
+            "council_district": "45",
+            "census_tract": "854",
+            "nta": "BK1702"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Provide a new or expand an existing elementary school",
+          "explanation": "Hydration Station: installation of five Elkay EZH20 filtered, touchless water bottle filling stations to improve hydration throughout the building. Rooftop Synthetic Turf: Conversion of the school's rooftop into a cushioned, durable play space for recess, PE and outdoor learning with high-durability artificial grass, impact-reducing padding and drainage support. Details for both available upon request.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "425 EAST 35 STREET, New York, NY, USA",
+            "postcode": "11203",
+            "latitude": "40.644761",
+            "longitude": "-73.944085",
+            "bin": "3110938",
+            "bbl": "3049350055",
+            "council_district": "45",
+            "census_tract": "854",
+            "nta": "BK1702"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    }
+  ]
+}

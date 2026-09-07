@@ -1,0 +1,3551 @@
+{
+  "schema": "cityscroll.community_board_budget_register_document.v1",
+  "method": "omb_register_full_tracking_code_within_cycle_v1",
+  "negative_rule": "A changed response text is a changed written answer and nothing else. It is not funding, a commitment, delivery, or completion, and no request is carried across fiscal cycles by a repeated priority number, a similar facility name, or matching request text.",
+  "board_id": "brooklyn-cb-05",
+  "publications": {
+    "as_of": "2026-09-07",
+    "servable": [
+      "20260512",
+      "20260630"
+    ],
+    "diagnostic_only": [
+      "20270217"
+    ],
+    "latest": "20260630"
+  },
+  "request_count": 42,
+  "requests": [
+    {
+      "tracking_code": "205202701C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Dept of Information Technology & Telecommunication",
+            "agency_id": "information-technology-and-telecommunications",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital request",
+          "explanation": "Budget Request for OTI - expand LinkNYC kiosks along Pennsylvania Avenue. The investment in the initial Link kiosks were implemented through funding from the ENY Rezone. However, there is a need to expand the kiosks in areas of the district where there is greater pedestrian traffic. Most residents of the district don't know that we have some installations of Link, therefore they are not serving their purpose of connectivity and information access.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: This is not a funding request. LinkNYC kiosks are built pursuant to a franchise agreement at no cost to the City. OTI can separately follow up on request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Dept of Information Technology & Telecommunication",
+            "agency_id": "information-technology-and-telecommunications",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital request",
+          "explanation": "Budget Request for OTI - expand LinkNYC kiosks along Pennsylvania Avenue. The investment in the initial Link kiosks were implemented through funding from the ENY Rezone. However, there is a need to expand the kiosks in areas of the district where there is greater pedestrian traffic. Most residents of the district don't know that we have some installations of Link, therefore they are not serving their purpose of connectivity and information access.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: This is not a funding request. LinkNYC kiosks are built pursuant to a franchise agreement at no cost to the City. OTI can separately follow up on request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Dept of Information Technology & Telecommunication",
+            "agency_id": "information-technology-and-telecommunications",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "858",
+          "request": "Other capital request",
+          "explanation": "Budget Request for OTI - expand LinkNYC kiosks along Pennsylvania Avenue. The investment in the initial Link kiosks were implemented through funding from the ENY Rezone. However, there is a need to expand the kiosks in areas of the district where there is greater pedestrian traffic. Most residents of the district don't know that we have some installations of Link, therefore they are not serving their purpose of connectivity and information access.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202701E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Extend library hours or expand and enhance library programs",
+          "explanation": "Please increase personnel budget to invest in hiring additional staff to accommodate extended library hours for all BPL branches in Brooklyn, Community Board 5 - Spring Creek, New Lots, Cypress Hills, and Arlington.",
+          "response": "This request includes more than one proposal. Funding for part is baselined in the agency's expense budget.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Extend library hours or expand and enhance library programs",
+          "explanation": "Please increase personnel budget to invest in hiring additional staff to accommodate extended library hours for all BPL branches in Brooklyn, Community Board 5 - Spring Creek, New Lots, Cypress Hills, and Arlington.",
+          "response": "This request includes more than one proposal. Funding for part is baselined in the agency's expense budget.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "038",
+          "request": "Extend library hours or expand and enhance library programs",
+          "explanation": "Please increase personnel budget to invest in hiring additional staff to accommodate extended library hours for all BPL branches in Brooklyn, Community Board 5 - Spring Creek, New Lots, Cypress Hills, and Arlington.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202702C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DPR",
+          "explanation": "Secure funding to Construct the East New York Recreation Center (ENYRC) Explanation: The district is still in need of a stand alone, full-service community center, that provides state-of-the art amenities, youth, family, and senior programming, and swimming pool. The existing model for this facility is the Brownsville Recreation Center (BRC) in CB16. CB5 RESPONSE TO THE AGENCY: The Community Board is in communication with Parks Department to understand potential capital allocation estimates, site viability.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "SUTTER BALLFIELDS, Brooklyn, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DPR",
+          "explanation": "Secure funding to Construct the East New York Recreation Center (ENYRC) Explanation: The district is still in need of a stand alone, full-service community center, that provides state-of-the art amenities, youth, family, and senior programming, and swimming pool. The existing model for this facility is the Brownsville Recreation Center (BRC) in CB16. CB5 RESPONSE TO THE AGENCY: The Community Board is in communication with Parks Department to understand potential capital allocation estimates, site viability.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "SUTTER BALLFIELDS, Brooklyn, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Other capital budget request for DPR",
+          "explanation": "Secure funding to Construct the East New York Recreation Center (ENYRC) Explanation: The district is still in need of a stand alone, full-service community center, that provides state-of-the art amenities, youth, family, and senior programming, and swimming pool. The existing model for this facility is the Brownsville Recreation Center (BRC) in CB16. CB5 RESPONSE TO THE AGENCY: The Community Board is in communication with Parks Department to understand potential capital allocation estimates, site viability.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "SUTTER BALLFIELDS, Brooklyn, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202702E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other senior center program requests",
+          "explanation": "Provide additonal funding for mental wellness programming in existing senior centers and social day care facilities.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other senior center program requests",
+          "explanation": "Provide additonal funding for mental wellness programming in existing senior centers and social day care facilities.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Other senior center program requests",
+          "explanation": "Provide additonal funding for mental wellness programming in existing senior centers and social day care facilities.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202703C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "Secure funding for construction of Public Restroom at Lion's Pride Playground - EXPLANATION: Funding has been allocated to renovate the upgrade the playground and adjacent site but a Public Restroom is still not included in the renovation. CB5 RESPONSE TO AGENCY: The recent renovations at Lion's Pride Playground can be complimented with the install of a comfort station. We are requesting that a study be conducted to see if the Public Restroom can be implemented through funding under Local Law 114/2022 for our district.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "LIONS PRIDE PLAYGROUND, Brooklyn, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "Secure funding for construction of Public Restroom at Lion's Pride Playground - EXPLANATION: Funding has been allocated to renovate the upgrade the playground and adjacent site but a Public Restroom is still not included in the renovation. CB5 RESPONSE TO AGENCY: The recent renovations at Lion's Pride Playground can be complimented with the install of a comfort station. We are requesting that a study be conducted to see if the Public Restroom can be implemented through funding under Local Law 114/2022 for our district.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "LIONS PRIDE PLAYGROUND, Brooklyn, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "Secure funding for construction of Public Restroom at Lion's Pride Playground - EXPLANATION: Funding has been allocated to renovate the upgrade the playground and adjacent site but a Public Restroom is still not included in the renovation. CB5 RESPONSE TO AGENCY: The recent renovations at Lion's Pride Playground can be complimented with the install of a comfort station. We are requesting that a study be conducted to see if the Public Restroom can be implemented through funding under Local Law 114/2022 for our district.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "LIONS PRIDE PLAYGROUND, Brooklyn, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202703E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase transportation services capacity",
+          "explanation": "Identify funding to return the DFTA MY Ride pilot program. Many older adults in CB5 participated in the DFTA My Ride initiative and viewed the program as a much needed resource to provide transportation access.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase transportation services capacity",
+          "explanation": "Identify funding to return the DFTA MY Ride pilot program. Many older adults in CB5 participated in the DFTA My Ride initiative and viewed the program as a much needed resource to provide transportation access.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "125",
+          "request": "Increase transportation services capacity",
+          "explanation": "Identify funding to return the DFTA MY Ride pilot program. Many older adults in CB5 participated in the DFTA My Ride initiative and viewed the program as a much needed resource to provide transportation access.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202704C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DPR",
+          "explanation": "Please install lighting at the Soccer Field in Lower Highalnd Park",
+          "response": "Agency supports but cannot accommodate Explanation: Highland Park is under the jurisdiction of Parks' Queens Borough Office. We would be glad to connect the Community Board with our Queens Borough Commissioner's Office to discuss potential improvements to Highland Park, if desired.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DPR",
+          "explanation": "Please install lighting at the Soccer Field in Lower Highalnd Park",
+          "response": "Agency supports but cannot accommodate Explanation: Highland Park is under the jurisdiction of Parks' Queens Borough Office. We would be glad to connect the Community Board with our Queens Borough Commissioner's Office to discuss potential improvements to Highland Park, if desired.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Other capital budget request for DPR",
+          "explanation": "Please install lighting at the Soccer Field in Lower Highalnd Park",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202704E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more public art",
+          "explanation": "Coordinate with MTA to provide more public art installations on the exterior of transit stations and transit hubs. These are the spaces that are frequented most by residents through daily commuting. Spaces need to be activated with cultural artwork from local artists in collaboration with the Department of Cultural Affairs. This provides community enhancement and results in greater neighborhood pride.",
+          "response": "Further investigation of this request is needed. Contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more public art",
+          "explanation": "Coordinate with MTA to provide more public art installations on the exterior of transit stations and transit hubs. These are the spaces that are frequented most by residents through daily commuting. Spaces need to be activated with cultural artwork from local artists in collaboration with the Department of Cultural Affairs. This provides community enhancement and results in greater neighborhood pride.",
+          "response": "Further investigation of this request is needed. Contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "126",
+          "request": "Provide more public art",
+          "explanation": "Coordinate with MTA to provide more public art installations on the exterior of transit stations and transit hubs. These are the spaces that are frequented most by residents through daily commuting. Spaces need to be activated with cultural artwork from local artists in collaboration with the Department of Cultural Affairs. This provides community enhancement and results in greater neighborhood pride.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202705C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve access to a building in a park",
+          "explanation": "Request capital funding to have stairway access to middle basin of Ridgewood Reservoir and Boardwalk for outer basins.",
+          "response": "Agency supports but cannot accommodate Explanation: Highland Park is under the jurisdiction of Parks' Queens Borough Office. We would be glad to connect the Community Board with our Queens Borough Commissioner's Office to discuss potential improvements to Highland Park, if desired.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve access to a building in a park",
+          "explanation": "Request capital funding to have stairway access to middle basin of Ridgewood Reservoir and Boardwalk for outer basins.",
+          "response": "Agency supports but cannot accommodate Explanation: Highland Park is under the jurisdiction of Parks' Queens Borough Office. We would be glad to connect the Community Board with our Queens Borough Commissioner's Office to discuss potential improvements to Highland Park, if desired.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Improve access to a building in a park",
+          "explanation": "Request capital funding to have stairway access to middle basin of Ridgewood Reservoir and Boardwalk for outer basins.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202705E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Investigate air quality complaints at specific location",
+          "explanation": "Please conduct air quality assessments at the intersection of Eldert Lane and Drew Street in CB5. This intersection houses an empty lot that houses diesel trucks and other large vehicles that are now driving in and out of the site. There was no public notification and residents are concerned with the amount of exhaust and smells from fumes resulting in the presence of the vehicles.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Investigate air quality complaints at specific location",
+          "explanation": "Please conduct air quality assessments at the intersection of Eldert Lane and Drew Street in CB5. This intersection houses an empty lot that houses diesel trucks and other large vehicles that are now driving in and out of the site. There was no public notification and residents are concerned with the amount of exhaust and smells from fumes resulting in the presence of the vehicles.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "826",
+          "request": "Investigate air quality complaints at specific location",
+          "explanation": "Please conduct air quality assessments at the intersection of Eldert Lane and Drew Street in CB5. This intersection houses an empty lot that houses diesel trucks and other large vehicles that are now driving in and out of the site. There was no public notification and residents are concerned with the amount of exhaust and smells from fumes resulting in the presence of the vehicles.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202706C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide new or increase number of sanitation trucks and other equipment",
+          "explanation": "Secure an additional haulster to accommodate the 20+ miles of narrow streets in the district. This is the only way we can successfully ensure that those residents will receive the same quality service that our garage provides throughout the district. RESPONSE TO AGENCY: Thank you for your consideration. We are re-submitting this request in anticipation of the need for this addition to our BK5 Garage equipment stock, to support the great work and dedication of the teams that execute the trash removal throughout our district.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide new or increase number of sanitation trucks and other equipment",
+          "explanation": "Secure an additional haulster to accommodate the 20+ miles of narrow streets in the district. This is the only way we can successfully ensure that those residents will receive the same quality service that our garage provides throughout the district. RESPONSE TO AGENCY: Thank you for your consideration. We are re-submitting this request in anticipation of the need for this addition to our BK5 Garage equipment stock, to support the great work and dedication of the teams that execute the trash removal throughout our district.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Provide new or increase number of sanitation trucks and other equipment",
+          "explanation": "Secure an additional haulster to accommodate the 20+ miles of narrow streets in the district. This is the only way we can successfully ensure that those residents will receive the same quality service that our garage provides throughout the district. RESPONSE TO AGENCY: Thank you for your consideration. We are re-submitting this request in anticipation of the need for this addition to our BK5 Garage equipment stock, to support the great work and dedication of the teams that execute the trash removal throughout our district.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202706E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Funding to further the SHOP Healthy Brooklyn (NYC) program in CB5, to include zip code 11239. The original study completed in CB5 only included zip code 11207 and 11208. The results of the program outlined the great need for healthy food options in local groceries and bodegas. The Epi Data Brief generated from the initiative also showed that bodegas make up 51% of the food establishments in the 11207 areas of the district. Additionally, the brief exposed that for every grocery store, there were 5 fast food restaurants and 10 bodegas. In addition, during the Shop Health initiative, grocery store and bodega owners were given free marketing tools that promoted healthy food and beverage purchases, as well as free containers/baskets for fruit & vegetable displays. RESUBMISSION",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "11239",
+            "NYC Council Member Barron"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Funding to further the SHOP Healthy Brooklyn (NYC) program in CB5, to include zip code 11239. The original study completed in CB5 only included zip code 11207 and 11208. The results of the program outlined the great need for healthy food options in local groceries and bodegas. The Epi Data Brief generated from the initiative also showed that bodegas make up 51% of the food establishments in the 11207 areas of the district. Additionally, the brief exposed that for every grocery store, there were 5 fast food restaurants and 10 bodegas. In addition, during the Shop Health initiative, grocery store and bodega owners were given free marketing tools that promoted healthy food and beverage purchases, as well as free containers/baskets for fruit & vegetable displays. RESUBMISSION",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "11239",
+            "NYC Council Member Barron"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Funding to further the SHOP Healthy Brooklyn (NYC) program in CB5, to include zip code 11239. The original study completed in CB5 only included zip code 11207 and 11208. The results of the program outlined the great need for healthy food options in local groceries and bodegas. The Epi Data Brief generated from the initiative also showed that bodegas make up 51% of the food establishments in the 11207 areas of the district. Additionally, the brief exposed that for every grocery store, there were 5 fast food restaurants and 10 bodegas. In addition, during the Shop Health initiative, grocery store and bodega owners were given free marketing tools that promoted healthy food and beverage purchases, as well as free containers/baskets for fruit & vegetable displays. RESUBMISSION",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "11239",
+            "NYC Council Member Barron"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202707C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "Stop sign installation on Loring Avenue & Amber Street 4-Way Stop Sign on Loring & Emerald Street",
+          "response": "This is not a budget request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "Stop sign installation on Loring Avenue & Amber Street 4-Way Stop Sign on Loring & Emerald Street",
+          "response": "This is not a budget request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "Stop sign installation on Loring Avenue & Amber Street 4-Way Stop Sign on Loring & Emerald Street",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202707E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Create or promote programs to de-stigmatize mental health needs and encourage treatment",
+          "explanation": "Invest in expanding and enhancing mental health programming and Mental Health First Aid Training in Brooklyn, Community Board 5.",
+          "response": "Further investigation is required. Contact the agency.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Create or promote programs to de-stigmatize mental health needs and encourage treatment",
+          "explanation": "Invest in expanding and enhancing mental health programming and Mental Health First Aid Training in Brooklyn, Community Board 5.",
+          "response": "Further investigation is required. Contact the agency.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Create or promote programs to de-stigmatize mental health needs and encourage treatment",
+          "explanation": "Invest in expanding and enhancing mental health programming and Mental Health First Aid Training in Brooklyn, Community Board 5.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202708C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "Request for implementation of traffic light and other traffic calming tools at Stanley Avenue & Crescent Street - due to youth fatality. This is also near Hale A. Woodruff Elementary School (P.S. 224). The area should be designated as a school zone.",
+          "response": "Please contact the Borough Commissioner's office for Traffic Calming Device requests.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "Request for implementation of traffic light and other traffic calming tools at Stanley Avenue & Crescent Street - due to youth fatality. This is also near Hale A. Woodruff Elementary School (P.S. 224). The area should be designated as a school zone.",
+          "response": "This is not a budget request.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Improve traffic and pedestrian safety, including traffic calming",
+          "explanation": "Request for implementation of traffic light and other traffic calming tools at Stanley Avenue & Crescent Street - due to youth fatality. This is also near Hale A. Woodruff Elementary School (P.S. 224). The area should be designated as a school zone.",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202708E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DPR",
+          "explanation": "Based on Agency Response: Is the allowance for an increase in headcount something that OMB will be doing to accommodate this request? Please increase personnel budget to include more park rangers for our district. CB5 has over 50 parks/playgrounds and the need for care and consistent maintenance and management of these spaces are vital. RESPONSE TO AGENCY: Following the previous fiscal year's budget, has there been any funding identified to address this need?",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DPR",
+          "explanation": "Based on Agency Response: Is the allowance for an increase in headcount something that OMB will be doing to accommodate this request? Please increase personnel budget to include more park rangers for our district. CB5 has over 50 parks/playgrounds and the need for care and consistent maintenance and management of these spaces are vital. RESPONSE TO AGENCY: Following the previous fiscal year's budget, has there been any funding identified to address this need?",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Other expense budget request for DPR",
+          "explanation": "Based on Agency Response: Is the allowance for an increase in headcount something that OMB will be doing to accommodate this request? Please increase personnel budget to include more park rangers for our district. CB5 has over 50 parks/playgrounds and the need for care and consistent maintenance and management of these spaces are vital. RESPONSE TO AGENCY: Following the previous fiscal year's budget, has there been any funding identified to address this need?",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202709C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for EDC",
+          "explanation": "Secure funding for the construction or utilization of existing available space within the Industrial Business Zone, for a Green Initiative / Trade & Labor Training Facility. CB5 RESPONSE TO THE AGENCY: The recent opening of the \"ENY Industrial Building\", which is based in CB16, is a great resource and will be utilized for cooperative spaces for small business owners and entrepreneurs. However, the emphasis on a dedicated site for trade school programming and non-tradition employment training/certification opportunities. We are requesting that additional studies be conducted to help identify space or shared space to implement such services.",
+          "response": "For more information, please contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for EDC",
+          "explanation": "Secure funding for the construction or utilization of existing available space within the Industrial Business Zone, for a Green Initiative / Trade & Labor Training Facility. CB5 RESPONSE TO THE AGENCY: The recent opening of the \"ENY Industrial Building\", which is based in CB16, is a great resource and will be utilized for cooperative spaces for small business owners and entrepreneurs. However, the emphasis on a dedicated site for trade school programming and non-tradition employment training/certification opportunities. We are requesting that additional studies be conducted to help identify space or shared space to implement such services.",
+          "response": "OMB supports the agency’s position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "802",
+          "request": "Other capital budget request for EDC",
+          "explanation": "Secure funding for the construction or utilization of existing available space within the Industrial Business Zone, for a Green Initiative / Trade & Labor Training Facility. CB5 RESPONSE TO THE AGENCY: The recent opening of the \"ENY Industrial Building\", which is based in CB16, is a great resource and will be utilized for cooperative spaces for small business owners and entrepreneurs. However, the emphasis on a dedicated site for trade school programming and non-tradition employment training/certification opportunities. We are requesting that additional studies be conducted to help identify space or shared space to implement such services.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202709E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Increase tree pruning cycles to accommodate growing community and newly developed areas of Brooklyn, Community Board 5 - i.e. Spring Creek / Gateway section which includes the Spring Creek Nehemiah Homes/Gateway Elton, etc. RESPONSE TO AGENCY: Following the previous fiscal year's budget submissions - has there been any funding identified to address the need to increase personnel for the Forestry Division to address borough-wide pruning needs?",
+          "response": "Agency supports but cannot accommodate Explanation: Funding for our block pruning program was restored following the pandemic, and our 7-year street tree pruning cycle matches industry standards. If individual trees need pruning for public safety, we encourage anyone to submit a service request by locating the tree on the NYC Tree Map (and clicking on the “report a problem” tab), calling 311, or using our online tree service request system. Our inspectors will visit the tree and determine the appropriate action in accordance with our Tree Risk Management program. More details can be found on the Parks website: https://www.nycgovparks.org/services/forestry/risk-management. NYC Parks' Climber & Pruner Training Program is an in-house training program that connects current entry-level Parks employees with the training to become Climber & Pruners. With this program, Parks expects to add 15-20 new Climber & Pruners to the workforce every 15 months to help mitigate recruitment and hiring challenges. We agree with the need for more funding to increase staff, but that funding cannot be determined at this time.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Increase tree pruning cycles to accommodate growing community and newly developed areas of Brooklyn, Community Board 5 - i.e. Spring Creek / Gateway section which includes the Spring Creek Nehemiah Homes/Gateway Elton, etc. RESPONSE TO AGENCY: Following the previous fiscal year's budget submissions - has there been any funding identified to address the need to increase personnel for the Forestry Division to address borough-wide pruning needs?",
+          "response": "Agency supports but cannot accommodate Explanation: Funding for our block pruning program was restored following the pandemic, and our 7-year street tree pruning cycle matches industry standards. If individual trees need pruning for public safety, we encourage anyone to submit a service request by locating the tree on the NYC Tree Map (and clicking on the “report a problem” tab), calling 311, or using our online tree service request system. Our inspectors will visit the tree and determine the appropriate action in accordance with our Tree Risk Management program. More details can be found on the Parks website: https://www.nycgovparks.org/services/forestry/risk-management. NYC Parks' Climber & Pruner Training Program is an in-house training program that connects current entry-level Parks employees with the training to become Climber & Pruners. With this program, Parks expects to add 15-20 new Climber & Pruners to the workforce every 15 months to help mitigate recruitment and hiring challenges. We agree with the need for more funding to increase staff, but that funding cannot be determined at this time.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Forestry services, including street tree maintenance",
+          "explanation": "Increase tree pruning cycles to accommodate growing community and newly developed areas of Brooklyn, Community Board 5 - i.e. Spring Creek / Gateway section which includes the Spring Creek Nehemiah Homes/Gateway Elton, etc. RESPONSE TO AGENCY: Following the previous fiscal year's budget submissions - has there been any funding identified to address the need to increase personnel for the Forestry Division to address borough-wide pruning needs?",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202710C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Health and Hospitals Corporation",
+            "agency_id": "nyc-health-hospitals",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded health care facility",
+          "explanation": "Due to the ongoing expansion of large housing developments in the district, the population and increase in family size is evident. We are in need of a new hospital based in the district to provide the necessary medical needs of existing and new residents. RESPONSE TO AGENCY: CB5 is resubmitting this request to emphasize the obvious need to conduct a study to assess the need based on existing & historic health concerns and time frame since a public hospital has existed in the district.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: NYC Health + Hospitals is currently in the process of modernizing its infrastructure, increasing its capacity and expanding the range of services it offers to better respond to the community’s growing healthcare needs. In order to create a new health care facility, H+H needs to closely coordinate with the State and conduct a community needs assessments to determine its viability. If the results of the assessment are positive, NYC Health + Hospitals will need to create a master plan and seek capital funding. Please note that the cost and effort required to construct a new facility is significant and NYC Health + Hospitals is currently unable to undertake a project of this magnitude due to lack of funding. \"",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Health and Hospitals Corporation",
+            "agency_id": "nyc-health-hospitals",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new or expanded health care facility",
+          "explanation": "Due to the ongoing expansion of large housing developments in the district, the population and increase in family size is evident. We are in need of a new hospital based in the district to provide the necessary medical needs of existing and new residents. RESPONSE TO AGENCY: CB5 is resubmitting this request to emphasize the obvious need to conduct a study to assess the need based on existing & historic health concerns and time frame since a public hospital has existed in the district.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: NYC Health + Hospitals is currently in the process of modernizing its infrastructure, increasing its capacity and expanding the range of services it offers to better respond to the community’s growing healthcare needs. In order to create a new health care facility, H+H needs to closely coordinate with the State and conduct a community needs assessments to determine its viability. If the results of the assessment are positive, NYC Health + Hospitals will need to create a master plan and seek capital funding. Please note that the cost and effort required to construct a new facility is significant and NYC Health + Hospitals is currently unable to undertake a project of this magnitude due to lack of funding. \"",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Health and Hospitals Corporation",
+            "agency_id": "nyc-health-hospitals",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "819",
+          "request": "Provide a new or expanded health care facility",
+          "explanation": "Due to the ongoing expansion of large housing developments in the district, the population and increase in family size is evident. We are in need of a new hospital based in the district to provide the necessary medical needs of existing and new residents. RESPONSE TO AGENCY: CB5 is resubmitting this request to emphasize the obvious need to conduct a study to assess the need based on existing & historic health concerns and time frame since a public hospital has existed in the district.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202710E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DPR",
+          "explanation": "Please conduct a study to determine the feasibility of installing a comfort station at parks/playgrounds in Brooklyn, Community Board 5. The study should include total amount of parks currently outfitted with comfort stations, criteria for installment, and cost for outfitting qualifying park sites, with new comfort stations. This study will support CB5's ongoing advocacy to ensure our park sites are fully equipped for maximum use.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DPR",
+          "explanation": "Please conduct a study to determine the feasibility of installing a comfort station at parks/playgrounds in Brooklyn, Community Board 5. The study should include total amount of parks currently outfitted with comfort stations, criteria for installment, and cost for outfitting qualifying park sites, with new comfort stations. This study will support CB5's ongoing advocacy to ensure our park sites are fully equipped for maximum use.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Other expense budget request for DPR",
+          "explanation": "Please conduct a study to determine the feasibility of installing a comfort station at parks/playgrounds in Brooklyn, Community Board 5. The study should include total amount of parks currently outfitted with comfort stations, criteria for installment, and cost for outfitting qualifying park sites, with new comfort stations. This study will support CB5's ongoing advocacy to ensure our park sites are fully equipped for maximum use.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202711C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "Exterior upgrades and lighting at the New Lots Avenue \"L\" station underpass. This line is a major feed between Brooklyn Community Boards 5 and 16 and provides ridership for thousands of customers daily. However, the underpass has extremely poor lighting, leaks, and consistent trash scattered about. The station is in need of an overhaul and a collaboration with the Department of Cultural Affairs to bring public art installations to the exterior of the station.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "Exterior upgrades and lighting at the New Lots Avenue \"L\" station underpass. This line is a major feed between Brooklyn Community Boards 5 and 16 and provides ridership for thousands of customers daily. However, the underpass has extremely poor lighting, leaks, and consistent trash scattered about. The station is in need of an overhaul and a collaboration with the Department of Cultural Affairs to bring public art installations to the exterior of the station.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "998",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "Exterior upgrades and lighting at the New Lots Avenue \"L\" station underpass. This line is a major feed between Brooklyn Community Boards 5 and 16 and provides ridership for thousands of customers daily. However, the underpass has extremely poor lighting, leaks, and consistent trash scattered about. The station is in need of an overhaul and a collaboration with the Department of Cultural Affairs to bring public art installations to the exterior of the station.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202711E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other enforcement requests",
+          "explanation": "Increase frequency of street inspection to remove abandoned vehicles and illegally parked vehicles. There are some locations that are targeted more than others, specifically in auto body/repair shops. - EXPLANATION: CB5 has the highest rate of 311 complaints for illegally parked and abandoned vehicles. We need a collaborated agency approach to address the issue. RESPONSE TO AGENCY: Please see re-submission of this item to appeal for allocation of any funding that has become available to address the need.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other enforcement requests",
+          "explanation": "Increase frequency of street inspection to remove abandoned vehicles and illegally parked vehicles. There are some locations that are targeted more than others, specifically in auto body/repair shops. - EXPLANATION: CB5 has the highest rate of 311 complaints for illegally parked and abandoned vehicles. We need a collaborated agency approach to address the issue. RESPONSE TO AGENCY: Please see re-submission of this item to appeal for allocation of any funding that has become available to address the need.",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Other enforcement requests",
+          "explanation": "Increase frequency of street inspection to remove abandoned vehicles and illegally parked vehicles. There are some locations that are targeted more than others, specifically in auto body/repair shops. - EXPLANATION: CB5 has the highest rate of 311 complaints for illegally parked and abandoned vehicles. We need a collaborated agency approach to address the issue. RESPONSE TO AGENCY: Please see re-submission of this item to appeal for allocation of any funding that has become available to address the need.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202712C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "Request to fund overall upgrades, street-scape improvements, and beautification of the station and surrounding area of New Lots Avenue \"L\" line.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "Request to fund overall upgrades, street-scape improvements, and beautification of the station and surrounding area of New Lots Avenue \"L\" line.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "998",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "Request to fund overall upgrades, street-scape improvements, and beautification of the station and surrounding area of New Lots Avenue \"L\" line.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202712E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other business regulatory assistance requests",
+          "explanation": "RESUBMISSION - Request that SBS implement a mandate policy to inform Community Board offices of any and all new lease holders or business owners in IBZ. Business updated reports should come from the contracted non-profit organization that manages the BIDs and the IBZ sites. Our understanding is that SBS is the agency that oversees the IBZ sites through a contractual relationship with a non-profit (for CB5 - that is BOC Network)",
+          "response": "The Agency will accommodate this request within existing resources, but the community board should contact the Agency with additional information.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other business regulatory assistance requests",
+          "explanation": "RESUBMISSION - Request that SBS implement a mandate policy to inform Community Board offices of any and all new lease holders or business owners in IBZ. Business updated reports should come from the contracted non-profit organization that manages the BIDs and the IBZ sites. Our understanding is that SBS is the agency that oversees the IBZ sites through a contractual relationship with a non-profit (for CB5 - that is BOC Network)",
+          "response": "The Agency will accommodate this request within existing resources, but the community board should contact the Agency with additional information.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "801",
+          "request": "Other business regulatory assistance requests",
+          "explanation": "RESUBMISSION - Request that SBS implement a mandate policy to inform Community Board offices of any and all new lease holders or business owners in IBZ. Business updated reports should come from the contracted non-profit organization that manages the BIDs and the IBZ sites. Our understanding is that SBS is the agency that oversees the IBZ sites through a contractual relationship with a non-profit (for CB5 - that is BOC Network)",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202713C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other NYPD facilities and equipment requests",
+          "explanation": "Brooklyn Community Board 5 respectfully requests urgent capital funding to address critical infrastructure needs at the NYPD Community Center and CB5 District Office located at 127 Pennsylvania Avenue. Although the building was renovated and reopened in 2019, ongoing structural deficiencies,including ceiling leaks and related water damage,pose significant safety hazards to staff and the public. The facility serves as a full-service community center, hosting children, youth, adults, and seniors daily, as well as accommodating the full District Office of Brooklyn Community Board 5 and NYPD personnel from Youth Strategies, Community Affairs, and School Safety. The current ADA lift is frequently out of service, impeding access for individuals with disabilities. Replacement with a modern, fully compliant ADA lift is urgently required to ensure equitable access for all visitors. We request the allocation of capital funding to remediate structural issues, prevent further damage, and upgrade critical accessibility infrastructure. Timely intervention will preserve the safety, functionality, and full operational capacity of this essential community and law enforcement hub.",
+          "response": "Please contact the Borough Commissioner's office to discuss this request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "127 PENNSYLVANIA AVENUE, Brooklyn, NY, USA"
+          },
+          "support_by": [
+            "NYC Council Member Sandy Nurse",
+            "NYC Council Member Chris Banks"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other NYPD facilities and equipment requests",
+          "explanation": "Brooklyn Community Board 5 respectfully requests urgent capital funding to address critical infrastructure needs at the NYPD Community Center and CB5 District Office located at 127 Pennsylvania Avenue. Although the building was renovated and reopened in 2019, ongoing structural deficiencies,including ceiling leaks and related water damage,pose significant safety hazards to staff and the public. The facility serves as a full-service community center, hosting children, youth, adults, and seniors daily, as well as accommodating the full District Office of Brooklyn Community Board 5 and NYPD personnel from Youth Strategies, Community Affairs, and School Safety. The current ADA lift is frequently out of service, impeding access for individuals with disabilities. Replacement with a modern, fully compliant ADA lift is urgently required to ensure equitable access for all visitors. We request the allocation of capital funding to remediate structural issues, prevent further damage, and upgrade critical accessibility infrastructure. Timely intervention will preserve the safety, functionality, and full operational capacity of this essential community and law enforcement hub.",
+          "response": "Please contact the Borough Commissioner's office to discuss this request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "127 PENNSYLVANIA AVENUE, Brooklyn, NY, USA"
+          },
+          "support_by": [
+            "NYC Council Member Sandy Nurse",
+            "NYC Council Member Chris Banks"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Other NYPD facilities and equipment requests",
+          "explanation": "Brooklyn Community Board 5 respectfully requests urgent capital funding to address critical infrastructure needs at the NYPD Community Center and CB5 District Office located at 127 Pennsylvania Avenue. Although the building was renovated and reopened in 2019, ongoing structural deficiencies,including ceiling leaks and related water damage,pose significant safety hazards to staff and the public. The facility serves as a full-service community center, hosting children, youth, adults, and seniors daily, as well as accommodating the full District Office of Brooklyn Community Board 5 and NYPD personnel from Youth Strategies, Community Affairs, and School Safety. The current ADA lift is frequently out of service, impeding access for individuals with disabilities. Replacement with a modern, fully compliant ADA lift is urgently required to ensure equitable access for all visitors. We request the allocation of capital funding to remediate structural issues, prevent further damage, and upgrade critical accessibility infrastructure. Timely intervention will preserve the safety, functionality, and full operational capacity of this essential community and law enforcement hub.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "127 PENNSYLVANIA AVENUE, Brooklyn, NY, USA"
+          },
+          "support_by": [
+            "NYC Council Member Sandy Nurse",
+            "NYC Council Member Chris Banks"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202713E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Add street signage or wayfinding elements",
+          "explanation": "Replace Stop sign at the intersection of Emerald Street and Sapphire Street and install approaching stop sign signal/indicator on Emerald. RESPONSE TO AGENCY: Following the previous fiscal year's budget submissions, has there been any funding identified to address this need?",
+          "response": "This is not a budget request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Add street signage or wayfinding elements",
+          "explanation": "Replace Stop sign at the intersection of Emerald Street and Sapphire Street and install approaching stop sign signal/indicator on Emerald. RESPONSE TO AGENCY: Following the previous fiscal year's budget submissions, has there been any funding identified to address this need?",
+          "response": "This is not a budget request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Add street signage or wayfinding elements",
+          "explanation": "Replace Stop sign at the intersection of Emerald Street and Sapphire Street and install approaching stop sign signal/indicator on Emerald. RESPONSE TO AGENCY: Following the previous fiscal year's budget submissions, has there been any funding identified to address this need?",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202714C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new NYPD facility, such as a new precinct house or sub-precinct",
+          "explanation": "Request for an extension of existing precinct - 75th pct. or new precinct to accommodate growing population in the district.",
+          "response": "Further study by the agency of this request is needed. Therefore, OMB does not take any position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide a new NYPD facility, such as a new precinct house or sub-precinct",
+          "explanation": "Request for an extension of existing precinct - 75th pct. or new precinct to accommodate growing population in the district.",
+          "response": "Further study by the agency of this request is needed. Therefore, OMB does not take any position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Provide a new NYPD facility, such as a new precinct house or sub-precinct",
+          "explanation": "Request for an extension of existing precinct - 75th pct. or new precinct to accommodate growing population in the district.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202714E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Address traffic congestion",
+          "explanation": "Address traffic congestion on Fountain Avenue between Sutter Avenue and Linden Boulevard It has become a congested area of the district due to the Fountain Avenue bike lanes that were implemented. We are requesting that DOT conduct a study to revisit the Fountain Avenue stretch to assess traffic flow and determine how it can be addressed. It is an important avenue that feeds into Linden Boulevard and also connects to the newly installed Shirley Chisholm State park, however the congestion caused by the bike lane is not condusive to pedestrian safety and ease of traffic.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: We are committed to improving and expanding the bicycle network to accommodate the increasing number of cyclists and therefore have no plans to removing the bicycle lanes at this location. DOT supports the community process and works diligently to develop a proposal based on feasibility and community direction. These efforts typically lead to a positive outcome because the project is developed based on a balance of community direction and feasibility. As always, we welcome community feedback and we continue to monitor projects as part of our post-implementation evaluation.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Address traffic congestion",
+          "explanation": "Address traffic congestion on Fountain Avenue between Sutter Avenue and Linden Boulevard It has become a congested area of the district due to the Fountain Avenue bike lanes that were implemented. We are requesting that DOT conduct a study to revisit the Fountain Avenue stretch to assess traffic flow and determine how it can be addressed. It is an important avenue that feeds into Linden Boulevard and also connects to the newly installed Shirley Chisholm State park, however the congestion caused by the bike lane is not condusive to pedestrian safety and ease of traffic.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: We are committed to improving and expanding the bicycle network to accommodate the increasing number of cyclists and therefore have no plans to removing the bicycle lanes at this location. DOT supports the community process and works diligently to develop a proposal based on feasibility and community direction. These efforts typically lead to a positive outcome because the project is developed based on a balance of community direction and feasibility. As always, we welcome community feedback and we continue to monitor projects as part of our post-implementation evaluation.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Address traffic congestion",
+          "explanation": "Address traffic congestion on Fountain Avenue between Sutter Avenue and Linden Boulevard It has become a congested area of the district due to the Fountain Avenue bike lanes that were implemented. We are requesting that DOT conduct a study to revisit the Fountain Avenue stretch to assess traffic flow and determine how it can be addressed. It is an important avenue that feeds into Linden Boulevard and also connects to the newly installed Shirley Chisholm State park, however the congestion caused by the bike lane is not condusive to pedestrian safety and ease of traffic.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202715C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide surveillance (Argus) cameras",
+          "explanation": "Request to have cameras near the public community gardens to alleviate illegal dumping, vandalism, theft, and other public safety matters that can cause damage to the sites and impede the necessary resources that our community gardens provide.",
+          "response": "More information is needed from the community board before making a funding decision. The community board should contact the agency.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide surveillance (Argus) cameras",
+          "explanation": "Request to have cameras near the public community gardens to alleviate illegal dumping, vandalism, theft, and other public safety matters that can cause damage to the sites and impede the necessary resources that our community gardens provide.",
+          "response": "More information is needed from the community board before making a funding decision. The community board should contact the agency.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Provide surveillance (Argus) cameras",
+          "explanation": "Request to have cameras near the public community gardens to alleviate illegal dumping, vandalism, theft, and other public safety matters that can cause damage to the sites and impede the necessary resources that our community gardens provide.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202715E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve parking operations",
+          "explanation": "Assess the traffic, parking, and pedestrian safety conditions of the installed protected bike lanes on Cozine Avenue and Wortman Avenue. Since the installation of the protected bike lanes, the longest protected bike lane project in ENY, there have been a number of complaints from neighboring residents. Not only did the neighborhood lose 200 parking spaces, but it has caused accidents for residents who realize that implemented signage goes against traffic and pedestrian flow in some intersections of the protected lanes.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: We are committed to improving and expanding the bicycle network to accommodate the increasing number of cyclists and therefore have no plans to removing the bicycle lanes at this location. DOT supports the community process and works diligently to develop a proposal based on feasibility and community direction. These efforts typically lead to a positive outcome because the project is developed based on a balance of community direction and feasibility. As always, we welcome community feedback and we continue to monitor projects as part of our post-implementation evaluation.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Improve parking operations",
+          "explanation": "Assess the traffic, parking, and pedestrian safety conditions of the installed protected bike lanes on Cozine Avenue and Wortman Avenue. Since the installation of the protected bike lanes, the longest protected bike lane project in ENY, there have been a number of complaints from neighboring residents. Not only did the neighborhood lose 200 parking spaces, but it has caused accidents for residents who realize that implemented signage goes against traffic and pedestrian flow in some intersections of the protected lanes.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: We are committed to improving and expanding the bicycle network to accommodate the increasing number of cyclists and therefore have no plans to removing the bicycle lanes at this location. DOT supports the community process and works diligently to develop a proposal based on feasibility and community direction. These efforts typically lead to a positive outcome because the project is developed based on a balance of community direction and feasibility. As always, we welcome community feedback and we continue to monitor projects as part of our post-implementation evaluation.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Improve parking operations",
+          "explanation": "Assess the traffic, parking, and pedestrian safety conditions of the installed protected bike lanes on Cozine Avenue and Wortman Avenue. Since the installation of the protected bike lanes, the longest protected bike lane project in ENY, there have been a number of complaints from neighboring residents. Not only did the neighborhood lose 200 parking spaces, but it has caused accidents for residents who realize that implemented signage goes against traffic and pedestrian flow in some intersections of the protected lanes.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202716E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Conduct traffic or parking studies",
+          "explanation": "Please conduct a study to determine the feasibility of converting Malta Street between Linden Boulevard and Stanley Avenue to a one-way street, going South. There has been an increased amount of speeding violations due to traffic calming methods implemented on surrounding blocks, so drivers are speeding through Malta to avoid speed control.",
+          "response": "OMB supports the agency's position as follows: Agency does not support but can address the need alternatively Explanation: As we stated last year, please formally request this in separate letter and we can have our TEP unit study.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Conduct traffic or parking studies",
+          "explanation": "Please conduct a study to determine the feasibility of converting Malta Street between Linden Boulevard and Stanley Avenue to a one-way street, going South. There has been an increased amount of speeding violations due to traffic calming methods implemented on surrounding blocks, so drivers are speeding through Malta to avoid speed control.",
+          "response": "OMB supports the agency's position as follows: Agency does not support but can address the need alternatively Explanation: As we stated last year, please formally request this in separate letter and we can have our TEP unit study.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Conduct traffic or parking studies",
+          "explanation": "Please conduct a study to determine the feasibility of converting Malta Street between Linden Boulevard and Stanley Avenue to a one-way street, going South. There has been an increased amount of speeding violations due to traffic calming methods implemented on surrounding blocks, so drivers are speeding through Malta to avoid speed control.",
+          "response": "Agency does not support but can address the need alternatively",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202717E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Conduct traffic or parking studies",
+          "explanation": "Please conduct a study to determine the feasibility of converting Malta Street between Linden Boulevard and Stanley Avenue to a one-way street, going South. Due to traffic calming measures implemented on surrounding blocks, drivers are increasingly speeding through Malta to avoid controls.",
+          "response": "Please contact the Borough Commissioner's office for Traffic Calming Device requests.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Conduct traffic or parking studies",
+          "explanation": "Please conduct a study to determine the feasibility of converting Malta Street between Linden Boulevard and Stanley Avenue to a one-way street, going South. Due to traffic calming measures implemented on surrounding blocks, drivers are increasingly speeding through Malta to avoid controls.",
+          "response": "Please contact the Borough Commissioner's office for Traffic Calming Device requests.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Conduct traffic or parking studies",
+          "explanation": "Please conduct a study to determine the feasibility of converting Malta Street between Linden Boulevard and Stanley Avenue to a one-way street, going South. Due to traffic calming measures implemented on surrounding blocks, drivers are increasingly speeding through Malta to avoid controls.",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202718E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other traffic improvement requests",
+          "explanation": "Please conduct a traffic study to determine the feasibility of a traffic signal a the intersection of Jamaica Avenue and Arlington Avenue.",
+          "response": "This is not a budget request.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other traffic improvement requests",
+          "explanation": "Please conduct a traffic study to determine the feasibility of a traffic signal a the intersection of Jamaica Avenue and Arlington Avenue.",
+          "response": "This is not a budget request.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Other traffic improvement requests",
+          "explanation": "Please conduct a traffic study to determine the feasibility of a traffic signal a the intersection of Jamaica Avenue and Arlington Avenue.",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202719E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Conduct traffic or parking studies",
+          "explanation": "Please conduct a traffic study to determine safety improvements at the intersection of Atlantic Avenue and N. Conduit Boulevard. Currently the traffic pattern merges Atlantic Avenue and N. Conduit Boulevard and they meet at the intersection of Logan Street which also encompasses turning signals. There is a need to implement signage or an additional traffic light to calm merging vehicles.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: This location is under review for our larger study of Conduit Avenue. We will provide an update once we have more information.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Conduct traffic or parking studies",
+          "explanation": "Please conduct a traffic study to determine safety improvements at the intersection of Atlantic Avenue and N. Conduit Boulevard. Currently the traffic pattern merges Atlantic Avenue and N. Conduit Boulevard and they meet at the intersection of Logan Street which also encompasses turning signals. There is a need to implement signage or an additional traffic light to calm merging vehicles.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: This location is under review for our larger study of Conduit Avenue. We will provide an update once we have more information.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Conduct traffic or parking studies",
+          "explanation": "Please conduct a traffic study to determine safety improvements at the intersection of Atlantic Avenue and N. Conduit Boulevard. Currently the traffic pattern merges Atlantic Avenue and N. Conduit Boulevard and they meet at the intersection of Logan Street which also encompasses turning signals. There is a need to implement signage or an additional traffic light to calm merging vehicles.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202720E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DOT",
+          "explanation": "Lighting on Chestnut Street & Atlantic Avenue. This is a newly developed area - with the Chestnut Commons housing development and the new Cypress Hills/ENY Community Center. It is now flooded with hundreds of families, older adults, and children and lighting is essential for the safety & well being of the new residents in this area.",
+          "response": "This is not a budget request.",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for DOT",
+          "explanation": "Lighting on Chestnut Street & Atlantic Avenue. This is a newly developed area - with the Chestnut Commons housing development and the new Cypress Hills/ENY Community Center. It is now flooded with hundreds of families, older adults, and children and lighting is essential for the safety & well being of the new residents in this area.",
+          "response": "This is not a budget request.",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "841",
+          "request": "Other expense budget request for DOT",
+          "explanation": "Lighting on Chestnut Street & Atlantic Avenue. This is a newly developed area - with the Chestnut Commons housing development and the new Cypress Hills/ENY Community Center. It is now flooded with hundreds of families, older adults, and children and lighting is essential for the safety & well being of the new residents in this area.",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202721E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for EDC",
+          "explanation": "Create a report from community input/feedback for the Broadway Junction site plans. The report should include feedback from the original Broadway Junction Working Group as well as more recent communication from community members and any capital/expense funding that has been secured to date. Report details should also include initial community requests for capital investments in street infrastructure upgrades; lighting; street calming methods; CUNY Institution; Trade School; and more. RESPONSE TO AGENCY: Please inform CB5 if you have progressed with findings or reports from existing studies. We are emphasizing the need to still incorporate a City University within the Broadway Junction area to provide direct access to higher education and greater opportunity to increase median incomes.",
+          "response": "For more information, please contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for EDC",
+          "explanation": "Create a report from community input/feedback for the Broadway Junction site plans. The report should include feedback from the original Broadway Junction Working Group as well as more recent communication from community members and any capital/expense funding that has been secured to date. Report details should also include initial community requests for capital investments in street infrastructure upgrades; lighting; street calming methods; CUNY Institution; Trade School; and more. RESPONSE TO AGENCY: Please inform CB5 if you have progressed with findings or reports from existing studies. We are emphasizing the need to still incorporate a City University within the Broadway Junction area to provide direct access to higher education and greater opportunity to increase median incomes.",
+          "response": "OMB supports the agency’s position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "802",
+          "request": "Other expense budget request for EDC",
+          "explanation": "Create a report from community input/feedback for the Broadway Junction site plans. The report should include feedback from the original Broadway Junction Working Group as well as more recent communication from community members and any capital/expense funding that has been secured to date. Report details should also include initial community requests for capital investments in street infrastructure upgrades; lighting; street calming methods; CUNY Institution; Trade School; and more. RESPONSE TO AGENCY: Please inform CB5 if you have progressed with findings or reports from existing studies. We are emphasizing the need to still incorporate a City University within the Broadway Junction area to provide direct access to higher education and greater opportunity to increase median incomes.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202722E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for EDC",
+          "explanation": "Create greater incentives for developers to incorporate cooperative work spaces within mixed used development and other initiatives that would assist with securing local business tenants. CB5 has large mixed-use development that was created to encourage revitalized and walkable commercial areas but rents are too high for local businesses to take advantage of the new spaces. Therefore commercial spaces are left vacant for unnecessary lengths of time with no activity.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for EDC",
+          "explanation": "Create greater incentives for developers to incorporate cooperative work spaces within mixed used development and other initiatives that would assist with securing local business tenants. CB5 has large mixed-use development that was created to encourage revitalized and walkable commercial areas but rents are too high for local businesses to take advantage of the new spaces. Therefore commercial spaces are left vacant for unnecessary lengths of time with no activity.",
+          "response": "OMB supports the agency’s position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "802",
+          "request": "Other expense budget request for EDC",
+          "explanation": "Create greater incentives for developers to incorporate cooperative work spaces within mixed used development and other initiatives that would assist with securing local business tenants. CB5 has large mixed-use development that was created to encourage revitalized and walkable commercial areas but rents are too high for local businesses to take advantage of the new spaces. Therefore commercial spaces are left vacant for unnecessary lengths of time with no activity.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202723E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Fire Department",
+            "agency_id": "fire-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more firefighters or EMS workers",
+          "explanation": "Implement additional funding to increase Firefighter personnel and EMS personnel. We need greater incentives and promotional campaigns to increase awareness of open positions within the Fire Department, with an emphasis on promotion in communities of color and high schools seniors.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: FDNY is planning to maximize Firefighter and EMT hiring in FY27.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Fire Department",
+            "agency_id": "fire-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more firefighters or EMS workers",
+          "explanation": "Implement additional funding to increase Firefighter personnel and EMS personnel. We need greater incentives and promotional campaigns to increase awareness of open positions within the Fire Department, with an emphasis on promotion in communities of color and high schools seniors.",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: FDNY is planning to maximize Firefighter and EMT hiring in FY27.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Fire Department",
+            "agency_id": "fire-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "057",
+          "request": "Provide more firefighters or EMS workers",
+          "explanation": "Implement additional funding to increase Firefighter personnel and EMS personnel. We need greater incentives and promotional campaigns to increase awareness of open positions within the Fire Department, with an emphasis on promotion in communities of color and high schools seniors.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202724E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for HPD",
+          "explanation": "Conduct comprehensive study of the results of the East New York Basement Legalization Pilot initiative. What were the results and how did it impact the homeowners who participated in the pilot? If results favored homeowners and provided greater opportunities for rental incomes, how can we continue the funding to implement the initiative as permanent program within HPD?",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DOB and HPD are working to issue rules that will govern a basement temporary residency program that the City Council authorized last year to create a pathway to legalize some basement apartments in NYC. HPD's PlusOne ADU program may be available to with financing for eligibility homeowners.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for HPD",
+          "explanation": "Conduct comprehensive study of the results of the East New York Basement Legalization Pilot initiative. What were the results and how did it impact the homeowners who participated in the pilot? If results favored homeowners and provided greater opportunities for rental incomes, how can we continue the funding to implement the initiative as permanent program within HPD?",
+          "response": "The Adopted Budget includes a city-wide allocation for this work. Specific locations are determined by the Agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Housing Preservation & Development",
+            "agency_id": "housing-preservation-and-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "806",
+          "request": "Other expense budget request for HPD",
+          "explanation": "Conduct comprehensive study of the results of the East New York Basement Legalization Pilot initiative. What were the results and how did it impact the homeowners who participated in the pilot? If results favored homeowners and provided greater opportunities for rental incomes, how can we continue the funding to implement the initiative as permanent program within HPD?",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202725E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for MOCJ",
+          "explanation": "Increase and extend budget for Cure Violence programming and the NYC Crisis Management System. Although we have had a decline in gun violence and gun-related incidents in varying neighborhoods in our city - it was proven through COVID, these numbers have the potential of increasing with a vengeance given the climate. We must continue to invest in the men and women who make a difference in preventative measures. Violence is a serious health epidemic and in CB5, homicide is amongst the top five causes of premature death. Therefore we have to expand on funding that focuses on prevention and intervention.",
+          "response": "Agency does not support and cannot accommodate Explanation: Please contact the agency directly and promptly for more information.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for MOCJ",
+          "explanation": "Increase and extend budget for Cure Violence programming and the NYC Crisis Management System. Although we have had a decline in gun violence and gun-related incidents in varying neighborhoods in our city - it was proven through COVID, these numbers have the potential of increasing with a vengeance given the climate. We must continue to invest in the men and women who make a difference in preventative measures. Violence is a serious health epidemic and in CB5, homicide is amongst the top five causes of premature death. Therefore we have to expand on funding that focuses on prevention and intervention.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: Please contact the agency directly and promptly for more information.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "260",
+          "request": "Other expense budget request for MOCJ",
+          "explanation": "Increase and extend budget for Cure Violence programming and the NYC Crisis Management System. Although we have had a decline in gun violence and gun-related incidents in varying neighborhoods in our city - it was proven through COVID, these numbers have the potential of increasing with a vengeance given the climate. We must continue to invest in the men and women who make a difference in preventative measures. Violence is a serious health epidemic and in CB5, homicide is amongst the top five causes of premature death. Therefore we have to expand on funding that focuses on prevention and intervention.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202726E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other NYPD staff resources requests",
+          "explanation": "Please provide update - has there been any movement within the last and/or current administration to accommodate this request? CB5 has the highest incidences of illegally parked vehicles and abandoned vehicles in the city. Our numbers have risen due to the amount of local auto shops and garages that park their junk or for-sale vehicles on public streets; and other abandoned vehicles that are randomly left on public streets for years. We need a very specific focus on this issue and an increase in the officers that search for these incidences in the district. RESPONSE TO AGENCY: Following the previous fiscal year's budget submissions - has there been any funding identified/allocated towards this need?",
+          "response": "More information is needed from the community board before making a funding decision. The community board should contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other NYPD staff resources requests",
+          "explanation": "Please provide update - has there been any movement within the last and/or current administration to accommodate this request? CB5 has the highest incidences of illegally parked vehicles and abandoned vehicles in the city. Our numbers have risen due to the amount of local auto shops and garages that park their junk or for-sale vehicles on public streets; and other abandoned vehicles that are randomly left on public streets for years. We need a very specific focus on this issue and an increase in the officers that search for these incidences in the district. RESPONSE TO AGENCY: Following the previous fiscal year's budget submissions - has there been any funding identified/allocated towards this need?",
+          "response": "More information is needed from the community board before making a funding decision. The community board should contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Other NYPD staff resources requests",
+          "explanation": "Please provide update - has there been any movement within the last and/or current administration to accommodate this request? CB5 has the highest incidences of illegally parked vehicles and abandoned vehicles in the city. Our numbers have risen due to the amount of local auto shops and garages that park their junk or for-sale vehicles on public streets; and other abandoned vehicles that are randomly left on public streets for years. We need a very specific focus on this issue and an increase in the officers that search for these incidences in the district. RESPONSE TO AGENCY: Following the previous fiscal year's budget submissions - has there been any funding identified/allocated towards this need?",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "205202727E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "brooklyn-cb-05",
+      "board_binding": "bound",
+      "publisher_boro": "2",
+      "publisher_board": "05",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more community board staff",
+          "explanation": "Increase community board personnel budget to allow for experienced, skilled staff hires to assist in data preparation, district assessments, research, procurement document processing, and other community-centered supports.",
+          "response": "As of the FY 2027 Executive Budget, each Community Board's budget is being maintained.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more community board staff",
+          "explanation": "Increase community board personnel budget to allow for experienced, skilled staff hires to assist in data preparation, district assessments, research, procurement document processing, and other community-centered supports.",
+          "response": "As of the FY 2027 Adopted Budget, each Community Board's budget is being maintained.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "002",
+          "request": "Provide more community board staff",
+          "explanation": "Increase community board personnel budget to allow for experienced, skilled staff hires to assist in data preparation, district assessments, research, procurement document processing, and other community-centered supports.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    }
+  ]
+}

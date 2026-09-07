@@ -1,0 +1,4300 @@
+{
+  "schema": "cityscroll.community_board_budget_register_document.v1",
+  "method": "omb_register_full_tracking_code_within_cycle_v1",
+  "negative_rule": "A changed response text is a changed written answer and nothing else. It is not funding, a commitment, delivery, or completion, and no request is carried across fiscal cycles by a repeated priority number, a similar facility name, or matching request text.",
+  "board_id": "manhattan-cb-10",
+  "publications": {
+    "as_of": "2026-09-07",
+    "servable": [
+      "20260512",
+      "20260630"
+    ],
+    "diagnostic_only": [
+      "20270217"
+    ],
+    "latest": "20260630"
+  },
+  "request_count": 46,
+  "requests": [
+    {
+      "tracking_code": "310202701C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Buildings",
+            "agency_id": "buildings",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DOB",
+          "explanation": "MCB10 requests $2 million Religious Building Repair Program, focusing on roof repairs, structural stabilization, system upgrades and ADA compliance, that would support the large church community and religious institutions in Central Harlem.",
+          "response": "For more information, please contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Buildings",
+            "agency_id": "buildings",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DOB",
+          "explanation": "MCB10 requests $2 million Religious Building Repair Program, focusing on roof repairs, structural stabilization, system upgrades and ADA compliance, that would support the large church community and religious institutions in Central Harlem.",
+          "response": "For more information, please contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Buildings",
+            "agency_id": "buildings",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "810",
+          "request": "Other capital budget request for DOB",
+          "explanation": "MCB10 requests $2 million Religious Building Repair Program, focusing on roof repairs, structural stabilization, system upgrades and ADA compliance, that would support the large church community and religious institutions in Central Harlem.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202701E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other request for services for the homeless",
+          "explanation": "$2 million dollars to expand and support Homeless Services in Central Harlem community that will be provided by qualified community based organizations that will offer these vital services in Central Harlem. This will ensure that those most in need will have access to services and receive services in a culturally competent manner.",
+          "response": "More information is needed from the agency before making a funding decision. The community board should contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other request for services for the homeless",
+          "explanation": "$2 million dollars to expand and support Homeless Services in Central Harlem community that will be provided by qualified community based organizations that will offer these vital services in Central Harlem. This will ensure that those most in need will have access to services and receive services in a culturally competent manner.",
+          "response": "More information is needed from the agency before making a funding decision. The community board should contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "071",
+          "request": "Other request for services for the homeless",
+          "explanation": "$2 million dollars to expand and support Homeless Services in Central Harlem community that will be provided by qualified community based organizations that will offer these vital services in Central Harlem. This will ensure that those most in need will have access to services and receive services in a culturally competent manner.",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202702C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other cultural facilities and resources requests",
+          "explanation": "Seek $5M to Create a dedicated fund for CB10 to acquire and renovate underutilized City or private real estate into permanent, multi-disciplinary cultural hubs (theatre, dance, gallery, rehearsal) with at least 50% of the space designated for rent-subsidized use by emerging Harlem-based organizations. (The capital request is for the initial funding of this program.)",
+          "response": "More information is needed from the community board before making a funding decision. The community board should contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other cultural facilities and resources requests",
+          "explanation": "Seek $5M to Create a dedicated fund for CB10 to acquire and renovate underutilized City or private real estate into permanent, multi-disciplinary cultural hubs (theatre, dance, gallery, rehearsal) with at least 50% of the space designated for rent-subsidized use by emerging Harlem-based organizations. (The capital request is for the initial funding of this program.)",
+          "response": "More information is needed from the community board before making a funding decision. The community board should contact the agency.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "126",
+          "request": "Other cultural facilities and resources requests",
+          "explanation": "Seek $5M to Create a dedicated fund for CB10 to acquire and renovate underutilized City or private real estate into permanent, multi-disciplinary cultural hubs (theatre, dance, gallery, rehearsal) with at least 50% of the space designated for rent-subsidized use by emerging Harlem-based organizations. (The capital request is for the initial funding of this program.)",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202702E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense request for DHS",
+          "explanation": "We request $2 million dollars to expand and support Homebase Homelessness Prevention Services in Central Harlem community that will be provided by qualified community-based organizations that will offer these vital services in Central Harlem. The community requests funding for home based programs provide individuals experiencing housing instability in the community with various homeless prevention services and aftercare services to families and individuals exiting NYC DHS shelter to permanent housing. These services include assistance obtaining public benefits, emergency rental assistance, financial counseling and money management, education and job placement.",
+          "response": "OMB supports the agency's position as follows: Agency does not support but can address the need alternatively Explanation: DSS currently funds programs to address these issues and concerns. To learn more about these programs and available resources in your district, please contact the agency. Note that there are nearby locations that are serving residents of upper Manhattan.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense request for DHS",
+          "explanation": "We request $2 million dollars to expand and support Homebase Homelessness Prevention Services in Central Harlem community that will be provided by qualified community-based organizations that will offer these vital services in Central Harlem. The community requests funding for home based programs provide individuals experiencing housing instability in the community with various homeless prevention services and aftercare services to families and individuals exiting NYC DHS shelter to permanent housing. These services include assistance obtaining public benefits, emergency rental assistance, financial counseling and money management, education and job placement.",
+          "response": "OMB supports the agency's position as follows: Agency does not support but can address the need alternatively Explanation: DSS currently funds programs to address these issues and concerns. To learn more about these programs and available resources in your district, please contact the agency. Note that there are nearby locations that are serving residents of upper Manhattan.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "071",
+          "request": "Other expense request for DHS",
+          "explanation": "We request $2 million dollars to expand and support Homebase Homelessness Prevention Services in Central Harlem community that will be provided by qualified community-based organizations that will offer these vital services in Central Harlem. The community requests funding for home based programs provide individuals experiencing housing instability in the community with various homeless prevention services and aftercare services to families and individuals exiting NYC DHS shelter to permanent housing. These services include assistance obtaining public benefits, emergency rental assistance, financial counseling and money management, education and job placement.",
+          "response": "Agency does not support but can address the need alternatively",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202703C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other cultural facilities and resources requests",
+          "explanation": "Seek $800K to Establish a new expense line for direct operational grants and a technical assistance program for 20 small-to-mid-size emerging Harlem-based arts groups. Funds are specifically for space rental, administrative support, and an annual operating subsidy.",
+          "response": "Further study by the agency of this request is needed. Therefore, OMB does not take any position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other cultural facilities and resources requests",
+          "explanation": "Seek $800K to Establish a new expense line for direct operational grants and a technical assistance program for 20 small-to-mid-size emerging Harlem-based arts groups. Funds are specifically for space rental, administrative support, and an annual operating subsidy.",
+          "response": "Further study by the agency of this request is needed. Therefore, OMB does not take any position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "126",
+          "request": "Other cultural facilities and resources requests",
+          "explanation": "Seek $800K to Establish a new expense line for direct operational grants and a technical assistance program for 20 small-to-mid-size emerging Harlem-based arts groups. Funds are specifically for space rental, administrative support, and an annual operating subsidy.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202703E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Create or promote programs to de-stigmatize substance misuse and encourage treatment",
+          "explanation": "$3 million dollars to create free mental health programs in the Harlem community that will be provided by qualified community based organizations that will offer these vital services in Central Harlem. This will ensure that those most in need will have access to services and receive services in a culturally competent manner.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Create or promote programs to de-stigmatize substance misuse and encourage treatment",
+          "explanation": "$3 million dollars to create free mental health programs in the Harlem community that will be provided by qualified community based organizations that will offer these vital services in Central Harlem. This will ensure that those most in need will have access to services and receive services in a culturally competent manner.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Create or promote programs to de-stigmatize substance misuse and encourage treatment",
+          "explanation": "$3 million dollars to create free mental health programs in the Harlem community that will be provided by qualified community based organizations that will offer these vital services in Central Harlem. This will ensure that those most in need will have access to services and receive services in a culturally competent manner.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202704C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DOE",
+          "explanation": "We request $5 million dollars. Fund must be allocated to support in school and afterschool programs for youth. Scholarships, mentors, and a path to keep children focused on school and to excel in their school work while also proving a place for them to be while parents' work. Keep children occupied with the advancement of their own education means less access and exposure to crime or negative experiences on the streets.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: THIS IS NOT A BUDGET REQUEST. CONTACT DOE.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DOE",
+          "explanation": "We request $5 million dollars. Fund must be allocated to support in school and afterschool programs for youth. Scholarships, mentors, and a path to keep children focused on school and to excel in their school work while also proving a place for them to be while parents' work. Keep children occupied with the advancement of their own education means less access and exposure to crime or negative experiences on the streets.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: THIS IS NOT A BUDGET REQUEST. CONTACT DOE.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Other capital budget request for DOE",
+          "explanation": "We request $5 million dollars. Fund must be allocated to support in school and afterschool programs for youth. Scholarships, mentors, and a path to keep children focused on school and to excel in their school work while also proving a place for them to be while parents' work. Keep children occupied with the advancement of their own education means less access and exposure to crime or negative experiences on the streets.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202704E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Harlem Hospital Services (Asthma, Maternal Health, Mental Health) for enhanced services, we request $2 Million.",
+          "response": "The request does not seem to be applicable to the Responsible Agency. OMB cannot make a determination at this time.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Harlem Hospital Services (Asthma, Maternal Health, Mental Health) for enhanced services, we request $2 Million.",
+          "response": "The request does not seem to be applicable to the Responsible Agency. OMB cannot make a determination at this time.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Other programs to address public health issues requests",
+          "explanation": "Harlem Hospital Services (Asthma, Maternal Health, Mental Health) for enhanced services, we request $2 Million.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202705C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "Seek $27M for Revitalization, flood resilience, greenway integration, comfort stations, public restroom installation, lighting, and safety infrastructure.",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "233 EAST 128 STREET, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "Seek $27M for Revitalization, flood resilience, greenway integration, comfort stations, public restroom installation, lighting, and safety infrastructure.",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "233 EAST 128 STREET, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a building in a park",
+          "explanation": "Seek $27M for Revitalization, flood resilience, greenway integration, comfort stations, public restroom installation, lighting, and safety infrastructure.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "233 EAST 128 STREET, New York, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202705E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Create or promote programs to de-stigmatize mental health needs and encourage treatment",
+          "explanation": "We request $ 2 Million for Community-Based Mental Health Programs",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Create or promote programs to de-stigmatize mental health needs and encourage treatment",
+          "explanation": "We request $ 2 Million for Community-Based Mental Health Programs",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Create or promote programs to de-stigmatize mental health needs and encourage treatment",
+          "explanation": "We request $ 2 Million for Community-Based Mental Health Programs",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202706C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Seek $1.5M for Comprehensive capital upgrade for the Jackie Robinson Park Dome/Amphitheater, including lighting, sound, climate control, and seating to facilitate year-round, high-quality programming for major community events like Harlem Week and SummerStage.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "85 BRADHURST AVENUE, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Seek $1.5M for Comprehensive capital upgrade for the Jackie Robinson Park Dome/Amphitheater, including lighting, sound, climate control, and seating to facilitate year-round, high-quality programming for major community events like Harlem Week and SummerStage.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "85 BRADHURST AVENUE, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Seek $1.5M for Comprehensive capital upgrade for the Jackie Robinson Park Dome/Amphitheater, including lighting, sound, climate control, and seating to facilitate year-round, high-quality programming for major community events like Harlem Week and SummerStage.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "85 BRADHURST AVENUE, New York, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202706E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Create or promote programs to de-stigmatize substance misuse and encourage treatment",
+          "explanation": "We request $2 million to expand funding for Health Home Substance Use Programs",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Create or promote programs to de-stigmatize substance misuse and encourage treatment",
+          "explanation": "We request $2 million to expand funding for Health Home Substance Use Programs",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Create or promote programs to de-stigmatize substance misuse and encourage treatment",
+          "explanation": "We request $2 million to expand funding for Health Home Substance Use Programs",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202707C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Seek $5M for Upgrades to courts, landscaping, lighting, ADA compliance and infrastructure beyond currently funded projects.",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "414 WEST 141 STREET, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Seek $5M for Upgrades to courts, landscaping, lighting, ADA compliance and infrastructure beyond currently funded projects.",
+          "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "414 WEST 141 STREET, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Seek $5M for Upgrades to courts, landscaping, lighting, ADA compliance and infrastructure beyond currently funded projects.",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "414 WEST 141 STREET, New York, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202707E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase health and safety inspections, e.g. for restaurants and childcare programs",
+          "explanation": "We request $ 2 Million for Public Health Code Enforcement to address Legionnaires Disease in our community.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Increase health and safety inspections, e.g. for restaurants and childcare programs",
+          "explanation": "We request $ 2 Million for Public Health Code Enforcement to address Legionnaires Disease in our community.",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Increase health and safety inspections, e.g. for restaurants and childcare programs",
+          "explanation": "We request $ 2 Million for Public Health Code Enforcement to address Legionnaires Disease in our community.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202708C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Seek $8M for Neighborhood Playgrounds (Abraham Lincoln, Williamson, MLK Jr., Playground 123, Strivers' Row, P.S. 175, P.S. 149). Resurfacing, ADA accessibility, safety and play equipment upgrades",
+          "response": "This request includes more than one proposal. The agency has recommended funding for this request in part. OMB supports the agency's position.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Seek $8M for Neighborhood Playgrounds (Abraham Lincoln, Williamson, MLK Jr., Playground 123, Strivers' Row, P.S. 175, P.S. 149). Resurfacing, ADA accessibility, safety and play equipment upgrades",
+          "response": "This request includes more than one proposal. The agency has recommended funding for this request in part. OMB supports the agency's position.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Seek $8M for Neighborhood Playgrounds (Abraham Lincoln, Williamson, MLK Jr., Playground 123, Strivers' Row, P.S. 175, P.S. 149). Resurfacing, ADA accessibility, safety and play equipment upgrades",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202708E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense request for DOHMH",
+          "explanation": "Harlem Hospital Services (Asthma, Maternal Health, Mental Health) for enhanced services, we request $2 million.",
+          "response": "The request does not seem to be applicable to the Responsible Agency. OMB cannot make a determination at this time.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "506 LENOX AVENUE, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense request for DOHMH",
+          "explanation": "Harlem Hospital Services (Asthma, Maternal Health, Mental Health) for enhanced services, we request $2 million.",
+          "response": "The request does not seem to be applicable to the Responsible Agency. OMB cannot make a determination at this time.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "506 LENOX AVENUE, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Other expense request for DOHMH",
+          "explanation": "Harlem Hospital Services (Asthma, Maternal Health, Mental Health) for enhanced services, we request $2 million.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "506 LENOX AVENUE, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202709C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DPR",
+          "explanation": "Seek $1M for Public art and heritage restoration (murals, interpretive signage).",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "233 EAST 128 STREET, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for DPR",
+          "explanation": "Seek $1M for Public art and heritage restoration (murals, interpretive signage).",
+          "response": "This request has already been funded.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "233 EAST 128 STREET, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Other capital budget request for DPR",
+          "explanation": "Seek $1M for Public art and heritage restoration (murals, interpretive signage).",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "233 EAST 128 STREET, New York, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202709E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Create or promote programs to de-stigmatize mental health needs and encourage treatment",
+          "explanation": "We request $2 million for Community-Based Mental Health Programs",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Create or promote programs to de-stigmatize mental health needs and encourage treatment",
+          "explanation": "We request $2 million for Community-Based Mental Health Programs",
+          "response": "The agency will try to accommodate this issue within existing resources. OMB supports the agency's position.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "816",
+          "request": "Create or promote programs to de-stigmatize mental health needs and encourage treatment",
+          "explanation": "We request $2 million for Community-Based Mental Health Programs",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202710C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Seek $800k for Capital upgrade for the Richard Rodgers Amphitheater in Marcus Garvey Park (Mount Morris Park), including modern sound systems, stage repair, and improved seating to maintain its function as an essential cultural venue.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "18 MOUNT MORRIS PARK WEST, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Seek $800k for Capital upgrade for the Richard Rodgers Amphitheater in Marcus Garvey Park (Mount Morris Park), including modern sound systems, stage repair, and improved seating to maintain its function as an essential cultural venue.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "18 MOUNT MORRIS PARK WEST, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Seek $800k for Capital upgrade for the Richard Rodgers Amphitheater in Marcus Garvey Park (Mount Morris Park), including modern sound systems, stage repair, and improved seating to maintain its function as an essential cultural venue.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "18 MOUNT MORRIS PARK WEST, New York, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202710E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance after school programs for elementary school students (grades K-5)",
+          "explanation": "At the start of the 2024-2025 school year, many families found that the afterschool programs their children depend on are no longer available. To prevent this from occurring in future budget decisions, Manhattan Community Board 10 urges DYCD to invest $2.1 million dollars for afterschool funding and coordinate city and state resources for afterschool programmatic funds. Afterschool programs offer vital benefits, including academic support, enhanced social skills, and safe, supervised environments for children. Despite their importance, these programs have been cut from many traditional public schools in our community due to changes in the State's funding formula. The Office of Children and Family Services has consolidated several funding sources into a single Leap Program, requiring providers to reapply. As a result, many non-profit organizations that previously ran these programs did not secure funding. This funding crisis has left families and public schools scrambling for safe afterschool options. However, we believe that the issue extends beyond funding alone. A lack of coordination between New York State and New York City has exacerbated the problem, leaving children and families in our community without essential resources. We urge you to advocate for the formation of a joint task force, composed of representatives from both New York State and New York City agencies. This task force should examine the coordination gaps between state and city efforts and develop a comprehensive plan to address the immediate and long-term need for afterschool programs in communities like ours. Afterschool programs provide supervised environments that protect children from dangerous influences such as gang involvement, substance abuse, and other risky behaviors. They also alleviate the burden on older siblings and working parents, who otherwise may have to leave their children unattended or miss work, risking charges of neglect or abuse.",
+          "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DYCD has begun a three-year, 20,000 seat expansion of the COMPASS afterschool program.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide, expand, or enhance after school programs for elementary school students (grades K-5)",
+          "explanation": "At the start of the 2024-2025 school year, many families found that the afterschool programs their children depend on are no longer available. To prevent this from occurring in future budget decisions, Manhattan Community Board 10 urges DYCD to invest $2.1 million dollars for afterschool funding and coordinate city and state resources for afterschool programmatic funds. Afterschool programs offer vital benefits, including academic support, enhanced social skills, and safe, supervised environments for children. Despite their importance, these programs have been cut from many traditional public schools in our community due to changes in the State's funding formula. The Office of Children and Family Services has consolidated several funding sources into a single Leap Program, requiring providers to reapply. As a result, many non-profit organizations that previously ran these programs did not secure funding. This funding crisis has left families and public schools scrambling for safe afterschool options. However, we believe that the issue extends beyond funding alone. A lack of coordination between New York State and New York City has exacerbated the problem, leaving children and families in our community without essential resources. We urge you to advocate for the formation of a joint task force, composed of representatives from both New York State and New York City agencies. This task force should examine the coordination gaps between state and city efforts and develop a comprehensive plan to address the immediate and long-term need for afterschool programs in communities like ours. Afterschool programs provide supervised environments that protect children from dangerous influences such as gang involvement, substance abuse, and other risky behaviors. They also alleviate the burden on older siblings and working parents, who otherwise may have to leave their children unattended or miss work, risking charges of neglect or abuse.",
+          "response": "This request has already been completed. Explanation: DYCD has begun a three-year, 20,000 seat expansion of the COMPASS afterschool program.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "260",
+          "request": "Provide, expand, or enhance after school programs for elementary school students (grades K-5)",
+          "explanation": "At the start of the 2024-2025 school year, many families found that the afterschool programs their children depend on are no longer available. To prevent this from occurring in future budget decisions, Manhattan Community Board 10 urges DYCD to invest $2.1 million dollars for afterschool funding and coordinate city and state resources for afterschool programmatic funds. Afterschool programs offer vital benefits, including academic support, enhanced social skills, and safe, supervised environments for children. Despite their importance, these programs have been cut from many traditional public schools in our community due to changes in the State's funding formula. The Office of Children and Family Services has consolidated several funding sources into a single Leap Program, requiring providers to reapply. As a result, many non-profit organizations that previously ran these programs did not secure funding. This funding crisis has left families and public schools scrambling for safe afterschool options. However, we believe that the issue extends beyond funding alone. A lack of coordination between New York State and New York City has exacerbated the problem, leaving children and families in our community without essential resources. We urge you to advocate for the formation of a joint task force, composed of representatives from both New York State and New York City agencies. This task force should examine the coordination gaps between state and city efforts and develop a comprehensive plan to address the immediate and long-term need for afterschool programs in communities like ours. Afterschool programs provide supervised environments that protect children from dangerous influences such as gang involvement, substance abuse, and other risky behaviors. They also alleviate the burden on older siblings and working parents, who otherwise may have to leave their children unattended or miss work, risking charges of neglect or abuse.",
+          "response": "This request has already been completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202711C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Request $3M for Public restroom construction, additional lighting, secure pickleball storage, and site upgrades.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "85 BRADHURST AVENUE, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Request $3M for Public restroom construction, additional lighting, secure pickleball storage, and site upgrades.",
+          "response": "The agency recommends funding this budget request, but at this time the availability of funds is uncertain. OMB supports the agency's position.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "85 BRADHURST AVENUE, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "846",
+          "request": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "explanation": "Request $3M for Public restroom construction, additional lighting, secure pickleball storage, and site upgrades.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "85 BRADHURST AVENUE, New York, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202711E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense request for DYCD",
+          "explanation": "We seek $750K annually to support job-readiness, technology, and cybersecurity education for Harlem residents and small business owners. Programs should include coding bootcamps, digital marketing training, and IT certifications that prepare residents for emerging industries.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Presently, there are a variety of agency-funded programs in the district for this target population. Additional programs are contingent upon available funding and will be distributed through an RFP process. Organizations are encouraged to apply.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense request for DYCD",
+          "explanation": "We seek $750K annually to support job-readiness, technology, and cybersecurity education for Harlem residents and small business owners. Programs should include coding bootcamps, digital marketing training, and IT certifications that prepare residents for emerging industries.",
+          "response": "Agency supports but cannot accommodate Explanation: Presently, there are a variety of agency-funded programs in the district for this target population. Additional programs are contingent upon available funding and will be distributed through an RFP process. Organizations are encouraged to apply.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Youth & Community Development",
+            "agency_id": "youth-and-community-development",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "260",
+          "request": "Other expense request for DYCD",
+          "explanation": "We seek $750K annually to support job-readiness, technology, and cybersecurity education for Harlem residents and small business owners. Programs should include coding bootcamps, digital marketing training, and IT certifications that prepare residents for emerging industries.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202712C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other garbage collection and recycling infrastructure requests",
+          "explanation": "MCB10 requests $1,500,000 to install 65 high-volume containers in key business areas and maintain the cleanliness of 116th Street, 125th Street, 135th Street and 145th Street",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other garbage collection and recycling infrastructure requests",
+          "explanation": "MCB10 requests $1,500,000 to install 65 high-volume containers in key business areas and maintain the cleanliness of 116th Street, 125th Street, 135th Street and 145th Street",
+          "response": "Due to fiscal constraints, the availability of funds is uncertain.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Sanitation",
+            "agency_id": "sanitation",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "827",
+          "request": "Other garbage collection and recycling infrastructure requests",
+          "explanation": "MCB10 requests $1,500,000 to install 65 high-volume containers in key business areas and maintain the cleanliness of 116th Street, 125th Street, 135th Street and 145th Street",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202712E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Health and Hospitals Corporation",
+            "agency_id": "nyc-health-hospitals",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for HHC",
+          "explanation": "For Gotham Health, we request $2 Million to expand Community Clinics",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: While we recognize the critical need for adult and pediatric care in the area, our existing clinics (St. Nicholas & Sydenham) are currently operating at physical capacity, which limits our ability to expand services. The proposed funding would not support significant infrastructure expansion at these two clinics. While not located in Community Board 10, NYC Health + Hospitals/Gotham, Morrisania clinic is relatively close to the community and it is undergoing a major capital investment that will result in a new and expanded clinical space when completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Health and Hospitals Corporation",
+            "agency_id": "nyc-health-hospitals",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other expense budget request for HHC",
+          "explanation": "For Gotham Health, we request $2 Million to expand Community Clinics",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: While we recognize the critical need for adult and pediatric care in the area, our existing clinics (St. Nicholas & Sydenham) are currently operating at physical capacity, which limits our ability to expand services. The proposed funding would not support significant infrastructure expansion at these two clinics. While not located in Community Board 10, NYC Health + Hospitals/Gotham, Morrisania clinic is relatively close to the community and it is undergoing a major capital investment that will result in a new and expanded clinical space when completed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Health and Hospitals Corporation",
+            "agency_id": "nyc-health-hospitals",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "819",
+          "request": "Other expense budget request for HHC",
+          "explanation": "For Gotham Health, we request $2 Million to expand Community Clinics",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202713C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for SBS",
+          "explanation": "We seek $2.5M to develop a multi-use innovation and co-working space dedicated to small business support, training in e-commerce and digital tools, incubation for MWBEs, and access to capital networks. The hub would serve as a central location for mentorship, technical assistance, and job creation.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: SBS does not have funding to expand our Business Solution Centers at this time. SBS is proud to offer, both virtually and in-person at our Business Solutions Centers, businesses 1-1 support, courses and webinars, support in accessing capital, and free legal services. Though not a co-working space, our Business Solutions offer entrepreneurs connections to free services to start, operate, and grow their business. Connections include support for M/WBE certification and mentorship networks. SBS offers the M/WBE Mentors program, a peer mentorship program for NYC M/WBEs. These mentors provide insight to M/WBEs needed to succeed and chart their own path of growth through government contracting our business education offering, we offer free business courses/webinars to help businesses develop their marketing and promotional skills. We encourage any entrepreneurs interested in receiving support to call our Small Business Hotline, 888-SBS-4NYC. SBS is always open to exploring new programming, including an incubator programming pending availablity of resources.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for SBS",
+          "explanation": "We seek $2.5M to develop a multi-use innovation and co-working space dedicated to small business support, training in e-commerce and digital tools, incubation for MWBEs, and access to capital networks. The hub would serve as a central location for mentorship, technical assistance, and job creation.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: SBS does not have funding to expand our Business Solution Centers at this time. SBS is proud to offer, both virtually and in-person at our Business Solutions Centers, businesses 1-1 support, courses and webinars, support in accessing capital, and free legal services. Though not a co-working space, our Business Solutions offer entrepreneurs connections to free services to start, operate, and grow their business. Connections include support for M/WBE certification and mentorship networks. SBS offers the M/WBE Mentors program, a peer mentorship program for NYC M/WBEs. These mentors provide insight to M/WBEs needed to succeed and chart their own path of growth through government contracting our business education offering, we offer free business courses/webinars to help businesses develop their marketing and promotional skills. We encourage any entrepreneurs interested in receiving support to call our Small Business Hotline, 888-SBS-4NYC. SBS is always open to exploring new programming, including an incubator programming pending availablity of resources.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Small Business Services",
+            "agency_id": "small-business-services",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "801",
+          "request": "Other capital budget request for SBS",
+          "explanation": "We seek $2.5M to develop a multi-use innovation and co-working space dedicated to small business support, training in e-commerce and digital tools, incubation for MWBEs, and access to capital networks. The hub would serve as a central location for mentorship, technical assistance, and job creation.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202713E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Landmarks Preservation Commission",
+            "agency_id": "landmarks-preservation-commission",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "As needed Land use planning, technical and urban design support",
+          "explanation": "MCB10 requests $50,000 to create a Preservation Resource Center under the Save Harlem Now or J. Max Bond Center for Urban Futures [Located at CUNY's Bernard and Anne Spitzer School of Architecture] or Community Board. The Center would provide technical assistance and a materials library, organize a workshop series, and support building owners and community organizations as they apply for grant support.",
+          "response": "Agency does not support and cannot accommodate Explanation: The Landmarks Preservation Commission does not have a capital budget structure and therefore cannot directly provide funding for capital projects. We recommend this project be brought to the attention of your elected officials i.e. Borough President and/or City Council member.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "141 CONVENT AVENUE, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Landmarks Preservation Commission",
+            "agency_id": "landmarks-preservation-commission",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "As needed Land use planning, technical and urban design support",
+          "explanation": "MCB10 requests $50,000 to create a Preservation Resource Center under the Save Harlem Now or J. Max Bond Center for Urban Futures [Located at CUNY's Bernard and Anne Spitzer School of Architecture] or Community Board. The Center would provide technical assistance and a materials library, organize a workshop series, and support building owners and community organizations as they apply for grant support.",
+          "response": "Agency does not support and cannot accommodate Explanation: The Landmarks Preservation Commission does not have a capital budget structure and therefore cannot directly provide funding for capital projects. We recommend this project be brought to the attention of your elected officials i.e. Borough President and/or City Council member.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "141 CONVENT AVENUE, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Landmarks Preservation Commission",
+            "agency_id": "landmarks-preservation-commission",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "999",
+          "request": "As needed Land use planning, technical and urban design support",
+          "explanation": "MCB10 requests $50,000 to create a Preservation Resource Center under the Save Harlem Now or J. Max Bond Center for Urban Futures [Located at CUNY's Bernard and Anne Spitzer School of Architecture] or Community Board. The Center would provide technical assistance and a materials library, organize a workshop series, and support building owners and community organizations as they apply for grant support.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "141 CONVENT AVENUE, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202714C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for EDC",
+          "explanation": "We seek $3M to fund the installation of high-speed public broadband and Wi-Fi access points across major corridors (125th Street, ACP Boulevard, Lenox Avenue) and NYCHA developments within Community District 10. This project will close the digital divide, support small businesses, and enhance access to education and telehealth services. NYC Office of Technology and Innovation (OTI).",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: Internet connectivity and Wi-Fi infrastructure falls under the purview of NYC OTI. We encourage CB 3 to reach out to the relevant agency for this request.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for EDC",
+          "explanation": "We seek $3M to fund the installation of high-speed public broadband and Wi-Fi access points across major corridors (125th Street, ACP Boulevard, Lenox Avenue) and NYCHA developments within Community District 10. This project will close the digital divide, support small businesses, and enhance access to education and telehealth services. NYC Office of Technology and Innovation (OTI).",
+          "response": "OMB supports the agency’s position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "802",
+          "request": "Other capital budget request for EDC",
+          "explanation": "We seek $3M to fund the installation of high-speed public broadband and Wi-Fi access points across major corridors (125th Street, ACP Boulevard, Lenox Avenue) and NYCHA developments within Community District 10. This project will close the digital divide, support small businesses, and enhance access to education and telehealth services. NYC Office of Technology and Innovation (OTI).",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": true
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202714E",
+      "fiscal_year": 2027,
+      "request_type": "E",
+      "request_class": "expense",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more community board staff",
+          "explanation": "Seek $75K annually for a Fund, a dedicated, full-time Arts & Culture Liaison position within the CB10 District Office to manage cultural advocacy, resource sharing, and community-partner relations, ensuring arts needs are consistently addressed.",
+          "response": "As of the FY 2027 Executive Budget, each Community Board's budget is being maintained.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Provide more community board staff",
+          "explanation": "Seek $75K annually for a Fund, a dedicated, full-time Arts & Culture Liaison position within the CB10 District Office to manage cultural advocacy, resource sharing, and community-partner relations, ensuring arts needs are consistently addressed.",
+          "response": "As of the FY 2027 Adopted Budget, each Community Board's budget is being maintained.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Mayor's Office of Management and Budget",
+            "agency_id": "management-and-budget",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "002",
+          "request": "Provide more community board staff",
+          "explanation": "Seek $75K annually for a Fund, a dedicated, full-time Arts & Culture Liaison position within the CB10 District Office to manage cultural advocacy, resource sharing, and community-partner relations, ensuring arts needs are consistently addressed.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": true,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202715C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for HRA",
+          "explanation": "$200,000 to support the growing African population. This includes $50,000 for the African Services Committee to conduct a survey on 116th and 125th Streets, assessing educational and skill levels. An additional $150,000 is proposed for Afrikana, a non-for-profit organization located at 685 Malcolm X Blvd NY, NY 10027, to provide essential services, such as job placement, language training, legal support, and assistance for street vendors to transition into the formal economy.",
+          "response": "Further study by the agency of this request is needed. Therefore, OMB does not take any position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital budget request for HRA",
+          "explanation": "$200,000 to support the growing African population. This includes $50,000 for the African Services Committee to conduct a survey on 116th and 125th Streets, assessing educational and skill levels. An additional $150,000 is proposed for Afrikana, a non-for-profit organization located at 685 Malcolm X Blvd NY, NY 10027, to provide essential services, such as job placement, language training, legal support, and assistance for street vendors to transition into the formal economy.",
+          "response": "Further study by the agency of this request is needed. Therefore, OMB does not take any position.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Human Resources Administration",
+            "agency_id": "human-resources-administration",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "096",
+          "request": "Other capital budget request for HRA",
+          "explanation": "$200,000 to support the growing African population. This includes $50,000 for the African Services Committee to conduct a survey on 116th and 125th Streets, assessing educational and skill levels. An additional $150,000 is proposed for Afrikana, a non-for-profit organization located at 685 Malcolm X Blvd NY, NY 10027, to provide essential services, such as job placement, language training, legal support, and assistance for street vendors to transition into the formal economy.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202716C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Landmarks Preservation Commission",
+            "agency_id": "landmarks-preservation-commission",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other housing support requests",
+          "explanation": "$50,000 to create a Preservation Resource Center under the Save Harlem Now or J. Max Bond Center for Urban Futures, located at CUNY's The Bernard and Anne Spitzer School of Architecture (141 Convent Avenue) or Community Board. The Center would provide technical assistance and a materials library, organize a workshop series, and support building owners and community organizations as they apply for grant support",
+          "response": "Agency does not support and cannot accommodate Explanation: The Landmarks Preservation Commission does not have a capital budget structure and therefore cannot directly provide funding for capital projects. We recommend this project be brought to the attention of your elected officials i.e. Borough President and/or City Council member.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "141 CONVENT AVENUE, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Landmarks Preservation Commission",
+            "agency_id": "landmarks-preservation-commission",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other housing support requests",
+          "explanation": "$50,000 to create a Preservation Resource Center under the Save Harlem Now or J. Max Bond Center for Urban Futures, located at CUNY's The Bernard and Anne Spitzer School of Architecture (141 Convent Avenue) or Community Board. The Center would provide technical assistance and a materials library, organize a workshop series, and support building owners and community organizations as they apply for grant support",
+          "response": "Agency does not support and cannot accommodate Explanation: The Landmarks Preservation Commission does not have a capital budget structure and therefore cannot directly provide funding for capital projects. We recommend this project be brought to the attention of your elected officials i.e. Borough President and/or City Council member.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "141 CONVENT AVENUE, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Landmarks Preservation Commission",
+            "agency_id": "landmarks-preservation-commission",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "999",
+          "request": "Other housing support requests",
+          "explanation": "$50,000 to create a Preservation Resource Center under the Save Harlem Now or J. Max Bond Center for Urban Futures, located at CUNY's The Bernard and Anne Spitzer School of Architecture (141 Convent Avenue) or Community Board. The Center would provide technical assistance and a materials library, organize a workshop series, and support building owners and community organizations as they apply for grant support",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "141 CONVENT AVENUE, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202717C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Improve accessibility of transit infrastructure, by providing elevators, escalators, etc.",
+          "explanation": "MCB10 requests that the Department of Transportation upgrade to comply with ADA accessibility IRT stations at 110th, 116th and 145th Streets at an estimated cost of $130 million per station.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Improve accessibility of transit infrastructure, by providing elevators, escalators, etc.",
+          "explanation": "MCB10 requests that the Department of Transportation upgrade to comply with ADA accessibility IRT stations at 110th, 116th and 145th Streets at an estimated cost of $130 million per station.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "998",
+          "request": "Improve accessibility of transit infrastructure, by providing elevators, escalators, etc.",
+          "explanation": "MCB10 requests that the Department of Transportation upgrade to comply with ADA accessibility IRT stations at 110th, 116th and 145th Streets at an estimated cost of $130 million per station.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202718C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "MCB10 requests that the IRT Uptown and Downtown Stations at 145th Street be aesthetically and technologically upgraded to increase rider safety and experience at an estimated cost of $43 million per station.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "OMB",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "MCB10 requests that the IRT Uptown and Downtown Stations at 145th Street be aesthetically and technologically upgraded to increase rider safety and experience at an estimated cost of $43 million per station.",
+          "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "binding": "bound",
+            "method": "reviewed_exact_publisher_alias"
+          },
+          "responded_by": "998",
+          "request": "Repair or upgrade subway stations or other transit infrastructure",
+          "explanation": "MCB10 requests that the IRT Uptown and Downtown Stations at 145th Street be aesthetically and technologically upgraded to increase rider safety and experience at an estimated cost of $43 million per station.",
+          "response": "Agency does not support and cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null,
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202719C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital request for NYPD",
+          "explanation": "We request $5 million dollars. Funds should be allocated to a study that examines the direct connection between poverty and gun violence. Any evidence found could support increased funding for job training programs that provide living wage employment. Warrant expungement and chances to clear summons give opportunities for those who have outstanding warrants or summons to resolve their legal issues giving them a better path to obtain.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Other capital request for NYPD",
+          "explanation": "We request $5 million dollars. Funds should be allocated to a study that examines the direct connection between poverty and gun violence. Any evidence found could support increased funding for job training programs that provide living wage employment. Warrant expungement and chances to clear summons give opportunities for those who have outstanding warrants or summons to resolve their legal issues giving them a better path to obtain.",
+          "response": "Further study by the agency of this request is needed.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "056",
+          "request": "Other capital request for NYPD",
+          "explanation": "We request $5 million dollars. Funds should be allocated to a study that examines the direct connection between poverty and gun violence. Any evidence found could support increased funding for job training programs that provide living wage employment. Warrant expungement and chances to clear summons give opportunities for those who have outstanding warrants or summons to resolve their legal issues giving them a better path to obtain.",
+          "response": "The agency does not understand the request as written and requires more clarification.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": null
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202720C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Provide new or replacement equipment to a library, including technology",
+          "explanation": "HVAC and fire alarm replacement: $7,000,000",
+          "response": "It is recommended that this request be brought to the attention of your Elected Officials.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "9 WEST 124 STREET, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Provide new or replacement equipment to a library, including technology",
+          "explanation": "HVAC and fire alarm replacement: $7,000,000",
+          "response": "It is recommended that this request be brought to the attention of your Elected Officials.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "9 WEST 124 STREET, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "037",
+          "request": "Provide new or replacement equipment to a library, including technology",
+          "explanation": "HVAC and fire alarm replacement: $7,000,000",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "9 WEST 124 STREET, New York, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202721C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "MCB10 is requesting capital funding for Courtyard, drainage: $2,500,000",
+          "response": "It is recommended that this request be brought to the attention of your Elected Officials.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "515 MALCOLM X BOULEVARD, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "OMB",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "MCB10 is requesting capital funding for Courtyard, drainage: $2,500,000",
+          "response": "It is recommended that this request be brought to the attention of your Elected Officials.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "515 MALCOLM X BOULEVARD, New York, NY, USA"
+          }
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "binding": "unbound",
+            "method": null,
+            "review": "no_existing_institution"
+          },
+          "responded_by": "037",
+          "request": "Create a new, or renovate or upgrade an existing public library",
+          "explanation": "MCB10 is requesting capital funding for Courtyard, drainage: $2,500,000",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "515 MALCOLM X BOULEVARD, New York, NY, USA"
+          }
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202722C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate other site component",
+          "explanation": "Capital Request for Frederick Douglas Academy (PS 499) for a Culinary Arts Training Space for $200,000 to enhance student programming and skillsets.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Cannot commit to at this time, for possible future consideration.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2581 ADAM CLAYTON POWELL BOULEVARD, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate other site component",
+          "explanation": "Capital Request for Frederick Douglas Academy (PS 499) for a Culinary Arts Training Space for $200,000 to enhance student programming and skillsets.",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Cannot commit to at this time, for possible future consideration.",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2581 ADAM CLAYTON POWELL BOULEVARD, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Renovate other site component",
+          "explanation": "Capital Request for Frederick Douglas Academy (PS 499) for a Culinary Arts Training Space for $200,000 to enhance student programming and skillsets.",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "01",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2581 ADAM CLAYTON POWELL BOULEVARD, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202723C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate interior building component",
+          "explanation": "Capital request for PS 154 - Harriet Tubman Learning Center of $150,000 for a Refurbished Auditorium",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: AUDITORIUM UPGRADE IN SCOPE.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "250 WEST 127 STREET, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate interior building component",
+          "explanation": "Capital request for PS 154 - Harriet Tubman Learning Center of $150,000 for a Refurbished Auditorium",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: AUDITORIUM UPGRADE IN SCOPE.",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "250 WEST 127 STREET, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Renovate interior building component",
+          "explanation": "Capital request for PS 154 - Harriet Tubman Learning Center of $150,000 for a Refurbished Auditorium",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "02",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "250 WEST 127 STREET, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202724C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate interior building component",
+          "explanation": "Capital Requests for PS 123: Mahalia Jackson for a refurbished auditorium",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: RESO A AUDITORIUM IN SCOPE.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "301 WEST 140 STREET, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate interior building component",
+          "explanation": "Capital Requests for PS 123: Mahalia Jackson for a refurbished auditorium",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: RESO A AUDITORIUM IN SCOPE.",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "301 WEST 140 STREET, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Renovate interior building component",
+          "explanation": "Capital Requests for PS 123: Mahalia Jackson for a refurbished auditorium",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "03",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "301 WEST 140 STREET, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202725C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate interior building component",
+          "explanation": "PS 92 - Mary McCloud Bethune's capital request of $150,000 for a Refurbished Auditorium",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: RESO A AUDITORIUM IN SCOPE.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "222 WEST 134 STREET, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate interior building component",
+          "explanation": "PS 92 - Mary McCloud Bethune's capital request of $150,000 for a Refurbished Auditorium",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: RESO A AUDITORIUM IN SCOPE.",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "222 WEST 134 STREET, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Renovate interior building component",
+          "explanation": "PS 92 - Mary McCloud Bethune's capital request of $150,000 for a Refurbished Auditorium",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "04",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "222 WEST 134 STREET, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202726C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide technology upgrade",
+          "explanation": "PS/MS 46: STEM Innovation: Hydroponics Lab Equipment for $100,000",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Funding Not Available. Capital work for SCA.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2987 FREDERICK DOUGLASS BOULEVARD, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide technology upgrade",
+          "explanation": "PS/MS 46: STEM Innovation: Hydroponics Lab Equipment for $100,000",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: Funding Not Available. Capital work for SCA.",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2987 FREDERICK DOUGLASS BOULEVARD, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Provide technology upgrade",
+          "explanation": "PS/MS 46: STEM Innovation: Hydroponics Lab Equipment for $100,000",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "05",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2987 FREDERICK DOUGLASS BOULEVARD, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202727C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Capital Budget Request for PS 194 Countee Cullen of $200,000 for a Refurbished Library and Auditorium",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: RESO A AUDITORIUM IN SCOPE.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "244 WEST 144 STREET, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Capital Budget Request for PS 194 Countee Cullen of $200,000 for a Refurbished Library and Auditorium",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: RESO A AUDITORIUM IN SCOPE.",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "244 WEST 144 STREET, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Capital Budget Request for PS 194 Countee Cullen of $200,000 for a Refurbished Library and Auditorium",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "06",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "244 WEST 144 STREET, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202728C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate interior building component",
+          "explanation": "Capital Request for MS/ HS 670 Thurgood Marshall Academy of $150,000 for Cafeteria Upgrade",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FUNDING NOT AVAILABLE.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "200 WEST 135 STREET, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate interior building component",
+          "explanation": "Capital Request for MS/ HS 670 Thurgood Marshall Academy of $150,000 for Cafeteria Upgrade",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FUNDING NOT AVAILABLE.",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "200 WEST 135 STREET, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Renovate interior building component",
+          "explanation": "Capital Request for MS/ HS 670 Thurgood Marshall Academy of $150,000 for Cafeteria Upgrade",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "07",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "200 WEST 135 STREET, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202729C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate exterior building component",
+          "explanation": "PS 200 - James McCune Smith School Capital Request of $145,000 for a playground",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: RESO A PLAYGROUND REFERRED TO LEGISLATOR FOR FUNDING. CONTACT YOUR ELECTED OFFICIAL.",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2589 ADAM CLAYTON POWELL JR BOULEVARD, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate exterior building component",
+          "explanation": "PS 200 - James McCune Smith School Capital Request of $145,000 for a playground",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: RESO A PLAYGROUND REFERRED TO LEGISLATOR FOR FUNDING. CONTACT YOUR ELECTED OFFICIAL.",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2589 ADAM CLAYTON POWELL JR BOULEVARD, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Renovate exterior building component",
+          "explanation": "PS 200 - James McCune Smith School Capital Request of $145,000 for a playground",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "08",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2589 ADAM CLAYTON POWELL JR BOULEVARD, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202730C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "PS 133 Fred R. Moore's Capital Request of $150,000 for a Refurbished Gymnasium",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FUNDING NOT AVAILABLE.",
+          "rank": {
+            "value": "09",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2121 5 AVENUE, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "PS 133 Fred R. Moore's Capital Request of $150,000 for a Refurbished Gymnasium",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FUNDING NOT AVAILABLE.",
+          "rank": {
+            "value": "09",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2121 5 AVENUE, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "PS 133 Fred R. Moore's Capital Request of $150,000 for a Refurbished Gymnasium",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "09",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "2121 5 AVENUE, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202731C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide technology upgrade",
+          "explanation": "Capital Request for PS / MS 161 Pedro Albizu Campos of $150,000 for Tech Lab and Playground Upgrade",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FUNDING NOT AVAILABLE.",
+          "rank": {
+            "value": "10",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "499 WEST 133 STREET, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Provide technology upgrade",
+          "explanation": "Capital Request for PS / MS 161 Pedro Albizu Campos of $150,000 for Tech Lab and Playground Upgrade",
+          "response": "OMB supports the agency's position as follows: Agency supports but cannot accommodate Explanation: FUNDING NOT AVAILABLE.",
+          "rank": {
+            "value": "10",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "499 WEST 133 STREET, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Provide technology upgrade",
+          "explanation": "Capital Request for PS / MS 161 Pedro Albizu Campos of $150,000 for Tech Lab and Playground Upgrade",
+          "response": "Agency supports but cannot accommodate",
+          "rank": {
+            "value": "10",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "499 WEST 133 STREET, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    },
+    {
+      "tracking_code": "310202732C",
+      "fiscal_year": 2027,
+      "request_type": "C",
+      "request_class": "capital",
+      "board_id": "manhattan-cb-10",
+      "board_binding": "bound",
+      "publisher_boro": "3",
+      "publisher_board": "10",
+      "versions": [
+        {
+          "publication": "20260512",
+          "publication_date": "2026-05-12",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Capital Budget Request for PS/MS 517 Teachers College Community School of $100,000 for STEM Innovation: Hydroponics Lab Equipment",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: Looking into capital funding source. LLW#140028",
+          "rank": {
+            "value": "11",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "168 MORNINGSIDE AVENUE, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20260630",
+          "publication_date": "2026-06-30",
+          "servable": true,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "OMB",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Capital Budget Request for PS/MS 517 Teachers College Community School of $100,000 for STEM Innovation: Hydroponics Lab Equipment",
+          "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: Looking into capital funding source. LLW#140028",
+          "rank": {
+            "value": "11",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "168 MORNINGSIDE AVENUE, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        },
+        {
+          "publication": "20270217",
+          "publication_date": "2027-02-17",
+          "servable": false,
+          "responsible_agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "binding": "bound",
+            "method": "shared_agency_alias_register"
+          },
+          "responded_by": "040",
+          "request": "Renovate or upgrade an elementary school",
+          "explanation": "Capital Budget Request for PS/MS 517 Teachers College Community School of $100,000 for STEM Innovation: Hydroponics Lab Equipment",
+          "response": "Agency supports and can accommodate",
+          "rank": {
+            "value": "11",
+            "scope": "agency_and_request_class",
+            "district_wide": false
+          },
+          "location": {
+            "street": "168 MORNINGSIDE AVENUE, New York, NY, USA"
+          },
+          "support_by": [
+            "New York City Council Member Yusef Salaam",
+            "Manhattan Borough President's Office"
+          ]
+        }
+      ],
+      "response_comparisons": [
+        {
+          "from_publication": "20260512",
+          "to_publication": "20260630",
+          "source_text_differs": false,
+          "differs_after_boilerplate_removed": false
+        }
+      ]
+    }
+  ]
+}
