@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import { readFile, readdir, mkdir, writeFile } from "node:fs/promises";
-import { readFileSync, statSync } from "node:fs";
 import { hostname } from "node:os";
 import { spawn, spawnSync } from "node:child_process";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -11,6 +10,18 @@ import {
   persistScheduleResult,
   replayOutbox,
 } from "./external_schedule_outbox.mjs";
+import {
+  CREDENTIAL_FAILURES,
+  credentialFailureLine,
+  resolveCredential,
+  resolveCredentialSource,
+} from "./lib/credential_files.mjs";
+import {
+  GITHUB_APP_FILE_VARS,
+  appCredentialFailureLine,
+  createInstallationTokenSource,
+  resolveGitHubAppCredential,
+} from "./github_app_identity.mjs";
 import { loadSourceContracts } from "./source_contracts.mjs";
 import {
   buildSourceHealthObservations,
@@ -403,96 +414,12 @@ async function pendingOutboxCount(stateDir) {
 
 export const SCHEDULER_WORKFLOW = "com.cityscroll.external-schedules";
 
-/**
- * How an explicitly configured credential file failed, in the vocabulary the
- * receipt is allowed to publish. The class names the operator's next move; the
- * path and the file's contents are never part of it, so a receipt can be read
- * and forwarded without carrying a secret or a host layout with it.
- */
-export const CREDENTIAL_FAILURES = {
-  absent: "absent",
-  empty: "empty",
-  unreadable: "unreadable",
-  "insecure-permissions": "readable by more than its owner; require mode 0600 or stricter",
-  "not-a-file": "not a regular file",
-};
-
-/**
- * Resolve one credential the same way for every secret the cycle needs.
- *
- * Explicit file configuration is authoritative. When a file variable names a
- * path, that file is the only accepted source for the cycle: absent, empty,
- * unreadable, or readable by anyone but its owner all resolve to no credential,
- * and none of them fall back to an inline export or to whatever interactive
- * GitHub CLI session happens to exist on the host. Failing closed is the point.
- * The whole reason the token is a dedicated machine identity is that a monitor
- * finding must never be filed, or an issue closed, under a person's account
- * because a file was misinstalled.
- *
- * An inline export is honoured only where no file variable is configured at
- * all, which is how a rehearsal on a workstation still runs.
- *
- * launchd starts an agent with no login shell, so a file path is the only way a
- * credential reaches the cycle without being written into a checked-in trigger.
- */
-export function resolveCredentialSource({
-  inlineVars = [],
-  fileVars = [],
-  env = process.env,
-  requireOwnerOnly = false,
-  readTextFile = readFileSync,
-  statFile = statSync,
-} = {}) {
-  for (const name of fileVars) {
-    const path = String(env[name] || "").trim();
-    if (!path) continue;
-    // A configured file is the only source from here on, whatever it turns out
-    // to hold. Every return below is terminal.
-    let stats;
-    try {
-      stats = statFile(path);
-    } catch (error) {
-      return { value: null, variable: name, failure: error?.code === "ENOENT" ? "absent" : "unreadable" };
-    }
-    if (!stats.isFile()) return { value: null, variable: name, failure: "not-a-file" };
-    // A token any local account can read is not a machine identity. The
-    // installer writes it with umask 177, so anything looser is a mistake to
-    // report rather than a permission to use. Only the delivery identity
-    // demands this today: tightening the admin key the same way would change
-    // whether an already-deployed cycle can publish its heartbeat at all.
-    if (requireOwnerOnly && (stats.mode & 0o077)) return { value: null, variable: name, failure: "insecure-permissions" };
-    let contents;
-    try {
-      contents = readTextFile(path, "utf8");
-    } catch (error) {
-      return { value: null, variable: name, failure: error?.code === "ENOENT" ? "absent" : "unreadable" };
-    }
-    const value = String(contents).trim();
-    if (!value) return { value: null, variable: name, failure: "empty" };
-    return { value, variable: name, failure: null };
-  }
-  for (const name of inlineVars) {
-    const value = String(env[name] || "").trim();
-    if (value) return { value, variable: name, failure: null };
-  }
-  return { value: null, variable: null, failure: "unconfigured" };
-}
-
-/**
- * The one line a failed resolution is allowed to emit: the variable to fix and
- * the class of failure, and nothing else. No path, no contents, no length.
- */
-export function credentialFailureLine({ variable, failure }) {
-  return `${variable} names a credential file that is ${CREDENTIAL_FAILURES[failure] || failure};`
-    + " continuing without a credential rather than falling back to another identity";
-}
-
-export function resolveCredential(options = {}) {
-  const { log = console.error } = options;
-  const resolution = resolveCredentialSource(options);
-  if (resolution.failure && resolution.failure !== "unconfigured") log(credentialFailureLine(resolution));
-  return resolution.value;
-}
+// The credential-file discipline itself now lives beside the other shared
+// helpers, because two identities read files the same way: the delivery token
+// and each of the three files a GitHub App identity is assembled from. It is
+// re-exported here so the runner stays the single import for everything a
+// cycle's credential handling needs.
+export { CREDENTIAL_FAILURES, credentialFailureLine, resolveCredential, resolveCredentialSource };
 
 function adminKey() {
   return resolveCredential({
@@ -534,6 +461,125 @@ export function outboxDeliveryReason(resolution) {
   if (!resolution || !resolution.failure) return null;
   if (resolution.failure === "unconfigured") return "github-token-unconfigured";
   return `${resolution.variable}:${resolution.failure}`;
+}
+
+export const DELIVERY_REPOSITORY = { owner: "cityscroll", repo: "cityscroll-app" };
+
+/**
+ * The client surface the issue loop calls. It is stated here so the refreshing
+ * client below cannot silently omit a method the shared client grows, and a
+ * test pins the two against each other rather than trusting this list.
+ */
+export const GITHUB_CLIENT_METHODS = Object.freeze([
+  "listIssues",
+  "listComments",
+  "createIssue",
+  "createComment",
+  "updateIssue",
+]);
+
+/**
+ * A client whose credential is resolved per request rather than captured once.
+ *
+ * An installation token expires in about an hour and a cycle can run longer
+ * than that — one bounded repair task alone is allowed ten minutes — so a
+ * client built around a single captured string would fail partway through a
+ * replay. Each call asks the token source for a current token, which mints on
+ * first use and re-mints inside the safety margin, and builds the shared client
+ * around it. The token is never held anywhere outside that call.
+ *
+ * A cycle whose token source has already failed raises rather than requesting
+ * with no credential, so a mint failure surfaces as a delivery error the outbox
+ * records against the intent instead of an unauthenticated write.
+ */
+export function createRefreshingGitHubClient({ source, owner, repo, apiBase, fetchImpl }) {
+  const call = async (method, args) => {
+    const token = await source.token();
+    if (!token) throw new Error(`GitHub App identity has no usable installation token: ${source.failure}`);
+    return createGitHubClient({ token, owner, repo, apiBase, fetchImpl })[method](...args);
+  };
+  return Object.fromEntries(GITHUB_CLIENT_METHODS.map((method) => [method, (...args) => call(method, args)]));
+}
+
+/**
+ * Resolve the one delivery identity this cycle will use, and build the GitHub
+ * client for it.
+ *
+ * Two identities are supported and they are not peers. A GitHub App installed
+ * on this repository alone is the intended one: its authority is an
+ * installation rather than an account, its permissions are visible in the
+ * response to every mint, and the credential that actually authorizes a request
+ * expires in about an hour. Naming any of the three App file variables selects
+ * that path for the whole cycle — the file token is not consulted, and a broken
+ * App configuration reports its own reason rather than silently handing the
+ * issue loop to whatever other credential the host carries. That precedence is
+ * the entire point: a half-installed App must not deliver under a fallback
+ * identity nobody chose.
+ *
+ * With none of the App variables configured, the file-token path behaves
+ * exactly as it did before, which is what keeps a workstation rehearsal and an
+ * already-deployed host running unchanged.
+ *
+ * The client is handed a function rather than a string, so a cycle that outlives
+ * an installation token re-mints mid-flight instead of failing partway through
+ * a replay.
+ */
+export function resolveDeliveryIdentity({
+  env = process.env,
+  owner = DELIVERY_REPOSITORY.owner,
+  repo = DELIVERY_REPOSITORY.repo,
+  apiBase = env.GITHUB_API_URL,
+  fetchImpl = fetch,
+  now = () => new Date(),
+  log = console.error,
+  readTextFile,
+  statFile,
+} = {}) {
+  const app = resolveGitHubAppCredential({
+    env,
+    ...(readTextFile ? { readTextFile } : {}),
+    ...(statFile ? { statFile } : {}),
+  });
+  if (app.configured) {
+    if (app.failure) {
+      log(`outbox delivery is offline: ${appCredentialFailureLine(app)}`);
+      return {
+        kind: null,
+        github: null,
+        reason: `${app.variable}:${app.failure}`,
+        summary: { identity_kind: "app", app_id: null, installation_id: null, permissions: [], token_expires_at: null },
+        source: null,
+      };
+    }
+    const source = createInstallationTokenSource({
+      credential: app.credential,
+      owner,
+      repo,
+      ...(apiBase ? { apiBase } : {}),
+      fetchImpl,
+      now,
+    });
+    const github = createRefreshingGitHubClient({ source, owner, repo, apiBase, fetchImpl });
+    return { kind: "app", github, reason: null, summary: source.summary(), source };
+  }
+
+  const delivery = githubTokenResolution(env);
+  const github = createGitHubClient({ token: delivery.value, owner, repo, apiBase, fetchImpl });
+  if (!github) {
+    log(delivery.failure === "unconfigured"
+      ? "outbox delivery is offline: no delivery identity is configured; point GH_APP_ID_FILE, GH_APP_INSTALLATION_ID_FILE and GH_APP_PRIVATE_KEY_FILE at mode-0600 files, or GH_TOKEN_FILE at one holding a token"
+      : `outbox delivery is offline: ${credentialFailureLine(delivery)}`);
+  }
+  return {
+    kind: github ? "file" : null,
+    github,
+    reason: outboxDeliveryReason(delivery),
+    // A file token carries no expiry the cycle can read and no installation to
+    // name, so the summary states the kind and leaves the rest empty rather
+    // than inventing a field shape the identity cannot fill.
+    summary: { identity_kind: github ? "file" : null, app_id: null, installation_id: null, permissions: [], token_expires_at: null },
+    source: null,
+  };
 }
 
 /**
@@ -704,7 +750,14 @@ async function persistHeartbeatReceipt(stateDir, receipt) {
  * evidence that the write landed; the round-tripped run_id is.
  */
 export async function publishHeartbeat(stateDir, now, dueJobs, options = {}) {
-  const { fetchImpl = fetch, cycleResult = "succeeded", outboxDelivery = null, outboxDeliveryReason: deliveryReason = null } = options;
+  const {
+    fetchImpl = fetch,
+    cycleResult = "succeeded",
+    outboxDelivery = null,
+    outboxDeliveryReason: deliveryReason = null,
+    outboxDeliveryIdentity = null,
+    outboxDeliveryTokenExpiresAt = null,
+  } = options;
   const url = process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL
     || "https://api.cityscroll.org/admin/reliability/scheduler";
   const runId = options.runId || schedulerRunId(now);
@@ -728,6 +781,16 @@ export async function publishHeartbeat(stateDir, now, dueJobs, options = {}) {
     // Which configured variable failed and how, when it did. Deliberately a
     // class rather than a path or a value, so the receipt stays publishable.
     outbox_delivery_reason: deliveryReason,
+    // Which of the two identities the cycle was configured to deliver with. Two
+    // cycles can both report "credentialed" while writing under entirely
+    // different authorities, so an operator reading only the heartbeat needs
+    // this to tell an installed App from a rehearsal token.
+    outbox_delivery_identity: outboxDeliveryIdentity,
+    // When the held credential stops being usable, for an identity that has an
+    // expiry to state. An App installation token lasts about an hour, so a
+    // cycle that keeps reporting the same expiry is one that stopped refreshing.
+    // A file token has no readable expiry and reports null rather than a guess.
+    outbox_delivery_token_expires_at: outboxDeliveryTokenExpiresAt,
   };
   const key = adminKey();
   // An unpublishable heartbeat is a failed cycle, not a quiet one: the runner
@@ -796,19 +859,14 @@ export async function publishHeartbeat(stateDir, now, dueJobs, options = {}) {
 async function main() {
   const jobs = await loadJobs();
   const stateDir = arg("--state-dir") || process.env.CROL_EXTERNAL_SCHEDULE_STATE_DIR || join(ROOT, ".external-schedule-state");
-  const delivery = githubTokenResolution();
-  const github = createGitHubClient({ token: delivery.value, owner: "cityscroll", repo: "cityscroll-app", apiBase: process.env.GITHUB_API_URL });
-  const deliveryReason = outboxDeliveryReason(delivery);
   // Delivery without an identity used to be silent. It is now stated exactly
   // once per cycle, in the log and on the heartbeat, so pending intents are
   // visibly undeliverable rather than merely unattempted. The line names the
   // variable and the failure class and nothing else, so it can be pasted into
   // a ticket without carrying the credential or the host's layout with it.
-  if (!github) {
-    console.error(delivery.failure === "unconfigured"
-      ? "outbox delivery is offline: no delivery identity is configured; point GH_TOKEN_FILE at a mode-0600 file holding the token"
-      : `outbox delivery is offline: ${credentialFailureLine(delivery)}`);
-  }
+  const delivery = resolveDeliveryIdentity();
+  const github = delivery.github;
+  const deliveryReason = delivery.reason;
   // A cycle that could not read its configured file replays nothing and touches
   // no attempt counter, so every pending intent stays exactly as retryable as
   // it was before the credential broke.
@@ -828,10 +886,15 @@ async function main() {
   // The cycle result travels with the heartbeat so a degraded run cannot read as
   // healthy liveness, and a healthy digest cannot stand in for a missing write.
   const degraded = summaries.some((summary) => summary.status !== "healthy");
+  // Read after the replays, so the expiry on the heartbeat is the one the cycle
+  // actually delivered under rather than the one it was configured with.
+  const deliverySummary = delivery.source ? delivery.source.summary() : delivery.summary;
   const heartbeat = await publishHeartbeat(stateDir, new Date(), due.map((job) => job.id), {
     cycleResult: degraded ? "degraded" : "succeeded",
     outboxDelivery,
     outboxDeliveryReason: deliveryReason,
+    outboxDeliveryIdentity: delivery.kind,
+    outboxDeliveryTokenExpiresAt: deliverySummary.token_expires_at,
   });
   // Repair runs after liveness is proven, on the leases this cycle was granted.
   // Outcomes are reported on the next heartbeat, so a repair never becomes mail
@@ -842,6 +905,10 @@ async function main() {
   const heartbeatReceipt = { ...heartbeat };
   delete heartbeatReceipt.repair_items;
   process.stdout.write(`${JSON.stringify({
+    // Which authority this cycle wrote under, and what GitHub said it may do.
+    // No token, no assertion, no key and no path: the receipt is publishable as
+    // it stands, and it still tells two identities apart.
+    delivery: { status: outboxDelivery, reason: deliveryReason, ...deliverySummary },
     replayBefore,
     heartbeat: heartbeatReceipt,
     due: summaries,

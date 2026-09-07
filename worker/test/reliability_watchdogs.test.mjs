@@ -218,6 +218,45 @@ test("the heartbeat records that a credential was loaded, never that delivery wo
   }
 });
 
+test("the heartbeat distinguishes the two delivery identities and records the token expiry", async () => {
+  // Both identities report "credentialed" when they load, so the kind is the
+  // only thing that says which authority a cycle actually wrote under. The
+  // expiry is what shows an App cycle still refreshing rather than riding a
+  // token it minted an hour ago.
+  const ALERT_STATE = kv();
+  const app = await recordSchedulerHeartbeat(
+    { ALERT_STATE },
+    {
+      ...CYCLE,
+      outbox_delivery: "credentialed",
+      outbox_delivery_identity: "app",
+      outbox_delivery_token_expires_at: "2026-08-25T14:30:00.000Z",
+    },
+    new Date("2026-08-25T13:30:00Z"),
+  );
+  assert.equal(app.heartbeat.outbox_delivery_identity, "app");
+  assert.equal(app.heartbeat.outbox_delivery_token_expires_at, "2026-08-25T14:30:00.000Z");
+
+  const file = await recordSchedulerHeartbeat(
+    { ALERT_STATE },
+    { ...CYCLE, outbox_delivery: "credentialed", outbox_delivery_identity: "file" },
+    new Date("2026-08-25T13:30:00Z"),
+  );
+  assert.equal(file.heartbeat.outbox_delivery_identity, "file");
+  assert.equal(file.heartbeat.outbox_delivery_token_expires_at, null);
+
+  // An identity the endpoint does not recognize is recorded as none claimed,
+  // the same way an unrecognized delivery state is.
+  for (const claim of ["machine-user", "installed", true, 1]) {
+    const write = await recordSchedulerHeartbeat(
+      { ALERT_STATE },
+      { ...CYCLE, outbox_delivery: "credentialed", outbox_delivery_identity: claim },
+      new Date("2026-08-25T13:30:00Z"),
+    );
+    assert.equal(write.heartbeat.outbox_delivery_identity, null, `${claim} was accepted as a delivery identity`);
+  }
+});
+
 test("ops failures have lossless stable signatures and restart-stable daily rollups", async () => {
   const ALERT_STATE = kv();
   const sent = [];

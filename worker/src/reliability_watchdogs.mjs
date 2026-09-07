@@ -204,6 +204,12 @@ export function schedulerHeartbeatEvidenceFindings(heartbeat = {}) {
 // outcomes are for.
 export const SCHEDULER_OUTBOX_DELIVERY_STATES = ["credentialed", "offline"];
 
+// Which of the two configured delivery identities the cycle used. A GitHub App
+// installed on this repository alone is the intended one; the file-backed token
+// remains for a workstation rehearsal. Both report "credentialed" when they
+// load, so the kind is what tells them apart.
+export const SCHEDULER_OUTBOX_DELIVERY_IDENTITIES = ["app", "file"];
+
 export async function recordSchedulerHeartbeat(env, heartbeat = {}, now = new Date()) {
   const rejected = schedulerHeartbeatEvidenceFindings(heartbeat);
   if (rejected.length) return { accepted: false, rejected, heartbeat: null };
@@ -227,6 +233,13 @@ export async function recordSchedulerHeartbeat(env, heartbeat = {}, now = new Da
     // no identity. The scheduler sends a variable name and a failure class, so
     // this stays readable without carrying a path or a secret.
     outbox_delivery_reason: trimmed(heartbeat.outbox_delivery_reason).slice(0, 120) || null,
+    // Which identity, and when its credential stops being usable. An App
+    // installation token lasts about an hour, so an expiry that stops moving is
+    // a cycle that stopped refreshing; a file token has none to report.
+    outbox_delivery_identity: SCHEDULER_OUTBOX_DELIVERY_IDENTITIES.includes(heartbeat.outbox_delivery_identity)
+      ? heartbeat.outbox_delivery_identity
+      : null,
+    outbox_delivery_token_expires_at: trimmed(heartbeat.outbox_delivery_token_expires_at).slice(0, 40) || null,
     due_jobs: Array.isArray(heartbeat.due_jobs) ? heartbeat.due_jobs.slice(0, 30) : [],
     run_key: heartbeat.run_key || null,
     // rel-12: whether this cycle can actually run a bounded repair task. A

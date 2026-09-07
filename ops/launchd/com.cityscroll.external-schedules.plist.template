@@ -30,6 +30,20 @@
          reports delivery offline until it can read the file. -->
     <key>GH_TOKEN_FILE</key>
     <string>__GH_TOKEN_FILE__</string>
+    <!-- The same delivery identity in its GitHub App form: an App installed on
+         this repository alone, whose short-lived installation tokens the cycle
+         mints for itself. Three mode-0600 files hold the App id, the
+         installation id, and the signing key; only their paths appear here.
+         Naming any of the three makes the App path authoritative for the whole
+         cycle, so a half-installed App reports offline with its reason rather
+         than delivering under the token file instead. Leave all three empty and
+         the cycle uses GH_TOKEN_FILE exactly as before. -->
+    <key>GH_APP_ID_FILE</key>
+    <string>__GH_APP_ID_FILE__</string>
+    <key>GH_APP_INSTALLATION_ID_FILE</key>
+    <string>__GH_APP_INSTALLATION_ID_FILE__</string>
+    <key>GH_APP_PRIVATE_KEY_FILE</key>
+    <string>__GH_APP_PRIVATE_KEY_FILE__</string>
     <key>CITYSCROLL_SCHEDULER_HEARTBEAT_URL</key>
     <string>https://api.cityscroll.org/admin/reliability/scheduler</string>
     <!-- The bounded debug/fix task the cycle runs for one leased repair item.
