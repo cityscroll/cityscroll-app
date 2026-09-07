@@ -1455,7 +1455,7 @@ rate-limited and cached, and none touches a paid service. Base URL: <code>https:
       "id": "contracts.analysis",
       "version": "1.0.0",
       "title": "Contracts Analysis",
-      "description": "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, coverage, and exact contract IDs. Does not report payments or spending.",
+      "description": "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, and coverage. Each group lists the exact contributing registration IDs in contract_ids and, at the same index in contract_procurement_ids, the canonical procurement ID get_contract accepts, or null when that contract is not individually retrievable. Does not report payments or spending.",
       "owner": "procurement",
       "operation": "read",
       "authority": {
@@ -1511,6 +1511,7 @@ rate-limited and cached, and none touches a paid service. Base URL: <code>https:
           "denominator",
           "population",
           "coverage",
+          "contract_detail",
           "filters",
           "freshness",
           "error"
@@ -1582,7 +1583,8 @@ rate-limited and cached, and none touches a paid service. Base URL: <code>https:
       "provenance": {
         "population": "site/data/analytics_registered_contracts.json",
         "identity": "prime_contract_id (exact registered-contract identity)",
-        "drillThrough": "ordinary Contracts scope with exact contributing contract identifiers"
+        "drillThrough": "ordinary Contracts scope with exact contributing contract identifiers",
+        "contractDetail": "each contributing registration identifier is resolved to the canonical procurement id contract.get@1 accepts, or reported as not individually retrievable with a reason"
       },
       "freshness": {
         "owner": "committed registered-contract analytical projection",
@@ -2708,7 +2710,7 @@ Per-IP and daily model-call ceilings apply. Machine-readable catalog: <code>JSON
   <li><code>retrieve_cited_passages</code> <span aria-hidden="true">·</span> read — Retrieve source passages with stable citations and exact source joins. Returns source text only. It does not generate an answer or infer civic relationships.</li>
   <li><code>get_contract</code> <span aria-hidden="true">·</span> read — Get one public contract by its exact ID. Uses the same Contracts record as CityScroll. Includes source links, coverage, freshness, amount validity, and lifecycle facts when available.</li>
   <li><code>browse_contracts</code> <span aria-hidden="true">·</span> read — List public Contracts records with bounded filters and pages. Results keep exact contract IDs separate, including records that share a PIN.</li>
-  <li><code>analyze_contracts</code> <span aria-hidden="true">·</span> read — Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, coverage, and exact contract IDs. Does not report payments or spending.</li>
+  <li><code>analyze_contracts</code> <span aria-hidden="true">·</span> read — Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, and coverage. Each group lists the exact contributing registration IDs in contract_ids and, at the same index in contract_procurement_ids, the canonical procurement ID get_contract accepts, or null when that contract is not individually retrievable. Does not report payments or spending.</li>
   <li><code>get_person_or_organization</code> <span aria-hidden="true">·</span> read — Get one exact typed person or organization row from the published People and organizations read model. Display names never create identity. Relation states and source fields are preserved.</li>
   <li><code>browse_organizations</code> <span aria-hidden="true">·</span> read — Browse the bounded typed People and organizations snapshot with exact row-kind and token filters. Results retain published, empty, or unknown relation states and read-model freshness.</li>
   <li><code>get_meeting</code> <span aria-hidden="true">·</span> read — Get one exact source-qualified meeting from the shared CityScroll meeting read model. Preserves source receipt, coverage, freshness, and attached meeting documents.</li>

@@ -21,6 +21,7 @@ import {
 } from "../../site/analytical_projection.mjs";
 import { ANALYTICAL_PROJECTION_SCHEMA, REGISTERED_CONTRACT_PROJECTION } from "../../site/analytical_projection_contract.mjs";
 import { analyzeContractsProjection } from "../../site/contracts_analysis_projection.mjs";
+import { procurementDetailIndex } from "../../site/procurement_detail_index.mjs";
 import {
   CONTRACT_GET_CAPABILITY_REFERENCE,
   CONTRACT_GET_LIMITS,
@@ -436,8 +437,32 @@ function analyticalHref(input, groupBy, label) {
   });
 }
 
-function analyzeRegisteredContracts(projection, input) {
-  return analyzeContractsProjection(projection, input);
+/**
+ * The detail index the analysis answer resolves its contributing contract
+ * identifiers through. It is read before the population so the two documents
+ * are not held in memory at once, and it is deliberately skipped when the
+ * caller injected a substitute projection: resolving a substituted aggregate
+ * against the published detail read model would compare two different
+ * snapshots, which is the drift the resolution exists to rule out.
+ */
+async function readProcurementDetailIndex(env) {
+  const injected = env?.PROCUREMENT_READ_MODEL
+    || (env?.schema === "cityscroll.shared_procurement_read_model.v1" ? env : null);
+  if (injected && typeof injected === "object") return procurementDetailIndex(injected);
+  if (env?.ANALYTICAL_PROJECTION || env?.ANALYTICAL_REGISTERED_CONTRACTS
+    || env?.schema === ANALYTICAL_PROJECTION_SCHEMA) return null;
+  try {
+    return procurementDetailIndex(await readStaticJson(SHARED_MODEL_PATH));
+  } catch (error) {
+    // A missing detail index never fails the aggregate; the answer simply
+    // stops claiming that any contributing contract can be fetched.
+    console.error("procurement detail index unavailable:", String(error?.message || error));
+    return null;
+  }
+}
+
+function analyzeRegisteredContracts(projection, input, detailIndex) {
+  return analyzeContractsProjection(projection, input, detailIndex);
 }
 
 export function workerContractsAnalysis(env) {
@@ -446,7 +471,8 @@ export function workerContractsAnalysis(env) {
     providerId: CONTRACTS_ANALYSIS_PROVIDER_ID,
     async execute(input) {
       try {
-        return analyzeRegisteredContracts(await readAnalyticalProjection(env), input);
+        const detailIndex = await readProcurementDetailIndex(env);
+        return analyzeRegisteredContracts(await readAnalyticalProjection(env), input, detailIndex);
       } catch (error) {
         console.error("Contracts analysis projection unavailable:", String(error?.message || error));
         return {
@@ -458,6 +484,7 @@ export function workerContractsAnalysis(env) {
           denominator: null,
           population: null,
           coverage: null,
+          contract_detail: null,
           filters: null,
           freshness: null,
           error: "unavailable",
@@ -533,14 +560,23 @@ export function formatContractsBrowseText(result) {
   return lines.join("\n");
 }
 
+/** Name only the identifiers a reader can actually fetch, and count the rest. */
+function contractIdentifierSummary(group) {
+  const resolved = (group.contract_procurement_ids || []).filter((id) => id !== null);
+  const missing = group.contract_retrieval.not_retrievable_contract_count;
+  const shown = resolved.length ? resolved.join(", ") : "no individually retrievable contract";
+  return missing ? `${shown}; ${missing} not individually retrievable` : shown;
+}
+
 export function formatContractsAnalysisText(result) {
   if (result.availability === "empty") return "No registered contracts match the bounded analytical filters.";
   if (result.availability === "unavailable") return "Contracts analysis is unavailable right now.";
   const measure = `${result.measure.reader_label} (${result.measure.unit})`;
   const lines = [
     `${result.group_by}: ${measure}; denominator ${result.denominator.value.toLocaleString("en-US")} ${result.denominator.unit} across ${result.denominator.contract_count.toLocaleString("en-US")} contracts.`,
-    ...result.groups.map((group, index) => `${index + 1}. ${group.label} — ${group.value.toLocaleString("en-US")} ${group.unit}; ${group.contract_count} contracts (${group.contract_ids.join(", ")})`),
+    ...result.groups.map((group, index) => `${index + 1}. ${group.label} — ${group.value.toLocaleString("en-US")} ${group.unit}; ${group.contract_count} contracts (${contractIdentifierSummary(group)})`),
     result.coverage.statement,
+    result.contract_detail.identifier_note,
   ];
   return lines.join("\n");
 }

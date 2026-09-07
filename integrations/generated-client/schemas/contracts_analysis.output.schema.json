@@ -10,6 +10,7 @@
     "denominator",
     "population",
     "coverage",
+    "contract_detail",
     "filters",
     "freshness",
     "error"
@@ -62,6 +63,12 @@
       ]
     },
     "coverage": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "contract_detail": {
       "type": [
         "object",
         "null"

@@ -1489,7 +1489,7 @@
       "name": "analyze_contracts",
       "operation_class": "read",
       "authority_class": "public_read",
-      "description": "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, coverage, and exact contract IDs. Does not report payments or spending.",
+      "description": "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, and coverage. Each group lists the exact contributing registration IDs in contract_ids and, at the same index in contract_procurement_ids, the canonical procurement ID get_contract accepts, or null when that contract is not individually retrievable. Does not report payments or spending.",
       "schema_reference": "contracts.analysis@1",
       "capability_reference": "contracts.analysis@1",
       "input_schema": {
@@ -1569,6 +1569,7 @@
           "denominator",
           "population",
           "coverage",
+          "contract_detail",
           "filters",
           "freshness",
           "error"
@@ -1621,6 +1622,12 @@
             ]
           },
           "coverage": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "contract_detail": {
             "type": [
               "object",
               "null"

@@ -5,6 +5,8 @@ import {
   CONTRACTS_ANALYSIS_AVAILABILITY,
   CONTRACTS_ANALYSIS_CAPABILITY_REFERENCE,
   CONTRACTS_ANALYSIS_LIMITS,
+  PROCUREMENT_DETAIL_NOT_RETRIEVABLE_REASON,
+  PROCUREMENT_DETAIL_RESOLUTIONS,
   executeContractsAnalysis,
 } from "../capabilities/contracts_analysis.mjs";
 import {
@@ -18,6 +20,40 @@ import {
   ANALYTICAL_PROJECTION_SCHEMA,
   REGISTERED_CONTRACT_PROJECTION,
 } from "./analytical_projection_contract.mjs";
+import { resolveProcurementDetailIds } from "./procurement_detail_index.mjs";
+
+const CONTRACT_IDENTIFIER_NOTE =
+  "contract_ids are publisher registration identifiers for the registered-contract aggregate; contract.get@1 accepts only the canonical procurement id at the same index of contract_procurement_ids, and a null there means that contract is not individually retrievable.";
+
+/**
+ * Resolve a group's contributing registration identifiers into the canonical
+ * ids the contract detail capability accepts. Without a detail index nothing
+ * is claimed: the ids stay null and the group says so, which is the honest
+ * answer when the aggregate cannot see the detail read model it would be
+ * pointing at.
+ */
+function groupContractDetail(contractIds, detailIndex) {
+  const resolved = resolveProcurementDetailIds(detailIndex, contractIds);
+  if (!resolved) {
+    return {
+      contract_procurement_ids: null,
+      contract_retrieval: {
+        resolution: PROCUREMENT_DETAIL_RESOLUTIONS[2],
+        retrievable_contract_count: 0,
+        not_retrievable_contract_count: contractIds.length,
+      },
+    };
+  }
+  const retrievable = resolved.filter((procurementId) => procurementId !== null).length;
+  return {
+    contract_procurement_ids: resolved,
+    contract_retrieval: {
+      resolution: detailIndex.resolution,
+      retrievable_contract_count: retrievable,
+      not_retrievable_contract_count: resolved.length - retrievable,
+    },
+  };
+}
 
 function analyticalFilters(input) {
   return {
@@ -91,7 +127,7 @@ function groupHref(input, groupBy, label) {
 }
 
 /** Build and validate the exact registered-contract capability envelope. */
-export function analyzeContractsProjection(projection, input = {}) {
+export function analyzeContractsProjection(projection, input = {}, detailIndex = null) {
   const rows = Array.isArray(projection?.rows) ? projection.rows : null;
   if (!rows || !["cityscroll.analytics_registered_contracts.v1", ANALYTICAL_PROJECTION_SCHEMA].includes(projection?.schema)) throw new Error("registered contract analytical projection is unavailable");
   const groupBy = input.groupBy || "agency";
@@ -108,9 +144,12 @@ export function analyzeContractsProjection(projection, input = {}) {
       unit: view.unit,
       contract_count: group.contract_count,
       contract_ids: [...group.contract_ids],
+      ...groupContractDetail([...group.contract_ids], detailIndex),
       drill_through: { href: groupHref(input, groupBy, group.label), filters: groupFilters(input, groupBy, group.label) },
     };
   });
+  const retrievableContractCount = groups.reduce((sum, group) => sum + group.contract_retrieval.retrievable_contract_count, 0);
+  const notRetrievableContractCount = groups.reduce((sum, group) => sum + group.contract_retrieval.not_retrievable_contract_count, 0);
   const denominatorValue = grouped.groups.reduce((sum, group) => sum + (Number(group[grouped.value_key]) || 0), 0);
   const denominatorContractCount = new Set(filtered.map((row) => row.prime_contract_id)).size;
   const denominatorValueCount = filtered.filter((row) => {
@@ -156,6 +195,19 @@ export function analyzeContractsProjection(projection, input = {}) {
         eligible_registered_value: coverage.eligible_registered_value,
         matched_registered_value: coverage.matched_registered_value,
         buckets: coverage.buckets,
+      },
+      contract_detail: {
+        capability: "contract.get@1",
+        identifier_field: "contract_procurement_ids",
+        identifier_note: CONTRACT_IDENTIFIER_NOTE,
+        resolution: detailIndex?.resolution || PROCUREMENT_DETAIL_RESOLUTIONS[2],
+        not_retrievable_reason: PROCUREMENT_DETAIL_NOT_RETRIEVABLE_REASON,
+        retrievable_contract_count: retrievableContractCount,
+        not_retrievable_contract_count: notRetrievableContractCount,
+        // Both vintages travel together so a reader can see when the aggregate
+        // and the detail records it points at were built from the same day.
+        read_model_generated_at: detailIndex?.generated_at || null,
+        read_model_procurement_id_count: detailIndex?.procurement_id_count ?? null,
       },
       filters: publicFilters(input),
       freshness: {

@@ -968,7 +968,8 @@
       "provenance": {
         "population": "site/data/analytics_registered_contracts.json",
         "identity": "prime_contract_id (exact registered-contract identity)",
-        "drillThrough": "ordinary Contracts scope with exact contributing contract identifiers"
+        "drillThrough": "ordinary Contracts scope with exact contributing contract identifiers",
+        "contractDetail": "each contributing registration identifier is resolved to the canonical procurement id contract.get@1 accepts, or reported as not individually retrievable with a reason"
       },
       "freshness": {
         "owner": "committed registered-contract analytical projection",

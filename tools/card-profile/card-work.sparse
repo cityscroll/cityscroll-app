@@ -617,11 +617,13 @@
 /site/procurement_browse_query.mjs
 /site/procurement_browse_read_path.mjs
 /site/procurement_coverage_labels.mjs
+/site/procurement_detail_index.mjs
 /site/procurement_digest_compile.mjs
 /site/procurement_document.mjs
 /site/procurement_event_log.mjs
 /site/procurement_facet_links.mjs
 /site/procurement_handoff_copy.mjs
+/site/procurement_identity_key.mjs
 /site/procurement_intent_watch_continuity.mjs
 /site/procurement_object_contract.mjs
 /site/procurement_opportunity_window.mjs
