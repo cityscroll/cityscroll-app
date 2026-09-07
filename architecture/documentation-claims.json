@@ -1,0 +1,338 @@
+{
+  "schema": "cityscroll.architecture.documentation_claim_registry.v1",
+  "description": "Bounded ownership registry for consequential documentation claims. Each entry names the documents it covers, the committed owner its truth is derived from, and the condition under which the claim is false. Replay with tools/documentation_drift_review.mjs --check.",
+  "documents": [
+    "ARCHITECTURE.md",
+    "docs/architecture.md",
+    "worker/README.md",
+    "docs/release/cloudflare-native-builds.md",
+    "docs/release/cloudflare-native-builds.json"
+  ],
+  "claims": [
+    {
+      "id": "worker-release-classification",
+      "title": "How the Worker deploys",
+      "rule": "absolute",
+      "documents": [
+        "ARCHITECTURE.md",
+        "docs/architecture.md",
+        "worker/README.md",
+        "docs/release/cloudflare-native-builds.md",
+        "docs/release/cloudflare-native-builds.json"
+      ],
+      "patterns": [
+        "manual,? non-required fallback",
+        "manual-only (?:fallback|workflow|classification|deploy)",
+        "Workers Builds (?:remains|is) the canonical release path",
+        "\"manual_fallback_workflow\""
+      ],
+      "false_when": {
+        "op": "is_false",
+        "fact": "release_infrastructure.pipelines.cloudflare-worker.manual_only"
+      },
+      "expected": "the Worker deploy workflow is automatic on a main push and separately re-runnable by hand",
+      "owner": {
+        "path": ".github/workflows/deploy-worker.yml",
+        "locator": "on.push.branches",
+        "fact": "release_infrastructure.pipelines.cloudflare-worker.classifications",
+        "deriver": "tools/release_infrastructure_facts.mjs"
+      },
+      "why": "The workflow declares push on main as well as workflow_dispatch, so classifying it as a manual-only or non-required fallback tells an operator to expect a deployment that does not exist."
+    },
+    {
+      "id": "worker-cron-count",
+      "title": "How many daily cron triggers exist",
+      "rule": "count",
+      "documents": [
+        "ARCHITECTURE.md",
+        "docs/architecture.md",
+        "worker/README.md",
+        "docs/release/cloudflare-native-builds.md"
+      ],
+      "patterns": [
+        "\\b(\\S+) daily cron"
+      ],
+      "count_fact": "release_infrastructure.crons",
+      "expected": "the number of cron schedules configured in the Wrangler triggers table",
+      "owner": {
+        "path": "worker/wrangler.toml",
+        "locator": "[triggers] crons",
+        "fact": "release_infrastructure.crons",
+        "deriver": "tools/release_infrastructure_facts.mjs"
+      },
+      "why": "A summary that undercounts the configured schedules hides an entire scheduled job from anyone reasoning about what runs unattended."
+    },
+    {
+      "id": "worker-cron-diagram-sole-schedule",
+      "title": "A diagram that names one cron schedule as the whole schedule set",
+      "rule": "absolute",
+      "documents": [
+        "ARCHITECTURE.md",
+        "docs/architecture.md",
+        "worker/README.md"
+      ],
+      "patterns": [
+        "Cron \\(daily \\d{1,2}:\\d{2} UTC\\)"
+      ],
+      "false_when": {
+        "op": "count_not_equals",
+        "fact": "release_infrastructure.crons",
+        "value": 1
+      },
+      "expected": "a diagram box that stands for the schedule set must not name a single time when several are configured",
+      "owner": {
+        "path": "worker/wrangler.toml",
+        "locator": "[triggers] crons",
+        "fact": "release_infrastructure.crons",
+        "deriver": "tools/release_infrastructure_facts.mjs"
+      },
+      "why": "A system map is read as the complete picture, so a single labelled cron box asserts that one schedule is all there is."
+    },
+    {
+      "id": "r2-source-vault-custody",
+      "title": "Whether the R2 source vault is active custody",
+      "rule": "qualified",
+      "finding_type": "contradicted_claim",
+      "documents": [
+        "ARCHITECTURE.md",
+        "docs/architecture.md",
+        "worker/README.md",
+        "docs/release/cloudflare-native-builds.md"
+      ],
+      "patterns": [
+        "content-addressed custody for approved public documents",
+        "source vault retains approved public documents",
+        "\\+ ?1 R2 source vault"
+      ],
+      "qualifier": "not an active store|commented out|inactive|reserved|not bound|disabled|would carry|design",
+      "false_when": {
+        "op": "is_false",
+        "fact": "release_infrastructure.binding_active.SOURCE_VAULT"
+      },
+      "expected": "the R2 binding is commented out and SOURCE_VAULT_ENABLED is \"false\", so custody is a design, not a store",
+      "owner": {
+        "path": "worker/wrangler.toml",
+        "locator": "[[r2_buckets]] binding = \"SOURCE_VAULT\" and [vars] SOURCE_VAULT_ENABLED",
+        "fact": "release_infrastructure.binding_active.SOURCE_VAULT",
+        "deriver": "tools/release_infrastructure_facts.mjs"
+      },
+      "why": "Describing an unbound seam as custody tells a reader that source documents are retained somewhere they are not, which is a retention claim rather than a naming preference."
+    },
+    {
+      "id": "third-party-loader-absence",
+      "title": "Whether a third-party loader is configured",
+      "rule": "absolute",
+      "documents": [
+        "ARCHITECTURE.md",
+        "docs/architecture.md",
+        "worker/README.md",
+        "docs/release/cloudflare-native-builds.md"
+      ],
+      "patterns": [
+        "no third-party trackers?"
+      ],
+      "false_when": {
+        "op": "is_true",
+        "fact": "collection_boundary.third_party_loader.configured"
+      },
+      "expected": "the browser loader carries a configured project id and is included by the top-level site documents",
+      "owner": {
+        "path": "site/clarity.js",
+        "locator": "CONFIGURED_PROJECT_ID",
+        "fact": "collection_boundary.third_party_loader.configured",
+        "deriver": "tools/collection_boundary_facts.mjs"
+      },
+      "why": "A reader answering \"does this product load a third-party script?\" from the canonical technical documentation would have been told no about a script that runs on every page a reader lands on."
+    },
+    {
+      "id": "public-stats-product-use",
+      "title": "Whether public statistics publish any product-use figure",
+      "rule": "absolute",
+      "documents": [
+        "ARCHITECTURE.md",
+        "docs/architecture.md",
+        "worker/README.md"
+      ],
+      "patterns": [
+        "never reads or returns product-use telemetry",
+        "no product-use telemetry is published"
+      ],
+      "false_when": {
+        "op": "non_empty",
+        "fact": "collection_boundary.public_search_usage.metric_ids"
+      },
+      "expected": "the public statistics route publishes period-bounded search counts through a closed allowlist",
+      "owner": {
+        "path": "worker/src/lib/public_search_usage.mjs",
+        "locator": "PUBLIC_SEARCH_USAGE_METRICS",
+        "fact": "collection_boundary.public_search_usage.metric_ids",
+        "deriver": "tools/collection_boundary_facts.mjs"
+      },
+      "why": "An absolute denial turns a reviewed, allowlisted projection into an apparent leak, so a maintainer looks for a defect instead of finding the contract."
+    },
+    {
+      "id": "materialization-completed",
+      "title": "Whether the materialization migration is described as finished",
+      "rule": "absolute",
+      "documents": [
+        "ARCHITECTURE.md",
+        "docs/architecture.md",
+        "worker/README.md"
+      ],
+      "patterns": [
+        "materiali[sz]ed read models are the exclusive delivery path",
+        "exclusive delivery path for resident",
+        "does not trigger a request-time publisher lookup",
+        "all resident reads are materiali[sz]ed"
+      ],
+      "false_when": {
+        "op": "non_empty",
+        "fact": "resident_read.open_debt_routes"
+      },
+      "expected": "the debt manifest still records open departures on resident routes",
+      "owner": {
+        "path": "architecture/no-live-external-debt.json",
+        "locator": "entries[].route",
+        "fact": "resident_read.open_debt_routes",
+        "deriver": "architecture/resident-read-policy.json first_party_routes.temporary_debt"
+      },
+      "why": "Stating the migration as complete deletes the recorded departures from the reader's picture, so the one route that still reaches a publisher at request time looks impossible."
+    },
+    {
+      "id": "materialization-exception-closure",
+      "title": "Whether the stated exception set acknowledges the recorded departures",
+      "rule": "qualified",
+      "finding_type": "unqualified_claim",
+      "documents": [
+        "ARCHITECTURE.md",
+        "docs/architecture.md",
+        "worker/README.md"
+      ],
+      "patterns": [
+        "\\bnone permits\\b[^.]{0,200}request-time",
+        "\\bno exception permits\\b[^.]{0,200}request-time"
+      ],
+      "qualifier": "migration departure|departures recorded|recorded below|temporary migration exception|no-live-external-debt|debt manifest",
+      "false_when": {
+        "op": "non_empty",
+        "fact": "resident_read.open_debt_routes"
+      },
+      "expected": "a statement that closes the exception set must name the recorded departures in the same statement",
+      "owner": {
+        "path": "architecture/no-live-external-debt.json",
+        "locator": "entries[].route",
+        "fact": "resident_read.open_debt_routes",
+        "deriver": "architecture/resident-read-policy.json first_party_routes.temporary_debt"
+      },
+      "why": "Closing the exception list without naming the recorded departures reads as an exhaustive account, which is how a real departure becomes invisible while every sentence around it stays true."
+    },
+    {
+      "id": "materialization-exception-reference",
+      "title": "Whether a document stating the invariant points at the recorded departures",
+      "rule": "reference",
+      "documents": [
+        "ARCHITECTURE.md",
+        "docs/architecture.md",
+        "worker/README.md"
+      ],
+      "patterns": [
+        "materiali[sz]ation-only",
+        "resident and required-CI reads are materiali[sz]"
+      ],
+      "required_reference": [
+        "architecture/no-live-external-debt.json"
+      ],
+      "false_when": {
+        "op": "non_empty",
+        "fact": "resident_read.open_debt_routes"
+      },
+      "expected": "a document that states the invariant links the manifest of open departures",
+      "owner": {
+        "path": "architecture/no-live-external-debt.json",
+        "locator": "entries[].route",
+        "fact": "resident_read.open_debt_routes",
+        "deriver": "architecture/resident-read-policy.json first_party_routes.temporary_debt"
+      },
+      "why": "Without the pointer a reader has no way to discover that the standing target is not the current state."
+    },
+    {
+      "id": "native-builds-connection",
+      "title": "Whether the native builds connection exists in the provider account",
+      "rule": "semantic",
+      "documents": [
+        "docs/release/cloudflare-native-builds.md",
+        "docs/release/cloudflare-native-builds.json"
+      ],
+      "patterns": [
+        "native builds connection",
+        "native_builds_connection"
+      ],
+      "applies_when": {
+        "op": "equals",
+        "fact": "release_infrastructure.externally_observed.worker_native_builds_connection",
+        "value": "unverified"
+      },
+      "adjudicated_by": "the site owner, against a committed read-only configuration read or deployment receipt",
+      "expected": "no committed file can establish a provider-account setting",
+      "owner": {
+        "path": "docs/release/cloudflare-native-builds.json",
+        "locator": "worker.native_builds_connection",
+        "fact": "release_infrastructure.externally_observed.worker_native_builds_connection",
+        "deriver": "tools/release_infrastructure_facts.mjs"
+      },
+      "why": "Nothing in this repository reads a provider dashboard, so this claim stays a human adjudication rather than a machine pass."
+    },
+    {
+      "id": "third-party-load-outcome",
+      "title": "What the configured third-party loader actually does at a reader's browser",
+      "rule": "semantic",
+      "documents": [
+        "ARCHITECTURE.md",
+        "docs/architecture.md"
+      ],
+      "patterns": [
+        "third-party session-analytics loader"
+      ],
+      "applies_when": {
+        "op": "is_false",
+        "fact": "collection_boundary.third_party_loader.load_outcome_observed"
+      },
+      "adjudicated_by": "the site owner, against the provider account and the owned collection reference",
+      "expected": "the loader appends the provider script and never inspects the response, so success, provider retention, and dashboard masking are all outside this tree",
+      "owner": {
+        "path": "site/clarity.js",
+        "locator": "boot()",
+        "fact": "collection_boundary.third_party_loader.load_outcome_observed",
+        "deriver": "tools/collection_boundary_facts.mjs"
+      },
+      "why": "A summary describing what a third-party script collects is asserting behaviour this repository cannot observe."
+    },
+    {
+      "id": "materialization-target-standing",
+      "title": "Whether the materialization target is still the accepted direction of travel",
+      "rule": "semantic",
+      "documents": [
+        "ARCHITECTURE.md",
+        "docs/architecture.md"
+      ],
+      "patterns": [
+        "is the target and the direction of travel",
+        "standing invariant every surface is held to",
+        "rule above is the target"
+      ],
+      "applies_when": {
+        "op": "non_empty",
+        "fact": "resident_read.open_debt_routes"
+      },
+      "adjudicated_by": "architecture review, against the recorded departures and their expiry",
+      "expected": "whether an open departure is still acceptable is a decision, not a derivation",
+      "owner": {
+        "path": "architecture/no-live-external-debt.json",
+        "locator": "expires_on",
+        "fact": "resident_read.open_debt_routes",
+        "deriver": "architecture/resident-read-policy.json first_party_routes.temporary_debt"
+      },
+      "why": "A build has no standing to decide that a departure is still tolerable, and a build timestamp is not a review date."
+    }
+  ]
+}

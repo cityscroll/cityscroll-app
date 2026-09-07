@@ -22,6 +22,10 @@ on:
       - "tools/architecture_*.mjs"
       - "tools/backtest_architecture_canaries.mjs"
       - "tools/reconcile_architecture.mjs"
+      - "tools/documentation_claim_observer.mjs"
+      - "tools/documentation_drift_review.mjs"
+      - "docs/release/cloudflare-native-builds.md"
+      - "docs/release/cloudflare-native-builds.json"
       - ".github/workflows/architecture-reconciliation.yml"
   merge_group:
   schedule:
@@ -46,6 +50,8 @@ jobs:
         run: |
           node tools/architecture_evidence_shards.mjs --check
           node tools/reconcile_architecture.mjs --check --output-dir "$RUNNER_TEMP/architecture-evidence"
+      - name: Check consequential documentation claims
+        run: node tools/documentation_drift_review.mjs --check
       - name: Replay frozen architecture canaries
         run: node tools/backtest_architecture_canaries.mjs --check
       - name: Upload short-lived architecture evidence
