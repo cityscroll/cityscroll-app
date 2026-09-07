@@ -1,6 +1,15 @@
 // First-party aggregate event collector. No cookies, visitor identifiers, raw search text,
 // entity names, or notice ids. The Worker validates every value against the versioned taxonomy
 // before writing it to Analytics Engine.
+//
+// The surface an event names comes from site/analytics_surface_taxonomy.mjs, which resolves a
+// pathname against the registered route map. This file no longer guesses one from the last path
+// segment and no longer answers "home" when it recognises nothing: a route the map does not
+// register produces no event at all, because an unattributed page view is a gap and a
+// misattributed one is a false measurement. The Worker builds its own allowlists from the same
+// module, so the two halves cannot drift apart.
+import { resolveAnalyticsSurface } from "./analytics_surface_taxonomy.mjs";
+
 (function () {
   "use strict";
 
@@ -15,24 +24,21 @@
     ["bronx", "bronx"], ["staten island", "staten-island"],
   ]);
 
-  function surface() {
-    if (/^\/experimental\/worth-a-look(?:\/|$)/.test(location.pathname)) return "worth-a-look";
-    const documentRoute = location.pathname.match(/^\/(now|near-you|following|browse)(?:\/|$)/)?.[1];
-    if (documentRoute) return documentRoute;
-    const page = location.pathname.split("/").pop() || "index.html";
-    return ({
-      "index.html": "home", "stats.html": "stats", "about.html": "about",
-      "data.html": "data", "api.html": "api", "changelog.html": "changelog",
-      "standards.html": "standards",
-    })[page] || "home";
-  }
+  // The one surface this document is allowed to name, resolved once. `null` means the route
+  // is not registered, and every record() call below then declines to send rather than
+  // attributing the reader's activity to a page they are not on.
+  const PAGE_SURFACE = resolveAnalyticsSurface(location.pathname).surface;
 
+  // A lens is a thing the reader chose. When nothing on the page establishes one there is no
+  // lens to report, and `undefined` becomes the taxonomy's `none` — never "money", which used
+  // to be handed out as a default and made an untyped search on any document look like a
+  // spending search on the homepage.
   function currentLens(node) {
     const tab = node && node.closest && node.closest(".tabpane");
     const fromPane = tab && tab.id.replace(/^tab-/, "");
     if (LENSES.has(fromPane)) return fromPane;
     const active = document.querySelector(".tabbtn.active");
-    return LENSES.has(active?.dataset?.tab) ? active.dataset.tab : "money";
+    return LENSES.has(active?.dataset?.tab) ? active.dataset.tab : undefined;
   }
 
   function currentArea() {
@@ -44,6 +50,10 @@
   }
 
   function record(event, dimensions) {
+    // An event with no surface is not sent. The Worker would refuse it anyway; declining here
+    // keeps an unregistered route from spending a request to be rejected, and keeps the
+    // rejection counter meaning "a producer sent something the taxonomy does not allow".
+    if (!dimensions || !dimensions.surface) return;
     const payload = JSON.stringify({ event, ...dimensions });
     try {
       // The browser treats an optional short-lived developer token as opaque. Only the Worker
@@ -80,7 +90,7 @@
       : ["notice", "agency", "vendor", "search", "investigation"].includes(first) ? first : null;
     if (!kind) return;
     const lens = lensSearch ? first : currentLens(document.body);
-    record("deep_link_open", { detail: kind, lens, surface: "home" });
+    record("deep_link_open", { detail: kind, lens, surface: PAGE_SURFACE });
   }
 
   document.addEventListener("click", (event) => {
@@ -90,31 +100,31 @@
       ? target.dataset.tab : currentLens(target);
 
     if (target.matches(".tabbtn[data-tab]")) {
-      record("lens_open", { lens, surface: "home" });
+      record("lens_open", { lens, surface: PAGE_SURFACE });
       return;
     }
     if (target.matches("[data-scenario][data-scenario-lens]")) {
       record("scenario_open", {
         lens: target.dataset.scenarioLens,
         detail: target.dataset.scenario,
-        surface: "home",
+        surface: PAGE_SURFACE,
       });
       return;
     }
     if (target.matches(".trychip")) {
-      record("search_run", { lens, detail: "preset", geography: currentArea(), surface: "home" });
+      record("search_run", { lens, detail: "preset", geography: currentArea(), surface: PAGE_SURFACE });
       return;
     }
     if (target.matches("#apreview,#asubscribe,#landalert,.watchbtn")) {
       record("alert_start", {
         lens,
         detail: target.id === "apreview" ? "preview" : "subscribe",
-        surface: "home",
+        surface: PAGE_SURFACE,
       });
       return;
     }
     if (target.matches("#invshare")) {
-      record("investigation_share", { detail: "create", surface: "home" });
+      record("investigation_share", { detail: "create", surface: PAGE_SURFACE });
       return;
     }
 
@@ -124,14 +134,14 @@
       || (/xlsx/i.test(id) ? "xlsx" : /csv|^export$/i.test(id) ? "csv"
         : /print/i.test(id) ? "print" : /ics/i.test(id) ? "ics"
           : /json/i.test(id) && /export|inv/i.test(id) ? "json" : null);
-    if (format) record("export", { lens, detail: format, surface: "home" });
+    if (format) record("export", { lens, detail: format, surface: PAGE_SURFACE });
   });
 
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Enter" || !event.target.matches("input[type='text'],input[type='search']")) return;
     if (/^nlq/.test(event.target.id)) return; // successful model-backed searches are counted by the Worker.
     record("search_run", {
-      lens: currentLens(event.target), detail: "filters", geography: currentArea(), surface: "home",
+      lens: currentLens(event.target), detail: "filters", geography: currentArea(), surface: PAGE_SURFACE,
     });
   });
 
@@ -139,7 +149,7 @@
     const link = event.target.closest?.("[data-borough-scope-link]");
     if (!link || link.dataset.boroughScopeLink === "all") return;
     record("search_run", {
-      lens: "land", detail: "filters", geography: currentArea(), surface: "home",
+      lens: "land", detail: "filters", geography: currentArea(), surface: PAGE_SURFACE,
     });
   });
 
@@ -171,7 +181,7 @@
 
   window.crolAnalytics = Object.freeze({ record });
   scheduleProductionRum();
-  record("page_view", { surface: surface() });
+  record("page_view", { surface: PAGE_SURFACE });
   document.querySelectorAll("[data-story-signal-card]").forEach(() => {
     record("comparative_signal_shown", { detail: "visible", surface: "worth-a-look" });
   });

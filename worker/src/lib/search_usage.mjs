@@ -216,18 +216,18 @@ export function optionalSearchUsageCuts(signals = {}) {
  * the earliest instant the store learned of that execution, so a retry can never move
  * an execution across a window boundary.
  */
-export function foldSearchUsage(observations = [], {
-  now = new Date(),
-  scan = {},
-  signals = {},
-  measuredSince = null,
-} = {}) {
-  const nowMs = new Date(now).getTime();
-  const measuredSinceMs = measurementStartMs(measuredSince);
+/**
+ * Collapse repeated intakes of one execution onto the earliest instant the store learned
+ * of it.
+ *
+ * Exported because more than one projection folds the same receipts, and they must agree
+ * on which instant an execution happened at. A retry that arrives after midnight resolves
+ * to the same earliest instant as the first intake, so one execution can never be counted
+ * on two dates — the property the dated aggregates depend on.
+ */
+export function dedupeSearchUsageExecutions(observations = []) {
   const byExecution = new Map();
   let duplicateIntakes = 0;
-  let futureDated = 0;
-
   for (const observation of observations) {
     if (!observation) continue;
     const existing = byExecution.get(observation.execution);
@@ -240,6 +240,19 @@ export function foldSearchUsage(observations = [], {
       byExecution.set(observation.execution, observation);
     }
   }
+  return { byExecution, duplicateIntakes };
+}
+
+export function foldSearchUsage(observations = [], {
+  now = new Date(),
+  scan = {},
+  signals = {},
+  measuredSince = null,
+} = {}) {
+  const nowMs = new Date(now).getTime();
+  const measuredSinceMs = measurementStartMs(measuredSince);
+  const { byExecution, duplicateIntakes } = dedupeSearchUsageExecutions(observations);
+  let futureDated = 0;
 
   const windows = {};
   for (const days of SEARCH_USAGE_WINDOW_DAYS) {
@@ -318,14 +331,17 @@ export function unavailableSearchUsage(reason, now = new Date()) {
 }
 
 /**
- * Read the production receipt prefix and fold it into the windowed statistics.
+ * Read the production receipt prefix once and return the observations it holds.
  *
- * Fail soft: a missing binding or a store error reports unavailability rather than
- * failing the whole private stats response, and never returns a zero that would read
- * as "no one searched".
+ * Separated from the windowed fold so a single scan can serve more than one projection:
+ * the rolling windows the desk reads and the dated daily aggregates the trend is built
+ * from are two readings of the same receipts, never two scans that can disagree.
+ *
+ * Fail soft: a missing binding or a store error reports the failure rather than an empty
+ * observation list, so a caller can never mistake an unread store for an idle day.
  */
-export async function readSearchUsage(env, { now = new Date(), signals = {}, measuredSince = null } = {}) {
-  if (!env?.ALERT_STATE?.list) return unavailableSearchUsage("no-store", now);
+export async function readSearchUsageObservations(env, { now = new Date() } = {}) {
+  if (!env?.ALERT_STATE?.list) return { ok: false, reason: "no-store", observations: [], scan: null };
 
   const nowMs = new Date(now).getTime();
   // Nothing outside retention can be in a window, so the oldest window bound is also
@@ -398,13 +414,26 @@ export async function readSearchUsage(env, { now = new Date(), signals = {}, mea
       }
     }
   } catch {
-    return unavailableSearchUsage("read-failed", now);
+    return { ok: false, reason: "read-failed", observations: [], scan: null };
   }
 
-  return foldSearchUsage(observations, {
-    now,
-    signals,
-    measuredSince,
+  return {
+    ok: true,
+    reason: null,
+    observations,
     scan: { keysSeen, hydrated, unclassified, scanComplete },
-  });
+  };
+}
+
+/**
+ * Read the production receipt prefix and fold it into the windowed statistics.
+ *
+ * Fail soft: a missing binding or a store error reports unavailability rather than
+ * failing the whole private stats response, and never returns a zero that would read
+ * as "no one searched".
+ */
+export async function readSearchUsage(env, { now = new Date(), signals = {}, measuredSince = null } = {}) {
+  const read = await readSearchUsageObservations(env, { now });
+  if (!read.ok) return unavailableSearchUsage(read.reason, now);
+  return foldSearchUsage(read.observations, { now, signals, measuredSince, scan: read.scan });
 }

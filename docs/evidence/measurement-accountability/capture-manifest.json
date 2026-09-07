@@ -1,0 +1,1361 @@
+{
+ "schema": "cityscroll.render_capture_manifest.v1",
+ "surface": "route attribution for first-party measurement",
+ "condition": "Served from the repository's own built site directory. Every off-origin request is denied and named except the event intake, which is answered locally so the dimensions the collector attempted to send can be recorded. No production traffic is involved and no image is written.",
+ "extensionless_alias_note": "The platform answers 308 from each .html document to its extensionless path, so a reader's browser sits on /stats rather than /stats.html. The local static server does not perform that redirect, so the aliases are exercised through the shared resolver in test/analytics_surface_taxonomy.test.mjs instead of here. The observed production redirect table is in docs/evidence/stats-public-experience/README.md.",
+ "image_binaries_committed": false,
+ "captures": [
+  {
+   "id": "route-root",
+   "route": "/",
+   "route_note": "The homepage, the only route that was ever correctly attributed.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "home",
+   "assertion": "Loading / attempts exactly one page view, and it names the surface home rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "home"
+     }
+    ],
+    "page_view_surface": "home",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "a7777b773a02a0bbc976a60f8aec0eea28fe12fe8603f919ebc78b8ca56b49c7",
+    "http_status": 200
+   },
+   "render_sha256": "a7777b773a02a0bbc976a60f8aec0eea28fe12fe8603f919ebc78b8ca56b49c7",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "route-index.html",
+   "route": "/index.html",
+   "route_note": "The homepage's document form.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "home",
+   "assertion": "Loading /index.html attempts exactly one page view, and it names the surface home rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "home"
+     }
+    ],
+    "page_view_surface": "home",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/contract-lifecycle",
+     "https://api.cityscroll.org/inv/Parks%20and%20Recreation",
+     "https://api.cityscroll.org/meeting-outcomes",
+     "https://api.cityscroll.org/priorcycle/20260810057",
+     "https://api.cityscroll.org/session",
+     "https://api.cityscroll.org/suggestions",
+     "https://cityscroll-worker.crol-worker.workers.dev/contract-lifecycle",
+     "https://cityscroll-worker.crol-worker.workers.dev/inv/Parks%20and%20Recreation",
+     "https://cityscroll-worker.crol-worker.workers.dev/meeting-outcomes",
+     "https://cityscroll-worker.crol-worker.workers.dev/priorcycle/20260810057",
+     "https://cityscroll-worker.crol-worker.workers.dev/suggestions",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "b99f87c047a705cfe8fa5dd58d85ccc06a5c642ded5b5a10bee0e9c14e8bd58c",
+    "http_status": 200
+   },
+   "render_sha256": "b99f87c047a705cfe8fa5dd58d85ccc06a5c642ded5b5a10bee0e9c14e8bd58c",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "route-stats.html",
+   "route": "/stats.html",
+   "route_note": "The public Stats document, previously reported as the homepage.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "stats",
+   "assertion": "Loading /stats.html attempts exactly one page view, and it names the surface stats rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "stats"
+     }
+    ],
+    "page_view_surface": "stats",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/stats",
+     "https://cityscroll-worker.crol-worker.workers.dev/stats",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "cf41f3cb79a79faf7900df95077479e774b81a906dc06defee57235853620b02",
+    "http_status": 200
+   },
+   "render_sha256": "cf41f3cb79a79faf7900df95077479e774b81a906dc06defee57235853620b02",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "route-about.html",
+   "route": "/about.html",
+   "route_note": "Previously reported as the homepage.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "about",
+   "assertion": "Loading /about.html attempts exactly one page view, and it names the surface about rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "about"
+     }
+    ],
+    "page_view_surface": "about",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "2c56f069347ef173ae73aaa59c472d5b927f472dd82d0e8681e23efd15c68b1f",
+    "http_status": 200
+   },
+   "render_sha256": "2c56f069347ef173ae73aaa59c472d5b927f472dd82d0e8681e23efd15c68b1f",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "route-api.html",
+   "route": "/api.html",
+   "route_note": "Previously reported as the homepage.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "api",
+   "assertion": "Loading /api.html attempts exactly one page view, and it names the surface api rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "api"
+     }
+    ],
+    "page_view_surface": "api",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "a099c3c5e4ba3270568ccdc63c035f761d3105e55d4720cc44d1cb8d1784ab6a",
+    "http_status": 200
+   },
+   "render_sha256": "a099c3c5e4ba3270568ccdc63c035f761d3105e55d4720cc44d1cb8d1784ab6a",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "route-search",
+   "route": "/search/",
+   "route_note": "The canonical Search document, previously reported as the homepage.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "search",
+   "assertion": "Loading /search/ attempts exactly one page view, and it names the surface search rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "search"
+     }
+    ],
+    "page_view_surface": "search",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/search-history",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "3166b3b7a31eb263a13b609560e01b5b2a639b7be9be1534309ac740dcb18c5e",
+    "http_status": 200
+   },
+   "render_sha256": "3166b3b7a31eb263a13b609560e01b5b2a639b7be9be1534309ac740dcb18c5e",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "route-now",
+   "route": "/now/",
+   "route_note": "A primary document that already had its own surface.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "now",
+   "assertion": "Loading /now/ attempts exactly one page view, and it names the surface now rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "now"
+     }
+    ],
+    "page_view_surface": "now",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/hearings",
+     "https://api.cityscroll.org/land-upcoming-hearings",
+     "https://api.cityscroll.org/property-locations",
+     "https://api.cityscroll.org/rules",
+     "https://api.cityscroll.org/session",
+     "https://api.cityscroll.org/staffing-exams",
+     "https://api.cityscroll.org/suggestions",
+     "https://cityscroll-worker.crol-worker.workers.dev/hearings",
+     "https://cityscroll-worker.crol-worker.workers.dev/land-upcoming-hearings",
+     "https://cityscroll-worker.crol-worker.workers.dev/property-locations",
+     "https://cityscroll-worker.crol-worker.workers.dev/rules",
+     "https://cityscroll-worker.crol-worker.workers.dev/staffing-exams",
+     "https://cityscroll-worker.crol-worker.workers.dev/suggestions",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "5fcf0122488b03db74e7b0ba059b4568511a45c871e61ce0d4066c8aa30f5afa",
+    "http_status": 200
+   },
+   "render_sha256": "5fcf0122488b03db74e7b0ba059b4568511a45c871e61ce0d4066c8aa30f5afa",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "route-near-you",
+   "route": "/near-you/",
+   "route_note": "A primary document that already had its own surface.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "near-you",
+   "assertion": "Loading /near-you/ attempts exactly one page view, and it names the surface near-you rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "near-you"
+     }
+    ],
+    "page_view_surface": "near-you",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://fonts.googleapis.com/css2"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "f6e97388be107f3be848299483e70e0f6f0f045214891e7d6880967fa0ae00e2",
+    "http_status": 200
+   },
+   "render_sha256": "f6e97388be107f3be848299483e70e0f6f0f045214891e7d6880967fa0ae00e2",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "route-following",
+   "route": "/following/",
+   "route_note": "A primary document that already had its own surface.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "following",
+   "assertion": "Loading /following/ attempts exactly one page view, and it names the surface following rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "following"
+     }
+    ],
+    "page_view_surface": "following",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/following/personal",
+     "https://fonts.googleapis.com/css2"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "a813a66c4f8faf26cd30606e77539de79501ef01bd01e56be2c41bce20c11a85",
+    "http_status": 200
+   },
+   "render_sha256": "a813a66c4f8faf26cd30606e77539de79501ef01bd01e56be2c41bce20c11a85",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "route-browse",
+   "route": "/browse/",
+   "route_note": "The browse index.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "browse",
+   "assertion": "Loading /browse/ attempts exactly one page view, and it names the surface browse rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "browse"
+     }
+    ],
+    "page_view_surface": "browse",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/session",
+     "https://api.cityscroll.org/suggestions",
+     "https://cityscroll-worker.crol-worker.workers.dev/suggestions",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "d958df1e1e280295293dc6470c9b6da1358c322c7f5023271115a9736d956c3f",
+    "http_status": 200
+   },
+   "render_sha256": "d958df1e1e280295293dc6470c9b6da1358c322c7f5023271115a9736d956c3f",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "route-browse-contracts",
+   "route": "/browse/contracts/",
+   "route_note": "Previously collapsed into the browse index.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "browse-contracts",
+   "assertion": "Loading /browse/contracts/ attempts exactly one page view, and it names the surface browse-contracts rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "browse-contracts"
+     }
+    ],
+    "page_view_surface": "browse-contracts",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/contract-lifecycle",
+     "https://api.cityscroll.org/inv/Parks%20and%20Recreation",
+     "https://api.cityscroll.org/meeting-outcomes",
+     "https://api.cityscroll.org/priorcycle/20260810057",
+     "https://api.cityscroll.org/session",
+     "https://api.cityscroll.org/suggestions",
+     "https://cityscroll-worker.crol-worker.workers.dev/contract-lifecycle",
+     "https://cityscroll-worker.crol-worker.workers.dev/inv/Parks%20and%20Recreation",
+     "https://cityscroll-worker.crol-worker.workers.dev/meeting-outcomes",
+     "https://cityscroll-worker.crol-worker.workers.dev/priorcycle/20260810057",
+     "https://cityscroll-worker.crol-worker.workers.dev/suggestions",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "871a0442a241161f8bcae94ab0a89e60d07f71f4c48b30cf0bde8043ee1a3529",
+    "http_status": 200
+   },
+   "render_sha256": "871a0442a241161f8bcae94ab0a89e60d07f71f4c48b30cf0bde8043ee1a3529",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "route-browse-zoning",
+   "route": "/browse/zoning/",
+   "route_note": "Previously collapsed into the browse index; also the route of a worked path on the Stats page.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "browse-zoning",
+   "assertion": "Loading /browse/zoning/ attempts exactly one page view, and it names the surface browse-zoning rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "browse-zoning"
+     }
+    ],
+    "page_view_surface": "browse-zoning",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/land-upcoming-hearings",
+     "https://api.cityscroll.org/session",
+     "https://api.cityscroll.org/suggestions",
+     "https://api.cityscroll.org/zap-outcomes",
+     "https://api.cityscroll.org/zap-projects-lookup",
+     "https://cityscroll-worker.crol-worker.workers.dev/land-upcoming-hearings",
+     "https://cityscroll-worker.crol-worker.workers.dev/suggestions",
+     "https://cityscroll-worker.crol-worker.workers.dev/zap-outcomes",
+     "https://cityscroll-worker.crol-worker.workers.dev/zap-projects-lookup",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+     "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "b19e35c8c4c7580b17b37bfc252f7a0462b5f0b63a1555df5a4ff8e5ab80e201",
+    "http_status": 200
+   },
+   "render_sha256": "b19e35c8c4c7580b17b37bfc252f7a0462b5f0b63a1555df5a4ff8e5ab80e201",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "route-browse-meetings",
+   "route": "/browse/meetings/",
+   "route_note": "Previously collapsed into the browse index.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "browse-meetings",
+   "assertion": "Loading /browse/meetings/ attempts exactly one page view, and it names the surface browse-meetings rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "browse-meetings"
+     }
+    ],
+    "page_view_surface": "browse-meetings",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/session",
+     "https://api.cityscroll.org/suggestions",
+     "https://cityscroll-worker.crol-worker.workers.dev/suggestions",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "20677cf705dc2f2d02e93c85fdcf9be58c81febd785a274250e67b050787ff05",
+    "http_status": 200
+   },
+   "render_sha256": "20677cf705dc2f2d02e93c85fdcf9be58c81febd785a274250e67b050787ff05",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "route-browse-people",
+   "route": "/browse/people/",
+   "route_note": "Previously collapsed into the browse index.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "browse-people",
+   "assertion": "Loading /browse/people/ attempts exactly one page view, and it names the surface browse-people rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "browse-people"
+     }
+    ],
+    "page_view_surface": "browse-people",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/session",
+     "https://api.cityscroll.org/suggestions",
+     "https://cityscroll-worker.crol-worker.workers.dev/suggestions",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "cc9d22398d754afd17097f1006c1d794b3d9dc1ae0cf4ccad586294106921789",
+    "http_status": 200
+   },
+   "render_sha256": "cc9d22398d754afd17097f1006c1d794b3d9dc1ae0cf4ccad586294106921789",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "route-browse-property",
+   "route": "/browse/property/",
+   "route_note": "Previously collapsed into the browse index.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "browse-property",
+   "assertion": "Loading /browse/property/ attempts exactly one page view, and it names the surface browse-property rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "browse-property"
+     }
+    ],
+    "page_view_surface": "browse-property",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/session",
+     "https://api.cityscroll.org/suggestions",
+     "https://cityscroll-worker.crol-worker.workers.dev/suggestions",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "ec4f246d7b2edfd6dde0209a55dac77f7dac896e5b23504bf6610554f830d5f6",
+    "http_status": 200
+   },
+   "render_sha256": "ec4f246d7b2edfd6dde0209a55dac77f7dac896e5b23504bf6610554f830d5f6",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "route-browse-rules",
+   "route": "/browse/rules/",
+   "route_note": "Previously collapsed into the browse index.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "browse-rules",
+   "assertion": "Loading /browse/rules/ attempts exactly one page view, and it names the surface browse-rules rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "browse-rules"
+     }
+    ],
+    "page_view_surface": "browse-rules",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/session",
+     "https://api.cityscroll.org/suggestions",
+     "https://cityscroll-worker.crol-worker.workers.dev/suggestions",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "f9a32d63d6bd97c304645e0e1f7f66625256d5df96f3f747d1766b77cd8c38b0",
+    "http_status": 200
+   },
+   "render_sha256": "f9a32d63d6bd97c304645e0e1f7f66625256d5df96f3f747d1766b77cd8c38b0",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "route-browse-staffing",
+   "route": "/browse/staffing/",
+   "route_note": "Previously collapsed into the browse index.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "browse-staffing",
+   "assertion": "Loading /browse/staffing/ attempts exactly one page view, and it names the surface browse-staffing rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "browse-staffing"
+     }
+    ],
+    "page_view_surface": "browse-staffing",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/session",
+     "https://api.cityscroll.org/suggestions",
+     "https://cityscroll-worker.crol-worker.workers.dev/suggestions",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "54b79056a080409a03d9351725779bd38c3e8f2221298b39463b02ce9d6e74bd",
+    "http_status": 200
+   },
+   "render_sha256": "54b79056a080409a03d9351725779bd38c3e8f2221298b39463b02ce9d6e74bd",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "route-browse-exams",
+   "route": "/browse/exams/",
+   "route_note": "Previously collapsed into the browse index.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "browse-exams",
+   "assertion": "Loading /browse/exams/ attempts exactly one page view, and it names the surface browse-exams rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "browse-exams"
+     }
+    ],
+    "page_view_surface": "browse-exams",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/session",
+     "https://api.cityscroll.org/staffing-exams",
+     "https://api.cityscroll.org/suggestions",
+     "https://cityscroll-worker.crol-worker.workers.dev/staffing-exams",
+     "https://cityscroll-worker.crol-worker.workers.dev/suggestions",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "fd8fc74c947214e5c39b137d8848e0f5bfd177f950dea87f7b871f16c6c33aa0",
+    "http_status": 200
+   },
+   "render_sha256": "fd8fc74c947214e5c39b137d8848e0f5bfd177f950dea87f7b871f16c6c33aa0",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "route-browse-places",
+   "route": "/browse/places/",
+   "route_note": "Previously collapsed into the browse index.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "browse-places",
+   "assertion": "Loading /browse/places/ attempts exactly one page view, and it names the surface browse-places rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "browse-places"
+     }
+    ],
+    "page_view_surface": "browse-places",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/session",
+     "https://api.cityscroll.org/suggestions",
+     "https://cityscroll-worker.crol-worker.workers.dev/suggestions",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "daf6ddad5692628d9780e523eeb8a2ac650d3879eafa06763ff22f60f13ec2c6",
+    "http_status": 200
+   },
+   "render_sha256": "daf6ddad5692628d9780e523eeb8a2ac650d3879eafa06763ff22f60f13ec2c6",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "route-notices-20231222103",
+   "route": "/notices/20231222103",
+   "route_note": "The award notice the Stats page's procurement path ends on, previously reported as the homepage.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "notice",
+   "assertion": "Loading /notices/20231222103 attempts exactly one page view, and it names the surface notice rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "notice"
+     }
+    ],
+    "page_view_surface": "notice",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/notice",
+     "https://api.cityscroll.org/session",
+     "https://api.cityscroll.org/suggestions",
+     "https://cityscroll-worker.crol-worker.workers.dev/notice",
+     "https://cityscroll-worker.crol-worker.workers.dev/suggestions",
+     "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "01af210cc9d584418c4af4970fbfeb0cfc5d7108de2c0ed0bab3f11a549ce445",
+    "http_status": 200
+   },
+   "render_sha256": "01af210cc9d584418c4af4970fbfeb0cfc5d7108de2c0ed0bab3f11a549ce445",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "route-notices-20260605008",
+   "route": "/notices/20260605008",
+   "route_note": "The rule notice the Stats page's legislation path starts from, previously reported as the homepage.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "notice",
+   "assertion": "Loading /notices/20260605008 attempts exactly one page view, and it names the surface notice rather than the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "notice"
+     }
+    ],
+    "page_view_surface": "notice",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/notice",
+     "https://api.cityscroll.org/session",
+     "https://api.cityscroll.org/suggestions",
+     "https://cityscroll-worker.crol-worker.workers.dev/notice",
+     "https://cityscroll-worker.crol-worker.workers.dev/suggestions",
+     "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "cc8721f3adad7910f8c2021994efb5acde3d4dd4d91a9a6388463858ce4e4ff0",
+    "http_status": 200
+   },
+   "render_sha256": "cc8721f3adad7910f8c2021994efb5acde3d4dd4d91a9a6388463858ce4e4ff0",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "redirected-data.html",
+   "route": "/data.html",
+   "route_note": "Redirects to the API guide's upstream section.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": [
+    "data",
+    "api"
+   ],
+   "assertion": "Loading /data.html reports only data or api — its own surface or the one it redirects to — and never the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "data"
+     },
+     {
+      "event": "page_view",
+      "surface": "api"
+     }
+    ],
+    "page_view_surface": "data",
+    "page_view_count": 2,
+    "off_origin_requests_attempted": [
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "a099c3c5e4ba3270568ccdc63c035f761d3105e55d4720cc44d1cb8d1784ab6a",
+    "http_status": 200,
+    "page_view_surfaces": [
+     "data",
+     "api"
+    ]
+   },
+   "render_sha256": "a099c3c5e4ba3270568ccdc63c035f761d3105e55d4720cc44d1cb8d1784ab6a",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "redirected-changelog.html",
+   "route": "/changelog.html",
+   "route_note": "Redirects to the About page.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": [
+    "changelog",
+    "about"
+   ],
+   "assertion": "Loading /changelog.html reports only changelog or about — its own surface or the one it redirects to — and never the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "about"
+     }
+    ],
+    "page_view_surface": "about",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "2c56f069347ef173ae73aaa59c472d5b927f472dd82d0e8681e23efd15c68b1f",
+    "http_status": 200,
+    "page_view_surfaces": [
+     "about"
+    ]
+   },
+   "render_sha256": "2c56f069347ef173ae73aaa59c472d5b927f472dd82d0e8681e23efd15c68b1f",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "redirected-standards.html",
+   "route": "/standards.html",
+   "route_note": "Redirects to the About page's accessibility section.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": [
+    "standards",
+    "about"
+   ],
+   "assertion": "Loading /standards.html reports only standards or about — its own surface or the one it redirects to — and never the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [
+     {
+      "event": "page_view",
+      "surface": "about"
+     }
+    ],
+    "page_view_surface": "about",
+    "page_view_count": 1,
+    "off_origin_requests_attempted": [
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "2c56f069347ef173ae73aaa59c472d5b927f472dd82d0e8681e23efd15c68b1f",
+    "http_status": 200,
+    "page_view_surfaces": [
+     "about"
+    ]
+   },
+   "render_sha256": "2c56f069347ef173ae73aaa59c472d5b927f472dd82d0e8681e23efd15c68b1f",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "unregistered-not-a-route",
+   "route": "/not-a-route/",
+   "route_note": "A route the map does not register.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": null,
+   "assertion": "Loading /not-a-route/ attempts no page view at all, rather than reporting the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": false,
+    "collector_is_module": false,
+    "events_attempted": [],
+    "page_view_surface": null,
+    "page_view_count": 0,
+    "off_origin_requests_attempted": [],
+    "render_scope": "innerHTML of body",
+    "render_sha256": "e526f42afda9696e25254a97eddadba1bfa0f8f264e85cfc75ffcc8b57165de5",
+    "http_status": 404
+   },
+   "render_sha256": "e526f42afda9696e25254a97eddadba1bfa0f8f264e85cfc75ffcc8b57165de5",
+   "render_scope": "innerHTML of body",
+   "file": null
+  },
+  {
+   "id": "unregistered-browse-nothing",
+   "route": "/browse/nothing/",
+   "route_note": "A route the map does not register.",
+   "viewport": {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900
+   },
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": null,
+   "assertion": "Loading /browse/nothing/ attempts no page view at all, rather than reporting the homepage.",
+   "assertion_holds": true,
+   "observed": {
+    "document_language": "en",
+    "collector_present": true,
+    "collector_is_module": true,
+    "events_attempted": [],
+    "page_view_surface": null,
+    "page_view_count": 0,
+    "off_origin_requests_attempted": [
+     "https://api.cityscroll.org/contract-lifecycle",
+     "https://api.cityscroll.org/inv/Parks%20and%20Recreation",
+     "https://api.cityscroll.org/meeting-outcomes",
+     "https://api.cityscroll.org/priorcycle/20260810057",
+     "https://api.cityscroll.org/session",
+     "https://api.cityscroll.org/suggestions",
+     "https://cityscroll-worker.crol-worker.workers.dev/contract-lifecycle",
+     "https://cityscroll-worker.crol-worker.workers.dev/inv/Parks%20and%20Recreation",
+     "https://cityscroll-worker.crol-worker.workers.dev/meeting-outcomes",
+     "https://cityscroll-worker.crol-worker.workers.dev/priorcycle/20260810057",
+     "https://cityscroll-worker.crol-worker.workers.dev/suggestions",
+     "https://fonts.googleapis.com/css2",
+     "https://static.cloudflareinsights.com/beacon.min.js",
+     "https://www.clarity.ms/tag/xusuca7gsv"
+    ],
+    "render_scope": "innerHTML of main",
+    "render_sha256": "0e353eb09c7972b6549e92d2fcb3b0392dee5a1f91771f0fcb457b20f43a99bd",
+    "http_status": 200
+   },
+   "render_sha256": "0e353eb09c7972b6549e92d2fcb3b0392dee5a1f91771f0fcb457b20f43a99bd",
+   "render_scope": "innerHTML of main",
+   "file": null
+  },
+  {
+   "id": "resolver-only-mandates-64116-001",
+   "route": "/mandates/64116-001",
+   "route_note": "The mandate the Stats page's legislation path ends on. Rendered by the Pages edge worker, so the static build does not serve it.",
+   "viewport": null,
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "mandate",
+   "assertion": "The surface vocabulary resolves /mandates/64116-001 to mandate. No page was loaded: the built static site does not serve this route.",
+   "assertion_holds": true,
+   "observed": {
+    "resolved_surface": "mandate",
+    "method": "site/analytics_surface_taxonomy.mjs resolveAnalyticsSurface",
+    "page_loaded": false
+   },
+   "render_sha256": null,
+   "render_scope": null,
+   "file": null
+  },
+  {
+   "id": "resolver-only-experimental-worth-a-look",
+   "route": "/experimental/worth-a-look/",
+   "route_note": "A private experiment kept out of the public build.",
+   "viewport": null,
+   "repository_revision": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+   "source_blob": {
+    "site/analytics.js": "37f56ba6dfea6354f09f28500b67c9681b4ca806",
+    "site/analytics_surface_taxonomy.mjs": "acb3549b41bfb7e62acedd00385c3e06cfb894e6"
+   },
+   "data_vintage": {
+    "served_coverage_evidence_oldest": "2026-05-26T00:00:00.000Z",
+    "served_coverage_evidence_newest": "2026-09-05T00:00:00.000Z"
+   },
+   "expected_surface": "worth-a-look",
+   "assertion": "The surface vocabulary resolves /experimental/worth-a-look/ to worth-a-look. No page was loaded: the built static site does not serve this route.",
+   "assertion_holds": true,
+   "observed": {
+    "resolved_surface": "worth-a-look",
+    "method": "site/analytics_surface_taxonomy.mjs resolveAnalyticsSurface",
+    "page_loaded": false
+   },
+   "render_sha256": null,
+   "render_scope": null,
+   "file": null
+  }
+ ]
+}

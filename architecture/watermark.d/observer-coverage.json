@@ -2,7 +2,7 @@
   "schema": "cityscroll.architecture.watermark-shard.v1",
   "id": "observer-coverage",
   "owner": "observer-coverage",
-  "updated_at": "2026-09-06T01:22:20-04:00",
-  "commit": "2e45d476f8a9350d49abeb6614c5108887b45230",
-  "value": "cdaf33a4b6ada66dc102040465e76754a893ef6a7d637b69c60b5cbb77539d68"
+  "updated_at": "2026-09-06T23:21:05Z",
+  "commit": "3173824eed3f503858b01ae3cd6a0c7e1a705a16",
+  "value": "fe27a4f25f69bb39d76d25d80f8d9800d57136b6a63b50ee388ef407e1cdfe8f"
 }

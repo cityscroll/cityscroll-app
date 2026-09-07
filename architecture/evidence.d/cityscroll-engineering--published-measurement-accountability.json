@@ -1,0 +1,53 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/published-measurement-accountability",
+  "status": "implemented",
+  "fingerprint": "published-measurement-accountability.v1",
+  "updated_at": "2026-09-06T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "analytics-surface-taxonomy",
+      "path": "site/analytics_surface_taxonomy.mjs"
+    },
+    {
+      "id": "analytics-surface-producer",
+      "path": "site/analytics.js"
+    },
+    {
+      "id": "analytics-surface-validator",
+      "path": "worker/src/lib/analytics.mjs"
+    },
+    {
+      "id": "analytics-event-intake",
+      "path": "worker/src/events.mjs"
+    },
+    {
+      "id": "public-search-usage-projection",
+      "path": "worker/src/lib/public_search_usage.mjs"
+    },
+    {
+      "id": "search-usage-dated-aggregates",
+      "path": "worker/src/lib/search_usage_daily.mjs"
+    },
+    {
+      "id": "daily-snapshot-publication-monitor",
+      "path": "tools/stats_publication_monitor.mjs"
+    },
+    {
+      "id": "measurement-review-projection",
+      "path": "site/measurement_review_source.mjs"
+    },
+    {
+      "id": "measurement-review-builder",
+      "path": "tools/build_measurement_review.mjs"
+    },
+    {
+      "id": "analytics-event-taxonomy-contract",
+      "path": "docs/analytics-event-taxonomy.md"
+    },
+    {
+      "id": "measurement-accountability-evidence",
+      "path": "docs/evidence/measurement-accountability"
+    }
+  ]
+}

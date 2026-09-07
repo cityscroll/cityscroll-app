@@ -318,6 +318,7 @@ site/analytical_projection.mjs
 site/analytical_projection_contract.mjs
 site/analytical_projection_shards.mjs
 site/analytics.js
+site/analytics_surface_taxonomy.mjs
 site/app/alerts.mjs
 site/app/authority-award.mjs
 site/app/boot.mjs
@@ -2194,6 +2195,7 @@ worker/src/lib/search_health.mjs
 worker/src/lib/search_history.mjs
 worker/src/lib/search_read_model.mjs
 worker/src/lib/search_usage.mjs
+worker/src/lib/search_usage_daily.mjs
 worker/src/lib/secret_compare.mjs
 worker/src/lib/session.mjs
 worker/src/lib/solicitation_procurement_method.mjs

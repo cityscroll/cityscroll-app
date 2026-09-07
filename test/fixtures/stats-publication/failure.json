@@ -1,0 +1,15 @@
+{
+  "note": "A controlled specimen: the publisher reports a fresh verification while the dated series has stopped advancing. No production traffic is involved.",
+  "published": {
+    "schema": "cityscroll.public_search_usage.v1",
+    "available": true,
+    "refresh": { "state": "fresh", "verified_at": "2026-09-06T09:10:00.000Z", "attempted_at": "2026-09-06T09:10:00.000Z", "failure_reason": null }
+  },
+  "lineage": {
+    "available": true,
+    "newest_day": "2026-09-01",
+    "missing_days": ["2026-09-02", "2026-09-03", "2026-09-04", "2026-09-05"],
+    "unrecoverable_days": [],
+    "reconciliation": { "rows": [], "missing_days": ["2026-09-02"], "unrecoverable_days": [] }
+  }
+}

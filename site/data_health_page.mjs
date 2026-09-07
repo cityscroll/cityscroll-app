@@ -586,7 +586,7 @@ ${renderCivicDocumentAssets(assetPrefix)}</head>
 ${renderCivicDocumentMast({ siteBase, surfaceClass: "data-health-mast" })}
 ${renderDataHealthBody(view)}
 <footer class="data-health-footer">Check each source at its official page. <a href="/stats.html">Stats</a> · <a href="/about.html">About</a>.</footer>
-<script defer src="${esc((assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`))}analytics.js?v=1.3.0"></script>
+<script type="module" src="${esc((assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`))}analytics.js?v=1.4.0"></script>
 </body></html>`.replace(/[ \t]+$/gm, "");
   const cruft = detectNodePageCruft(html);
   if (cruft.length) throw new Error(`Data health page contains reader-facing cruft: ${cruft.join(", ")}`);

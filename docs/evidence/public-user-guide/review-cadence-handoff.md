@@ -16,6 +16,7 @@ daily:
 | Live source-contract drift | `tools/external_schedule_jobs.json` (`source-contracts-live`) | daily |
 | Source evidence freshness | `tools/external_schedule_jobs.json` (`source-freshness-watchdog`) | daily |
 | Digest shadow monitor | `tools/external_schedule_jobs.json` (`digest-shadow-monitor`) | twice daily |
+| Daily search-use snapshot | `tools/external_schedule_jobs.json` (`stats-daily-snapshot-monitor`) | daily |
 
 The scheduler for those jobs is declared `independent` in the same manifest, and
 the repository's contract is that no new scheduler, mail route, or recipient

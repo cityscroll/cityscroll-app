@@ -217,6 +217,7 @@
 /site/analytical_projection_contract.mjs
 /site/analytical_projection_shards.mjs
 /site/analytics.js
+/site/analytics_surface_taxonomy.mjs
 /site/api.html
 /site/app/
 /site/ask_cited_synthesis.mjs
@@ -532,6 +533,7 @@
 /site/matter_coverage_recovery.mjs
 /site/matter_phase_spine.mjs
 /site/matter_publication_generation.mjs
+/site/measurement_review_source.mjs
 /site/meeting_capability_projection.mjs
 /site/meeting_document.mjs
 /site/meeting_matter_stamps.mjs

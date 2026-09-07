@@ -8,10 +8,14 @@
 // operator probes and valid developer-exclusion tokens do not inflate Site totals. See
 // worker/src/lib/ops_contract.mjs and docs/analytics-event-taxonomy.md.
 
+import {
+  ANALYTICS_COLLECTOR_SURFACES,
+  ANALYTICS_SURFACES,
+} from "../../../site/analytics_surface_taxonomy.mjs";
 import { normalizeUsageTrafficClass } from "./ops_contract.mjs";
 
-export const TAXONOMY_VERSION = "1.3.0";
-export const COMPATIBLE_TAXONOMY_VERSIONS = Object.freeze(["1.0.0", "1.1.0", "1.2.0", TAXONOMY_VERSION]);
+export const TAXONOMY_VERSION = "1.4.0";
+export const COMPATIBLE_TAXONOMY_VERSIONS = Object.freeze(["1.0.0", "1.1.0", "1.2.0", "1.3.0", TAXONOMY_VERSION]);
 export const DEFAULT_ANALYTICS_DATASET = "crol_usage_events_v1";
 export const ANALYTICS_RETENTION_DAYS = 90;
 export const ANALYTICS_DOCUMENT_CUTOVER = "2026-08-05";
@@ -33,47 +37,55 @@ export const ANALYTICS_SCENARIOS = Object.freeze([
   "subsidies-land-use", "legal-compliance",
 ]);
 
-const SURFACES = Object.freeze([
-  "home", ...ANALYTICS_PRIMARY_DOCUMENT_SURFACES,
-  "stats", "about", "data", "api", "changelog", "standards",
-]);
+/**
+ * Every surface spelling this reader recognises, and the narrower set a browser can
+ * actually produce. Both come from site/analytics_surface_taxonomy.mjs, which resolves
+ * them from the registered route map, so the validator's allowlist and the page
+ * script's resolver are one definition rather than two lists that drift.
+ *
+ * The wider set is the read domain: rows written before a document shipped the
+ * collector, and delivery surfaces the Worker and the mailer name, still have to
+ * classify. The narrower set is what intake accepts for a browser-produced event.
+ */
+const SURFACES = ANALYTICS_SURFACES;
+const BROWSER_SURFACES = ANALYTICS_COLLECTOR_SURFACES;
 
 const ACTION_OUTCOMES = Object.freeze(["submitted", "attended", "bid", "won", "not-useful"]);
 export const ACTION_OUTCOME_PROMPT_STATUS = "retired-2026-08-06";
 
 const EVENT_SPECS = Object.freeze({
   page_view: {
-    surfaces: SURFACES,
+    surfaces: BROWSER_SURFACES,
   },
   lens_open: {
     lenses: ANALYTICS_LENSES,
-    surfaces: ["home"],
+    surfaces: BROWSER_SURFACES,
   },
   scenario_open: {
     lenses: ANALYTICS_LENSES,
     details: ANALYTICS_SCENARIOS,
-    surfaces: ["home"],
+    surfaces: BROWSER_SURFACES,
   },
   search_run: {
     lenses: ANALYTICS_LENSES,
     details: ["filters", "natural-language", "preset"],
     areas: ANALYTICS_AREAS,
-    surfaces: ["home", "api"],
+    surfaces: [...BROWSER_SURFACES, "api"],
   },
   deep_link_open: {
     lenses: ANALYTICS_LENSES,
     details: ["notice", "agency", "vendor", "search", "investigation"],
-    surfaces: ["home", "digest"],
+    surfaces: [...BROWSER_SURFACES, "digest"],
   },
   export: {
     lenses: ANALYTICS_LENSES,
     details: ["csv", "xlsx", "print", "ics", "json"],
-    surfaces: ["home"],
+    surfaces: BROWSER_SURFACES,
   },
   alert_start: {
     lenses: ANALYTICS_LENSES,
     details: ["preview", "subscribe"],
-    surfaces: ["home"],
+    surfaces: BROWSER_SURFACES,
   },
   alert_confirmed: {
     lenses: ANALYTICS_LENSES,
@@ -97,7 +109,7 @@ const EVENT_SPECS = Object.freeze({
   },
   investigation_share: {
     details: ["create", "copy", "add_signal"],
-    surfaces: ["home", "api"],
+    surfaces: [...BROWSER_SURFACES, "api"],
   },
   comparative_signal_shown: {
     details: ["visible"],
@@ -105,23 +117,29 @@ const EVENT_SPECS = Object.freeze({
   },
   action_opened: {
     details: ["direct", "official-handoff"],
-    surfaces: ["home"],
+    surfaces: BROWSER_SURFACES,
   },
   outcome_prompted: {
     details: ["official-handoff", "passed-action"],
-    surfaces: ["home"],
+    surfaces: BROWSER_SURFACES,
   },
   outcome_dismissed: {
     details: ["official-handoff", "passed-action"],
-    surfaces: ["home"],
+    surfaces: BROWSER_SURFACES,
   },
   outcome_recorded: {
     details: ["submitted", "attended", "bid", "won", "not-useful"],
-    surfaces: ["home"],
+    surfaces: BROWSER_SURFACES,
   },
 });
 
 const NONE = "none";
+
+/** Events whose lens is genuinely optional, so `none` is an answer rather than a defect. */
+const LENS_OPTIONAL_EVENTS = Object.freeze([
+  "alert_confirmed", "deep_link_open", "digest_link_open", "digest_sent", "export",
+  "alert_start", "search_run",
+]);
 
 function enumValue(value, allowed, fallback = NONE) {
   const normalized = String(value || "").trim().toLowerCase();
@@ -139,9 +157,13 @@ export function normalizeUsageEvent(input) {
   const geography = enumValue(input.geography, spec.areas);
   const surface = enumValue(input.surface, spec.surfaces);
 
-  // Required dimensions are the ones whose spec has exactly one or more allowed values and whose
-  // event would be meaningless without one. Optional geography is allowed only for search_run.
-  if (spec.lenses && lens === NONE && !["deep_link_open", "export", "alert_start", "alert_confirmed", "digest_sent", "digest_link_open"].includes(event)) return null;
+  // Required dimensions are the ones whose spec has one or more allowed values and whose event
+  // would be meaningless without one. Optional geography is allowed only for search_run.
+  //
+  // A lens is a thing the reader chose. `search_run` joins the events that may carry none:
+  // a search typed on a document with no lens control is a real search, and the producer no
+  // longer invents "money" to satisfy a required dimension it cannot honestly fill.
+  if (spec.lenses && lens === NONE && !LENS_OPTIONAL_EVENTS.includes(event)) return null;
   if (spec.details && detail === NONE) return null;
   if (spec.surfaces && surface === NONE) return null;
 
@@ -259,6 +281,19 @@ function fixedCounts(keys, observed = {}) {
   return Object.fromEntries(keys.map((key) => [key, observed[key] || 0]));
 }
 
+/**
+ * The page-view breakdown's fixed shape: one row per surface that ships the collector, so a
+ * surface with no views this window reads as a measured zero rather than a missing key. A
+ * spelling written before the taxonomy grew is kept beside them instead of being dropped —
+ * an older row is history, not noise.
+ */
+function pageViewsBySurface(observed = {}) {
+  const extras = Object.keys(observed)
+    .filter((key) => key && key !== NONE && !BROWSER_SURFACES.includes(key))
+    .sort();
+  return fixedCounts([...BROWSER_SURFACES, ...extras], observed);
+}
+
 function blankUsage(measuredSince = null) {
   return {
     available: false,
@@ -268,7 +303,7 @@ function blankUsage(measuredSince = null) {
     page_views: {
       last7d: 0,
       last30d: 0,
-      by_surface_last30d: fixedCounts(SURFACES),
+      by_surface_last30d: pageViewsBySurface(),
       attribution_cutover: ANALYTICS_DOCUMENT_CUTOVER,
       pre_cutover_home: {
         label: "home (before primary-document attribution)",
@@ -390,7 +425,7 @@ export function buildUsageSnapshot(rows, now = new Date(), configuredSince = nul
     else out.growth.by_day[day].interactions += count;
   }
 
-  out.page_views.by_surface_last30d = fixedCounts(SURFACES, pageBySurface);
+  out.page_views.by_surface_last30d = pageViewsBySurface(pageBySurface);
   out.lens_interest.last7d = fixedCounts(ANALYTICS_LENSES, lens7);
   out.lens_interest.last30d = fixedCounts(ANALYTICS_LENSES, lens30);
   out.scenario_interest.last7d = fixedCounts(ANALYTICS_SCENARIOS, scenario7);
@@ -462,15 +497,16 @@ export function reconcileUsageWithDurableStores(usage, durable = {}, options = {
 
   const takeMax = (a, b) => Math.max(Number(a) || 0, Number(b) || 0);
 
-  out.page_views = out.page_views || { last7d: 0, last30d: 0, by_surface_last30d: fixedCounts(SURFACES) };
+  out.page_views = out.page_views || { last7d: 0, last30d: 0, by_surface_last30d: pageViewsBySurface() };
   out.page_views.last7d = takeMax(out.page_views.last7d, page7);
   out.page_views.last30d = takeMax(out.page_views.last30d, page30);
-  out.page_views.by_surface_last30d = fixedCounts(SURFACES, {
-    ...out.page_views.by_surface_last30d,
-    ...Object.fromEntries(
-      SURFACES.map((s) => [s, takeMax(out.page_views.by_surface_last30d?.[s], pageBySurface[s])]),
-    ),
-  });
+  const mergedBySurface = { ...out.page_views.by_surface_last30d, ...pageBySurface };
+  out.page_views.by_surface_last30d = pageViewsBySurface(Object.fromEntries(
+    Object.keys(mergedBySurface).map((surface) => [
+      surface,
+      takeMax(out.page_views.by_surface_last30d?.[surface], pageBySurface[surface]),
+    ]),
+  ));
 
   out.searches = out.searches || { last7d: 0, last30d: 0, by_lens_last30d: fixedCounts(ANALYTICS_LENSES) };
   out.searches.last7d = takeMax(out.searches.last7d, searches7);

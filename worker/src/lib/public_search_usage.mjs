@@ -26,7 +26,13 @@
  * days they cover, and the state of the measurement itself.
  */
 
-import { SEARCH_USAGE_WINDOW_DAYS, readSearchUsage } from "./search_usage.mjs";
+import {
+  SEARCH_USAGE_WINDOW_DAYS,
+  foldSearchUsage,
+  readSearchUsageObservations,
+  unavailableSearchUsage,
+} from "./search_usage.mjs";
+import { publishSearchUsageDailyAggregates } from "./search_usage_daily.mjs";
 
 export const PUBLIC_SEARCH_USAGE_SCHEMA = "cityscroll.public_search_usage.v1";
 
@@ -361,7 +367,13 @@ export async function refreshPublicSearchUsageSnapshot(env, { now = new Date() }
   // The first refresh is where measurement starts being claimed, and it says so once.
   const measuredSince = (await resolveSearchMeasurementStart(env, { record })) || utcDayStartIso(now);
 
-  const usage = await readSearchUsage(env, { now, measuredSince });
+  // One scan of the receipt store serves both readings: the windowed projection this
+  // contract publishes, and the dated aggregates the trend and the reconciliation are built
+  // from. Two scans could disagree with each other; one cannot.
+  const read = await readSearchUsageObservations(env, { now });
+  const usage = read.ok
+    ? foldSearchUsage(read.observations, { now, measuredSince, scan: read.scan })
+    : unavailableSearchUsage(read.reason, now);
   const artifact = projectPublicSearchUsage(usage, { now });
   const violations = publicSearchUsageViolations(artifact);
   const verified = artifact.available && violations.length === 0;
@@ -389,11 +401,27 @@ export async function refreshPublicSearchUsageSnapshot(env, { now = new Date() }
   } catch {
     return { verified: false, reason: "write_failed" };
   }
+
+  // The dated lineage is published from the same read, and independently of whether the
+  // public projection could be verified. A refresh that cannot publish a period still knows
+  // which days it saw, and losing that would be losing the trend rather than the summary.
+  const daily = read.ok
+    ? await publishSearchUsageDailyAggregates(env, { now, observations: read.observations, measuredSince })
+    : { published: false, reason: read.reason, days: [] };
+
   return {
     verified,
     reason: next.failure_reason,
     measured_since: measuredSince,
     periods_measured: artifact.periods.filter((period) => period.state === "measured").length,
+    daily_aggregates: {
+      published: daily.published,
+      reason: daily.reason || null,
+      created: daily.days.filter((row) => row.action === "created").length,
+      unchanged: daily.days.filter((row) => row.action === "unchanged").length,
+      divergent: daily.days.filter((row) => row.action === "divergent_kept_stored").map((row) => row.day),
+      write_failed: daily.days.filter((row) => row.action === "write_failed").map((row) => row.day),
+    },
   };
 }
 

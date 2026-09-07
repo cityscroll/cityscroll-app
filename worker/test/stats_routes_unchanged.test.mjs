@@ -11,6 +11,8 @@ import test from "node:test";
 
 import { readFileSync } from "node:fs";
 
+import { ANALYTICS_COLLECTOR_SURFACES } from "../../site/analytics_surface_taxonomy.mjs";
+import { TAXONOMY_VERSION } from "../src/lib/analytics.mjs";
 import { handleAdminStats } from "../src/admin.mjs";
 import { buildPublicStatsBody, handleStats } from "../src/stats.mjs";
 
@@ -31,7 +33,33 @@ function sha256(value) {
  * claim than "the old keys are still present" — it also proves none of them moved,
  * changed value, or changed order.
  */
-const ADDITIVE_SINCE_RUM07 = Object.freeze(["search_executions"]);
+const ADDITIVE_SINCE_RUM07 = Object.freeze([
+  "search_executions",
+  "measurement_basis",
+  "search_usage_lineage",
+  "measurement_diagnostics",
+]);
+
+/**
+ * The one field inside the baseline that deliberately changed shape, and the surfaces it
+ * carried when the baseline was captured.
+ *
+ * The page-view breakdown used to have eleven rows because the browser could only ever name
+ * eleven surfaces: it derived one from the last path segment and answered "home" for anything
+ * else, so the Search document, the data-health document and each `/browse/<lane>/` document
+ * were all counted as the homepage. The breakdown is now shaped by the surfaces that actually
+ * ship the collector. Projecting it back onto the eleven the baseline knew, and hashing that,
+ * proves this is the only field that moved: everything else still matches byte for byte.
+ */
+const RUM07_TAXONOMY_VERSION = "1.3.0";
+const RUM07_PAGE_VIEW_SURFACES = Object.freeze([
+  "home", "now", "near-you", "following", "browse",
+  "stats", "about", "data", "api", "changelog", "standards",
+]);
+
+function asRum07PageViewSurfaces(observed = {}) {
+  return Object.fromEntries(RUM07_PAGE_VIEW_SURFACES.map((surface) => [surface, observed[surface] || 0]));
+}
 
 test("RUM-08 leaves authenticated /admin/stats byte-compatible with the RUM-07 baseline", async () => {
   const response = await handleAdminStats(
@@ -50,6 +78,18 @@ test("RUM-08 leaves authenticated /admin/stats byte-compatible with the RUM-07 b
     assert.ok(field in body, `${field} is present and accounted for as an additive field`);
     delete body[field];
   }
+  // The corrected surface taxonomy is asserted on its own terms, then projected back to the
+  // eleven surfaces and the version the baseline knew, so the hash can still speak for
+  // everything else. Those two are the whole intended difference.
+  assert.deepEqual(
+    Object.keys(body.usage.page_views.by_surface_last30d),
+    [...ANALYTICS_COLLECTOR_SURFACES],
+    "the page-view breakdown covers exactly the documents that ship the collector",
+  );
+  assert.equal(body.usage.taxonomy_version, TAXONOMY_VERSION);
+  body.usage.page_views.by_surface_last30d =
+    asRum07PageViewSurfaces(body.usage.page_views.by_surface_last30d);
+  body.usage.taxonomy_version = RUM07_TAXONOMY_VERSION;
   assert.equal(
     sha256(`${JSON.stringify(body, null, 2)}`),
     ADMIN_STATS_RUM07_SHA256,

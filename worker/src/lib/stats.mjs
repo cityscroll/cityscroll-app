@@ -9,6 +9,16 @@ import { digestRoute, normalizeDigestId } from "./digest_routes.mjs";
 
 export const STATS_TTL = 40 * 24 * 3600; // 40 days — enough for a 30-day window with slack
 
+/**
+ * Private diagnostic counter for event submissions the taxonomy refused.
+ *
+ * A rejected event is not a measurement and never becomes one: the count carries no
+ * dimension from the refused body and is read back only on the authenticated desk. It lives
+ * here, beside the other per-day counters, so both the intake that writes it and the desk
+ * that reads it name one key.
+ */
+export const REJECTED_EVENT_METRIC = "usage_rejected";
+
 // UTC YYYY-MM-DD, matching the `m:nl:<day>` / `sendcount:<day>` convention elsewhere.
 export function dayStr(d) {
   return d.toISOString().slice(0, 10);

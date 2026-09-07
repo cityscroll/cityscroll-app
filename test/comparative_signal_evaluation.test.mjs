@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-import { normalizeUsageEvent } from "../worker/src/lib/analytics.mjs";
+import { TAXONOMY_VERSION, normalizeUsageEvent } from "../worker/src/lib/analytics.mjs";
 import {
   buildComparativeSignalEvaluation,
   loadComparativeSignalEvaluationInputs,
@@ -102,7 +102,9 @@ test("one aggregate shown event supplies the handoff denominator without identif
     geography: "none",
     surface: "worth-a-look",
     traffic_class: "production",
-    taxonomy_version: "1.3.0",
+    // The version travels with the taxonomy rather than being pinned here: what this case is
+    // about is that no identifying dimension survives, not which version stamped the row.
+    taxonomy_version: TAXONOMY_VERSION,
   });
 });
 

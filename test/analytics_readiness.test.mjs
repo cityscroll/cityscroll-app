@@ -5,7 +5,7 @@ import { readFile } from "node:fs/promises";
 import vm from "node:vm";
 
 import { handleEvent } from "../worker/src/events.mjs";
-import { handlePrivateStats } from "../worker/src/stats.mjs";
+import { handlePrivateStats, handleStats } from "../worker/src/stats.mjs";
 import { primaryDocumentOutputs } from "../tools/build_primary_documents.mjs";
 import {
   ANALYTICS_LENSES,
@@ -19,6 +19,10 @@ import {
   reconcileUsageWithDurableStores,
   usageAnalyticsQuery,
 } from "../worker/src/lib/analytics.mjs";
+import {
+  ANALYTICS_COLLECTOR_SURFACES,
+  resolveAnalyticsSurface,
+} from "../site/analytics_surface_taxonomy.mjs";
 
 const FIXTURE_NOW = new Date("2026-07-27T12:00:00Z");
 const FIXTURE_DAY = FIXTURE_NOW.toISOString().slice(0, 10);
@@ -26,6 +30,8 @@ const FIXTURE_DAY = FIXTURE_NOW.toISOString().slice(0, 10);
 function fakeKV(seed = {}) {
   const store = new Map(Object.entries(seed));
   return {
+    // Exposed so a test can assert which keys a request wrote, not only what it returned.
+    store,
     async get(key) { return store.has(key) ? store.get(key) : null; },
     async put(key, value) { store.set(key, value); },
     async list({ prefix = "" } = {}) {
@@ -83,30 +89,14 @@ async function emit(points, event, options = {}) {
   return response;
 }
 
-async function pageViewSurface(pathname) {
-  const source = await readFile(new URL("../site/analytics.js", import.meta.url), "utf8");
-  const payloads = [];
-  const context = {
-    location: { pathname, hash: "" },
-    localStorage: { getItem() { return ""; } },
-    navigator: {},
-    fetch(_url, init) {
-      payloads.push(JSON.parse(init.body));
-      return Promise.resolve(new Response(null, { status: 204 }));
-    },
-    document: {
-      body: {},
-      addEventListener() {},
-      querySelector() { return null; },
-      querySelectorAll() { return []; },
-    },
-  };
-  context.window = {
-    addEventListener() {},
-    CROL_API_ORIGIN: "https://api.cityscroll.org",
-  };
-  vm.runInNewContext(source, context);
-  return payloads.find((payload) => payload.event === "page_view")?.surface;
+/**
+ * The producer's own surface answer for a pathname. `site/analytics.js` is a module now, so
+ * the resolution it performs is exercised through the module both halves share rather than by
+ * re-running the page script in a sandbox; the page script's use of it is asserted separately
+ * below, by reading its source.
+ */
+function pageViewSurface(pathname) {
+  return resolveAnalyticsSurface(pathname).surface;
 }
 
 test("event intake writes only bounded taxonomy dimensions", async () => {
@@ -247,21 +237,76 @@ test("fixture event flows emit -> sampling-aware aggregate -> authenticated stat
   assert.equal(body.nl_search.by_category.meetings, 0, "previously omitted zero-count lens is pinned");
 });
 
-test("primary document routes classify before the legacy filename fallback", async () => {
+test("the route map decides a surface, and an unregistered route gets none", async () => {
+  // Every one of these was reported as "home" before the taxonomy was shared: the platform
+  // serves each .html document at its extensionless path, and the Search, data-health and
+  // per-lane browse documents were never in the old filename table at all.
   const routes = {
+    "/": "home",
+    "/index.html": "home",
     "/now/": "now",
     "/near-you/": "near-you",
     "/near-you/borough/queens/": "near-you",
     "/following/": "following",
     "/browse/": "browse",
-    "/browse/property/": "browse",
-    "/": "home",
+    "/browse/property/": "browse-property",
+    "/browse/contracts/": "browse-contracts",
+    "/search/": "search",
+    "/data-health/": "data-health",
+    "/stats": "stats",
     "/stats.html": "stats",
+    "/about": "about",
+    "/api": "api",
+    "/data": "data",
+    "/changelog": "changelog",
+    "/standards": "standards",
     "/experimental/worth-a-look/": "worth-a-look",
+    // The three worked paths the public Stats page teaches, and the mandate one of them ends on.
+    "/notices/20231222103": "notice",
+    "/notices/20260605008": "notice",
+    "/mandates/64116-001": "mandate",
+    "/browse/zoning/": "browse-zoning",
+    "/agencies/homeless-services/": "agency",
+    "/guide/start/trace-an-award-and-keep-the-trail/": "guide-article",
   };
   for (const [pathname, expected] of Object.entries(routes)) {
-    assert.equal(await pageViewSurface(pathname), expected, pathname);
+    assert.equal(pageViewSurface(pathname), expected, pathname);
   }
+
+  // An unregistered route is an observability gap, not the homepage.
+  for (const pathname of ["/not-a-route/", "/notices/", "/browse/nothing/", "/stats/extra"]) {
+    assert.equal(pageViewSurface(pathname), null, pathname);
+    assert.equal(resolveAnalyticsSurface(pathname).classification_state, "unclassified", pathname);
+  }
+
+  // The page script resolves through that module and refuses to send an event without a
+  // surface; no literal fallback survives in its source.
+  const producer = await readFile(new URL("../site/analytics.js", import.meta.url), "utf8");
+  assert.match(producer, /import \{ resolveAnalyticsSurface \} from "\.\/analytics_surface_taxonomy\.mjs";/);
+  assert.match(producer, /const PAGE_SURFACE = resolveAnalyticsSurface\(location\.pathname\)\.surface;/);
+  assert.match(producer, /if \(!dimensions \|\| !dimensions\.surface\) return;/);
+  assert.doesNotMatch(producer, /\|\| "home"/);
+  assert.doesNotMatch(producer, /surface: "home"/);
+  // A lens is a thing the reader chose; the producer no longer hands one out by default.
+  assert.doesNotMatch(producer, /: "money";/);
+});
+
+test("the surface a producer can emit is exactly the surface the validator accepts", () => {
+  for (const surface of ANALYTICS_COLLECTOR_SURFACES) {
+    assert.ok(
+      normalizeUsageEvent({ event: "page_view", surface }),
+      `page_view from ${surface} must be accepted`,
+    );
+  }
+  // A registered route whose document does not ship the collector is not an accepted page-view
+  // dimension: nothing produces it, so nothing may report it.
+  for (const surface of ["notice", "vendor", "mandate", "guide-article"]) {
+    assert.ok(!ANALYTICS_COLLECTOR_SURFACES.includes(surface), `${surface} ships no collector`);
+    assert.equal(normalizeUsageEvent({ event: "page_view", surface }), null, surface);
+  }
+  // Delivery surfaces belong to the events that are delivered, never to a page view.
+  assert.equal(normalizeUsageEvent({ event: "page_view", surface: "email" }), null);
+  assert.equal(normalizeUsageEvent({ event: "page_view", surface: "digest" }), null);
 });
 
 test("all primary documents load the aggregate collector", async () => {
@@ -269,11 +314,11 @@ test("all primary documents load the aggregate collector", async () => {
   for (const route of ["now", "browse"]) {
     const entry = Object.entries(built).find(([path]) => path.endsWith(`/site/${route}/index.html`));
     assert.ok(entry, `${route} build output exists`);
-    assert.match(entry[1], /analytics\.js\?v=1\.3\.0/, route);
+    assert.match(entry[1], /analytics\.js\?v=1\.4\.0/, route);
   }
   for (const route of ["near-you", "following"]) {
     const html = await readFile(new URL(`../site/${route}/index.html`, import.meta.url), "utf8");
-    assert.match(html, /analytics\.js\?v=1\.3\.0/, route);
+    assert.match(html, /analytics\.js\?v=1\.4\.0/, route);
   }
 });
 
@@ -483,7 +528,7 @@ test("public stats page is a small coverage surface with dated cards and no usag
 
 test("every public page loads the first-party collector and every locale covers new labels", async () => {
   for (const page of ["index.html", "stats.html", "about.html", "data.html", "api.html", "changelog.html", "standards.html"]) {
-    assert.match(await readFile(new URL(`../site/${page}`, import.meta.url), "utf8"), /analytics\.js\?v=1\.3\.0/, page);
+    assert.match(await readFile(new URL(`../site/${page}`, import.meta.url), "utf8"), /analytics\.js\?v=1\.4\.0/, page);
   }
   for (const locale of ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"]) {
     const source = await readFile(new URL(`../site/i18n/lang/${locale}.js`, import.meta.url), "utf8");
@@ -514,4 +559,144 @@ test("taxonomy and budget note pin current Cloudflare allowances and limits", as
   for (const version of COMPATIBLE_TAXONOMY_VERSIONS) {
     assert.match(usageAnalyticsQuery(), new RegExp(`'${version.replaceAll(".", "\\.")}'`));
   }
+});
+
+/**
+ * The boundary the published figures depend on: an interaction and a finished search are two
+ * signals, and neither is ever quietly turned into the other.
+ */
+test("a search interaction and an accepted execution stay two signals", async () => {
+  const points = [];
+  const alertState = fakeKV();
+  await emit(points, {
+    event: "search_run",
+    lens: "land",
+    detail: "filters",
+    surface: "home",
+  }, { alertState, nowMs: FIXTURE_NOW.getTime() });
+
+  // The interaction moved its own counters and nothing else. There is no receipt key, no
+  // execution counter, and nothing that a completed-search reader would pick up.
+  const written = [...alertState.store.keys()].sort();
+  assert.deepEqual(written, [
+    `stats:catday:usage_search_run:land:${FIXTURE_DAY}`,
+    `stats:usage_search_run:${FIXTURE_DAY}`,
+  ]);
+  assert.equal(written.some((key) => key.startsWith("search:exec")), false);
+
+  const response = await handlePrivateStats(new Request("https://api.cityscroll.org/admin/stats"), {
+    ALERT_STATE: alertState,
+    NL_METER: fakeKV(),
+  }, { now: FIXTURE_NOW });
+  const body = JSON.parse(await response.text());
+
+  // Completed searches are read from the receipt store, which this interaction never wrote to.
+  // The interaction is counted once as an interaction and contributes nothing to the completed
+  // count, and the empty completed count does not claim to be an established measurement.
+  assert.equal(await alertState.get(`stats:usage_search_run:${FIXTURE_DAY}`), "1");
+  assert.equal(body.search_executions.windows.last7d.completed, 0);
+  assert.equal(body.search_executions.windows.last7d.returned_records, 0);
+  assert.equal(body.search_executions.measured_since, null,
+    "with no established start, a zero is not a claim that nobody searched");
+  assert.equal(body.search_executions.executions_observed, 0);
+
+  // And the two are described as different measurements, by different methods, beside each
+  // other rather than added together.
+  assert.equal(body.measurement_basis["usage.searches"].method, "sampled");
+  assert.equal(body.measurement_basis["usage.searches"].exactness, "estimated");
+  assert.equal(body.measurement_basis.search_executions.method, "receipt-count");
+  assert.equal(body.measurement_basis.search_executions.exactness, "exact");
+  assert.match(body.measurement_basis.note, /Never summed/i);
+  assert.match(usageAnalyticsQuery(), /_sample_interval/);
+});
+
+test("a refused dimension is counted privately and never becomes a report", async () => {
+  const points = [];
+  const alertState = fakeKV();
+  const env = {
+    USAGE_ANALYTICS: analyticsBinding(points),
+    ANALYTICS_ENVIRONMENT: "production",
+    ALERT_STATE: alertState,
+  };
+  const submit = async (event) => handleEvent(new Request("https://api.cityscroll.org/events", {
+    method: "POST",
+    headers: { Origin: "https://cityscroll.org", "Content-Type": "text/plain;charset=UTF-8" },
+    body: JSON.stringify(event),
+  }), env, { nowMs: FIXTURE_NOW.getTime() });
+
+  // A surface nobody registered, and a page view claiming a delivery surface.
+  assert.equal((await submit({ event: "page_view", surface: "a-surface-nobody-registered" })).status, 400);
+  assert.equal((await submit({ event: "page_view", surface: "email" })).status, 400);
+  assert.deepEqual(points, [], "a refused submission writes no analytics point");
+  assert.equal(await alertState.get(`stats:usage_rejected:${FIXTURE_DAY}`), "2");
+  // The refused values themselves are not kept anywhere.
+  assert.equal([...alertState.store.keys()].some((key) => key.includes("a-surface-nobody-registered")), false);
+  assert.equal(await alertState.get(`stats:page_view:${FIXTURE_DAY}`), null);
+
+  const response = await handlePrivateStats(new Request("https://api.cityscroll.org/admin/stats"), {
+    ALERT_STATE: alertState,
+    NL_METER: fakeKV(),
+  }, { now: FIXTURE_NOW });
+  const body = JSON.parse(await response.text());
+  assert.equal(body.measurement_diagnostics.rejected_events_last7d, 2);
+  assert.equal(body.measurement_diagnostics.rejected_events_last30d, 2);
+});
+
+test("developer and preview traffic cannot move a production counter, refused or accepted", async () => {
+  const secret = "x".repeat(48);
+  const nowMs = FIXTURE_NOW.getTime();
+
+  const developerState = fakeKV();
+  const developerEnv = {
+    USAGE_ANALYTICS: analyticsBinding([]),
+    ANALYTICS_ENVIRONMENT: "production",
+    ANALYTICS_DEV_KEY: secret,
+    ALERT_STATE: developerState,
+  };
+  const asDeveloper = async (event) => handleEvent(new Request("https://api.cityscroll.org/events", {
+    method: "POST",
+    headers: {
+      Origin: "https://cityscroll.org",
+      "Content-Type": "text/plain;charset=UTF-8",
+      "X-CROL-Analytics-Dev": developerToken(secret, nowMs),
+    },
+    body: JSON.stringify(event),
+  }), developerEnv, { nowMs });
+
+  assert.equal((await asDeveloper({ event: "page_view", surface: "stats" })).status, 204);
+  assert.equal((await asDeveloper({ event: "page_view", surface: "nonsense" })).status, 400);
+  assert.deepEqual([...developerState.store.keys()], [], "no production counter moved, and no rejection was counted");
+
+  const previewState = fakeKV();
+  const previewEnv = {
+    USAGE_ANALYTICS: analyticsBinding([]),
+    ANALYTICS_ENVIRONMENT: "preview",
+    ALERT_STATE: previewState,
+  };
+  const response = await handleEvent(new Request("https://api.cityscroll.org/events", {
+    method: "POST",
+    headers: { Origin: "https://cityscroll.org", "Content-Type": "text/plain;charset=UTF-8" },
+    body: JSON.stringify({ event: "page_view", surface: "no-such-surface" }),
+  }), previewEnv, { nowMs });
+  assert.equal(response.status, 400);
+  assert.deepEqual([...previewState.store.keys()], []);
+});
+
+test("this change publishes no new public headline metric", async () => {
+  const response = await handleStats(
+    new Request("https://api.cityscroll.org/stats"),
+    {},
+    { waitUntil: async (promise) => promise },
+    { now: FIXTURE_NOW, skipCacheRead: true },
+  );
+  const body = JSON.parse(await response.text());
+  assert.deepEqual(Object.keys(body),
+    ["schema", "generated_at", "scope", "coverage", "language_coverage", "search_usage"]);
+  // The dated lineage, the reconciliation and the refusal diagnostics are private evidence for
+  // the published figures, not published figures of their own.
+  for (const key of ["search_usage_lineage", "measurement_diagnostics", "measurement_basis"]) {
+    assert.equal(key in body, false, key);
+  }
+  const text = JSON.stringify(body);
+  assert.doesNotMatch(text, /page_view|export|deep_link|click|surface/i);
 });
