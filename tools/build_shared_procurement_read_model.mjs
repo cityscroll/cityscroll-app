@@ -15,6 +15,10 @@ import { buildSharedProcurementReadModel } from "../site/shared_procurement_read
 import { buildSharedProcurementReadModelShardArtifacts } from "../site/procurement_read_model_shards.mjs";
 import { buildProcurementBrowseQueryArtifacts } from "../site/procurement_browse_query.mjs";
 import { buildProcurementBrowsePopulationShardArtifacts } from "../site/procurement_browse_population_shards.mjs";
+import {
+  buildProcurementBrowseCapabilityIndexArtifacts,
+  serializedProcurementBrowseCapabilityShard,
+} from "../site/procurement_browse_capability_index.mjs";
 import { recordsFromMtaOpportunityFixtures } from "../warehouse/lib/mta_opportunities.mjs";
 import {
   mtaAnnualContractSourceSystemId,
@@ -42,6 +46,8 @@ const BROWSE_QUERY_OUT = new URL("../site/data/procurement_browse_query.json", i
 const BROWSE_QUERY_ROWS_OUT = new URL("../site/data/procurement_browse_query_rows.json", import.meta.url);
 const BROWSE_QUERY_SHARD_DIR = new URL("../site/data/procurement_browse_rows/", import.meta.url);
 const BROWSE_POPULATION_SHARD_DIR = new URL("../site/data/procurement_browse_rows_population/", import.meta.url);
+const BROWSE_CAPABILITY_OUT = new URL("../site/data/procurement_browse_capability.json", import.meta.url);
+const BROWSE_CAPABILITY_SHARD_DIR = new URL("../site/data/procurement_browse_capability/", import.meta.url);
 const DIGEST_OUT = new URL("../site/data/procurement_digest_snapshot.json", import.meta.url);
 const MTA_SOURCES = new URL("../site/data/mta_procurement_sources.json", import.meta.url);
 const ROOT = new URL("../", import.meta.url);
@@ -328,6 +334,38 @@ function browsePopulationGroup(browse) {
   };
 }
 
+function browseCapabilityShardPath(descriptor) {
+  return new URL(`../site/data/${descriptor.path}`, import.meta.url);
+}
+
+// The pre-shaped read model behind the public Contracts browse capability. The
+// detail family answers one object at a time, so a browse that reads it has to
+// read the whole population to count matches. This family publishes the shape a
+// browse needs instead: a compact filter tier it scans whole, and bounded
+// detail shards from which it reads only the page it returns.
+function browseCapabilityGroup(model) {
+  const artifacts = buildProcurementBrowseCapabilityIndexArtifacts(model);
+  const shardNames = [...artifacts.manifest.filter_shards, ...artifacts.manifest.detail_shards]
+    .map((descriptor) => descriptor.path.split("/").at(-1));
+  return {
+    artifactLabel: "stale Contracts browse capability artifact",
+    shardLabel: "stale Contracts browse capability shard",
+    shardDir: BROWSE_CAPABILITY_SHARD_DIR,
+    expectedNames: new Set(shardNames),
+    outputs: [
+      [BROWSE_CAPABILITY_OUT, serialized(artifacts.manifest)],
+      ...artifacts.manifest.filter_shards.map((descriptor, index) => [
+        browseCapabilityShardPath(descriptor),
+        serializedProcurementBrowseCapabilityShard(artifacts.filterShards[index]),
+      ]),
+      ...artifacts.manifest.detail_shards.map((descriptor, index) => [
+        browseCapabilityShardPath(descriptor),
+        serializedProcurementBrowseCapabilityShard(artifacts.detailShards[index]),
+      ]),
+    ],
+  };
+}
+
 function browseQueryShardPath(descriptor) {
   return new URL(`../site/data/${descriptor.path}`, import.meta.url);
 }
@@ -469,6 +507,7 @@ function buildAndEmit() {
   );
   const groups = [
     shardedModelGroup(model),
+    browseCapabilityGroup(model),
     browseQueryGroup(browse, model.coherence_receipt.source_model_fingerprint),
     browsePopulationGroup(browse),
     {

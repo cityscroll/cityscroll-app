@@ -7,10 +7,16 @@ import {
 } from "../../site/procurement_read_model_shards.mjs";
 import { loadAnalyticalProjectionDocument } from "../../site/analytical_projection_shards.mjs";
 import {
-  materializeProcurementSearchDocument,
-} from "../../site/procurement_search_producer.mjs";
-import { contractSearchDocumentToMoneyRow } from "../../site/contract_search_bridge.mjs";
-import { publicProcurementAmount } from "../../site/checkbook_passport_corroboration.mjs";
+  buildProcurementBrowseCapabilityIndex,
+  composeProcurementBrowseCapabilityContract,
+  loadProcurementBrowseCapabilityDetails,
+  loadProcurementBrowseCapabilityFilterTier,
+  procurementBrowseCapabilityDetail,
+  procurementBrowseCapabilityEntryMatches,
+  procurementBrowseCapabilityEnvelope,
+  PROCUREMENT_BROWSE_CAPABILITY_INDEX_PATH,
+  PROCUREMENT_BROWSE_CAPABILITY_INDEX_SCHEMA,
+} from "../../site/procurement_browse_capability_index.mjs";
 import {
   ANALYTICAL_MEASURES,
   ANALYTICAL_PROJECTION_URL,
@@ -44,7 +50,6 @@ import {
 const SHARED_MODEL_ORIGIN = "https://cityscroll.org";
 const SHARED_MODEL_PATH = "/data/shared_procurement_read_model.json";
 const ANALYTICAL_PROJECTION_ORIGIN = "https://cityscroll.org";
-const PUBLIC_AMOUNT_MAX_EXCLUSIVE = 10_000_000_000;
 
 export const CONTRACT_GET_HTTP_ADAPTER = Object.freeze({
   id: "worker-http.contract-get@1",
@@ -135,123 +140,67 @@ async function readAnalyticalProjection(env) {
   return projection;
 }
 
-/** Load the committed model, or a test-provided model, without source-store access. */
-async function readModel(env, { procurementId = null, browse = false } = {}) {
+/**
+ * Load one object's slice of the committed model, or a test-provided model,
+ * without source-store access. The manifest names the single bounded shard that
+ * carries a canonical id, so an object read stays one shard wide however large
+ * the population grows. There is deliberately no whole-population path here:
+ * the browse capability reads the pre-shaped index instead.
+ */
+async function readModel(env, { procurementId = null } = {}) {
   const injected = env?.PROCUREMENT_READ_MODEL
     || (env?.schema === "cityscroll.shared_procurement_read_model.v1" ? env : null);
   if (injected && typeof injected === "object") return injected;
 
   const manifest = await readStaticJson(SHARED_MODEL_PATH);
   if (Array.isArray(manifest?.rows)) return manifest;
-  const shardPaths = procurementId
-    ? [manifest?.procurement_shard_by_id?.[procurementId]].filter(Boolean)
-    : browse ? (manifest?.shards || []).map((shard) => shard?.path).filter(Boolean) : [];
-  if (!shardPaths.length) return { ...manifest, rows: [], observations: [] };
-  const shards = await Promise.all(shardPaths.map((path) => readStaticJson(`/data/${path}`)));
-  return combineSharedProcurementReadModel(manifest, shards);
+  const shardPath = procurementId ? manifest?.procurement_shard_by_id?.[procurementId] : null;
+  if (!shardPath) return { ...manifest, rows: [], observations: [] };
+  const shard = await readStaticJson(`/data/${shardPath}`);
+  return combineSharedProcurementReadModel(manifest, [shard]);
+}
+
+/**
+ * Load the pre-shaped Contracts browse index: the compact filter tier a browse
+ * scans, and the envelope its result rows are composed against. A test that
+ * already holds a whole read model gets the same index built in memory, so both
+ * paths answer through exactly one filter and one composition.
+ */
+async function readBrowseCapabilityIndex(env) {
+  const injectedIndex = env?.PROCUREMENT_BROWSE_CAPABILITY_INDEX
+    || (env?.schema === PROCUREMENT_BROWSE_CAPABILITY_INDEX_SCHEMA ? env : null);
+  if (injectedIndex && typeof injectedIndex === "object") {
+    return { manifest: injectedIndex, entries: injectedIndex.entries || [] };
+  }
+  const injectedModel = env?.PROCUREMENT_READ_MODEL
+    || (env?.schema === "cityscroll.shared_procurement_read_model.v1" ? env : null);
+  if (injectedModel && typeof injectedModel === "object") {
+    const index = buildProcurementBrowseCapabilityIndex(injectedModel);
+    return { manifest: index, entries: index.entries };
+  }
+  const tier = await loadProcurementBrowseCapabilityFilterTier(
+    `/data/${PROCUREMENT_BROWSE_CAPABILITY_INDEX_PATH}`,
+    readStaticJson,
+  );
+  if (!tier) throw new Error("Contracts browse index is incomplete");
+  return tier;
 }
 
 function sourceSystemFromRef(ref) {
   return clean(ref).split(":", 1)[0].toLowerCase() || null;
 }
 
-function sourceObservationView(observation) {
-  return {
-    source_observation_ref: observation?.source_observation_ref || null,
-    source_system: observation?.source_system || null,
-    source_id: observation?.source_system_id || null,
-    ingested_at: observation?.ingested_at || null,
-  };
-}
-
-function sourceEnvelopes(model, observations) {
-  const observed = new Set(observations.map((entry) => entry.source_system).filter(Boolean));
-  return Object.fromEntries(Object.entries(model?.sources || {}).map(([source, envelope]) => {
-    const status = envelope?.status || "unavailable";
-    const state = observed.has(source)
-      ? "observed"
-      : ["unavailable", "partial"].includes(status) ? "not_observed" : "not_published";
-    return [source, {
-      state,
-      status,
-      generated_at: envelope?.generated_at || null,
-      reason: envelope?.reason || null,
-      source_row_count: envelope?.row_count ?? null,
-    }];
-  }));
-}
-
-function publicObject(object) {
-  return {
-    object_type: object.object_type,
-    schema: object.schema,
-    procurement_id: object.procurement_id,
-    canonical_id: object.canonical_id,
-    source_observation_refs: object.source_observation_refs,
-    stages: object.stages,
-    identity_keys: object.identity_keys,
-    identity_edges: object.identity_edges,
-    lifecycle: object.lifecycle || null,
-    ...(Array.isArray(object.lifecycles) ? { lifecycles: object.lifecycles } : {}),
-    compatibility: object.compatibility,
-  };
-}
-
-function amountView(object, observations) {
-  const value = publicProcurementAmount(object, observations);
-  const valid = typeof value === "number" && Number.isFinite(value)
-    && value > 0 && value < PUBLIC_AMOUNT_MAX_EXCLUSIVE;
-  return {
-    value: value == null ? null : value,
-    valid,
-    validity_rule: "finite amount greater than 0 and less than $10,000,000,000",
-  };
-}
-
-function freshnessView(model) {
-  const generatedAt = model?.generated_at || model?.freshness?.generated_at || null;
-  return {
-    as_of: generatedAt || "unknown",
-    generated_at: generatedAt,
-    checked_at: model?.freshness?.checked_at || null,
-    sources: model?.freshness?.sources || {},
-  };
-}
-
+/**
+ * One published contract, composed from the population envelope and this
+ * object's detail. The browse page composes the same two parts from the
+ * published index, so an object read and a browse row are the same projection
+ * rather than two projections that happen to agree.
+ */
 function projectContract(model, object) {
-  const observations = (Array.isArray(model?.observations) ? model.observations : [])
-    .filter((entry) => object.source_observation_refs?.includes(entry.source_observation_ref));
-  const document = materializeProcurementSearchDocument(object, model);
-  const browseRow = document ? contractSearchDocumentToMoneyRow(document) : null;
-  const sourceObservations = observations.map(sourceObservationView);
-  const coverage = {
-    state: "observed",
-    source_envelopes: sourceEnvelopes(model, observations),
-    not_published: Object.entries(sourceEnvelopes(model, observations))
-      .filter(([, entry]) => entry.state === "not_published").map(([source]) => source),
-    not_observed: Object.entries(sourceEnvelopes(model, observations))
-      .filter(([, entry]) => entry.state === "not_observed").map(([source]) => source),
-    not_yet_joined: Array.isArray(object.coverage?.not_yet_joined)
-      ? object.coverage.not_yet_joined : [],
-    publication: model?.publication || null,
-  };
-  return {
-    ...publicObject(object),
-    ...(browseRow ? { fields: (() => { const { search_document: _private, ...fields } = browseRow; return fields; })() } : {}),
-    provenance: {
-      identity: {
-        exact: true,
-        basis: "site/procurement_object_contract.mjs exact identity gate",
-        canonical_id: object.procurement_id,
-        prime_contract_ids: object.identity_keys?.contract_ids || [],
-        epins: object.identity_keys?.epins || [],
-      },
-      source_observations: sourceObservations,
-    },
-    coverage,
-    freshness: freshnessView(model),
-    amount: amountView(object, observations),
-  };
+  return composeProcurementBrowseCapabilityContract(
+    procurementBrowseCapabilityEnvelope(model),
+    procurementBrowseCapabilityDetail(model, object),
+  );
 }
 
 function modelObjects(model) {
@@ -275,22 +224,6 @@ function modelObjects(model) {
 
 function findObject(model, procurementId) {
   return modelObjects(model).find((object) => object.procurement_id === procurementId) || null;
-}
-
-function lower(value) { return clean(value).toLowerCase(); }
-
-function matchesBrowseInput(contract, input) {
-  const fields = contract.fields || {};
-  const query = lower(input.query);
-  if (query && !query.split(/\s+/).filter(Boolean).every((term) => lower(JSON.stringify(fields)).includes(term))) return false;
-  if (input.agency && !lower(fields.agency_name).includes(lower(input.agency))) return false;
-  if (input.vendor && !lower(fields.vendor_name).includes(lower(input.vendor))) return false;
-  if (input.stage && !(fields.procurement_stages || []).includes(input.stage)) return false;
-  if (input.sourceSystem && !(fields.source_systems || []).includes(input.sourceSystem)) return false;
-  const amount = contract.amount;
-  if (input.minAmount !== undefined && (!amount.valid || amount.value < input.minAmount)) return false;
-  if (input.maxAmount !== undefined && (!amount.valid || amount.value > input.maxAmount)) return false;
-  return true;
 }
 
 function encodeCursor(id) {
@@ -328,32 +261,46 @@ export function workerContractsBrowse(env) {
     providerId: CONTRACTS_BROWSE_PROVIDER_ID,
     async execute(input) {
       try {
-        const model = await readModel(env, { browse: true });
+        // The filter tier is the whole population in its smallest filterable
+        // form, so a match count is exact without materializing anything. Only
+        // the page that is actually returned is read in full and composed.
+        const { manifest, entries } = await readBrowseCapabilityIndex(env);
         const cursorId = decodeCursor(input.cursor);
         if (input.cursor && !cursorId) throw new Error("invalid cursor");
-        const candidates = modelObjects(model).slice().sort((a, b) => a.procurement_id.localeCompare(b.procurement_id));
-        const matches = candidates.map((object) => projectContract(model, object)).filter((contract) => matchesBrowseInput(contract, input));
-        const after = cursorId ? matches.findIndex((contract) => contract.procurement_id === cursorId) : -1;
+        const matches = entries.filter((entry) => procurementBrowseCapabilityEntryMatches(entry, input));
+        const after = cursorId ? matches.findIndex((entry) => entry.procurement_id === cursorId) : -1;
         if (cursorId && after < 0) throw new Error("invalid cursor");
+        const limit = input.limit || CONTRACTS_BROWSE_LIMITS.default;
         const start = after + 1;
-        const results = matches.slice(start, start + (input.limit || CONTRACTS_BROWSE_LIMITS.default));
-        const truncated = start + results.length < matches.length;
+        const page = matches.slice(start, start + limit);
+        const truncated = start + page.length < matches.length;
+        const details = await loadProcurementBrowseCapabilityDetails(
+          `/data/${PROCUREMENT_BROWSE_CAPABILITY_INDEX_PATH}`,
+          manifest,
+          page,
+          readStaticJson,
+        );
+        // A page the index cannot supply in full is a truncated index, not a
+        // shorter page. Reporting it as unavailable keeps a partial read from
+        // being published as a complete answer.
+        if (!details) throw new Error("Contracts browse detail is incomplete");
+        const results = details.map((detail) => composeProcurementBrowseCapabilityContract(manifest, detail));
         return {
           capability_reference: CONTRACTS_BROWSE_CAPABILITY_REFERENCE,
           availability: results.length ? "complete" : "empty",
           results,
           total_matches: matches.length,
           pagination: {
-            limit: input.limit || CONTRACTS_BROWSE_LIMITS.default,
+            limit,
             returned: results.length,
             truncated,
             next_cursor: truncated ? encodeCursor(results.at(-1).procurement_id) : null,
           },
           coverage: {
-            sources: model.sources || {},
-            publication: model.publication || null,
+            sources: manifest.sources || {},
+            publication: manifest.publication || null,
           },
-          freshness: freshnessView(model),
+          freshness: { ...manifest.freshness },
           error: null,
         };
       } catch (error) {
