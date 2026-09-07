@@ -31,21 +31,21 @@
     "page_size": 20000,
     "pages": 90,
     "count_drift_policy": "fail without publishing",
-    "page_manifest_sha256": "30e5c5dd4f7364a433fc7219be6a8c516e15ec798d26d087e046e5fd6e48281c"
+    "page_manifest_sha256": "5b13f282e627cf2a9a535ecb6fc67dec943e921da0c53660160abed886b7488c"
   },
   "population": {
-    "publisher_record_count": 1783465,
-    "source_xml_rows": 1783465,
-    "normalized_rows": 1783465,
-    "unique_transaction_ids": 1633936,
-    "duplicate_transaction_rows": 149529,
-    "reversal_rows": 1616,
+    "publisher_record_count": 1783981,
+    "source_xml_rows": 1783981,
+    "normalized_rows": 1783981,
+    "unique_transaction_ids": 1634438,
+    "duplicate_transaction_rows": 149543,
+    "reversal_rows": 1627,
     "null_amount_rows": 0,
     "agency_grouping": [
       {
         "agency": "Department of Education",
-        "transaction_count": 1211750,
-        "net_check_amount": 13250741764.93
+        "transaction_count": 1211758,
+        "net_check_amount": 13250718049.16
       },
       {
         "agency": "Pension Contributions",
@@ -64,13 +64,13 @@
       },
       {
         "agency": "Department of Citywide Administrative Services",
-        "transaction_count": 19317,
-        "net_check_amount": 1714924166.2
+        "transaction_count": 19318,
+        "net_check_amount": 1714907952.3
       },
       {
         "agency": "Department of Health and Mental Hygiene",
-        "transaction_count": 29863,
-        "net_check_amount": 1626244863.63
+        "transaction_count": 29936,
+        "net_check_amount": 1649289242.6
       },
       {
         "agency": "Administration for Children's Services",
@@ -89,8 +89,8 @@
       },
       {
         "agency": "Department of Environmental Protection",
-        "transaction_count": 55825,
-        "net_check_amount": 987878086.62
+        "transaction_count": 55868,
+        "net_check_amount": 988570677.55
       },
       {
         "agency": "OFFICE OF CRIMINAL JUSTICE",
@@ -99,8 +99,8 @@
       },
       {
         "agency": "Department of Sanitation",
-        "transaction_count": 40084,
-        "net_check_amount": 820063549.83
+        "transaction_count": 40369,
+        "net_check_amount": 821441008.88
       },
       {
         "agency": "Housing Preservation and Development",
@@ -124,13 +124,13 @@
       },
       {
         "agency": "Department for the Aging",
-        "transaction_count": 7243,
-        "net_check_amount": 512231485.71
+        "transaction_count": 7337,
+        "net_check_amount": 513670849.27
       },
       {
         "agency": "Fire Department",
-        "transaction_count": 13719,
-        "net_check_amount": 265574644.1
+        "transaction_count": 13726,
+        "net_check_amount": 265700038.6
       },
       {
         "agency": "Department of Small Business Services",
@@ -214,8 +214,8 @@
       },
       {
         "agency": "Department of Consumer & Worker Protection",
-        "transaction_count": 1474,
-        "net_check_amount": 38368659.95
+        "transaction_count": 1475,
+        "net_check_amount": 38368036.2
       },
       {
         "agency": "New York Research Libraries",
@@ -239,8 +239,8 @@
       },
       {
         "agency": "Department of Buildings",
-        "transaction_count": 1602,
-        "net_check_amount": 24244111.74
+        "transaction_count": 1606,
+        "net_check_amount": 24251015.49
       },
       {
         "agency": "Debt Service",
@@ -701,17 +701,17 @@
     "by_fiscal_year": [
       {
         "fiscal_year": 2026,
-        "source_record_count": 1783465,
-        "source_xml_rows": 1783465,
-        "normalized_rows": 1783465,
-        "source_net_check_amount": 52327564799.68,
-        "normalized_net_check_amount": 52327564799.68,
-        "reversal_rows": 1616,
+        "source_record_count": 1783981,
+        "source_xml_rows": 1783981,
+        "normalized_rows": 1783981,
+        "source_net_check_amount": 52354210337.02,
+        "normalized_net_check_amount": 52354210337.02,
+        "reversal_rows": 1627,
         "agency_grouping": [
           {
             "agency": "Department of Education",
-            "transaction_count": 1211750,
-            "net_check_amount": 13250741764.93
+            "transaction_count": 1211758,
+            "net_check_amount": 13250718049.16
           },
           {
             "agency": "Pension Contributions",
@@ -730,13 +730,13 @@
           },
           {
             "agency": "Department of Citywide Administrative Services",
-            "transaction_count": 19317,
-            "net_check_amount": 1714924166.2
+            "transaction_count": 19318,
+            "net_check_amount": 1714907952.3
           },
           {
             "agency": "Department of Health and Mental Hygiene",
-            "transaction_count": 29863,
-            "net_check_amount": 1626244863.63
+            "transaction_count": 29936,
+            "net_check_amount": 1649289242.6
           },
           {
             "agency": "Administration for Children's Services",
@@ -755,8 +755,8 @@
           },
           {
             "agency": "Department of Environmental Protection",
-            "transaction_count": 55825,
-            "net_check_amount": 987878086.62
+            "transaction_count": 55868,
+            "net_check_amount": 988570677.55
           },
           {
             "agency": "OFFICE OF CRIMINAL JUSTICE",
@@ -765,8 +765,8 @@
           },
           {
             "agency": "Department of Sanitation",
-            "transaction_count": 40084,
-            "net_check_amount": 820063549.83
+            "transaction_count": 40369,
+            "net_check_amount": 821441008.88
           },
           {
             "agency": "Housing Preservation and Development",
@@ -790,13 +790,13 @@
           },
           {
             "agency": "Department for the Aging",
-            "transaction_count": 7243,
-            "net_check_amount": 512231485.71
+            "transaction_count": 7337,
+            "net_check_amount": 513670849.27
           },
           {
             "agency": "Fire Department",
-            "transaction_count": 13719,
-            "net_check_amount": 265574644.1
+            "transaction_count": 13726,
+            "net_check_amount": 265700038.6
           },
           {
             "agency": "Department of Small Business Services",
@@ -880,8 +880,8 @@
           },
           {
             "agency": "Department of Consumer & Worker Protection",
-            "transaction_count": 1474,
-            "net_check_amount": 38368659.95
+            "transaction_count": 1475,
+            "net_check_amount": 38368036.2
           },
           {
             "agency": "New York Research Libraries",
@@ -905,8 +905,8 @@
           },
           {
             "agency": "Department of Buildings",
-            "transaction_count": 1602,
-            "net_check_amount": 24244111.74
+            "transaction_count": 1606,
+            "net_check_amount": 24251015.49
           },
           {
             "agency": "Debt Service",
@@ -1373,17 +1373,17 @@
     "partitions": [
       {
         "fiscal_year": 2026,
-        "source_record_count": 1783465,
-        "source_xml_rows": 1783465,
-        "normalized_rows": 1783465,
-        "source_net_check_amount": 52327564799.68,
-        "normalized_net_check_amount": 52327564799.68,
-        "reversal_rows": 1616,
+        "source_record_count": 1783981,
+        "source_xml_rows": 1783981,
+        "normalized_rows": 1783981,
+        "source_net_check_amount": 52354210337.02,
+        "normalized_net_check_amount": 52354210337.02,
+        "reversal_rows": 1627,
         "agency_grouping": [
           {
             "agency": "Department of Education",
-            "transaction_count": 1211750,
-            "net_check_amount": 13250741764.93
+            "transaction_count": 1211758,
+            "net_check_amount": 13250718049.16
           },
           {
             "agency": "Pension Contributions",
@@ -1402,13 +1402,13 @@
           },
           {
             "agency": "Department of Citywide Administrative Services",
-            "transaction_count": 19317,
-            "net_check_amount": 1714924166.2
+            "transaction_count": 19318,
+            "net_check_amount": 1714907952.3
           },
           {
             "agency": "Department of Health and Mental Hygiene",
-            "transaction_count": 29863,
-            "net_check_amount": 1626244863.63
+            "transaction_count": 29936,
+            "net_check_amount": 1649289242.6
           },
           {
             "agency": "Administration for Children's Services",
@@ -1427,8 +1427,8 @@
           },
           {
             "agency": "Department of Environmental Protection",
-            "transaction_count": 55825,
-            "net_check_amount": 987878086.62
+            "transaction_count": 55868,
+            "net_check_amount": 988570677.55
           },
           {
             "agency": "OFFICE OF CRIMINAL JUSTICE",
@@ -1437,8 +1437,8 @@
           },
           {
             "agency": "Department of Sanitation",
-            "transaction_count": 40084,
-            "net_check_amount": 820063549.83
+            "transaction_count": 40369,
+            "net_check_amount": 821441008.88
           },
           {
             "agency": "Housing Preservation and Development",
@@ -1462,13 +1462,13 @@
           },
           {
             "agency": "Department for the Aging",
-            "transaction_count": 7243,
-            "net_check_amount": 512231485.71
+            "transaction_count": 7337,
+            "net_check_amount": 513670849.27
           },
           {
             "agency": "Fire Department",
-            "transaction_count": 13719,
-            "net_check_amount": 265574644.1
+            "transaction_count": 13726,
+            "net_check_amount": 265700038.6
           },
           {
             "agency": "Department of Small Business Services",
@@ -1552,8 +1552,8 @@
           },
           {
             "agency": "Department of Consumer & Worker Protection",
-            "transaction_count": 1474,
-            "net_check_amount": 38368659.95
+            "transaction_count": 1475,
+            "net_check_amount": 38368036.2
           },
           {
             "agency": "New York Research Libraries",
@@ -1577,8 +1577,8 @@
           },
           {
             "agency": "Department of Buildings",
-            "transaction_count": 1602,
-            "net_check_amount": 24244111.74
+            "transaction_count": 1606,
+            "net_check_amount": 24251015.49
           },
           {
             "agency": "Debt Service",
@@ -2040,17 +2040,17 @@
         "reconciled": true
       }
     ],
-    "source_xml_rows": 1783465,
-    "normalized_rows": 1783465,
-    "source_net_check_amount": 52327564799.68,
-    "normalized_net_check_amount": 52327564799.68,
+    "source_xml_rows": 1783981,
+    "normalized_rows": 1783981,
+    "source_net_check_amount": 52354210337.02,
+    "normalized_net_check_amount": 52354210337.02,
     "reconciled": true
   },
   "conversion": {
     "csv": {
       "path": "warehouse/raw/checkbook-payment-population/payments.csv",
-      "row_count": 1783465,
-      "sha256": "cb10a93d48d11eb44128e158f6f7b572a4cb4df3033bfb633b82a4c7357582ae"
+      "row_count": 1783981,
+      "sha256": "25ad4795a38dad21b774921e3863db52cf2f128db94d17c65956f0d45f90cccd"
     },
     "receipt": "warehouse/receipts/proof/checkbook_payment_population_conversion_latest.json",
     "next_step": "warehouse/scripts/convert_checkbook_payment_population.py --csv <payments.csv> --parquet <payments.parquet> --source-receipt warehouse/receipts/proof/checkbook_payment_population_latest.json",
@@ -2079,7 +2079,7 @@
     ]
   },
   "checksums": {
-    "normalized_csv_sha256": "cb10a93d48d11eb44128e158f6f7b572a4cb4df3033bfb633b82a4c7357582ae"
+    "normalized_csv_sha256": "25ad4795a38dad21b774921e3863db52cf2f128db94d17c65956f0d45f90cccd"
   },
   "coverage_statement": "This receipt covers only the declared fiscal-year contract-spending partitions. It must not be used to infer payment coverage for other fiscal years or spending categories."
 }

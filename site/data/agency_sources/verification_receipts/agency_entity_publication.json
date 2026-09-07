@@ -2,9 +2,9 @@
   "schema": "cityscroll.agency_entity_publication_receipt.v1",
   "publication_schema": "cityscroll.agency_entity_publication.v1",
   "method": "agency_entity_publication_v1",
-  "generated_at": "2026-09-06T22:12:11.527Z",
-  "input_digest": "sha256:a2dc4e9de2a990e143d4baa7be26e1c74bd8c33f275ea32c52cade130cb8568c",
-  "publication_digest": "sha256:07657d25bb3b0bd8adf83042dea96d00b82fe74d993d2df98d5a67dfde11b47b",
+  "generated_at": "2026-09-07T13:02:33.872Z",
+  "input_digest": "sha256:be9741c8d5cf558f95a95fd4966cc26ba70a17868e5a5bf7d4de597a24d4ba3b",
+  "publication_digest": "sha256:c60866cebdcd9ee29b2f637e45bd65cad60218762f71cb4e9d7fa7f30f86cb4f",
   "sources": [
     {
       "system": "nyc_open_data",
@@ -33,7 +33,7 @@
     {
       "system": "passport-public-contracts",
       "id": "by_agency.preview",
-      "observed_on": "2026-09-06",
+      "observed_on": "2026-09-07",
       "provides": [
         "published_by_agency"
       ]

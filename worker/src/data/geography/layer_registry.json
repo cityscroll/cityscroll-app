@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.geography_layer_registry.v1",
-  "generated_at": "2026-09-06T15:57:40.284Z",
+  "generated_at": "2026-09-07T13:14:15.860Z",
   "layers": [
     {
       "type": "borough",
@@ -46,14 +46,14 @@
       "artifacts": {
         "full": {
           "path": "data/geography/layers/borough/2026-05-26.full.json",
-          "sha256": "6a32d046a746bcfd24897ea4048ddd52d79f9b177940b612200766c5ac53a270",
+          "sha256": "4ad10a6f0bec706869c096a412eb9cd36c7bcb0f8bde349dc565013331d6738a",
           "bytes": 3784020,
           "geometry_fidelity": "full"
         },
         "simplified": {
           "site_path": "site/data/geography/layers/borough/2026-05-26.json",
           "worker_path": "worker/src/data/geography/layers/borough/2026-05-26.json",
-          "sha256": "547328e6a6f7652a6481d7e736b88424697571a9a31af2cccfc72afa78b21d60",
+          "sha256": "b53ec2d0ad07034e6fc97fd335ade97bc832bbe1fd2f530a32e42c7d3c5b2982",
           "bytes": 98592,
           "geometry_fidelity": "simplified"
         }
@@ -103,14 +103,14 @@
       "artifacts": {
         "full": {
           "path": "data/geography/layers/community_district/2026-05-26.full.json",
-          "sha256": "539b8cb9e79d79a0bcb069e0cdff3d9ab62e9171dc936febd22b238d3f336448",
+          "sha256": "b669043208ad54f78a41bbfc9060d2d0d933fe23de749e82b0470a2ae9e0f547",
           "bytes": 3805055,
           "geometry_fidelity": "full"
         },
         "simplified": {
           "site_path": "site/data/geography/layers/community_district/2026-05-26.json",
           "worker_path": "worker/src/data/geography/layers/community_district/2026-05-26.json",
-          "sha256": "975359694c42be73ae6a976dc3f50f91cccda2a033c3b7b8a46618e84e114cea",
+          "sha256": "5f21deda6a35e7c6253779928cb362cbb3320767c25dd47d63bbc1f5101a4cd8",
           "bytes": 117203,
           "geometry_fidelity": "simplified"
         }
@@ -160,14 +160,14 @@
       "artifacts": {
         "full": {
           "path": "data/geography/layers/council_district/2026-05-26.full.json",
-          "sha256": "cb04d304228429e1a3f33c08db0785e6f6bda32f5ca7c3e29a8d7cd9144ebee6",
+          "sha256": "dfb3b11c51f61fc0c2c4f81c3fa87aa64912fa64d6eb5a1febdacfc492653d69",
           "bytes": 3832341,
           "geometry_fidelity": "full"
         },
         "simplified": {
           "site_path": "site/data/geography/layers/council_district/2026-05-26.json",
           "worker_path": "worker/src/data/geography/layers/council_district/2026-05-26.json",
-          "sha256": "cf070bb510bf06716e4eeffd56c87c565bfde939865513a2dce529ae5c2512ac",
+          "sha256": "5ff745db5efa772b80380f2256e6d826c572f4a263393d7228a7116dad4f44a8",
           "bytes": 114996,
           "geometry_fidelity": "simplified"
         }

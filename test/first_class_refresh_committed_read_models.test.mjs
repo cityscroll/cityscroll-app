@@ -6,16 +6,20 @@ import test from "node:test";
 
 import {
   ROOT,
+  coveredByPublishedPaths,
+  publishedPaths,
   readRegistry,
   registryBuilders,
   registryDrift,
   describeDrift,
+  unpublishedRebuildOutputs,
   workflowGateBuilders,
 } from "../ops/first-class-refresh/rebuild-committed-read-models.mjs";
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const WORKFLOW = path.join(REPO_ROOT, ".github/workflows/first-class-refresh.yml");
 const WAREHOUSE_SCRIPT = path.join(REPO_ROOT, "ops/first-class-refresh/run-warehouse-refresh.sh");
+const PR_SCRIPT = path.join(REPO_ROOT, "tools/open_first_class_refresh_pr.sh");
 const DERIVED_MANIFEST = path.join(REPO_ROOT, "warehouse/derived_json_build_manifest.json");
 
 test("the rebuild registry resolves against the repository it ships in", () => {
@@ -88,4 +92,55 @@ test("both halves of the refresh run the rebuild", () => {
     warehouseRebuildAt > 0 && warehouseCommitAt > warehouseRebuildAt,
     "the warehouse-held refresh must rebuild before it commits",
   );
+});
+
+test("the paths the refresh publishes are declared once and exist", () => {
+  const registry = readRegistry(REPO_ROOT);
+  const paths = publishedPaths(registry);
+  assert.ok(paths.length, "the refresh must declare which paths it commits");
+  assert.equal(new Set(paths).size, paths.length, "each published path is declared once");
+  for (const entry of registry.published_paths) {
+    assert.ok(existsSync(path.join(REPO_ROOT, entry.path)), `published path ${entry.path} is not in the repository`);
+    assert.ok(entry.reason && entry.reason.length > 20, `published path ${entry.path} needs a stated reason`);
+  }
+});
+
+test("every rebuild step writes inside a path the refresh commits", () => {
+  // The second half of the drift guard. Running a builder is not publishing it:
+  // a read model rebuilt outside the commit's pathspecs is regenerated and then
+  // discarded, and the gate that re-derives it in check mode fails on the
+  // refresh's own pull request. These are the committed documents the rebuild
+  // sequence is known to write outside site/ and worker/.
+  const paths = publishedPaths(readRegistry(REPO_ROOT));
+  for (const written of [
+    "docs/evidence/served-coverage/census.json",
+    "docs/evidence/geography-subjects/located-in-audit.json",
+    "docs/gap-taxonomy.md",
+    "site/data/served_coverage_snapshot.json",
+    "worker/src/data/keyword_search_index_shards/manifest.json",
+    "warehouse/receipts/proof/community_board_payroll_identity_latest.json",
+  ]) {
+    assert.ok(coveredByPublishedPaths(written, paths), `${written} is rebuilt but never committed`);
+  }
+});
+
+test("the publish guard reports only what the rebuild itself wrote", () => {
+  const paths = ["site", "worker"];
+  const before = ["site/data/dataset.json"];
+  const after = ["site/data/dataset.json", "site/data/derived.json", "docs/evidence/census.json"];
+  assert.deepEqual(unpublishedRebuildOutputs(before, after, paths), ["docs/evidence/census.json"]);
+  // A checkout the guard cannot read is not a failure to publish.
+  assert.deepEqual(unpublishedRebuildOutputs(null, after, paths), []);
+  // A path that merely shares a prefix with a published one is not covered.
+  assert.equal(coveredByPublishedPaths("sitemap.xml", paths), false);
+});
+
+test("both commit scripts stage the registry's list rather than their own", () => {
+  // Two hand-kept copies of the path list is how a rebuilt read model got
+  // dropped between the builder that wrote it and the commit that published it.
+  for (const script of [PR_SCRIPT, WAREHOUSE_SCRIPT]) {
+    const text = readFileSync(script, "utf8");
+    assert.match(text, /rebuild-committed-read-models\.mjs[^\n]*--published-paths/, `${script} must read the declared paths`);
+    assert.doesNotMatch(text, /^\s*(commit_)?paths=\((?!\)).*$/m, `${script} must not restate the path list`);
+  }
 });

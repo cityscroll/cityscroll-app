@@ -6,7 +6,7 @@
     "publisher": "Office of the New York City Comptroller",
     "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
     "endpoint": "https://www.checkbooknyc.com/api",
-    "pulled_at": "2026-09-06T22:12:11.527Z",
+    "pulled_at": "2026-09-07T13:02:33.872Z",
     "type_of_data": "Contracts",
     "status": "registered",
     "category": "expense",
@@ -30,27 +30,27 @@
     "source_snapshot_token": "not_provided_by_publisher"
   },
   "population": {
-    "api_transaction_rows": 36438,
+    "api_transaction_rows": 36464,
     "by_fiscal_year": {
       "2025": 19335,
       "2026": 14739,
-      "2027": 2364
+      "2027": 2390
     },
-    "normalized_unique_contracts": 26796,
+    "normalized_unique_contracts": 26822,
     "duplicate_slices_collapsed": 9642,
-    "prime_slices": 26796,
+    "prime_slices": 26822,
     "subvendor_slices": 9642,
     "other_slices": 0,
     "blocked": {
       "missing_contract_id_slices": 0,
       "ambiguous_pin_contracts": 0,
-      "missing_pin_contracts": 10817,
+      "missing_pin_contracts": 10837,
       "ambiguous_prime_vendor_contracts": 15,
       "missing_prime_vendor_contracts": 0,
       "ambiguous_agency_contracts": 0,
       "missing_agency_contracts": 0,
       "ambiguous_registration_date_contracts": 0,
-      "ambiguous_start_date_contracts": 82,
+      "ambiguous_start_date_contracts": 84,
       "ambiguous_prime_registration_date_contracts": 0,
       "ambiguous_prime_start_date_contracts": 0,
       "ambiguous_award_method_contracts": 0,
@@ -60,44 +60,44 @@
     }
   },
   "checksums": {
-    "page_manifest_sha256": "cd33529c969297dcaab3702d35b5038b1bfbef086147288ac8e770bac318e341",
-    "normalized_contracts_sha256": "24342d1a72ed34770bceacc747d38b192a79e25a8f919bcd365a0f116ffb3205",
-    "committed_graph_slice_sha256": "db22495d5f806763eceed2027cba3665936a60f76ab3fb335068b241f1f5de9b"
+    "page_manifest_sha256": "7eed16d919423fe73899e6550527a5ce6b3a5d0037d9a459dcb409abaa328b35",
+    "normalized_contracts_sha256": "061dad26dbf52d617b134eef2f49e730311f3ef743e2db1a148ec2aea5e08492",
+    "committed_graph_slice_sha256": "e99ab30eb4d9040023d6ef008aaa5a9639070d904358857e92c0ef651957ae30"
   },
   "overlap_before_graph_selection": {
-    "checkbook_contracts": 26796,
+    "checkbook_contracts": 26822,
     "exact_overlap_buckets": {
-      "passport_and_city_record": 3903,
-      "passport_only": 1784,
+      "passport_and_city_record": 3902,
+      "passport_only": 1785,
       "city_record_only": 1007,
-      "new_unique": 20102
+      "new_unique": 20128
     },
     "passport": {
       "matched_contracts": 5687,
       "by_contract_id": 5561,
-      "by_pin_epin": 5043,
-      "rate": 0.21223316912972084,
+      "by_pin_epin": 5042,
+      "rate": 0.21202744016106181,
       "denominator": "normalized Checkbook contracts in the collected fiscal-year window"
     },
     "city_record": {
-      "matched_checkbook_contracts": 4910,
-      "checkbook_rate": 0.1832363039259591,
-      "matched_modern_awards": 4857,
+      "matched_checkbook_contracts": 4909,
+      "checkbook_rate": 0.18302140034300202,
+      "matched_modern_awards": 4856,
       "modern_awards_with_pin": 5574,
-      "modern_award_rate": 0.871367061356297,
+      "modern_award_rate": 0.8711876569788303,
       "denominator": "City Record Recent Contract Awards since 2025-01-01 with an exact PIN"
     },
-    "new_unique_contract_ids": 20102,
+    "new_unique_contract_ids": 20128,
     "acceptance_rule": "normalized exact contract_id or exact PIN/EPIN only; names are not join keys"
   },
   "graph_slice": {
     "cap": null,
-    "row_count": 9807,
+    "row_count": 9832,
     "selected_buckets": {
-      "passport_and_city_record": 1948,
-      "passport_only": 93,
+      "passport_and_city_record": 1949,
+      "passport_only": 94,
       "city_record_only": 752,
-      "new_unique": 7014
+      "new_unique": 7037
     },
     "strategy": "City Record Award publication: valid amount (0 < x < $10B) and start/registration within 365 days; no separate row cap",
     "source": "normalized unique contracts from the measured fiscal-year population"

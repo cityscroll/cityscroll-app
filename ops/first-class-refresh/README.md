@@ -140,6 +140,23 @@ path, in both directions. Adding a committed-freshness gate without deciding how
 the refresh handles it fails that test, and so does leaving a builder in the
 registry after its gate is removed.
 
+## Running a builder is not publishing it
+
+Both halves of the refresh commit a fixed list of pathspecs rather than the
+whole tree. Several rebuild steps write a committed evidence document rather
+than a served artifact — the served-coverage census, the geography located-in
+audit, the data-source graph, the gap taxonomy — and a document rebuilt outside
+that list was regenerated and then dropped at commit time. The pull request then
+published the refreshed input without the read model derived from it and failed
+the very gate the rebuild was meant to satisfy.
+
+`published_paths` in the same registry is that list, and both commit scripts
+read it from there (`rebuild-committed-read-models.mjs --published-paths`)
+instead of restating it. The rebuild also compares the working tree before and
+after the sequence and exits non-zero, naming the files, when it wrote anything
+the list does not cover — so a builder that starts writing somewhere new stops
+the refresh loudly rather than opening a pull request that fails its own gate.
+
 ## Invariant: every run starts from the default branch's tip
 
 Before touching anything, the script (via `preflight.sh`) fetches `origin`

@@ -34,8 +34,8 @@ test("the evaluator measures every required dimension with explicit denominators
   // shows only what the frozen inspection receipt admits.
   assert.deepEqual(result.dimensions.yield.aggregate, {
     numerator: 3,
-    denominator: 9053,
-    rate: 0.000331,
+    denominator: 9078,
+    rate: 0.00033,
   });
   const amountFamily = result.dimensions.yield.families.within_contract_registered_amount_change;
   assert.equal(amountFamily.numerator, 2);

@@ -29,16 +29,24 @@ if [ -z "${GH_TOKEN:-}" ] && [ -z "${PUSH_REMOTE:-}" ]; then
   exit 1
 fi
 
-# warehouse/receipts holds the acquisition receipts that attest the populations
-# published under site/. Committing the data without them leaves a receipt
-# describing an earlier pull beside the artifact it is supposed to prove, and
-# the collector's own row-count and checksum verification then compares a fresh
-# artifact against a stale receipt.
-paths=(site worker)
-# A checkout without any acquisition receipts is legitimate, and git add treats
-# a pathspec that matches nothing as an error, so only add the directory when it
-# is actually present.
-[ -d warehouse/receipts ] && paths+=(warehouse/receipts)
+# One list, not two: ops/first-class-refresh/committed-read-models.json names
+# every path the refresh publishes, beside the read models it rebuilds. Keeping a
+# second copy here is what let a regenerated evidence document under docs/ be
+# built and then dropped at commit time, so the pull request failed the gate that
+# re-derives that document in check mode.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+paths=()
+while IFS= read -r declared; do
+  [ -n "$declared" ] || continue
+  # A checkout without any acquisition receipts is legitimate, and git add treats
+  # a pathspec that matches nothing as an error, so only add a declared path when
+  # it is actually present.
+  [ -e "$declared" ] && paths+=("$declared")
+done < <(node "$SCRIPT_DIR/../ops/first-class-refresh/rebuild-committed-read-models.mjs" --published-paths)
+if [ "${#paths[@]}" -eq 0 ]; then
+  echo "none of the paths the refresh publishes exist in this checkout." >&2
+  exit 1
+fi
 if [ -z "$(git status --porcelain -- "${paths[@]}")" ]; then
   echo "No dataset changes to publish."
   exit 0

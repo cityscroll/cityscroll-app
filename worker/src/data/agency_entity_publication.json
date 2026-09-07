@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.agency_entity_publication.v1",
   "method": "agency_entity_publication_v1",
-  "generated_at": "2026-09-06T22:12:11.527Z",
+  "generated_at": "2026-09-07T13:02:33.872Z",
   "sources": [
     {
       "system": "nyc_open_data",
@@ -39,7 +39,7 @@
       "name": "Award-corroborated public contract census",
       "attribution": null,
       "url": null,
-      "observed_on": "2026-09-06",
+      "observed_on": "2026-09-07",
       "provides": [
         "published_by_agency"
       ]

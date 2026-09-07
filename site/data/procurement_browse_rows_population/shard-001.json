@@ -4,6 +4,694 @@
   "shard_id": "001",
   "rows": [
     {
+      "procurement_id": "procurement:contract:CT181620271403301",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620271403301",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620271403301:NEW YORK STATE INDUSTRIES FOR THE DISABLED INC:prime-vendor:2026-08-28"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2026-10-01",
+      "agency_id": null,
+      "agency_name": "Department of Health and Mental Hygiene",
+      "short_title": "Contract CT181620271403301",
+      "pin": null,
+      "contract_id": "CT181620271403301",
+      "contract_amount": 1154.25,
+      "vendor_name": "NEW YORK STATE INDUSTRIES FOR THE DISABLED INC",
+      "official_url": null,
+      "selection_method_description": null,
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Health and Mental Hygiene · NEW YORK STATE INDUSTRIES FOR THE DISABLED INC · $1,154.25",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620271403346",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620271403346",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620271403346:BOEHRINGER INGELHEIM ANIMAL HEALTH USA INC:prime-vendor:2026-08-31"
+      ],
+      "start_date": "2026-08-25",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Health and Mental Hygiene",
+      "short_title": "Contract CT181620271403346",
+      "pin": null,
+      "contract_id": "CT181620271403346",
+      "contract_amount": 19737,
+      "vendor_name": "BOEHRINGER INGELHEIM ANIMAL HEALTH USA INC",
+      "official_url": null,
+      "selection_method_description": null,
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Health and Mental Hygiene · BOEHRINGER INGELHEIM ANIMAL HEALTH USA INC · $19,737",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620271403350",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620271403350",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620271403350:NATIONAL INDUSTRIES FOR THE BLIND:prime-vendor:2026-08-31"
+      ],
+      "start_date": "2026-08-11",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Health and Mental Hygiene",
+      "short_title": "Contract CT181620271403350",
+      "pin": null,
+      "contract_id": "CT181620271403350",
+      "contract_amount": 367.35,
+      "vendor_name": "NATIONAL INDUSTRIES FOR THE BLIND",
+      "official_url": null,
+      "selection_method_description": null,
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Health and Mental Hygiene · NATIONAL INDUSTRIES FOR THE BLIND · $367.35",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620271403361",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620271403361",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620271403361:KARLA GRANADO LLC:prime-vendor:2026-08-31"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Health and Mental Hygiene",
+      "short_title": "Contract CT181620271403361",
+      "pin": null,
+      "contract_id": "CT181620271403361",
+      "contract_amount": 5000,
+      "vendor_name": "KARLA GRANADO LLC",
+      "official_url": null,
+      "selection_method_description": null,
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Health and Mental Hygiene · KARLA GRANADO LLC · $5,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620271403437",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620271403437",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620271403437:MEMORIAL SLOAN KETTERING CANCER CENTER:prime-vendor:2026-09-01"
+      ],
+      "start_date": "2026-08-27",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Health and Mental Hygiene",
+      "short_title": "Contract CT181620271403437",
+      "pin": null,
+      "contract_id": "CT181620271403437",
+      "contract_amount": 11000,
+      "vendor_name": "MEMORIAL SLOAN KETTERING CANCER CENTER",
+      "official_url": null,
+      "selection_method_description": null,
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Health and Mental Hygiene · MEMORIAL SLOAN KETTERING CANCER CENTER · $11,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620271403438",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620271403438",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620271403438:CRAFTY CLOTH INC:prime-vendor:2026-09-01"
+      ],
+      "start_date": "2026-08-13",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Health and Mental Hygiene",
+      "short_title": "Contract CT181620271403438",
+      "pin": null,
+      "contract_id": "CT181620271403438",
+      "contract_amount": 5360.1,
+      "vendor_name": "Crafty Cloth Inc",
+      "official_url": null,
+      "selection_method_description": null,
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Health and Mental Hygiene · Crafty Cloth Inc · $5,360.1",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620271403439",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620271403439",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620271403439:ALZHEIMERS DISEASE AND RELATED DISORDERS ASSOCIATION INC:prime-vendor:2026-09-01"
+      ],
+      "start_date": "2026-07-02",
+      "end_date": "2027-07-30",
+      "agency_id": null,
+      "agency_name": "Department of Health and Mental Hygiene",
+      "short_title": "Contract CT181620271403439",
+      "pin": null,
+      "contract_id": "CT181620271403439",
+      "contract_amount": 20000,
+      "vendor_name": "Alzheimers Disease And Related Disorders Association Inc",
+      "official_url": null,
+      "selection_method_description": null,
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Health and Mental Hygiene · Alzheimers Disease And Related Disorders Association Inc · $20,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620271403440",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620271403440",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620271403440:DIRAD TECHNOLOGIES INC:prime-vendor:2026-09-01"
+      ],
+      "start_date": "2026-08-01",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Health and Mental Hygiene",
+      "short_title": "Contract CT181620271403440",
+      "pin": null,
+      "contract_id": "CT181620271403440",
+      "contract_amount": 14089.6,
+      "vendor_name": "DIRAD TECHNOLOGIES INC",
+      "official_url": null,
+      "selection_method_description": null,
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Health and Mental Hygiene · DIRAD TECHNOLOGIES INC · $14,089.6",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620271403441",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620271403441",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620271403441:RUSD SOLUTIONS INC:prime-vendor:2026-09-01"
+      ],
+      "start_date": "2026-09-01",
+      "end_date": "2027-08-31",
+      "agency_id": null,
+      "agency_name": "Department of Health and Mental Hygiene",
+      "short_title": "Contract CT181620271403441",
+      "pin": null,
+      "contract_id": "CT181620271403441",
+      "contract_amount": 3381,
+      "vendor_name": "Rusd Solutions Inc",
+      "official_url": null,
+      "selection_method_description": null,
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Health and Mental Hygiene · Rusd Solutions Inc · $3,381",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620271403466",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620271403466",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620271403466:OPTIFORM IMAGING SYSTEMS INC:prime-vendor:2026-09-01"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Health and Mental Hygiene",
+      "short_title": "Contract CT181620271403466",
+      "pin": null,
+      "contract_id": "CT181620271403466",
+      "contract_amount": 13605,
+      "vendor_name": "OPTIFORM IMAGING SYSTEMS INC",
+      "official_url": null,
+      "selection_method_description": null,
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Health and Mental Hygiene · OPTIFORM IMAGING SYSTEMS INC · $13,605",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620271403526",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620271403526",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620271403526:READY DATA INC:prime-vendor:2026-09-02"
+      ],
+      "start_date": "2026-09-01",
+      "end_date": "2027-08-31",
+      "agency_id": null,
+      "agency_name": "Department of Health and Mental Hygiene",
+      "short_title": "Contract CT181620271403526",
+      "pin": null,
+      "contract_id": "CT181620271403526",
+      "contract_amount": 4408,
+      "vendor_name": "READY DATA INC",
+      "official_url": null,
+      "selection_method_description": null,
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Health and Mental Hygiene · READY DATA INC · $4,408",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620271403601",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620271403601",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620271403601:REMEDYREPACK INC:prime-vendor:2026-09-03"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Health and Mental Hygiene",
+      "short_title": "Contract CT181620271403601",
+      "pin": null,
+      "contract_id": "CT181620271403601",
+      "contract_amount": 19999.7,
+      "vendor_name": "RemedyRepack Inc",
+      "official_url": null,
+      "selection_method_description": null,
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Health and Mental Hygiene · RemedyRepack Inc · $19,999.7",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620271403646",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620271403646",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620271403646:AMERICAN COMPUTER CONSULTANTS INC:prime-vendor:2026-09-04"
+      ],
+      "start_date": "2026-08-21",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Health and Mental Hygiene",
+      "short_title": "Contract CT181620271403646",
+      "pin": null,
+      "contract_id": "CT181620271403646",
+      "contract_amount": 17675.3,
+      "vendor_name": "AMERICAN COMPUTER CONSULTANTS INC",
+      "official_url": null,
+      "selection_method_description": null,
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Health and Mental Hygiene · AMERICAN COMPUTER CONSULTANTS INC · $17,675.3",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620271403647",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620271403647",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620271403647:WESTCHESTER COUNTY:prime-vendor:2026-09-04"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Health and Mental Hygiene",
+      "short_title": "Contract CT181620271403647",
+      "pin": null,
+      "contract_id": "CT181620271403647",
+      "contract_amount": 7101,
+      "vendor_name": "WESTCHESTER COUNTY",
+      "official_url": null,
+      "selection_method_description": null,
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Health and Mental Hygiene · WESTCHESTER COUNTY · $7,101",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620278800234",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620278800234",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620278800234:TRANSITIONAL SERVICES FOR NEW YORK, INC:prime-vendor:2026-06-02",
+        "city_record:20260603013",
+        "passport_public_contracts:contract:81622P8002KXLR001:5612085"
+      ],
+      "request_id": "20260603013",
+      "start_date": "2026-06-09",
+      "end_date": "06/30/2030",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "NY 15/15 Congregate Supportive Housing: Single Adults",
+      "pin": "81622P8002KXLR001",
+      "contract_id": "CT181620278800234",
+      "contract_amount": 4157230,
+      "vendor_name": "Transitional Services for New York, Inc.",
+      "official_url": null,
+      "selection_method_description": "Renewal",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Transitional Services for New York, Inc. · $4,157,230",
+      "notice_evidence": [
+        {
+          "request_id": "20260603013",
+          "type_of_notice_description": "Award",
+          "short_title": "NY 15/15 Congregate Supportive Housing: Single Adults",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-06-09",
+          "href": "/notices/20260603013"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts",
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620278800236",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620278800236",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620278800236:CENTER FOR URBAN COMMUNITY SERVICES INC:prime-vendor:2026-06-03",
+        "city_record:20260604020",
+        "passport_public_contracts:contract:81622P8001KXLR001:5622890"
+      ],
+      "request_id": "20260604020",
+      "start_date": "2026-06-10",
+      "end_date": "06/30/2030",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Supportive Housing",
+      "pin": "81622P8001KXLR001",
+      "contract_id": "CT181620278800236",
+      "contract_amount": 29480430,
+      "vendor_name": "Center for Urban Community Services, Inc.",
+      "official_url": null,
+      "selection_method_description": "Renewal",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Center for Urban Community Services, Inc. · $29,480,430",
+      "notice_evidence": [
+        {
+          "request_id": "20260604020",
+          "type_of_notice_description": "Award",
+          "short_title": "Supportive Housing",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-06-10",
+          "href": "/notices/20260604020"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts",
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620278800242",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620278800242",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620278800242:HOUSING AND SERVICES INC:prime-vendor:2026-06-02"
+      ],
+      "start_date": "2026-09-01",
+      "end_date": "2030-08-31",
+      "agency_id": null,
+      "agency_name": "Department of Health and Mental Hygiene",
+      "short_title": "Contract CT181620278800242",
+      "pin": "81622P8017KXLR001",
+      "contract_id": "CT181620278800242",
+      "contract_amount": 6438745,
+      "vendor_name": "HOUSING AND SERVICES INC",
+      "official_url": null,
+      "selection_method_description": null,
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Health and Mental Hygiene · HOUSING AND SERVICES INC · $6,438,745",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620278800249",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620278800249",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620278800249:RESEARCH FOUNDATION FOR MENTAL HYGIENE, INC.:prime-vendor:2026-06-05",
+        "city_record:20260608007",
+        "passport_public_contracts:contract:81626M0008001:5658538"
+      ],
+      "request_id": "20260608007",
+      "start_date": "2026-06-12",
+      "end_date": "06/30/2035",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "MHY 714 Specialized Services Substance Abuse Programs",
+      "pin": "81626M0008001",
+      "contract_id": "CT181620278800249",
+      "contract_amount": 5543505,
+      "vendor_name": "Research Foundation for Mental Hygiene, Inc.",
+      "official_url": null,
+      "selection_method_description": "Required Method",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Research Foundation for Mental Hygiene, Inc. · $5,543,505",
+      "notice_evidence": [
+        {
+          "request_id": "20260608007",
+          "type_of_notice_description": "Award",
+          "short_title": "MHY 714 Specialized Services Substance Abuse Programs",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-06-12",
+          "href": "/notices/20260608007"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts",
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620278800276",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620278800276",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620278800276:THE JEWISH COMMUNITY CENTER IN MANHATTAN INC:prime-vendor:2026-06-02",
+        "city_record:20260603011",
+        "passport_public_contracts:contract:81626N0012005:5673166"
+      ],
+      "request_id": "20260603011",
+      "start_date": "2026-06-09",
+      "end_date": "12/31/2027",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "FY27 NAE for Recreation OPWDD",
+      "pin": "81626N0012005",
+      "contract_id": "CT181620278800276",
+      "contract_amount": 120075,
+      "vendor_name": "The Jewish Community Center in Manhattan Inc",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · The Jewish Community Center in Manhattan Inc · $120,075",
+      "notice_evidence": [
+        {
+          "request_id": "20260603011",
+          "type_of_notice_description": "Award",
+          "short_title": "FY27 NAE for Recreation OPWDD",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2026-06-09",
+          "href": "/notices/20260603011"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts",
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620278800278",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620278800278",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620278800278:GIVING ALTERNATIVE LEARNERS UPLIFTING OPPORTUNITIES INC:prime-vendor:2026-06-10"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2027-12-31",
+      "agency_id": null,
+      "agency_name": "Department of Health and Mental Hygiene",
+      "short_title": "Contract CT181620278800278",
+      "pin": "81626N0012002",
+      "contract_id": "CT181620278800278",
+      "contract_amount": 77244,
+      "vendor_name": "GIVING ALTERNATIVE LEARNERS UPLIFTING OPPORTUNITIES INC",
+      "official_url": null,
+      "selection_method_description": null,
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Health and Mental Hygiene · GIVING ALTERNATIVE LEARNERS UPLIFTING OPPORTUNITIES INC · $77,244",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT181620278800312",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT181620278800312",
       "procurement_stages": [
@@ -106299,37 +106987,6 @@
       ]
     },
     {
-      "procurement_id": "procurement:contract:CT184620268802394",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268802394",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT184620268802394:AIO EVENTS & MORE CORP:prime-vendor:2025-09-02"
-      ],
-      "start_date": "2025-09-06",
-      "end_date": "2026-06-06",
-      "agency_id": null,
-      "agency_name": "Department of Parks and Recreation",
-      "short_title": "Contract CT184620268802394",
-      "pin": "84626C0108001",
-      "contract_id": "CT184620268802394",
-      "contract_amount": 18060,
-      "vendor_name": "AIO EVENTS & MORE CORP",
-      "official_url": null,
-      "selection_method_description": null,
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Parks and Recreation · AIO EVENTS & MORE CORP · $18,060",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ]
-    },
-    {
       "procurement_id": "procurement:contract:CT184620268802448",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268802448",
       "procurement_stages": [
@@ -123698,6 +124355,7 @@
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT184620268806360:SIENIA CONSTRUCTION INC:prime-vendor:2026-04-21",
         "city_record:20260422008",
         "passport_public_contracts:contract:84626B0016001:5669227"
       ],
@@ -123732,7 +124390,8 @@
       "source_system": "shared_procurement_read_model",
       "source_systems": [
         "city_record",
-        "passport_public_contracts"
+        "passport_public_contracts",
+        "checkbook_contracts"
       ]
     },
     {
@@ -128495,6 +129154,7 @@
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT184620268807248:CDE AIR CONDITIONING CO INC:prime-vendor:2026-05-14",
         "city_record:20260515006",
         "passport_public_contracts:contract:84626B0031001:5713696"
       ],
@@ -128529,7 +129189,8 @@
       "source_system": "shared_procurement_read_model",
       "source_systems": [
         "city_record",
-        "passport_public_contracts"
+        "passport_public_contracts",
+        "checkbook_contracts"
       ]
     },
     {
@@ -137100,6 +137761,37 @@
         "registered"
       ],
       "additional_description_1": "Department of Parks and Recreation · Playworld park Solutions Inc · $1,564.75",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT184620278802738",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278802738",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT184620278802738:GARDEN WORLD INC:prime-vendor:2026-09-03"
+      ],
+      "start_date": "2026-09-07",
+      "end_date": "2026-10-16",
+      "agency_id": null,
+      "agency_name": "Department of Parks and Recreation",
+      "short_title": "Contract CT184620278802738",
+      "pin": "84627C0136001",
+      "contract_id": "CT184620278802738",
+      "contract_amount": 7698.75,
+      "vendor_name": "GARDEN WORLD INC",
+      "official_url": null,
+      "selection_method_description": null,
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Parks and Recreation · GARDEN WORLD INC · $7,698.75",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [

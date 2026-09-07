@@ -4,6 +4,906 @@
   "shard_id": "001",
   "rows": [
     {
+      "prime_contract_id": "CT178120268800628",
+      "agency": "Department of Probation",
+      "prime_vendor": "AMERICA WORKS OF NEW YORK INC",
+      "pin": "78121P8372KXLA005",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Human Services",
+      "contract_purpose": "NeON (Neighborhood Opportunity Network) Works Program",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 479627.9,
+      "original_registered_amount": 479627.9,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT178120268800665",
+      "agency": "Department of Probation",
+      "prime_vendor": "JUSTICE INNOVATION INC",
+      "pin": "78122X8007KXLA003",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Human Services",
+      "contract_purpose": "NeON (Neighborhood Opportunity Network) Works Program",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 334986.38,
+      "original_registered_amount": 334986.38,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT180620258808090",
+      "agency": "Housing Preservation and Development",
+      "prime_vendor": "MET COUNCIL RESEARCH & EDUCATIONAL FUND INC",
+      "pin": "80622L1645001",
+      "registration_date": "2025-06-11",
+      "start_date": "2021-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "industry": "Human Services",
+      "contract_purpose": "For provision of housing and tenant support services.",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 1441,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 245290,
+      "original_registered_amount": 245290,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2021-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT182620258807673",
+      "agency": "Department of Environmental Protection",
+      "prime_vendor": "ACME INDUSTRIAL INC.",
+      "pin": "82621B0044001R001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-06-14",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Standardized Services",
+      "contract_purpose": "1528-GEN:Service, Repair of kawasaki Gas Turbine generators",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -3,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 1592547,
+      "original_registered_amount": 1592547,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-06-14"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT184120258808932",
+      "agency": "Department of Transportation",
+      "prime_vendor": "S & M TIRE RECYCLING INC",
+      "pin": "84125W0046001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-05-27",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "M/WBE SMALL PURCHASE",
+      "industry": "Standardized Services",
+      "contract_purpose": "RUBBISH TIRE REMOVAL & DISPOSAL",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 15,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 1500000,
+      "original_registered_amount": 1500000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-05-27"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT184620251413772",
+      "agency": "Department of Parks and Recreation",
+      "prime_vendor": "GRIMCO INC",
+      "pin": null,
+      "registration_date": "2025-06-11",
+      "start_date": "2025-06-02",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SM PURCH GOODS SERVICES 100K",
+      "industry": "Goods",
+      "contract_purpose": "To Purchase Printer, Laminator, and Accessories for CAPPRJ",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 9,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 40539,
+      "original_registered_amount": 40539,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-06-02"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT185020251416533",
+      "agency": "Department of Design and Construction",
+      "prime_vendor": "AMERICAN MUSEUM OF NATURAL HISTORY",
+      "pin": "8502025AC0206G",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-06-20",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "GRANTS",
+      "industry": "Construction Services",
+      "contract_purpose": "ELEVATORS, HALL OF OCEAN LIFE PUBLIC BATHROOM, BUILDING 11 A",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -9,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 13442000,
+      "original_registered_amount": 13442000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-06-20"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT185820258807321",
+      "agency": "Department of Information Technology and Telecommunications",
+      "prime_vendor": "PAMTEN INC",
+      "pin": "85825W0110001A001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-03-24",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "M/WBE SMALL PURCHASE",
+      "industry": "Professional Services",
+      "contract_purpose": "7-858-0566A PSAC TOC ANALYST #2",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 79,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 172900,
+      "original_registered_amount": 172900,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-03-24"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CTA180120257206571",
+      "agency": "Department of Small Business Services",
+      "prime_vendor": "NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION",
+      "pin": "12704SUMMERCONCERT",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-05-19",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "SOLE SOURCE",
+      "industry": "Standardized Services",
+      "contract_purpose": "NYC Summer Concert Series - 101760004",
+      "document_code": "CTA1",
+      "contract_version": "1",
+      "parent_contract_id": "MMA180120258803455",
+      "registration_lag_days": 23,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 328335.84,
+      "original_registered_amount": 328335.84,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-05-19"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CTA180620257206736",
+      "agency": "Housing Preservation and Development",
+      "prime_vendor": "NEW YORK CITY HOUSING AUTHORITY",
+      "pin": null,
+      "registration_date": "2025-06-11",
+      "start_date": "2025-06-16",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "MULTIPLE AWARDS",
+      "industry": "Standardized Services",
+      "contract_purpose": "CM Services for Waste Yards @Various Developments",
+      "document_code": "CTA1",
+      "contract_version": "1",
+      "parent_contract_id": "MMA180620256200751",
+      "registration_lag_days": -5,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 272548.81,
+      "original_registered_amount": 272548.81,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-06-16"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CTA180620257206737",
+      "agency": "Housing Preservation and Development",
+      "prime_vendor": "NEW YORK CITY HOUSING AUTHORITY",
+      "pin": null,
+      "registration_date": "2025-06-11",
+      "start_date": "2025-05-29",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "MULTIPLE AWARDS",
+      "industry": "Construction Services",
+      "contract_purpose": "Playground Upgrade at Justice Sotomayor Houses",
+      "document_code": "CTA1",
+      "contract_version": "1",
+      "parent_contract_id": "MMA180620256200076",
+      "registration_lag_days": 13,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 500000,
+      "original_registered_amount": 500000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-05-29"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CTA185020258808157",
+      "agency": "Department of Design and Construction",
+      "prime_vendor": "THE MCKISSACK GROUP INC",
+      "pin": "85024Z0149001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-15",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "MULTIPLE AWARDS",
+      "industry": "Professional Services",
+      "contract_purpose": "Construction Management Services",
+      "document_code": "CTA1",
+      "contract_version": "1",
+      "parent_contract_id": "MMA185020238803348",
+      "registration_lag_days": -34,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 2374204.81,
+      "original_registered_amount": 2374204.81,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-15"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "MMA106920258805548",
+      "agency": "Department of Social Services",
+      "prime_vendor": "Chapin Hall Center for Children",
+      "pin": "06919P0006012R001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-01-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Human Services",
+      "contract_purpose": "Renewal for the Provision of NYC Opportunity Anti-Poverty Pr",
+      "document_code": "MMA1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 161,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 1664152.1,
+      "original_registered_amount": 1664152.1,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-01-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "MMA180620256201202",
+      "agency": "Housing Preservation and Development",
+      "prime_vendor": "NEW YORK CITY HOUSING AUTHORITY",
+      "pin": null,
+      "registration_date": "2025-06-11",
+      "start_date": "2025-02-20",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Professional Services",
+      "contract_purpose": "Mechanical, Electrical and Plumbing Engineering - Various",
+      "document_code": "MMA1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 111,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 1986176.21,
+      "original_registered_amount": 1986176.21,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-02-20"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "MMA180620256201291",
+      "agency": "Housing Preservation and Development",
+      "prime_vendor": "NEW YORK CITY HOUSING AUTHORITY",
+      "pin": null,
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-08",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Standardized Services",
+      "contract_purpose": "IDIQ Contract for Environmental Investigation @Various Dev.",
+      "document_code": "MMA1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -27,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 12732914.21,
+      "original_registered_amount": 12732914.21,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-08"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT101520251416757",
+      "agency": "Office of the Comptroller",
+      "prime_vendor": "K SYSTEMS SOLUTIONS LLC",
+      "pin": "01525BIST70476",
+      "registration_date": "2025-06-10",
+      "start_date": "2025-06-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "M/WBE SMALL PURCHASE",
+      "industry": "Goods",
+      "contract_purpose": "ACL ROBOTICS ENTERPRISE PLATFORM SOLUTION",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 9,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 102262.7,
+      "original_registered_amount": 102262.7,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-06-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-10"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT104020253165830",
+      "agency": "Department of Education",
+      "prime_vendor": "Just Right Reader Inc",
+      "pin": null,
+      "registration_date": "2025-06-10",
+      "start_date": "2025-06-10",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - WRITTEN",
+      "industry": "Human Services",
+      "contract_purpose": "SOLE VENDOR-COMMODITIES",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 0,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 25000,
+      "original_registered_amount": 25000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-06-10"
+        ],
+        "registration_date_observations": [
+          "2025-06-10"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT104020253165867",
+      "agency": "Department of Education",
+      "prime_vendor": "MOVIN SOLUTION INC",
+      "pin": null,
+      "registration_date": "2025-06-10",
+      "start_date": "2025-06-10",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - WRITTEN",
+      "industry": "Not Classified",
+      "contract_purpose": "MWBE-SERVICES",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 0,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 25000,
+      "original_registered_amount": 25000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-06-10"
+        ],
+        "registration_date_observations": [
+          "2025-06-10"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT104020253165873",
+      "agency": "Department of Education",
+      "prime_vendor": "FAMILY LIFE THEATRE PROGRAMS",
+      "pin": null,
+      "registration_date": "2025-06-10",
+      "start_date": "2025-06-10",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - WRITTEN",
+      "industry": "Human Services",
+      "contract_purpose": "MWBE-SERVICES",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 0,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 25000,
+      "original_registered_amount": 25000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-06-10"
+        ],
+        "registration_date_observations": [
+          "2025-06-10"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT106820258808872",
+      "agency": "Administration for Children's Services",
+      "prime_vendor": "NYC IT INC",
+      "pin": "06825W0048001",
+      "registration_date": "2025-06-10",
+      "start_date": "2025-06-04",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "M/WBE SMALL PURCHASE",
+      "industry": "Professional Services",
+      "contract_purpose": "TeamViewer",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 6,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 46550,
+      "original_registered_amount": 46550,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-06-04"
+        ],
+        "registration_date_observations": [
+          "2025-06-10"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT106820268800027",
+      "agency": "Administration for Children's Services",
+      "prime_vendor": "MEDRITE MEDICAL CARE PC DBA MEDRITE URGENT CARE",
+      "pin": "06822B0003001R001",
+      "registration_date": "2025-06-10",
+      "start_date": "2025-10-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Not Classified",
+      "contract_purpose": "Renewal of Drug Screening (Testing) Services for DCP Clients",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -113,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 4060320,
+      "original_registered_amount": 4060320,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-10-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-10"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT106820268800098",
+      "agency": "Administration for Children's Services",
+      "prime_vendor": "KAMBRIAN CORPORATION",
+      "pin": "06825W0047001",
+      "registration_date": "2025-06-10",
+      "start_date": "2025-07-22",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "M/WBE SMALL PURCHASE",
+      "industry": "Professional Services",
+      "contract_purpose": "PDQ Connect Annual Support Maintenance",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -42,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 123960,
+      "original_registered_amount": 123960,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-22"
+        ],
+        "registration_date_observations": [
+          "2025-06-10"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT107120268800008",
+      "agency": "Department of Homeless Services",
+      "prime_vendor": "SUS-URGENT HOUSING PROGRAMS INC",
+      "pin": "07121P8069KXLR001",
+      "registration_date": "2025-06-10",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Human Services",
+      "contract_purpose": "Renewal- FWC Stand Alone Trans. Res. at Echo Pl - 63 units",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -21,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 26756400,
+      "original_registered_amount": 26756400,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-10"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT107120268800033",
+      "agency": "Department of Homeless Services",
+      "prime_vendor": "INSTITUTE FOR COMMUNITY LIVING, INC.",
+      "pin": "07121P8079KXLR001",
+      "registration_date": "2025-06-10",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Human Services",
+      "contract_purpose": "FY26 Renewal - Shelter Svcs for SA @ Catherine LIFE 200 Beds",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -21,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 42749322,
+      "original_registered_amount": 42749322,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-10"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT107220258806779",
+      "agency": "Department of Correction",
+      "prime_vendor": "LAWLESS & MANGIONE ARCHITECTS & ENGINEERS LLP",
+      "pin": "07225N0003001",
+      "registration_date": "2025-06-10",
+      "start_date": "2024-11-15",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "NEGOTIATED ACQUISITION AND DOE NEGOTIATED SERVICES",
+      "industry": "Professional Services",
+      "contract_purpose": "Consultant Services regarding Environmental Conditions.",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 207,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 59500,
+      "original_registered_amount": 59500,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-11-15"
+        ],
+        "registration_date_observations": [
+          "2025-06-10"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
       "prime_contract_id": "CT112520268800405",
       "agency": "Department for the Aging",
       "prime_vendor": null,
@@ -262413,7 +263313,7 @@
       "prime_contract_id": "CT185620258803347",
       "agency": "Department of Citywide Administrative Services",
       "prime_vendor": "SUNRISE ELECTRICAL SERVICES LLC",
-      "pin": "85624B0006001A001",
+      "pin": "85624B0006001C001",
       "registration_date": "2024-11-19",
       "start_date": "2024-12-02",
       "registration_fiscal_year": 2025,

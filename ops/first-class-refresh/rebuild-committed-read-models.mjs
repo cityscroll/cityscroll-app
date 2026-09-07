@@ -15,10 +15,19 @@
 // the reason. The companion test fails when the workflow grows a gate this
 // registry has not accounted for.
 //
+// Running the builder is only half of publishing it. Both halves of the refresh
+// commit a fixed list of pathspecs, so a read model rebuilt outside that list is
+// regenerated and then silently discarded, and the gate that re-derives it in
+// check mode fails on the refresh's own pull request. The registry declares that
+// list as published_paths, the commit scripts read it from here rather than
+// restating it, and this script fails the run when the rebuild dirtied anything
+// the list does not cover.
+//
 // Usage:
 //   node ops/first-class-refresh/rebuild-committed-read-models.mjs
 //   node ops/first-class-refresh/rebuild-committed-read-models.mjs --list
 //   node ops/first-class-refresh/rebuild-committed-read-models.mjs --check-registry
+//   node ops/first-class-refresh/rebuild-committed-read-models.mjs --published-paths
 
 import { readFileSync, statSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -40,7 +49,24 @@ export function readRegistry(root = ROOT) {
   if (!Array.isArray(registry.not_rebuilt)) {
     throw new Error("committed read-model registry has no not_rebuilt list");
   }
+  if (!Array.isArray(registry.published_paths) || !registry.published_paths.length) {
+    throw new Error("committed read-model registry declares no published paths");
+  }
+  for (const entry of registry.published_paths) {
+    if (!entry?.path) throw new Error("every published path needs a path");
+    if (!entry.reason) throw new Error(`published path ${entry.path} needs a stated reason`);
+  }
   return registry;
+}
+
+// The pathspecs both halves of the refresh stage when they commit. The commit
+// scripts read these rather than keeping their own copy.
+export function publishedPaths(registry) {
+  return registry.published_paths.map((entry) => entry.path);
+}
+
+export function coveredByPublishedPaths(file, paths) {
+  return paths.some((root) => file === root || file.startsWith(`${root}/`));
 }
 
 // Every builder path the registry accounts for, whichever side of the split it
@@ -99,6 +125,43 @@ export function describeDrift(drift) {
   return lines;
 }
 
+// What the working tree currently reports as changed, including untracked files
+// so a builder that starts writing a brand-new output is caught too. Ignored
+// build outputs stay out of it, and a checkout that is not a git working tree
+// returns null so the guard below stands down rather than failing the refresh.
+export function dirtyPaths(root = ROOT) {
+  const result = spawnSync("git", ["status", "--porcelain=v1", "-z", "--untracked-files=all"], {
+    cwd: root,
+    encoding: "utf8",
+  });
+  if (result.error || result.status !== 0) return null;
+  const fields = result.stdout.split("\0");
+  const files = [];
+  for (let index = 0; index < fields.length; index += 1) {
+    const record = fields[index];
+    if (!record) continue;
+    files.push(record.slice(3));
+    // A rename or copy records its source as the following field.
+    if (record[0] === "R" || record[0] === "C") index += 1;
+  }
+  return files;
+}
+
+// The refresh commits a declared list of pathspecs. A read model rebuilt
+// outside that list is regenerated and then dropped, which is how a refresh
+// opens a pull request that fails the very gate its rebuild was meant to
+// satisfy. Comparing the tree before and after the sequence keeps the guard
+// about what this run wrote, not about whatever the checkout was already
+// carrying.
+export function unpublishedRebuildOutputs(before, after, paths) {
+  if (!before || !after) return [];
+  const already = new Set(before);
+  return after
+    .filter((file) => !already.has(file))
+    .filter((file) => !coveredByPublishedPaths(file, paths))
+    .sort();
+}
+
 function assertExecutables(registry, root) {
   for (const step of registry.rebuild_sequence) {
     const [tool] = step.command;
@@ -108,6 +171,7 @@ function assertExecutables(registry, root) {
 
 function runSequence(registry, root) {
   assertExecutables(registry, root);
+  const before = dirtyPaths(root);
   for (const step of registry.rebuild_sequence) {
     const [tool, ...args] = step.command;
     console.log(`rebuilding ${step.id}: ${tool} ${args.join(" ")}`.trimEnd());
@@ -121,11 +185,26 @@ function runSequence(registry, root) {
       process.exit(result.status ?? 1);
     }
   }
+  const stranded = unpublishedRebuildOutputs(before, dirtyPaths(root), publishedPaths(registry));
+  if (stranded.length) {
+    console.error("the rebuild wrote files outside the paths the refresh commits:");
+    for (const file of stranded) console.error(`  ${file}`);
+    console.error(
+      "Add the path to published_paths in ops/first-class-refresh/committed-read-models.json, " +
+        "or make the builder write inside a path already listed there. Left as it is, the refresh " +
+        "would publish the input and discard the read model derived from it.",
+    );
+    process.exit(1);
+  }
   console.log(`rebuilt ${registry.rebuild_sequence.length} committed read-model steps`);
 }
 
 function main(argv) {
   const registry = readRegistry(ROOT);
+  if (argv.includes("--published-paths")) {
+    for (const declared of publishedPaths(registry)) console.log(declared);
+    return;
+  }
   if (argv.includes("--list")) {
     for (const step of registry.rebuild_sequence) console.log(`rebuild  ${step.command.join(" ")}`);
     for (const entry of registry.not_rebuilt) console.log(`skip     ${entry.builder} (${entry.disposition})`);

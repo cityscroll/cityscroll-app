@@ -11,7 +11,7 @@
   "domain": "meetings",
   "title": "Meetings domain observations for entity intelligence",
   "description": "City Record Public Hearings and Meetings rows (and Agency Rules public hearings with event_date) for offline meeting and entity-intelligence materialization. Meeting notice fields are retained for the canonical read model; bounded person-level votes live in the people domain snapshot (by_person from meeting-outcomes).",
-  "retrieved_at": "2026-09-06T22:47:58.530Z",
+  "retrieved_at": "2026-09-07T13:17:09.974Z",
   "window_days": 180,
   "source": {
     "system": "city_record",

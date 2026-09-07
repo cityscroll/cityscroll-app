@@ -9944,12 +9944,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": "meeting:community_board:3fr3vc7mnkcl6rna4o8oo4vq0b_R20210308T233000@google.com::2026-06-08",
+          "target_id": "meeting:community_board:598h8thfkslekvsh851uussla8_R20210114T000000@google.com::2026-06-10",
           "target_name": "Upcoming & recent proceedings",
-          "count": 71,
+          "count": 70,
           "state": "matched",
-          "href": "/meetings/meeting%3Acommunity_board%3A3fr3vc7mnkcl6rna4o8oo4vq0b_R20210308T233000%40google.com%3A%3A2026-06-08",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3A3fr3vc7mnkcl6rna4o8oo4vq0b_R20210308T233000%40google.com%3A%3A2026-06-08",
+          "href": "/meetings/meeting%3Acommunity_board%3A598h8thfkslekvsh851uussla8_R20210114T000000%40google.com%3A%3A2026-06-10",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3A598h8thfkslekvsh851uussla8_R20210114T000000%40google.com%3A%3A2026-06-10",
           "scope": {
             "board": "manhattan-cb-06"
           },
@@ -9962,7 +9962,7 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": "3fr3vc7mnkcl6rna4o8oo4vq0b_R20210308T233000@google.com::2026-06-08",
+            "source_record_id": "598h8thfkslekvsh851uussla8_R20210114T000000@google.com::2026-06-10",
             "source_fields": null,
             "join_method": null,
             "source_href": "https://cbsix.org/meetings-calendar/",
@@ -10299,12 +10299,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": "meeting:community_board:1cbqovndbk43ahn4uq2qujfj04@google.com::2026-06-08",
+          "target_id": "meeting:community_board:7kkqoa1hnf1gqgikrepsamh4qg_R20260609T223000@google.com::2026-06-09",
           "target_name": "Upcoming & recent proceedings",
-          "count": 24,
+          "count": 23,
           "state": "matched",
-          "href": "/meetings/meeting%3Acommunity_board%3A1cbqovndbk43ahn4uq2qujfj04%40google.com%3A%3A2026-06-08",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3A1cbqovndbk43ahn4uq2qujfj04%40google.com%3A%3A2026-06-08",
+          "href": "/meetings/meeting%3Acommunity_board%3A7kkqoa1hnf1gqgikrepsamh4qg_R20260609T223000%40google.com%3A%3A2026-06-09",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3A7kkqoa1hnf1gqgikrepsamh4qg_R20260609T223000%40google.com%3A%3A2026-06-09",
           "scope": {
             "board": "manhattan-cb-07"
           },
@@ -10317,7 +10317,7 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": "1cbqovndbk43ahn4uq2qujfj04@google.com::2026-06-08",
+            "source_record_id": "7kkqoa1hnf1gqgikrepsamh4qg_R20260609T223000@google.com::2026-06-09",
             "source_fields": null,
             "join_method": null,
             "source_href": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
@@ -11411,12 +11411,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": "meeting:community_board:recxZ2RwegRATDsCQ",
+          "target_id": "meeting:community_board:rec5PnNcHNtj9SIIr",
           "target_name": "Upcoming & recent proceedings",
-          "count": 136,
+          "count": 135,
           "state": "matched",
-          "href": "/meetings/meeting%3Acommunity_board%3ArecxZ2RwegRATDsCQ",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3ArecxZ2RwegRATDsCQ",
+          "href": "/meetings/meeting%3Acommunity_board%3Arec5PnNcHNtj9SIIr",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Arec5PnNcHNtj9SIIr",
           "scope": {
             "board": "manhattan-cb-11"
           },
@@ -11429,7 +11429,7 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": "recxZ2RwegRATDsCQ",
+            "source_record_id": "rec5PnNcHNtj9SIIr",
             "source_fields": null,
             "join_method": null,
             "source_href": "https://www.cb11m.org/calendar/",
@@ -12235,12 +12235,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": "meeting:community_board:p3vfshdk6m2pt5kmskct7dt8em@google.com::2026-06-08",
+          "target_id": "meeting:community_board:74s6ehltphp52khfgu6kdo3ame_R20240611T220000@google.com::2026-06-09",
           "target_name": "Upcoming & recent proceedings",
-          "count": 33,
+          "count": 32,
           "state": "matched",
-          "href": "/meetings/meeting%3Acommunity_board%3Ap3vfshdk6m2pt5kmskct7dt8em%40google.com%3A%3A2026-06-08",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ap3vfshdk6m2pt5kmskct7dt8em%40google.com%3A%3A2026-06-08",
+          "href": "/meetings/meeting%3Acommunity_board%3A74s6ehltphp52khfgu6kdo3ame_R20240611T220000%40google.com%3A%3A2026-06-09",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3A74s6ehltphp52khfgu6kdo3ame_R20240611T220000%40google.com%3A%3A2026-06-09",
           "scope": {
             "board": "queens-cb-02"
           },
@@ -12253,7 +12253,7 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": "p3vfshdk6m2pt5kmskct7dt8em@google.com::2026-06-08",
+            "source_record_id": "74s6ehltphp52khfgu6kdo3ame_R20240611T220000@google.com::2026-06-09",
             "source_fields": null,
             "join_method": null,
             "source_href": "https://www.nyc.gov/site/queenscb2/calendar/calendar.page",
