@@ -36,6 +36,7 @@ const geography = read("site/data/community_board_geography_lookup.json");
 const scorecard = read("site/data/community_board_minutes_scorecard.json");
 const sourceRegistry = read("site/data/non_council_outcome_sources/source_registry.json");
 const register = read("site/data/community_board_budget_register.json");
+const projectLinks = read("site/data/community_board_request_project_links.json");
 const documents = Object.fromEntries(register.boards.map((entry) => [
   entry.board_id,
   read(`site/data/community_board_budget_register/${entry.board_id}.json`),
@@ -55,6 +56,7 @@ function sources(overrides = {}) {
     geography,
     communityBoardBudgetRegister: register,
     communityBoardBudgetRequests: documents,
+    communityBoardRequestProjectLinks: projectLinks,
     generated_at: scorecard.as_of,
     ...overrides,
   };

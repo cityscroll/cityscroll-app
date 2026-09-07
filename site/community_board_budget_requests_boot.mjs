@@ -54,6 +54,7 @@ export const BUDGET_REQUEST_BOOT_LABELS_VERSION = 1;
 
 const BUDGET_REQUEST_BOOT_FOCUSABLE = "a[href], button:not([disabled]), [tabindex]:not([tabindex='-1'])";
 const BUDGET_REQUEST_BOOT_ROW = "li.board-budget-request";
+const BUDGET_REQUEST_BOOT_PROJECT = ".board-request-project";
 
 /** Parse one section's labels; never throws, and never trusts a stale shape. */
 export function parseBudgetRequestLabels(value) {
@@ -73,6 +74,36 @@ function budgetRequestBootText(row, selector) {
   const node = row.querySelector(selector);
   const text = node ? String(node.textContent || "").trim() : "";
   return text || null;
+}
+
+/**
+ * One capital project block, read back as the lines it already displays.
+ *
+ * The same rule as the rest of this file: the row is the record, so the
+ * inspected view quotes it rather than a payload. Every destination is read as
+ * the anchor the page already renders, so the dialog cannot offer a link the
+ * page does not have.
+ */
+function readBudgetRequestProject(node) {
+  return {
+    heading: budgetRequestBootText(node, ".board-request-project-heading"),
+    identity: budgetRequestBootText(node, ".board-request-project-identity"),
+    named: budgetRequestBootText(node, ".board-request-project-named"),
+    passage: budgetRequestBootText(node, ".board-request-project-passage"),
+    spelling: budgetRequestBootText(node, ".board-request-project-spelling"),
+    scope: budgetRequestBootText(node, ".board-request-project-scope"),
+    observations: [...node.querySelectorAll(".board-request-project-observation")]
+      .map((row) => String(row.textContent || "").trim())
+      .filter(Boolean),
+    difference: budgetRequestBootText(node, ".board-request-project-difference"),
+    boundary: budgetRequestBootText(node, ".board-request-project-boundary"),
+    actions: [...node.querySelectorAll(".board-request-project-action")]
+      .map((anchor) => ({
+        href: anchor.getAttribute("href"),
+        label: String(anchor.textContent || "").trim(),
+      }))
+      .filter((action) => action.href && action.label),
+  };
 }
 
 /**
@@ -101,6 +132,7 @@ export function readBudgetRequestRow(row) {
       text: budgetRequestBootText(node, ".board-budget-request-answer-text"),
       note: budgetRequestBootText(node, ".board-budget-request-answer-note"),
     })),
+    projects: [...row.querySelectorAll(BUDGET_REQUEST_BOOT_PROJECT)].map(readBudgetRequestProject),
     href: destination ? destination.getAttribute("href") : null,
     href_label: destination ? String(destination.textContent || "").trim() : null,
   };
@@ -188,6 +220,47 @@ export function paintBudgetRequestDialog(dialog, record, labels) {
       list.appendChild(item);
     }
     inner.appendChild(list);
+  }
+
+  // The capital project a request names travels with the record, because the
+  // reference is part of what the reader opened the record to read. It keeps
+  // its own boundary sentence and its own destinations rather than borrowing
+  // the request's.
+  for (const project of Array.isArray(record.projects) ? record.projects : []) {
+    if (project.heading) {
+      inner.appendChild(budgetRequestBootElement(doc, "h3", "budget-request-dialog-subhead", project.heading));
+    }
+    for (const [className, value] of [
+      ["budget-request-dialog-project-identity", project.identity],
+      ["budget-request-dialog-project-named", project.named],
+      ["budget-request-dialog-project-passage", project.passage],
+      ["budget-request-dialog-project-spelling", project.spelling],
+      ["budget-request-dialog-project-scope", project.scope],
+    ]) {
+      if (value) inner.appendChild(budgetRequestBootElement(doc, "p", className, value));
+    }
+    if (project.observations.length) {
+      const list = budgetRequestBootElement(doc, "ul", "budget-request-dialog-project-observations");
+      for (const observation of project.observations) {
+        list.appendChild(budgetRequestBootElement(doc, "li", null, observation));
+      }
+      inner.appendChild(list);
+    }
+    if (project.difference) {
+      inner.appendChild(budgetRequestBootElement(doc, "p", "budget-request-dialog-project-difference", project.difference));
+    }
+    if (project.boundary) {
+      inner.appendChild(budgetRequestBootElement(doc, "p", "budget-request-dialog-note", project.boundary));
+    }
+    if (project.actions.length) {
+      const actions = budgetRequestBootElement(doc, "p", "budget-request-dialog-project-actions");
+      for (const action of project.actions) {
+        const anchor = budgetRequestBootElement(doc, "a", "budget-request-dialog-open", action.label);
+        anchor.href = action.href;
+        actions.appendChild(anchor);
+      }
+      inner.appendChild(actions);
+    }
   }
 
   for (const note of Array.isArray(labels.notes) ? labels.notes : []) {

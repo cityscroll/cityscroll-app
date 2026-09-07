@@ -5005,3 +5005,92 @@ select {
   padding-inline-start: var(--space-2);
   border-inline-start: 2px solid var(--color-border-subtle, currentColor);
 }
+
+/* The capital project a request names: a block inside the request row, set off
+   by a rule rather than a box so it reads as part of the record it belongs to
+   and never as a second card competing with it. Logical properties throughout,
+   so the inset side follows the reader's writing direction. */
+.board-request-project {
+  margin-block-start: var(--space-2);
+  padding-inline-start: var(--space-2);
+  border-inline-start: 2px solid var(--color-border, #d7dce3);
+  max-width: var(--measure);
+}
+
+.board-request-project-heading {
+  margin: 0;
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.board-request-project-identity {
+  margin-block: var(--space-1) 0;
+}
+
+.board-request-project-code {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.board-request-project-named,
+.board-request-project-passage,
+.board-request-project-spelling,
+.board-request-project-scope,
+.board-request-project-difference,
+.board-request-project-boundary {
+  margin-block: var(--space-1) 0;
+  max-width: var(--measure);
+}
+
+.board-request-project-observations {
+  margin-block: var(--space-1) 0;
+  padding-inline-start: var(--space-3);
+}
+
+.board-request-project-observation {
+  max-width: var(--measure);
+  margin-block-end: 2px;
+}
+
+.board-request-project-difference {
+  font-weight: 600;
+}
+
+/* Every destination is an ordinary anchor. They wrap onto their own lines on a
+   narrow screen rather than forcing the row to scroll sideways. */
+.board-request-project-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  margin-block: var(--space-2) 0;
+}
+
+.budget-request-dialog-project-identity,
+.budget-request-dialog-project-named,
+.budget-request-dialog-project-passage,
+.budget-request-dialog-project-spelling,
+.budget-request-dialog-project-scope,
+.budget-request-dialog-project-difference {
+  margin: 2px 0 0;
+}
+
+.budget-request-dialog-project-difference {
+  font-weight: 600;
+}
+
+.budget-request-dialog-project-observations {
+  margin: 4px 0 0;
+  padding-inline-start: 18px;
+}
+
+.budget-request-dialog-project-observations li {
+  margin-block-end: 2px;
+}
+
+.budget-request-dialog-project-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin: 8px 0 0;
+}

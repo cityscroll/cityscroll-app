@@ -41,6 +41,10 @@
 
 import { renderNodeSection } from "./civic_document_chrome.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
+import {
+  communityBoardRequestProjectLinkIndex,
+  renderRequestProjectLinks,
+} from "./community_board_request_project_links.mjs";
 
 export const COMMUNITY_BOARD_BUDGET_REQUESTS_VIEW_SCHEMA = "cityscroll.community_board_budget_requests_view.v1";
 export const AGENCY_BUDGET_REQUESTS_VIEW_SCHEMA = "cityscroll.agency_budget_requests_view.v1";
@@ -174,7 +178,7 @@ function budgetRequestRank(rank) {
  * the same reason it is excluded there: it is not an answer anyone has been
  * given yet.
  */
-function budgetRequestRow(request, { source }) {
+function budgetRequestRow(request, { source, projectLinks = null }) {
   const code = budgetRequestClean(request?.tracking_code, 20).toUpperCase();
   if (!BUDGET_REQUEST_TRACKING_CODE.test(code)) return null;
   const versions = (Array.isArray(request?.versions) ? request.versions : [])
@@ -229,6 +233,10 @@ function budgetRequestRow(request, { source }) {
         .filter(Boolean),
     ),
     answers: Object.freeze(answers),
+    // The reviewed capital project links this request carries, or `null`. An
+    // optional relation that is absent adds nothing to the row: no heading, no
+    // empty panel, and no sentence about a project that was never named.
+    project_links: projectLinks?.forRequest(request?.board_id, code) || null,
     latest_answer: answers[answers.length - 1],
     changed_answer: answers.some((answer) => answer.changed === true),
     source_url: source.source_url,
@@ -288,7 +296,7 @@ function budgetRequestByRank(left, right) {
  * nothing for gets a sentence about the register, because "nobody asked" and
  * "the register holds nothing here" are different answers.
  */
-export function communityBoardBudgetRequestsForBoard(index, document, bodyId) {
+export function communityBoardBudgetRequestsForBoard(index, document, bodyId, { projectLinks: projectLinkArtifact = null } = {}) {
   const board = budgetRequestClean(bodyId, 80);
   if (!BUDGET_REQUEST_BODY_ID.test(board)) return null;
   const base = { ...budgetRequestBase(COMMUNITY_BOARD_BUDGET_REQUESTS_VIEW_SCHEMA), body_id: board, agency_count: 0, groups: Object.freeze([]) };
@@ -302,8 +310,12 @@ export function communityBoardBudgetRequestsForBoard(index, document, bodyId) {
     return Object.freeze({ ...withSource, state: BUDGET_REQUEST_STATES.UNAVAILABLE });
   }
 
+  // The capital project relation is optional twice over: the materialization
+  // may be absent, and a request that carries no reviewed link renders exactly
+  // as it did before this reading existed.
+  const projectLinks = communityBoardRequestProjectLinkIndex(projectLinkArtifact);
   const rows = (Array.isArray(document?.requests) ? document.requests : [])
-    .map((request) => budgetRequestRow(request, { source }))
+    .map((request) => budgetRequestRow(request, { source, projectLinks }))
     .filter((row) => row && row.board_id === board);
   if (!rows.length) {
     return Object.freeze({ ...withSource, state: BUDGET_REQUEST_STATES.NONE_RECORDED });
@@ -1251,6 +1263,10 @@ function budgetRequestMarkup(request, t, lang, { reciprocalHref = null, compact 
     ? `<p class="board-budget-request-explanation">${budgetRequestSourceText(request.explanation)}</p>`
     : "";
   const answers = compact ? [request.latest_answer] : request.answers;
+  // The board's own page is where a request is read whole, so the capital
+  // project a request names is rendered there. The agency surface hands off to
+  // that page rather than restating a second record inside a summary row.
+  const projects = compact ? "" : renderRequestProjectLinks(request.project_links, { lang });
   const destination = reciprocalHref
     ? `<a class="ui-constellation-link board-budget-request-agency-link" href="${budgetRequestEsc(reciprocalHref)}">`
       + `${budgetRequestSourceText(request.agency.source_label)}</a>`
@@ -1275,6 +1291,7 @@ function budgetRequestMarkup(request, t, lang, { reciprocalHref = null, compact 
     + support
     + `<p class="muted node-muted board-budget-request-answers-heading">${budgetRequestEsc(t("cbbr_answers_heading"))}</p>`
     + `<ol class="board-budget-request-answers">${answers.map((answer) => budgetRequestAnswerMarkup(answer, t, lang)).join("")}</ol>`
+    + projects
     + `</li>`;
 }
 

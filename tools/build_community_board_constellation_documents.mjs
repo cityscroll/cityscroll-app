@@ -98,6 +98,16 @@ function sourceRows() {
   } catch (error) {
     communityBoardHearingContext = { error: `community_board_hearing_context unreadable: ${error.message}` };
   }
+  // The reviewed request-to-capital-project links. This one is genuinely
+  // optional: an absent or unreadable materialization removes the relation from
+  // every request rather than failing the board, because a request with no link
+  // renders exactly as it did before the relation existed.
+  let communityBoardRequestProjectLinks = null;
+  try {
+    communityBoardRequestProjectLinks = readJson("site/data/community_board_request_project_links.json");
+  } catch (_error) {
+    communityBoardRequestProjectLinks = null;
+  }
   const institutionEdges = {};
   const edgeKeys = new Set();
   const retainEdge = (edge) => {
@@ -172,6 +182,7 @@ function sourceRows() {
     communityBoardBudgetRegister,
     communityBoardBudgetRequests,
     communityBoardHearingContext,
+    communityBoardRequestProjectLinks,
   };
 }
 
