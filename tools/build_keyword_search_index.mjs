@@ -158,7 +158,10 @@ const excludedVendorRoots = (Array.isArray(vendorCorpus.outcomes) ? vendorCorpus
 const parcelCorpus = buildParcelSearchDocuments(parcels, {
   residentSnapshot: propertyResidents,
 });
-const communityBoardCorpus = buildBoardSearchDocuments(communityBoards);
+const communityBoardResolutionPilot = json("site/data/community_board_resolution_pilot.json");
+const communityBoardCorpus = buildBoardSearchDocuments(communityBoards, {
+  resolutionPilot: communityBoardResolutionPilot,
+});
 const communityBoardPeopleCorpus = buildCommunityBoardPersonSearchDocuments(communityBoardPeople, {
   boardLookup: communityBoards,
   committeeRegistry: communityBoardCommittees,
@@ -251,6 +254,7 @@ const output = {
       vendors: "site/data/entity_intelligence_lookup.json",
       vendor_aliases: "entity_resolution/review/alias_registry.json",
       community_boards: "site/data/community_board_constellation_lookup.json",
+      community_board_decisions: "site/data/community_board_resolution_pilot.json",
       land: "site/data/zap_projects_warehouse_lookup.json",
       meetings: "site/data/shared_meeting_read_model.json",
       exams: "site/data/staffing_exams.json",

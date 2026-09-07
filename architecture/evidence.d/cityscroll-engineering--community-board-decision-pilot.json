@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/community-board-decision-pilot",
+  "status": "implemented",
+  "fingerprint": "community-board-decision-pilot.v1",
+  "updated_at": "2026-09-07T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "community-board-decision-pilot-read-model",
+      "path": "site/community_board_resolution_pilot.mjs"
+    },
+    {
+      "id": "community-board-decision-pilot-reviewed-source",
+      "path": "site/data/community_board_resolution_sources/board_resolution_pilot_review.v1.json"
+    },
+    {
+      "id": "community-board-decision-pilot-builder",
+      "path": "tools/build_community_board_resolution_pilot.mjs"
+    },
+    {
+      "id": "community-board-decision-pilot-tests",
+      "path": "test/community_board_resolution_pilot.test.mjs"
+    },
+    {
+      "id": "community-board-decision-pilot-capture",
+      "path": "tools/capture_community_board_decisions_evidence.py"
+    },
+    {
+      "id": "community-board-decision-pilot-served-evidence",
+      "path": "docs/evidence/community-board-decisions/README.md"
+    }
+  ]
+}

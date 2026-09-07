@@ -4576,3 +4576,90 @@ select {
   margin: 12px 0 0;
   overflow-wrap: anywhere;
 }
+
+/*
+ * Board decisions keep their source passage and their excluded tallies behind
+ * fragments rather than <details> elements. A browser restores a history
+ * entry's URL and scroll offset, not an element's open state, so a reader who
+ * opens a passage, follows the link to the published document and presses Back
+ * returns to the list exactly as they left it. Each control is a plain
+ * same-page link: no script, no new tab, no subscription. With no stylesheet at
+ * all every passage and tally simply renders, which is the right failure.
+ */
+.board-decision + .board-decision {
+  margin-block-start: var(--space-3);
+  padding-block-start: var(--space-3);
+  border-block-start: 1px solid var(--color-border);
+}
+
+.board-decision-plain {
+  margin-block: var(--space-1) 0;
+  font-weight: 600;
+}
+
+.board-decision-votes {
+  margin-block: var(--space-2) 0;
+  padding-inline-start: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--space-1);
+}
+
+.board-decision-vote {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.board-decision-quote {
+  margin-block: var(--space-1);
+  margin-inline: 0;
+  padding-inline-start: var(--space-2);
+  border-inline-start: 3px solid var(--color-border-strong);
+  color: var(--color-text-soft);
+}
+
+.board-decision-excluded-list {
+  margin-block: var(--space-1) 0;
+  padding-inline-start: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--space-1);
+}
+
+.board-decision-passage,
+.board-decision-excluded {
+  margin-block-start: var(--space-2);
+}
+
+.board-decision-passage > .board-decision-passage-body,
+.board-decision-passage > .board-decision-less,
+.board-decision-excluded > .board-decision-excluded-body,
+.board-decision-excluded > .board-decision-less {
+  display: none;
+}
+
+.board-decision-passage:target > .board-decision-passage-body,
+.board-decision-excluded:target > .board-decision-excluded-body {
+  display: block;
+  margin-block-end: var(--space-2);
+}
+
+.board-decision-passage:target > .board-decision-less,
+.board-decision-excluded:target > .board-decision-less {
+  display: inline-block;
+}
+
+.board-decision-passage:target > .board-decision-more,
+.board-decision-excluded:target > .board-decision-more {
+  display: none;
+}
+
+.board-decision-more,
+.board-decision-less {
+  display: inline-block;
+  /* WCAG 2.5.8: a comfortable target on a touch screen. */
+  min-height: 24px;
+  padding-block: var(--space-1);
+  color: var(--color-action);
+  font-weight: 600;
+}

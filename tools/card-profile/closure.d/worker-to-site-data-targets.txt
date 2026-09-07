@@ -3,6 +3,7 @@
 # concurrent addition is kept rather than resolved by hand; readers sort and
 # deduplicate, and the next regeneration restores this canonical order.
 site/data/action_link_health.json
+site/data/community_board_resolution_pilot.json
 site/data/comparative_story_signals.json
 site/data/council_land_matter_links.json
 site/data/district_activity.json

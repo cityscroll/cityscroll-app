@@ -67,6 +67,7 @@ import {
   renderPinFamilyVerifyPage,
 } from "./lib/pin_family_verify.mjs";
 import { buildOpsContract } from "./lib/ops_contract.mjs";
+import boardResolutionReviewQueue from "./data/community_board_resolution_review_queue.json" with { type: "json" };
 import { PerformanceQueryError } from "./lib/performance_query.mjs";
 import {
   ADMIN_PERFORMANCE_SCHEMA,
@@ -2035,6 +2036,32 @@ export async function handleAdminPassportIngestMeta(req, env) {
 }
 
 // GET /admin/source-health-receipts?key=… — latest KV acquisition receipts.
+// GET /admin/board-resolution-review?key=… — the community-board decision candidates that
+// were read but NOT published to residents, with the reason each was held: a document that
+// states no meeting date, a passage not read to the reviewed standard, an amendment recorded
+// after the passage, or an address the board's own agenda and resolution spell differently.
+// These never appear in site/ at all, so this is the only read of them. Read-only; fails
+// closed with the rest of /admin/*.
+export async function handleAdminBoardResolutionReview(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "GET") return json({ error: "method not allowed" }, 405);
+  const url = new URL(req.url);
+  const board = (url.searchParams.get("board") || "").trim().toLowerCase();
+  const reason = (url.searchParams.get("reason") || "").trim();
+  const held = boardResolutionReviewQueue.held_candidates.filter((row) => (
+    (!board || row.board_id === board) && (!reason || row.held_reason === reason)
+  ));
+  return json({
+    schema: boardResolutionReviewQueue.schema,
+    reviewed_on: boardResolutionReviewQueue.reviewed_on,
+    selection: { board: board || null, held_reason: reason || null },
+    coverage: boardResolutionReviewQueue.coverage,
+    documents: boardResolutionReviewQueue.documents,
+    held_candidates: held,
+  }, 200);
+}
+
 export async function handleAdminSourceHealthReceipts(req, env) {
   const auth = checkAdminKey(req, env);
   if (!auth.ok) return auth.res;

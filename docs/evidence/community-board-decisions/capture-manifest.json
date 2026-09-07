@@ -1,0 +1,1681 @@
+{
+  "schema": "cityscroll.community_board_decisions_render_manifest.v1",
+  "evidence_class": "isolated-consumer-render",
+  "capture_mode": "headless-playwright-loopback-static-render",
+  "captured_at": "2026-09-07T13:23:26Z",
+  "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+  "data_vintage": "2026-09-07",
+  "image_directory": ".artifacts/community-board-decisions",
+  "image_policy": "Capture images remain ignored and are not committed. Their SHA-256 values bind this textual manifest to the reviewed render.",
+  "production_scope": "These captures are isolated render evidence and are not labeled as live.",
+  "coverage": {
+    "documents": 4,
+    "boards": 2,
+    "candidate_blocks_observed": 25,
+    "decisions_published": 2,
+    "candidates_held": 23
+  },
+  "captures": [
+    {
+      "name": "manhattan-cb-03-loaded",
+      "route": "/community-boards/manhattan-cb-03/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "data_vintage": "2026-09-07",
+      "scripting": true,
+      "stylesheet": "loaded",
+      "assertion": "The decisions, their owning tallies, the tallies that are not the decision and the published document all render; no control opens a new tab and the page does not scroll horizontally.",
+      "observed": {
+        "section_present": true,
+        "decision_count": 1,
+        "decisions": [
+          {
+            "id": "manhattan-cb-03:2026-05-26:transportation-2",
+            "position": "supports",
+            "votes": [
+              {
+                "stage": "full_board",
+                "ownership": "names_this_item",
+                "text": "Full board vote: 34 in favour, 1 against, 0 abstaining. The document records this tally against Transportation item 2."
+              }
+            ],
+            "excluded": [
+              {
+                "reason": "referral_motion_on_another_item",
+                "text": "3-28-2 send Transportation item 4 to Landmarks Committee A motion to send a different item to another committee."
+              },
+              {
+                "reason": "amendment_to_another_item",
+                "text": "32-2-1 amending Transportation item 4 An amendment to a different item."
+              },
+              {
+                "reason": "omnibus_that_excludes_this_item",
+                "text": "35-0-0 excluding Transportation items 2, 3, 4 One vote taken on the other items, expressly excluding this one."
+              },
+              {
+                "reason": "another_item",
+                "text": "34-1-0 Transportation item 3 A vote on a different item."
+              },
+              {
+                "reason": "another_item",
+                "text": "34-1-0 Transportation item 4 A vote on a different item."
+              }
+            ],
+            "quotes": [
+              "Therefore, be it resolved that Manhattan Community Board 3 supports NYC DOT's proposal for a continuous 5' standard bike lane along St. Mark's Place from Third Avenue to Avenue A including the elimination of a parking lane on the north side of the street between 2nd and 3rd Avenues to accommodate the 5' standard bike lane on this block, and Be it further resolved, that Manhattan Community Board 3 urges DOT to work with the community and businesses to address any impacts to changed parking regulations prior to implementation, especially to those businesses located on the block between 2nd and 3rd Avenues."
+            ],
+            "source_href": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf"
+          }
+        ],
+        "controls": [
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-other",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-passage",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          }
+        ],
+        "details_elements": 0,
+        "buttons": 0,
+        "horizontal_overflow": false
+      },
+      "keyboard": {
+        "count": 3,
+        "reachable": 3,
+        "native": true,
+        "new_tab": 0,
+        "smallest_target_css_px": 26
+      },
+      "axe": {
+        "failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "in_decisions_section": false,
+            "nodes": [
+              "<dl class=\"community-board-money-metrics\">"
+            ]
+          }
+        ],
+        "owned_by_this_section": [],
+        "passes": true
+      },
+      "image": "manhattan-cb-03-loaded-390x844.png",
+      "image_sha256": "3800024267f1961182f23996894ebf7a6d0e11b821f02fc74c1eb137ec2411b0",
+      "render_content_sha256": "d8a19201cc883ab79dc65b3391343d51afcc149a0dc437d21244fec1fbb2792e"
+    },
+    {
+      "name": "manhattan-cb-03-no-script",
+      "route": "/community-boards/manhattan-cb-03/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "data_vintage": "2026-09-07",
+      "scripting": false,
+      "stylesheet": "loaded",
+      "assertion": "With JavaScript disabled the decision, every tally, the quoted passage and the link to the published document are all present in the served document.",
+      "observed": {
+        "section_present": true,
+        "decision_count": 1,
+        "decisions": [
+          {
+            "id": "manhattan-cb-03:2026-05-26:transportation-2",
+            "position": "supports",
+            "votes": [
+              {
+                "stage": "full_board",
+                "ownership": "names_this_item",
+                "text": "Full board vote: 34 in favour, 1 against, 0 abstaining. The document records this tally against Transportation item 2."
+              }
+            ],
+            "excluded": [
+              {
+                "reason": "referral_motion_on_another_item",
+                "text": "3-28-2 send Transportation item 4 to Landmarks Committee A motion to send a different item to another committee."
+              },
+              {
+                "reason": "amendment_to_another_item",
+                "text": "32-2-1 amending Transportation item 4 An amendment to a different item."
+              },
+              {
+                "reason": "omnibus_that_excludes_this_item",
+                "text": "35-0-0 excluding Transportation items 2, 3, 4 One vote taken on the other items, expressly excluding this one."
+              },
+              {
+                "reason": "another_item",
+                "text": "34-1-0 Transportation item 3 A vote on a different item."
+              },
+              {
+                "reason": "another_item",
+                "text": "34-1-0 Transportation item 4 A vote on a different item."
+              }
+            ],
+            "quotes": [
+              "Therefore, be it resolved that Manhattan Community Board 3 supports NYC DOT's proposal for a continuous 5' standard bike lane along St. Mark's Place from Third Avenue to Avenue A including the elimination of a parking lane on the north side of the street between 2nd and 3rd Avenues to accommodate the 5' standard bike lane on this block, and Be it further resolved, that Manhattan Community Board 3 urges DOT to work with the community and businesses to address any impacts to changed parking regulations prior to implementation, especially to those businesses located on the block between 2nd and 3rd Avenues."
+            ],
+            "source_href": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf"
+          }
+        ],
+        "controls": [
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-other",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-passage",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          }
+        ],
+        "details_elements": 0,
+        "buttons": 0,
+        "horizontal_overflow": false
+      },
+      "image": "manhattan-cb-03-no-script-390x844.png",
+      "image_sha256": "4777411803b1abf056ca77f77da8e9e3f58f0d4461e0ec342412b91a4b4ba385",
+      "render_content_sha256": "d8a19201cc883ab79dc65b3391343d51afcc149a0dc437d21244fec1fbb2792e"
+    },
+    {
+      "name": "manhattan-cb-03-no-stylesheet",
+      "route": "/community-boards/manhattan-cb-03/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "data_vintage": "2026-09-07",
+      "scripting": true,
+      "stylesheet": "blocked",
+      "assertion": "With the stylesheet failing to load the passage and the excluded tallies render open rather than behind a control that can no longer be styled shut.",
+      "observed": {
+        "section_present": true,
+        "decision_count": 1,
+        "decisions": [
+          {
+            "id": "manhattan-cb-03:2026-05-26:transportation-2",
+            "position": "supports",
+            "votes": [
+              {
+                "stage": "full_board",
+                "ownership": "names_this_item",
+                "text": "Full board vote: 34 in favour, 1 against, 0 abstaining. The document records this tally against Transportation item 2."
+              }
+            ],
+            "excluded": [
+              {
+                "reason": "referral_motion_on_another_item",
+                "text": "3-28-2 send Transportation item 4 to Landmarks Committee A motion to send a different item to another committee."
+              },
+              {
+                "reason": "amendment_to_another_item",
+                "text": "32-2-1 amending Transportation item 4 An amendment to a different item."
+              },
+              {
+                "reason": "omnibus_that_excludes_this_item",
+                "text": "35-0-0 excluding Transportation items 2, 3, 4 One vote taken on the other items, expressly excluding this one."
+              },
+              {
+                "reason": "another_item",
+                "text": "34-1-0 Transportation item 3 A vote on a different item."
+              },
+              {
+                "reason": "another_item",
+                "text": "34-1-0 Transportation item 4 A vote on a different item."
+              }
+            ],
+            "quotes": [
+              "Therefore, be it resolved that Manhattan Community Board 3 supports NYC DOT's proposal for a continuous 5' standard bike lane along St. Mark's Place from Third Avenue to Avenue A including the elimination of a parking lane on the north side of the street between 2nd and 3rd Avenues to accommodate the 5' standard bike lane on this block, and Be it further resolved, that Manhattan Community Board 3 urges DOT to work with the community and businesses to address any impacts to changed parking regulations prior to implementation, especially to those businesses located on the block between 2nd and 3rd Avenues."
+            ],
+            "source_href": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf"
+          }
+        ],
+        "controls": [
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-other",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-passage",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          }
+        ],
+        "details_elements": 0,
+        "buttons": 0,
+        "horizontal_overflow": false
+      },
+      "keyboard": {
+        "count": 5,
+        "reachable": 5,
+        "native": true,
+        "new_tab": 0,
+        "smallest_target_css_px": 17
+      },
+      "axe": {
+        "failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "in_decisions_section": false,
+            "nodes": [
+              "<dl class=\"community-board-money-metrics\">"
+            ]
+          }
+        ],
+        "owned_by_this_section": [],
+        "passes": true
+      },
+      "image": "manhattan-cb-03-no-stylesheet-390x844.png",
+      "image_sha256": "f90d8891ecc8d96c7d9f98f5c64eb74d08dec5122f1abbccd035207181fbec8d",
+      "render_content_sha256": "d8a19201cc883ab79dc65b3391343d51afcc149a0dc437d21244fec1fbb2792e"
+    },
+    {
+      "name": "manhattan-cb-03-loaded",
+      "route": "/community-boards/manhattan-cb-03/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "data_vintage": "2026-09-07",
+      "scripting": true,
+      "stylesheet": "loaded",
+      "assertion": "The decisions, their owning tallies, the tallies that are not the decision and the published document all render; no control opens a new tab and the page does not scroll horizontally.",
+      "observed": {
+        "section_present": true,
+        "decision_count": 1,
+        "decisions": [
+          {
+            "id": "manhattan-cb-03:2026-05-26:transportation-2",
+            "position": "supports",
+            "votes": [
+              {
+                "stage": "full_board",
+                "ownership": "names_this_item",
+                "text": "Full board vote: 34 in favour, 1 against, 0 abstaining. The document records this tally against Transportation item 2."
+              }
+            ],
+            "excluded": [
+              {
+                "reason": "referral_motion_on_another_item",
+                "text": "3-28-2 send Transportation item 4 to Landmarks Committee A motion to send a different item to another committee."
+              },
+              {
+                "reason": "amendment_to_another_item",
+                "text": "32-2-1 amending Transportation item 4 An amendment to a different item."
+              },
+              {
+                "reason": "omnibus_that_excludes_this_item",
+                "text": "35-0-0 excluding Transportation items 2, 3, 4 One vote taken on the other items, expressly excluding this one."
+              },
+              {
+                "reason": "another_item",
+                "text": "34-1-0 Transportation item 3 A vote on a different item."
+              },
+              {
+                "reason": "another_item",
+                "text": "34-1-0 Transportation item 4 A vote on a different item."
+              }
+            ],
+            "quotes": [
+              "Therefore, be it resolved that Manhattan Community Board 3 supports NYC DOT's proposal for a continuous 5' standard bike lane along St. Mark's Place from Third Avenue to Avenue A including the elimination of a parking lane on the north side of the street between 2nd and 3rd Avenues to accommodate the 5' standard bike lane on this block, and Be it further resolved, that Manhattan Community Board 3 urges DOT to work with the community and businesses to address any impacts to changed parking regulations prior to implementation, especially to those businesses located on the block between 2nd and 3rd Avenues."
+            ],
+            "source_href": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf"
+          }
+        ],
+        "controls": [
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-other",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-passage",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          }
+        ],
+        "details_elements": 0,
+        "buttons": 0,
+        "horizontal_overflow": false
+      },
+      "keyboard": {
+        "count": 3,
+        "reachable": 3,
+        "native": true,
+        "new_tab": 0,
+        "smallest_target_css_px": 27
+      },
+      "axe": {
+        "failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "in_decisions_section": false,
+            "nodes": [
+              "<dl class=\"community-board-money-metrics\">"
+            ]
+          }
+        ],
+        "owned_by_this_section": [],
+        "passes": true
+      },
+      "image": "manhattan-cb-03-loaded-1440x900.png",
+      "image_sha256": "beccdf9800efc9baa6271e51b3134a2f15b32071a1d0b1e141f015e01982725e",
+      "render_content_sha256": "d8a19201cc883ab79dc65b3391343d51afcc149a0dc437d21244fec1fbb2792e"
+    },
+    {
+      "name": "manhattan-cb-03-no-script",
+      "route": "/community-boards/manhattan-cb-03/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "data_vintage": "2026-09-07",
+      "scripting": false,
+      "stylesheet": "loaded",
+      "assertion": "With JavaScript disabled the decision, every tally, the quoted passage and the link to the published document are all present in the served document.",
+      "observed": {
+        "section_present": true,
+        "decision_count": 1,
+        "decisions": [
+          {
+            "id": "manhattan-cb-03:2026-05-26:transportation-2",
+            "position": "supports",
+            "votes": [
+              {
+                "stage": "full_board",
+                "ownership": "names_this_item",
+                "text": "Full board vote: 34 in favour, 1 against, 0 abstaining. The document records this tally against Transportation item 2."
+              }
+            ],
+            "excluded": [
+              {
+                "reason": "referral_motion_on_another_item",
+                "text": "3-28-2 send Transportation item 4 to Landmarks Committee A motion to send a different item to another committee."
+              },
+              {
+                "reason": "amendment_to_another_item",
+                "text": "32-2-1 amending Transportation item 4 An amendment to a different item."
+              },
+              {
+                "reason": "omnibus_that_excludes_this_item",
+                "text": "35-0-0 excluding Transportation items 2, 3, 4 One vote taken on the other items, expressly excluding this one."
+              },
+              {
+                "reason": "another_item",
+                "text": "34-1-0 Transportation item 3 A vote on a different item."
+              },
+              {
+                "reason": "another_item",
+                "text": "34-1-0 Transportation item 4 A vote on a different item."
+              }
+            ],
+            "quotes": [
+              "Therefore, be it resolved that Manhattan Community Board 3 supports NYC DOT's proposal for a continuous 5' standard bike lane along St. Mark's Place from Third Avenue to Avenue A including the elimination of a parking lane on the north side of the street between 2nd and 3rd Avenues to accommodate the 5' standard bike lane on this block, and Be it further resolved, that Manhattan Community Board 3 urges DOT to work with the community and businesses to address any impacts to changed parking regulations prior to implementation, especially to those businesses located on the block between 2nd and 3rd Avenues."
+            ],
+            "source_href": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf"
+          }
+        ],
+        "controls": [
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-other",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-passage",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          }
+        ],
+        "details_elements": 0,
+        "buttons": 0,
+        "horizontal_overflow": false
+      },
+      "image": "manhattan-cb-03-no-script-1440x900.png",
+      "image_sha256": "e9407940cc9cd013d750fed9250dde5e470b42c6db00de464e9b58240340f68e",
+      "render_content_sha256": "d8a19201cc883ab79dc65b3391343d51afcc149a0dc437d21244fec1fbb2792e"
+    },
+    {
+      "name": "manhattan-cb-03-no-stylesheet",
+      "route": "/community-boards/manhattan-cb-03/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "data_vintage": "2026-09-07",
+      "scripting": true,
+      "stylesheet": "blocked",
+      "assertion": "With the stylesheet failing to load the passage and the excluded tallies render open rather than behind a control that can no longer be styled shut.",
+      "observed": {
+        "section_present": true,
+        "decision_count": 1,
+        "decisions": [
+          {
+            "id": "manhattan-cb-03:2026-05-26:transportation-2",
+            "position": "supports",
+            "votes": [
+              {
+                "stage": "full_board",
+                "ownership": "names_this_item",
+                "text": "Full board vote: 34 in favour, 1 against, 0 abstaining. The document records this tally against Transportation item 2."
+              }
+            ],
+            "excluded": [
+              {
+                "reason": "referral_motion_on_another_item",
+                "text": "3-28-2 send Transportation item 4 to Landmarks Committee A motion to send a different item to another committee."
+              },
+              {
+                "reason": "amendment_to_another_item",
+                "text": "32-2-1 amending Transportation item 4 An amendment to a different item."
+              },
+              {
+                "reason": "omnibus_that_excludes_this_item",
+                "text": "35-0-0 excluding Transportation items 2, 3, 4 One vote taken on the other items, expressly excluding this one."
+              },
+              {
+                "reason": "another_item",
+                "text": "34-1-0 Transportation item 3 A vote on a different item."
+              },
+              {
+                "reason": "another_item",
+                "text": "34-1-0 Transportation item 4 A vote on a different item."
+              }
+            ],
+            "quotes": [
+              "Therefore, be it resolved that Manhattan Community Board 3 supports NYC DOT's proposal for a continuous 5' standard bike lane along St. Mark's Place from Third Avenue to Avenue A including the elimination of a parking lane on the north side of the street between 2nd and 3rd Avenues to accommodate the 5' standard bike lane on this block, and Be it further resolved, that Manhattan Community Board 3 urges DOT to work with the community and businesses to address any impacts to changed parking regulations prior to implementation, especially to those businesses located on the block between 2nd and 3rd Avenues."
+            ],
+            "source_href": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf"
+          }
+        ],
+        "controls": [
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-other",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-passage",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          }
+        ],
+        "details_elements": 0,
+        "buttons": 0,
+        "horizontal_overflow": false
+      },
+      "keyboard": {
+        "count": 5,
+        "reachable": 5,
+        "native": true,
+        "new_tab": 0,
+        "smallest_target_css_px": 17
+      },
+      "axe": {
+        "failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "in_decisions_section": false,
+            "nodes": [
+              "<dl class=\"community-board-money-metrics\">"
+            ]
+          }
+        ],
+        "owned_by_this_section": [],
+        "passes": true
+      },
+      "image": "manhattan-cb-03-no-stylesheet-1440x900.png",
+      "image_sha256": "622893485f0800d0a15255fde2931c48c107d1edaf2ffbf69dab3fead59c1a8e",
+      "render_content_sha256": "d8a19201cc883ab79dc65b3391343d51afcc149a0dc437d21244fec1fbb2792e"
+    },
+    {
+      "name": "manhattan-cb-03-journey",
+      "route": "/community-boards/manhattan-cb-03/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "data_vintage": "2026-09-07",
+      "scripting": true,
+      "stylesheet": "loaded",
+      "assertion": "Inspect the passage from the keyboard, press Escape, leave for another page, press the browser's own Back, and the expansion and reading position return; dismissing closes the passage without leaving the decision; the excluded tallies inspect the same way.",
+      "observed": {
+        "section_present": true,
+        "decision_count": 1,
+        "decisions": [
+          {
+            "id": "manhattan-cb-03:2026-05-26:transportation-2",
+            "position": "supports",
+            "votes": [
+              {
+                "stage": "full_board",
+                "ownership": "names_this_item",
+                "text": "Full board vote: 34 in favour, 1 against, 0 abstaining. The document records this tally against Transportation item 2."
+              }
+            ],
+            "excluded": [
+              {
+                "reason": "referral_motion_on_another_item",
+                "text": "3-28-2 send Transportation item 4 to Landmarks Committee A motion to send a different item to another committee."
+              },
+              {
+                "reason": "amendment_to_another_item",
+                "text": "32-2-1 amending Transportation item 4 An amendment to a different item."
+              },
+              {
+                "reason": "omnibus_that_excludes_this_item",
+                "text": "35-0-0 excluding Transportation items 2, 3, 4 One vote taken on the other items, expressly excluding this one."
+              },
+              {
+                "reason": "another_item",
+                "text": "34-1-0 Transportation item 3 A vote on a different item."
+              },
+              {
+                "reason": "another_item",
+                "text": "34-1-0 Transportation item 4 A vote on a different item."
+              }
+            ],
+            "quotes": [
+              "Therefore, be it resolved that Manhattan Community Board 3 supports NYC DOT's proposal for a continuous 5' standard bike lane along St. Mark's Place from Third Avenue to Avenue A including the elimination of a parking lane on the north side of the street between 2nd and 3rd Avenues to accommodate the 5' standard bike lane on this block, and Be it further resolved, that Manhattan Community Board 3 urges DOT to work with the community and businesses to address any impacts to changed parking regulations prior to implementation, especially to those businesses located on the block between 2nd and 3rd Avenues."
+            ],
+            "source_href": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf"
+          }
+        ],
+        "controls": [
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-other",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-passage",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          }
+        ],
+        "details_elements": 0,
+        "buttons": 0,
+        "horizontal_overflow": false
+      },
+      "keyboard": {
+        "count": 3,
+        "reachable": 3,
+        "native": true,
+        "new_tab": 0,
+        "smallest_target_css_px": 26
+      },
+      "axe": {
+        "failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "in_decisions_section": false,
+            "nodes": [
+              "<dl class=\"community-board-money-metrics\">"
+            ]
+          }
+        ],
+        "owned_by_this_section": [],
+        "passes": true
+      },
+      "journey": {
+        "scroll_before_inspect": 4268,
+        "opened_passage": {
+          "fragment": "#board-decisions-1-passage",
+          "scroll": 2137,
+          "open_fragment_targets": [
+            "board-decisions-1-passage"
+          ],
+          "passage_body_visible": 1,
+          "excluded_body_visible": 0
+        },
+        "after_escape": {
+          "fragment": "#board-decisions-1-passage",
+          "scroll": 2137,
+          "open_fragment_targets": [
+            "board-decisions-1-passage"
+          ],
+          "passage_body_visible": 1,
+          "excluded_body_visible": 0
+        },
+        "returned_after_back": {
+          "fragment": "#board-decisions-1-passage",
+          "scroll": 2137,
+          "open_fragment_targets": [
+            "board-decisions-1-passage"
+          ],
+          "passage_body_visible": 1,
+          "excluded_body_visible": 0
+        },
+        "after_dismiss": {
+          "fragment": "#board-decisions-1",
+          "scroll": 1698,
+          "open_fragment_targets": [],
+          "passage_body_visible": 0,
+          "excluded_body_visible": 0
+        },
+        "opened_excluded": {
+          "fragment": "#board-decisions-1-other",
+          "scroll": 2078,
+          "open_fragment_targets": [
+            "board-decisions-1-other"
+          ],
+          "passage_body_visible": 0,
+          "excluded_body_visible": 1
+        },
+        "passage_opened": true,
+        "expansion_survived_back": true,
+        "scroll_survived_back": true,
+        "escape_kept_the_page": true,
+        "dismiss_closed_the_passage": true,
+        "dismiss_stayed_on_the_decision": true,
+        "excluded_inspected": true,
+        "published_document_href": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf"
+      },
+      "image": "manhattan-cb-03-journey-390x844.png",
+      "image_sha256": "7717737fa5ef15924962f7055ed7b4431b4c67f718aba8dc90908f3fea5fa104",
+      "render_content_sha256": "d8a19201cc883ab79dc65b3391343d51afcc149a0dc437d21244fec1fbb2792e"
+    },
+    {
+      "name": "brooklyn-cb-15-loaded",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "data_vintage": "2026-09-07",
+      "scripting": true,
+      "stylesheet": "loaded",
+      "assertion": "The decisions, their owning tallies, the tallies that are not the decision and the published document all render; no control opens a new tab and the page does not scroll horizontally.",
+      "observed": {
+        "section_present": true,
+        "decision_count": 1,
+        "decisions": [
+          {
+            "id": "brooklyn-cb-15:2026-06-30:bsa-154-90-bzii",
+            "position": "approves",
+            "votes": [
+              {
+                "stage": "committee",
+                "ownership": "sole_motion_in_this_section",
+                "text": "Committee vote: 10 in favour, 0 against, 0 abstaining. The document records this tally directly after the only motion in this section."
+              },
+              {
+                "stage": "full_board",
+                "ownership": "sole_motion_in_this_section",
+                "text": "Full board vote: 29 in favour, 0 against, 0 abstaining. The document records this tally directly after the only motion in this section."
+              }
+            ],
+            "excluded": [],
+            "quotes": [
+              "BSA: 154-90-BZII 730 Avenue S \u2013 Southwest corner of the intersection of East 8th Street and Avenue S",
+              "This application is submitted to request modifications to the variance of the \u201cOriginal Grant\u201d which allowed the construction of a two-story and cellar with a synagogue with which the premise is currently improved. In 2025, they were granted the addition of a new third and fourth floor. Now they are seeking to add a lobby enclosure at the front of the building.",
+              "A motion was made to approve by Eli Zami and seconded by Chick Pallotta",
+              "will be confined to their existing exterior stairwell footprint. It was asked if they are planning to use impact glass and it was answered that the glass material has not been identified at this juncture but he would bring that suggestion back to the client."
+            ],
+            "source_href": "https://www.nyc.gov/assets/brooklyncb15/downloads/pdf/Board-Meeting-Minutes-June-30-2026.pdf"
+          }
+        ],
+        "controls": [
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-passage",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          }
+        ],
+        "details_elements": 0,
+        "buttons": 0,
+        "horizontal_overflow": false
+      },
+      "keyboard": {
+        "count": 2,
+        "reachable": 2,
+        "native": true,
+        "new_tab": 0,
+        "smallest_target_css_px": 26
+      },
+      "axe": {
+        "failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "in_decisions_section": false,
+            "nodes": [
+              "<dl class=\"community-board-money-metrics\">"
+            ]
+          }
+        ],
+        "owned_by_this_section": [],
+        "passes": true
+      },
+      "image": "brooklyn-cb-15-loaded-390x844.png",
+      "image_sha256": "fbafc7a54b02fc854701651a2035a8c8b19b044776f2418ea2a452762f6473c6",
+      "render_content_sha256": "02699dd76071a8d189b8380d96adc582f7aeb135f8ebe3b4162e06c4146c6885"
+    },
+    {
+      "name": "brooklyn-cb-15-no-script",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "data_vintage": "2026-09-07",
+      "scripting": false,
+      "stylesheet": "loaded",
+      "assertion": "With JavaScript disabled the decision, every tally, the quoted passage and the link to the published document are all present in the served document.",
+      "observed": {
+        "section_present": true,
+        "decision_count": 1,
+        "decisions": [
+          {
+            "id": "brooklyn-cb-15:2026-06-30:bsa-154-90-bzii",
+            "position": "approves",
+            "votes": [
+              {
+                "stage": "committee",
+                "ownership": "sole_motion_in_this_section",
+                "text": "Committee vote: 10 in favour, 0 against, 0 abstaining. The document records this tally directly after the only motion in this section."
+              },
+              {
+                "stage": "full_board",
+                "ownership": "sole_motion_in_this_section",
+                "text": "Full board vote: 29 in favour, 0 against, 0 abstaining. The document records this tally directly after the only motion in this section."
+              }
+            ],
+            "excluded": [],
+            "quotes": [
+              "BSA: 154-90-BZII 730 Avenue S \u2013 Southwest corner of the intersection of East 8th Street and Avenue S",
+              "This application is submitted to request modifications to the variance of the \u201cOriginal Grant\u201d which allowed the construction of a two-story and cellar with a synagogue with which the premise is currently improved. In 2025, they were granted the addition of a new third and fourth floor. Now they are seeking to add a lobby enclosure at the front of the building.",
+              "A motion was made to approve by Eli Zami and seconded by Chick Pallotta",
+              "will be confined to their existing exterior stairwell footprint. It was asked if they are planning to use impact glass and it was answered that the glass material has not been identified at this juncture but he would bring that suggestion back to the client."
+            ],
+            "source_href": "https://www.nyc.gov/assets/brooklyncb15/downloads/pdf/Board-Meeting-Minutes-June-30-2026.pdf"
+          }
+        ],
+        "controls": [
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-passage",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          }
+        ],
+        "details_elements": 0,
+        "buttons": 0,
+        "horizontal_overflow": false
+      },
+      "image": "brooklyn-cb-15-no-script-390x844.png",
+      "image_sha256": "f79595621a0a92c1880394703b7bd55d229a14a1961fff3f2a8f8a884422c645",
+      "render_content_sha256": "02699dd76071a8d189b8380d96adc582f7aeb135f8ebe3b4162e06c4146c6885"
+    },
+    {
+      "name": "brooklyn-cb-15-no-stylesheet",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "data_vintage": "2026-09-07",
+      "scripting": true,
+      "stylesheet": "blocked",
+      "assertion": "With the stylesheet failing to load the passage and the excluded tallies render open rather than behind a control that can no longer be styled shut.",
+      "observed": {
+        "section_present": true,
+        "decision_count": 1,
+        "decisions": [
+          {
+            "id": "brooklyn-cb-15:2026-06-30:bsa-154-90-bzii",
+            "position": "approves",
+            "votes": [
+              {
+                "stage": "committee",
+                "ownership": "sole_motion_in_this_section",
+                "text": "Committee vote: 10 in favour, 0 against, 0 abstaining. The document records this tally directly after the only motion in this section."
+              },
+              {
+                "stage": "full_board",
+                "ownership": "sole_motion_in_this_section",
+                "text": "Full board vote: 29 in favour, 0 against, 0 abstaining. The document records this tally directly after the only motion in this section."
+              }
+            ],
+            "excluded": [],
+            "quotes": [
+              "BSA: 154-90-BZII 730 Avenue S \u2013 Southwest corner of the intersection of East 8th Street and Avenue S",
+              "This application is submitted to request modifications to the variance of the \u201cOriginal Grant\u201d which allowed the construction of a two-story and cellar with a synagogue with which the premise is currently improved. In 2025, they were granted the addition of a new third and fourth floor. Now they are seeking to add a lobby enclosure at the front of the building.",
+              "A motion was made to approve by Eli Zami and seconded by Chick Pallotta",
+              "will be confined to their existing exterior stairwell footprint. It was asked if they are planning to use impact glass and it was answered that the glass material has not been identified at this juncture but he would bring that suggestion back to the client."
+            ],
+            "source_href": "https://www.nyc.gov/assets/brooklyncb15/downloads/pdf/Board-Meeting-Minutes-June-30-2026.pdf"
+          }
+        ],
+        "controls": [
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-passage",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          }
+        ],
+        "details_elements": 0,
+        "buttons": 0,
+        "horizontal_overflow": false
+      },
+      "keyboard": {
+        "count": 3,
+        "reachable": 3,
+        "native": true,
+        "new_tab": 0,
+        "smallest_target_css_px": 17
+      },
+      "axe": {
+        "failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "in_decisions_section": false,
+            "nodes": [
+              "<dl class=\"community-board-money-metrics\">"
+            ]
+          }
+        ],
+        "owned_by_this_section": [],
+        "passes": true
+      },
+      "image": "brooklyn-cb-15-no-stylesheet-390x844.png",
+      "image_sha256": "7152295ee437b9ac8b5327803cfc6429133f6998dbfdd7dd31d058b5101af130",
+      "render_content_sha256": "02699dd76071a8d189b8380d96adc582f7aeb135f8ebe3b4162e06c4146c6885"
+    },
+    {
+      "name": "brooklyn-cb-15-loaded",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "data_vintage": "2026-09-07",
+      "scripting": true,
+      "stylesheet": "loaded",
+      "assertion": "The decisions, their owning tallies, the tallies that are not the decision and the published document all render; no control opens a new tab and the page does not scroll horizontally.",
+      "observed": {
+        "section_present": true,
+        "decision_count": 1,
+        "decisions": [
+          {
+            "id": "brooklyn-cb-15:2026-06-30:bsa-154-90-bzii",
+            "position": "approves",
+            "votes": [
+              {
+                "stage": "committee",
+                "ownership": "sole_motion_in_this_section",
+                "text": "Committee vote: 10 in favour, 0 against, 0 abstaining. The document records this tally directly after the only motion in this section."
+              },
+              {
+                "stage": "full_board",
+                "ownership": "sole_motion_in_this_section",
+                "text": "Full board vote: 29 in favour, 0 against, 0 abstaining. The document records this tally directly after the only motion in this section."
+              }
+            ],
+            "excluded": [],
+            "quotes": [
+              "BSA: 154-90-BZII 730 Avenue S \u2013 Southwest corner of the intersection of East 8th Street and Avenue S",
+              "This application is submitted to request modifications to the variance of the \u201cOriginal Grant\u201d which allowed the construction of a two-story and cellar with a synagogue with which the premise is currently improved. In 2025, they were granted the addition of a new third and fourth floor. Now they are seeking to add a lobby enclosure at the front of the building.",
+              "A motion was made to approve by Eli Zami and seconded by Chick Pallotta",
+              "will be confined to their existing exterior stairwell footprint. It was asked if they are planning to use impact glass and it was answered that the glass material has not been identified at this juncture but he would bring that suggestion back to the client."
+            ],
+            "source_href": "https://www.nyc.gov/assets/brooklyncb15/downloads/pdf/Board-Meeting-Minutes-June-30-2026.pdf"
+          }
+        ],
+        "controls": [
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-passage",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          }
+        ],
+        "details_elements": 0,
+        "buttons": 0,
+        "horizontal_overflow": false
+      },
+      "keyboard": {
+        "count": 2,
+        "reachable": 2,
+        "native": true,
+        "new_tab": 0,
+        "smallest_target_css_px": 27
+      },
+      "axe": {
+        "failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "in_decisions_section": false,
+            "nodes": [
+              "<dl class=\"community-board-money-metrics\">"
+            ]
+          }
+        ],
+        "owned_by_this_section": [],
+        "passes": true
+      },
+      "image": "brooklyn-cb-15-loaded-1440x900.png",
+      "image_sha256": "b5f6f089ce4b9b45c8556bc162895865facf6fda3e1c91b713be065ef044fcab",
+      "render_content_sha256": "02699dd76071a8d189b8380d96adc582f7aeb135f8ebe3b4162e06c4146c6885"
+    },
+    {
+      "name": "brooklyn-cb-15-no-script",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "data_vintage": "2026-09-07",
+      "scripting": false,
+      "stylesheet": "loaded",
+      "assertion": "With JavaScript disabled the decision, every tally, the quoted passage and the link to the published document are all present in the served document.",
+      "observed": {
+        "section_present": true,
+        "decision_count": 1,
+        "decisions": [
+          {
+            "id": "brooklyn-cb-15:2026-06-30:bsa-154-90-bzii",
+            "position": "approves",
+            "votes": [
+              {
+                "stage": "committee",
+                "ownership": "sole_motion_in_this_section",
+                "text": "Committee vote: 10 in favour, 0 against, 0 abstaining. The document records this tally directly after the only motion in this section."
+              },
+              {
+                "stage": "full_board",
+                "ownership": "sole_motion_in_this_section",
+                "text": "Full board vote: 29 in favour, 0 against, 0 abstaining. The document records this tally directly after the only motion in this section."
+              }
+            ],
+            "excluded": [],
+            "quotes": [
+              "BSA: 154-90-BZII 730 Avenue S \u2013 Southwest corner of the intersection of East 8th Street and Avenue S",
+              "This application is submitted to request modifications to the variance of the \u201cOriginal Grant\u201d which allowed the construction of a two-story and cellar with a synagogue with which the premise is currently improved. In 2025, they were granted the addition of a new third and fourth floor. Now they are seeking to add a lobby enclosure at the front of the building.",
+              "A motion was made to approve by Eli Zami and seconded by Chick Pallotta",
+              "will be confined to their existing exterior stairwell footprint. It was asked if they are planning to use impact glass and it was answered that the glass material has not been identified at this juncture but he would bring that suggestion back to the client."
+            ],
+            "source_href": "https://www.nyc.gov/assets/brooklyncb15/downloads/pdf/Board-Meeting-Minutes-June-30-2026.pdf"
+          }
+        ],
+        "controls": [
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-passage",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          }
+        ],
+        "details_elements": 0,
+        "buttons": 0,
+        "horizontal_overflow": false
+      },
+      "image": "brooklyn-cb-15-no-script-1440x900.png",
+      "image_sha256": "6ed2a32df45d6deb75876953c1c4d685af0f2e0140756c742898815d31e75029",
+      "render_content_sha256": "02699dd76071a8d189b8380d96adc582f7aeb135f8ebe3b4162e06c4146c6885"
+    },
+    {
+      "name": "brooklyn-cb-15-no-stylesheet",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "data_vintage": "2026-09-07",
+      "scripting": true,
+      "stylesheet": "blocked",
+      "assertion": "With the stylesheet failing to load the passage and the excluded tallies render open rather than behind a control that can no longer be styled shut.",
+      "observed": {
+        "section_present": true,
+        "decision_count": 1,
+        "decisions": [
+          {
+            "id": "brooklyn-cb-15:2026-06-30:bsa-154-90-bzii",
+            "position": "approves",
+            "votes": [
+              {
+                "stage": "committee",
+                "ownership": "sole_motion_in_this_section",
+                "text": "Committee vote: 10 in favour, 0 against, 0 abstaining. The document records this tally directly after the only motion in this section."
+              },
+              {
+                "stage": "full_board",
+                "ownership": "sole_motion_in_this_section",
+                "text": "Full board vote: 29 in favour, 0 against, 0 abstaining. The document records this tally directly after the only motion in this section."
+              }
+            ],
+            "excluded": [],
+            "quotes": [
+              "BSA: 154-90-BZII 730 Avenue S \u2013 Southwest corner of the intersection of East 8th Street and Avenue S",
+              "This application is submitted to request modifications to the variance of the \u201cOriginal Grant\u201d which allowed the construction of a two-story and cellar with a synagogue with which the premise is currently improved. In 2025, they were granted the addition of a new third and fourth floor. Now they are seeking to add a lobby enclosure at the front of the building.",
+              "A motion was made to approve by Eli Zami and seconded by Chick Pallotta",
+              "will be confined to their existing exterior stairwell footprint. It was asked if they are planning to use impact glass and it was answered that the glass material has not been identified at this juncture but he would bring that suggestion back to the client."
+            ],
+            "source_href": "https://www.nyc.gov/assets/brooklyncb15/downloads/pdf/Board-Meeting-Minutes-June-30-2026.pdf"
+          }
+        ],
+        "controls": [
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-passage",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          }
+        ],
+        "details_elements": 0,
+        "buttons": 0,
+        "horizontal_overflow": false
+      },
+      "keyboard": {
+        "count": 3,
+        "reachable": 3,
+        "native": true,
+        "new_tab": 0,
+        "smallest_target_css_px": 17
+      },
+      "axe": {
+        "failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "in_decisions_section": false,
+            "nodes": [
+              "<dl class=\"community-board-money-metrics\">"
+            ]
+          }
+        ],
+        "owned_by_this_section": [],
+        "passes": true
+      },
+      "image": "brooklyn-cb-15-no-stylesheet-1440x900.png",
+      "image_sha256": "9608391715a5e4ff21f5ee66e7551615e2f0852fcda75117d853ba0293aed1bf",
+      "render_content_sha256": "02699dd76071a8d189b8380d96adc582f7aeb135f8ebe3b4162e06c4146c6885"
+    },
+    {
+      "name": "brooklyn-cb-15-journey",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "data_vintage": "2026-09-07",
+      "scripting": true,
+      "stylesheet": "loaded",
+      "assertion": "Inspect the passage from the keyboard, press Escape, leave for another page, press the browser's own Back, and the expansion and reading position return; dismissing closes the passage without leaving the decision; the excluded tallies inspect the same way.",
+      "observed": {
+        "section_present": true,
+        "decision_count": 1,
+        "decisions": [
+          {
+            "id": "brooklyn-cb-15:2026-06-30:bsa-154-90-bzii",
+            "position": "approves",
+            "votes": [
+              {
+                "stage": "committee",
+                "ownership": "sole_motion_in_this_section",
+                "text": "Committee vote: 10 in favour, 0 against, 0 abstaining. The document records this tally directly after the only motion in this section."
+              },
+              {
+                "stage": "full_board",
+                "ownership": "sole_motion_in_this_section",
+                "text": "Full board vote: 29 in favour, 0 against, 0 abstaining. The document records this tally directly after the only motion in this section."
+              }
+            ],
+            "excluded": [],
+            "quotes": [
+              "BSA: 154-90-BZII 730 Avenue S \u2013 Southwest corner of the intersection of East 8th Street and Avenue S",
+              "This application is submitted to request modifications to the variance of the \u201cOriginal Grant\u201d which allowed the construction of a two-story and cellar with a synagogue with which the premise is currently improved. In 2025, they were granted the addition of a new third and fourth floor. Now they are seeking to add a lobby enclosure at the front of the building.",
+              "A motion was made to approve by Eli Zami and seconded by Chick Pallotta",
+              "will be confined to their existing exterior stairwell footprint. It was asked if they are planning to use impact glass and it was answered that the glass material has not been identified at this juncture but he would bring that suggestion back to the client."
+            ],
+            "source_href": "https://www.nyc.gov/assets/brooklyncb15/downloads/pdf/Board-Meeting-Minutes-June-30-2026.pdf"
+          }
+        ],
+        "controls": [
+          {
+            "tag": "A",
+            "href": "#board-decisions-1-passage",
+            "target": null
+          },
+          {
+            "tag": "A",
+            "href": "#board-decisions-1",
+            "target": null
+          }
+        ],
+        "details_elements": 0,
+        "buttons": 0,
+        "horizontal_overflow": false
+      },
+      "keyboard": {
+        "count": 2,
+        "reachable": 2,
+        "native": true,
+        "new_tab": 0,
+        "smallest_target_css_px": 26
+      },
+      "axe": {
+        "failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "in_decisions_section": false,
+            "nodes": [
+              "<dl class=\"community-board-money-metrics\">"
+            ]
+          }
+        ],
+        "owned_by_this_section": [],
+        "passes": true
+      },
+      "journey": {
+        "scroll_before_inspect": 3629,
+        "opened_passage": {
+          "fragment": "#board-decisions-1-passage",
+          "scroll": 2647,
+          "open_fragment_targets": [
+            "board-decisions-1-passage"
+          ],
+          "passage_body_visible": 1,
+          "excluded_body_visible": 0
+        },
+        "after_escape": {
+          "fragment": "#board-decisions-1-passage",
+          "scroll": 2647,
+          "open_fragment_targets": [
+            "board-decisions-1-passage"
+          ],
+          "passage_body_visible": 1,
+          "excluded_body_visible": 0
+        },
+        "returned_after_back": {
+          "fragment": "#board-decisions-1-passage",
+          "scroll": 2647,
+          "open_fragment_targets": [
+            "board-decisions-1-passage"
+          ],
+          "passage_body_visible": 1,
+          "excluded_body_visible": 0
+        },
+        "after_dismiss": {
+          "fragment": "#board-decisions-1",
+          "scroll": 1980,
+          "open_fragment_targets": [],
+          "passage_body_visible": 0,
+          "excluded_body_visible": 0
+        },
+        "opened_excluded": null,
+        "passage_opened": true,
+        "expansion_survived_back": true,
+        "scroll_survived_back": true,
+        "escape_kept_the_page": true,
+        "dismiss_closed_the_passage": true,
+        "dismiss_stayed_on_the_decision": true,
+        "excluded_inspected": false,
+        "published_document_href": "https://www.nyc.gov/assets/brooklyncb15/downloads/pdf/Board-Meeting-Minutes-June-30-2026.pdf"
+      },
+      "image": "brooklyn-cb-15-journey-390x844.png",
+      "image_sha256": "41de1ae6b0b9b57fa4ed43c5595f6c145c7163507cab8e97bf551d418b86e256",
+      "render_content_sha256": "02699dd76071a8d189b8380d96adc582f7aeb135f8ebe3b4162e06c4146c6885"
+    },
+    {
+      "name": "queens-cb-01-outside-the-pilot",
+      "route": "/community-boards/queens-cb-01/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "data_vintage": "2026-09-07",
+      "scripting": true,
+      "stylesheet": "loaded",
+      "assertion": "A board outside the reviewed documents renders no decisions section at all.",
+      "observed": {
+        "section_present": false
+      },
+      "keyboard": {
+        "count": 0,
+        "reachable": 0,
+        "native": true,
+        "new_tab": 0,
+        "smallest_target_css_px": null
+      },
+      "image": "queens-cb-01-outside-the-pilot-1440x900.png",
+      "image_sha256": "586a8c863cb5945011abce47f622c9a8f416e6470994fe0300f30463a72632e8",
+      "render_content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "translated_renders": [
+    {
+      "board_id": "brooklyn-cb-15",
+      "lang": "en",
+      "direction": "ltr",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "926391f001c81b5dc936fd3503df0619bf29e799efcc1713cec73c0ea2884e67",
+      "bytes": 4683
+    },
+    {
+      "board_id": "brooklyn-cb-15",
+      "lang": "es",
+      "direction": "ltr",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "2a51c9638823de00e5bb7dc8a9e9b5760cd32e08da324664e5c7b3c16abc3ef9",
+      "bytes": 4806
+    },
+    {
+      "board_id": "brooklyn-cb-15",
+      "lang": "zh-Hans",
+      "direction": "ltr",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "010bddf492a4728db77c7ef4d2c5304dce8ccddf383049278d2661ea30b22bed",
+      "bytes": 4587
+    },
+    {
+      "board_id": "brooklyn-cb-15",
+      "lang": "ru",
+      "direction": "ltr",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "908bcd45c72057e26455eb3cfab20fe09e6d0720e9c40a10757cc06b7e60814d",
+      "bytes": 5692
+    },
+    {
+      "board_id": "brooklyn-cb-15",
+      "lang": "bn",
+      "direction": "ltr",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "b37c5ad71d6300ce22a26815bb3dcda8df35c21437a7afb0f97367e0cf73a36c",
+      "bytes": 6149
+    },
+    {
+      "board_id": "brooklyn-cb-15",
+      "lang": "ht",
+      "direction": "ltr",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "c7ba806bd014bcbbbfdce3bfb2e3cafc31dc3c55283da4eba12188ecc80a4261",
+      "bytes": 4631
+    },
+    {
+      "board_id": "brooklyn-cb-15",
+      "lang": "ko",
+      "direction": "ltr",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "373ccc9e633d122496e9c8c61575670cd49fe4355d42291c9802a8f7fb08269a",
+      "bytes": 4809
+    },
+    {
+      "board_id": "brooklyn-cb-15",
+      "lang": "fr",
+      "direction": "ltr",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "05cb5352d347f3a386c67010bc84604e29de27d9d53d237847d3a19ecf61acf9",
+      "bytes": 4842
+    },
+    {
+      "board_id": "brooklyn-cb-15",
+      "lang": "pl",
+      "direction": "ltr",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "585516c9e6116bb93a3419b075dc4d301ee909b1ad9d5bb29ab85360c5b00a99",
+      "bytes": 4765
+    },
+    {
+      "board_id": "brooklyn-cb-15",
+      "lang": "ar",
+      "direction": "rtl",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "946a9a415d09753f5e51a6481bdd9bf4901e7011caf01909e26d8c52f8aecb26",
+      "bytes": 5271
+    },
+    {
+      "board_id": "brooklyn-cb-15",
+      "lang": "ur",
+      "direction": "rtl",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "405ad3fdd00992ceebbb6a31394d71f935d539d3eccfd4eac2badc36d7e66a71",
+      "bytes": 5421
+    },
+    {
+      "board_id": "manhattan-cb-03",
+      "lang": "en",
+      "direction": "ltr",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "1ae727e278ad9336f1bd00833e478578bde15f991f0a8ef4c2fc3817ce9787c8",
+      "bytes": 5236
+    },
+    {
+      "board_id": "manhattan-cb-03",
+      "lang": "es",
+      "direction": "ltr",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "9eef76ac654ed96334a853f5ba7af7a62cce3a3bfa2a988acf47abbe9fb1a631",
+      "bytes": 5341
+    },
+    {
+      "board_id": "manhattan-cb-03",
+      "lang": "zh-Hans",
+      "direction": "ltr",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "0a4ba841c925b24b1c8f122f5c6c149f815c13e0eaefc36c7a5c75e3671c2880",
+      "bytes": 5170
+    },
+    {
+      "board_id": "manhattan-cb-03",
+      "lang": "ru",
+      "direction": "ltr",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "559fe31be6d006feda0df08cc58714181989c59a296da6bdd013573c826690f4",
+      "bytes": 6269
+    },
+    {
+      "board_id": "manhattan-cb-03",
+      "lang": "bn",
+      "direction": "ltr",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "6c3cddc327f2cfe136be5b87147118a3a7b1c77c4c79f3c9ce9e42db4975bede",
+      "bytes": 6879
+    },
+    {
+      "board_id": "manhattan-cb-03",
+      "lang": "ht",
+      "direction": "ltr",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "e6d353d2ec7c0794caa0f2befa955cdeba05b91eac0b149580cd95cf9bd71ea4",
+      "bytes": 5181
+    },
+    {
+      "board_id": "manhattan-cb-03",
+      "lang": "ko",
+      "direction": "ltr",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "5bde8fc8d7fa0a7bdcbb96482d9df65e824ec401eb453cc19dad52c7ef8b7762",
+      "bytes": 5447
+    },
+    {
+      "board_id": "manhattan-cb-03",
+      "lang": "fr",
+      "direction": "ltr",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "63fb5c6b56f0bae0e449ee5da769ef3f2d91789970252fd63164377e6d8b903d",
+      "bytes": 5390
+    },
+    {
+      "board_id": "manhattan-cb-03",
+      "lang": "pl",
+      "direction": "ltr",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "c129a9b396956d5ae586a5dad857dadb7a3a4c0748a94f5cc47ba93263646b96",
+      "bytes": 5358
+    },
+    {
+      "board_id": "manhattan-cb-03",
+      "lang": "ar",
+      "direction": "rtl",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "5d4591ce8e9248efa243d390cb26c7e43fc00a7d7a4931dd6461c11030825691",
+      "bytes": 5789
+    },
+    {
+      "board_id": "manhattan-cb-03",
+      "lang": "ur",
+      "direction": "rtl",
+      "declares_language": true,
+      "declares_direction": true,
+      "differs_from_english": true,
+      "unresolved_keys": [],
+      "publisher_text_kept": true,
+      "publisher_text_isolated": true,
+      "source_reachable": true,
+      "render_content_sha256": "3a456d9376372df40f87bdb6d1537468c98bc1d36a497b31eac423c9547027d5",
+      "bytes": 5974
+    }
+  ]
+}

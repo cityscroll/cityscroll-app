@@ -58,6 +58,13 @@ function sourceRows() {
   } catch (error) {
     communityBoardLandPositions = { error: `community_board_land_positions unreadable: ${error.message}` };
   }
+  // The bounded decision reading is a retained artifact like the others. It is
+  // read here rather than at render time so a board page never depends on a
+  // publisher. Unlike the enrichments above it fails the build rather than
+  // degrading: a board page missing the decisions it is supposed to carry would
+  // read as a board that decided nothing, which is the confusion this reading
+  // exists to avoid.
+  const communityBoardResolutionPilot = readJson("site/data/community_board_resolution_pilot.json");
   const institutionEdges = {};
   const edgeKeys = new Set();
   const retainEdge = (edge) => {
@@ -128,6 +135,7 @@ function sourceRows() {
     communityBoardDistrictProjects,
     communityBoardLandPositions,
     institutionEdges,
+    communityBoardResolutionPilot,
   };
 }
 

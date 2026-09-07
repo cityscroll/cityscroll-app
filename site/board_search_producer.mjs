@@ -6,6 +6,7 @@ import {
   normalizeCommunityBoardCommitteeRegistry,
 } from "./community_board_committees.mjs";
 import { communityBoardCommitteePageHref } from "./community_board_links.mjs";
+import { communityBoardResolutionSearchTopics } from "./community_board_resolution_pilot.mjs";
 import {
   admitProjectedSearchDocument,
   cleanSearchText,
@@ -54,7 +55,7 @@ function boardAliases(identity) {
   ]);
 }
 
-export function projectBoardSearchDocument(id, row = {}, { lookup = {} } = {}) {
+export function projectBoardSearchDocument(id, row = {}, { lookup = {}, resolutionPilot = null } = {}) {
   if (lookup.schema !== READ_MODEL_SCHEMA || lookup.method !== READ_MODEL_METHOD) {
     return failedSearchProjection("not_indexed", "unsupported_community_board_read_model", ["read_model"]);
   }
@@ -68,6 +69,14 @@ export function projectBoardSearchDocument(id, row = {}, { lookup = {} } = {}) {
   const relationLabels = uniqueSearchText((Array.isArray(row.edge_summary) ? row.edge_summary : [])
     .filter((edge) => edge?.state === "matched")
     .flatMap((edge) => [edge.relation_label, edge.target_name]));
+  // A resident looking for a decision searches the issue -- the street, the
+  // case number -- not the board. These words come only from decisions the
+  // board is recorded as having taken, so a search never reaches a board on
+  // the strength of a passage it did not decide.
+  const decisionTopics = uniqueSearchText(
+    resolutionPilot ? communityBoardResolutionSearchTopics(resolutionPilot, identity.id) : [],
+    120,
+  );
 
   return admitProjectedSearchDocument({
     object_ref: identity.ref,
@@ -76,7 +85,7 @@ export function projectBoardSearchDocument(id, row = {}, { lookup = {} } = {}) {
     canonical_href: identity.href,
     title,
     summary: `${title} · Community Board · appointed local advisory body.`,
-    search_text: uniqueSearchText([title, identity.id, ...aliases, ...relationLabels])
+    search_text: uniqueSearchText([title, identity.id, ...aliases, ...relationLabels, ...decisionTopics])
       .join(" ").slice(0, SEARCH_TEXT_MAX_LENGTH),
     source_family: "community_board_constellation",
     source_observation_refs: [`community_board_registry:${identity.id}`],
@@ -93,6 +102,7 @@ export function projectBoardSearchDocument(id, row = {}, { lookup = {} } = {}) {
       borough: identity.borough,
       district: identity.district,
       aliases,
+      decision_topics: decisionTopics,
       coverage: {
         matched_categories: Number(row.summary?.matched_categories) || 0,
         category_count: Number(row.summary?.category_count) || 0,
@@ -106,7 +116,7 @@ export function projectBoardSearchDocument(id, row = {}, { lookup = {} } = {}) {
   }, "borough_qualified_community_board_identity");
 }
 
-export function buildBoardSearchDocuments(lookup = {}) {
+export function buildBoardSearchDocuments(lookup = {}, { resolutionPilot = null } = {}) {
   if (lookup.schema !== READ_MODEL_SCHEMA || lookup.method !== READ_MODEL_METHOD
     || !lookup.by_id || typeof lookup.by_id !== "object" || Array.isArray(lookup.by_id)) {
     return unavailableSearchProducerCorpus({
@@ -121,7 +131,7 @@ export function buildBoardSearchDocuments(lookup = {}) {
     .sort(([left], [right]) => left.localeCompare(right, "en-US"))
     .map(([id, row]) => freezeSearchValue({
       board_id: id,
-      ...projectBoardSearchDocument(id, row, { lookup }),
+      ...projectBoardSearchDocument(id, row, { lookup, resolutionPilot }),
     }));
   return searchProducerCorpus({
     schema: BOARD_SEARCH_PRODUCER_SCHEMA,

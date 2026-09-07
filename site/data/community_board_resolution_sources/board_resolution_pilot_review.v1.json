@@ -1,0 +1,846 @@
+{
+  "schema": "cityscroll.community_board_resolution_pilot_review.v1",
+  "version": 1,
+  "reviewed_on": "2026-09-07",
+  "scope": "A bounded review of four already-published community-board documents. It is not a citywide corpus, it establishes no automatic link between a board decision and any later outcome, and nothing here is inferred from a document that was not read.",
+  "extraction": {
+    "method": "embedded PDF text layer",
+    "optical_character_recognition_used": false,
+    "note": "Every passage below is quoted from the extracted text whose digest each document row carries."
+  },
+  "policy": {
+    "a_tally_must_name_its_own_item": true,
+    "nearest_or_first_tally_is_never_the_answer": true,
+    "committee_and_full_board_tallies_stay_distinct": true,
+    "discussion_is_not_an_adopted_condition": true,
+    "conflicting_addresses_are_retained_not_resolved": true,
+    "a_document_without_a_stated_meeting_date_is_not_attached_to_one": true
+  },
+  "documents": [
+    {
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "board_id": "manhattan-cb-03",
+      "publisher": "Manhattan Community Board 3",
+      "document_role": "minutes",
+      "published_label": "May 2026 Full Board Minutes",
+      "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf",
+      "document_sha256": "9a16cd0b65eaadf619ce72c59edbaaff8ea2169e0de9cdfabf162fb232d19f96",
+      "meeting_date": "2026-05-26",
+      "meeting_date_state": "stated_in_document",
+      "meeting_date_statement": "Meeting of Community Board 3 held on Tuesday, May 26, 2026 at 6:30pm at PS 20, 166 Essex Street.",
+      "extracted_text_sha256": "8f900f0ccc9f2acf09e6e930733f4459e6438bd4373d5e2edcf39d236b6797a4",
+      "extracted_text_bytes": 58056,
+      "candidate_blocks_observed": 14,
+      "observed_on": "2026-09-07"
+    },
+    {
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "board_id": "manhattan-cb-03",
+      "publisher": "Manhattan Community Board 3",
+      "document_role": "vote_sheet",
+      "published_label": "July 2026 Vote Sheet",
+      "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/votereso/votereso2026-07.pdf",
+      "document_sha256": "5ffb916275265d4c7b48e4ca1c81e534f59d5f9f426cf55ae84598071a0d1e07",
+      "meeting_date": null,
+      "meeting_date_state": "not_stated",
+      "meeting_date_statement": null,
+      "extracted_text_sha256": "4e3c8f06578eda1ea623aaaa5348f2b6d87e87a99cfa73c580e9e95d0ce5cefd",
+      "extracted_text_bytes": 40426,
+      "candidate_blocks_observed": 9,
+      "observed_on": "2026-09-07"
+    },
+    {
+      "document_id": "brooklyn-cb-15:2026-05-26:general-board-minutes",
+      "board_id": "brooklyn-cb-15",
+      "publisher": "Brooklyn Community Board 15",
+      "document_role": "minutes",
+      "published_label": "Monthly Board Meeting - Minutes, General Board Meeting",
+      "document_url": "https://www.nyc.gov/assets/brooklyncb15/downloads/pdf/Board-Meeting-Minutes-May-26-2026.pdf",
+      "document_sha256": "d2b4428cfb2495fcf738ce88ee37fa774a2437def44b1e288d0b33e5dcd78525",
+      "meeting_date": "2026-05-26",
+      "meeting_date_state": "stated_in_document",
+      "meeting_date_statement": "Tuesday May 26, 2026 7:00pm",
+      "extracted_text_sha256": "3c83736ad7353fc0f4fa845bff007cf271fca7daae366afa38cdd42c37432c65",
+      "extracted_text_bytes": 25734,
+      "candidate_blocks_observed": 1,
+      "observed_on": "2026-09-07"
+    },
+    {
+      "document_id": "brooklyn-cb-15:2026-06-30:general-board-minutes",
+      "board_id": "brooklyn-cb-15",
+      "publisher": "Brooklyn Community Board 15",
+      "document_role": "minutes",
+      "published_label": "Monthly Board Meeting - Minutes, General Board Meeting",
+      "document_url": "https://www.nyc.gov/assets/brooklyncb15/downloads/pdf/Board-Meeting-Minutes-June-30-2026.pdf",
+      "document_sha256": "e4b983e6cadf159d43ee52b77d62fd23c74a50e81c878a74296027b00c7b8b4c",
+      "meeting_date": "2026-06-30",
+      "meeting_date_state": "stated_in_document",
+      "meeting_date_statement": "Tuesday June 30, 2026 7:00pm",
+      "extracted_text_sha256": "f2bdd9de839f4c4424176ad9c238bb4a389de28eed0a82f342eb115a8f5bcc62",
+      "extracted_text_bytes": 19913,
+      "candidate_blocks_observed": 1,
+      "observed_on": "2026-09-07"
+    }
+  ],
+  "candidates": [
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:transportation-2",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 11,
+      "source_line": 788,
+      "admission": "published",
+      "agenda_item_label": "Transportation, Public Safety, Sanitation & Environment Committee item 2",
+      "agenda_item_text": "2. DOT: Proposal for a Bike Lane on St Marks Pl from 4th Ave to Ave A",
+      "title": "Community Board 3 Support for a Bike Lane on St. Marks Place from 3rd Ave to Avenue A",
+      "position": "supports",
+      "subject_topics": [
+        "bicycle lane",
+        "St. Marks Place",
+        "parking removal",
+        "street resurfacing",
+        "Department of Transportation",
+        "Third Avenue",
+        "Avenue A"
+      ],
+      "passages": [
+        {
+          "role": "title",
+          "source_lines": [
+            788,
+            788
+          ],
+          "text": "VOTE: TITLE: Community Board 3 Support for a Bike Lane on St. Marks Place from 3rd Ave to Avenue A"
+        },
+        {
+          "role": "operative",
+          "source_lines": [
+            815,
+            823
+          ],
+          "text": "Therefore, be it resolved that Manhattan Community Board 3 supports NYC DOT's proposal for a continuous 5' standard bike lane along St. Mark's Place from Third Avenue to Avenue A including the elimination of a parking lane on the north side of the street between 2nd and 3rd Avenues to accommodate the 5' standard bike lane on this block, and Be it further resolved, that Manhattan Community Board 3 urges DOT to work with the community and businesses to address any impacts to changed parking regulations prior to implementation, especially to those businesses located on the block between 2nd and 3rd Avenues."
+        }
+      ],
+      "passage_boundary": {
+        "ends_before_source_line": 824,
+        "next_block_first_line": "3. Street Co-naming: Stanton & Eldridge Street Intersection in Honor of Dolores \"Brownie\" Morales",
+        "rule": "the reviewed passage stops at the next numbered agenda item; a raw split keeps that line"
+      },
+      "votes": [
+        {
+          "stage": "full_board",
+          "subject_wording": "Transportation item 2",
+          "yes": 34,
+          "no": 1,
+          "abstain": 0,
+          "present_not_voting": 0,
+          "result": "passed",
+          "text": "34 YES 1 NO 0 ABS 0 PNV MOTION PASSED (Transportation item 2)",
+          "motion_ownership": "names_this_item",
+          "source_lines": [
+            886,
+            886
+          ]
+        }
+      ],
+      "excluded_votes": [
+        {
+          "subject_wording": "send Transportation item 4 to Landmarks Committee",
+          "yes": 3,
+          "no": 28,
+          "abstain": 2,
+          "present_not_voting": 0,
+          "result": "did_not_pass",
+          "text": "3 YES 28 NO 2 ABS 0 PNV MOTION DID NOT PASS (send Transportation item 4 to Landmarks Committee)",
+          "exclusion_reason": "referral_motion_on_another_item",
+          "source_lines": [
+            883,
+            883
+          ]
+        },
+        {
+          "subject_wording": "amending Transportation item 4",
+          "yes": 32,
+          "no": 2,
+          "abstain": 1,
+          "present_not_voting": 0,
+          "result": "passed",
+          "text": "32 YES 2 NO 1 ABS 0 PNV MOTION PASSED (amending Transportation item 4)",
+          "exclusion_reason": "amendment_to_another_item",
+          "source_lines": [
+            884,
+            884
+          ]
+        },
+        {
+          "subject_wording": "excluding Transportation items 2, 3, 4",
+          "yes": 35,
+          "no": 0,
+          "abstain": 0,
+          "present_not_voting": 0,
+          "result": "passed",
+          "text": "35 YES 0 NO 0 ABS 0 PNV MOTION PASSED (excluding Transportation items 2, 3, 4)",
+          "exclusion_reason": "omnibus_that_excludes_this_item",
+          "source_lines": [
+            885,
+            885
+          ]
+        },
+        {
+          "subject_wording": "Transportation item 3",
+          "yes": 34,
+          "no": 1,
+          "abstain": 0,
+          "present_not_voting": 0,
+          "result": "passed",
+          "text": "34 YES 1 NO 0 ABS 0 PNV MOTION PASSED (Transportation item 3)",
+          "exclusion_reason": "another_item",
+          "source_lines": [
+            887,
+            887
+          ]
+        },
+        {
+          "subject_wording": "Transportation item 4",
+          "yes": 34,
+          "no": 1,
+          "abstain": 0,
+          "present_not_voting": 0,
+          "result": "passed",
+          "text": "34 YES 1 NO 0 ABS 0 PNV MOTION PASSED (Transportation item 4)",
+          "exclusion_reason": "another_item",
+          "source_lines": [
+            888,
+            888
+          ]
+        }
+      ],
+      "authority": {
+        "authority_name": "New York City Department of Transportation",
+        "relation": "proposal_from",
+        "review_regime": "agency_street_design_proposal",
+        "case_number": null,
+        "is_ulurp": false
+      },
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "brooklyn-cb-15:2026-06-30:bsa-154-90-bzii",
+      "document_id": "brooklyn-cb-15:2026-06-30:general-board-minutes",
+      "board_id": "brooklyn-cb-15",
+      "ordinal": 1,
+      "source_line": 30,
+      "admission": "published",
+      "agenda_item_label": "Zoning Committee",
+      "agenda_item_text": "ZONING COMMITTEE:",
+      "title": "BSA: 154-90-BZII 730 Avenue S - lobby enclosure at the front of the building",
+      "position": "approves",
+      "subject_topics": [
+        "730 Avenue S",
+        "Board of Standards and Appeals",
+        "154-90-BZII",
+        "lobby enclosure",
+        "variance modification",
+        "East 8th Street",
+        "Avenue S"
+      ],
+      "passages": [
+        {
+          "role": "case_identity",
+          "source_lines": [
+            30,
+            31
+          ],
+          "text": "BSA: 154-90-BZII 730 Avenue S – Southwest corner of the intersection of East 8th Street and Avenue S"
+        },
+        {
+          "role": "application",
+          "source_lines": [
+            32,
+            38
+          ],
+          "text": "This application is submitted to request modifications to the variance of the “Original Grant” which allowed the construction of a two-story and cellar with a synagogue with which the premise is currently improved. In 2025, they were granted the addition of a new third and fourth floor. Now they are seeking to add a lobby enclosure at the front of the building."
+        },
+        {
+          "role": "motion",
+          "source_lines": [
+            46,
+            46
+          ],
+          "text": "A motion was made to approve by Eli Zami and seconded by Chick Pallotta"
+        }
+      ],
+      "passage_boundary": {
+        "ends_before_source_line": 64,
+        "next_block_first_line": "PUBLIC HEARING / PUBLIC SESSION:",
+        "rule": "the reviewed passage stops before the public session that follows the vote"
+      },
+      "votes": [
+        {
+          "stage": "committee",
+          "subject_wording": "Committee Vote",
+          "yes": 10,
+          "no": 0,
+          "abstain": 0,
+          "present_not_voting": null,
+          "result": "passed",
+          "text": "A Committee Vote was taken, 10 yes, 0 no and 0 abstention. The motion passed the Committee.",
+          "motion_ownership": "sole_motion_in_this_section",
+          "source_lines": [
+            55,
+            56
+          ]
+        },
+        {
+          "stage": "full_board",
+          "subject_wording": "Full Board Vote",
+          "yes": 29,
+          "no": 0,
+          "abstain": 0,
+          "present_not_voting": null,
+          "result": "passed",
+          "text": "A Full Board Vote was taken, 29 yes, 0 no and 0 abstentions. The motion passed.",
+          "motion_ownership": "sole_motion_in_this_section",
+          "source_lines": [
+            62,
+            63
+          ]
+        }
+      ],
+      "excluded_votes": [],
+      "authority": {
+        "authority_name": "New York City Board of Standards and Appeals",
+        "relation": "application_before",
+        "review_regime": "bsa_variance_modification",
+        "case_number": "154-90-BZII",
+        "is_ulurp": false
+      },
+      "address_assertions": [],
+      "non_adopted_notes": [
+        {
+          "classification": "discussion_not_adopted_condition",
+          "source_lines": [
+            41,
+            44
+          ],
+          "text": "will be confined to their existing exterior stairwell footprint. It was asked if they are planning to use impact glass and it was answered that the glass material has not been identified at this juncture but he would bring that suggestion back to the client."
+        }
+      ],
+      "section_motion_count": 1
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:sla-2",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 1,
+      "source_line": 190,
+      "admission": "held",
+      "held_reason": "conflicting_address_assertions",
+      "agenda_item_label": "SLA Licensing & Outdoor Dining Committee item 2",
+      "agenda_item_text": "2. New Excellent Hand-Pulled Noodles Inc, 106 Bayard St (aka 75 Baxter St) (op/method of operation: add karaoke, extend closing hours to 2am all days from 12am all days)",
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To-Stipulations Attached",
+      "position": "recommends_denial_unless_conditions",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [
+        {
+          "stage": "full_board",
+          "subject_wording": "excluding SLA item 3",
+          "yes": 35,
+          "no": 0,
+          "abstain": 0,
+          "present_not_voting": 0,
+          "result": "passed",
+          "text": "35 YES 0 NO 0 ABS 0 PNV MOTION PASSED (excluding SLA item 3)",
+          "motion_ownership": "omnibus_that_covers_this_item",
+          "source_lines": [
+            778,
+            778
+          ]
+        }
+      ],
+      "excluded_votes": [
+        {
+          "subject_wording": "SLA item 3",
+          "yes": 33,
+          "no": 2,
+          "abstain": 0,
+          "present_not_voting": 0,
+          "result": "passed",
+          "text": "33 YES 2 NO 0 ABS 0 PNV MOTION PASSED (SLA item 3)",
+          "exclusion_reason": "another_item",
+          "source_lines": [
+            779,
+            779
+          ]
+        }
+      ],
+      "authority": {
+        "authority_name": "New York State Liquor Authority",
+        "relation": "application_before",
+        "review_regime": "liquor_license_alteration",
+        "case_number": null,
+        "is_ulurp": false
+      },
+      "address_assertions": [
+        {
+          "source_position": "agenda_item",
+          "source_line": 188,
+          "text": "106 Bayard St (aka 75 Baxter St)"
+        },
+        {
+          "source_position": "resolution_recital",
+          "source_line": 194,
+          "text": "103 Bayard St"
+        },
+        {
+          "source_position": "resolution_operative",
+          "source_line": 221,
+          "text": "106 Bayard Street"
+        }
+      ],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-02",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 2,
+      "source_line": 246,
+      "admission": "held",
+      "held_reason": "not_reviewed_in_this_pilot",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—Stipulations",
+      "position": "recommends_denial_unless_conditions",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-03",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 3,
+      "source_line": 307,
+      "admission": "held",
+      "held_reason": "not_reviewed_in_this_pilot",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—Stipulations",
+      "position": "recommends_denial_unless_conditions",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-04",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 4,
+      "source_line": 359,
+      "admission": "held",
+      "held_reason": "not_reviewed_in_this_pilot",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—Stipulations",
+      "position": "recommends_denial_unless_conditions",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-05",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 5,
+      "source_line": 417,
+      "admission": "held",
+      "held_reason": "not_reviewed_in_this_pilot",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—Stipulations",
+      "position": "recommends_denial_unless_conditions",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-06",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 6,
+      "source_line": 474,
+      "admission": "held",
+      "held_reason": "not_reviewed_in_this_pilot",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—Stipulations",
+      "position": "recommends_denial_unless_conditions",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-07",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 7,
+      "source_line": 522,
+      "admission": "held",
+      "held_reason": "not_reviewed_in_this_pilot",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—Stipulations",
+      "position": "recommends_denial_unless_conditions",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-08",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 8,
+      "source_line": 574,
+      "admission": "held",
+      "held_reason": "not_reviewed_in_this_pilot",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—Stipulations",
+      "position": "recommends_denial_unless_conditions",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-09",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 9,
+      "source_line": 624,
+      "admission": "held",
+      "held_reason": "not_reviewed_in_this_pilot",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—Stipulations",
+      "position": "recommends_denial_unless_conditions",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-10",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 10,
+      "source_line": 679,
+      "admission": "held",
+      "held_reason": "not_reviewed_in_this_pilot",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—Stipulations",
+      "position": "recommends_denial_unless_conditions",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-12",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 12,
+      "source_line": 825,
+      "admission": "held",
+      "held_reason": "not_reviewed_in_this_pilot",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Community Board 3 Support for Co-naming Rivington Street Between Stanton and Eldridge",
+      "position": "supports",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-13",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 13,
+      "source_line": 845,
+      "admission": "held",
+      "held_reason": "passage_predates_recorded_amendment",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Community Board 3 Support of a submission to the Landmarks Preservation Commission",
+      "position": "supports",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-14",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 14,
+      "source_line": 873,
+      "admission": "held",
+      "held_reason": "not_reviewed_in_this_pilot",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Community Board 3 support for FIFA Block Party, on July 19 on Broome Street between Essex",
+      "position": "supports",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-07:candidate-01",
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 1,
+      "source_line": 54,
+      "admission": "held",
+      "held_reason": "document_states_no_meeting_date",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "To Name the Multi-Purpose Field at the Northwest Corner of Tompkins Square Park",
+      "position": "unclassified",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-07:candidate-02",
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 2,
+      "source_line": 111,
+      "admission": "held",
+      "held_reason": "document_states_no_meeting_date",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—",
+      "position": "unclassified",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-07:candidate-03",
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 3,
+      "source_line": 173,
+      "admission": "held",
+      "held_reason": "document_states_no_meeting_date",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—",
+      "position": "unclassified",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-07:candidate-04",
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 4,
+      "source_line": 234,
+      "admission": "held",
+      "held_reason": "document_states_no_meeting_date",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—",
+      "position": "unclassified",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-07:candidate-05",
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 5,
+      "source_line": 296,
+      "admission": "held",
+      "held_reason": "document_states_no_meeting_date",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—",
+      "position": "unclassified",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-07:candidate-06",
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 6,
+      "source_line": 369,
+      "admission": "held",
+      "held_reason": "document_states_no_meeting_date",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Community Board 3 Recommendation To Deny",
+      "position": "unclassified",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-07:candidate-07",
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 7,
+      "source_line": 477,
+      "admission": "held",
+      "held_reason": "document_states_no_meeting_date",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—",
+      "position": "unclassified",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-07:candidate-08",
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 8,
+      "source_line": 533,
+      "admission": "held",
+      "held_reason": "document_states_no_meeting_date",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—",
+      "position": "unclassified",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-07:candidate-09",
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "board_id": "manhattan-cb-03",
+      "ordinal": 9,
+      "source_line": 663,
+      "admission": "held",
+      "held_reason": "document_states_no_meeting_date",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Community Board 3 recommendation to approve Certificate of appropriateness for",
+      "position": "unclassified",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    },
+    {
+      "candidate_id": "brooklyn-cb-15:2026-05-26:candidate-01",
+      "document_id": "brooklyn-cb-15:2026-05-26:general-board-minutes",
+      "board_id": "brooklyn-cb-15",
+      "ordinal": 1,
+      "source_line": 44,
+      "admission": "held",
+      "held_reason": "not_reviewed_in_this_pilot",
+      "agenda_item_label": null,
+      "agenda_item_text": null,
+      "title": "Resolution to opt in to an earlier Friday set out time for Saturday collections",
+      "position": "approves",
+      "subject_topics": [],
+      "passages": [],
+      "votes": [],
+      "excluded_votes": [],
+      "authority": null,
+      "address_assertions": [],
+      "non_adopted_notes": []
+    }
+  ]
+}

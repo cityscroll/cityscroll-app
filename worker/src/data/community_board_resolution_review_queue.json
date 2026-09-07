@@ -1,0 +1,813 @@
+{
+  "schema": "cityscroll.community_board_resolution_review_queue.v1",
+  "version": 1,
+  "reviewed_on": "2026-09-07",
+  "documents": [
+    {
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "board_id": "manhattan-cb-03",
+      "publisher": "Manhattan Community Board 3",
+      "document_role": "minutes",
+      "published_label": "May 2026 Full Board Minutes",
+      "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf",
+      "document_sha256": "9a16cd0b65eaadf619ce72c59edbaaff8ea2169e0de9cdfabf162fb232d19f96",
+      "meeting_date": "2026-05-26",
+      "meeting_date_state": "stated_in_document",
+      "extracted_text_sha256": "8f900f0ccc9f2acf09e6e930733f4459e6438bd4373d5e2edcf39d236b6797a4",
+      "candidate_blocks_observed": 14,
+      "observed_on": "2026-09-07"
+    },
+    {
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "board_id": "manhattan-cb-03",
+      "publisher": "Manhattan Community Board 3",
+      "document_role": "vote_sheet",
+      "published_label": "July 2026 Vote Sheet",
+      "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/votereso/votereso2026-07.pdf",
+      "document_sha256": "5ffb916275265d4c7b48e4ca1c81e534f59d5f9f426cf55ae84598071a0d1e07",
+      "meeting_date": null,
+      "meeting_date_state": "not_stated",
+      "extracted_text_sha256": "4e3c8f06578eda1ea623aaaa5348f2b6d87e87a99cfa73c580e9e95d0ce5cefd",
+      "candidate_blocks_observed": 9,
+      "observed_on": "2026-09-07"
+    },
+    {
+      "document_id": "brooklyn-cb-15:2026-05-26:general-board-minutes",
+      "board_id": "brooklyn-cb-15",
+      "publisher": "Brooklyn Community Board 15",
+      "document_role": "minutes",
+      "published_label": "Monthly Board Meeting - Minutes, General Board Meeting",
+      "document_url": "https://www.nyc.gov/assets/brooklyncb15/downloads/pdf/Board-Meeting-Minutes-May-26-2026.pdf",
+      "document_sha256": "d2b4428cfb2495fcf738ce88ee37fa774a2437def44b1e288d0b33e5dcd78525",
+      "meeting_date": "2026-05-26",
+      "meeting_date_state": "stated_in_document",
+      "extracted_text_sha256": "3c83736ad7353fc0f4fa845bff007cf271fca7daae366afa38cdd42c37432c65",
+      "candidate_blocks_observed": 1,
+      "observed_on": "2026-09-07"
+    },
+    {
+      "document_id": "brooklyn-cb-15:2026-06-30:general-board-minutes",
+      "board_id": "brooklyn-cb-15",
+      "publisher": "Brooklyn Community Board 15",
+      "document_role": "minutes",
+      "published_label": "Monthly Board Meeting - Minutes, General Board Meeting",
+      "document_url": "https://www.nyc.gov/assets/brooklyncb15/downloads/pdf/Board-Meeting-Minutes-June-30-2026.pdf",
+      "document_sha256": "e4b983e6cadf159d43ee52b77d62fd23c74a50e81c878a74296027b00c7b8b4c",
+      "meeting_date": "2026-06-30",
+      "meeting_date_state": "stated_in_document",
+      "extracted_text_sha256": "f2bdd9de839f4c4424176ad9c238bb4a389de28eed0a82f342eb115a8f5bcc62",
+      "candidate_blocks_observed": 1,
+      "observed_on": "2026-09-07"
+    }
+  ],
+  "held_candidates": [
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:sla-2",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To-Stipulations Attached",
+      "position": "recommends_denial_unless_conditions",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "minutes",
+        "published_label": "May 2026 Full Board Minutes",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf",
+        "document_sha256": "9a16cd0b65eaadf619ce72c59edbaaff8ea2169e0de9cdfabf162fb232d19f96",
+        "meeting_date": "2026-05-26",
+        "meeting_date_state": "stated_in_document",
+        "extracted_text_sha256": "8f900f0ccc9f2acf09e6e930733f4459e6438bd4373d5e2edcf39d236b6797a4",
+        "candidate_blocks_observed": 14,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [
+        {
+          "yes": 35,
+          "no": 0,
+          "abstain": 0,
+          "present_not_voting": 0,
+          "result": "passed",
+          "subject_wording": "excluding SLA item 3",
+          "text": "35 YES 0 NO 0 ABS 0 PNV MOTION PASSED (excluding SLA item 3)",
+          "source_lines": [
+            778,
+            778
+          ],
+          "stage": "full_board",
+          "motion_ownership": "omnibus_that_covers_this_item"
+        }
+      ],
+      "excluded_votes": [
+        {
+          "yes": 33,
+          "no": 2,
+          "abstain": 0,
+          "present_not_voting": 0,
+          "result": "passed",
+          "subject_wording": "SLA item 3",
+          "text": "33 YES 2 NO 0 ABS 0 PNV MOTION PASSED (SLA item 3)",
+          "source_lines": [
+            779,
+            779
+          ],
+          "exclusion_reason": "another_item"
+        }
+      ],
+      "address": {
+        "assertions": [
+          {
+            "source_position": "agenda_item",
+            "text": "106 Bayard St (aka 75 Baxter St)"
+          },
+          {
+            "source_position": "resolution_recital",
+            "text": "103 Bayard St"
+          },
+          {
+            "source_position": "resolution_operative",
+            "text": "106 Bayard Street"
+          }
+        ],
+        "conflicting": true,
+        "property_match_withheld": true
+      },
+      "held_reason": "conflicting_address_assertions"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-02",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—Stipulations",
+      "position": "recommends_denial_unless_conditions",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "minutes",
+        "published_label": "May 2026 Full Board Minutes",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf",
+        "document_sha256": "9a16cd0b65eaadf619ce72c59edbaaff8ea2169e0de9cdfabf162fb232d19f96",
+        "meeting_date": "2026-05-26",
+        "meeting_date_state": "stated_in_document",
+        "extracted_text_sha256": "8f900f0ccc9f2acf09e6e930733f4459e6438bd4373d5e2edcf39d236b6797a4",
+        "candidate_blocks_observed": 14,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "not_reviewed_in_this_pilot"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-03",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—Stipulations",
+      "position": "recommends_denial_unless_conditions",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "minutes",
+        "published_label": "May 2026 Full Board Minutes",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf",
+        "document_sha256": "9a16cd0b65eaadf619ce72c59edbaaff8ea2169e0de9cdfabf162fb232d19f96",
+        "meeting_date": "2026-05-26",
+        "meeting_date_state": "stated_in_document",
+        "extracted_text_sha256": "8f900f0ccc9f2acf09e6e930733f4459e6438bd4373d5e2edcf39d236b6797a4",
+        "candidate_blocks_observed": 14,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "not_reviewed_in_this_pilot"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-04",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—Stipulations",
+      "position": "recommends_denial_unless_conditions",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "minutes",
+        "published_label": "May 2026 Full Board Minutes",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf",
+        "document_sha256": "9a16cd0b65eaadf619ce72c59edbaaff8ea2169e0de9cdfabf162fb232d19f96",
+        "meeting_date": "2026-05-26",
+        "meeting_date_state": "stated_in_document",
+        "extracted_text_sha256": "8f900f0ccc9f2acf09e6e930733f4459e6438bd4373d5e2edcf39d236b6797a4",
+        "candidate_blocks_observed": 14,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "not_reviewed_in_this_pilot"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-05",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—Stipulations",
+      "position": "recommends_denial_unless_conditions",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "minutes",
+        "published_label": "May 2026 Full Board Minutes",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf",
+        "document_sha256": "9a16cd0b65eaadf619ce72c59edbaaff8ea2169e0de9cdfabf162fb232d19f96",
+        "meeting_date": "2026-05-26",
+        "meeting_date_state": "stated_in_document",
+        "extracted_text_sha256": "8f900f0ccc9f2acf09e6e930733f4459e6438bd4373d5e2edcf39d236b6797a4",
+        "candidate_blocks_observed": 14,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "not_reviewed_in_this_pilot"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-06",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—Stipulations",
+      "position": "recommends_denial_unless_conditions",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "minutes",
+        "published_label": "May 2026 Full Board Minutes",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf",
+        "document_sha256": "9a16cd0b65eaadf619ce72c59edbaaff8ea2169e0de9cdfabf162fb232d19f96",
+        "meeting_date": "2026-05-26",
+        "meeting_date_state": "stated_in_document",
+        "extracted_text_sha256": "8f900f0ccc9f2acf09e6e930733f4459e6438bd4373d5e2edcf39d236b6797a4",
+        "candidate_blocks_observed": 14,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "not_reviewed_in_this_pilot"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-07",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—Stipulations",
+      "position": "recommends_denial_unless_conditions",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "minutes",
+        "published_label": "May 2026 Full Board Minutes",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf",
+        "document_sha256": "9a16cd0b65eaadf619ce72c59edbaaff8ea2169e0de9cdfabf162fb232d19f96",
+        "meeting_date": "2026-05-26",
+        "meeting_date_state": "stated_in_document",
+        "extracted_text_sha256": "8f900f0ccc9f2acf09e6e930733f4459e6438bd4373d5e2edcf39d236b6797a4",
+        "candidate_blocks_observed": 14,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "not_reviewed_in_this_pilot"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-08",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—Stipulations",
+      "position": "recommends_denial_unless_conditions",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "minutes",
+        "published_label": "May 2026 Full Board Minutes",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf",
+        "document_sha256": "9a16cd0b65eaadf619ce72c59edbaaff8ea2169e0de9cdfabf162fb232d19f96",
+        "meeting_date": "2026-05-26",
+        "meeting_date_state": "stated_in_document",
+        "extracted_text_sha256": "8f900f0ccc9f2acf09e6e930733f4459e6438bd4373d5e2edcf39d236b6797a4",
+        "candidate_blocks_observed": 14,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "not_reviewed_in_this_pilot"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-09",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—Stipulations",
+      "position": "recommends_denial_unless_conditions",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "minutes",
+        "published_label": "May 2026 Full Board Minutes",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf",
+        "document_sha256": "9a16cd0b65eaadf619ce72c59edbaaff8ea2169e0de9cdfabf162fb232d19f96",
+        "meeting_date": "2026-05-26",
+        "meeting_date_state": "stated_in_document",
+        "extracted_text_sha256": "8f900f0ccc9f2acf09e6e930733f4459e6438bd4373d5e2edcf39d236b6797a4",
+        "candidate_blocks_observed": 14,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "not_reviewed_in_this_pilot"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-10",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—Stipulations",
+      "position": "recommends_denial_unless_conditions",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "minutes",
+        "published_label": "May 2026 Full Board Minutes",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf",
+        "document_sha256": "9a16cd0b65eaadf619ce72c59edbaaff8ea2169e0de9cdfabf162fb232d19f96",
+        "meeting_date": "2026-05-26",
+        "meeting_date_state": "stated_in_document",
+        "extracted_text_sha256": "8f900f0ccc9f2acf09e6e930733f4459e6438bd4373d5e2edcf39d236b6797a4",
+        "candidate_blocks_observed": 14,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "not_reviewed_in_this_pilot"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-12",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "title": "Community Board 3 Support for Co-naming Rivington Street Between Stanton and Eldridge",
+      "position": "supports",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "minutes",
+        "published_label": "May 2026 Full Board Minutes",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf",
+        "document_sha256": "9a16cd0b65eaadf619ce72c59edbaaff8ea2169e0de9cdfabf162fb232d19f96",
+        "meeting_date": "2026-05-26",
+        "meeting_date_state": "stated_in_document",
+        "extracted_text_sha256": "8f900f0ccc9f2acf09e6e930733f4459e6438bd4373d5e2edcf39d236b6797a4",
+        "candidate_blocks_observed": 14,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "not_reviewed_in_this_pilot"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-13",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "title": "Community Board 3 Support of a submission to the Landmarks Preservation Commission",
+      "position": "supports",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "minutes",
+        "published_label": "May 2026 Full Board Minutes",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf",
+        "document_sha256": "9a16cd0b65eaadf619ce72c59edbaaff8ea2169e0de9cdfabf162fb232d19f96",
+        "meeting_date": "2026-05-26",
+        "meeting_date_state": "stated_in_document",
+        "extracted_text_sha256": "8f900f0ccc9f2acf09e6e930733f4459e6438bd4373d5e2edcf39d236b6797a4",
+        "candidate_blocks_observed": 14,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "passage_predates_recorded_amendment"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:candidate-14",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+      "title": "Community Board 3 support for FIFA Block Party, on July 19 on Broome Street between Essex",
+      "position": "supports",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "minutes",
+        "published_label": "May 2026 Full Board Minutes",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf",
+        "document_sha256": "9a16cd0b65eaadf619ce72c59edbaaff8ea2169e0de9cdfabf162fb232d19f96",
+        "meeting_date": "2026-05-26",
+        "meeting_date_state": "stated_in_document",
+        "extracted_text_sha256": "8f900f0ccc9f2acf09e6e930733f4459e6438bd4373d5e2edcf39d236b6797a4",
+        "candidate_blocks_observed": 14,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "not_reviewed_in_this_pilot"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-07:candidate-01",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "title": "To Name the Multi-Purpose Field at the Northwest Corner of Tompkins Square Park",
+      "position": "unclassified",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "vote_sheet",
+        "published_label": "July 2026 Vote Sheet",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/votereso/votereso2026-07.pdf",
+        "document_sha256": "5ffb916275265d4c7b48e4ca1c81e534f59d5f9f426cf55ae84598071a0d1e07",
+        "meeting_date": null,
+        "meeting_date_state": "not_stated",
+        "extracted_text_sha256": "4e3c8f06578eda1ea623aaaa5348f2b6d87e87a99cfa73c580e9e95d0ce5cefd",
+        "candidate_blocks_observed": 9,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "document_states_no_meeting_date"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-07:candidate-02",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—",
+      "position": "unclassified",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "vote_sheet",
+        "published_label": "July 2026 Vote Sheet",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/votereso/votereso2026-07.pdf",
+        "document_sha256": "5ffb916275265d4c7b48e4ca1c81e534f59d5f9f426cf55ae84598071a0d1e07",
+        "meeting_date": null,
+        "meeting_date_state": "not_stated",
+        "extracted_text_sha256": "4e3c8f06578eda1ea623aaaa5348f2b6d87e87a99cfa73c580e9e95d0ce5cefd",
+        "candidate_blocks_observed": 9,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "document_states_no_meeting_date"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-07:candidate-03",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—",
+      "position": "unclassified",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "vote_sheet",
+        "published_label": "July 2026 Vote Sheet",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/votereso/votereso2026-07.pdf",
+        "document_sha256": "5ffb916275265d4c7b48e4ca1c81e534f59d5f9f426cf55ae84598071a0d1e07",
+        "meeting_date": null,
+        "meeting_date_state": "not_stated",
+        "extracted_text_sha256": "4e3c8f06578eda1ea623aaaa5348f2b6d87e87a99cfa73c580e9e95d0ce5cefd",
+        "candidate_blocks_observed": 9,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "document_states_no_meeting_date"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-07:candidate-04",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—",
+      "position": "unclassified",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "vote_sheet",
+        "published_label": "July 2026 Vote Sheet",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/votereso/votereso2026-07.pdf",
+        "document_sha256": "5ffb916275265d4c7b48e4ca1c81e534f59d5f9f426cf55ae84598071a0d1e07",
+        "meeting_date": null,
+        "meeting_date_state": "not_stated",
+        "extracted_text_sha256": "4e3c8f06578eda1ea623aaaa5348f2b6d87e87a99cfa73c580e9e95d0ce5cefd",
+        "candidate_blocks_observed": 9,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "document_states_no_meeting_date"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-07:candidate-05",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—",
+      "position": "unclassified",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "vote_sheet",
+        "published_label": "July 2026 Vote Sheet",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/votereso/votereso2026-07.pdf",
+        "document_sha256": "5ffb916275265d4c7b48e4ca1c81e534f59d5f9f426cf55ae84598071a0d1e07",
+        "meeting_date": null,
+        "meeting_date_state": "not_stated",
+        "extracted_text_sha256": "4e3c8f06578eda1ea623aaaa5348f2b6d87e87a99cfa73c580e9e95d0ce5cefd",
+        "candidate_blocks_observed": 9,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "document_states_no_meeting_date"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-07:candidate-06",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "title": "Community Board 3 Recommendation To Deny",
+      "position": "unclassified",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "vote_sheet",
+        "published_label": "July 2026 Vote Sheet",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/votereso/votereso2026-07.pdf",
+        "document_sha256": "5ffb916275265d4c7b48e4ca1c81e534f59d5f9f426cf55ae84598071a0d1e07",
+        "meeting_date": null,
+        "meeting_date_state": "not_stated",
+        "extracted_text_sha256": "4e3c8f06578eda1ea623aaaa5348f2b6d87e87a99cfa73c580e9e95d0ce5cefd",
+        "candidate_blocks_observed": 9,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "document_states_no_meeting_date"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-07:candidate-07",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—",
+      "position": "unclassified",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "vote_sheet",
+        "published_label": "July 2026 Vote Sheet",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/votereso/votereso2026-07.pdf",
+        "document_sha256": "5ffb916275265d4c7b48e4ca1c81e534f59d5f9f426cf55ae84598071a0d1e07",
+        "meeting_date": null,
+        "meeting_date_state": "not_stated",
+        "extracted_text_sha256": "4e3c8f06578eda1ea623aaaa5348f2b6d87e87a99cfa73c580e9e95d0ce5cefd",
+        "candidate_blocks_observed": 9,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "document_states_no_meeting_date"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-07:candidate-08",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "title": "Community Board 3 Recommendation To Deny Unless Stipulations Agreed To—",
+      "position": "unclassified",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "vote_sheet",
+        "published_label": "July 2026 Vote Sheet",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/votereso/votereso2026-07.pdf",
+        "document_sha256": "5ffb916275265d4c7b48e4ca1c81e534f59d5f9f426cf55ae84598071a0d1e07",
+        "meeting_date": null,
+        "meeting_date_state": "not_stated",
+        "extracted_text_sha256": "4e3c8f06578eda1ea623aaaa5348f2b6d87e87a99cfa73c580e9e95d0ce5cefd",
+        "candidate_blocks_observed": 9,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "document_states_no_meeting_date"
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-07:candidate-09",
+      "board_id": "manhattan-cb-03",
+      "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+      "title": "Community Board 3 recommendation to approve Certificate of appropriateness for",
+      "position": "unclassified",
+      "admission": "held",
+      "document": {
+        "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+        "board_id": "manhattan-cb-03",
+        "publisher": "Manhattan Community Board 3",
+        "document_role": "vote_sheet",
+        "published_label": "July 2026 Vote Sheet",
+        "document_url": "https://www.nyc.gov/assets/manhattancb3/downloads/votereso/votereso2026-07.pdf",
+        "document_sha256": "5ffb916275265d4c7b48e4ca1c81e534f59d5f9f426cf55ae84598071a0d1e07",
+        "meeting_date": null,
+        "meeting_date_state": "not_stated",
+        "extracted_text_sha256": "4e3c8f06578eda1ea623aaaa5348f2b6d87e87a99cfa73c580e9e95d0ce5cefd",
+        "candidate_blocks_observed": 9,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "document_states_no_meeting_date"
+    },
+    {
+      "candidate_id": "brooklyn-cb-15:2026-05-26:candidate-01",
+      "board_id": "brooklyn-cb-15",
+      "document_id": "brooklyn-cb-15:2026-05-26:general-board-minutes",
+      "title": "Resolution to opt in to an earlier Friday set out time for Saturday collections",
+      "position": "approves",
+      "admission": "held",
+      "document": {
+        "document_id": "brooklyn-cb-15:2026-05-26:general-board-minutes",
+        "board_id": "brooklyn-cb-15",
+        "publisher": "Brooklyn Community Board 15",
+        "document_role": "minutes",
+        "published_label": "Monthly Board Meeting - Minutes, General Board Meeting",
+        "document_url": "https://www.nyc.gov/assets/brooklyncb15/downloads/pdf/Board-Meeting-Minutes-May-26-2026.pdf",
+        "document_sha256": "d2b4428cfb2495fcf738ce88ee37fa774a2437def44b1e288d0b33e5dcd78525",
+        "meeting_date": "2026-05-26",
+        "meeting_date_state": "stated_in_document",
+        "extracted_text_sha256": "3c83736ad7353fc0f4fa845bff007cf271fca7daae366afa38cdd42c37432c65",
+        "candidate_blocks_observed": 1,
+        "observed_on": "2026-09-07"
+      },
+      "votes": [],
+      "excluded_votes": [],
+      "address": {
+        "assertions": [],
+        "conflicting": false,
+        "property_match_withheld": false
+      },
+      "held_reason": "not_reviewed_in_this_pilot"
+    }
+  ],
+  "coverage": {
+    "documents": 4,
+    "boards": 2,
+    "candidate_blocks_observed": 25,
+    "candidates_reviewed": 25,
+    "decisions_published": 2,
+    "candidates_held": 23,
+    "held_reasons": {
+      "conflicting_address_assertions": 1,
+      "document_states_no_meeting_date": 9,
+      "not_reviewed_in_this_pilot": 12,
+      "passage_predates_recorded_amendment": 1
+    }
+  }
+}

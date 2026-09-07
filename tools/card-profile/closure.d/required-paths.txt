@@ -462,6 +462,7 @@ site/data/community_board_meeting_index/shard-001.json
 site/data/community_board_meeting_index/shard-002.json
 site/data/community_board_meeting_index/shard-003.json
 site/data/community_board_people.json
+site/data/community_board_resolution_pilot.json
 site/data/comparative_story_signals.json
 site/data/council_land_matter_links.json
 site/data/district_activity.json
@@ -1991,6 +1992,7 @@ worker/src/data/attachment_related_notices.json
 worker/src/data/city_record_pin_chain_warehouse_lookup.json
 worker/src/data/community_board_districts.json
 worker/src/data/community_board_geography_lookup.json
+worker/src/data/community_board_resolution_review_queue.json
 worker/src/data/district_boundaries.json
 worker/src/data/doing_business_warehouse_lookup.json
 worker/src/data/entity_intelligence_lookup.json
