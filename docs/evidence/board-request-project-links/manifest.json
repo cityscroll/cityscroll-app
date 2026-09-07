@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.board_request_project_capture.v1",
-  "captured_at": "2026-09-07T18:28:50.503931+00:00",
-  "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+  "captured_at": "2026-09-07T19:15:35.276848+00:00",
+  "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
   "data_vintage": {
     "community_board_budget_register": "2026-09-07T11:54:00.629Z",
     "community_board_budget_register_as_of": "2026-09-07",
@@ -49,7 +49,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -129,7 +129,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -209,7 +209,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -272,7 +272,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -335,7 +335,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -417,7 +417,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -499,7 +499,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -553,7 +553,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -607,7 +607,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -669,7 +669,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -738,7 +738,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -807,7 +807,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -876,7 +876,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -945,7 +945,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -1014,7 +1014,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -1083,7 +1083,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -1152,7 +1152,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -1221,7 +1221,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -1290,7 +1290,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -1359,7 +1359,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -1428,7 +1428,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -1500,7 +1500,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -1561,7 +1561,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
@@ -1622,7 +1622,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8251b462943c58727a666d0b283f384cce15cfcc",
+      "revision": "aa8ff40cd6ba8590826b427636a74c01fb34c105",
       "data_vintage": {
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
         "community_board_budget_register_as_of": "2026-09-07",
