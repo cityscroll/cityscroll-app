@@ -90356,6 +90356,7 @@
     },
     {
       "request_id": "20260805006",
+      "meeting_id": "meeting:city_record:20260805006",
       "agency_name": "Transportation",
       "short_title": "Dining Out NYC Hearing",
       "start_date": "2026-08-14T00:00:00.000",
@@ -90432,7 +90433,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260805006",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -92394,6 +92394,7 @@
     },
     {
       "request_id": "20260602001",
+      "meeting_id": "meeting:city_record:20260602001",
       "agency_name": "Office of Labor Relations",
       "short_title": "City of New York Deferred Compensation Plan Board Meeting",
       "start_date": "2026-08-26T00:00:00.000",
@@ -92432,7 +92433,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260602001",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -94719,6 +94719,7 @@
     },
     {
       "request_id": "20260714029",
+      "meeting_id": "meeting:city_record:20260714029",
       "agency_name": "Transportation",
       "short_title": "Notice of Public Hearing and Opportunity to Comment-  FHV and Taxi Parking at Commercial Meters and Commercial Vehicle Markings",
       "start_date": "2026-07-22T00:00:00.000",
@@ -94740,7 +94741,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260714029",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -94809,6 +94809,7 @@
     },
     {
       "request_id": "20260811003",
+      "meeting_id": "meeting:city_record:20260811003",
       "agency_name": "Landmarks Preservation Commission",
       "short_title": "September 1, 2026, Public Hearing Agenda CR",
       "start_date": "2026-08-18T00:00:00.000",
@@ -94851,7 +94852,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260811003",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -96990,6 +96990,7 @@
     },
     {
       "request_id": "20260715041",
+      "meeting_id": "meeting:city_record:20260715041",
       "agency_name": "Buildings",
       "short_title": "Amendments to Rules Relating to the Energy Conservation Code",
       "start_date": "2026-07-23T00:00:00.000",
@@ -97011,7 +97012,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260715041",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -97080,6 +97080,7 @@
     },
     {
       "request_id": "20260728028",
+      "meeting_id": "meeting:city_record:20260728028",
       "agency_name": "Transportation",
       "short_title": "Dining Out NYC Public Hearings",
       "start_date": "2026-08-07T00:00:00.000",
@@ -97156,7 +97157,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260728028",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -97723,6 +97723,7 @@
     },
     {
       "request_id": "20260730025",
+      "meeting_id": "meeting:city_record:20260730025",
       "agency_name": "Transportation",
       "short_title": "August 26, 2026 PUBLIC HEARING",
       "start_date": "2026-08-06T00:00:00.000",
@@ -97765,7 +97766,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260730025",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -97834,6 +97834,7 @@
     },
     {
       "request_id": "20260805038",
+      "meeting_id": "meeting:city_record:20260805038",
       "agency_name": "City Planning Commission",
       "short_title": "City Planning Commission Public Hearing",
       "start_date": "2026-08-12T00:00:00.000",
@@ -97876,7 +97877,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260805038",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -97945,6 +97945,7 @@
     },
     {
       "request_id": "20260722029",
+      "meeting_id": "meeting:city_record:20260722029",
       "agency_name": "Board of Education Retirement System",
       "short_title": "BERS EXECUTIVE COMMITTEE MEETING",
       "start_date": "2026-08-17T00:00:00.000",
@@ -97986,7 +97987,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260722029",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -98055,6 +98055,7 @@
     },
     {
       "request_id": "20260708002",
+      "meeting_id": "meeting:city_record:20260708002",
       "agency_name": "Sanitation",
       "short_title": "DSNY Proposed Implementation Dates Regarding Brooklyn East, Manhattan Northeast, Queens West, and Manhattan West CWZs",
       "start_date": "2026-07-15T00:00:00.000",
@@ -98091,7 +98092,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260708002",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -98658,6 +98658,7 @@
     },
     {
       "request_id": "20260729019",
+      "meeting_id": "meeting:city_record:20260729019",
       "agency_name": "Citywide Administrative Services",
       "short_title": "Public Hearing \u001a Office of Technology & Innovation [858] \u001a NYS Civil Service Commission Proposal",
       "start_date": "2026-08-05T00:00:00.000",
@@ -98679,7 +98680,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260729019",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -98748,6 +98748,7 @@
     },
     {
       "request_id": "20260713006",
+      "meeting_id": "meeting:city_record:20260713006",
       "agency_name": "Consumer and Worker Protection",
       "short_title": "DCWP NOH Rules Relating to Waitlist for GV Licenses",
       "start_date": "2026-07-20T00:00:00.000",
@@ -98769,7 +98770,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260713006",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -98838,6 +98838,7 @@
     },
     {
       "request_id": "20260729005",
+      "meeting_id": "meeting:city_record:20260729005",
       "agency_name": "Citywide Administrative Services",
       "short_title": "NYPD IT Infrastructure Engineer Public Hearing.",
       "start_date": "2026-08-05T00:00:00.000",
@@ -98859,7 +98860,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260729005",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -98928,6 +98928,7 @@
     },
     {
       "request_id": "20260729020",
+      "meeting_id": "meeting:city_record:20260729020",
       "agency_name": "Citywide Administrative Services",
       "short_title": "Public Hearing \u001a Office of The Comptroller [015] \u001a NYS Civil Service Commission Proposal",
       "start_date": "2026-08-05T00:00:00.000",
@@ -98949,7 +98950,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260729020",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -99267,6 +99267,7 @@
     },
     {
       "request_id": "20260727031",
+      "meeting_id": "meeting:city_record:20260727031",
       "agency_name": "Landmarks Preservation Commission",
       "short_title": "AUGUST 18, 2026 PUBLIC HEARING AGENDA",
       "start_date": "2026-08-04T00:00:00.000",
@@ -99309,7 +99310,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260727031",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -99378,6 +99378,7 @@
     },
     {
       "request_id": "20260810053",
+      "meeting_id": "meeting:city_record:20260810053",
       "agency_name": "Public Design Commission",
       "short_title": "Design Commission Meeting Agenda, Monday, August 17, 2026",
       "start_date": "2026-08-13T00:00:00.000",
@@ -99491,7 +99492,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260810053",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -99802,6 +99802,7 @@
     },
     {
       "request_id": "20260723005",
+      "meeting_id": "meeting:city_record:20260723005",
       "agency_name": "Transportation",
       "short_title": "Dining Out NYC Public Hearings",
       "start_date": "2026-07-29T00:00:00.000",
@@ -99875,7 +99876,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260723005",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -99944,6 +99944,7 @@
     },
     {
       "request_id": "20260706044",
+      "meeting_id": "meeting:city_record:20260706044",
       "agency_name": "Taxi and Limousine Commission",
       "short_title": "Driver Relief Penalty Reduction and Medallion Relief Program Rule Proposal.",
       "start_date": "2026-07-13T00:00:00.000",
@@ -99986,7 +99987,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260706044",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -100304,6 +100304,7 @@
     },
     {
       "request_id": "20260710032",
+      "meeting_id": "meeting:city_record:20260710032",
       "agency_name": "Franchise and Concession Review Committee",
       "short_title": "FCRC AUGUST PUBLIC MEETING",
       "start_date": "2026-07-24T00:00:00.000",
@@ -100349,7 +100350,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260710032",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -100418,6 +100418,7 @@
     },
     {
       "request_id": "20260729004",
+      "meeting_id": "meeting:city_record:20260729004",
       "agency_name": "City Council",
       "short_title": "8-12-26 Subcommittee on Zoning and Franchises meeting",
       "start_date": "2026-08-06T00:00:00.000",
@@ -100460,7 +100461,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260729004",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -100973,6 +100973,7 @@
     },
     {
       "request_id": "20260618040",
+      "meeting_id": "meeting:city_record:20260618040",
       "agency_name": "Citywide Administrative Services",
       "short_title": "FOR ACQUISITION - portions of  Block 3264, Lot 20; Block 3238, Lots 50, 52, and 126; and Block 3245, Lot 12",
       "start_date": "2026-06-26T00:00:00.000",
@@ -101049,7 +101050,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260618040",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -101118,6 +101118,7 @@
     },
     {
       "request_id": "20260721023",
+      "meeting_id": "meeting:city_record:20260721023",
       "agency_name": "City Planning Commission",
       "short_title": "City Planning Commission Public Hearing",
       "start_date": "2026-07-29T00:00:00.000",
@@ -101160,7 +101161,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260721023",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -101229,6 +101229,7 @@
     },
     {
       "request_id": "20260709028",
+      "meeting_id": "meeting:city_record:20260709028",
       "agency_name": "Police Department",
       "short_title": "Concession for Operation and Maintenance of Cafeteria at the NYPD Police Academy",
       "start_date": "2026-07-16T00:00:00.000",
@@ -101292,7 +101293,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260709028",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -101361,6 +101361,7 @@
     },
     {
       "request_id": "20260716022",
+      "meeting_id": "meeting:city_record:20260716022",
       "agency_name": "Parks and Recreation",
       "short_title": "Notice of Joint Public Hearing: 8/10/2026; for the Development, Operation and Maintenance of an Outdoor Café and Other Amenities in WNYC Transmitter Park, Brooklyn (Solicitation # B385-SB-2025)",
       "start_date": "2026-07-24T00:00:00.000",
@@ -101432,7 +101433,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260716022",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -101501,6 +101501,7 @@
     },
     {
       "request_id": "20260723030",
+      "meeting_id": "meeting:city_record:20260723030",
       "agency_name": "Board of Standards and Appeals",
       "short_title": "Board of Standards and Appeals Public Hearing Notice",
       "start_date": "2026-07-27T00:00:00.000",
@@ -101595,7 +101596,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260723030",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -101664,6 +101664,7 @@
     },
     {
       "request_id": "20260626036",
+      "meeting_id": "meeting:city_record:20260626036",
       "agency_name": "Consumer and Worker Protection",
       "short_title": "DCWP NOH Junk Fees",
       "start_date": "2026-07-08T00:00:00.000",
@@ -101685,7 +101686,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260626036",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -101754,6 +101754,7 @@
     },
     {
       "request_id": "20260716009",
+      "meeting_id": "meeting:city_record:20260716009",
       "agency_name": "Transportation",
       "short_title": "Dining Out NYC Public Hearing",
       "start_date": "2026-07-22T00:00:00.000",
@@ -101831,7 +101832,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260716009",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -101900,6 +101900,7 @@
     },
     {
       "request_id": "20260716025",
+      "meeting_id": "meeting:city_record:20260716025",
       "agency_name": "Environmental Control Board",
       "short_title": "New York City Environmental Control Board Meeting August 6, 2026",
       "start_date": "2026-07-23T00:00:00.000",
@@ -101945,7 +101946,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260716025",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -102263,6 +102263,7 @@
     },
     {
       "request_id": "20260626034",
+      "meeting_id": "meeting:city_record:20260626034",
       "agency_name": "Consumer and Worker Protection",
       "short_title": "DCWP NOH Requirements for HVFHV Services and Protections for Drivers",
       "start_date": "2026-07-06T00:00:00.000",
@@ -102284,7 +102285,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260626034",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -102353,6 +102353,7 @@
     },
     {
       "request_id": "20260618036",
+      "meeting_id": "meeting:city_record:20260618036",
       "agency_name": "Housing Preservation and Development",
       "short_title": "Proposed Amendment to 421-a(16) Workbook Rules",
       "start_date": "2026-06-26T00:00:00.000",
@@ -102374,7 +102375,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260618036",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -102443,6 +102443,7 @@
     },
     {
       "request_id": "20260714001",
+      "meeting_id": "meeting:city_record:20260714001",
       "agency_name": "Landmarks Preservation Commission",
       "short_title": "August 4, 2026, Public Hearing Agenda CR",
       "start_date": "2026-07-22T00:00:00.000",
@@ -102485,7 +102486,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260714001",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -102803,6 +102803,7 @@
     },
     {
       "request_id": "20260708015",
+      "meeting_id": "meeting:city_record:20260708015",
       "agency_name": "Equal Employment Practices Commission",
       "short_title": "EEPC COMMISSION MEETING #289",
       "start_date": "2026-07-15T00:00:00.000",
@@ -102845,7 +102846,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260708015",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -103416,6 +103416,7 @@
     },
     {
       "request_id": "20260624001",
+      "meeting_id": "meeting:city_record:20260624001",
       "agency_name": "Housing Authority",
       "short_title": "New York City Housing Authority Board Meeting",
       "start_date": "2026-07-16T00:00:00.000",
@@ -103453,7 +103454,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260624001",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -103522,6 +103522,7 @@
     },
     {
       "request_id": "20260707029",
+      "meeting_id": "meeting:city_record:20260707029",
       "agency_name": "City Planning Commission",
       "short_title": "City Planning Commission Public Hearing Ad",
       "start_date": "2026-07-15T00:00:00.000",
@@ -103564,7 +103565,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260707029",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -103633,6 +103633,7 @@
     },
     {
       "request_id": "20260624005",
+      "meeting_id": "meeting:city_record:20260624005",
       "agency_name": "Sanitation",
       "short_title": "Notice of Availability of Final Scope of Work, Completion of a Draft Environmental Impact Statement and Public Hearing",
       "start_date": "2026-07-01T00:00:00.000",
@@ -103658,7 +103659,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260624005",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -103727,6 +103727,7 @@
     },
     {
       "request_id": "20260707004",
+      "meeting_id": "meeting:city_record:20260707004",
       "agency_name": "Landmarks Preservation Commission",
       "short_title": "July 28, 2026, Public Hearing Agenda",
       "start_date": "2026-07-14T00:00:00.000",
@@ -103769,7 +103770,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260707004",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -103838,6 +103838,7 @@
     },
     {
       "request_id": "20260629003",
+      "meeting_id": "meeting:city_record:20260629003",
       "agency_name": "Board of Standards and Appeals",
       "short_title": "Correction: Board of Standards and Appeals Public Hearing Notice",
       "start_date": "2026-07-06T00:00:00.000",
@@ -103927,7 +103928,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260629003",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -104245,6 +104245,7 @@
     },
     {
       "request_id": "20260616058",
+      "meeting_id": "meeting:city_record:20260616058",
       "agency_name": "Transportation",
       "short_title": "NEW  YORK CITY DEPARTMENT OF TRANSPORTATION",
       "start_date": "2026-07-01T00:00:00.000",
@@ -104287,7 +104288,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260616058",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -104356,6 +104356,7 @@
     },
     {
       "request_id": "20260707022",
+      "meeting_id": "meeting:city_record:20260707022",
       "agency_name": "City Council",
       "short_title": "7-22-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
       "start_date": "2026-07-16T00:00:00.000",
@@ -104398,7 +104399,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260707022",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -104740,6 +104740,7 @@
     },
     {
       "request_id": "20260623060",
+      "meeting_id": "meeting:city_record:20260623060",
       "agency_name": "Civic Engagement Commission",
       "short_title": "NYC Civic Engagement Commission Public Meeting",
       "start_date": "2026-06-30T00:00:00.000",
@@ -104782,7 +104783,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260623060",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -104851,6 +104851,7 @@
     },
     {
       "request_id": "20260707021",
+      "meeting_id": "meeting:city_record:20260707021",
       "agency_name": "City Council",
       "short_title": "7-21-26 Subcommittee on Zoning and Franchises meeting",
       "start_date": "2026-07-15T00:00:00.000",
@@ -104893,7 +104894,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260707021",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -105315,6 +105315,7 @@
     },
     {
       "request_id": "20260630005",
+      "meeting_id": "meeting:city_record:20260630005",
       "agency_name": "Landmarks Preservation Commission",
       "short_title": "July 21, 2026, Public Hearing Agenda",
       "start_date": "2026-07-07T00:00:00.000",
@@ -105357,7 +105358,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260630005",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -105675,6 +105675,7 @@
     },
     {
       "request_id": "20260713032",
+      "meeting_id": "meeting:city_record:20260713032",
       "agency_name": "Public Design Commission",
       "short_title": "Design Commission Meeting Agenda, Monday, July 20, 2026",
       "start_date": "2026-07-16T00:00:00.000",
@@ -105787,7 +105788,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260713032",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -105856,6 +105856,7 @@
     },
     {
       "request_id": "20260624036",
+      "meeting_id": "meeting:city_record:20260624036",
       "agency_name": "Transportation",
       "short_title": "Dining Out NYC Public Hearing",
       "start_date": "2026-07-01T00:00:00.000",
@@ -105933,7 +105934,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260624036",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -106002,6 +106002,7 @@
     },
     {
       "request_id": "20260617040",
+      "meeting_id": "meeting:city_record:20260617040",
       "agency_name": "Industrial Development Agency",
       "short_title": "NEW YORK CITY INDUSTRIAL DEVELOPMENT AGENCY - NOTICE OF PUBLIC HEARING - July 16th, 2026",
       "start_date": "2026-07-02T00:00:00.000",
@@ -106077,7 +106078,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260617040",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -106146,6 +106146,7 @@
     },
     {
       "request_id": "20260617042",
+      "meeting_id": "meeting:city_record:20260617042",
       "agency_name": "Build NYC Resource Corporation",
       "short_title": "BUILD NYC RESOURCE CORPORATION - NOTICE OF PUBLIC HEARING - July 16th, 2026",
       "start_date": "2026-07-02T00:00:00.000",
@@ -106221,7 +106222,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260617042",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -106781,6 +106781,7 @@
     },
     {
       "request_id": "20260625034",
+      "meeting_id": "meeting:city_record:20260625034",
       "agency_name": "Housing Authority",
       "short_title": "NYCHA Audit and Finance Committee Meeting.",
       "start_date": "2026-07-01T00:00:00.000",
@@ -106818,7 +106819,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260625034",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -106887,6 +106887,7 @@
     },
     {
       "request_id": "20260624002",
+      "meeting_id": "meeting:city_record:20260624002",
       "agency_name": "City Planning Commission",
       "short_title": "City Planning Commission Public Hearing Ad",
       "start_date": "2026-06-30T00:00:00.000",
@@ -106929,7 +106930,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260624002",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -107489,6 +107489,7 @@
     },
     {
       "request_id": "20260106033",
+      "meeting_id": "meeting:city_record:20260106033",
       "agency_name": "Board of Correction",
       "short_title": "Board of Correction Public Meeting",
       "start_date": "2026-07-08T00:00:00.000",
@@ -107540,7 +107541,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260106033",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -107609,6 +107609,7 @@
     },
     {
       "request_id": "20260706036",
+      "meeting_id": "meeting:city_record:20260706036",
       "agency_name": "City Council",
       "short_title": "Correction: 7-14-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
       "start_date": "2026-07-08T00:00:00.000",
@@ -107653,7 +107654,6 @@
       "source_note": "legistar_event_join_demo",
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260706036",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -108095,6 +108095,7 @@
     },
     {
       "request_id": "20260623006",
+      "meeting_id": "meeting:city_record:20260623006",
       "agency_name": "Landmarks Preservation Commission",
       "short_title": "July 14, 2026, Public Hearing Agenda CR",
       "start_date": "2026-06-29T00:00:00.000",
@@ -108137,7 +108138,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260623006",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -108459,6 +108459,7 @@
     },
     {
       "request_id": "20260612028",
+      "meeting_id": "meeting:city_record:20260612028",
       "agency_name": "Board of Standards and Appeals",
       "short_title": "Board of Standards and Appeals Public Hearing Notice",
       "start_date": "2026-06-22T00:00:00.000",
@@ -108540,7 +108541,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260612028",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -108609,6 +108609,7 @@
     },
     {
       "request_id": "20260625040",
+      "meeting_id": "meeting:city_record:20260625040",
       "agency_name": "City Council",
       "short_title": "7-9-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
       "start_date": "2026-07-02T00:00:00.000",
@@ -108651,7 +108652,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260625040",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -109272,6 +109272,7 @@
     },
     {
       "request_id": "20260618050",
+      "meeting_id": "meeting:city_record:20260618050",
       "agency_name": "Borough President - Brooklyn",
       "short_title": "Brooklyn Borough President ULURP Public Hearing",
       "start_date": "2026-06-26T00:00:00.000",
@@ -109356,7 +109357,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260618050",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -109425,6 +109425,7 @@
     },
     {
       "request_id": "20260629046",
+      "meeting_id": "meeting:city_record:20260629046",
       "agency_name": "NYC Workforce Development Board",
       "short_title": "NYC Workforce Development Board Executive Committee Meeting",
       "start_date": "2026-07-06T00:00:00.000",
@@ -109467,7 +109468,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260629046",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -109536,6 +109536,7 @@
     },
     {
       "request_id": "20260618037",
+      "meeting_id": "meeting:city_record:20260618037",
       "agency_name": "Borough President - Queens",
       "short_title": "Queens Borough President Land Use Public Hearing",
       "start_date": "2026-06-26T00:00:00.000",
@@ -109634,7 +109635,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260618037",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -109703,6 +109703,7 @@
     },
     {
       "request_id": "20260617039",
+      "meeting_id": "meeting:city_record:20260617039",
       "agency_name": "City Council",
       "short_title": "7-1-26 Subcommittee on Zoning and Franchises meeting",
       "start_date": "2026-06-25T00:00:00.000",
@@ -109745,7 +109746,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260617039",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -109962,6 +109962,7 @@
     },
     {
       "request_id": "20260609065",
+      "meeting_id": "meeting:city_record:20260609065",
       "agency_name": "City Planning",
       "short_title": "Park Avenue Brooklyn Rezoning Public Hearing Notice for Draft Environmental Impact Statement",
       "start_date": "2026-06-16T00:00:00.000",
@@ -110001,7 +110002,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260609065",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -110070,6 +110070,7 @@
     },
     {
       "request_id": "20260610012",
+      "meeting_id": "meeting:city_record:20260610012",
       "agency_name": "City Planning Commission",
       "short_title": "Correction: City Planning Commission Public Hearing Ad",
       "start_date": "2026-06-16T00:00:00.000",
@@ -110112,7 +110113,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260610012",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -111181,6 +111181,7 @@
     },
     {
       "request_id": "20260610007",
+      "meeting_id": "meeting:city_record:20260610007",
       "agency_name": "Rent Guidelines Board",
       "short_title": "JUNE 25, 2026 MEETING OF THE RENT GUIDELINES BOARD",
       "start_date": "2026-06-18T00:00:00.000",
@@ -111218,7 +111219,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260610007",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -111287,6 +111287,7 @@
     },
     {
       "request_id": "20260605045",
+      "meeting_id": "meeting:city_record:20260605045",
       "agency_name": "Charter Revision Commission",
       "short_title": "JUNE 25, 2026 PUBLIC HEARING",
       "start_date": "2026-06-18T00:00:00.000",
@@ -111324,7 +111325,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260605045",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -111393,6 +111393,7 @@
     },
     {
       "request_id": "20260623048",
+      "meeting_id": "meeting:city_record:20260623048",
       "agency_name": "Charter Revision Commission",
       "short_title": "JUNE 25, 2026 PUBLIC HEARING",
       "start_date": "2026-06-24T00:00:00.000",
@@ -111457,7 +111458,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260623048",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -111526,6 +111526,7 @@
     },
     {
       "request_id": "20260618032",
+      "meeting_id": "meeting:city_record:20260618032",
       "agency_name": "Community Boards",
       "short_title": "June 25, 2026 Public Hearing",
       "start_date": "2026-06-23T00:00:00.000",
@@ -111619,7 +111620,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260618032",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -112681,6 +112681,7 @@
     },
     {
       "request_id": "20260610067",
+      "meeting_id": "meeting:city_record:20260610067",
       "agency_name": "Board of Education Retirement System",
       "short_title": "BERS EXECUTIVE COMMITTEE MEETING",
       "start_date": "2026-06-17T00:00:00.000",
@@ -112725,7 +112726,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260610067",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -115271,6 +115271,7 @@
     },
     {
       "request_id": "20260612036",
+      "meeting_id": "meeting:city_record:20260612036",
       "agency_name": "Public Design Commission",
       "short_title": "Design Commission Meeting Agenda, Monday, June 22, 2026",
       "start_date": "2026-06-17T00:00:00.000",
@@ -115382,7 +115383,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260612036",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -124175,6 +124175,7 @@
     },
     {
       "request_id": "20260213014",
+      "meeting_id": "meeting:city_record:20260213014",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-06-22T00:00:00.000",
@@ -124200,7 +124201,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260213014",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -124261,6 +124261,7 @@
     },
     {
       "request_id": "20260213015",
+      "meeting_id": "meeting:city_record:20260213015",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-06-29T00:00:00.000",
@@ -124286,7 +124287,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260213015",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -124347,6 +124347,7 @@
     },
     {
       "request_id": "20260504036",
+      "meeting_id": "meeting:city_record:20260504036",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-07-06T00:00:00.000",
@@ -124372,7 +124373,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260504036",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -124433,6 +124433,7 @@
     },
     {
       "request_id": "20260504037",
+      "meeting_id": "meeting:city_record:20260504037",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-07-13T00:00:00.000",
@@ -124458,7 +124459,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260504037",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -124519,6 +124519,7 @@
     },
     {
       "request_id": "20260504038",
+      "meeting_id": "meeting:city_record:20260504038",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-07-20T00:00:00.000",
@@ -124544,7 +124545,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260504038",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -124605,6 +124605,7 @@
     },
     {
       "request_id": "20260504039",
+      "meeting_id": "meeting:city_record:20260504039",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-07-27T00:00:00.000",
@@ -124630,7 +124631,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260504039",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -124691,6 +124691,7 @@
     },
     {
       "request_id": "20260504040",
+      "meeting_id": "meeting:city_record:20260504040",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-08-03T00:00:00.000",
@@ -124712,7 +124713,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260504040",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -124773,6 +124773,7 @@
     },
     {
       "request_id": "20260504041",
+      "meeting_id": "meeting:city_record:20260504041",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-08-10T00:00:00.000",
@@ -124794,7 +124795,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260504041",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -124855,6 +124855,7 @@
     },
     {
       "request_id": "20260504042",
+      "meeting_id": "meeting:city_record:20260504042",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-08-17T00:00:00.000",
@@ -124876,7 +124877,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260504042",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -124937,6 +124937,7 @@
     },
     {
       "request_id": "20260504043",
+      "meeting_id": "meeting:city_record:20260504043",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-08-24T00:00:00.000",
@@ -124958,7 +124959,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260504043",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -125019,6 +125019,7 @@
     },
     {
       "request_id": "20260504044",
+      "meeting_id": "meeting:city_record:20260504044",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-08-31T00:00:00.000",
@@ -125040,7 +125041,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260504044",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -125101,6 +125101,7 @@
     },
     {
       "request_id": "20260617003",
+      "meeting_id": "meeting:city_record:20260617003",
       "agency_name": "Charter Revision Commission",
       "short_title": "Citywide Public Input Sessions",
       "start_date": "2026-06-24T00:00:00.000",
@@ -125165,7 +125166,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260617003",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -125226,6 +125226,7 @@
     },
     {
       "request_id": "20260715002",
+      "meeting_id": "meeting:city_record:20260715002",
       "agency_name": "Charter Revision Commission",
       "short_title": "Final Meeting of the Commission on Government Efficiency",
       "start_date": "2026-07-20T00:00:00.000",
@@ -125263,7 +125264,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260715002",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -125324,6 +125324,7 @@
     },
     {
       "request_id": "20260813031",
+      "meeting_id": "meeting:city_record:20260813031",
       "agency_name": "Housing Preservation and Development",
       "short_title": "511 West 171st Street",
       "start_date": "2026-08-21T00:00:00.000",
@@ -125399,7 +125400,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260813031",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -125460,6 +125460,7 @@
     },
     {
       "request_id": "20260819023",
+      "meeting_id": "meeting:city_record:20260819023",
       "agency_name": "Office of the Mayor",
       "short_title": "Mayoral Public Hearing",
       "start_date": "2026-08-21T00:00:00.000",
@@ -125481,7 +125482,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260819023",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -215835,6 +215835,7 @@
     },
     {
       "request_id": "20260805006",
+      "meeting_id": "meeting:city_record:20260805006",
       "agency_name": "Transportation",
       "short_title": "Dining Out NYC Hearing",
       "start_date": "2026-08-14T00:00:00.000",
@@ -215911,7 +215912,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260805006",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -217873,6 +217873,7 @@
     },
     {
       "request_id": "20260602001",
+      "meeting_id": "meeting:city_record:20260602001",
       "agency_name": "Office of Labor Relations",
       "short_title": "City of New York Deferred Compensation Plan Board Meeting",
       "start_date": "2026-08-26T00:00:00.000",
@@ -217911,7 +217912,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260602001",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -220198,6 +220198,7 @@
     },
     {
       "request_id": "20260714029",
+      "meeting_id": "meeting:city_record:20260714029",
       "agency_name": "Transportation",
       "short_title": "Notice of Public Hearing and Opportunity to Comment-  FHV and Taxi Parking at Commercial Meters and Commercial Vehicle Markings",
       "start_date": "2026-07-22T00:00:00.000",
@@ -220219,7 +220220,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260714029",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -220288,6 +220288,7 @@
     },
     {
       "request_id": "20260811003",
+      "meeting_id": "meeting:city_record:20260811003",
       "agency_name": "Landmarks Preservation Commission",
       "short_title": "September 1, 2026, Public Hearing Agenda CR",
       "start_date": "2026-08-18T00:00:00.000",
@@ -220330,7 +220331,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260811003",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -222469,6 +222469,7 @@
     },
     {
       "request_id": "20260715041",
+      "meeting_id": "meeting:city_record:20260715041",
       "agency_name": "Buildings",
       "short_title": "Amendments to Rules Relating to the Energy Conservation Code",
       "start_date": "2026-07-23T00:00:00.000",
@@ -222490,7 +222491,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260715041",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -222559,6 +222559,7 @@
     },
     {
       "request_id": "20260728028",
+      "meeting_id": "meeting:city_record:20260728028",
       "agency_name": "Transportation",
       "short_title": "Dining Out NYC Public Hearings",
       "start_date": "2026-08-07T00:00:00.000",
@@ -222635,7 +222636,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260728028",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -223202,6 +223202,7 @@
     },
     {
       "request_id": "20260730025",
+      "meeting_id": "meeting:city_record:20260730025",
       "agency_name": "Transportation",
       "short_title": "August 26, 2026 PUBLIC HEARING",
       "start_date": "2026-08-06T00:00:00.000",
@@ -223244,7 +223245,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260730025",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -223313,6 +223313,7 @@
     },
     {
       "request_id": "20260805038",
+      "meeting_id": "meeting:city_record:20260805038",
       "agency_name": "City Planning Commission",
       "short_title": "City Planning Commission Public Hearing",
       "start_date": "2026-08-12T00:00:00.000",
@@ -223355,7 +223356,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260805038",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -223424,6 +223424,7 @@
     },
     {
       "request_id": "20260722029",
+      "meeting_id": "meeting:city_record:20260722029",
       "agency_name": "Board of Education Retirement System",
       "short_title": "BERS EXECUTIVE COMMITTEE MEETING",
       "start_date": "2026-08-17T00:00:00.000",
@@ -223465,7 +223466,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260722029",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -223534,6 +223534,7 @@
     },
     {
       "request_id": "20260708002",
+      "meeting_id": "meeting:city_record:20260708002",
       "agency_name": "Sanitation",
       "short_title": "DSNY Proposed Implementation Dates Regarding Brooklyn East, Manhattan Northeast, Queens West, and Manhattan West CWZs",
       "start_date": "2026-07-15T00:00:00.000",
@@ -223570,7 +223571,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260708002",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -224137,6 +224137,7 @@
     },
     {
       "request_id": "20260729019",
+      "meeting_id": "meeting:city_record:20260729019",
       "agency_name": "Citywide Administrative Services",
       "short_title": "Public Hearing \u001a Office of Technology & Innovation [858] \u001a NYS Civil Service Commission Proposal",
       "start_date": "2026-08-05T00:00:00.000",
@@ -224158,7 +224159,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260729019",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -224227,6 +224227,7 @@
     },
     {
       "request_id": "20260713006",
+      "meeting_id": "meeting:city_record:20260713006",
       "agency_name": "Consumer and Worker Protection",
       "short_title": "DCWP NOH Rules Relating to Waitlist for GV Licenses",
       "start_date": "2026-07-20T00:00:00.000",
@@ -224248,7 +224249,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260713006",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -224317,6 +224317,7 @@
     },
     {
       "request_id": "20260729005",
+      "meeting_id": "meeting:city_record:20260729005",
       "agency_name": "Citywide Administrative Services",
       "short_title": "NYPD IT Infrastructure Engineer Public Hearing.",
       "start_date": "2026-08-05T00:00:00.000",
@@ -224338,7 +224339,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260729005",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -224407,6 +224407,7 @@
     },
     {
       "request_id": "20260729020",
+      "meeting_id": "meeting:city_record:20260729020",
       "agency_name": "Citywide Administrative Services",
       "short_title": "Public Hearing \u001a Office of The Comptroller [015] \u001a NYS Civil Service Commission Proposal",
       "start_date": "2026-08-05T00:00:00.000",
@@ -224428,7 +224429,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260729020",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -224746,6 +224746,7 @@
     },
     {
       "request_id": "20260727031",
+      "meeting_id": "meeting:city_record:20260727031",
       "agency_name": "Landmarks Preservation Commission",
       "short_title": "AUGUST 18, 2026 PUBLIC HEARING AGENDA",
       "start_date": "2026-08-04T00:00:00.000",
@@ -224788,7 +224789,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260727031",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -224857,6 +224857,7 @@
     },
     {
       "request_id": "20260810053",
+      "meeting_id": "meeting:city_record:20260810053",
       "agency_name": "Public Design Commission",
       "short_title": "Design Commission Meeting Agenda, Monday, August 17, 2026",
       "start_date": "2026-08-13T00:00:00.000",
@@ -224970,7 +224971,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260810053",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -225281,6 +225281,7 @@
     },
     {
       "request_id": "20260723005",
+      "meeting_id": "meeting:city_record:20260723005",
       "agency_name": "Transportation",
       "short_title": "Dining Out NYC Public Hearings",
       "start_date": "2026-07-29T00:00:00.000",
@@ -225354,7 +225355,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260723005",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -225423,6 +225423,7 @@
     },
     {
       "request_id": "20260706044",
+      "meeting_id": "meeting:city_record:20260706044",
       "agency_name": "Taxi and Limousine Commission",
       "short_title": "Driver Relief Penalty Reduction and Medallion Relief Program Rule Proposal.",
       "start_date": "2026-07-13T00:00:00.000",
@@ -225465,7 +225466,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260706044",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -225783,6 +225783,7 @@
     },
     {
       "request_id": "20260710032",
+      "meeting_id": "meeting:city_record:20260710032",
       "agency_name": "Franchise and Concession Review Committee",
       "short_title": "FCRC AUGUST PUBLIC MEETING",
       "start_date": "2026-07-24T00:00:00.000",
@@ -225828,7 +225829,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260710032",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -225897,6 +225897,7 @@
     },
     {
       "request_id": "20260729004",
+      "meeting_id": "meeting:city_record:20260729004",
       "agency_name": "City Council",
       "short_title": "8-12-26 Subcommittee on Zoning and Franchises meeting",
       "start_date": "2026-08-06T00:00:00.000",
@@ -225939,7 +225940,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260729004",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -226452,6 +226452,7 @@
     },
     {
       "request_id": "20260618040",
+      "meeting_id": "meeting:city_record:20260618040",
       "agency_name": "Citywide Administrative Services",
       "short_title": "FOR ACQUISITION - portions of  Block 3264, Lot 20; Block 3238, Lots 50, 52, and 126; and Block 3245, Lot 12",
       "start_date": "2026-06-26T00:00:00.000",
@@ -226528,7 +226529,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260618040",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -226597,6 +226597,7 @@
     },
     {
       "request_id": "20260721023",
+      "meeting_id": "meeting:city_record:20260721023",
       "agency_name": "City Planning Commission",
       "short_title": "City Planning Commission Public Hearing",
       "start_date": "2026-07-29T00:00:00.000",
@@ -226639,7 +226640,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260721023",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -226708,6 +226708,7 @@
     },
     {
       "request_id": "20260709028",
+      "meeting_id": "meeting:city_record:20260709028",
       "agency_name": "Police Department",
       "short_title": "Concession for Operation and Maintenance of Cafeteria at the NYPD Police Academy",
       "start_date": "2026-07-16T00:00:00.000",
@@ -226771,7 +226772,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260709028",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -226840,6 +226840,7 @@
     },
     {
       "request_id": "20260716022",
+      "meeting_id": "meeting:city_record:20260716022",
       "agency_name": "Parks and Recreation",
       "short_title": "Notice of Joint Public Hearing: 8/10/2026; for the Development, Operation and Maintenance of an Outdoor Café and Other Amenities in WNYC Transmitter Park, Brooklyn (Solicitation # B385-SB-2025)",
       "start_date": "2026-07-24T00:00:00.000",
@@ -226911,7 +226912,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260716022",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -226980,6 +226980,7 @@
     },
     {
       "request_id": "20260723030",
+      "meeting_id": "meeting:city_record:20260723030",
       "agency_name": "Board of Standards and Appeals",
       "short_title": "Board of Standards and Appeals Public Hearing Notice",
       "start_date": "2026-07-27T00:00:00.000",
@@ -227074,7 +227075,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260723030",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -227143,6 +227143,7 @@
     },
     {
       "request_id": "20260626036",
+      "meeting_id": "meeting:city_record:20260626036",
       "agency_name": "Consumer and Worker Protection",
       "short_title": "DCWP NOH Junk Fees",
       "start_date": "2026-07-08T00:00:00.000",
@@ -227164,7 +227165,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260626036",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -227233,6 +227233,7 @@
     },
     {
       "request_id": "20260716009",
+      "meeting_id": "meeting:city_record:20260716009",
       "agency_name": "Transportation",
       "short_title": "Dining Out NYC Public Hearing",
       "start_date": "2026-07-22T00:00:00.000",
@@ -227310,7 +227311,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260716009",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -227379,6 +227379,7 @@
     },
     {
       "request_id": "20260716025",
+      "meeting_id": "meeting:city_record:20260716025",
       "agency_name": "Environmental Control Board",
       "short_title": "New York City Environmental Control Board Meeting August 6, 2026",
       "start_date": "2026-07-23T00:00:00.000",
@@ -227424,7 +227425,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260716025",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -227742,6 +227742,7 @@
     },
     {
       "request_id": "20260626034",
+      "meeting_id": "meeting:city_record:20260626034",
       "agency_name": "Consumer and Worker Protection",
       "short_title": "DCWP NOH Requirements for HVFHV Services and Protections for Drivers",
       "start_date": "2026-07-06T00:00:00.000",
@@ -227763,7 +227764,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260626034",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -227832,6 +227832,7 @@
     },
     {
       "request_id": "20260618036",
+      "meeting_id": "meeting:city_record:20260618036",
       "agency_name": "Housing Preservation and Development",
       "short_title": "Proposed Amendment to 421-a(16) Workbook Rules",
       "start_date": "2026-06-26T00:00:00.000",
@@ -227853,7 +227854,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260618036",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -227922,6 +227922,7 @@
     },
     {
       "request_id": "20260714001",
+      "meeting_id": "meeting:city_record:20260714001",
       "agency_name": "Landmarks Preservation Commission",
       "short_title": "August 4, 2026, Public Hearing Agenda CR",
       "start_date": "2026-07-22T00:00:00.000",
@@ -227964,7 +227965,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260714001",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -228282,6 +228282,7 @@
     },
     {
       "request_id": "20260708015",
+      "meeting_id": "meeting:city_record:20260708015",
       "agency_name": "Equal Employment Practices Commission",
       "short_title": "EEPC COMMISSION MEETING #289",
       "start_date": "2026-07-15T00:00:00.000",
@@ -228324,7 +228325,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260708015",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -228895,6 +228895,7 @@
     },
     {
       "request_id": "20260624001",
+      "meeting_id": "meeting:city_record:20260624001",
       "agency_name": "Housing Authority",
       "short_title": "New York City Housing Authority Board Meeting",
       "start_date": "2026-07-16T00:00:00.000",
@@ -228932,7 +228933,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260624001",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -229001,6 +229001,7 @@
     },
     {
       "request_id": "20260707029",
+      "meeting_id": "meeting:city_record:20260707029",
       "agency_name": "City Planning Commission",
       "short_title": "City Planning Commission Public Hearing Ad",
       "start_date": "2026-07-15T00:00:00.000",
@@ -229043,7 +229044,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260707029",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -229112,6 +229112,7 @@
     },
     {
       "request_id": "20260624005",
+      "meeting_id": "meeting:city_record:20260624005",
       "agency_name": "Sanitation",
       "short_title": "Notice of Availability of Final Scope of Work, Completion of a Draft Environmental Impact Statement and Public Hearing",
       "start_date": "2026-07-01T00:00:00.000",
@@ -229137,7 +229138,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260624005",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -229206,6 +229206,7 @@
     },
     {
       "request_id": "20260707004",
+      "meeting_id": "meeting:city_record:20260707004",
       "agency_name": "Landmarks Preservation Commission",
       "short_title": "July 28, 2026, Public Hearing Agenda",
       "start_date": "2026-07-14T00:00:00.000",
@@ -229248,7 +229249,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260707004",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -229317,6 +229317,7 @@
     },
     {
       "request_id": "20260629003",
+      "meeting_id": "meeting:city_record:20260629003",
       "agency_name": "Board of Standards and Appeals",
       "short_title": "Correction: Board of Standards and Appeals Public Hearing Notice",
       "start_date": "2026-07-06T00:00:00.000",
@@ -229406,7 +229407,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260629003",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -229724,6 +229724,7 @@
     },
     {
       "request_id": "20260616058",
+      "meeting_id": "meeting:city_record:20260616058",
       "agency_name": "Transportation",
       "short_title": "NEW  YORK CITY DEPARTMENT OF TRANSPORTATION",
       "start_date": "2026-07-01T00:00:00.000",
@@ -229766,7 +229767,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260616058",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -229835,6 +229835,7 @@
     },
     {
       "request_id": "20260707022",
+      "meeting_id": "meeting:city_record:20260707022",
       "agency_name": "City Council",
       "short_title": "7-22-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
       "start_date": "2026-07-16T00:00:00.000",
@@ -229877,7 +229878,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260707022",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -230219,6 +230219,7 @@
     },
     {
       "request_id": "20260623060",
+      "meeting_id": "meeting:city_record:20260623060",
       "agency_name": "Civic Engagement Commission",
       "short_title": "NYC Civic Engagement Commission Public Meeting",
       "start_date": "2026-06-30T00:00:00.000",
@@ -230261,7 +230262,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260623060",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -230330,6 +230330,7 @@
     },
     {
       "request_id": "20260707021",
+      "meeting_id": "meeting:city_record:20260707021",
       "agency_name": "City Council",
       "short_title": "7-21-26 Subcommittee on Zoning and Franchises meeting",
       "start_date": "2026-07-15T00:00:00.000",
@@ -230372,7 +230373,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260707021",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -230794,6 +230794,7 @@
     },
     {
       "request_id": "20260630005",
+      "meeting_id": "meeting:city_record:20260630005",
       "agency_name": "Landmarks Preservation Commission",
       "short_title": "July 21, 2026, Public Hearing Agenda",
       "start_date": "2026-07-07T00:00:00.000",
@@ -230836,7 +230837,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260630005",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -231154,6 +231154,7 @@
     },
     {
       "request_id": "20260713032",
+      "meeting_id": "meeting:city_record:20260713032",
       "agency_name": "Public Design Commission",
       "short_title": "Design Commission Meeting Agenda, Monday, July 20, 2026",
       "start_date": "2026-07-16T00:00:00.000",
@@ -231266,7 +231267,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260713032",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -231335,6 +231335,7 @@
     },
     {
       "request_id": "20260624036",
+      "meeting_id": "meeting:city_record:20260624036",
       "agency_name": "Transportation",
       "short_title": "Dining Out NYC Public Hearing",
       "start_date": "2026-07-01T00:00:00.000",
@@ -231412,7 +231413,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260624036",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -231481,6 +231481,7 @@
     },
     {
       "request_id": "20260617040",
+      "meeting_id": "meeting:city_record:20260617040",
       "agency_name": "Industrial Development Agency",
       "short_title": "NEW YORK CITY INDUSTRIAL DEVELOPMENT AGENCY - NOTICE OF PUBLIC HEARING - July 16th, 2026",
       "start_date": "2026-07-02T00:00:00.000",
@@ -231556,7 +231557,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260617040",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -231625,6 +231625,7 @@
     },
     {
       "request_id": "20260617042",
+      "meeting_id": "meeting:city_record:20260617042",
       "agency_name": "Build NYC Resource Corporation",
       "short_title": "BUILD NYC RESOURCE CORPORATION - NOTICE OF PUBLIC HEARING - July 16th, 2026",
       "start_date": "2026-07-02T00:00:00.000",
@@ -231700,7 +231701,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260617042",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -232260,6 +232260,7 @@
     },
     {
       "request_id": "20260625034",
+      "meeting_id": "meeting:city_record:20260625034",
       "agency_name": "Housing Authority",
       "short_title": "NYCHA Audit and Finance Committee Meeting.",
       "start_date": "2026-07-01T00:00:00.000",
@@ -232297,7 +232298,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260625034",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -232366,6 +232366,7 @@
     },
     {
       "request_id": "20260624002",
+      "meeting_id": "meeting:city_record:20260624002",
       "agency_name": "City Planning Commission",
       "short_title": "City Planning Commission Public Hearing Ad",
       "start_date": "2026-06-30T00:00:00.000",
@@ -232408,7 +232409,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260624002",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -232968,6 +232968,7 @@
     },
     {
       "request_id": "20260106033",
+      "meeting_id": "meeting:city_record:20260106033",
       "agency_name": "Board of Correction",
       "short_title": "Board of Correction Public Meeting",
       "start_date": "2026-07-08T00:00:00.000",
@@ -233019,7 +233020,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260106033",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -233088,6 +233088,7 @@
     },
     {
       "request_id": "20260706036",
+      "meeting_id": "meeting:city_record:20260706036",
       "agency_name": "City Council",
       "short_title": "Correction: 7-14-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
       "start_date": "2026-07-08T00:00:00.000",
@@ -233132,7 +233133,6 @@
       "source_note": "legistar_event_join_demo",
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260706036",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -233574,6 +233574,7 @@
     },
     {
       "request_id": "20260623006",
+      "meeting_id": "meeting:city_record:20260623006",
       "agency_name": "Landmarks Preservation Commission",
       "short_title": "July 14, 2026, Public Hearing Agenda CR",
       "start_date": "2026-06-29T00:00:00.000",
@@ -233616,7 +233617,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260623006",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -233938,6 +233938,7 @@
     },
     {
       "request_id": "20260612028",
+      "meeting_id": "meeting:city_record:20260612028",
       "agency_name": "Board of Standards and Appeals",
       "short_title": "Board of Standards and Appeals Public Hearing Notice",
       "start_date": "2026-06-22T00:00:00.000",
@@ -234019,7 +234020,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260612028",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -234088,6 +234088,7 @@
     },
     {
       "request_id": "20260625040",
+      "meeting_id": "meeting:city_record:20260625040",
       "agency_name": "City Council",
       "short_title": "7-9-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
       "start_date": "2026-07-02T00:00:00.000",
@@ -234130,7 +234131,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260625040",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -234751,6 +234751,7 @@
     },
     {
       "request_id": "20260618050",
+      "meeting_id": "meeting:city_record:20260618050",
       "agency_name": "Borough President - Brooklyn",
       "short_title": "Brooklyn Borough President ULURP Public Hearing",
       "start_date": "2026-06-26T00:00:00.000",
@@ -234835,7 +234836,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260618050",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -234904,6 +234904,7 @@
     },
     {
       "request_id": "20260629046",
+      "meeting_id": "meeting:city_record:20260629046",
       "agency_name": "NYC Workforce Development Board",
       "short_title": "NYC Workforce Development Board Executive Committee Meeting",
       "start_date": "2026-07-06T00:00:00.000",
@@ -234946,7 +234947,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260629046",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -235015,6 +235015,7 @@
     },
     {
       "request_id": "20260618037",
+      "meeting_id": "meeting:city_record:20260618037",
       "agency_name": "Borough President - Queens",
       "short_title": "Queens Borough President Land Use Public Hearing",
       "start_date": "2026-06-26T00:00:00.000",
@@ -235113,7 +235114,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260618037",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -235182,6 +235182,7 @@
     },
     {
       "request_id": "20260617039",
+      "meeting_id": "meeting:city_record:20260617039",
       "agency_name": "City Council",
       "short_title": "7-1-26 Subcommittee on Zoning and Franchises meeting",
       "start_date": "2026-06-25T00:00:00.000",
@@ -235224,7 +235225,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260617039",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -235441,6 +235441,7 @@
     },
     {
       "request_id": "20260609065",
+      "meeting_id": "meeting:city_record:20260609065",
       "agency_name": "City Planning",
       "short_title": "Park Avenue Brooklyn Rezoning Public Hearing Notice for Draft Environmental Impact Statement",
       "start_date": "2026-06-16T00:00:00.000",
@@ -235480,7 +235481,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260609065",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -235549,6 +235549,7 @@
     },
     {
       "request_id": "20260610012",
+      "meeting_id": "meeting:city_record:20260610012",
       "agency_name": "City Planning Commission",
       "short_title": "Correction: City Planning Commission Public Hearing Ad",
       "start_date": "2026-06-16T00:00:00.000",
@@ -235591,7 +235592,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260610012",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -236660,6 +236660,7 @@
     },
     {
       "request_id": "20260610007",
+      "meeting_id": "meeting:city_record:20260610007",
       "agency_name": "Rent Guidelines Board",
       "short_title": "JUNE 25, 2026 MEETING OF THE RENT GUIDELINES BOARD",
       "start_date": "2026-06-18T00:00:00.000",
@@ -236697,7 +236698,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260610007",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -236766,6 +236766,7 @@
     },
     {
       "request_id": "20260605045",
+      "meeting_id": "meeting:city_record:20260605045",
       "agency_name": "Charter Revision Commission",
       "short_title": "JUNE 25, 2026 PUBLIC HEARING",
       "start_date": "2026-06-18T00:00:00.000",
@@ -236803,7 +236804,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260605045",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -236872,6 +236872,7 @@
     },
     {
       "request_id": "20260623048",
+      "meeting_id": "meeting:city_record:20260623048",
       "agency_name": "Charter Revision Commission",
       "short_title": "JUNE 25, 2026 PUBLIC HEARING",
       "start_date": "2026-06-24T00:00:00.000",
@@ -236936,7 +236937,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260623048",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -237005,6 +237005,7 @@
     },
     {
       "request_id": "20260618032",
+      "meeting_id": "meeting:city_record:20260618032",
       "agency_name": "Community Boards",
       "short_title": "June 25, 2026 Public Hearing",
       "start_date": "2026-06-23T00:00:00.000",
@@ -237098,7 +237099,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260618032",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -238160,6 +238160,7 @@
     },
     {
       "request_id": "20260610067",
+      "meeting_id": "meeting:city_record:20260610067",
       "agency_name": "Board of Education Retirement System",
       "short_title": "BERS EXECUTIVE COMMITTEE MEETING",
       "start_date": "2026-06-17T00:00:00.000",
@@ -238204,7 +238205,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260610067",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -240750,6 +240750,7 @@
     },
     {
       "request_id": "20260612036",
+      "meeting_id": "meeting:city_record:20260612036",
       "agency_name": "Public Design Commission",
       "short_title": "Design Commission Meeting Agenda, Monday, June 22, 2026",
       "start_date": "2026-06-17T00:00:00.000",
@@ -240861,7 +240862,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260612036",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -249654,6 +249654,7 @@
     },
     {
       "request_id": "20260213014",
+      "meeting_id": "meeting:city_record:20260213014",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-06-22T00:00:00.000",
@@ -249679,7 +249680,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260213014",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -249740,6 +249740,7 @@
     },
     {
       "request_id": "20260213015",
+      "meeting_id": "meeting:city_record:20260213015",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-06-29T00:00:00.000",
@@ -249765,7 +249766,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260213015",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -249826,6 +249826,7 @@
     },
     {
       "request_id": "20260504036",
+      "meeting_id": "meeting:city_record:20260504036",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-07-06T00:00:00.000",
@@ -249851,7 +249852,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260504036",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -249912,6 +249912,7 @@
     },
     {
       "request_id": "20260504037",
+      "meeting_id": "meeting:city_record:20260504037",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-07-13T00:00:00.000",
@@ -249937,7 +249938,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260504037",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -249998,6 +249998,7 @@
     },
     {
       "request_id": "20260504038",
+      "meeting_id": "meeting:city_record:20260504038",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-07-20T00:00:00.000",
@@ -250023,7 +250024,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260504038",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -250084,6 +250084,7 @@
     },
     {
       "request_id": "20260504039",
+      "meeting_id": "meeting:city_record:20260504039",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-07-27T00:00:00.000",
@@ -250109,7 +250110,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260504039",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -250170,6 +250170,7 @@
     },
     {
       "request_id": "20260504040",
+      "meeting_id": "meeting:city_record:20260504040",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-08-03T00:00:00.000",
@@ -250191,7 +250192,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260504040",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -250252,6 +250252,7 @@
     },
     {
       "request_id": "20260504041",
+      "meeting_id": "meeting:city_record:20260504041",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-08-10T00:00:00.000",
@@ -250273,7 +250274,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260504041",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -250334,6 +250334,7 @@
     },
     {
       "request_id": "20260504042",
+      "meeting_id": "meeting:city_record:20260504042",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-08-17T00:00:00.000",
@@ -250355,7 +250356,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260504042",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -250416,6 +250416,7 @@
     },
     {
       "request_id": "20260504043",
+      "meeting_id": "meeting:city_record:20260504043",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-08-24T00:00:00.000",
@@ -250437,7 +250438,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260504043",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -250498,6 +250498,7 @@
     },
     {
       "request_id": "20260504044",
+      "meeting_id": "meeting:city_record:20260504044",
       "agency_name": "Board Meetings",
       "short_title": "BOARD MEETINGS",
       "start_date": "2026-08-31T00:00:00.000",
@@ -250519,7 +250520,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260504044",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -250580,6 +250580,7 @@
     },
     {
       "request_id": "20260617003",
+      "meeting_id": "meeting:city_record:20260617003",
       "agency_name": "Charter Revision Commission",
       "short_title": "Citywide Public Input Sessions",
       "start_date": "2026-06-24T00:00:00.000",
@@ -250644,7 +250645,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260617003",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -250705,6 +250705,7 @@
     },
     {
       "request_id": "20260715002",
+      "meeting_id": "meeting:city_record:20260715002",
       "agency_name": "Charter Revision Commission",
       "short_title": "Final Meeting of the Commission on Government Efficiency",
       "start_date": "2026-07-20T00:00:00.000",
@@ -250742,7 +250743,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260715002",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -250803,6 +250803,7 @@
     },
     {
       "request_id": "20260813031",
+      "meeting_id": "meeting:city_record:20260813031",
       "agency_name": "Housing Preservation and Development",
       "short_title": "511 West 171st Street",
       "start_date": "2026-08-21T00:00:00.000",
@@ -250878,7 +250879,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260813031",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -250939,6 +250939,7 @@
     },
     {
       "request_id": "20260819023",
+      "meeting_id": "meeting:city_record:20260819023",
       "agency_name": "Office of the Mayor",
       "short_title": "Mayoral Public Hearing",
       "start_date": "2026-08-21T00:00:00.000",
@@ -250960,7 +250961,6 @@
       },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20260819023",
       "source_keys": [
         {
           "source_system": "city_record",
