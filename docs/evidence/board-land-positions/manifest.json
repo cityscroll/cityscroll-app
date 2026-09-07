@@ -1,0 +1,1054 @@
+{
+  "schema": "cityscroll.board_land_position_capture.v1",
+  "captured_at": "2026-09-07T12:38:22.115405+00:00",
+  "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+  "data_vintage": {
+    "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+    "community_board_geography_lookup": "2026-05-26",
+    "community_board_minutes_scorecard": "2026-09-06"
+  },
+  "counts": {
+    "retained_projects": 40,
+    "projects_with_observed_recommendations": 22,
+    "board_recommendations": 20,
+    "board_positions": 20,
+    "boards_with_positions": 16,
+    "projects_with_board_positions": 20,
+    "undated_board_recommendations": 0,
+    "unsubmitted_board_recommendations": 0,
+    "unresolved_board_recommendations": 0,
+    "waivers": 1,
+    "positions_without_recorded_tally": 1
+  },
+  "positive_board": "manhattan-cb-04",
+  "empty_board": "bronx-cb-01",
+  "min_target_px": 24,
+  "captures": [
+    {
+      "surface": "community_board_document",
+      "case": "board-land-positions-shared-date",
+      "route": "/community-boards/manhattan-cb-04/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "observed": {
+        "section_present": true,
+        "heading": "Positions this board recorded on land use projects",
+        "state": "available",
+        "position_count_attribute": "2",
+        "project_count_attribute": "2",
+        "recorded_date_count_attribute": "1",
+        "ready_for_inspection": true,
+        "rendered_rows": 2,
+        "distinct_recorded_dates": [
+          "2026-02-04"
+        ],
+        "project_hrefs": [
+          "/browse/zoning/#land/2023M0213",
+          "/browse/zoning/#land/2024M0244"
+        ],
+        "distinct_project_hrefs": 2,
+        "no_horizontal_overflow": true,
+        "calendar_present": true,
+        "committee_links": 0,
+        "links": {
+          "count": 2,
+          "visible": 2,
+          "reachable": 2,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 2,
+          "visible": 2,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24
+      },
+      "axe": {
+        "scope": "#board-land-positions",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "targets": [
+              ".community-board-money-metrics"
+            ]
+          }
+        ],
+        "page_passes": false
+      },
+      "assertion": "/community-boards/manhattan-cb-04/ at 390x844: Two applications this board recorded on one date with one identical tally render as two rows with two project destinations and two source records, and the copy states that they are two applications rather than two meetings.",
+      "screenshot": ".artifacts/board-land-positions/board-land-positions-shared-date-390x844.png",
+      "screenshot_sha256": "efdecfc450353fb95285e780d667d06501503ae70aed2833e8fa1e74f6f29ef4",
+      "render_sha256": "3bdaded7cfe401d4877e6b833679d7cf688a24c6afbc1d49a05f1f5826622da0"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-land-positions-shared-date",
+      "route": "/community-boards/manhattan-cb-04/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "observed": {
+        "section_present": true,
+        "heading": "Positions this board recorded on land use projects",
+        "state": "available",
+        "position_count_attribute": "2",
+        "project_count_attribute": "2",
+        "recorded_date_count_attribute": "1",
+        "ready_for_inspection": true,
+        "rendered_rows": 2,
+        "distinct_recorded_dates": [
+          "2026-02-04"
+        ],
+        "project_hrefs": [
+          "/browse/zoning/#land/2023M0213",
+          "/browse/zoning/#land/2024M0244"
+        ],
+        "distinct_project_hrefs": 2,
+        "no_horizontal_overflow": true,
+        "calendar_present": true,
+        "committee_links": 0,
+        "links": {
+          "count": 2,
+          "visible": 2,
+          "reachable": 2,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 2,
+          "visible": 2,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24
+      },
+      "axe": {
+        "scope": "#board-land-positions",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "targets": [
+              ".community-board-money-metrics"
+            ]
+          }
+        ],
+        "page_passes": false
+      },
+      "assertion": "/community-boards/manhattan-cb-04/ at 1440x900: Two applications this board recorded on one date with one identical tally render as two rows with two project destinations and two source records, and the copy states that they are two applications rather than two meetings.",
+      "screenshot": ".artifacts/board-land-positions/board-land-positions-shared-date-1440x900.png",
+      "screenshot_sha256": "a85bda49545a84f7a63c8e60a65d869dca9586af7d471f6d211e405bb5ca19bc",
+      "render_sha256": "3bdaded7cfe401d4877e6b833679d7cf688a24c6afbc1d49a05f1f5826622da0"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-land-positions-shared-date-no-javascript",
+      "route": "/community-boards/manhattan-cb-04/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "disabled",
+      "observed": {
+        "section_present": true,
+        "heading": "Positions this board recorded on land use projects",
+        "state": "available",
+        "position_count_attribute": "2",
+        "project_count_attribute": "2",
+        "recorded_date_count_attribute": "1",
+        "ready_for_inspection": false,
+        "rendered_rows": 2,
+        "distinct_recorded_dates": [
+          "2026-02-04"
+        ],
+        "project_hrefs": [
+          "/browse/zoning/#land/2023M0213",
+          "/browse/zoning/#land/2024M0244"
+        ],
+        "distinct_project_hrefs": 2,
+        "no_horizontal_overflow": true,
+        "calendar_present": true,
+        "committee_links": 0,
+        "links": {
+          "count": 2,
+          "visible": 2,
+          "reachable": 2,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 2,
+          "visible": 0,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        }
+      },
+      "assertion": "/community-boards/manhattan-cb-04/ with scripting disabled: every project link works and every recorded fact is already in the row, while the inspect control is not offered at all",
+      "render_sha256": "bfa3178c0eae951993c2e91e3ad3981a4607ccc7bbf4a168a55e3c98d61a04d7"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-land-positions-waiver",
+      "route": "/community-boards/staten-island-cb-01/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "observed": {
+        "section_present": true,
+        "heading": "Positions this board recorded on land use projects",
+        "state": "available",
+        "position_count_attribute": "2",
+        "project_count_attribute": "2",
+        "recorded_date_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 2,
+        "distinct_recorded_dates": [
+          "2026-04-14",
+          "2026-05-12"
+        ],
+        "project_hrefs": [
+          "/browse/zoning/#land/2026R0127",
+          "/browse/zoning/#land/2025R0137"
+        ],
+        "distinct_project_hrefs": 2,
+        "no_horizontal_overflow": true,
+        "calendar_present": false,
+        "committee_links": 0,
+        "links": {
+          "count": 2,
+          "visible": 2,
+          "reachable": 2,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 2,
+          "visible": 2,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24
+      },
+      "axe": {
+        "scope": "#board-land-positions",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "targets": [
+              ".community-board-money-metrics"
+            ]
+          }
+        ],
+        "page_passes": false
+      },
+      "assertion": "/community-boards/staten-island-cb-01/ at 390x844: A waiver of recommendation keeps its own published label and its absent tally, and the copy says it is neither support nor opposition.",
+      "screenshot": ".artifacts/board-land-positions/board-land-positions-waiver-390x844.png",
+      "screenshot_sha256": "884dd4871551ff76c0642bdcb19a48c87406650d53247b9d3ed4930e2892f0db",
+      "render_sha256": "34e6944c619e62aef618354cede4f5e1baf23b87683c21bf25faafa3477102df"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-land-positions-waiver",
+      "route": "/community-boards/staten-island-cb-01/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "observed": {
+        "section_present": true,
+        "heading": "Positions this board recorded on land use projects",
+        "state": "available",
+        "position_count_attribute": "2",
+        "project_count_attribute": "2",
+        "recorded_date_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 2,
+        "distinct_recorded_dates": [
+          "2026-04-14",
+          "2026-05-12"
+        ],
+        "project_hrefs": [
+          "/browse/zoning/#land/2026R0127",
+          "/browse/zoning/#land/2025R0137"
+        ],
+        "distinct_project_hrefs": 2,
+        "no_horizontal_overflow": true,
+        "calendar_present": false,
+        "committee_links": 0,
+        "links": {
+          "count": 2,
+          "visible": 2,
+          "reachable": 2,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 2,
+          "visible": 2,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24
+      },
+      "axe": {
+        "scope": "#board-land-positions",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "targets": [
+              ".community-board-money-metrics"
+            ]
+          }
+        ],
+        "page_passes": false
+      },
+      "assertion": "/community-boards/staten-island-cb-01/ at 1440x900: A waiver of recommendation keeps its own published label and its absent tally, and the copy says it is neither support nor opposition.",
+      "screenshot": ".artifacts/board-land-positions/board-land-positions-waiver-1440x900.png",
+      "screenshot_sha256": "0d0aa92ea707581de20e5f043f80da86854c9de925e40a808d32863691a569b2",
+      "render_sha256": "34e6944c619e62aef618354cede4f5e1baf23b87683c21bf25faafa3477102df"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-land-positions-waiver-no-javascript",
+      "route": "/community-boards/staten-island-cb-01/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "disabled",
+      "observed": {
+        "section_present": true,
+        "heading": "Positions this board recorded on land use projects",
+        "state": "available",
+        "position_count_attribute": "2",
+        "project_count_attribute": "2",
+        "recorded_date_count_attribute": "2",
+        "ready_for_inspection": false,
+        "rendered_rows": 2,
+        "distinct_recorded_dates": [
+          "2026-04-14",
+          "2026-05-12"
+        ],
+        "project_hrefs": [
+          "/browse/zoning/#land/2026R0127",
+          "/browse/zoning/#land/2025R0137"
+        ],
+        "distinct_project_hrefs": 2,
+        "no_horizontal_overflow": true,
+        "calendar_present": false,
+        "committee_links": 0,
+        "links": {
+          "count": 2,
+          "visible": 2,
+          "reachable": 2,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 2,
+          "visible": 0,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        }
+      },
+      "assertion": "/community-boards/staten-island-cb-01/ with scripting disabled: every project link works and every recorded fact is already in the row, while the inspect control is not offered at all",
+      "render_sha256": "e71197718851a2c9ec1c09e72cabfd2aaea0a990a028d04f1ea1554f21bc4ee7"
+    },
+    {
+      "surface": "journey",
+      "case": "board-position-inspect-journey",
+      "route": "/community-boards/manhattan-cb-04/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "observed": {
+        "dialog_open": true,
+        "dialog_labelled_by": "board-land-position-inspect-title",
+        "dialog_title": "Dewitt Clinton Park North (801 Eleventh Avenue)",
+        "focus_inside_dialog": true,
+        "scroll_while_open": 3850,
+        "url_unchanged_by_inspection": true,
+        "dialog_states_advisory": true,
+        "dialog_states_tally_meaning": true,
+        "dialog_states_other_body": true,
+        "dialog_states_missing_vote_date": true,
+        "dialog_open_href": "/browse/zoning/#land/2024M0244",
+        "dialog_closed_by_escape": true,
+        "focus_returned_to_control": true,
+        "scroll_after_dismiss": 3850,
+        "rows_after_dismiss": 2,
+        "scrolled_to": 3850,
+        "scroll_before_leaving": 3850,
+        "left_for_path": "/browse/zoning/",
+        "left_for_hash": "land/2024M0244",
+        "returned_path": "/community-boards/manhattan-cb-04/",
+        "scroll_on_return": 3850,
+        "rows_on_return": 2,
+        "rows_before": 2,
+        "calendar_panels_before": 1,
+        "calendar_panels_on_return": 1,
+        "ready_on_return": true,
+        "scroll_preserved_through_inspection": true,
+        "scroll_restored": true,
+        "list_undisturbed": true,
+        "calendar_undisturbed": true
+      },
+      "assertion": "/community-boards/manhattan-cb-04/ at 390x844: a reader inspects one recorded position in place, dismisses it with Escape and gets focus back on the control, then opens the project and returns with the browser's own Back to the board with their scroll position, the list and the board calendar as they left them",
+      "screenshot": ".artifacts/board-land-positions/board-position-inspect-journey-390x844.png",
+      "screenshot_sha256": "a1be609997cea2028ece329288b64c3371379fce4428f2b5cbeee35775434b82",
+      "render_sha256": "3bdaded7cfe401d4877e6b833679d7cf688a24c6afbc1d49a05f1f5826622da0"
+    },
+    {
+      "surface": "journey",
+      "case": "board-position-inspect-journey",
+      "route": "/community-boards/manhattan-cb-04/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "observed": {
+        "dialog_open": true,
+        "dialog_labelled_by": "board-land-position-inspect-title",
+        "dialog_title": "Dewitt Clinton Park North (801 Eleventh Avenue)",
+        "focus_inside_dialog": true,
+        "scroll_while_open": 2531,
+        "url_unchanged_by_inspection": true,
+        "dialog_states_advisory": true,
+        "dialog_states_tally_meaning": true,
+        "dialog_states_other_body": true,
+        "dialog_states_missing_vote_date": true,
+        "dialog_open_href": "/browse/zoning/#land/2024M0244",
+        "dialog_closed_by_escape": true,
+        "focus_returned_to_control": true,
+        "scroll_after_dismiss": 2531,
+        "rows_after_dismiss": 2,
+        "scrolled_to": 2531,
+        "scroll_before_leaving": 2531,
+        "left_for_path": "/browse/zoning/",
+        "left_for_hash": "land/2024M0244",
+        "returned_path": "/community-boards/manhattan-cb-04/",
+        "scroll_on_return": 2531,
+        "rows_on_return": 2,
+        "rows_before": 2,
+        "calendar_panels_before": 1,
+        "calendar_panels_on_return": 1,
+        "ready_on_return": true,
+        "scroll_preserved_through_inspection": true,
+        "scroll_restored": true,
+        "list_undisturbed": true,
+        "calendar_undisturbed": true
+      },
+      "assertion": "/community-boards/manhattan-cb-04/ at 1440x900: a reader inspects one recorded position in place, dismisses it with Escape and gets focus back on the control, then opens the project and returns with the browser's own Back to the board with their scroll position, the list and the board calendar as they left them",
+      "screenshot": ".artifacts/board-land-positions/board-position-inspect-journey-1440x900.png",
+      "screenshot_sha256": "0ca7b251619a0a486cdde712f730f4490f7438c9eefc6b05cc21627c5df89bd9",
+      "render_sha256": "3bdaded7cfe401d4877e6b833679d7cf688a24c6afbc1d49a05f1f5826622da0"
+    },
+    {
+      "surface": "keyboard",
+      "case": "board-position-keyboard",
+      "route": "/community-boards/manhattan-cb-04/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "observed": {
+        "control_focusable": true,
+        "opened_by_enter": true,
+        "focus_on_dismiss_control": true,
+        "tab_stays_inside": true,
+        "closed_by_escape": true,
+        "focus_returned": true
+      },
+      "axe": {
+        "scope": "#board-land-positions",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "targets": [
+              ".community-board-money-metrics"
+            ]
+          }
+        ],
+        "page_passes": false
+      },
+      "assertion": "/community-boards/manhattan-cb-04/ by keyboard alone: Tab reaches the inspect control, Enter opens the record with focus inside it, Tab stays inside, and Escape dismisses it and returns focus to the control it was opened from",
+      "screenshot": ".artifacts/board-land-positions/board-position-keyboard-1440x900.png",
+      "screenshot_sha256": "8c40b56951e4af2cb247c7a01ec760b6f31657a827dfc4e445370694cbf8ffb4",
+      "render_sha256": "3bdaded7cfe401d4877e6b833679d7cf688a24c6afbc1d49a05f1f5826622da0"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-language-en",
+      "route": "/community-boards/manhattan-cb-04/ (lang=en)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "observed": {
+        "section_present": true,
+        "state": "available",
+        "heading": "Positions this board recorded on land use projects",
+        "direction": null,
+        "language": null,
+        "project_links": 2,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "published_title_preserved": true,
+        "published_position_preserved": true
+      },
+      "axe": {
+        "scope": "#board-land-positions",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in en with the publisher's own project names and recorded position labels left in the source language",
+      "render_sha256": "3bdaded7cfe401d4877e6b833679d7cf688a24c6afbc1d49a05f1f5826622da0"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-language-es",
+      "route": "/community-boards/manhattan-cb-04/ (lang=es)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "observed": {
+        "section_present": true,
+        "state": "available",
+        "heading": "Posiciones que esta junta registr\u00f3 sobre proyectos de uso del suelo",
+        "direction": "ltr",
+        "language": "es",
+        "project_links": 2,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "published_title_preserved": true,
+        "published_position_preserved": true
+      },
+      "axe": {
+        "scope": "#board-land-positions",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in es with the publisher's own project names and recorded position labels left in the source language",
+      "render_sha256": "5b24750aaa78e4f00dd21f0dea388f8719d4b4b29c76e3c1ba836e2f5403935b"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-language-zh-Hans",
+      "route": "/community-boards/manhattan-cb-04/ (lang=zh-Hans)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "observed": {
+        "section_present": true,
+        "state": "available",
+        "heading": "\u672c\u59d4\u5458\u4f1a\u5c31\u571f\u5730\u4f7f\u7528\u9879\u76ee\u767b\u8bb0\u7684\u7acb\u573a",
+        "direction": "ltr",
+        "language": "zh-Hans",
+        "project_links": 2,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "published_title_preserved": true,
+        "published_position_preserved": true
+      },
+      "axe": {
+        "scope": "#board-land-positions",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in zh-Hans with the publisher's own project names and recorded position labels left in the source language",
+      "render_sha256": "d812174a8dfa4e253ba0507c1670ae672bfa00af83c9650bfb172f9f2242f8e1"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-language-ru",
+      "route": "/community-boards/manhattan-cb-04/ (lang=ru)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "observed": {
+        "section_present": true,
+        "state": "available",
+        "heading": "\u041f\u043e\u0437\u0438\u0446\u0438\u0438, \u043a\u043e\u0442\u043e\u0440\u044b\u0435 \u044d\u0442\u043e\u0442 \u0441\u043e\u0432\u0435\u0442 \u0437\u0430\u0444\u0438\u043a\u0441\u0438\u0440\u043e\u0432\u0430\u043b \u043f\u043e \u043f\u0440\u043e\u0435\u043a\u0442\u0430\u043c \u0437\u0435\u043c\u043b\u0435\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0438\u044f",
+        "direction": "ltr",
+        "language": "ru",
+        "project_links": 2,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "published_title_preserved": true,
+        "published_position_preserved": true
+      },
+      "axe": {
+        "scope": "#board-land-positions",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in ru with the publisher's own project names and recorded position labels left in the source language",
+      "render_sha256": "2050fcf1ec8468f39539b7b71276a21d56e64b9debc8a474f6ae4409e5dc1c0e"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-language-bn",
+      "route": "/community-boards/manhattan-cb-04/ (lang=bn)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "observed": {
+        "section_present": true,
+        "state": "available",
+        "heading": "\u098f\u0987 \u09ac\u09cb\u09b0\u09cd\u09a1 \u09ad\u09c2\u09ae\u09bf \u09ac\u09cd\u09af\u09ac\u09b9\u09be\u09b0 \u09aa\u09cd\u09b0\u0995\u09b2\u09cd\u09aa\u09c7 \u09af\u09c7 \u0985\u09ac\u09b8\u09cd\u09a5\u09be\u09a8 \u09a8\u09a5\u09bf\u09ad\u09c1\u0995\u09cd\u09a4 \u0995\u09b0\u09c7\u099b\u09c7",
+        "direction": "ltr",
+        "language": "bn",
+        "project_links": 2,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "published_title_preserved": true,
+        "published_position_preserved": true
+      },
+      "axe": {
+        "scope": "#board-land-positions",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in bn with the publisher's own project names and recorded position labels left in the source language",
+      "render_sha256": "4750fe0586ee55cf7dae2ea368a31e7be0d5c307ab24ebd16315617416314096"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-language-ht",
+      "route": "/community-boards/manhattan-cb-04/ (lang=ht)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "observed": {
+        "section_present": true,
+        "state": "available",
+        "heading": "Pozisyon kons\u00e8y sa a anrejistre sou pwoj\u00e8 itilizasyon t\u00e8",
+        "direction": "ltr",
+        "language": "ht",
+        "project_links": 2,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "published_title_preserved": true,
+        "published_position_preserved": true
+      },
+      "axe": {
+        "scope": "#board-land-positions",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in ht with the publisher's own project names and recorded position labels left in the source language",
+      "render_sha256": "59ed53a0a0baee7866ad129272d28e3e9c3f66bf14dc0e68d7636466652b3750"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-language-ko",
+      "route": "/community-boards/manhattan-cb-04/ (lang=ko)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "observed": {
+        "section_present": true,
+        "state": "available",
+        "heading": "\uc774 \ubcf4\ub4dc\uac00 \ud1a0\uc9c0 \uc774\uc6a9 \ud504\ub85c\uc81d\ud2b8\uc5d0 \uae30\ub85d\ud55c \uc785\uc7a5",
+        "direction": "ltr",
+        "language": "ko",
+        "project_links": 2,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "published_title_preserved": true,
+        "published_position_preserved": true
+      },
+      "axe": {
+        "scope": "#board-land-positions",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in ko with the publisher's own project names and recorded position labels left in the source language",
+      "render_sha256": "154b773be95e64d975905a84d78127a5f38dd1c1598eb18a00e29cef2b1ef9f0"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-language-fr",
+      "route": "/community-boards/manhattan-cb-04/ (lang=fr)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "observed": {
+        "section_present": true,
+        "state": "available",
+        "heading": "Positions que ce conseil a consign\u00e9es sur des projets d'am\u00e9nagement",
+        "direction": "ltr",
+        "language": "fr",
+        "project_links": 2,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "published_title_preserved": true,
+        "published_position_preserved": true
+      },
+      "axe": {
+        "scope": "#board-land-positions",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in fr with the publisher's own project names and recorded position labels left in the source language",
+      "render_sha256": "07ebbb05a6ce93d364e130565145a9119b964614817f88cf663584d4c1475dea"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-language-pl",
+      "route": "/community-boards/manhattan-cb-04/ (lang=pl)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "observed": {
+        "section_present": true,
+        "state": "available",
+        "heading": "Stanowiska, kt\u00f3re ta rada odnotowa\u0142a wobec projekt\u00f3w zagospodarowania terenu",
+        "direction": "ltr",
+        "language": "pl",
+        "project_links": 2,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "published_title_preserved": true,
+        "published_position_preserved": true
+      },
+      "axe": {
+        "scope": "#board-land-positions",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in pl with the publisher's own project names and recorded position labels left in the source language",
+      "render_sha256": "cad4c1a75d7097473d9d161c15f389e40840da18f8356f2f24eda0bbae1518fa"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-language-ar",
+      "route": "/community-boards/manhattan-cb-04/ (lang=ar)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "observed": {
+        "section_present": true,
+        "state": "available",
+        "heading": "\u0627\u0644\u0645\u0648\u0627\u0642\u0641 \u0627\u0644\u062a\u064a \u0633\u062c\u0651\u0644\u0647\u0627 \u0647\u0630\u0627 \u0627\u0644\u0645\u062c\u0644\u0633 \u0628\u0634\u0623\u0646 \u0645\u0634\u0627\u0631\u064a\u0639 \u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u0627\u0644\u0623\u0631\u0627\u0636\u064a",
+        "direction": "rtl",
+        "language": "ar",
+        "project_links": 2,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "published_title_preserved": true,
+        "published_position_preserved": true
+      },
+      "axe": {
+        "scope": "#board-land-positions",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in ar with the publisher's own project names and recorded position labels left in the source language",
+      "render_sha256": "5a0dce100d765fe601788ef94d8e676c4b85bc4122e8e39ca9f5fd0cde5edebc"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-language-ur",
+      "route": "/community-boards/manhattan-cb-04/ (lang=ur)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "observed": {
+        "section_present": true,
+        "state": "available",
+        "heading": "\u0627\u0633 \u0628\u0648\u0631\u0688 \u0646\u06d2 \u0632\u0645\u06cc\u0646 \u06a9\u06d2 \u0627\u0633\u062a\u0639\u0645\u0627\u0644 \u06a9\u06d2 \u0645\u0646\u0635\u0648\u0628\u0648\u06ba \u067e\u0631 \u062c\u0648 \u0645\u0624\u0642\u0641 \u0631\u06cc\u06a9\u0627\u0631\u0688 \u06a9\u06cc\u0627",
+        "direction": "rtl",
+        "language": "ur",
+        "project_links": 2,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "published_title_preserved": true,
+        "published_position_preserved": true
+      },
+      "axe": {
+        "scope": "#board-land-positions",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in ur with the publisher's own project names and recorded position labels left in the source language",
+      "render_sha256": "dc3e074a60589c993ad3b0cfc4f851a0aab3fe720e6f0a9d2ffd9dbeea38c7d9"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-no-recorded-position",
+      "route": "/community-boards/bronx-cb-01/ (this source records no position)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "observed": {
+        "section_present": true,
+        "state": "none_recorded",
+        "heading": "Positions this board recorded on land use projects",
+        "direction": null,
+        "language": null,
+        "project_links": 0,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "retained_project_count": "40"
+      },
+      "axe": {
+        "scope": "#board-land-positions",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "this source records no position for this board: the section says so about the source and names the population it was measured over, rather than rendering nothing or claiming the board has never voted",
+      "render_sha256": "7369e57bd9e1eddf6b44c609704e0a027589b9c88d266f36d255a7792274ed55"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-positions-unavailable",
+      "route": "/community-boards/manhattan-cb-04/ (recorded positions unreadable)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "e33c8550c4f92c1216933c83a91b70ed9b106f92",
+      "data_vintage": {
+        "community_board_land_positions": "2026-09-06T15:58:50.482Z",
+        "community_board_geography_lookup": "2026-05-26",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "observed": {
+        "section_present": true,
+        "state": "unavailable",
+        "heading": "Positions this board recorded on land use projects",
+        "direction": null,
+        "language": null,
+        "project_links": 0,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "source_link": 1
+      },
+      "axe": {
+        "scope": "#board-land-positions",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the recorded positions could not be read: the section says so, offers a retry, keeps its published source reachable, and lists no position",
+      "render_sha256": "fc09dfeed6fa390606f11149227a64a54f58a95a7cc10eed7454fa89cac90d92"
+    }
+  ],
+  "axe_all_pass": true
+}

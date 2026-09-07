@@ -32,7 +32,7 @@
 
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -776,4 +776,167 @@ test("the rendered section names the publisher and the date it was observed", ()
   const html = sectionFor(BROOKLYN_CB1);
   assert.match(textOf(html), /Source: NYC Department of City Planning, Zoning Application Portal ?\. Observed /);
   assert.match(html, /href="https:\/\/data\.cityofnewyork\.us\/d\/hgx4-8ukb"/);
+});
+
+/* ---------- the committed capture evidence ---------- */
+
+const CAPTURE = read("docs/evidence/board-land-positions/manifest.json");
+
+test("the capture manifest is the proof, and no image binary is committed", () => {
+  assert.equal(CAPTURE.schema, "cityscroll.board_land_position_capture.v1");
+  assert.match(CAPTURE.revision, /^[0-9a-f]{40}$/);
+  assert.equal(CAPTURE.data_vintage.community_board_land_positions, LOOKUP.source.observed_on);
+  assert.deepEqual(CAPTURE.counts, LOOKUP.counts);
+  assert.ok(CAPTURE.captures.length >= 20);
+  for (const capture of CAPTURE.captures) {
+    assert.match(capture.route, /^\/community-boards\//);
+    assert.ok(capture.viewport.width > 0 && capture.viewport.height > 0, capture.case);
+    assert.equal(capture.revision, CAPTURE.revision, capture.case);
+    assert.deepEqual(capture.data_vintage, CAPTURE.data_vintage, capture.case);
+    assert.ok(capture.assertion.length > 40, capture.case);
+    assert.match(capture.render_sha256, /^[0-9a-f]{64}$/, capture.case);
+    if (capture.screenshot) {
+      assert.match(capture.screenshot_sha256, /^[0-9a-f]{64}$/, capture.case);
+      // The rendered image stays local: the receipt carries its digest, and the
+      // path it names is under an ignored working directory, never the tree.
+      assert.match(capture.screenshot, /^\.artifacts\//, capture.case);
+      assert.doesNotMatch(capture.screenshot, /^docs\//, capture.case);
+    }
+  }
+  assert.equal(CAPTURE.axe_all_pass, true);
+
+  // The committed evidence directory holds the receipt and nothing else, so no
+  // image binary can reach the repository through it.
+  const files = readdirSync(new URL("../docs/evidence/board-land-positions/", import.meta.url));
+  assert.deepEqual(files.sort(), ["manifest.json"]);
+});
+
+test("the capture manifest covers both viewports, both fallbacks and every language", () => {
+  const cases = new Set(CAPTURE.captures.map((capture) => capture.case));
+  for (const lang of ["en", ...SHIPPING_LANGS]) assert.ok(cases.has(`board-language-${lang}`), lang);
+  assert.ok(cases.has("board-no-recorded-position"));
+  assert.ok(cases.has("board-positions-unavailable"));
+  assert.ok(cases.has("board-position-keyboard"));
+  assert.ok(cases.has("board-position-inspect-journey"));
+
+  const widths = new Set(CAPTURE.captures
+    .filter((capture) => capture.case.startsWith("board-land-positions-shared-date")
+      && capture.javascript === "enabled")
+    .map((capture) => capture.viewport.width));
+  assert.deepEqual([...widths].sort((a, b) => a - b), [390, 1440]);
+});
+
+test("the captured pages prove the two applications stayed two, in both viewports", () => {
+  const shared = CAPTURE.captures.filter((capture) => capture.case.startsWith("board-land-positions-shared-date"));
+  assert.ok(shared.length >= 3);
+  for (const capture of shared) {
+    const observed = capture.observed;
+    assert.equal(observed.section_present, true, capture.case);
+    assert.equal(observed.rendered_rows, 2, capture.case);
+    assert.equal(observed.distinct_project_hrefs, 2, capture.case);
+    // One recorded date carrying two rows: the pages never turn it into two.
+    assert.deepEqual(observed.distinct_recorded_dates, ["2026-02-04"], capture.case);
+    assert.equal(observed.recorded_date_count_attribute, "1", capture.case);
+    assert.equal(observed.position_count_attribute, "2", capture.case);
+    assert.equal(observed.no_horizontal_overflow, true, capture.case);
+  }
+});
+
+test("the captured pages prove the no-scripting fallback and the native affordances", () => {
+  const withoutScript = CAPTURE.captures.filter((capture) => capture.javascript === "disabled");
+  assert.ok(withoutScript.length >= 2);
+  for (const capture of withoutScript) {
+    assert.equal(capture.observed.section_present, true, capture.case);
+    assert.ok(capture.observed.rendered_rows > 0, capture.case);
+    // The inspect control is in the markup but never offered without the
+    // behaviour behind it; the project links work regardless.
+    assert.equal(capture.observed.ready_for_inspection, false, capture.case);
+    assert.equal(capture.observed.inspect_controls.visible, 0, capture.case);
+    assert.equal(capture.observed.links.native, true, capture.case);
+    assert.equal(capture.observed.links.new_tab, 0, capture.case);
+    assert.equal(capture.observed.links.scripted, 0, capture.case);
+  }
+
+  for (const capture of CAPTURE.captures.filter((c) => c.observed?.inspect_controls && c.javascript === "enabled")) {
+    const controls = capture.observed.inspect_controls;
+    assert.equal(controls.native, true, capture.case);
+    assert.equal(controls.labelled, true, capture.case);
+    assert.equal(controls.nested_in_link, 0, capture.case);
+    assert.equal(controls.visible, controls.count, capture.case);
+    assert.equal(capture.observed.links.reachable, capture.observed.links.visible, capture.case);
+    assert.ok(capture.observed.smallest_target_px >= 24, `${capture.case}: ${capture.observed.smallest_target_px}`);
+  }
+});
+
+test("the captured journey preserves scope, scroll and the list through inspect and Back", () => {
+  const journeys = CAPTURE.captures.filter((capture) => capture.case === "board-position-inspect-journey");
+  assert.equal(journeys.length, 2);
+  for (const { observed, viewport } of journeys) {
+    const at = `${viewport.width}x${viewport.height}`;
+    assert.equal(observed.dialog_open, true, at);
+    assert.equal(observed.dialog_labelled_by, "board-land-position-inspect-title", at);
+    assert.equal(observed.focus_inside_dialog, true, at);
+    // Inspecting changes nothing about where the reader is.
+    assert.equal(observed.url_unchanged_by_inspection, true, at);
+    assert.equal(observed.scroll_preserved_through_inspection, true, at);
+    // The teaching copy and the other body's undated position travel with it.
+    assert.equal(observed.dialog_states_advisory, true, at);
+    assert.equal(observed.dialog_states_tally_meaning, true, at);
+    assert.equal(observed.dialog_states_other_body, true, at);
+    assert.equal(observed.dialog_states_missing_vote_date, true, at);
+    // Escape dismisses and focus comes back to the control it opened from.
+    assert.equal(observed.dialog_closed_by_escape, true, at);
+    assert.equal(observed.focus_returned_to_control, true, at);
+    // The full record is a real destination, and Back returns the board intact.
+    assert.equal(observed.dialog_open_href, `/browse/zoning/#land/${DEWITT_ELEVENTH}`, at);
+    assert.equal(observed.left_for_path, "/browse/zoning/", at);
+    assert.equal(observed.left_for_hash, `land/${DEWITT_ELEVENTH}`, at);
+    assert.equal(observed.returned_path, `/community-boards/${MANHATTAN_CB4}/`, at);
+    assert.equal(observed.scroll_restored, true, at);
+    assert.equal(observed.list_undisturbed, true, at);
+    assert.equal(observed.calendar_undisturbed, true, at);
+    assert.equal(observed.ready_on_return, true, at);
+  }
+});
+
+test("the captured keyboard pass drives the whole affordance without a pointer", () => {
+  const keyboard = CAPTURE.captures.find((capture) => capture.case === "board-position-keyboard");
+  assert.ok(keyboard);
+  assert.deepEqual(keyboard.observed, {
+    control_focusable: true,
+    opened_by_enter: true,
+    focus_on_dismiss_control: true,
+    tab_stays_inside: true,
+    closed_by_escape: true,
+    focus_returned: true,
+  });
+});
+
+test("the captured language pages resolve every label and preserve the source text", () => {
+  for (const lang of ["en", ...SHIPPING_LANGS]) {
+    const capture = CAPTURE.captures.find((row) => row.case === `board-language-${lang}`);
+    assert.ok(capture, lang);
+    assert.equal(capture.observed.section_present, true, lang);
+    assert.equal(capture.observed.unresolved_key_rendered, false, lang);
+    assert.equal(capture.observed.no_horizontal_overflow, true, lang);
+    assert.equal(capture.observed.published_title_preserved, true, lang);
+    assert.equal(capture.observed.published_position_preserved, true, lang);
+    if (lang !== "en") {
+      assert.equal(capture.observed.language, lang, lang);
+      assert.equal(capture.observed.direction, ["ar", "ur"].includes(lang) ? "rtl" : "ltr", lang);
+    }
+  }
+});
+
+test("the captured absence and failure pages stay two different answers", () => {
+  const absent = CAPTURE.captures.find((capture) => capture.case === "board-no-recorded-position");
+  const failed = CAPTURE.captures.find((capture) => capture.case === "board-positions-unavailable");
+  assert.equal(absent.observed.state, "none_recorded");
+  assert.equal(absent.observed.project_links, 0);
+  assert.equal(absent.observed.retained_project_count, String(LOOKUP.counts.retained_projects));
+  assert.equal(failed.observed.state, "unavailable");
+  assert.equal(failed.observed.project_links, 0);
+  // The published source stays reachable through the failure.
+  assert.equal(failed.observed.source_link, 1);
+  assert.notEqual(absent.render_sha256, failed.render_sha256);
 });
