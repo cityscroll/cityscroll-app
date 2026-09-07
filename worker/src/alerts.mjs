@@ -31,6 +31,7 @@ import { emailT } from "./lib/i18n.mjs";
 import { digestDecision, digestCoversBacklogWindow, dedupeFreshByContent, shortDate, matchEvidence } from "./lib/digest.mjs";
 import { itemAwarenessHtml } from "./lib/digest_item_awareness.mjs";
 import { emptyFunnel, mergeFunnels, normalizeFunnel } from "./lib/digest_funnel.mjs";
+import { TRANSIENT_UPSTREAM_STATUSES, markUpstreamFailure, upstreamResultFields } from "./lib/upstream_failure.mjs";
 import { buildProcurementAlertAtom, procurementAlertSubject } from "./lib/procurement_alert_atom.mjs";
 import {
   groupDigestRowsByActionBand,
@@ -433,8 +434,12 @@ async function recordQueueJobOutcome(env, day, jobResult) {
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const REQ_URL = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
-const RETRYABLE_SODA_STATUSES = new Set([408, 425, 429, 500, 502, 503, 504, 524]);
-const SODA_RETRY_DELAY_MS = 250;
+// A gateway timeout at the source is ordinary weather, not a fault of ours. The read gets a
+// budget rather than a single retry: three attempts with a widening pause, bounded by a wall
+// clock so one unwell source can never stall the whole digest run behind it.
+const RETRYABLE_SODA_STATUSES = TRANSIENT_UPSTREAM_STATUSES;
+const SODA_RETRY_DELAYS_MS = Object.freeze([250, 1000]);
+const SODA_RETRY_BUDGET_MS = 4000;
 
 export async function runDigestShadowRecoveryCatchUp(env, shadowHold, {
   now = new Date(),
@@ -588,6 +593,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
         watch: w.id,
         ...(options.capturePreviews ? { previewId: watchDigestId } : {}),
         error: String(e?.message || e),
+        ...upstreamResultFields(e),
       });
     }
   }
@@ -1166,7 +1172,7 @@ export async function processOneSub(env, s, ctx) {
       ...(preview ? { preview } : {}),
     };
   } catch (e) {
-    return { sub: s.key, ...(previewId ? { previewId } : {}), kind: "subscription", error: String(e?.message || e) };
+    return { sub: s.key, ...(previewId ? { previewId } : {}), kind: "subscription", error: String(e?.message || e), ...upstreamResultFields(e) };
   }
 }
 
@@ -1426,7 +1432,7 @@ export async function processAccountRollup(env, subs, ctx) {
     };
     return result;
   } catch (e) {
-    return { sub: accountId, ...(previewId ? { previewId } : {}), kind: "rollup", email: email || null, emailRedacted: redactEmail(email), error: String(e?.message || e) };
+    return { sub: accountId, ...(previewId ? { previewId } : {}), kind: "rollup", email: email || null, emailRedacted: redactEmail(email), error: String(e?.message || e), ...upstreamResultFields(e) };
   }
 }
 
@@ -1698,7 +1704,7 @@ export async function processAwardSub(env, s, ctx) {
       ...(preview ? { preview } : {}),
     };
   } catch (e) {
-    return { sub: s.key, ...(previewId ? { previewId } : {}), error: String(e?.message || e) };
+    return { sub: s.key, ...(previewId ? { previewId } : {}), error: String(e?.message || e), ...upstreamResultFields(e) };
   }
 }
 
@@ -2390,27 +2396,44 @@ export function dueLabel(dueDate) {
 export async function fetchSodaRowsWithRetry(url, {
   fetchFn = fetch,
   waitFn = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds)),
+  nowFn = () => Date.now(),
+  budgetMs = SODA_RETRY_BUDGET_MS,
+  delaysMs = SODA_RETRY_DELAYS_MS,
 } = {}) {
-  const attempts = 2;
+  const attempts = delaysMs.length + 1;
+  const startedAt = nowFn();
   let lastError = null;
+  let made = 0;
   for (let attempt = 0; attempt < attempts; attempt++) {
+    made = attempt + 1;
     let response;
     try {
       response = await fetchFn(url);
     } catch (error) {
-      lastError = error;
-      if (attempt === attempts - 1) throw error;
-      await waitFn(SODA_RETRY_DELAY_MS);
+      lastError = markUpstreamFailure(error, { source: "soda", httpStatus: null, attempts: made });
+      if (!(await pauseWithinBudget(attempt))) throw lastError;
       continue;
     }
     if (response.ok) return response.json();
-    lastError = new Error(`SODA ${response.status}`);
-    if (!RETRYABLE_SODA_STATUSES.has(response.status) || attempt === attempts - 1) {
-      throw lastError;
-    }
-    await waitFn(SODA_RETRY_DELAY_MS);
+    const transient = RETRYABLE_SODA_STATUSES.has(response.status);
+    // The exhausted budget is part of the evidence: a reader of the run has to be able to see
+    // that the source was asked more than once before the read was given up on.
+    lastError = new Error(transient
+      ? `SODA ${response.status} (source unavailable after ${made} attempt${made === 1 ? "" : "s"})`
+      : `SODA ${response.status}`);
+    if (transient) markUpstreamFailure(lastError, { source: "soda", httpStatus: response.status, attempts: made });
+    if (!transient || !(await pauseWithinBudget(attempt))) throw lastError;
   }
   throw lastError;
+
+  // True when another attempt is both configured and still inside the wall-clock budget.
+  async function pauseWithinBudget(attempt) {
+    const delay = delaysMs[attempt];
+    if (delay == null) return false;
+    if (nowFn() - startedAt + delay > budgetMs) return false;
+    await waitFn(delay);
+    return true;
+  }
 }
 
 async function runWatch(w) {

@@ -263,6 +263,110 @@ test("the digest shadow probe reports a missing credential instead of an anonymo
   });
 });
 
+// A rehearsal the probe cannot read and a rehearsal that read a source which did not answer are
+// two different things, and neither of them is "the digest is wrong". These pin the words the
+// monitor uses for each, because the word it reaches for is the whole value of the report.
+test("a rehearsal the probe cannot read names why, and claims nothing about the digest", async () => {
+  await withTempDir("crol-digest-shadow-notrun", async (stateDir) => {
+    const output = await withDigestShadowEnv({
+      CITYSCROLL_ADMIN_KEY: "probe-secret",
+      CITYSCROLL_DIGEST_SHADOW_URL: "https://example.invalid/admin/digest-shadow",
+    }, () => runScheduledJob(DIGEST_SHADOW_JOB, {
+      stateDir,
+      now: new Date("2026-09-06T10:10:00.000Z"),
+      async fetchImpl() {
+        return { ok: false, status: 404, async json() { return { error: "not-run", degraded_receipt: null }; } };
+      },
+    }));
+    assert.equal(output.result.status, "degraded");
+    assert.equal(output.result.degraded_reason, "rehearsal-not-run");
+    assert.equal(output.result.fault_domain, "rehearsal_reachability");
+    assert.match(output.result.body, /no rehearsal is stored for 2026-09-06/);
+    assert.doesNotMatch(output.result.body, /UNAVAILABLE/);
+    // Nothing is known about the sources either, so nothing is said about them.
+    assert.equal(output.intents.length, 1);
+    assert.equal(output.intents[0].issue.mode, "open");
+    assert.equal(output.intents[0].issue.title, "Digest shadow run needs attention");
+  });
+});
+
+test("a stale rehearsal is named as stale rather than as an unnamed failure", async () => {
+  await withTempDir("crol-digest-shadow-stale", async (stateDir) => {
+    const output = await withDigestShadowEnv({
+      CITYSCROLL_ADMIN_KEY: "probe-secret",
+      CITYSCROLL_DIGEST_SHADOW_URL: "https://example.invalid/admin/digest-shadow",
+    }, () => runScheduledJob(DIGEST_SHADOW_JOB, {
+      stateDir,
+      now: new Date("2026-09-07T10:10:00.000Z"),
+      async fetchImpl() {
+        return { ok: true, status: 200, async json() { return { summary: { status: "READY", run_day: "2026-09-05" } }; } };
+      },
+    }));
+    assert.equal(output.result.degraded_reason, "rehearsal-stale");
+    assert.match(output.result.body, /newest stored rehearsal is for 2026-09-05, not 2026-09-07/);
+  });
+});
+
+test("an unavailable source closes the digest finding and opens its own", async () => {
+  await withTempDir("crol-digest-shadow-upstream", async (stateDir) => {
+    const output = await withDigestShadowEnv({
+      CITYSCROLL_ADMIN_KEY: "probe-secret",
+      CITYSCROLL_DIGEST_SHADOW_URL: "https://example.invalid/admin/digest-shadow",
+    }, () => runScheduledJob(DIGEST_SHADOW_JOB, {
+      stateDir,
+      now: new Date("2026-09-07T10:10:00.000Z"),
+      async fetchImpl() {
+        return {
+          ok: true,
+          status: 200,
+          async json() {
+            return {
+              summary: {
+                status: "DEGRADED_UPSTREAM",
+                run_day: "2026-09-07",
+                redlines: [],
+                upstream_incidents: [{
+                  code: "upstream_source_unavailable",
+                  digest_id: "watch:rivington",
+                  evidence: { source: "soda", http_status: 524, attempts: 3 },
+                }],
+              },
+            };
+          },
+        };
+      },
+    }));
+    assert.equal(output.result.status, "degraded");
+    assert.equal(output.result.degraded_reason, "upstream-source-unavailable");
+    assert.equal(output.result.fault_domain, "upstream_source");
+    assert.match(output.result.body, /found no fault in the digest/);
+    assert.deepEqual(output.intents.map((intent) => [intent.issue.mode, intent.issue.title]), [
+      ["close", "Digest shadow run needs attention"],
+      ["open", "Digest shadow source is unavailable"],
+    ]);
+  });
+});
+
+test("a healthy rehearsal closes both the digest finding and the source finding", async () => {
+  await withTempDir("crol-digest-shadow-recovered", async (stateDir) => {
+    const output = await withDigestShadowEnv({
+      CITYSCROLL_ADMIN_KEY: "probe-secret",
+      CITYSCROLL_DIGEST_SHADOW_URL: "https://example.invalid/admin/digest-shadow",
+    }, () => runScheduledJob(DIGEST_SHADOW_JOB, {
+      stateDir,
+      now: new Date("2026-09-07T10:10:00.000Z"),
+      async fetchImpl() {
+        return { ok: true, status: 200, async json() { return { summary: { status: "READY", run_day: "2026-09-07" } }; } };
+      },
+    }));
+    assert.equal(output.result.status, "healthy");
+    assert.deepEqual(output.intents.map((intent) => [intent.issue.mode, intent.issue.title]), [
+      ["close", "Digest shadow run needs attention"],
+      ["close", "Digest shadow source is unavailable"],
+    ]);
+  });
+});
+
 // The issue loop's delivery identity is a dedicated machine account, installed
 // as a mode-0600 file the trigger only names. The failure that matters is not a
 // missing file: it is a broken file being papered over by whatever other

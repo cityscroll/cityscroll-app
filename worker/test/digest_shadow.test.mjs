@@ -101,6 +101,9 @@ test("a schedule-skipped weekly watch does not masquerade as a recall drop", () 
     item_count: 0,
     evaluation_state: "skipped",
     skip_reason: "weekly",
+    // Carried so a later reader can tell a quiet day from a recall drop without the raw run.
+    matched_row_count: null,
+    digest_action: "heartbeat",
   });
   assert.equal(out.previews[0].watch_counts[0].skip_reason, "weekly");
 });
