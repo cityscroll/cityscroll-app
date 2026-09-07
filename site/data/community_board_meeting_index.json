@@ -35405,13 +35405,13 @@
     {
       "path": "community_board_meeting_index/shard-002.json",
       "kind": "by_board",
-      "bytes": 4907292,
+      "bytes": 4908215,
       "entry_count": 22
     },
     {
       "path": "community_board_meeting_index/shard-003.json",
       "kind": "rows",
-      "bytes": 4506773,
+      "bytes": 4507696,
       "entry_count": 407
     }
   ]

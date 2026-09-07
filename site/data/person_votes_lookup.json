@@ -2,7 +2,7 @@
   "schema_version": 2,
   "title": "Person-level Legistar roll-call votes by official",
   "description": "Precomputed index of retained by_person votes for the #official/{id} surface. Built from people_domain_observations (meeting-outcomes roll_call densify). Never invents tallies.",
-  "retrieved_at": "2026-09-06T22:47:58.530Z",
+  "retrieved_at": "2026-09-06T16:05:52.290Z",
   "source": {
     "system": "legistar",
     "read_model": "meeting-outcomes:materialized:v2",
@@ -65,7 +65,7 @@
       "sample_event_id": null,
       "basis": "dated_live_legistar_audit"
     },
-    "vintage": "2026-09-06T22:47:58.530Z",
+    "vintage": "2026-09-06T16:05:52.290Z",
     "gate": {
       "minimum_retention_rate": 0.95,
       "minimum_distinct_events": 30,

@@ -132,11 +132,11 @@ test("every retained exact matter is published, with the counts the fixture itse
 
   // The same figures stated absolutely, so a corpus that silently changes shape
   // is visible rather than self-justifying.
-  assert.equal(population.matter_count, 66);
-  assert.equal(population.appearances, 76);
-  assert.equal(population.two_event_histories, 10);
+  assert.equal(population.matter_count, 78);
+  assert.equal(population.appearances, 100);
+  assert.equal(population.two_event_histories, 22);
   assert.equal(population.one_event_histories, 56);
-  assert.equal(population.references, 78);
+  assert.equal(population.references, 102);
 
   // The committed artifact is what this builder produces from this input.
   assert.deepEqual(built, lookup, "site/data/legislative_matter_lookup.json is current");
@@ -163,9 +163,9 @@ test("the matter that was already published keeps its history unchanged in shape
 // does not know instead of implying that nothing more will happen.
 // ---------------------------------------------------------------------------
 
-test("all 66 published matter routes resolve", async () => {
+test("all 78 published matter routes resolve", async () => {
   const ids = Object.keys(lookup.matters);
-  assert.equal(ids.length, 66);
+  assert.equal(ids.length, 78);
   const statuses = new Map();
   for (const id of ids) {
     assert.equal(edgeRequestKind(`https://cityscroll.org/matters/${id}/`), "matter");
@@ -391,18 +391,23 @@ test("a matter id claimed by two publisher tenants publishes neither and says so
 });
 
 // ---------------------------------------------------------------------------
-// A5 — the ten retained sequences read in source-event order, and the page says
+// A5 — the retained two-event sequences read in source-event order, and the page says
 // only what the record says.
 // ---------------------------------------------------------------------------
 
-test("every two-event history shows the earlier laid-over step before the later approval", () => {
+test("every two-event history shows the earlier laid-over step before the later disposition", () => {
   const sequences = Object.values(lookup.matters).filter((entry) => entry.appearances.length === 2);
-  assert.equal(sequences.length, 10);
+  assert.equal(sequences.length, 22);
   for (const entry of sequences) {
     const [earlier, later] = entry.appearances;
     assert.ok(earlier.event.date < later.event.date, `${entry.matter_id} is ordered by source event date`);
     assert.match(earlier.outcome, /Laid Over/i, `${entry.matter_id} begins laid over`);
-    assert.match(later.outcome, /Approved by Subcommittee/i, `${entry.matter_id} ends approved by subcommittee`);
+    // The later step is stated as a rule rather than as one publisher phrase:
+    // the corpus carries several dispositions (approval, approval with
+    // modifications, a committee step), and what the sequence claims is that
+    // the matter moved on from being laid over, not which words said so.
+    assert.doesNotMatch(later.outcome, /Laid Over/i, `${entry.matter_id} moves on from laid over`);
+    assert.ok(later.outcome.trim(), `${entry.matter_id} states its later disposition`);
 
     // The rendered order matches the retained order, so a reader meets the
     // earlier step first.

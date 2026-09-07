@@ -210,7 +210,12 @@ export function materializeCommunityBoardMeetingRow(record, board, observedAt, o
     title: record.title,
     category: record.category,
     format: record.format,
-    publisher_identifier: record.publisher_identifier,
+    // The identity the meeting object resolved, not only the one the publisher
+    // stated. A calendar record carries its identity in its own record id, and
+    // reading the raw field alone left the row saying it had no publisher
+    // identifier while the institution edge built from the same meeting was
+    // promoted on one.
+    publisher_identifier: meeting.publisher_identifier || record.publisher_identifier || null,
     publisher_identifiers: record.publisher_identifiers,
     source_role: record.source_role || "upcoming_meetings",
     observed_receipt: record.observed_receipt,
@@ -346,6 +351,36 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
       .map((record) => materializeCommunityBoardMeetingRow(record, board, observedAt, { committeeRegistry }));
     if (meetingRows.length) byBoard[descriptor.board_id] = [...(byBoard[descriptor.board_id] || []), ...meetingRows];
   }
+  return assembleCommunityBoardMeetingIndex({
+    inventory,
+    byBoard,
+    sourceRecordsByBoard,
+    allRecords,
+    receipts,
+    fetched,
+    eventDetailsFetched,
+    observedAt,
+  });
+}
+
+/**
+ * Assemble the index from already-observed source records.
+ *
+ * Kept separate from the fetch loop so the committed index can be re-derived
+ * from its own committed source records — the projection changes far more often
+ * than the observation does, and re-reading 59 publishers to restate a field is
+ * neither necessary nor polite.
+ */
+export function assembleCommunityBoardMeetingIndex({
+  inventory,
+  byBoard,
+  sourceRecordsByBoard,
+  allRecords,
+  receipts,
+  fetched = 0,
+  eventDetailsFetched = 0,
+  observedAt,
+}) {
   assertNoDuplicatePublisherIdentifiers(allRecords);
   const rows = Object.values(byBoard).flat().sort((left, right) => (
     String(left.event_date).localeCompare(String(right.event_date))
@@ -411,7 +446,42 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
   };
 }
 
+/**
+ * Re-derive rows, institution edges and coverage from the committed index's own
+ * source records, contacting no publisher.
+ */
+export function rematerializeCommunityBoardMeetingIndex() {
+  const inventory = readJson(INVENTORY);
+  const committeeRegistry = readJson(COMMITTEE_REGISTRY);
+  const boardById = new Map((inventory.boards || []).map((board) => [board.id, board]));
+  const committed = readCommunityBoardMeetingIndex(OUTPUT);
+  const sourceRecordsByBoard = committed.source_records_by_board || {};
+  const observedAt = committed.generated_at;
+  const byBoard = {};
+  const allRecords = [];
+  for (const [boardId, records] of Object.entries(sourceRecordsByBoard)) {
+    allRecords.push(...records);
+    const board = boardById.get(boardId);
+    const meetingRows = records
+      .filter((record) => (record.source_role || "upcoming_meetings") === "upcoming_meetings")
+      .filter((record) => record.record_kind === "event" && record.record_id && record.date)
+      .map((record) => materializeCommunityBoardMeetingRow(record, board, observedAt, { committeeRegistry }));
+    if (meetingRows.length) byBoard[boardId] = meetingRows;
+  }
+  return assembleCommunityBoardMeetingIndex({
+    inventory,
+    byBoard,
+    sourceRecordsByBoard,
+    allRecords,
+    receipts: committed.receipts || [],
+    fetched: committed.coverage?.source_urls_checked || 0,
+    eventDetailsFetched: committed.coverage?.event_details_checked || 0,
+    observedAt,
+  });
+}
+
 const check = process.argv.includes("--check");
+const rematerialize = process.argv.includes("--rematerialize");
 if (process.argv[1] && import.meta.url === `file://${process.argv[1]}`) {
   if (check) {
     if (!existsSync(OUTPUT)) throw new Error("community board meeting index is missing");
@@ -424,7 +494,9 @@ if (process.argv[1] && import.meta.url === `file://${process.argv[1]}`) {
     }
     console.log(`checked ${index.coverage.records_indexed} indexed meetings across ${index.coverage.boards_indexed} boards`);
   } else {
-    const index = await buildCommunityBoardMeetingIndex();
+    const index = rematerialize
+      ? rematerializeCommunityBoardMeetingIndex()
+      : await buildCommunityBoardMeetingIndex();
     writeIndex(index);
     console.log(`wrote ${index.coverage.records_indexed} indexed meetings across ${index.coverage.boards_indexed} boards`);
   }

@@ -8,6 +8,7 @@
     "rules": 2,
     "processConformance": "cityscroll.process_conformance.v1",
     "land": 1,
+    "procurementAwards": 1,
     "gate": "cityscroll.cross_spine_edge_eval.v3"
   },
   "agencies": 49,
@@ -1065,7 +1066,7 @@
     },
     "mandate_contract": {
       "totals": {
-        "public_inferred": 0,
+        "public_inferred": 3,
         "evidence_only": 0
       },
       "denominators": {
@@ -1073,8 +1074,12 @@
         "source_rows": 210,
         "pre_route_pairs": 51
       },
-      "by_tier": {},
-      "by_reason": {},
+      "by_tier": {
+        "public_inferred": 3
+      },
+      "by_reason": {
+        "held_out_precision_gate_passed": 3
+      },
       "by_agency": {
         "administration-for-childrens-services": {
           "denominators": {
@@ -1332,9 +1337,11 @@
             "source_rows": 6,
             "pre_route_pairs": 6
           },
-          "public_inferred": 0,
+          "public_inferred": 3,
           "evidence_only": 0,
-          "reason_counts": {}
+          "reason_counts": {
+            "held_out_precision_gate_passed": 3
+          }
         },
         "housing-preservation-and-development": {
           "denominators": {
@@ -1567,11 +1574,13 @@
           "reason_counts": {}
         }
       },
-      "by_source_system": {}
+      "by_source_system": {
+        "city_record": 3
+      }
     },
     "mandate_rule": {
       "totals": {
-        "public_inferred": 0,
+        "public_inferred": 1,
         "evidence_only": 0
       },
       "denominators": {
@@ -1579,8 +1588,12 @@
         "source_rows": 4900,
         "pre_route_pairs": 24500
       },
-      "by_tier": {},
-      "by_reason": {},
+      "by_tier": {
+        "public_inferred": 1
+      },
+      "by_reason": {
+        "public_inferred": 1
+      },
       "by_agency": {
         "administration-for-childrens-services": {
           "denominators": {
@@ -2018,9 +2031,11 @@
             "source_rows": 100,
             "pre_route_pairs": 800
           },
-          "public_inferred": 0,
+          "public_inferred": 1,
           "evidence_only": 0,
-          "reason_counts": {}
+          "reason_counts": {
+            "public_inferred": 1
+          }
         },
         "small-business-services": {
           "denominators": {
@@ -2073,7 +2088,9 @@
           "reason_counts": {}
         }
       },
-      "by_source_system": {}
+      "by_source_system": {
+        "city_record": 1
+      }
     }
   }
 }

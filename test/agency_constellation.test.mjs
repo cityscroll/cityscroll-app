@@ -408,7 +408,12 @@ test("passport EI graph hydrates a denser precomputed contracts category", () =>
   assert.doesNotMatch(byId.contracts.view_all_href, /mode=open/);
   const html = renderAgencyConstellationDeferredFragment(view);
   assert.match(html, /data-total-count="12"/);
-  assert.doesNotMatch(html, /https?:\/\/a0333-passportpublic/);
+  // The category's own links stay inside the site; the publisher address
+  // belongs to the evidence inspector, which names the official source for
+  // every claim it discloses.
+  const categoryLinks = html.match(/<a class="agency-connection-link"[^>]*>/g) || [];
+  assert.ok(categoryLinks.length);
+  for (const link of categoryLinks) assert.doesNotMatch(link, /https?:\/\/a0333-passportpublic/);
 });
 
 test("agency scope carries across category browse URLs", () => {

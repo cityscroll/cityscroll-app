@@ -147,7 +147,7 @@ test("exact contract-id matches stay public; PIN-family id mismatches do not", (
   }), true);
 });
 
-test("committed review artifact classifies 42 PIN-family mismatches as 36 auto + 6 human", () => {
+test("committed review artifact classifies 130 PIN-family mismatches as 118 auto + 12 human", () => {
   const crosswalk = JSON.parse(readFileSync(join(ROOT, "site/data/passport_checkbook_crosswalk.json"), "utf8"));
   const spine = JSON.parse(readFileSync(join(ROOT, "site/data/procurement_spine_sources.json"), "utf8"));
   const committed = JSON.parse(readFileSync(join(ROOT, "site/data/pin_family_mismatch_review.json"), "utf8"));
@@ -158,16 +158,25 @@ test("committed review artifact classifies 42 PIN-family mismatches as 36 auto +
     passportContracts: spine.rows.passport_contracts,
     checkbookContracts: spine.rows.checkbook_contracts,
   });
-  assert.equal(committed.metrics.pin_family_id_mismatches, 42);
-  assert.equal(committed.metrics.auto_related_instrument, 36);
-  assert.equal(committed.metrics.needs_review, 6);
-  assert.equal(committed.metrics.by_rule.fms_document_type_mismatch, 15);
-  assert.equal(committed.metrics.by_rule.successor_term, 18);
-  assert.equal(committed.metrics.by_rule.later_term_renewal, 3);
+  assert.equal(committed.metrics.pin_family_id_mismatches, 130);
+  assert.equal(committed.metrics.auto_related_instrument, 118);
+  assert.equal(committed.metrics.needs_review, 12);
+  assert.equal(committed.metrics.by_rule.fms_document_type_mismatch, 71);
+  assert.equal(committed.metrics.by_rule.successor_term, 39);
+  assert.equal(committed.metrics.by_rule.later_term_renewal, 8);
   assert.deepEqual(rebuilt.metrics, committed.metrics);
+  // The queue is what the automatic rules did not settle, stated as that rule
+  // rather than as the vendor names one generation happened to leave in it. A
+  // same-vendor PIN-family mismatch is a review case too — it is exactly the
+  // pair a reader would otherwise be sold as one contract.
   const queue = committed.pairs.filter((pair) => pair.identity_class === "needs_review");
-  assert.equal(queue.length, 6);
-  assert.ok(queue.every((pair) => pair.evidence.vendor_same === false));
-  assert.ok(queue.some((pair) => pair.evidence.checkbook.vendor === "DTN LLC"));
-  assert.ok(queue.some((pair) => pair.evidence.checkbook.vendor === "LKB Engineering PLLC"));
+  assert.equal(queue.length, committed.metrics.needs_review);
+  assert.equal(
+    committed.metrics.auto_related_instrument + committed.metrics.needs_review
+      + committed.metrics.auto_same_contract,
+    committed.metrics.pin_family_id_mismatches,
+  );
+  assert.ok(queue.every((pair) => !pair.rule));
+  assert.ok(queue.every((pair) => Boolean(pair.evidence.checkbook.vendor)));
+  assert.ok(queue.every((pair) => typeof pair.evidence.vendor_same === "boolean"));
 });

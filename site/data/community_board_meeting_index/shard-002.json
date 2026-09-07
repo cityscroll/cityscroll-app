@@ -13002,7 +13002,7 @@
               "value": "nyc-calendar:brooklyn-cb-18:2026-06-17:regular-monthly-board-meeting"
             }
           ],
-          "publisher_identifier": null,
+          "publisher_identifier": "nyc-calendar:brooklyn-cb-18:2026-06-17:regular-monthly-board-meeting",
           "title": "REGULAR MONTHLY BOARD MEETING",
           "event_date": "2026-06-17T19:00:00-04:00",
           "event_end": null,
@@ -20645,7 +20645,7 @@
               "value": "nyc-calendar:manhattan-cb-03:2026-09-10:health-seniors-human-services-youth-education-human-rights-committee"
             }
           ],
-          "publisher_identifier": null,
+          "publisher_identifier": "nyc-calendar:manhattan-cb-03:2026-09-10:health-seniors-human-services-youth-education-human-rights-committee",
           "title": "Health, Seniors, & Human Services / Youth, Education, & Human Rights Committee",
           "event_date": "2026-09-10T18:30:00-04:00",
           "event_end": null,
@@ -20877,7 +20877,7 @@
               "value": "nyc-calendar:manhattan-cb-03:2026-09-14:sla-licensing-outdoor-dining-committee"
             }
           ],
-          "publisher_identifier": null,
+          "publisher_identifier": "nyc-calendar:manhattan-cb-03:2026-09-14:sla-licensing-outdoor-dining-committee",
           "title": "SLA Licensing & Outdoor Dining Committee",
           "event_date": "2026-09-14T18:30:00-04:00",
           "event_end": null,
@@ -21109,7 +21109,7 @@
               "value": "nyc-calendar:manhattan-cb-03:2026-09-16:land-use-zoning-public-private-housing-committee"
             }
           ],
-          "publisher_identifier": null,
+          "publisher_identifier": "nyc-calendar:manhattan-cb-03:2026-09-16:land-use-zoning-public-private-housing-committee",
           "title": "Land Use, Zoning, Public & Private Housing Committee",
           "event_date": "2026-09-16T18:30:00-04:00",
           "event_end": null,
@@ -21336,7 +21336,7 @@
               "value": "nyc-calendar:manhattan-cb-03:2026-09-17:parks-recreation-waterfront-resiliency-committee"
             }
           ],
-          "publisher_identifier": null,
+          "publisher_identifier": "nyc-calendar:manhattan-cb-03:2026-09-17:parks-recreation-waterfront-resiliency-committee",
           "title": "Parks, Recreation, Waterfront, & Resiliency Committee",
           "event_date": "2026-09-17T18:30:00-04:00",
           "event_end": null,
@@ -21568,7 +21568,7 @@
               "value": "nyc-calendar:manhattan-cb-03:2026-09-21:cb-3-public-hearing-fy-2028-budget-priorities"
             }
           ],
-          "publisher_identifier": null,
+          "publisher_identifier": "nyc-calendar:manhattan-cb-03:2026-09-21:cb-3-public-hearing-fy-2028-budget-priorities",
           "title": "CB 3 Public Hearing - FY 2028 Budget Priorities",
           "event_date": "2026-09-21T18:30:00-04:00",
           "event_end": null,
@@ -21800,7 +21800,7 @@
               "value": "nyc-calendar:manhattan-cb-03:2026-09-24:by-laws-task-force"
             }
           ],
-          "publisher_identifier": null,
+          "publisher_identifier": "nyc-calendar:manhattan-cb-03:2026-09-24:by-laws-task-force",
           "title": "By-Laws Task Force",
           "event_date": "2026-09-24T18:00:00-04:00",
           "event_end": null,
@@ -22027,7 +22027,7 @@
               "value": "nyc-calendar:manhattan-cb-03:2026-09-24:executive-committee"
             }
           ],
-          "publisher_identifier": null,
+          "publisher_identifier": "nyc-calendar:manhattan-cb-03:2026-09-24:executive-committee",
           "title": "Executive Committee",
           "event_date": "2026-09-24T18:30:00-04:00",
           "event_end": null,
@@ -22254,7 +22254,7 @@
               "value": "nyc-calendar:manhattan-cb-03:2026-09-28:transportation-public-safety-sanitation-environment-committee"
             }
           ],
-          "publisher_identifier": null,
+          "publisher_identifier": "nyc-calendar:manhattan-cb-03:2026-09-28:transportation-public-safety-sanitation-environment-committee",
           "title": "Transportation, Public Safety, Sanitation & Environment Committee",
           "event_date": "2026-09-28T18:30:00-04:00",
           "event_end": null,
@@ -22486,7 +22486,7 @@
               "value": "nyc-calendar:manhattan-cb-03:2026-09-29:community-board-3-full-board-meeting"
             }
           ],
-          "publisher_identifier": null,
+          "publisher_identifier": "nyc-calendar:manhattan-cb-03:2026-09-29:community-board-3-full-board-meeting",
           "title": "Community Board 3, Full Board Meeting",
           "event_date": "2026-09-29T18:30:00-04:00",
           "event_end": null,
@@ -88408,7 +88408,7 @@
               "value": "nyc-calendar:queens-cb-01:2026-09-22:full-board-public-hearing-meetings"
             }
           ],
-          "publisher_identifier": null,
+          "publisher_identifier": "nyc-calendar:queens-cb-01:2026-09-22:full-board-public-hearing-meetings",
           "title": "Full Board / Public Hearing Meetings",
           "event_date": "2026-09-22T18:00:00-04:00",
           "event_end": null,
@@ -99744,7 +99744,7 @@
               "value": "nyc-calendar:queens-cb-07:2026-09-14:regular-public-hearing-meeting"
             }
           ],
-          "publisher_identifier": null,
+          "publisher_identifier": "nyc-calendar:queens-cb-07:2026-09-14:regular-public-hearing-meeting",
           "title": "Regular & Public Hearing meeting",
           "event_date": "2026-09-14",
           "event_end": null,
