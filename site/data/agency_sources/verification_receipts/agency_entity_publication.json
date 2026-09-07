@@ -4,7 +4,7 @@
   "method": "agency_entity_publication_v1",
   "generated_at": "2026-09-07T13:02:33.872Z",
   "input_digest": "sha256:be9741c8d5cf558f95a95fd4966cc26ba70a17868e5a5bf7d4de597a24d4ba3b",
-  "publication_digest": "sha256:5519c8ed616965edcafe168975e3c7c9236646de62ca8ac9d88ac39603beb102",
+  "publication_digest": "sha256:54d1a242093ffbed64f28605c86edd7049f05056888f39b53ba23998760f1442",
   "sources": [
     {
       "system": "nyc_open_data",

@@ -223,7 +223,7 @@ export function agencyLeadershipAnswer(canonicalEntityId, publication = committe
     person: null,
     title: null,
     reason: clean(read.reason) || "officer-statement-unreadable",
-    note: "An officer statement is published for this agency, but it could not be read on this request. This is a fault on our side, not a statement that no officer is recorded.",
+    note: "An officer statement is published for this agency and could not be read on this request. The fault is ours, and the same id may answer on a later request.",
   };
 }
 

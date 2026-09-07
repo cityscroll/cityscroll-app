@@ -54,7 +54,7 @@ export const AGENCY_OFFICER_STATUS = Object.freeze({
 /** The columns an officer statement is allowed to be built from. */
 export const AGENCY_OFFICER_SOURCE_FIELDS = Object.freeze(["head_name", "head_title"]);
 
-export const AGENCY_OFFICER_NOT_RECORDED_NOTE = "No dataset this publication reads names an officer for this agency. That is what the published record says about its officer, not a failure to read the record, and it is not evidence that the agency has no head.";
+export const AGENCY_OFFICER_NOT_RECORDED_NOTE = "The datasets this publication reads carry no officer for this agency. The record was read and it names nobody. Another public source may still name an officer for this agency.";
 
 /** Datasets whose columns this publication is allowed to carry. */
 export const AGENCY_IDENTITY_SOURCE_SYSTEM = "nyc_open_data";
