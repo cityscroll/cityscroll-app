@@ -2,6 +2,7 @@ import { asOfSection } from "./agency_constellation_sections/as_of.mjs";
 import { contractsSection } from "./agency_constellation_sections/contracts.mjs";
 import { fiscalContextSection } from "./agency_constellation_sections/fiscal_context.mjs";
 import { agencyLifecycleConformanceSection } from "./agency_constellation_sections/agency_lifecycle_conformance.mjs";
+import { budgetRequestsSection } from "./agency_constellation_sections/budget_requests.mjs";
 import { meetingsSection } from "./agency_constellation_sections/meetings.mjs";
 import { mandateContractsSection } from "./agency_constellation_sections/mandate_contracts.mjs";
 import { mandatePredictionsSection } from "./agency_constellation_sections/mandate_predictions.mjs";
@@ -33,6 +34,7 @@ const registeredSections = [
   contractsSection,
   vendorsSection,
   agencyLifecycleConformanceSection,
+  budgetRequestsSection,
   meetingsSection,
   rulesSection,
   processConformanceSection,
@@ -59,6 +61,26 @@ validateRegistry(registeredSections);
 export const AGENCY_CONSTELLATION_SECTIONS = Object.freeze(
   [...registeredSections].sort((left, right) => left.order - right.order),
 );
+
+/**
+ * Sections the agency document renders itself, ahead of the reader.
+ *
+ * Most of an agency profile's relationship sections arrive in a deferred
+ * fragment the page fetches after load. A section marked static opts out of
+ * that: it is written into the document, so it is there with scripting off and
+ * it stays out of the committed relationship artifacts.
+ */
+export const AGENCY_CONSTELLATION_STATIC_SECTION_IDS = Object.freeze(
+  AGENCY_CONSTELLATION_SECTIONS.filter((section) => section.static === true).map((section) => section.id),
+);
+
+export function renderAgencyConstellationStaticSections(view) {
+  return AGENCY_CONSTELLATION_SECTIONS
+    .filter((section) => section.static === true)
+    .map((section) => section.render(view))
+    .filter(Boolean)
+    .join("");
+}
 
 export function renderAgencyConstellationSections(view, { exclude = [] } = {}) {
   const excluded = new Set(exclude);

@@ -307,6 +307,8 @@
 /site/community-boards/
 /site/community_board_adopted_budget.mjs
 /site/community_board_agenda_recommendation.mjs
+/site/community_board_budget_requests.mjs
+/site/community_board_budget_requests_boot.mjs
 /site/community_board_bylaws.mjs
 /site/community_board_committees.mjs
 /site/community_board_constellation.mjs

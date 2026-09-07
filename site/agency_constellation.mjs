@@ -16,7 +16,9 @@ import { renderRelatedPublicBodiesFor } from "./civic_institution_related_bodies
 import {
   agencyConstellationSectionScripts,
   agencyConstellationSectionStyles,
+  AGENCY_CONSTELLATION_STATIC_SECTION_IDS,
   renderAgencyConstellationSections,
+  renderAgencyConstellationStaticSections,
 } from "./agency_constellation_section_registry.mjs";
 import {
   gateNodePageRender,
@@ -144,7 +146,7 @@ function agencyDeferredSectionView(view, displayView, activeClaimId, effectiveAs
     activeClaimId,
     effectiveAsOf,
     showAsOf,
-  }, { exclude: ["as-of"] });
+  }, { exclude: ["as-of", ...AGENCY_CONSTELLATION_STATIC_SECTION_IDS] });
   const edgeSummary = buildAgencyEdgeSummary(displayView);
   const surfaceEdgeSummary = sections.includes('id="mandates-conformance"')
     ? edgeSummary
@@ -350,6 +352,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
 })();
     </script>
     ${initialLedger}
+    ${renderAgencyConstellationStaticSections(sectionView)}
     <div data-civic-object-deferred data-civic-object-deferred-state="loading" role="status">Loading public relationships…</div>
     ${secondaryActions}
   </main>
@@ -358,6 +361,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   <script type="module" src="${esc(traversalSrc)}"></script>
   <script type="module" src="${esc(runtimeSrc)}"></script>
   <script type="module" src="${esc(`${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}report_issue.mjs`)}"></script>
+  <script type="module" src="${esc(`${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}community_board_budget_requests_boot.mjs`)}"></script>
   <script>${agencyConstellationSectionScripts(sectionView)}</script>
 </body>
 </html>`);

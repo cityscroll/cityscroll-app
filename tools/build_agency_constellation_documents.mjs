@@ -43,6 +43,7 @@ import {
   institutionRecordCapacityIndex,
 } from "../site/civic_institution_record_capacity.mjs";
 import { buildAgencyCapacityBrowseContract } from "../site/agency_browse_contract.mjs";
+import { agencyBudgetRequestsForAgency } from "../site/community_board_budget_requests.mjs";
 import { BROWSE_FACETS } from "../site/browse_view.mjs";
 import { canonicalizeBrowseUrl } from "../site/route_migration.mjs";
 import { developmentRolesForInstitution } from "../site/civic_institution_development_roles.mjs";
@@ -122,6 +123,12 @@ function loadSources() {
   if (!existsSync(intelligencePath)) {
     throw new Error("Missing site/data/entity_intelligence_lookup.json");
   }
+  // The community board budget register, read once for the whole build. It is
+  // an optional enrichment here in exactly the sense the board pages treat it:
+  // a register that cannot be read has to say so on the agency page rather than
+  // let the page build as though no district had ever asked this agency for
+  // anything.
+  const budgetRegister = readBudgetRegister();
   const procurementBrowse = existsSync(procurementBrowsePath)
     ? readProcurementBrowsePopulation(procurementBrowsePath)
     : null;
@@ -175,7 +182,34 @@ function loadSources() {
     meeting_outcomes: existsSync(join(SITE, "data/meeting_outcomes_snapshot.json"))
       ? readJson(join(SITE, "data/meeting_outcomes_snapshot.json"))
       : null,
+    budget_register: budgetRegister,
   };
+}
+
+/**
+ * The retained community board budget register: its header, every board
+ * document, and the board display names the agency surface names them by.
+ *
+ * A failure is carried forward as a state rather than swallowed, so an agency
+ * page whose register could not be read says that instead of showing an empty
+ * list that would read as "no district asked this agency for anything".
+ */
+function readBudgetRegister() {
+  const indexPath = join(SITE, "data/community_board_budget_register.json");
+  const lookupPath = join(SITE, "data/community_board_constellation_lookup.json");
+  try {
+    const index = readJson(indexPath);
+    const documents = (index.boards || []).map((entry) => (
+      readJson(join(SITE, "data/community_board_budget_register", `${entry.board_id}.json`))
+    ));
+    const lookup = existsSync(lookupPath) ? readJson(lookupPath) : { by_id: {} };
+    const boardNames = Object.fromEntries(
+      Object.entries(lookup.by_id || {}).map(([boardId, row]) => [boardId, row?.display_name || boardId]),
+    );
+    return { index, documents, boardNames };
+  } catch (error) {
+    return { index: { error: `community_board_budget_register unreadable: ${error.message}` }, documents: [], boardNames: {} };
+  }
 }
 
 function boroughOfficeSourcesFor(id, sources) {
@@ -638,6 +672,16 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
       todayISO: mandateVintage(sources),
     });
     if (!view) continue;
+    const budgetRequests = agencyBudgetRequestsForAgency(
+      sources.budget_register?.index,
+      sources.budget_register?.documents,
+      id,
+      { boardNames: sources.budget_register?.boardNames },
+    );
+    // Only an agency the register actually names carries the section. An agency
+    // no board addressed is not told that as a finding about itself; the
+    // register's own board pages already say what it holds.
+    if (budgetRequests && budgetRequests.state !== "none_recorded") view.budget_requests = budgetRequests;
     const identity = reconcileAgencyIdentity(id, publisherRows);
     view.route_identity_report = identityReport;
     view.identity_evidence = buildAgencyIdentityEvidence({
@@ -736,7 +780,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
         subject_ref: view.subject_ref,
         generated_at: generatedAt,
         view,
-      }, (key, value) => key === "route_identity_report" ? undefined : value)}\n`,
+      }, (key, value) => (DEFERRED_VIEW_OMITTED_KEYS.has(key) ? undefined : value))}\n`,
     ]);
   }
 
@@ -780,6 +824,18 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
 // gitignored build/deploy artifact (see the module header), so a clean checkout has none
 // and its absence is not drift. Comparing it would only pass on a machine that had
 // already run a write-mode build.
+/**
+ * View keys the committed deferred-data artifact does not carry.
+ *
+ * `route_identity_report` is a whole-build report that would be repeated once
+ * per agency. `budget_requests` is the community board budget request reading,
+ * which the document already renders itself, ahead of the reader: repeating
+ * every district's requests here would add hundreds of kilobytes to the
+ * committed artifact of every agency that answers one, for a section nothing
+ * fetches this file to draw.
+ */
+const DEFERRED_VIEW_OMITTED_KEYS = new Set(["route_identity_report", "budget_requests"]);
+
 const COMMITTED_DOCUMENT_NAMES = Object.freeze(["relationships.json", "relationships-data.json"]);
 const STALE_REPORT_LIMIT = 20;
 

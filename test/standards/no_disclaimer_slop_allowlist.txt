@@ -1,3 +1,11 @@
 # Reviewed exceptions for no-disclaimer-slop.
 # Format: RULE_ID<TAB>exact normalized copy
 # Prefer an inline `no-disclaimer-slop: ignore` comment when the exception is local.
+
+# The city's own answer to one community board budget request, quoted verbatim
+# on the board and agency request lists. The sentence is the agency correcting
+# which transit operator the request belongs to, which is exactly the kind of
+# concrete boundary this gate is meant to keep; it reads as a hedge only because
+# it is a published quotation rather than copy this site wrote. Rewriting a
+# publisher's answer to satisfy a copy gate would misreport the record.
+defensive_hedge_shape	this is in fact an LIRR request, not NYCT.

@@ -1,0 +1,1808 @@
+{
+  "schema": "cityscroll.board_budget_request_capture.v1",
+  "captured_at": "2026-09-07T17:05:02.482998+00:00",
+  "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+  "data_vintage": {
+    "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+    "community_board_budget_register_as_of": "2026-09-07",
+    "community_board_minutes_scorecard": "2026-09-06"
+  },
+  "counts": {
+    "publications": 3,
+    "retained_rows": 11427,
+    "requests": 3809,
+    "boards": 59,
+    "request_classes": {
+      "C": 1752,
+      "E": 1853,
+      "CS": 204
+    },
+    "versions_per_request": [
+      3
+    ],
+    "diagnostic_only_versions": 3809,
+    "unidentified_rows": 0,
+    "rows_without_board_binding": 0,
+    "derived_request_titles": 3,
+    "agency_labels": 35,
+    "agency_labels_bound": 30,
+    "agency_labels_unbound": 5,
+    "agency_observations_bound": 11070,
+    "comparable_version_pairs": 3809,
+    "responses_differing_in_source_text": 444,
+    "responses_differing_after_boilerplate_removed": 293,
+    "board_requests": {
+      "bronx-cb-01": 22,
+      "bronx-cb-02": 25,
+      "bronx-cb-03": 51,
+      "bronx-cb-04": 77,
+      "bronx-cb-05": 60,
+      "bronx-cb-06": 45,
+      "bronx-cb-07": 70,
+      "bronx-cb-08": 59,
+      "bronx-cb-09": 110,
+      "bronx-cb-10": 75,
+      "bronx-cb-11": 21,
+      "bronx-cb-12": 11,
+      "brooklyn-cb-01": 82,
+      "brooklyn-cb-02": 61,
+      "brooklyn-cb-03": 89,
+      "brooklyn-cb-04": 38,
+      "brooklyn-cb-05": 42,
+      "brooklyn-cb-06": 59,
+      "brooklyn-cb-07": 64,
+      "brooklyn-cb-08": 86,
+      "brooklyn-cb-09": 133,
+      "brooklyn-cb-10": 63,
+      "brooklyn-cb-11": 65,
+      "brooklyn-cb-12": 42,
+      "brooklyn-cb-13": 115,
+      "brooklyn-cb-14": 59,
+      "brooklyn-cb-15": 54,
+      "brooklyn-cb-16": 81,
+      "brooklyn-cb-17": 75,
+      "brooklyn-cb-18": 56,
+      "manhattan-cb-01": 78,
+      "manhattan-cb-02": 79,
+      "manhattan-cb-03": 49,
+      "manhattan-cb-04": 99,
+      "manhattan-cb-05": 113,
+      "manhattan-cb-06": 36,
+      "manhattan-cb-07": 34,
+      "manhattan-cb-08": 67,
+      "manhattan-cb-09": 134,
+      "manhattan-cb-10": 46,
+      "manhattan-cb-11": 80,
+      "manhattan-cb-12": 86,
+      "queens-cb-01": 75,
+      "queens-cb-02": 65,
+      "queens-cb-03": 110,
+      "queens-cb-04": 108,
+      "queens-cb-05": 56,
+      "queens-cb-06": 60,
+      "queens-cb-07": 58,
+      "queens-cb-08": 74,
+      "queens-cb-09": 51,
+      "queens-cb-10": 78,
+      "queens-cb-11": 48,
+      "queens-cb-12": 57,
+      "queens-cb-13": 30,
+      "queens-cb-14": 80,
+      "staten-island-cb-01": 44,
+      "staten-island-cb-02": 15,
+      "staten-island-cb-03": 9
+    },
+    "agency_requests": {
+      "parks-and-recreation": 818,
+      "health-and-mental-hygiene": 146,
+      "police-department": 238,
+      "transportation": 617,
+      "education": 292,
+      "sanitation": 206,
+      "youth-and-community-development": 106,
+      "environmental-protection": 194,
+      "fire-department": 77,
+      "small-business-services": 62,
+      "housing-preservation-and-development": 139,
+      "n-y-c-transit-authority": 111,
+      "human-resources-administration": 70,
+      "management-and-budget": 42,
+      "aging": 141,
+      "cultural-affairs": 42,
+      "housing-authority": 72,
+      "economic-development-corporation": 78,
+      "citywide-administrative-services": 26,
+      "homeless-services": 40,
+      "city-planning": 41,
+      "emergency-management": 3,
+      "city-university": 1,
+      "buildings": 39,
+      "landmarks-preservation-commission": 10,
+      "information-technology-and-telecommunications": 12,
+      "nyc-health-hospitals": 39,
+      "mayors-office-of-criminal-justice": 5,
+      "administration-for-childrens-services": 20,
+      "consumer-and-worker-protection": 3
+    }
+  },
+  "positive_board": "brooklyn-cb-14",
+  "agencies": [
+    "transportation",
+    "environmental-protection",
+    "parks-and-recreation"
+  ],
+  "min_target_px": 24,
+  "captures": [
+    {
+      "surface": "community_board_document",
+      "case": "board-budget-requests-narrow-touch",
+      "route": "/community-boards/brooklyn-cb-14/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Budget requests this district made to city agencies",
+        "state": "available",
+        "request_count_attribute": "59",
+        "changed_answer_count_attribute": "8",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 59,
+        "answers_visible": 118,
+        "visible_inspect_controls": 22,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "agency_groups": 22,
+        "scope_links": 22,
+        "links": {
+          "count": 56,
+          "visible": 22,
+          "reachable": 22,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 59,
+          "visible": 22,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24,
+        "changed_answer_row_present": true,
+        "wrapper_only_row_present": true,
+        "states_changed_answer": true,
+        "states_wrapper_change": false,
+        "states_request_response_boundary": true,
+        "states_rank_scope": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "targets": [
+              ".community-board-money-metrics"
+            ]
+          }
+        ],
+        "page_passes": false
+      },
+      "assertion": "/community-boards/brooklyn-cb-14/ at 390x844: this district's requests are browsable by the agency that answers them, each request carries the board's own words, its priority scoped to that agency and budget type, and every dated answer, and a rewritten answer is named as one while a moved publisher wrapper is named as a wrapper change",
+      "screenshot": ".artifacts/board-budget-requests/board-budget-requests-narrow-touch-390x844.png",
+      "screenshot_sha256": "3ceac04e8dbf713bdb786fa48bc8a2083eed2171cdfdc0ffc53f679892024d29",
+      "render_sha256": "a06fc1adbbedcd17e558e0f16f7563d1582db8a27584a38758f0f3d44e0061e5"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-budget-requests-desktop",
+      "route": "/community-boards/brooklyn-cb-14/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Budget requests this district made to city agencies",
+        "state": "available",
+        "request_count_attribute": "59",
+        "changed_answer_count_attribute": "8",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 59,
+        "answers_visible": 118,
+        "visible_inspect_controls": 22,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "agency_groups": 22,
+        "scope_links": 22,
+        "links": {
+          "count": 56,
+          "visible": 22,
+          "reachable": 22,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 59,
+          "visible": 22,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24,
+        "changed_answer_row_present": true,
+        "wrapper_only_row_present": true,
+        "states_changed_answer": true,
+        "states_wrapper_change": false,
+        "states_request_response_boundary": true,
+        "states_rank_scope": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "targets": [
+              ".community-board-money-metrics"
+            ]
+          }
+        ],
+        "page_passes": false
+      },
+      "assertion": "/community-boards/brooklyn-cb-14/ at 1440x900: this district's requests are browsable by the agency that answers them, each request carries the board's own words, its priority scoped to that agency and budget type, and every dated answer, and a rewritten answer is named as one while a moved publisher wrapper is named as a wrapper change",
+      "screenshot": ".artifacts/board-budget-requests/board-budget-requests-desktop-1440x900.png",
+      "screenshot_sha256": "137277db6c1b1fc4f814a9fcf930429d5280769f98c8080da929696318ce90f1",
+      "render_sha256": "a06fc1adbbedcd17e558e0f16f7563d1582db8a27584a38758f0f3d44e0061e5"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-budget-requests-no-javascript-narrow-touch",
+      "route": "/community-boards/brooklyn-cb-14/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "disabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Budget requests this district made to city agencies",
+        "state": "available",
+        "request_count_attribute": "59",
+        "changed_answer_count_attribute": "8",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": false,
+        "rendered_rows": 59,
+        "answers_visible": 118,
+        "visible_inspect_controls": 0,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "agency_groups": 22,
+        "scope_links": 22,
+        "links": {
+          "count": 56,
+          "visible": 22,
+          "reachable": 22,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 59,
+          "visible": 0,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 26,
+        "answer_text_present": true,
+        "board_words_present": true
+      },
+      "assertion": "/community-boards/brooklyn-cb-14/ at 390x844 with scripting disabled: every agency link works, the board's own words and both dated answers are already in the row, and the inspect control is not offered at all",
+      "render_sha256": "628afab59e98ced759116a5a503dc308230d13929b91da1892334b0da1b048f7"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-budget-requests-no-javascript-desktop",
+      "route": "/community-boards/brooklyn-cb-14/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "disabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Budget requests this district made to city agencies",
+        "state": "available",
+        "request_count_attribute": "59",
+        "changed_answer_count_attribute": "8",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": false,
+        "rendered_rows": 59,
+        "answers_visible": 118,
+        "visible_inspect_controls": 0,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "agency_groups": 22,
+        "scope_links": 22,
+        "links": {
+          "count": 56,
+          "visible": 22,
+          "reachable": 22,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 59,
+          "visible": 0,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 27,
+        "answer_text_present": true,
+        "board_words_present": true
+      },
+      "assertion": "/community-boards/brooklyn-cb-14/ at 1440x900 with scripting disabled: every agency link works, the board's own words and both dated answers are already in the row, and the inspect control is not offered at all",
+      "render_sha256": "628afab59e98ced759116a5a503dc308230d13929b91da1892334b0da1b048f7"
+    },
+    {
+      "surface": "agency_document",
+      "case": "agency-budget-requests-population-transportation-narrow-touch",
+      "route": "/agencies/transportation/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Community board budget requests this agency answers",
+        "state": "available",
+        "request_count_attribute": "617",
+        "changed_answer_count_attribute": "84",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 48,
+        "answers_visible": 48,
+        "visible_inspect_controls": 48,
+        "source_link_present": true,
+        "no_horizontal_overflow": false,
+        "unresolved_key_rendered": false,
+        "board_groups": 56,
+        "board_count_attribute": "56",
+        "links": {
+          "count": 56,
+          "visible": 56,
+          "reachable": 56,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 48,
+          "visible": 48,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24,
+        "states_no_score": true,
+        "states_board_order": true
+      },
+      "axe": {
+        "scope": "#agency-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "/agencies/transportation/ at 390x844: the agency states the whole frozen population of community board requests it is responsible for answering, lists every district that asked in that district's own priority order, links back to each one at this agency's own scope, and publishes no score of how it answered",
+      "screenshot": ".artifacts/board-budget-requests/agency-budget-requests-transportation-narrow-touch.png",
+      "screenshot_sha256": "b1cce7b42b69015430937bdb3a7c1020d5276e04e526b0a0171ade014f0f6fc1",
+      "render_sha256": "e38c739b34df2206e4c19f80b199011d028f37b97a755cc8772b0fb87f16f8e3"
+    },
+    {
+      "surface": "agency_document",
+      "case": "agency-budget-requests-population-transportation-desktop",
+      "route": "/agencies/transportation/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Community board budget requests this agency answers",
+        "state": "available",
+        "request_count_attribute": "617",
+        "changed_answer_count_attribute": "84",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 48,
+        "answers_visible": 48,
+        "visible_inspect_controls": 48,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "board_groups": 56,
+        "board_count_attribute": "56",
+        "links": {
+          "count": 56,
+          "visible": 56,
+          "reachable": 56,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 48,
+          "visible": 48,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24,
+        "states_no_score": true,
+        "states_board_order": true
+      },
+      "axe": {
+        "scope": "#agency-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "/agencies/transportation/ at 1440x900: the agency states the whole frozen population of community board requests it is responsible for answering, lists every district that asked in that district's own priority order, links back to each one at this agency's own scope, and publishes no score of how it answered",
+      "screenshot": ".artifacts/board-budget-requests/agency-budget-requests-transportation-desktop.png",
+      "screenshot_sha256": "ef7e3241f9372c0b3d1ff834f05d461c2a511df90317de9e3274b9da9ae6ff65",
+      "render_sha256": "e38c739b34df2206e4c19f80b199011d028f37b97a755cc8772b0fb87f16f8e3"
+    },
+    {
+      "surface": "agency_document",
+      "case": "agency-budget-requests-population-environmental-protection-narrow-touch",
+      "route": "/agencies/environmental-protection/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Community board budget requests this agency answers",
+        "state": "available",
+        "request_count_attribute": "194",
+        "changed_answer_count_attribute": "0",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 48,
+        "answers_visible": 48,
+        "visible_inspect_controls": 48,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "board_groups": 51,
+        "board_count_attribute": "51",
+        "links": {
+          "count": 51,
+          "visible": 51,
+          "reachable": 51,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 48,
+          "visible": 48,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24,
+        "states_no_score": true,
+        "states_board_order": true
+      },
+      "axe": {
+        "scope": "#agency-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "/agencies/environmental-protection/ at 390x844: the agency states the whole frozen population of community board requests it is responsible for answering, lists every district that asked in that district's own priority order, links back to each one at this agency's own scope, and publishes no score of how it answered",
+      "screenshot": ".artifacts/board-budget-requests/agency-budget-requests-environmental-protection-narrow-touch.png",
+      "screenshot_sha256": "9506ce9f450e51f233d8387fce3ec2a7043fce4c21fe6154eccb195a9b832263",
+      "render_sha256": "2f7307eabd9438c569a522ed021c7bbae3472c33fde43efb178d819089f944f2"
+    },
+    {
+      "surface": "agency_document",
+      "case": "agency-budget-requests-population-environmental-protection-desktop",
+      "route": "/agencies/environmental-protection/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Community board budget requests this agency answers",
+        "state": "available",
+        "request_count_attribute": "194",
+        "changed_answer_count_attribute": "0",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 48,
+        "answers_visible": 48,
+        "visible_inspect_controls": 48,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "board_groups": 51,
+        "board_count_attribute": "51",
+        "links": {
+          "count": 51,
+          "visible": 51,
+          "reachable": 51,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 48,
+          "visible": 48,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24,
+        "states_no_score": true,
+        "states_board_order": true
+      },
+      "axe": {
+        "scope": "#agency-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "/agencies/environmental-protection/ at 1440x900: the agency states the whole frozen population of community board requests it is responsible for answering, lists every district that asked in that district's own priority order, links back to each one at this agency's own scope, and publishes no score of how it answered",
+      "screenshot": ".artifacts/board-budget-requests/agency-budget-requests-environmental-protection-desktop.png",
+      "screenshot_sha256": "ddf1aa71004c5432af1cd8591d812f1ae1478befe99d2e4a58ec381f4ecbf665",
+      "render_sha256": "2f7307eabd9438c569a522ed021c7bbae3472c33fde43efb178d819089f944f2"
+    },
+    {
+      "surface": "agency_document",
+      "case": "agency-budget-requests-population-parks-and-recreation-narrow-touch",
+      "route": "/agencies/parks-and-recreation/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Community board budget requests this agency answers",
+        "state": "available",
+        "request_count_attribute": "818",
+        "changed_answer_count_attribute": "0",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 48,
+        "answers_visible": 48,
+        "visible_inspect_controls": 48,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "board_groups": 59,
+        "board_count_attribute": "59",
+        "links": {
+          "count": 59,
+          "visible": 59,
+          "reachable": 59,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 48,
+          "visible": 48,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24,
+        "states_no_score": true,
+        "states_board_order": true
+      },
+      "axe": {
+        "scope": "#agency-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "/agencies/parks-and-recreation/ at 390x844: the agency states the whole frozen population of community board requests it is responsible for answering, lists every district that asked in that district's own priority order, links back to each one at this agency's own scope, and publishes no score of how it answered",
+      "screenshot": ".artifacts/board-budget-requests/agency-budget-requests-parks-and-recreation-narrow-touch.png",
+      "screenshot_sha256": "29570cda876d0e793b0dfa3bb2b5001e3b7ac0cc04c82c752e2a40d8b45ac654",
+      "render_sha256": "daa1335d182347467ebadfbb2a02848ccfb4b5dfa644955d4dac58da86377be5"
+    },
+    {
+      "surface": "agency_document",
+      "case": "agency-budget-requests-population-parks-and-recreation-desktop",
+      "route": "/agencies/parks-and-recreation/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Community board budget requests this agency answers",
+        "state": "available",
+        "request_count_attribute": "818",
+        "changed_answer_count_attribute": "0",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 48,
+        "answers_visible": 48,
+        "visible_inspect_controls": 48,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "board_groups": 59,
+        "board_count_attribute": "59",
+        "links": {
+          "count": 59,
+          "visible": 59,
+          "reachable": 59,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 48,
+          "visible": 48,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24,
+        "states_no_score": true,
+        "states_board_order": true
+      },
+      "axe": {
+        "scope": "#agency-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "/agencies/parks-and-recreation/ at 1440x900: the agency states the whole frozen population of community board requests it is responsible for answering, lists every district that asked in that district's own priority order, links back to each one at this agency's own scope, and publishes no score of how it answered",
+      "screenshot": ".artifacts/board-budget-requests/agency-budget-requests-parks-and-recreation-desktop.png",
+      "screenshot_sha256": "70caad740c939d886d75e3a0655ca5c441853d1f826de34d6771a6fb0efaa84a",
+      "render_sha256": "daa1335d182347467ebadfbb2a02848ccfb4b5dfa644955d4dac58da86377be5"
+    },
+    {
+      "surface": "agency_document",
+      "case": "agency-budget-requests-no-javascript-desktop",
+      "route": "/agencies/transportation/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "disabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Community board budget requests this agency answers",
+        "state": "available",
+        "request_count_attribute": "617",
+        "changed_answer_count_attribute": "84",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": false,
+        "rendered_rows": 48,
+        "answers_visible": 48,
+        "visible_inspect_controls": 0,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "board_groups": 56,
+        "board_count_attribute": "56",
+        "links": {
+          "count": 56,
+          "visible": 56,
+          "reachable": 56,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 48,
+          "visible": 0,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24
+      },
+      "assertion": "/agencies/transportation/ with scripting disabled: this section is written into the document rather than fetched after it, so the population, every district that asked and each district's answers are readable, and the inspect control is not offered at all",
+      "render_sha256": "5370887bf1602dfdaadfa72c26bdd8cbc534be5cfb34b33ec0ebe376a4eb3bc4"
+    },
+    {
+      "surface": "journey",
+      "case": "board-budget-requests-scope-journey-narrow-touch",
+      "route": "/community-boards/brooklyn-cb-14/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "scope_before": "board-budget-requests-transportation",
+        "scroll_before": 24062,
+        "rows_before": 59,
+        "dialog_open": true,
+        "dialog_labelled_by": "budget-request-inspect-title",
+        "focus_inside_dialog": true,
+        "scroll_while_open": 24062,
+        "scope_unchanged_by_inspection": true,
+        "dialog_states_boundary": true,
+        "dialog_states_rank_scope": true,
+        "dialog_states_change": true,
+        "dialog_carries_both_answers": true,
+        "dialog_dismissed": true,
+        "scroll_after_dismiss": 24062,
+        "left_for_path": "/agencies/transportation/",
+        "left_for_hash": "agency-budget-requests-brooklyn-cb-14",
+        "returned_path": "/community-boards/brooklyn-cb-14/",
+        "returned_by_history": true,
+        "scope_after": "board-budget-requests-transportation",
+        "scroll_before_leaving": 24062,
+        "scroll_after": 24062,
+        "rows_after": 59,
+        "ready_on_return": true,
+        "scroll_preserved_through_inspection": true,
+        "scroll_restored": true
+      },
+      "assertion": "/community-boards/brooklyn-cb-14/ at 390x844: a reader chooses an agency, inspects one request in place, dismisses it with Escape, opens the agency that answers it and returns with the browser's own Back to the same chosen agency, the same list and the same scroll position they left from",
+      "screenshot": ".artifacts/board-budget-requests/board-budget-requests-scope-journey-narrow-touch.png",
+      "screenshot_sha256": "29f75597aea4bbd377a2189a080185eb03091dfbb4f57e92696450abbff257cc",
+      "render_sha256": "a06fc1adbbedcd17e558e0f16f7563d1582db8a27584a38758f0f3d44e0061e5"
+    },
+    {
+      "surface": "journey",
+      "case": "board-budget-requests-scope-journey-desktop",
+      "route": "/community-boards/brooklyn-cb-14/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "scope_before": "board-budget-requests-transportation",
+        "scroll_before": 14657,
+        "rows_before": 59,
+        "dialog_open": true,
+        "dialog_labelled_by": "budget-request-inspect-title",
+        "focus_inside_dialog": true,
+        "scroll_while_open": 14657,
+        "scope_unchanged_by_inspection": true,
+        "dialog_states_boundary": true,
+        "dialog_states_rank_scope": true,
+        "dialog_states_change": true,
+        "dialog_carries_both_answers": true,
+        "dialog_dismissed": true,
+        "scroll_after_dismiss": 14657,
+        "left_for_path": "/agencies/transportation/",
+        "left_for_hash": "agency-budget-requests-brooklyn-cb-14",
+        "returned_path": "/community-boards/brooklyn-cb-14/",
+        "returned_by_history": true,
+        "scope_after": "board-budget-requests-transportation",
+        "scroll_before_leaving": 14657,
+        "scroll_after": 14657,
+        "rows_after": 59,
+        "ready_on_return": true,
+        "scroll_preserved_through_inspection": true,
+        "scroll_restored": true
+      },
+      "assertion": "/community-boards/brooklyn-cb-14/ at 1440x900: a reader chooses an agency, inspects one request in place, dismisses it with Escape, opens the agency that answers it and returns with the browser's own Back to the same chosen agency, the same list and the same scroll position they left from",
+      "screenshot": ".artifacts/board-budget-requests/board-budget-requests-scope-journey-desktop.png",
+      "screenshot_sha256": "af675c00c8f03f38cfb6b9b56ab36b616581f10ce4e59ec5a7653c5a385d6e69",
+      "render_sha256": "a06fc1adbbedcd17e558e0f16f7563d1582db8a27584a38758f0f3d44e0061e5"
+    },
+    {
+      "surface": "keyboard",
+      "case": "board-budget-requests-keyboard",
+      "route": "/community-boards/brooklyn-cb-14/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "group_opened_by_address": true,
+        "control_focusable": true,
+        "smallest_target_px": 24,
+        "opened_with_keyboard": true,
+        "focus_on_dismiss_control": true,
+        "tab_stays_inside": true,
+        "dialog_states_wrapper_change": true,
+        "dismissed_with_escape": true,
+        "focus_returned_to_control": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [
+          {
+            "id": "definition-list",
+            "impact": "serious",
+            "targets": [
+              ".community-board-money-metrics"
+            ]
+          }
+        ],
+        "page_passes": false
+      },
+      "assertion": "/community-boards/brooklyn-cb-14/ by keyboard alone: Tab reaches the inspect control, Enter opens the request with focus inside it, Tab stays inside, the record names the wrapper change for what it is, and Escape dismisses it and returns focus to the control it was opened from",
+      "screenshot": ".artifacts/board-budget-requests/board-budget-requests-keyboard-1440x900.png",
+      "screenshot_sha256": "8d443ae28a5c1522d9785d6d878416c9892d2b0e12363ddeaa5588288f2edce4",
+      "render_sha256": "87cdd5459759952d780136d80c4c2040e0bc98ac7bea15c594e61728cff6efa6"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-budget-requests-language-en",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=en)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Budget requests this district made to city agencies",
+        "state": "available",
+        "request_count_attribute": "59",
+        "changed_answer_count_attribute": "8",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 59,
+        "answers_visible": 118,
+        "visible_inspect_controls": 22,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "agency_groups": 22,
+        "scope_links": 22,
+        "links": {
+          "count": 56,
+          "visible": 22,
+          "reachable": 22,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 59,
+          "visible": 22,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24,
+        "direction": null,
+        "language": null,
+        "published_answer_preserved": true,
+        "published_agency_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in en with the publisher's own request wording, agency names and published answers left in the source language, and no label left unresolved",
+      "render_sha256": "a06fc1adbbedcd17e558e0f16f7563d1582db8a27584a38758f0f3d44e0061e5"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-budget-requests-language-es",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=es)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "es",
+      "observed": {
+        "section_present": true,
+        "heading": "Solicitudes presupuestarias que este distrito hizo a las agencias municipales",
+        "state": "available",
+        "request_count_attribute": "59",
+        "changed_answer_count_attribute": "8",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 59,
+        "answers_visible": 118,
+        "visible_inspect_controls": 22,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "agency_groups": 22,
+        "scope_links": 22,
+        "links": {
+          "count": 56,
+          "visible": 22,
+          "reachable": 22,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 59,
+          "visible": 22,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24,
+        "direction": "ltr",
+        "language": "es",
+        "published_answer_preserved": true,
+        "published_agency_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in es with the publisher's own request wording, agency names and published answers left in the source language, and no label left unresolved",
+      "render_sha256": "485ecf58ae6f23ee35ae1e96aa61779b6b5cf971619d568ac8609f89fe9584d1"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-budget-requests-language-zh-Hans",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=zh-Hans)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "zh-Hans",
+      "observed": {
+        "section_present": true,
+        "heading": "\u672c\u533a\u5411\u5e02\u653f\u673a\u6784\u63d0\u51fa\u7684\u9884\u7b97\u8bf7\u6c42",
+        "state": "available",
+        "request_count_attribute": "59",
+        "changed_answer_count_attribute": "8",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 59,
+        "answers_visible": 118,
+        "visible_inspect_controls": 22,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "agency_groups": 22,
+        "scope_links": 22,
+        "links": {
+          "count": 56,
+          "visible": 22,
+          "reachable": 22,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 59,
+          "visible": 22,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24,
+        "direction": "ltr",
+        "language": "zh-Hans",
+        "published_answer_preserved": true,
+        "published_agency_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in zh-Hans with the publisher's own request wording, agency names and published answers left in the source language, and no label left unresolved",
+      "render_sha256": "bda2049d001142d39e3f99833396c77242c5f3a7baf0c411465a1fd20f99b4cb"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-budget-requests-language-ru",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=ru)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "ru",
+      "observed": {
+        "section_present": true,
+        "heading": "\u0411\u044e\u0434\u0436\u0435\u0442\u043d\u044b\u0435 \u0437\u0430\u043f\u0440\u043e\u0441\u044b, \u043a\u043e\u0442\u043e\u0440\u044b\u0435 \u044d\u0442\u043e\u0442 \u043e\u043a\u0440\u0443\u0433 \u043d\u0430\u043f\u0440\u0430\u0432\u0438\u043b \u0433\u043e\u0440\u043e\u0434\u0441\u043a\u0438\u043c \u0432\u0435\u0434\u043e\u043c\u0441\u0442\u0432\u0430\u043c",
+        "state": "available",
+        "request_count_attribute": "59",
+        "changed_answer_count_attribute": "8",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 59,
+        "answers_visible": 118,
+        "visible_inspect_controls": 22,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "agency_groups": 22,
+        "scope_links": 22,
+        "links": {
+          "count": 56,
+          "visible": 22,
+          "reachable": 22,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 59,
+          "visible": 22,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24,
+        "direction": "ltr",
+        "language": "ru",
+        "published_answer_preserved": true,
+        "published_agency_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in ru with the publisher's own request wording, agency names and published answers left in the source language, and no label left unresolved",
+      "render_sha256": "cff588ef7e6ca784a6e9c556bd307355e52a4426a8ba20ba767d1557a536ebe5"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-budget-requests-language-bn",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=bn)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "bn",
+      "observed": {
+        "section_present": true,
+        "heading": "\u098f\u0987 \u099c\u09c7\u09b2\u09be \u09b6\u09b9\u09b0\u09c7\u09b0 \u09b8\u0982\u09b8\u09cd\u09a5\u09be\u0997\u09c1\u09b2\u09bf\u0995\u09c7 \u09af\u09c7 \u09ac\u09be\u099c\u09c7\u099f \u0985\u09a8\u09c1\u09b0\u09cb\u09a7 \u0995\u09b0\u09c7\u099b\u09c7",
+        "state": "available",
+        "request_count_attribute": "59",
+        "changed_answer_count_attribute": "8",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 59,
+        "answers_visible": 118,
+        "visible_inspect_controls": 22,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "agency_groups": 22,
+        "scope_links": 22,
+        "links": {
+          "count": 56,
+          "visible": 22,
+          "reachable": 22,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 59,
+          "visible": 22,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24,
+        "direction": "ltr",
+        "language": "bn",
+        "published_answer_preserved": true,
+        "published_agency_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in bn with the publisher's own request wording, agency names and published answers left in the source language, and no label left unresolved",
+      "render_sha256": "bdcde02307f941b26b31c4727ff8f9260a69b03da9a41105d4b2f1832ce78383"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-budget-requests-language-ht",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=ht)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "ht",
+      "observed": {
+        "section_present": true,
+        "heading": "Demann bidj\u00e8 distrik sa a f\u00e8 bay ajans vil la",
+        "state": "available",
+        "request_count_attribute": "59",
+        "changed_answer_count_attribute": "8",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 59,
+        "answers_visible": 118,
+        "visible_inspect_controls": 22,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "agency_groups": 22,
+        "scope_links": 22,
+        "links": {
+          "count": 56,
+          "visible": 22,
+          "reachable": 22,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 59,
+          "visible": 22,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24,
+        "direction": "ltr",
+        "language": "ht",
+        "published_answer_preserved": true,
+        "published_agency_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in ht with the publisher's own request wording, agency names and published answers left in the source language, and no label left unresolved",
+      "render_sha256": "f0807a8ef7ac0d3c518b98bde44f69f41ea9bf4621a660d26c895aae53952626"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-budget-requests-language-ko",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=ko)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "ko",
+      "observed": {
+        "section_present": true,
+        "heading": "\uc774 \uad6c\uac00 \uc2dc \uae30\uad00\uc5d0 \uc81c\ucd9c\ud55c \uc608\uc0b0 \uc694\uccad",
+        "state": "available",
+        "request_count_attribute": "59",
+        "changed_answer_count_attribute": "8",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 59,
+        "answers_visible": 118,
+        "visible_inspect_controls": 22,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "agency_groups": 22,
+        "scope_links": 22,
+        "links": {
+          "count": 56,
+          "visible": 22,
+          "reachable": 22,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 59,
+          "visible": 22,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24,
+        "direction": "ltr",
+        "language": "ko",
+        "published_answer_preserved": true,
+        "published_agency_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in ko with the publisher's own request wording, agency names and published answers left in the source language, and no label left unresolved",
+      "render_sha256": "10be1408ecfdea7f660560522e8a40bf81811da318ccc1d8ff57632370da63d9"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-budget-requests-language-fr",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=fr)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "fr",
+      "observed": {
+        "section_present": true,
+        "heading": "Demandes budg\u00e9taires que ce district a adress\u00e9es aux agences municipales",
+        "state": "available",
+        "request_count_attribute": "59",
+        "changed_answer_count_attribute": "8",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 59,
+        "answers_visible": 118,
+        "visible_inspect_controls": 22,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "agency_groups": 22,
+        "scope_links": 22,
+        "links": {
+          "count": 56,
+          "visible": 22,
+          "reachable": 22,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 59,
+          "visible": 22,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24,
+        "direction": "ltr",
+        "language": "fr",
+        "published_answer_preserved": true,
+        "published_agency_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in fr with the publisher's own request wording, agency names and published answers left in the source language, and no label left unresolved",
+      "render_sha256": "d68ad15119a112d477fd02fc947baf3eb94a6ef02824553ce96aedf36dc9624e"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-budget-requests-language-pl",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=pl)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "pl",
+      "observed": {
+        "section_present": true,
+        "heading": "Wnioski bud\u017cetowe, kt\u00f3re ta dzielnica z\u0142o\u017cy\u0142a do agencji miejskich",
+        "state": "available",
+        "request_count_attribute": "59",
+        "changed_answer_count_attribute": "8",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 59,
+        "answers_visible": 118,
+        "visible_inspect_controls": 22,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "agency_groups": 22,
+        "scope_links": 22,
+        "links": {
+          "count": 56,
+          "visible": 22,
+          "reachable": 22,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 59,
+          "visible": 22,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24,
+        "direction": "ltr",
+        "language": "pl",
+        "published_answer_preserved": true,
+        "published_agency_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in pl with the publisher's own request wording, agency names and published answers left in the source language, and no label left unresolved",
+      "render_sha256": "69a292d804964e59842c16cccfeeef74d8061ababaafdc266adf27ad20f3fe44"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-budget-requests-language-ar",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=ar)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "ar",
+      "observed": {
+        "section_present": true,
+        "heading": "\u0637\u0644\u0628\u0627\u062a \u0627\u0644\u0645\u064a\u0632\u0627\u0646\u064a\u0629 \u0627\u0644\u062a\u064a \u0642\u062f\u0651\u0645\u0647\u0627 \u0647\u0630\u0627 \u0627\u0644\u062d\u064a \u0625\u0644\u0649 \u0648\u0643\u0627\u0644\u0627\u062a \u0627\u0644\u0645\u062f\u064a\u0646\u0629",
+        "state": "available",
+        "request_count_attribute": "59",
+        "changed_answer_count_attribute": "8",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 59,
+        "answers_visible": 118,
+        "visible_inspect_controls": 22,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "agency_groups": 22,
+        "scope_links": 22,
+        "links": {
+          "count": 56,
+          "visible": 22,
+          "reachable": 22,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 59,
+          "visible": 22,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24,
+        "direction": "rtl",
+        "language": "ar",
+        "published_answer_preserved": true,
+        "published_agency_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in ar with the publisher's own request wording, agency names and published answers left in the source language, and no label left unresolved",
+      "render_sha256": "e6ab42bc5a7445dcadeed7bc5cd79a69af6b365139c4b99ae4970a3db4785660"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-budget-requests-language-ur",
+      "route": "/community-boards/brooklyn-cb-14/ (lang=ur)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "ur",
+      "observed": {
+        "section_present": true,
+        "heading": "\u0627\u0633 \u0636\u0644\u0639 \u0646\u06d2 \u0634\u06c1\u0631\u06cc \u0627\u062f\u0627\u0631\u0648\u06ba \u0633\u06d2 \u062c\u0648 \u0628\u062c\u0679 \u062f\u0631\u062e\u0648\u0627\u0633\u062a\u06cc\u06ba \u06a9\u06cc\u06ba",
+        "state": "available",
+        "request_count_attribute": "59",
+        "changed_answer_count_attribute": "8",
+        "fiscal_years_attribute": "2027",
+        "publication_count_attribute": "2",
+        "ready_for_inspection": true,
+        "rendered_rows": 59,
+        "answers_visible": 118,
+        "visible_inspect_controls": 22,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "agency_groups": 22,
+        "scope_links": 22,
+        "links": {
+          "count": 56,
+          "visible": 22,
+          "reachable": 22,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 59,
+          "visible": 22,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": 24,
+        "direction": "rtl",
+        "language": "ur",
+        "published_answer_preserved": true,
+        "published_agency_preserved": true
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the section renders in ur with the publisher's own request wording, agency names and published answers left in the source language, and no label left unresolved",
+      "render_sha256": "5a7caa461cb9f349fdfec361dc1fa4359a961160bc4e628959c9ca1c2a70bbae"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-budget-requests-none-recorded",
+      "route": "/community-boards/brooklyn-cb-14/ (the register holds no request for this board)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Budget requests this district made to city agencies",
+        "state": "none_recorded",
+        "request_count_attribute": null,
+        "changed_answer_count_attribute": null,
+        "fiscal_years_attribute": null,
+        "publication_count_attribute": null,
+        "ready_for_inspection": false,
+        "rendered_rows": 0,
+        "answers_visible": 0,
+        "visible_inspect_controls": 0,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "agency_groups": 0,
+        "scope_links": 0,
+        "links": {
+          "count": 0,
+          "visible": 0,
+          "reachable": 0,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 0,
+          "visible": 0,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": null,
+        "direction": null,
+        "language": null
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the register holds no request for this board: the section says so about the register rather than rendering nothing, and still states what a request and a response are",
+      "render_sha256": "1dc363cba40af84c137ca4888fc2f8c7ef9e2eedc47beffc0fcce90446857dbe"
+    },
+    {
+      "surface": "community_board_document",
+      "case": "board-budget-requests-failed-load",
+      "route": "/community-boards/brooklyn-cb-14/ (the register could not be read)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "519e8a3e4adc94d13342fc4506cd875e7f047970",
+      "data_vintage": {
+        "community_board_budget_register": "2026-09-07T11:54:00.629Z",
+        "community_board_budget_register_as_of": "2026-09-07",
+        "community_board_minutes_scorecard": "2026-09-06"
+      },
+      "javascript": "enabled",
+      "language": "en",
+      "observed": {
+        "section_present": true,
+        "heading": "Budget requests this district made to city agencies",
+        "state": "unavailable",
+        "request_count_attribute": null,
+        "changed_answer_count_attribute": null,
+        "fiscal_years_attribute": null,
+        "publication_count_attribute": null,
+        "ready_for_inspection": false,
+        "rendered_rows": 0,
+        "answers_visible": 0,
+        "visible_inspect_controls": 0,
+        "source_link_present": true,
+        "no_horizontal_overflow": true,
+        "unresolved_key_rendered": false,
+        "agency_groups": 0,
+        "scope_links": 0,
+        "links": {
+          "count": 0,
+          "visible": 0,
+          "reachable": 0,
+          "native": true,
+          "new_tab": 0,
+          "scripted": 0
+        },
+        "inspect_controls": {
+          "count": 0,
+          "visible": 0,
+          "native": true,
+          "labelled": true,
+          "nested_in_link": 0
+        },
+        "smallest_target_px": null,
+        "direction": null,
+        "language": null
+      },
+      "axe": {
+        "scope": "#board-budget-requests",
+        "failing_violations": [],
+        "passes": true,
+        "page_failing_violations": [],
+        "page_passes": true
+      },
+      "assertion": "the register could not be read: the section says so, offers a retry, keeps its published source reachable, and lists no request \u2014 a failure to read, not a district that asked for nothing",
+      "render_sha256": "1c52c0b9ded3b041dd5c39b05995d0f95eaf8bf44108aa286a3699614c770d14"
+    }
+  ],
+  "axe_all_pass": true
+}

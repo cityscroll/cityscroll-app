@@ -4663,3 +4663,235 @@ select {
   color: var(--color-action);
   font-weight: 600;
 }
+
+/* Community board budget requests — the district's requests to city agencies
+ * and the dated answers published for them.
+ *
+ * The agency scope is a fragment, not a script. A group past the opening few
+ * keeps its heading and its count but holds its list closed until the page's
+ * own address names it, because a browser restores a history entry's URL and
+ * scroll offset and not an element's open state — so putting the chosen agency
+ * in the URL is what lets a reader open one, follow a request out, and come
+ * back to the same agency at the same place. With no stylesheet at all every
+ * group simply renders open, which is the right failure.
+ */
+.board-budget-requests-scope {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  margin: var(--space-2) 0;
+  padding: 0;
+  list-style: none;
+}
+
+.board-budget-requests-scope-link {
+  display: inline-block;
+  /* WCAG 2.5.8: a comfortable target on a touch screen. */
+  min-height: 24px;
+  padding-block: var(--space-1);
+}
+
+.board-budget-requests-scope-count {
+  color: var(--color-text-muted);
+}
+
+.board-budget-request-group {
+  margin-block-start: var(--space-3);
+}
+
+.board-budget-request-group > h3 {
+  margin-block-end: var(--space-1);
+}
+
+.board-budget-request-group[data-budget-request-group-collapsed] > .board-budget-request-list,
+.board-budget-request-group[data-budget-request-group-collapsed] > .board-budget-request-group-close {
+  display: none;
+}
+
+.board-budget-request-group[data-budget-request-group-collapsed]:target > .board-budget-request-list {
+  display: grid;
+}
+
+.board-budget-request-group[data-budget-request-group-collapsed]:target > .board-budget-request-group-close {
+  display: inline-block;
+}
+
+.board-budget-request-group[data-budget-request-group-collapsed]:target > .board-budget-request-group-open {
+  display: none;
+}
+
+.board-budget-request-group-open,
+.board-budget-request-group-close {
+  display: inline-block;
+  /* WCAG 2.5.8: a comfortable target on a touch screen. */
+  min-height: 24px;
+  padding-block: var(--space-1);
+  color: var(--color-action);
+  font-weight: 600;
+}
+
+.board-budget-requests-boundary,
+.board-budget-requests-rank-boundary,
+.board-budget-requests-changed,
+.agency-budget-requests-boundary,
+.agency-budget-requests-scope,
+.agency-budget-requests-changed,
+.board-budget-request-explanation,
+.agency-budget-request-more {
+  max-width: var(--measure);
+}
+
+.board-budget-request-code {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.board-budget-request-explanation {
+  margin-block: var(--space-1);
+}
+
+.board-budget-request-answers {
+  margin: var(--space-1) 0 0;
+  padding-inline-start: var(--space-3);
+}
+
+.board-budget-request-answer {
+  max-width: var(--measure);
+  margin-block-end: var(--space-1);
+}
+
+.board-budget-request-answer-date {
+  font-weight: 600;
+}
+
+.board-budget-request-answer[data-answer-state="changed"] > .board-budget-request-answer-note {
+  font-weight: 600;
+}
+
+/* The inspect control is progressive enhancement: it stays out of the
+   document's flow until the boot module marks the section ready, so a reader
+   without scripting is only ever offered the links, which work for them, and
+   every fact it would have shown is already written into the row. */
+.board-budget-request-inspect {
+  display: none;
+}
+
+[data-budget-requests-ready] .board-budget-request-inspect {
+  display: inline-block;
+  margin-inline-start: var(--space-1);
+  padding: 1px 8px;
+  font: inherit;
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--color-action);
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  cursor: pointer;
+  /* WCAG 2.5.8: a comfortable target on a touch screen. */
+  min-height: 24px;
+}
+
+[data-budget-requests-ready] .board-budget-request-inspect:hover {
+  background: var(--color-canvas-subtle, transparent);
+}
+
+.budget-request-dialog {
+  max-width: 36rem;
+  width: calc(100vw - 32px);
+  padding: 0;
+  border: 1px solid var(--color-border-strong, #7a828f);
+  border-radius: 4px;
+  background: var(--color-surface, #fff);
+  color: var(--color-text, #12181f);
+}
+
+.budget-request-dialog::backdrop {
+  background: rgb(18 24 31 / 45%);
+}
+
+.budget-request-dialog-inner {
+  padding: 16px;
+  font: 14px/1.55 var(--font-interface, ui-sans-serif, system-ui, sans-serif);
+}
+
+.budget-request-dialog-close {
+  float: right;
+  margin: -4px -4px 0 8px;
+  padding: 4px 10px;
+  font: inherit;
+  font-size: 13px;
+  color: inherit;
+  background: transparent;
+  border: 1px solid var(--color-border-strong, #7a828f);
+  border-radius: 2px;
+  cursor: pointer;
+  /* WCAG 2.5.8: a comfortable target on a touch screen. */
+  min-height: 24px;
+}
+
+.budget-request-dialog-kicker {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.budget-request-dialog-title {
+  margin: 4px 0 0;
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+.budget-request-dialog-code {
+  margin: 2px 0 0;
+  color: var(--color-text-muted);
+}
+
+.budget-request-dialog-subhead {
+  margin: 12px 0 4px;
+  font-size: 14px;
+}
+
+.budget-request-dialog-facts {
+  margin: 8px 0 0;
+  padding-inline-start: 18px;
+}
+
+.budget-request-dialog-facts li {
+  margin-block-end: 2px;
+}
+
+.budget-request-dialog-answers {
+  margin: 4px 0 0;
+  padding-inline-start: 18px;
+}
+
+.budget-request-dialog-answer {
+  margin-block-end: 8px;
+}
+
+.budget-request-dialog-answer-date {
+  margin: 0;
+  font-weight: 600;
+}
+
+.budget-request-dialog-answer-text,
+.budget-request-dialog-explanation {
+  margin: 2px 0 0;
+}
+
+.budget-request-dialog-answer-note {
+  margin: 2px 0 0;
+  color: var(--color-text-muted);
+}
+
+.budget-request-dialog-note {
+  margin: 8px 0 0;
+  color: var(--color-text-muted);
+}
+
+.budget-request-dialog-actions {
+  margin: 12px 0 0;
+}
