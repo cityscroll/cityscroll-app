@@ -30,15 +30,15 @@
     "dimension_count": 11,
     "board_dimension_slots": 649,
     "status_counts": {
-      "already modeled": 61,
-      "already present in source but discarded": 30,
+      "already modeled": 62,
+      "already present in source but discarded": 32,
       "requires another official source": 369,
-      "not reliably available": 189
+      "not reliably available": 186
     },
-    "grounded_slots_already_modeled": 61,
-    "source_present_but_discarded_slots": 30,
-    "unresolved_slots": 558,
-    "headline": "61 of 649 board-dimension slots are already modeled; 30 have explicit source signals that are not typed; 558 remain unresolved or require another official source."
+    "grounded_slots_already_modeled": 62,
+    "source_present_but_discarded_slots": 32,
+    "unresolved_slots": 555,
+    "headline": "62 of 649 board-dimension slots are already modeled; 32 have explicit source signals that are not typed; 555 remain unresolved or require another official source."
   },
   "dimension_summary": {
     "official_committee_directory": {
@@ -54,9 +54,9 @@
       "board_count": 59,
       "counts": {
         "already modeled": 0,
-        "already present in source but discarded": 16,
+        "already present in source but discarded": 17,
         "requires another official source": 0,
-        "not reliably available": 43
+        "not reliably available": 42
       }
     },
     "board_roster": {
@@ -98,10 +98,10 @@
     "upcoming_meetings": {
       "board_count": 59,
       "counts": {
-        "already modeled": 22,
+        "already modeled": 23,
         "already present in source but discarded": 0,
         "requires another official source": 4,
-        "not reliably available": 33
+        "not reliably available": 32
       }
     },
     "minutes": {
@@ -135,23 +135,23 @@
       "board_count": 59,
       "counts": {
         "already modeled": 0,
-        "already present in source but discarded": 7,
+        "already present in source but discarded": 8,
         "requires another official source": 0,
-        "not reliably available": 52
+        "not reliably available": 51
       }
     }
   },
   "meeting_measurements": {
-    "record_count": 403,
-    "boards_with_records": 22,
-    "records_explicitly_identifying_committee": 196,
+    "record_count": 411,
+    "boards_with_records": 23,
+    "records_explicitly_identifying_committee": 202,
     "records_with_structured_committee_field": 54,
     "records_whose_title_exactly_matches_known_local_committee": 0,
-    "full_board_records": 36,
-    "explicit_public_hearing_records": 7,
+    "full_board_records": 37,
+    "explicit_public_hearing_records": 8,
     "joint_committee_records": 6,
-    "records_without_typed_institution_host": 403,
-    "committee_records_with_unresolved_host_body": 196,
+    "records_without_typed_institution_host": 411,
+    "committee_records_with_unresolved_host_body": 202,
     "known_local_committee_registry": {
       "path": "not present in Card 1; reviewed board-local registry is a later card deliverable",
       "known_committee_count": 0,
@@ -4042,9 +4042,9 @@
           "publisher_kind": "board_owned_official",
           "fetch_mode": "browser-required",
           "inventory_status": "verified",
-          "collection_state": "unavailable",
-          "collection_state_reason": "source_not_checked",
-          "current_record_count": 0
+          "collection_state": "indexed",
+          "collection_state_reason": null,
+          "current_record_count": 8
         },
         "minutes": {
           "url": "https://cb5.org/board-actions/",
@@ -4054,7 +4054,7 @@
           "fetch_mode": "browser-required",
           "inventory_status": "verified",
           "collection_state": "unavailable",
-          "collection_state_reason": "source_not_checked",
+          "collection_state_reason": "source_serves_browsers_only",
           "current_record_count": 0
         }
       },
@@ -4066,10 +4066,10 @@
           "note": "The current inventory defines upcoming_meetings and minutes only; the Council Legistar committee registry is out of scope."
         },
         "committee_identity_in_calendar_or_source_data": {
-          "status": "not reliably available",
-          "basis": "meeting_title_explicit_committee_signal_not_observed",
-          "evidence_count": 0,
-          "note": "The current committed source data does not establish this fact."
+          "status": "already present in source but discarded",
+          "basis": "meeting_title_explicit_committee_signal",
+          "evidence_count": 6,
+          "note": "The publisher title names a committee, but the current materialized row has no typed committee identity."
         },
         "board_roster": {
           "status": "requires another official source",
@@ -4096,10 +4096,10 @@
           "note": "The current source inventory does not retain governing documents."
         },
         "upcoming_meetings": {
-          "status": "not reliably available",
-          "basis": "indexed_meeting_records_no_current_record",
-          "evidence_count": 0,
-          "note": "An explicit source was inventoried, but the current committed collection does not establish the fact."
+          "status": "already modeled",
+          "basis": "indexed_meeting_records",
+          "evidence_count": 8,
+          "note": null
         },
         "minutes": {
           "status": "not reliably available",
@@ -4120,23 +4120,30 @@
           "note": "Minutes metadata alone does not establish a recommendation, resolution, or its publisher identity."
         },
         "public_hearings": {
-          "status": "not reliably available",
-          "basis": "meeting_title_explicit_public_hearing_signal_not_observed",
-          "evidence_count": 0,
-          "note": "The current committed source data does not establish this fact."
+          "status": "already present in source but discarded",
+          "basis": "meeting_title_explicit_public_hearing_signal",
+          "evidence_count": 1,
+          "note": "The publisher title says public hearing, but the current row has no orthogonal typed proceeding field."
         }
       },
       "meeting_measurements": {
-        "record_count": 0,
-        "records_explicitly_identifying_committee": 0,
+        "record_count": 8,
+        "records_explicitly_identifying_committee": 6,
         "records_with_structured_committee_field": 0,
         "records_whose_title_exactly_matches_known_local_committee": 0,
-        "full_board_records": 0,
-        "explicit_public_hearing_records": 0,
+        "full_board_records": 1,
+        "explicit_public_hearing_records": 1,
         "joint_committee_records": 0,
-        "records_without_typed_institution_host": 0,
-        "committee_records_with_unresolved_host_body": 0,
-        "explicit_committee_title_samples": []
+        "records_without_typed_institution_host": 8,
+        "committee_records_with_unresolved_host_body": 6,
+        "explicit_committee_title_samples": [
+          "Executive Committee",
+          "Land Use, Housing & Zoning Committee",
+          "Landmarks Committee",
+          "Parks, Public Spaces & Environment Committee",
+          "State Licenses & Permits Committee",
+          "Transportation Committee"
+        ]
       }
     },
     {
@@ -4166,7 +4173,7 @@
           "fetch_mode": "browser-required",
           "inventory_status": "verified",
           "collection_state": "unavailable",
-          "collection_state_reason": "source_not_checked",
+          "collection_state_reason": "source_serves_browsers_only",
           "current_record_count": 0
         }
       },
@@ -4401,7 +4408,7 @@
           "fetch_mode": "browser-required",
           "inventory_status": "verified",
           "collection_state": "unavailable",
-          "collection_state_reason": "source_not_checked",
+          "collection_state_reason": "source_serves_browsers_only",
           "current_record_count": 0
         },
         "minutes": {
@@ -4412,7 +4419,7 @@
           "fetch_mode": "browser-required",
           "inventory_status": "verified",
           "collection_state": "unavailable",
-          "collection_state_reason": "source_not_checked",
+          "collection_state_reason": "source_serves_browsers_only",
           "current_record_count": 0
         }
       },
@@ -4758,7 +4765,7 @@
           "fetch_mode": "browser-required",
           "inventory_status": "verified",
           "collection_state": "unavailable",
-          "collection_state_reason": "source_not_checked",
+          "collection_state_reason": "source_serves_browsers_only",
           "current_record_count": 0
         }
       },
@@ -5219,7 +5226,7 @@
           "fetch_mode": "browser/API required",
           "inventory_status": "verified",
           "collection_state": "unavailable",
-          "collection_state_reason": "source_not_checked",
+          "collection_state_reason": "source_serves_browsers_only",
           "current_record_count": 0
         },
         "minutes": {
@@ -5230,7 +5237,7 @@
           "fetch_mode": "browser/API required",
           "inventory_status": "verified",
           "collection_state": "unavailable",
-          "collection_state_reason": "source_not_checked",
+          "collection_state_reason": "source_serves_browsers_only",
           "current_record_count": 0
         }
       },
