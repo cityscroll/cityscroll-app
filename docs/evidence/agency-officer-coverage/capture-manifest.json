@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "card": "c889411f1d9a9",
+  "capture_mode": "headless-render",
+  "repository_revision": "128c96002",
+  "note": "Rendered read-back of the surfaces that answer who leads a city agency, for one agency the published sources record an officer for and one they do not. The route handlers were invoked directly with no store binding, so the bytes come only from the published agency records and the committed organization read model. No image binaries: each capture records the sha256 of the rendered bytes.",
+  "data_vintage": "agency roster observed 2026-08-09 (t3jq-9nkf); organization read model generated 2026-09-06",
+  "viewports": [
+    {
+      "id": "responsive",
+      "note": "The dossier is a single-column document with its own responsive rules, and the organization row is a JSON body; each capture is the rendered output rather than a rasterized viewport."
+    }
+  ],
+  "captures": [
+    {
+      "fixture": "covered-dossier-page",
+      "route": "GET /entity-dossier?id=agency:id:buildings (Accept: text/html)",
+      "viewport": "responsive",
+      "assertion": "Returns 200 with a leadership block that states the question, names Ahmed Tigani, Commissioner, links the dataset the name came from (nyc_open_data t3jq-9nkf), names the publisher fields it read, and shows 2026-08-09 as the date that dataset reports its rows were last updated, with the publisher's own confidence.",
+      "content_sha256": "4148d888ff0eedad1d3739b884f74b2f3ea8268a3b5d7fd36858877d0aa9b8f0",
+      "bytes": 16349,
+      "file": null
+    },
+    {
+      "fixture": "covered-dossier-json",
+      "route": "GET /entity-dossier?id=agency:id:buildings&format=json",
+      "viewport": "responsive",
+      "assertion": "The JSON body carries the same leadership answer with status published, the person, the title, the source system and dataset id, the publisher fields and the observation date.",
+      "content_sha256": "b51b0f75eec17ad9603cd45ad805a3d2f418fa878ca5934e1707def4690c8c53",
+      "bytes": 9051,
+      "file": null
+    },
+    {
+      "fixture": "covered-organization-row",
+      "route": "GET /people-organizations?id=agency:id:buildings",
+      "viewport": "responsive",
+      "assertion": "The exact organization row a reader reaches through the organizations browse carries the same published officer, so the question is answered on the browse path and not only in the dossier.",
+      "content_sha256": "3ab659700f5bb1e08bbf5b4a3ad82ceb79e95beb628797c1d3c36c17fd2cf946",
+      "bytes": 1371,
+      "file": null
+    },
+    {
+      "fixture": "not-recorded-dossier-page",
+      "route": "GET /entity-dossier?id=agency:id:community-boards (Accept: text/html)",
+      "viewport": "responsive",
+      "assertion": "Returns 200 with the same leadership block, stating Not recorded rather than an empty leader: it says the datasets it read carry no officer for this agency and that the record names nobody, and it names the dataset with its last-updated date. The question is asked and answered rather than omitted.",
+      "content_sha256": "fc159e39826bf76db132bd2b86bb980b780cf07663a5b85c25b6f6cfacc43411",
+      "bytes": 13154,
+      "file": null
+    },
+    {
+      "fixture": "not-recorded-dossier-json",
+      "route": "GET /entity-dossier?id=agency:id:community-boards&format=json",
+      "viewport": "responsive",
+      "assertion": "The JSON body carries status not_recorded with a null person and title and the consulted datasets with their observation dates, which a client can tell apart from the unreadable answer a record it could not read produces.",
+      "content_sha256": "1c7c0633c3f98827624fb13f02cd053c3c6938dc33808fb626dc5203b629cbc9",
+      "bytes": 6443,
+      "file": null
+    },
+    {
+      "fixture": "not-recorded-organization-row",
+      "route": "GET /people-organizations?id=agency:id:community-boards",
+      "viewport": "responsive",
+      "assertion": "The organization row carries the same explicit not-recorded answer, so neither read surface leaves the leadership question unanswered for an agency no registered dataset names an officer for.",
+      "content_sha256": "948f1ca09b015abf0d6198df6ada2389e94b6388d66d04dd628d1874ce41df65",
+      "bytes": 1457,
+      "file": null
+    }
+  ]
+}
