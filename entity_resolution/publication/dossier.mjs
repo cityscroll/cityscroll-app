@@ -47,6 +47,65 @@ const IDENTITY_FACTS = [
     kind: "text",
     aliases: ["contract_id", "prime_contract_id", "contract_number"],
   },
+  // Agency identity facts. Every one of these is a column a named public
+  // dataset publishes about the organization itself, so a dossier for an
+  // organization can carry the same attributed treatment a procurement record
+  // gets. A source that does not publish the column leaves the fact
+  // not observed rather than filled in from elsewhere.
+  {
+    fact: "agency_acronym",
+    label: "Acronym",
+    kind: "text",
+    aliases: ["agency_acronym", "acronym"],
+  },
+  {
+    fact: "organization_type",
+    label: "Organization type",
+    kind: "text",
+    aliases: ["organization_type", "org_type"],
+  },
+  {
+    fact: "agency_website",
+    label: "Official website",
+    kind: "text",
+    aliases: ["agency_website"],
+  },
+  {
+    fact: "principal_officer",
+    label: "Principal officer",
+    kind: "text",
+    aliases: ["principal_officer", "agency_head_name", "head_name"],
+  },
+  {
+    fact: "principal_officer_title",
+    label: "Principal officer title",
+    kind: "text",
+    aliases: ["principal_officer_title", "agency_head_title", "head_title"],
+  },
+  {
+    fact: "reports_to",
+    label: "Reports to",
+    kind: "text",
+    aliases: ["reports_to"],
+  },
+  {
+    fact: "budget_code",
+    label: "Budget code",
+    kind: "text",
+    aliases: ["budget_code", "agency_number"],
+  },
+  {
+    fact: "adopted_budget",
+    label: "Adopted budget",
+    kind: "amount",
+    aliases: ["adopted_budget", "budget_adopted"],
+  },
+  {
+    fact: "budget_fiscal_year",
+    label: "Budget fiscal year",
+    kind: "text",
+    aliases: ["budget_fiscal_year", "budget_fy"],
+  },
 ];
 
 export const PUBLIC_DOSSIER_FACT_DEFINITIONS = Object.freeze([

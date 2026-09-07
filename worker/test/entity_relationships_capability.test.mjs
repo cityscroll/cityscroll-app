@@ -12,7 +12,7 @@ import {
   executeEntityRelationships,
 } from "../../capabilities/entity_relationships.mjs";
 import {
-  GRAPH_NOT_YET_PUBLIC,
+  graphNotYetPublicBody,
   PUBLIC_RELATIONSHIP_GRAPH_VERSION,
   handlePublicRelationshipGraph,
   renderPublicRelationshipGraphPage,
@@ -282,7 +282,7 @@ test("HTTP adapter preserves not_yet_public and unavailable response bytes", asy
     "https://api.cityscroll.org/entity-relationships?id=vendor%3Aunknown&format=json",
   ), { DB: dbReturning([]) });
   assert.equal(missing.status, 404);
-  assert.equal(await missing.text(), JSON.stringify(GRAPH_NOT_YET_PUBLIC));
+  assert.equal(await missing.text(), JSON.stringify(graphNotYetPublicBody()));
 
   const unavailable = await handlePublicRelationshipGraph(new Request(
     `https://api.cityscroll.org/entity-relationships?id=${encodeURIComponent(ENTITY_ID)}&format=json`,

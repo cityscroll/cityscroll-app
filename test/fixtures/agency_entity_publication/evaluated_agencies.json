@@ -1,0 +1,39 @@
+{
+  "schema": "cityscroll.evaluated_agency_fixture.v1",
+  "note": "Organizations named by questions in live evaluation runs of the deployed research service, with the availabilities those runs recorded for the four organization read surfaces. Regenerate with tools/build_evaluated_agency_fixture.mjs when the evaluation set changes.",
+  "evaluated_capabilities": [
+    "get_entity_dossier",
+    "get_entity_relationships",
+    "browse_organizations",
+    "get_person_or_organization"
+  ],
+  "run_count": 3,
+  "agencies": [
+    {
+      "entity_id": "agency:id:buildings",
+      "agency_id": "buildings",
+      "name": "Department of Buildings"
+    },
+    {
+      "entity_id": "agency:id:city-planning",
+      "agency_id": "city-planning",
+      "name": "Department of City Planning"
+    }
+  ],
+  "uncovered_entity_id": "agency:id:not-a-published-agency",
+  "observed_before_publication": {
+    "get_entity_dossier": [
+      "not_yet_public"
+    ],
+    "get_entity_relationships": [
+      "available",
+      "not_yet_public"
+    ],
+    "browse_organizations": [
+      "unavailable"
+    ],
+    "get_person_or_organization": [
+      "unavailable"
+    ]
+  }
+}

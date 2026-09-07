@@ -24,6 +24,16 @@ export const ORGANIZATIONS_BROWSE_LIMITS = Object.freeze({
 export const PEOPLE_ORGANIZATION_ROW_KINDS = Object.freeze([
   "official", "exact-person-appointment", "notice-only-hire", "agency", "vendor", "committee", "community-board", "community-board-person", "community-board-committee",
 ]);
+/** Read-model schema versions this capability admits.
+ *
+ * The materialized read model and its readers version independently, so the
+ * admitted set is declared once here. A model whose schema is not on this list
+ * is reported as unreadable rather than as an absent row: those are different
+ * answers and a reader needs to tell them apart. */
+export const PEOPLE_ORGANIZATIONS_READ_MODEL_SCHEMAS = Object.freeze([
+  "cityscroll.people_organizations_read_model.v1",
+  "cityscroll.people_organizations_read_model.v2",
+]);
 export const PEOPLE_RELATION_STATES = Object.freeze(["published", "empty", "unknown"]);
 export const PEOPLE_GET_AVAILABILITY = Object.freeze(["available", "not_yet_public", "unavailable"]);
 export const ORGANIZATIONS_BROWSE_AVAILABILITY = Object.freeze(["complete", "empty", "unavailable"]);

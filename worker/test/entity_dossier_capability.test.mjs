@@ -8,7 +8,7 @@ import {
   executeEntityDossier,
 } from "../../capabilities/entity_dossier.mjs";
 import {
-  DOSSIER_NOT_YET_PUBLIC,
+  dossierNotYetPublicBody,
   PUBLIC_DOSSIER_VERSION,
   handleEntityDossier,
   renderEntityDossierPage,
@@ -202,7 +202,7 @@ test("HTTP adapter preserves not_yet_public and unavailable response bytes", asy
     "https://api.cityscroll.org/entity-dossier?id=vendor%3Aunknown&format=json",
   ), { DB: dbReturning([]) });
   assert.equal(missing.status, 404);
-  assert.equal(await missing.text(), JSON.stringify(DOSSIER_NOT_YET_PUBLIC));
+  assert.equal(await missing.text(), JSON.stringify(dossierNotYetPublicBody()));
 
   const unavailable = await handleEntityDossier(new Request(
     `https://api.cityscroll.org/entity-dossier?id=${encodeURIComponent(ENTITY_ID)}&format=json`,

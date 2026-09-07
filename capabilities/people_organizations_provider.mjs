@@ -28,13 +28,17 @@ function freshness(model) {
   return { as_of: model.generated_at || "unknown", generated_at: model.generated_at || null };
 }
 
-function coverage(model) {
+/** An empty page is a statement about this corpus, never a count of the world. */
+const BROWSE_ABSENCE_NOTE = "No published row matched these filters. The browse reads one bounded published read model, so an organization can be absent from it and still exist in the public record; this is a coverage statement, not a finding that no such organization exists.";
+
+function coverage(model, { matched = true } = {}) {
   return {
     state: model.generated_at ? "published" : "unknown",
     read_model_schema: model.schema,
     row_kinds: model.row_kinds,
     relation_states: model.relation_states,
     counts: model.counts,
+    ...(matched ? {} : { absence: BROWSE_ABSENCE_NOTE }),
   };
 }
 
@@ -63,6 +67,8 @@ function searchValue(row) {
     .filter(Boolean).join(" ")).toLocaleLowerCase();
 }
 
+export { BROWSE_ABSENCE_NOTE };
+
 /** Execute the organizations.browse@1 provider against an already loaded model. */
 export function organizationsBrowseFromModel(model, input) {
   const rows = modelRows(model);
@@ -89,7 +95,7 @@ export function organizationsBrowseFromModel(model, input) {
       truncated,
       next_cursor: truncated ? encodeCursor(resultRows.at(-1).id) : null,
     },
-    coverage: coverage(model),
+    coverage: coverage(model, { matched: resultRows.length > 0 }),
     freshness: freshness(model),
     error: null,
   };

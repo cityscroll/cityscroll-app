@@ -322,6 +322,14 @@ jobs:
         # builder — including a document orphaned for an agency the builder no longer emits.
         # Read-only: writes nothing in CI.
         run: node tools/build_agency_constellation_documents.mjs --check
+      - name: Committed agency entity record freshness
+        if: matrix.family == 'static-standards'
+        # Required PR gate for the published agency entity records the dossier and
+        # relationship-graph surfaces read. Re-derives the materialization from the
+        # committed identity crosswalk, constellation rollup and contract census, and
+        # fails closed when either published copy or the verification receipt drifts
+        # from the owning builder. Read-only: writes nothing in CI.
+        run: node tools/build_agency_entity_publication.mjs --check
       - name: Depot re-derivation drift gate
         if: matrix.family == 'static-standards'
         # Gauge-fired on PR/push (never cron). Re-derives the join graph from the committed

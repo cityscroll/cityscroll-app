@@ -217,7 +217,7 @@ export function validateEntityDossierOutput(result, input) {
       throw new TypeError("not_yet_public entity.dossier output requires not-found");
     }
     if (result.availability === "unavailable"
-        && !["no-store", "dossier-unavailable"].includes(result.error)) {
+        && !["no-store", "dossier-unavailable", "record-unreadable"].includes(result.error)) {
       throw new TypeError("unavailable entity.dossier output has an invalid error code");
     }
   }

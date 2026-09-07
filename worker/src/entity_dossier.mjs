@@ -14,6 +14,11 @@ import {
   ENTITY_DOSSIER_REPRESENTATIONS,
   executeEntityDossier,
 } from "../../capabilities/entity_dossier.mjs";
+import {
+  AGENCY_ENTITY_PUBLICATION,
+  agencyPublicationCoverage,
+  readPublishedAgency,
+} from "./lib/published_agency_entity.mjs";
 
 const DOSSIER_CACHE = "public, max-age=300";
 export const DOSSIER_RECORD_LIMIT = 250;
@@ -26,12 +31,20 @@ export const ENTITY_DOSSIER_HTTP_ADAPTER = Object.freeze({
   representations: ENTITY_DOSSIER_REPRESENTATIONS,
 });
 
+/** Public-facing status when the published record for this id cannot be read. */
+export const DOSSIER_RECORD_UNREADABLE = {
+  error: "record-unreadable",
+  public_status: "unavailable",
+  message:
+    "A dossier is published for this id, but its stored record could not be read on this request. This is a fault on our side, not a statement that the record is absent; the same id may answer on a later request.",
+};
+
 /** Public-facing status when no canonical entity is published for this id. */
 export const DOSSIER_NOT_YET_PUBLIC = {
   error: "not-found",
   public_status: "not_yet_public",
   message:
-    "No public entity dossier is available for this id. Subject-registry links on notice lifecycles are live; this dossier surface only returns linked assertions for canonical entity ids published from the resolution store. Do not treat name-shaped or contract ids as live dossier keys until a resolved entity returns linked records.",
+    "No public entity dossier is available for this id. Subject-registry links on notice lifecycles are live; this dossier surface only returns linked assertions for canonical entity ids published from the resolution store and city agencies published from the agency entity records. This id is outside that published set, which is not evidence that no public record names it. Do not treat name-shaped or contract ids as live dossier keys until a resolved entity returns linked records.",
 };
 
 function json(body, status = 200) {
@@ -45,13 +58,18 @@ function json(body, status = 200) {
   });
 }
 
+/** The exact not-yet-public body: the disclosure plus what the set does cover. */
+export function dossierNotYetPublicBody(publication = AGENCY_ENTITY_PUBLICATION) {
+  return { ...DOSSIER_NOT_YET_PUBLIC, coverage: agencyPublicationCoverage(publication) };
+}
+
 function notYetPublicResponse(request) {
   const url = new URL(request.url);
   const wantsJson = url.searchParams.get("format") === "json"
     || (request.headers.get("accept") || "").includes("application/json");
   if (wantsJson || !request.headers.get("accept")?.includes("text/html")) {
     // Default API clients (and bare GETs) get the structured not-yet-public body.
-    return json(DOSSIER_NOT_YET_PUBLIC, 404);
+    return json(dossierNotYetPublicBody(), 404);
   }
   const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Entity dossier not yet public · CityScroll</title>
@@ -181,8 +199,27 @@ export function renderEntityDossierPage(dossier) {
     </main></body></html>`;
 }
 
+/** Serialize the published agency record for this id, when one is published. */
+export function publishedAgencyDossier(canonicalEntityId, publication = AGENCY_ENTITY_PUBLICATION) {
+  const published = readPublishedAgency(publication, canonicalEntityId);
+  if (!published) return null;
+  if (published.status === "unreadable") return published;
+  const dossier = serializePublicEntityDossier(published.rows, {
+    recordLimit: DOSSIER_RECORD_LIMIT,
+    truncated: false,
+  });
+  // A published record that will not serialize is a fault to disclose, never an
+  // empty dossier and never an unpublished answer.
+  return dossier
+    ? { status: "published", dossier }
+    : { status: "unreadable", reason: "record-observations-unreadable" };
+}
+
 /** Query one dossier by canonical entity id. */
-export async function readEntityDossier(db, canonicalEntityId) {
+export async function readEntityDossier(db, canonicalEntityId, publication = AGENCY_ENTITY_PUBLICATION) {
+  const published = publishedAgencyDossier(canonicalEntityId, publication);
+  if (published?.status === "published") return published.dossier;
+  if (published?.status === "unreadable") throw new Error(published.reason);
   if (!db) return null;
   const entityId = clean(canonicalEntityId);
   if (!entityId || entityId.length > 300) return null;
@@ -218,11 +255,28 @@ export async function readEntityDossier(db, canonicalEntityId) {
 }
 
 /** Explicit D1 provider for the transport-neutral entity.dossier.get@1 contract. */
-export function workerD1EntityDossier(db) {
+export function workerD1EntityDossier(db, { publication = AGENCY_ENTITY_PUBLICATION } = {}) {
   return Object.freeze({
     capabilityReference: ENTITY_DOSSIER_CAPABILITY_REFERENCE,
     providerId: ENTITY_DOSSIER_PROVIDER_ID,
     async execute({ entityId }) {
+      const published = publishedAgencyDossier(entityId, publication);
+      if (published?.status === "published") {
+        return {
+          capability_reference: ENTITY_DOSSIER_CAPABILITY_REFERENCE,
+          availability: "available",
+          dossier: published.dossier,
+          error: null,
+        };
+      }
+      if (published?.status === "unreadable") {
+        return {
+          capability_reference: ENTITY_DOSSIER_CAPABILITY_REFERENCE,
+          availability: "unavailable",
+          dossier: null,
+          error: "record-unreadable",
+        };
+      }
       if (!db) {
         return {
           capability_reference: ENTITY_DOSSIER_CAPABILITY_REFERENCE,
@@ -232,7 +286,7 @@ export function workerD1EntityDossier(db) {
         };
       }
       try {
-        const dossier = await readEntityDossier(db, entityId);
+        const dossier = await readEntityDossier(db, entityId, publication);
         return dossier ? {
           capability_reference: ENTITY_DOSSIER_CAPABILITY_REFERENCE,
           availability: "available",
@@ -258,21 +312,27 @@ export function workerD1EntityDossier(db) {
 
 export async function handleEntityDossier(request, env) {
   if (request.method !== "GET") return json({ error: "method not allowed" }, 405);
-  if (!env?.DB) return json({ error: "no-store" }, 503);
   const url = new URL(request.url);
   const entityId = clean(url.searchParams.get("id"));
   if (!entityId || entityId.length > 300) return json({ error: "id-required" }, 400);
+  // The published agency records answer without a store, so the store guard
+  // applies only to ids this route would have to look up in D1.
+  if (!env?.DB && !readPublishedAgency(AGENCY_ENTITY_PUBLICATION, entityId)) {
+    return json({ error: "no-store" }, 503);
+  }
   let result;
   try {
     result = await executeEntityDossier(
-      workerD1EntityDossier(env.DB),
+      workerD1EntityDossier(env?.DB),
       { entityId },
     );
   } catch {
     return json({ error: "dossier-unavailable" }, 503);
   }
   if (result.availability === "unavailable") {
-    return json({ error: result.error }, 503);
+    return result.error === "record-unreadable"
+      ? json(DOSSIER_RECORD_UNREADABLE, 503)
+      : json({ error: result.error }, 503);
   }
   if (result.availability === "not_yet_public") return notYetPublicResponse(request);
   const { dossier } = result;

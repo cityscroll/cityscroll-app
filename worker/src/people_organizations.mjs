@@ -11,6 +11,7 @@ import {
   ORGANIZATIONS_BROWSE_CAPABILITY_REFERENCE,
   ORGANIZATIONS_BROWSE_LIMITS,
   ORGANIZATIONS_BROWSE_PROVIDER_ID,
+  PEOPLE_ORGANIZATIONS_READ_MODEL_SCHEMAS,
 } from "../../capabilities/people_organizations.mjs";
 import {
   modelRows,
@@ -48,7 +49,7 @@ export function workerPeopleOrganizations(env) {
       async execute(input) {
         try {
           const model = await readModel(env);
-          if (model?.schema !== "cityscroll.people_organizations_read_model.v1") throw new Error("people organizations read model is unavailable");
+          if (!PEOPLE_ORGANIZATIONS_READ_MODEL_SCHEMAS.includes(model?.schema)) throw new Error("people organizations read model is unavailable");
           const row = modelRows(model).find((candidate) => candidate.id === input.entityId.trim());
           return { capability_reference: PEOPLE_GET_CAPABILITY_REFERENCE, availability: row ? "available" : "not_yet_public", person_or_organization: row ? publicModelRow(row) : null, error: row ? null : "not-found" };
         } catch (error) {
@@ -63,7 +64,7 @@ export function workerPeopleOrganizations(env) {
       async execute(input) {
         try {
           const model = await readModel(env);
-          if (model?.schema !== "cityscroll.people_organizations_read_model.v1") throw new Error("people organizations read model is unavailable");
+          if (!PEOPLE_ORGANIZATIONS_READ_MODEL_SCHEMAS.includes(model?.schema)) throw new Error("people organizations read model is unavailable");
           return organizationsBrowseFromModel(model, input);
         } catch (error) {
           console.error("people organizations browse unavailable:", String(error?.message || error));
