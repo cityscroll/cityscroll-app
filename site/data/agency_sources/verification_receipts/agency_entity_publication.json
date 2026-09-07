@@ -1,0 +1,51 @@
+{
+  "schema": "cityscroll.agency_entity_publication_receipt.v1",
+  "publication_schema": "cityscroll.agency_entity_publication.v1",
+  "method": "agency_entity_publication_v1",
+  "generated_at": "2026-09-06T22:12:11.527Z",
+  "input_digest": "sha256:a2dc4e9de2a990e143d4baa7be26e1c74bd8c33f275ea32c52cade130cb8568c",
+  "publication_digest": "sha256:07657d25bb3b0bd8adf83042dea96d00b82fe74d993d2df98d5a67dfde11b47b",
+  "sources": [
+    {
+      "system": "nyc_open_data",
+      "id": "t3jq-9nkf",
+      "observed_on": "2026-08-09",
+      "provides": [
+        "name",
+        "agency_acronym",
+        "organization_type",
+        "agency_website",
+        "principal_officer",
+        "principal_officer_title",
+        "reports_to"
+      ]
+    },
+    {
+      "system": "nyc_open_data",
+      "id": "mwzb-yiwb",
+      "observed_on": "2026-07-08",
+      "provides": [
+        "budget_code",
+        "adopted_budget",
+        "budget_fiscal_year"
+      ]
+    },
+    {
+      "system": "passport-public-contracts",
+      "id": "by_agency.preview",
+      "observed_on": "2026-09-06",
+      "provides": [
+        "published_by_agency"
+      ]
+    }
+  ],
+  "coverage": {
+    "published_agency_count": 116,
+    "crosswalk_agency_count": 116,
+    "graph_contract_limit": 12,
+    "basis": "agency identity crosswalk rows with at least one dataset observation",
+    "absence_note": "An agency id absent from this publication is not covered by it. Absence here is not evidence that the agency does not exist or that no public record names it.",
+    "agencies_with_principal_officer_edge": 107,
+    "agencies_with_published_contract_edge": 35
+  }
+}

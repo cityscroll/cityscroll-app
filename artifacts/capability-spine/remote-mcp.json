@@ -8,7 +8,7 @@
   "evidence_class": "local_protocol_interop",
   "evidence_notes": "Exercises the current MCP SDK client against handleMcp() with the client transport's fetch overridden to dispatch in-process. It proves protocol and semantic parity, not that a deployed https://api.cityscroll.org/mcp endpoint is reachable.",
   "execution_environment": "node-intercepted-transport-fixture",
-  "fixture_sha256": "70bf37432c331e90ef37a3a92a9f4b9c722d30d41de909186ad8bf91c6996d3b",
+  "fixture_sha256": "ebc1f2734d34c37f29d3b281d95851a6c77581d9c7b3b2ec16da2a91d4da314f",
   "layers": {
     "adapter_policy": "worker/src/mcp.mjs plus capabilities/mcp_tool_declarations.mjs",
     "cloudflare_os_runtime": "downstream and not built by cs-06",
@@ -108,7 +108,7 @@
     },
     {
       "adapter_id": "mcp.get_entity_dossier@1",
-      "adapter_semantic_sha256": "f2eecf61a5a2a75e2d7c4f07a096691d56937048db3ca318128523e50d492590",
+      "adapter_semantic_sha256": "1509ef85049d6c0207f14cea32bed835afb61fe62f762d8163fad3511df2ae65",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -122,7 +122,7 @@
       },
       "calls": 1,
       "capability_reference": "entity.dossier.get@1",
-      "direct_semantic_sha256": "f2eecf61a5a2a75e2d7c4f07a096691d56937048db3ca318128523e50d492590",
+      "direct_semantic_sha256": "1509ef85049d6c0207f14cea32bed835afb61fe62f762d8163fad3511df2ae65",
       "name": "get_entity_dossier",
       "operation_class": "read",
       "parity": "pass",
@@ -269,7 +269,7 @@
     },
     {
       "adapter_id": "mcp.get_person_or_organization@1",
-      "adapter_semantic_sha256": "9d14621ff8128f0d5958f92d9fb2984e5aabd193c7e4f28e1097ade2e095187d",
+      "adapter_semantic_sha256": "418490a8d658a017ffc3c99fe1e9a478942ba10a0a9c5f8603a868e4b3eb780c",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -283,7 +283,7 @@
       },
       "calls": 1,
       "capability_reference": "people.get@1",
-      "direct_semantic_sha256": "9d14621ff8128f0d5958f92d9fb2984e5aabd193c7e4f28e1097ade2e095187d",
+      "direct_semantic_sha256": "418490a8d658a017ffc3c99fe1e9a478942ba10a0a9c5f8603a868e4b3eb780c",
       "name": "get_person_or_organization",
       "operation_class": "read",
       "parity": "pass",
@@ -294,7 +294,7 @@
     },
     {
       "adapter_id": "mcp.browse_organizations@1",
-      "adapter_semantic_sha256": "0a1ffbc9373d39607be8b73dffb6dd08581bb8e7bb9538d09b192bf18845ba51",
+      "adapter_semantic_sha256": "9a879b0969322b5e26842df5abd1f746fc0cea8305d7e0b12f16cb992eac5db7",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -312,7 +312,7 @@
       },
       "calls": 1,
       "capability_reference": "organizations.browse@1",
-      "direct_semantic_sha256": "0a1ffbc9373d39607be8b73dffb6dd08581bb8e7bb9538d09b192bf18845ba51",
+      "direct_semantic_sha256": "9a879b0969322b5e26842df5abd1f746fc0cea8305d7e0b12f16cb992eac5db7",
       "name": "browse_organizations",
       "operation_class": "read",
       "parity": "pass",

@@ -42,6 +42,7 @@
     "site/agency_directory_contract.mjs",
     "site/agency_directory_runtime.mjs",
     "site/agency_directory.mjs",
+    "site/agency_entity_publication.mjs",
     "site/agency_fiscal_context.mjs",
     "site/agency_identity_evidence.mjs",
     "site/agency_identity.mjs",

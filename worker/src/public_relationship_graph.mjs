@@ -21,6 +21,11 @@ import {
   ENTITY_RELATIONSHIPS_REPRESENTATIONS,
   executeEntityRelationships,
 } from "../../capabilities/entity_relationships.mjs";
+import {
+  AGENCY_ENTITY_PUBLICATION,
+  agencyPublicationCoverage,
+  readPublishedAgency,
+} from "./lib/published_agency_entity.mjs";
 
 const GRAPH_CACHE = "public, max-age=300";
 export const GRAPH_RECORD_LIMIT = 250;
@@ -40,6 +45,23 @@ function staticGraphForId(id) {
     : null;
 }
 
+/**
+ * A published graph for this id, if one is materialized.
+ *
+ * Returns the graph itself when it is published, an unreadable verdict when a
+ * record exists but cannot be used, and null when the id is simply outside
+ * every published set.
+ */
+export function publishedGraphForId(id, publication = AGENCY_ENTITY_PUBLICATION) {
+  const staticGraph = staticGraphForId(id);
+  if (staticGraph) return { status: "published", graph: staticGraph };
+  const agency = readPublishedAgency(publication, id);
+  if (!agency) return null;
+  return agency.status === "published"
+    ? { status: "published", graph: agency.graph }
+    : agency;
+}
+
 function clean(value) {
   return String(value ?? "").replace(/\s+/g, " ").trim();
 }
@@ -50,12 +72,20 @@ function escapeHtml(value) {
   }[char]));
 }
 
+/** Public-facing status when the published graph for this id cannot be read. */
+export const GRAPH_RECORD_UNREADABLE = {
+  error: "record-unreadable",
+  public_status: "unavailable",
+  message:
+    "A relationship graph is published for this id, but its stored record could not be read on this request. This is a fault on our side, not a statement that the relationships are absent; the same id may answer on a later request.",
+};
+
 /** Public-facing status when no canonical entity graph is published for this id. */
 export const GRAPH_NOT_YET_PUBLIC = {
   error: "not-found",
   public_status: "not_yet_public",
   message:
-    "No public relationship graph is available for this id. Subject-registry links on notice lifecycles are live; this graph surface only returns typed edges for canonical entity ids published from the resolution store. Do not treat name-shaped or contract ids as live graph keys until a resolved entity returns linked records.",
+    "No public relationship graph is available for this id. Subject-registry links on notice lifecycles are live; this graph surface only returns typed edges for canonical entity ids published from the resolution store and city agencies published from the agency entity records. This id is outside that published set, which is not evidence that no relationship exists. Do not treat name-shaped or contract ids as live graph keys until a resolved entity returns linked records.",
 };
 
 function json(body, status = 200) {
@@ -69,12 +99,17 @@ function json(body, status = 200) {
   });
 }
 
+/** The exact not-yet-public body: the disclosure plus what the set does cover. */
+export function graphNotYetPublicBody(publication = AGENCY_ENTITY_PUBLICATION) {
+  return { ...GRAPH_NOT_YET_PUBLIC, coverage: agencyPublicationCoverage(publication) };
+}
+
 function notYetPublicResponse(request) {
   const url = new URL(request.url);
   const wantsJson = url.searchParams.get("format") === "json"
     || (request.headers.get("accept") || "").includes("application/json");
   if (wantsJson || !request.headers.get("accept")?.includes("text/html")) {
-    return json(GRAPH_NOT_YET_PUBLIC, 404);
+    return json(graphNotYetPublicBody(), 404);
   }
   const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Relationship graph not yet public · CityScroll</title>
@@ -174,13 +209,18 @@ export function renderPublicRelationshipGraphPage(graph) {
 export async function readPublicRelationshipGraph(db, canonicalEntityId, opts = {}) {
   const entityId = clean(canonicalEntityId);
   if (!entityId || entityId.length > 300) return null;
-  const staticGraph = staticGraphForId(entityId);
-  if (staticGraph) {
-    return serializePublicRelationshipGraph([], {
+  const published = publishedGraphForId(entityId, opts.publication || AGENCY_ENTITY_PUBLICATION);
+  if (published?.status === "unreadable") throw new Error(published.reason);
+  if (published?.status === "published") {
+    const graph = serializePublicRelationshipGraph([], {
       ...opts,
       rootId: entityId,
-      publishedGraph: staticGraph,
+      publishedGraph: published.graph,
     });
+    // A published graph that will not serialize is a fault to disclose, not an
+    // unpublished answer and not an empty graph.
+    if (!graph) throw new Error("record-relationships-unreadable");
+    return graph;
   }
   if (!db) return null;
   const result = await db.prepare(
@@ -220,17 +260,27 @@ export async function readPublicRelationshipGraph(db, canonicalEntityId, opts = 
 }
 
 /** Explicit provider for the transport-neutral entity.relationships.get@1 contract. */
-export function workerD1EntityRelationships(db) {
+export function workerD1EntityRelationships(db, { publication = AGENCY_ENTITY_PUBLICATION } = {}) {
   return Object.freeze({
     capabilityReference: ENTITY_RELATIONSHIPS_CAPABILITY_REFERENCE,
     providerId: ENTITY_RELATIONSHIPS_PROVIDER_ID,
     async execute({ entityId, depth, fanOut, nodeTypes, edgeTypes }) {
+      const published = publishedGraphForId(entityId, publication);
+      if (published?.status === "unreadable") {
+        return {
+          capability_reference: ENTITY_RELATIONSHIPS_CAPABILITY_REFERENCE,
+          availability: "unavailable",
+          graph: null,
+          error: "record-unreadable",
+        };
+      }
       try {
         const graph = await readPublicRelationshipGraph(db, entityId, {
           depth,
           fanOut,
           nodeTypes,
           edgeTypes,
+          publication,
         });
         if (graph) {
           return {
@@ -263,7 +313,9 @@ export async function handlePublicRelationshipGraph(request, env) {
   const url = new URL(request.url);
   const entityId = clean(url.searchParams.get("id"));
   if (!entityId || entityId.length > 300) return json({ error: "id-required" }, 400);
-  if (!env?.DB && !staticGraphForId(entityId)) return json({ error: "no-store" }, 503);
+  // The published graphs answer without a store, so the store guard applies
+  // only to ids this route would have to look up in D1.
+  if (!env?.DB && !publishedGraphForId(entityId)) return json({ error: "no-store" }, 503);
 
   const depth = positiveInteger(url.searchParams.get("depth"), PUBLIC_GRAPH_DEFAULT_DEPTH);
   const fanOut = positiveInteger(url.searchParams.get("fan_out"), PUBLIC_GRAPH_DEFAULT_FAN_OUT);
@@ -289,7 +341,7 @@ export async function handlePublicRelationshipGraph(request, env) {
   let result;
   try {
     result = await executeEntityRelationships(
-      workerD1EntityRelationships(env.DB),
+      workerD1EntityRelationships(env?.DB),
       {
         entityId,
         depth,
@@ -301,7 +353,11 @@ export async function handlePublicRelationshipGraph(request, env) {
   } catch {
     return json({ error: "relationship-graph-unavailable" }, 503);
   }
-  if (result.availability === "unavailable") return json({ error: result.error }, 503);
+  if (result.availability === "unavailable") {
+    return result.error === "record-unreadable"
+      ? json(GRAPH_RECORD_UNREADABLE, 503)
+      : json({ error: result.error }, 503);
+  }
   if (result.availability === "not_yet_public") return notYetPublicResponse(request);
   const { graph } = result;
   if (url.searchParams.get("format") === "json"

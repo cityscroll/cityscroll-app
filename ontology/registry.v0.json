@@ -3186,6 +3186,87 @@
         "public_dossier"
       ],
       "grounding": "built"
+    },
+    {
+      "id": "agency_acronym",
+      "status": "registered",
+      "kind": "text",
+      "backing": [
+        "public_dossier"
+      ],
+      "grounding": "built"
+    },
+    {
+      "id": "organization_type",
+      "status": "registered",
+      "kind": "text",
+      "backing": [
+        "public_dossier"
+      ],
+      "grounding": "built"
+    },
+    {
+      "id": "agency_website",
+      "status": "registered",
+      "kind": "text",
+      "backing": [
+        "public_dossier"
+      ],
+      "grounding": "built"
+    },
+    {
+      "id": "principal_officer",
+      "status": "registered",
+      "kind": "text",
+      "backing": [
+        "public_dossier"
+      ],
+      "grounding": "built"
+    },
+    {
+      "id": "principal_officer_title",
+      "status": "registered",
+      "kind": "text",
+      "backing": [
+        "public_dossier"
+      ],
+      "grounding": "built"
+    },
+    {
+      "id": "reports_to",
+      "status": "registered",
+      "kind": "text",
+      "backing": [
+        "public_dossier"
+      ],
+      "grounding": "built"
+    },
+    {
+      "id": "budget_code",
+      "status": "registered",
+      "kind": "text",
+      "backing": [
+        "public_dossier"
+      ],
+      "grounding": "built"
+    },
+    {
+      "id": "adopted_budget",
+      "status": "registered",
+      "kind": "amount",
+      "backing": [
+        "public_dossier"
+      ],
+      "grounding": "built"
+    },
+    {
+      "id": "budget_fiscal_year",
+      "status": "registered",
+      "kind": "text",
+      "backing": [
+        "public_dossier"
+      ],
+      "grounding": "built"
     }
   ],
   "kinetic_action_types": {

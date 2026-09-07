@@ -313,7 +313,7 @@ export function validateEntityRelationshipsOutput(result, input) {
       throw new TypeError("not_yet_public entity.relationships output requires not-found");
     }
     if (result.availability === "unavailable"
-        && !["no-store", "relationship-graph-unavailable"].includes(result.error)) {
+        && !["no-store", "relationship-graph-unavailable", "record-unreadable"].includes(result.error)) {
       throw new TypeError("unavailable entity.relationships output has an invalid error code");
     }
   }
