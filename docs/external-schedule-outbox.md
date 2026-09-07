@@ -10,8 +10,10 @@ Verification:
 
 ```bash
 node --test test/external_schedule_trigger.test.mjs test/external_schedule_outbox.test.mjs \
-  test/github_app_identity.test.mjs test/repair_dispatch.test.mjs
-node --test worker/test/reliability_watchdogs.test.mjs
+  test/github_app_identity.test.mjs test/repair_dispatch.test.mjs \
+  test/repair_findings.test.mjs test/repair_playbooks.test.mjs test/repair_dispatch_wiring.test.mjs
+node --test worker/test/reliability_watchdogs.test.mjs worker/test/repair_queue.test.mjs \
+  worker/test/repair_monitor_findings.test.mjs
 node tools/audit_scheduler_ownership.mjs --check
 ```
 
@@ -154,5 +156,87 @@ Activate it only once the credential's own installation receipt reads installed.
    Markers make that first drain safe: every intent is matched against existing issues and comments before it writes, so a backlog replays without duplicating anything.
 
 Until step 2 passes, record the deployment as credential-waiting. There is no substitute identity: an operator's own token would file monitor findings under a person, which is the outcome the file-backed credential discipline exists to prevent.
+
+## Automatic repair
+
+Every monitor on this schedule could already say precisely what broke. What none of them could do was fix anything, so a stale source contract or a rehearsal that failed on a gateway error waited on somebody to read an issue — and the same condition re-filed itself the next morning, and the morning after that. The site owner's decision was to close that loop deterministically: a scripted playbook rather than a model, with everything a playbook cannot close escalated rather than dropped.
+
+The loop runs entirely on the heartbeat this cycle already publishes.
+
+1. **A monitor run becomes queue items.** A degraded run produces one item per failure signature, carrying the same sanitized evidence its issue carries. A run that recovers reports the scope it just evaluated and what is still failing inside it, and the queue closes the rest as `recovered` — a different word from `repaired`, because a condition that went away is not a repair that worked.
+2. **The queue deduplicates by signature.** A signature is `monitor:<monitor id>:<failure class>[:<subject>]`. A condition on its fifth day advances a repeat counter on the item that already exists; it never opens a fifth item, and it never re-files a second issue.
+3. **The cycle leases up to three items** on the same heartbeat, spending one attempt each, and runs the dispatcher once per item with a ten-minute bound.
+4. **The dispatcher selects a committed playbook from the signature alone**, runs it, and verifies by re-running the monitor's own check for that one subject. Nothing a queue record carries is ever executed: the item reaches the dispatcher on stdin, and the registry — not the item — decides what runs.
+5. **What no playbook can close is reported as judgment**, which is the one outcome that mails the owner. Queueing, pickup, retry and a successful repair are all silent.
+
+The slot ledger already accounts for every scheduled slot that passed, so the repair rail does not go looking for missed ones. Of the three ways a slot goes unsettled, only one is repairable: a slot that was attempted and threw recorded nothing and the ledger has already advanced past it, so no later cycle will retry it. A slot recorded as superseded or outside the catch-up window was skipped on purpose — these are monitors, a later observation subsumes an earlier one, and the newest outstanding slot ran in the same cycle — so queueing those would re-report the same present state and re-open the same issue, which is what the ledger exists to prevent. A missed-slot item therefore also carries no recovery scope: the ledger stops reporting the slot immediately, so a scope would close the item before anything could re-run it. It is closed by its own dispatch instead, which reports the slot repaired as soon as it has a recorded result.
+
+### The exit-code contract
+
+`CITYSCROLL_REPAIR_DISPATCH_COMMAND` names the command the cycle runs for one leased item. It is spawned with the single argument `--repair-item` and no shell, with the item as JSON on stdin, and its exit code is the whole of what it reports:
+
+| Exit | Queue outcome | Meaning |
+| --- | --- | --- |
+| `0` | `repaired` | A scripted remedy ran and the monitor's own check now passes. The item retires silently. |
+| `2` | `judgment` | Nothing deterministic can close it. The item parks at the judgment boundary and mails the owner once, with the summary saying what change or grant would close it. It reopens for one further attempt tomorrow if the condition is still there. |
+| anything else | `failed` | A remedy ran and did not work. The queue retries, up to three attempts, then parks it as judgment. |
+
+The last line the command writes to stdout is the sentence the cycle reports back, bounded to 400 characters and redacted on the way through.
+
+The installer defaults the variable to a launcher it writes beside the state directory, which execs the resolved interpreter against `tools/repair_dispatch.mjs` in the checkout the trigger already runs. That indirection exists because launchd resolves nothing through a login shell and the cycle spawns the command with no shell at all, so "node plus a script path" cannot be a single string in the trigger. Set `CITYSCROLL_REPAIR_DISPATCH_COMMAND` to another executable to override it, or to `none` to run the cycle without one — in which case the heartbeat declares `repair_dispatch: false`, the queue declines to lease rather than promising a pickup it cannot make, and every finding waits on a person exactly as it did before.
+
+### What the identity may and may not do
+
+The App identity this scheduler runs under carries Issues: write and Metadata: read on this repository, and nothing else. So a playbook may read the repository and run local commands on the scheduler host, and it may not push a commit, open a pull request, or trigger a workflow. A remedy that needs any of those is not a remedy here: it is exactly the case for `judgment`, and the summary names the change that would close it. No playbook may widen that boundary from inside.
+
+### The playbook registry
+
+The registry is `tools/repair_playbooks.mjs`, keyed by monitor and failure class. Each entry declares a precondition, an idempotent remedy, a verification that re-runs the monitor's own check, and a bounded runtime.
+
+A stale source contract is decided from the live verifier's own two-clock finding rather than from a second measurement: the verifier already names the publisher's stamp, the vintage our retained snapshot states, and which side is behind, and the playbook reads that. Where the publisher is the stale side, no acquisition can help and the item is judgment. Where our acquisition is the stale side, the retained evidence decides: a file this repository carries needs a repository change this identity cannot make, and host state can be re-acquired here.
+
+| Playbook | Precondition | Remedy | Verification | Judgment instead when |
+| --- | --- | --- | --- | --- |
+| `source-contract-stale` | the contract is registered, and the live check names our acquisition as the stale side rather than the publisher | where the retained evidence is host state, re-run the contract's acquisition path once | re-run the live source-contract check for that one contract | the publisher is the stale side, no retained vintage is declared, the retained evidence is a repository file, or the contract declares no acquisition tool |
+| `missed-slot` | the monitor is still a registered scheduled job and the slot has no recorded result | re-run the slot once under its original slot key | the slot has a recorded result afterwards | the finding names a monitor this cycle no longer carries |
+| `digest-shadow-upstream` | the digest rehearsal is still a registered scheduled job | wait a bounded backoff, then re-run the rehearsal once | the re-run rehearsal reports READY | the upstream is still failing after the retry, reported as degraded-upstream rather than as a failed repair |
+| `freshness-stale` | a scheduled publication path is registered for the watchdog's reason and its own receipt has not advanced | re-run that publication path's scheduled command once | re-run the freshness watchdog for that one source contract | the publication path ran recently and the evidence still did not advance, or no scheduled path is registered for the reason |
+
+`degraded-upstream` is deliberately neither repaired nor failed. A rehearsal that fails on a gateway error from a publisher is retried once after a bounded backoff, and if the publisher is still down, more retries would learn nothing new and calling it a failed repair would name the wrong fault. It parks as judgment saying what it is, so the decision in front of the operator is whether to wait or to raise it with the publisher.
+
+### The classes deliberately left to judgment
+
+A failure class with no deterministic local remedy is not given a playbook that pretends otherwise. These reach a person on their first sighting rather than after three silent attempts:
+
+| Failure class | Why no playbook |
+| --- | --- |
+| `source-contract-outage` | the publisher is unreachable, and nothing on this host restores a third-party endpoint |
+| `source-contract-schema-drift` | the publisher changed the shape of the data, so the fix is a change to this repository's reader or its declared required fields |
+| `publication-cycle-stalled` | the desk publication cycle is a separate producer, and restarting it from inside a monitor's repair would hide which of the two is stalled |
+| `digest-shadow-credential` | minting or rotating a credential is never inside a repair's scope |
+| `digest-shadow-degraded` | the rehearsal built something the redlines refused, and what to do about the content is an editorial decision |
+| `action-link-degraded` | an outbound action link changed on the publisher's side, and choosing a replacement destination is an editorial decision |
+| `stats-snapshot-missing` | the daily snapshot did not publish, and the remedy is a change to the publication path in this repository |
+
+### What judgment means for the operator
+
+A judgment is one mail, naming what failed, since when, how many attempts were made, what the attempt reported, and the run and receipt to look at. The queue then parks the item and stops retrying it for the rest of the day, so a condition firing every few minutes cannot spin the loop against work somebody has been asked to decide. If it is still happening tomorrow it gets one further bounded attempt, on the same rhythm the alert loop already uses to re-surface a finding that has not gone away.
+
+Every attempt also leaves a local receipt at `$CROL_EXTERNAL_SCHEDULE_STATE_DIR/repair/receipts/<signature>.json` — the last ten attempts for that signature, newest first, each with its outcome and its verification result — so an operator can see what was tried without the mail. The cycle's own summary reports how many findings it observed, how many it queued, how many it closed, and what its repairs did:
+
+```bash
+jq '{repair_observed, repair_queued, repair_closed, repair_leased, repair_reported}' \
+  "$CROL_EXTERNAL_SCHEDULE_STATE_DIR/heartbeat/latest.json"
+jq '{latest_outcome, attempt_count, attempts: [.attempts[] | {observed_at, outcome, summary}]}' \
+  "$CROL_EXTERNAL_SCHEDULE_STATE_DIR"/repair/receipts/*.json
+```
+
+Reinstall from the stable checkout to activate it:
+
+```bash
+tools/install_external_schedule_launchd.sh
+```
+
+The installer reports which launcher the trigger points at and warns if the rail is disabled. As with every other input it writes, naming a command is not evidence that a repair works: the first cycle's summary and the receipts are.
 
 The remaining daily data-freshness jobs (`attachment-metadata`, `surface-load-live`, and `multi-flywheel`) remain listed as follow-ups in the job manifest.

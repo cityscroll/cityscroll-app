@@ -46,10 +46,15 @@
     <string>__GH_APP_PRIVATE_KEY_FILE__</string>
     <key>CITYSCROLL_SCHEDULER_HEARTBEAT_URL</key>
     <string>https://api.cityscroll.org/admin/reliability/scheduler</string>
-    <!-- The bounded debug/fix task the cycle runs for one leased repair item.
-         It is operator configuration and provider-neutral: the queue describes
-         a failure and never names anything to execute. Leave it empty and the
-         cycle publishes liveness without leasing repair work. -->
+    <!-- The bounded repair task the cycle runs for one leased repair item. It
+         is operator configuration: the queue describes a failure and never
+         names anything to execute, and the item reaches this command on stdin
+         so nothing a queue record carries can reach a shell. The installer
+         defaults it to a launcher that execs the resolved interpreter against
+         this checkout's deterministic dispatcher, which selects a committed
+         playbook, verifies the result, and exits 0 repaired / 2 judgment /
+         1 failed. Left empty, the cycle publishes liveness, declares
+         repair_dispatch false, and leases nothing. -->
     <key>CITYSCROLL_REPAIR_DISPATCH_COMMAND</key>
     <string>__CITYSCROLL_REPAIR_DISPATCH_COMMAND__</string>
   </dict>
