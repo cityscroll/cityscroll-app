@@ -2,7 +2,7 @@
   "schema": "cityscroll.agency_source_identity_snapshot.v1",
   "generated_from": {
     "route_identity_report": "12783|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-05T13:44:00.909Z|2026-09-06T16:05:05.204Z|2026-09-06T22:12:50.879Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-05T13:44:00.909Z|2026-09-06|2026-09-06|2026-09-06T16:04:20.611Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:50.879Z|2026-09-06T22:47:58.530Z",
-    "route_directory_count": 94
+    "route_directory_count": 89
   },
   "contract": {
     "schema": "cityscroll.agency_source_identity_contract.v1",
@@ -113,7 +113,7 @@
     },
     "routes": {
       "pattern": "/agencies/{slug}/",
-      "count": 94,
+      "count": 89,
       "paths": [
         "/agencies/administration-for-childrens-services/",
         "/agencies/administrative-trials-and-hearings/",
@@ -125,8 +125,6 @@
         "/agencies/borough-president-bronx/",
         "/agencies/borough-president-brooklyn/",
         "/agencies/borough-president-queens/",
-        "/agencies/bronx-borough-board/",
-        "/agencies/brooklyn-borough-board/",
         "/agencies/build-nyc-resource-corporation/",
         "/agencies/buildings/",
         "/agencies/business-integrity-commission/",
@@ -176,7 +174,6 @@
         "/agencies/law-department/",
         "/agencies/long-island-rail-road/",
         "/agencies/management-and-budget/",
-        "/agencies/manhattan-borough-board/",
         "/agencies/mayors-office-of-contract-services/",
         "/agencies/mayors-office-of-criminal-justice/",
         "/agencies/metropolitan-transportation-authority/",
@@ -197,12 +194,10 @@
         "/agencies/probation/",
         "/agencies/public-advocate/",
         "/agencies/public-design-commission/",
-        "/agencies/queens-borough-board/",
         "/agencies/records-and-information-services/",
         "/agencies/rent-guidelines-board/",
         "/agencies/sanitation/",
         "/agencies/small-business-services/",
-        "/agencies/staten-island-borough-board/",
         "/agencies/tax-commission/",
         "/agencies/taxi-and-limousine-commission/",
         "/agencies/teachers-retirement-system/",
@@ -471,7 +466,7 @@
       "counts": {
         "matched": 79,
         "source_only": 35,
-        "route_only": 9,
+        "route_only": 4,
         "alias_route": 16,
         "legitimate_external": 5,
         "collision": 2,
@@ -543,26 +538,6 @@
           "canonical_id": null,
           "route": null,
           "basis": "publisher identity without a generated route"
-        },
-        {
-          "source_id": "bronx-borough-board",
-          "institution_kind": null,
-          "vintage": "12783|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-05T13:44:00.909Z|2026-09-06T16:05:05.204Z|2026-09-06T22:12:50.879Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-05T13:44:00.909Z|2026-09-06|2026-09-06|2026-09-06T16:04:20.611Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:50.879Z|2026-09-06T22:47:58.530Z",
-          "status": "route_only",
-          "links_to_canonical": false,
-          "canonical_id": null,
-          "route": "/agencies/bronx-borough-board/",
-          "basis": "route retained without publisher crosswalk"
-        },
-        {
-          "source_id": "brooklyn-borough-board",
-          "institution_kind": null,
-          "vintage": "12783|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-05T13:44:00.909Z|2026-09-06T16:05:05.204Z|2026-09-06T22:12:50.879Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-05T13:44:00.909Z|2026-09-06|2026-09-06|2026-09-06T16:04:20.611Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:50.879Z|2026-09-06T22:47:58.530Z",
-          "status": "route_only",
-          "links_to_canonical": false,
-          "canonical_id": null,
-          "route": "/agencies/brooklyn-borough-board/",
-          "basis": "route retained without publisher crosswalk"
         },
         {
           "source_id": "civic-engagement-commission",
@@ -713,16 +688,6 @@
           "canonical_id": null,
           "route": null,
           "basis": "publisher identity without a generated route"
-        },
-        {
-          "source_id": "manhattan-borough-board",
-          "institution_kind": null,
-          "vintage": "12783|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-05T13:44:00.909Z|2026-09-06T16:05:05.204Z|2026-09-06T22:12:50.879Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-05T13:44:00.909Z|2026-09-06|2026-09-06|2026-09-06T16:04:20.611Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:50.879Z|2026-09-06T22:47:58.530Z",
-          "status": "route_only",
-          "links_to_canonical": false,
-          "canonical_id": null,
-          "route": "/agencies/manhattan-borough-board/",
-          "basis": "route retained without publisher crosswalk"
         },
         {
           "source_id": "mayors-fund-to-advance-new-york-city",
@@ -925,16 +890,6 @@
           "basis": "publisher identity without a generated route"
         },
         {
-          "source_id": "queens-borough-board",
-          "institution_kind": null,
-          "vintage": "12783|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-05T13:44:00.909Z|2026-09-06T16:05:05.204Z|2026-09-06T22:12:50.879Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-05T13:44:00.909Z|2026-09-06|2026-09-06|2026-09-06T16:04:20.611Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:50.879Z|2026-09-06T22:47:58.530Z",
-          "status": "route_only",
-          "links_to_canonical": false,
-          "canonical_id": null,
-          "route": "/agencies/queens-borough-board/",
-          "basis": "route retained without publisher crosswalk"
-        },
-        {
           "source_id": "school-construction-authority",
           "institution_kind": null,
           "vintage": "12783|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-05T13:44:00.909Z|2026-09-06T16:05:05.204Z|2026-09-06T22:12:50.879Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-05T13:44:00.909Z|2026-09-06|2026-09-06|2026-09-06T16:04:20.611Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:50.879Z|2026-09-06T22:47:58.530Z",
@@ -943,16 +898,6 @@
           "canonical_id": null,
           "route": null,
           "basis": "publisher identity without a generated route"
-        },
-        {
-          "source_id": "staten-island-borough-board",
-          "institution_kind": null,
-          "vintage": "12783|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-05T13:44:00.909Z|2026-09-06T16:05:05.204Z|2026-09-06T22:12:50.879Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-05T13:44:00.909Z|2026-09-06|2026-09-06|2026-09-06T16:04:20.611Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:50.879Z|2026-09-06T22:47:58.530Z",
-          "status": "route_only",
-          "links_to_canonical": false,
-          "canonical_id": null,
-          "route": "/agencies/staten-island-borough-board/",
-          "basis": "route retained without publisher crosswalk"
         },
         {
           "source_id": "trust-for-governors-island",
@@ -1135,26 +1080,6 @@
           "canonical_id": null,
           "route": null,
           "basis": "publisher identity without a generated route"
-        },
-        {
-          "source_id": "bronx-borough-board",
-          "institution_kind": null,
-          "vintage": "12783|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-05T13:44:00.909Z|2026-09-06T16:05:05.204Z|2026-09-06T22:12:50.879Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-05T13:44:00.909Z|2026-09-06|2026-09-06|2026-09-06T16:04:20.611Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:50.879Z|2026-09-06T22:47:58.530Z",
-          "status": "route_only",
-          "links_to_canonical": false,
-          "canonical_id": null,
-          "route": "/agencies/bronx-borough-board/",
-          "basis": "route retained without publisher crosswalk"
-        },
-        {
-          "source_id": "brooklyn-borough-board",
-          "institution_kind": null,
-          "vintage": "12783|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-05T13:44:00.909Z|2026-09-06T16:05:05.204Z|2026-09-06T22:12:50.879Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-05T13:44:00.909Z|2026-09-06|2026-09-06|2026-09-06T16:04:20.611Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:50.879Z|2026-09-06T22:47:58.530Z",
-          "status": "route_only",
-          "links_to_canonical": false,
-          "canonical_id": null,
-          "route": "/agencies/brooklyn-borough-board/",
-          "basis": "route retained without publisher crosswalk"
         },
         {
           "source_id": "build-nyc-resource-corporation",
@@ -1797,16 +1722,6 @@
           "basis": "publisher crosswalk plus stable agency route"
         },
         {
-          "source_id": "manhattan-borough-board",
-          "institution_kind": null,
-          "vintage": "12783|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-05T13:44:00.909Z|2026-09-06T16:05:05.204Z|2026-09-06T22:12:50.879Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-05T13:44:00.909Z|2026-09-06|2026-09-06|2026-09-06T16:04:20.611Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:50.879Z|2026-09-06T22:47:58.530Z",
-          "status": "route_only",
-          "links_to_canonical": false,
-          "canonical_id": null,
-          "route": "/agencies/manhattan-borough-board/",
-          "basis": "route retained without publisher crosswalk"
-        },
-        {
           "source_id": "mayoralty",
           "institution_kind": null,
           "vintage": "12783|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-05T13:44:00.909Z|2026-09-06T16:05:05.204Z|2026-09-06T22:12:50.879Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-05T13:44:00.909Z|2026-09-06|2026-09-06|2026-09-06T16:04:20.611Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:50.879Z|2026-09-06T22:47:58.530Z",
@@ -2317,16 +2232,6 @@
           "basis": "publisher identity without a generated route"
         },
         {
-          "source_id": "queens-borough-board",
-          "institution_kind": null,
-          "vintage": "12783|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-05T13:44:00.909Z|2026-09-06T16:05:05.204Z|2026-09-06T22:12:50.879Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-05T13:44:00.909Z|2026-09-06|2026-09-06|2026-09-06T16:04:20.611Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:50.879Z|2026-09-06T22:47:58.530Z",
-          "status": "route_only",
-          "links_to_canonical": false,
-          "canonical_id": null,
-          "route": "/agencies/queens-borough-board/",
-          "basis": "route retained without publisher crosswalk"
-        },
-        {
           "source_id": "records-and-information-services",
           "institution_kind": null,
           "vintage": "12783|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-05T13:44:00.909Z|2026-09-06T16:05:05.204Z|2026-09-06T22:12:50.879Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-05T13:44:00.909Z|2026-09-06|2026-09-06|2026-09-06T16:04:20.611Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:50.879Z|2026-09-06T22:47:58.530Z",
@@ -2375,16 +2280,6 @@
           "canonical_id": "small-business-services",
           "route": "/agencies/small-business-services/",
           "basis": "publisher crosswalk plus stable agency route"
-        },
-        {
-          "source_id": "staten-island-borough-board",
-          "institution_kind": null,
-          "vintage": "12783|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-09-05T13:44:00.909Z|2026-09-06T16:05:05.204Z|2026-09-06T22:12:50.879Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-09-05T13:44:00.909Z|2026-09-06|2026-09-06|2026-09-06T16:04:20.611Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:11.527Z|2026-09-06T22:12:50.879Z|2026-09-06T22:47:58.530Z",
-          "status": "route_only",
-          "links_to_canonical": false,
-          "canonical_id": null,
-          "route": "/agencies/staten-island-borough-board/",
-          "basis": "route retained without publisher crosswalk"
         },
         {
           "source_id": "tax-commission",

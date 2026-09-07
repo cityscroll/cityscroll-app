@@ -24,9 +24,19 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..");
 
 export const AGENCY_SOURCE_IDENTITY_SNAPSHOT_SCHEMA = "cityscroll.agency_source_identity_snapshot.v1";
 
+/**
+ * The agency routes the repository carries source for.
+ *
+ * Every agency page's index.html is generated and untracked, so a directory
+ * holding nothing else is a build artifact, not a route this receipt describes.
+ * Counting those made the committed snapshot depend on whether a build had run
+ * in the working tree, which is not a property a regression receipt may have.
+ */
 export function agencyRouteDirectoryNames({ root = ROOT } = {}) {
-  return readdirSync(join(root, "site/agencies"), { withFileTypes: true })
+  const base = join(root, "site/agencies");
+  return readdirSync(base, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
+    .filter((entry) => readdirSync(join(base, entry.name)).some((name) => name !== "index.html"))
     .map((entry) => entry.name)
     .sort();
 }
