@@ -208,13 +208,13 @@ describe("committed Council land-bridge receipt", () => {
   );
 
   it("measures the full present-notice Council matter corpus and ships above the usefulness bar", () => {
-    assert.equal(committedReceipt.coverage.eligible_rows, 78);
-    assert.equal(committedReceipt.coverage.matched, 32);
-    assert.equal(committedReceipt.coverage.unresolved, 46);
+    assert.equal(committedReceipt.coverage.eligible_rows, 102);
+    assert.equal(committedReceipt.coverage.matched, 63);
+    assert.equal(committedReceipt.coverage.unresolved, 39);
     assert.equal(committedReceipt.coverage.rejected, 0);
-    assert.equal(committedReceipt.join_measurement.rates.exact_land_identifier.rate, 0.410256);
+    assert.equal(committedReceipt.join_measurement.rates.exact_land_identifier.rate, 0.617647);
     assert.equal(committedReceipt.gate.result, "GO");
-    assert.equal(committedReceipt.materialized_edges.length, 32);
+    assert.equal(committedReceipt.materialized_edges.length, 63);
     assert.equal(committedReceipt.honest_absent, false);
   });
 
