@@ -175,19 +175,47 @@ test("scheduler watchdog fires on expired heartbeat and pending outbox", async (
   assert.match(result.findings.join("; "), /3 pending/);
 });
 
-test("a pending outbox with no delivery identity names the missing token", async () => {
-  // A cycle without a delivery token used to report the same pending count as a
-  // cycle whose delivery failed, so the configuration gap read as a flaky API.
+test("a pending outbox with no usable delivery identity names the variable to repair", async () => {
+  // A cycle without a usable delivery token used to report the same pending
+  // count as a cycle whose delivery failed, so the configuration gap read as a
+  // flaky API. The reason travels with it, redacted to a variable and a class.
   const ALERT_STATE = kv();
   const now = new Date("2026-08-25T13:35:00Z");
   const write = await recordSchedulerHeartbeat(
     { ALERT_STATE },
-    { ...CYCLE, pending_outbox: 2, outbox_delivery: "offline" },
+    { ...CYCLE, pending_outbox: 2, outbox_delivery: "offline", outbox_delivery_reason: "GH_TOKEN_FILE:insecure-permissions" },
     new Date("2026-08-25T13:30:00Z"),
   );
   assert.equal(write.heartbeat.outbox_delivery, "offline");
+  assert.equal(write.heartbeat.outbox_delivery_reason, "GH_TOKEN_FILE:insecure-permissions");
   const result = await schedulerWatchdogSnapshot({ ALERT_STATE }, { now });
-  assert.match(result.findings.join("; "), /2 pending item\(s\) and delivery is offline for lack of a configured token/);
+  assert.match(
+    result.findings.join("; "),
+    /2 pending item\(s\) and delivery is offline for lack of a usable token \(GH_TOKEN_FILE:insecure-permissions\)/,
+  );
+});
+
+test("the heartbeat records that a credential was loaded, never that delivery works", async () => {
+  // "credentialed" is the strongest claim a cycle may make from configuration
+  // alone: whether the identity is the intended account, and whether GitHub
+  // accepts it, is only ever proven by a delivery attempt.
+  const ALERT_STATE = kv();
+  const credentialed = await recordSchedulerHeartbeat(
+    { ALERT_STATE },
+    { ...CYCLE, outbox_delivery: "credentialed" },
+    new Date("2026-08-25T13:30:00Z"),
+  );
+  assert.equal(credentialed.heartbeat.outbox_delivery, "credentialed");
+  assert.equal(credentialed.heartbeat.outbox_delivery_reason, null);
+  // A cycle that claims anything else is recorded as having claimed nothing.
+  for (const claim of ["online", "operational", "installed", true, 1]) {
+    const write = await recordSchedulerHeartbeat(
+      { ALERT_STATE },
+      { ...CYCLE, outbox_delivery: claim },
+      new Date("2026-08-25T13:30:00Z"),
+    );
+    assert.equal(write.heartbeat.outbox_delivery, null, `${claim} was accepted as a delivery state`);
+  }
 });
 
 test("ops failures have lossless stable signatures and restart-stable daily rollups", async () => {

@@ -44,13 +44,24 @@ test("the trigger names every input the cycle cannot inherit from a login shell"
   for (const key of [
     "CROL_EXTERNAL_SCHEDULE_STATE_DIR",
     "CITYSCROLL_ADMIN_KEY_FILE",
+    "GH_TOKEN_FILE",
     "CITYSCROLL_SCHEDULER_HEARTBEAT_URL",
   ]) {
     assert.match(template, new RegExp(`<key>${key}</key>`), `the trigger does not name ${key}`);
   }
   assert.equal(plistString("CITYSCROLL_SCHEDULER_HEARTBEAT_URL"), "https://api.cityscroll.org/admin/reliability/scheduler");
-  // The credential is a file path, never an inline secret in a checked-in template.
-  assert.match(template, /<key>CITYSCROLL_ADMIN_KEY_FILE<\/key>\s*<string>__[A-Z_]+__<\/string>/);
+  // Every credential is a file path, never an inline secret in a checked-in
+  // template, and the path is absolute: launchd resolves nothing relative, and
+  // a credential the cycle cannot find is one it refuses rather than replaces.
+  for (const key of ["CITYSCROLL_ADMIN_KEY_FILE", "GH_TOKEN_FILE"]) {
+    assert.match(template, new RegExp(`<key>${key}</key>\\s*<string>__[A-Z_]+__</string>`), `${key} is not a substituted path`);
+    assert.match(installer, new RegExp(`${key}:-"\\$state_dir/`), `the installer derives no absolute default for ${key}`);
+  }
+  // The installer substitutes the path variable into the trigger, so the value
+  // never reaches the plist or a command line. The one place a token value is
+  // named at all is the hint telling the operator to write it into the file.
+  assert.match(installer, /s\|__GH_TOKEN_FILE__\|\$gh_token_file\|g/);
+  assert.equal(/(ghp_|github_pat_)/.test(template), false, "the trigger carries a literal token");
 });
 
 test("the trigger names its interpreter absolutely instead of searching a PATH", () => {
