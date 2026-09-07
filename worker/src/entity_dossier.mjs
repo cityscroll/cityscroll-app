@@ -16,6 +16,7 @@ import {
 } from "../../capabilities/entity_dossier.mjs";
 import {
   AGENCY_ENTITY_PUBLICATION,
+  agencyLeadershipAnswer,
   agencyPublicationCoverage,
   readPublishedAgency,
 } from "./lib/published_agency_entity.mjs";
@@ -167,6 +168,41 @@ function linkConfidenceSummaryHtml(summary = {}) {
   return `<p class="link-summary" data-link-confidence-summary="1">${strong} strong · ${tentative} tentative · ${notScored} not scored of ${total} linked records. Bands reflect match strength, not publisher certainty.</p>`;
 }
 
+/** The leadership answer, rendered so the question is never silently dropped.
+ *
+ * All three answers occupy the same block: a named officer with the dataset and
+ * the date behind it, a stated "not recorded", or a stated read failure. The
+ * block is omitted only for entities the leadership question does not apply to.
+ */
+function leadershipHtml(leadership) {
+  if (!leadership) return "";
+  const heading = `<div class="fact-head"><h2>${escapeHtml(leadership.question)}</h2><span class="status">${escapeHtml(humanStatus(leadership.status))}</span></div>`;
+  if (leadership.status === "published") {
+    const title = clean(leadership.title);
+    return `<section class="leadership" data-leadership="published">${heading}
+      <p class="value">${escapeHtml(leadership.person)}${title ? `, ${escapeHtml(title)}` : ""}</p>
+      <dl>
+        <div><dt>Source</dt><dd>${sourceLink(leadership.source)}</dd></div>
+        <div><dt>Publisher fields</dt><dd>${escapeHtml(leadership.source_fields.join(", "))}</dd></div>
+        <div><dt>Source last updated</dt><dd><time datetime="${escapeHtml(leadership.observed_at)}">${escapeHtml(leadership.observed_at)}</time></dd></div>
+        <div><dt>Confidence</dt><dd>${escapeHtml(humanStatus(leadership.confidence.status))} · ${escapeHtml(humanStatus(leadership.confidence.basis))}</dd></div>
+      </dl>
+    </section>`;
+  }
+  if (leadership.status === "not_recorded") {
+    const consulted = leadership.consulted_sources
+      .map((source) => `<li>${sourceLink(source)} · last updated <time datetime="${escapeHtml(source.observed_at)}">${escapeHtml(source.observed_at)}</time></li>`)
+      .join("");
+    return `<section class="leadership missing" data-leadership="not_recorded">${heading}
+      <p class="value">Not recorded</p><p>${escapeHtml(leadership.note)}</p>
+      <ul>${consulted}</ul>
+    </section>`;
+  }
+  return `<section class="leadership missing" data-leadership="unreadable">${heading}
+    <p class="value">Could not be read</p><p>${escapeHtml(leadership.note)}</p>
+  </section>`;
+}
+
 export function renderEntityDossierPage(dossier) {
   const records = dossier.linked_records.map((record) => `<li>
       <div class="record-main">${sourceLink(record.source)}${linkConfidenceBadge(record.link_confidence)}</div>
@@ -185,8 +221,8 @@ export function renderEntityDossierPage(dossier) {
     <title>${escapeHtml(dossier.entity.name)} · Entity dossier · CityScroll</title>
     <style>
       :root{--paper:#f7f2e8;--card:#ffffff;--ink:#17202a;--muted:#5e6a73;--line:#d7cdbd;--accent:#9c3f32;--warn:#8a4b11;--blue:#295d76;--strong:#1f6b4a;--tentative:#8a4b11}
-      *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--blue);overflow-wrap:anywhere}main{width:min(1100px,calc(100% - 32px));margin:0 auto;padding:48px 0 72px}.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;font-weight:800;color:var(--accent)}h1{font:700 clamp(2rem,5vw,4.5rem)/.98 Georgia,serif;max-width:15ch;margin:.25rem 0 1rem}.lede{max-width:70ch;color:var(--muted);font-size:1.05rem}.scope,.records,.derived,.fact{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-width:0}.summary{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.45fr);gap:18px;margin:28px 0}.summary h2,.fact h2,.derived h2{margin:0;font:700 1.25rem Georgia,serif}.scope dl,.fact dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.scope dl div,.fact dl div{min-width:0}.scope dt,.fact dt{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.scope dd,.fact dd{margin:2px 0 0;overflow-wrap:anywhere}.records ul,.fact ul{list-style:none;padding:0;margin:12px 0 0}.records li{display:flex;gap:12px;justify-content:space-between;align-items:flex-start;border-top:1px solid var(--line);padding:10px 0}.records li span{color:var(--muted);font-size:.85rem;white-space:nowrap}.record-main{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-width:0}.link-band{border:1px solid var(--line);border-radius:999px;padding:2px 8px;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;font-weight:700;white-space:nowrap}.link-band-strong{background:#e7f5ee;border-color:#8fbfa4;color:var(--strong)}.link-band-tentative{background:#fff1df;border-color:#d39355;color:var(--tentative)}.link-band-not_scored{background:#f0ebe3;color:var(--muted)}.link-summary{margin:10px 0 0;color:var(--muted);font-size:.88rem}.derived{border-left:5px solid var(--blue);margin-bottom:18px}.derived-value{font:700 1.5rem Georgia,serif;margin:.3rem 0}.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:18px}.fact-head{display:flex;align-items:start;justify-content:space-between;gap:12px}.status{border:1px solid var(--line);border-radius:999px;padding:3px 8px;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}.fact.disagreement{border-color:#d39355}.fact.disagreement .status{background:#fff1df;border-color:#d39355;color:var(--warn)}.fact.missing{color:var(--muted);background:#f5f0e7}.fact li{border-top:1px solid var(--line);padding:12px 0}.value{font-weight:750;font-size:1.08rem;margin:0;overflow-wrap:anywhere}.source{margin:.15rem 0 .7rem;color:var(--muted);font-size:.88rem}.disagreement{border-left:4px solid #d39355;padding-left:10px;color:var(--warn)}footer{margin-top:28px;color:var(--muted);font-size:.86rem}
-      @media(max-width:760px){main{padding-top:28px}.summary,.facts{grid-template-columns:1fr}.scope dl,.fact dl{grid-template-columns:1fr}.records li{display:block}.records li span{display:block;margin-top:3px}}
+      *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--blue);overflow-wrap:anywhere}main{width:min(1100px,calc(100% - 32px));margin:0 auto;padding:48px 0 72px}.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;font-weight:800;color:var(--accent)}h1{font:700 clamp(2rem,5vw,4.5rem)/.98 Georgia,serif;max-width:15ch;margin:.25rem 0 1rem}.lede{max-width:70ch;color:var(--muted);font-size:1.05rem}.scope,.records,.derived,.fact,.leadership{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-width:0}.summary{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.45fr);gap:18px;margin:28px 0}.summary h2,.fact h2,.derived h2,.leadership h2{margin:0;font:700 1.25rem Georgia,serif}.leadership{margin-bottom:18px;border-left:5px solid var(--accent)}.leadership dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.leadership dl div{min-width:0}.leadership dt{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.leadership dd{margin:2px 0 0;overflow-wrap:anywhere}.leadership ul{list-style:none;padding:0;margin:10px 0 0;color:var(--muted);font-size:.88rem}.leadership.missing{background:#f5f0e7}.scope dl,.fact dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.scope dl div,.fact dl div{min-width:0}.scope dt,.fact dt{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.scope dd,.fact dd{margin:2px 0 0;overflow-wrap:anywhere}.records ul,.fact ul{list-style:none;padding:0;margin:12px 0 0}.records li{display:flex;gap:12px;justify-content:space-between;align-items:flex-start;border-top:1px solid var(--line);padding:10px 0}.records li span{color:var(--muted);font-size:.85rem;white-space:nowrap}.record-main{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-width:0}.link-band{border:1px solid var(--line);border-radius:999px;padding:2px 8px;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;font-weight:700;white-space:nowrap}.link-band-strong{background:#e7f5ee;border-color:#8fbfa4;color:var(--strong)}.link-band-tentative{background:#fff1df;border-color:#d39355;color:var(--tentative)}.link-band-not_scored{background:#f0ebe3;color:var(--muted)}.link-summary{margin:10px 0 0;color:var(--muted);font-size:.88rem}.derived{border-left:5px solid var(--blue);margin-bottom:18px}.derived-value{font:700 1.5rem Georgia,serif;margin:.3rem 0}.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:18px}.fact-head{display:flex;align-items:start;justify-content:space-between;gap:12px}.status{border:1px solid var(--line);border-radius:999px;padding:3px 8px;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}.fact.disagreement{border-color:#d39355}.fact.disagreement .status{background:#fff1df;border-color:#d39355;color:var(--warn)}.fact.missing{color:var(--muted);background:#f5f0e7}.fact li{border-top:1px solid var(--line);padding:12px 0}.value{font-weight:750;font-size:1.08rem;margin:0;overflow-wrap:anywhere}.source{margin:.15rem 0 .7rem;color:var(--muted);font-size:.88rem}.disagreement{border-left:4px solid #d39355;padding-left:10px;color:var(--warn)}footer{margin-top:28px;color:var(--muted);font-size:.86rem}
+      @media(max-width:760px){main{padding-top:28px}.summary,.facts{grid-template-columns:1fr}.scope dl,.fact dl,.leadership dl{grid-template-columns:1fr}.records li{display:block}.records li span{display:block;margin-top:3px}}
     </style></head><body><main>
       <header><p class="eyebrow">CityScroll · bounded public dossier</p><h1>${escapeHtml(dossier.entity.name)}</h1><p class="lede">Public assertions linked to one canonical ${escapeHtml(dossier.entity.type)}. Conflicting values remain separate and attributed. Cross-source links show match strength (strong vs tentative).</p><p><a href="${escapeHtml(relationshipsUrl)}">Explore typed public relationships</a></p></header>
       <div class="summary"><section class="scope"><h2>Dossier scope</h2><p>${escapeHtml(dossier.scope.note)}</p><dl>
@@ -194,6 +230,7 @@ export function renderEntityDossierPage(dossier) {
       <div><dt>Observation period</dt><dd>${escapeHtml(dossier.scope.observed_from ? observedTime(dossier.scope.observed_from) : "Not observed")} – ${escapeHtml(dossier.scope.observed_through ? observedTime(dossier.scope.observed_through) : "Not observed")}</dd></div>
       <div><dt>Link strength</dt><dd>${escapeHtml(`${Number(summary.strong) || 0} strong · ${Number(summary.tentative) || 0} tentative · ${Number(summary.not_scored) || 0} not scored`)}</dd></div>
       </dl></section><section class="records"><h2>Linked source records</h2>${linkConfidenceSummaryHtml(summary)}<ul>${records || "<li>No linked source records.</li>"}</ul></section></div>
+      ${leadershipHtml(dossier.leadership)}
       ${derived}<div class="facts">${facts}</div>
       <footer>Dossier contract ${escapeHtml(dossier.version)} · Missing fields mean only that they were not observed in these linked records. Link strength bands are CityScroll match assessments, not publisher scores.</footer>
     </main></body></html>`;
@@ -210,9 +247,12 @@ export function publishedAgencyDossier(canonicalEntityId, publication = AGENCY_E
   });
   // A published record that will not serialize is a fault to disclose, never an
   // empty dossier and never an unpublished answer.
-  return dossier
-    ? { status: "published", dossier }
-    : { status: "unreadable", reason: "record-observations-unreadable" };
+  if (!dossier) return { status: "unreadable", reason: "record-observations-unreadable" };
+  // "Who leads this agency" is the question most often put to an organization,
+  // so the dossier answers it in its own right rather than leaving the reader
+  // to notice whether a principal-officer assertion happened to be present.
+  const leadership = agencyLeadershipAnswer(canonicalEntityId, publication);
+  return { status: "published", dossier: leadership ? { ...dossier, leadership } : dossier };
 }
 
 /** Query one dossier by canonical entity id. */

@@ -52,6 +52,8 @@ async function inputDigest() {
 function receiptFor(doc, digest, serialized) {
   const withLeader = Object.values(doc.agencies)
     .filter((record) => record.graph.edges.some((edge) => edge.type === "agency_led_by")).length;
+  const officers = Object.values(doc.officers || {});
+  const officerStatus = (status) => officers.filter((officer) => officer.status === status).length;
   const withContracts = Object.values(doc.agencies)
     .filter((record) => record.graph.edges.some((edge) => edge.type === "published_by_agency")).length;
   return {
@@ -71,6 +73,9 @@ function receiptFor(doc, digest, serialized) {
       ...doc.coverage,
       agencies_with_principal_officer_edge: withLeader,
       agencies_with_published_contract_edge: withContracts,
+      officer_statements: officers.length,
+      officer_statements_published: officerStatus("published"),
+      officer_statements_not_recorded: officerStatus("not_recorded"),
     },
   };
 }
@@ -92,6 +97,12 @@ async function main() {
   });
   if (doc.schema !== AGENCY_ENTITY_PUBLICATION_SCHEMA) throw new Error("unexpected publication schema");
   if (!doc.coverage.published_agency_count) throw new Error("no agency entity records were published");
+  // Every agency this publication covers has to carry a leadership answer, even
+  // when that answer is that no source records an officer. A missing statement
+  // would put the question back where it started.
+  for (const entityId of Object.keys(doc.agencies)) {
+    if (!doc.officers?.[entityId]) throw new Error(`no officer statement for ${entityId}`);
+  }
   const serialized = `${JSON.stringify(doc, null, 2)}\n`;
   const receipt = `${JSON.stringify(receiptFor(doc, digest, serialized), null, 2)}\n`;
 
