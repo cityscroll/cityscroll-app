@@ -1,0 +1,3177 @@
+{
+  "schema": "cityscroll.metric_receipt.v1",
+  "metric": "council_vote_event_item_binding",
+  "measured_at": "2026-09-07",
+  "subject": "Council roll-call evidence bound to its publisher event and event item",
+  "source": {
+    "system": "legistar",
+    "endpoints": [
+      "Events/{id}/EventItems",
+      "EventItems/{id}/Votes"
+    ],
+    "client": "nyc",
+    "basis": "Authenticated item-level reacquisition; no summary is attached to an agenda item it was not recorded on."
+  },
+  "scope": {
+    "events": 22,
+    "matter_bearing_event_items": 245,
+    "event_items_with_roll_call": 33,
+    "event_items_without_roll_call": 212,
+    "retained_vote_rows": 257
+  },
+  "published_vote_values": [
+    {
+      "vote_value": "Affirmative",
+      "rows": 216
+    },
+    {
+      "vote_value": "Absent",
+      "rows": 26
+    },
+    {
+      "vote_value": "Bereavement",
+      "rows": 10
+    },
+    {
+      "vote_value": "Medical",
+      "rows": 5
+    }
+  ],
+  "corrected_appearances": [
+    {
+      "request_id": "20260729004",
+      "event_id": "22528",
+      "event_date": "2026-08-12",
+      "matter_id": "79201",
+      "matter_file": "LU 0115-2026",
+      "before": "Passed|7/0/2/—|5289:abstain,7785:abstain,7810:aye,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "Passed|7/0/0/2|5289:absent,7785:absent,7810:aye,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye"
+    },
+    {
+      "request_id": "20260729004",
+      "event_id": "22528",
+      "event_date": "2026-08-12",
+      "matter_id": "79202",
+      "matter_file": "LU 0116-2026",
+      "before": "Passed|7/0/2/—|5289:abstain,7785:abstain,7810:aye,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "Passed|7/0/0/2|5289:absent,7785:absent,7810:aye,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye"
+    },
+    {
+      "request_id": "20260729004",
+      "event_id": "22528",
+      "event_date": "2026-08-12",
+      "matter_id": "79203",
+      "matter_file": "LU 0117-2026",
+      "before": "Passed|7/0/2/—|5289:abstain,7785:abstain,7810:aye,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "Passed|7/0/0/2|5289:absent,7785:absent,7810:aye,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye"
+    },
+    {
+      "request_id": "20260729004",
+      "event_id": "22528",
+      "event_date": "2026-08-12",
+      "matter_id": "79204",
+      "matter_file": "LU 0118-2026",
+      "before": "Passed|7/0/2/—|5289:abstain,7785:abstain,7810:aye,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "Passed|7/0/0/2|5289:absent,7785:absent,7810:aye,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye"
+    },
+    {
+      "request_id": "20260729004",
+      "event_id": "22528",
+      "event_date": "2026-08-12",
+      "matter_id": "79205",
+      "matter_file": "LU 0119-2026",
+      "before": "Passed|7/0/2/—|5289:abstain,7785:abstain,7810:aye,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "Passed|7/0/0/2|5289:absent,7785:absent,7810:aye,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye"
+    },
+    {
+      "request_id": "20260707021",
+      "event_id": "22502",
+      "event_date": "2026-07-21",
+      "matter_id": "79201",
+      "matter_file": "LU 0115-2026",
+      "before": "Passed|7/0/2/—|5289:abstain,7785:abstain,7810:aye,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "no_roll_call_recorded"
+    },
+    {
+      "request_id": "20260707021",
+      "event_id": "22502",
+      "event_date": "2026-07-21",
+      "matter_id": "79203",
+      "matter_file": "LU 0117-2026",
+      "before": "Passed|7/0/2/—|5289:abstain,7785:abstain,7810:aye,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "no_roll_call_recorded"
+    },
+    {
+      "request_id": "20260707021",
+      "event_id": "22502",
+      "event_date": "2026-07-21",
+      "matter_id": "79202",
+      "matter_file": "LU 0116-2026",
+      "before": "Passed|7/0/2/—|5289:abstain,7785:abstain,7810:aye,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "no_roll_call_recorded"
+    },
+    {
+      "request_id": "20260707021",
+      "event_id": "22502",
+      "event_date": "2026-07-21",
+      "matter_id": "79204",
+      "matter_file": "LU 0118-2026",
+      "before": "Passed|7/0/2/—|5289:abstain,7785:abstain,7810:aye,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "no_roll_call_recorded"
+    },
+    {
+      "request_id": "20260707021",
+      "event_id": "22502",
+      "event_date": "2026-07-21",
+      "matter_id": "79205",
+      "matter_file": "LU 0119-2026",
+      "before": "Passed|7/0/2/—|5289:abstain,7785:abstain,7810:aye,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "no_roll_call_recorded"
+    },
+    {
+      "request_id": "20260706036",
+      "event_id": "22526",
+      "event_date": "2026-07-14",
+      "matter_id": "79193",
+      "matter_file": "LU 0112-2026",
+      "before": "Passed|6/0/1/—|7798:abstain,7801:aye,7823:aye,7824:aye,7825:aye,7832:aye,7898:aye",
+      "after": "Passed|6/0/0/1|7798:absent,7801:aye,7823:aye,7824:aye,7825:aye,7832:aye,7898:aye"
+    },
+    {
+      "request_id": "20260706036",
+      "event_id": "22526",
+      "event_date": "2026-07-14",
+      "matter_id": "79194",
+      "matter_file": "LU 0113-2026",
+      "before": "no_roll_call_recorded",
+      "after": "Passed|6/0/0/1|7798:absent,7801:aye,7823:aye,7824:aye,7825:aye,7832:aye,7898:aye"
+    },
+    {
+      "request_id": "20260706036",
+      "event_id": "22526",
+      "event_date": "2026-07-14",
+      "matter_id": "79163",
+      "matter_file": "LU 0110-2026",
+      "before": "Passed|6/0/1/—|7798:abstain,7801:aye,7823:aye,7824:aye,7825:aye,7832:aye,7898:aye",
+      "after": "Passed|6/0/0/1|7798:absent,7801:aye,7823:aye,7824:aye,7825:aye,7832:aye,7898:aye"
+    },
+    {
+      "request_id": "20260706036",
+      "event_id": "22526",
+      "event_date": "2026-07-14",
+      "matter_id": "79164",
+      "matter_file": "LU 0111-2026",
+      "before": "Passed|6/0/1/—|7798:abstain,7801:aye,7823:aye,7824:aye,7825:aye,7832:aye,7898:aye",
+      "after": "Passed|6/0/0/1|7798:absent,7801:aye,7823:aye,7824:aye,7825:aye,7832:aye,7898:aye"
+    },
+    {
+      "request_id": "20260706036",
+      "event_id": "22526",
+      "event_date": "2026-07-14",
+      "matter_id": "79062",
+      "matter_file": "LU 0091-2026",
+      "before": "Passed|6/0/1/—|7798:abstain,7801:aye,7823:aye,7824:aye,7825:aye,7832:aye,7898:aye",
+      "after": "Passed|6/0/0/1|7798:absent,7801:aye,7823:aye,7824:aye,7825:aye,7832:aye,7898:aye"
+    },
+    {
+      "request_id": "20260706036",
+      "event_id": "22526",
+      "event_date": "2026-07-14",
+      "matter_id": "79063",
+      "matter_file": "LU 0092-2026",
+      "before": "Passed|6/0/1/—|7798:abstain,7801:aye,7823:aye,7824:aye,7825:aye,7832:aye,7898:aye",
+      "after": "Passed|6/0/0/1|7798:absent,7801:aye,7823:aye,7824:aye,7825:aye,7832:aye,7898:aye"
+    },
+    {
+      "request_id": "20260706036",
+      "event_id": "22526",
+      "event_date": "2026-07-14",
+      "matter_id": "79064",
+      "matter_file": "LU 0093-2026",
+      "before": "Passed|6/0/1/—|7798:abstain,7801:aye,7823:aye,7824:aye,7825:aye,7832:aye,7898:aye",
+      "after": "Passed|6/0/0/1|7798:absent,7801:aye,7823:aye,7824:aye,7825:aye,7832:aye,7898:aye"
+    },
+    {
+      "request_id": "20260625040",
+      "event_id": "22567",
+      "event_date": "2026-07-09",
+      "matter_id": "79062",
+      "matter_file": "LU 0091-2026",
+      "before": "Passed|6/0/1/—|7798:abstain,7801:aye,7823:aye,7824:aye,7825:aye,7832:aye,7898:aye",
+      "after": "no_roll_call_recorded"
+    },
+    {
+      "request_id": "20260625040",
+      "event_id": "22567",
+      "event_date": "2026-07-09",
+      "matter_id": "79063",
+      "matter_file": "LU 0092-2026",
+      "before": "Passed|6/0/1/—|7798:abstain,7801:aye,7823:aye,7824:aye,7825:aye,7832:aye,7898:aye",
+      "after": "no_roll_call_recorded"
+    },
+    {
+      "request_id": "20260625040",
+      "event_id": "22567",
+      "event_date": "2026-07-09",
+      "matter_id": "79064",
+      "matter_file": "LU 0093-2026",
+      "before": "Passed|6/0/1/—|7798:abstain,7801:aye,7823:aye,7824:aye,7825:aye,7832:aye,7898:aye",
+      "after": "no_roll_call_recorded"
+    },
+    {
+      "request_id": "20260625040",
+      "event_id": "22567",
+      "event_date": "2026-07-09",
+      "matter_id": "79163",
+      "matter_file": "LU 0110-2026",
+      "before": "Passed|6/0/1/—|7798:abstain,7801:aye,7823:aye,7824:aye,7825:aye,7832:aye,7898:aye",
+      "after": "no_roll_call_recorded"
+    },
+    {
+      "request_id": "20260625040",
+      "event_id": "22567",
+      "event_date": "2026-07-09",
+      "matter_id": "79164",
+      "matter_file": "LU 0111-2026",
+      "before": "Passed|6/0/1/—|7798:abstain,7801:aye,7823:aye,7824:aye,7825:aye,7832:aye,7898:aye",
+      "after": "no_roll_call_recorded"
+    },
+    {
+      "request_id": "20260428021",
+      "event_id": "22375",
+      "event_date": "2026-05-19",
+      "matter_id": "78605",
+      "matter_file": "LU 0056-2026",
+      "before": "Passed|8/0/1/—|5289:aye,7785:aye,7810:abstain,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "Passed|8/0/0/1|5289:aye,7785:aye,7810:absent,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye"
+    },
+    {
+      "request_id": "20260428021",
+      "event_id": "22375",
+      "event_date": "2026-05-19",
+      "matter_id": "78606",
+      "matter_file": "LU 0057-2026",
+      "before": "Passed|8/0/1/—|5289:aye,7785:aye,7810:abstain,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "Passed|8/0/0/1|5289:aye,7785:aye,7810:absent,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye"
+    },
+    {
+      "request_id": "20260428021",
+      "event_id": "22375",
+      "event_date": "2026-05-19",
+      "matter_id": "78682",
+      "matter_file": "LU 0058-2026",
+      "before": "Passed|8/0/1/—|5289:aye,7785:aye,7810:abstain,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "Passed|8/0/0/1|5289:aye,7785:aye,7810:absent,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye"
+    },
+    {
+      "request_id": "20260428021",
+      "event_id": "22375",
+      "event_date": "2026-05-19",
+      "matter_id": "78760",
+      "matter_file": "LU 0066-2026",
+      "before": "Passed|8/0/1/—|5289:aye,7785:aye,7810:abstain,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "Passed|8/0/0/1|5289:aye,7785:aye,7810:absent,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye"
+    },
+    {
+      "request_id": "20260408025",
+      "event_id": "22342",
+      "event_date": "2026-04-22",
+      "matter_id": "78682",
+      "matter_file": "LU 0058-2026",
+      "before": "Passed|8/0/1/—|5289:aye,7785:aye,7810:abstain,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "no_roll_call_recorded"
+    },
+    {
+      "request_id": "20260408025",
+      "event_id": "22342",
+      "event_date": "2026-04-22",
+      "matter_id": "78606",
+      "matter_file": "LU 0057-2026",
+      "before": "Passed|8/0/1/—|5289:aye,7785:aye,7810:abstain,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "no_roll_call_recorded"
+    },
+    {
+      "request_id": "20260408025",
+      "event_id": "22342",
+      "event_date": "2026-04-22",
+      "matter_id": "78605",
+      "matter_file": "LU 0056-2026",
+      "before": "Passed|8/0/1/—|5289:aye,7785:aye,7810:abstain,7818:aye,7833:aye,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "no_roll_call_recorded"
+    },
+    {
+      "request_id": "20260331028",
+      "event_id": "22365",
+      "event_date": "2026-04-14",
+      "matter_id": "78537",
+      "matter_file": "LU 0049-2026",
+      "before": "Passed|8/0/1/—|5289:aye,7785:aye,7810:aye,7818:aye,7833:abstain,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "Passed|8/0/0/1|5289:aye,7785:aye,7810:aye,7818:aye,7833:absent,7866:aye,7895:aye,7897:aye,7898:aye"
+    },
+    {
+      "request_id": "20260331028",
+      "event_id": "22365",
+      "event_date": "2026-04-14",
+      "matter_id": "78538",
+      "matter_file": "LU 0050-2026",
+      "before": "Passed|8/0/1/—|5289:aye,7785:aye,7810:aye,7818:aye,7833:abstain,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "Passed|8/0/0/1|5289:aye,7785:aye,7810:aye,7818:aye,7833:absent,7866:aye,7895:aye,7897:aye,7898:aye"
+    },
+    {
+      "request_id": "20260331028",
+      "event_id": "22365",
+      "event_date": "2026-04-14",
+      "matter_id": "78409",
+      "matter_file": "LU 0045-2026",
+      "before": "Passed|8/0/1/—|5289:aye,7785:aye,7810:aye,7818:aye,7833:abstain,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "Passed|8/0/0/1|5289:aye,7785:aye,7810:aye,7818:aye,7833:absent,7866:aye,7895:aye,7897:aye,7898:aye"
+    },
+    {
+      "request_id": "20260331028",
+      "event_id": "22365",
+      "event_date": "2026-04-14",
+      "matter_id": "78411",
+      "matter_file": "LU 0046-2026",
+      "before": "Passed|8/0/1/—|5289:aye,7785:aye,7810:aye,7818:aye,7833:abstain,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "Passed|8/0/0/1|5289:aye,7785:aye,7810:aye,7818:aye,7833:absent,7866:aye,7895:aye,7897:aye,7898:aye"
+    },
+    {
+      "request_id": "20260304007",
+      "event_id": "22300",
+      "event_date": "2026-03-18",
+      "matter_id": "78409",
+      "matter_file": "LU 0045-2026",
+      "before": "Passed|8/0/1/—|5289:aye,7785:aye,7810:aye,7818:aye,7833:abstain,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "no_roll_call_recorded"
+    },
+    {
+      "request_id": "20260304007",
+      "event_id": "22300",
+      "event_date": "2026-03-18",
+      "matter_id": "78411",
+      "matter_file": "LU 0046-2026",
+      "before": "Passed|8/0/1/—|5289:aye,7785:aye,7810:aye,7818:aye,7833:abstain,7866:aye,7895:aye,7897:aye,7898:aye",
+      "after": "no_roll_call_recorded"
+    }
+  ],
+  "person_rows": {
+    "before": {
+      "rows": 341,
+      "people": 19,
+      "events": 12,
+      "by_published_value": {
+        "Affirmative": 295,
+        "Absent": 41,
+        "Bereavement": 5
+      },
+      "by_bucket": {
+        "aye": 295,
+        "abstain": 46
+      }
+    },
+    "after": {
+      "rows": 257,
+      "people": 19,
+      "events": 7,
+      "event_items": 33,
+      "by_published_value": {
+        "Affirmative": 216,
+        "Absent": 26,
+        "Bereavement": 10,
+        "Medical": 5
+      },
+      "by_bucket": {
+        "aye": 216,
+        "absent": 41
+      }
+    },
+    "basis": "Before is the published people artifact. After is one row per publisher vote row, addressed by event item. Counts move because rows that were copied onto meetings where no roll call was taken are gone, and rows the matter-keyed map dropped are back."
+  },
+  "event_items": [
+    {
+      "event_id": "22617",
+      "event_item_id": "441454",
+      "matter_id": "79331",
+      "matter_file": "LU 0127-2026",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22617",
+      "event_item_id": "441455",
+      "matter_id": "79332",
+      "matter_file": "LU 0128-2026",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22617",
+      "event_item_id": "441457",
+      "matter_id": "79292",
+      "matter_file": "LU 0120-2026",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22617",
+      "event_item_id": "441458",
+      "matter_id": "79293",
+      "matter_file": "LU 0121-2026",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22617",
+      "event_item_id": "441459",
+      "matter_id": "79294",
+      "matter_file": "LU 0122-2026",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22617",
+      "event_item_id": "441460",
+      "matter_id": "79295",
+      "matter_file": "LU 0123-2026",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22617",
+      "event_item_id": "441461",
+      "matter_id": "79296",
+      "matter_file": "LU 0124-2026",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22617",
+      "event_item_id": "441462",
+      "matter_id": "79297",
+      "matter_file": "LU 0125-2026",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22617",
+      "event_item_id": "441463",
+      "matter_id": "79298",
+      "matter_file": "LU 0126-2026",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22617",
+      "event_item_id": "441476",
+      "matter_id": "79452",
+      "matter_file": "T2026-2499",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22617",
+      "event_item_id": "441477",
+      "matter_id": "79453",
+      "matter_file": "T2026-2500",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22617",
+      "event_item_id": "441478",
+      "matter_id": "79454",
+      "matter_file": "T2026-2501",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22617",
+      "event_item_id": "441479",
+      "matter_id": "79455",
+      "matter_file": "T2026-2502",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22617",
+      "event_item_id": "441480",
+      "matter_id": "79456",
+      "matter_file": "T2026-2503",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22617",
+      "event_item_id": "441481",
+      "matter_id": "79457",
+      "matter_file": "T2026-2504",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22617",
+      "event_item_id": "441482",
+      "matter_id": "79458",
+      "matter_file": "T2026-2505",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22617",
+      "event_item_id": "441483",
+      "matter_id": "79459",
+      "matter_file": "T2026-2506",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22617",
+      "event_item_id": "441484",
+      "matter_id": "79460",
+      "matter_file": "T2026-2507",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22617",
+      "event_item_id": "441485",
+      "matter_id": "79461",
+      "matter_file": "T2026-2508",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22619",
+      "event_item_id": "441452",
+      "matter_id": "79450",
+      "matter_file": "T2026-2497",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22619",
+      "event_item_id": "441453",
+      "matter_id": "79451",
+      "matter_file": "T2026-2498",
+      "action": null,
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "440798",
+      "matter_id": "79292",
+      "matter_file": "LU 0120-2026",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "440806",
+      "matter_id": "79293",
+      "matter_file": "LU 0121-2026",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "440807",
+      "matter_id": "79294",
+      "matter_file": "LU 0122-2026",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "440808",
+      "matter_id": "79295",
+      "matter_file": "LU 0123-2026",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "440809",
+      "matter_id": "79296",
+      "matter_file": "LU 0124-2026",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "440810",
+      "matter_id": "79297",
+      "matter_file": "LU 0125-2026",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "440811",
+      "matter_id": "79298",
+      "matter_file": "LU 0126-2026",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "440812",
+      "matter_id": "79201",
+      "matter_file": "LU 0115-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "440813",
+      "matter_id": "79202",
+      "matter_file": "LU 0116-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "440814",
+      "matter_id": "79203",
+      "matter_file": "LU 0117-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "440815",
+      "matter_id": "79204",
+      "matter_file": "LU 0118-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "440816",
+      "matter_id": "79205",
+      "matter_file": "LU 0119-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "441061",
+      "matter_id": "79298",
+      "matter_file": "LU 0126-2026",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "441062",
+      "matter_id": "79297",
+      "matter_file": "LU 0125-2026",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "441063",
+      "matter_id": "79296",
+      "matter_file": "LU 0124-2026",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "441064",
+      "matter_id": "79295",
+      "matter_file": "LU 0123-2026",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "441065",
+      "matter_id": "79294",
+      "matter_file": "LU 0122-2026",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "441066",
+      "matter_id": "79293",
+      "matter_file": "LU 0121-2026",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "441067",
+      "matter_id": "79292",
+      "matter_file": "LU 0120-2026",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "441068",
+      "matter_id": "79203",
+      "matter_file": "LU 0117-2026",
+      "action": "Approved by Subcommittee",
+      "roll_call_rows": 9,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 7
+        },
+        {
+          "vote_value": "Bereavement",
+          "rows": 1
+        },
+        {
+          "vote_value": "Medical",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "441069",
+      "matter_id": "79205",
+      "matter_file": "LU 0119-2026",
+      "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+      "roll_call_rows": 9,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 7
+        },
+        {
+          "vote_value": "Bereavement",
+          "rows": 1
+        },
+        {
+          "vote_value": "Medical",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "441070",
+      "matter_id": "79204",
+      "matter_file": "LU 0118-2026",
+      "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+      "roll_call_rows": 9,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 7
+        },
+        {
+          "vote_value": "Bereavement",
+          "rows": 1
+        },
+        {
+          "vote_value": "Medical",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "441071",
+      "matter_id": "79201",
+      "matter_file": "LU 0115-2026",
+      "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+      "roll_call_rows": 9,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 7
+        },
+        {
+          "vote_value": "Bereavement",
+          "rows": 1
+        },
+        {
+          "vote_value": "Medical",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22528",
+      "event_item_id": "441072",
+      "matter_id": "79202",
+      "matter_file": "LU 0116-2026",
+      "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+      "roll_call_rows": 9,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 7
+        },
+        {
+          "vote_value": "Bereavement",
+          "rows": 1
+        },
+        {
+          "vote_value": "Medical",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22509",
+      "event_item_id": "440691",
+      "matter_id": "79200",
+      "matter_file": "LU 0114-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22509",
+      "event_item_id": "440717",
+      "matter_id": "79200",
+      "matter_file": "LU 0114-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22502",
+      "event_item_id": "440575",
+      "matter_id": "79201",
+      "matter_file": "LU 0115-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22502",
+      "event_item_id": "440576",
+      "matter_id": "79203",
+      "matter_file": "LU 0117-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22502",
+      "event_item_id": "440577",
+      "matter_id": "79202",
+      "matter_file": "LU 0116-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22502",
+      "event_item_id": "440579",
+      "matter_id": "79204",
+      "matter_file": "LU 0118-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22502",
+      "event_item_id": "440580",
+      "matter_id": "79205",
+      "matter_file": "LU 0119-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22502",
+      "event_item_id": "440697",
+      "matter_id": "79205",
+      "matter_file": "LU 0119-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22502",
+      "event_item_id": "440698",
+      "matter_id": "79204",
+      "matter_file": "LU 0118-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22502",
+      "event_item_id": "440699",
+      "matter_id": "79203",
+      "matter_file": "LU 0117-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22502",
+      "event_item_id": "440700",
+      "matter_id": "79202",
+      "matter_file": "LU 0116-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22502",
+      "event_item_id": "440701",
+      "matter_id": "79201",
+      "matter_file": "LU 0115-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22526",
+      "event_item_id": "440244",
+      "matter_id": "79193",
+      "matter_file": "LU 0112-2026",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22526",
+      "event_item_id": "440245",
+      "matter_id": "79194",
+      "matter_file": "LU 0113-2026",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22526",
+      "event_item_id": "440246",
+      "matter_id": "79163",
+      "matter_file": "LU 0110-2026",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22526",
+      "event_item_id": "440247",
+      "matter_id": "79164",
+      "matter_file": "LU 0111-2026",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22526",
+      "event_item_id": "440248",
+      "matter_id": "79062",
+      "matter_file": "LU 0091-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22526",
+      "event_item_id": "440249",
+      "matter_id": "79063",
+      "matter_file": "LU 0092-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22526",
+      "event_item_id": "440250",
+      "matter_id": "79064",
+      "matter_file": "LU 0093-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22526",
+      "event_item_id": "440494",
+      "matter_id": "79062",
+      "matter_file": "LU 0091-2026",
+      "action": "Approved by Subcommittee",
+      "roll_call_rows": 7,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 6
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22526",
+      "event_item_id": "440495",
+      "matter_id": "79063",
+      "matter_file": "LU 0092-2026",
+      "action": "Approved by Subcommittee",
+      "roll_call_rows": 7,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 6
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22526",
+      "event_item_id": "440496",
+      "matter_id": "79064",
+      "matter_file": "LU 0093-2026",
+      "action": "Approved by Subcommittee",
+      "roll_call_rows": 7,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 6
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22526",
+      "event_item_id": "440497",
+      "matter_id": "79163",
+      "matter_file": "LU 0110-2026",
+      "action": "P-C Item Approved by Subcommittee with Companion Resolution",
+      "roll_call_rows": 7,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 6
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22526",
+      "event_item_id": "440498",
+      "matter_id": "79164",
+      "matter_file": "LU 0111-2026",
+      "action": "P-C Item Approved by Subcommittee with Companion Resolution",
+      "roll_call_rows": 7,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 6
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22526",
+      "event_item_id": "440499",
+      "matter_id": "79193",
+      "matter_file": "LU 0112-2026",
+      "action": "P-C Item Approved by Subcommittee with Companion Resolution",
+      "roll_call_rows": 7,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 6
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22526",
+      "event_item_id": "440500",
+      "matter_id": "79194",
+      "matter_file": "LU 0113-2026",
+      "action": "P-C Item Approved by Subcommittee with Companion Resolution",
+      "roll_call_rows": 7,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 6
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22567",
+      "event_item_id": "440187",
+      "matter_id": "79062",
+      "matter_file": "LU 0091-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22567",
+      "event_item_id": "440188",
+      "matter_id": "79063",
+      "matter_file": "LU 0092-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22567",
+      "event_item_id": "440189",
+      "matter_id": "79064",
+      "matter_file": "LU 0093-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22567",
+      "event_item_id": "440192",
+      "matter_id": "79163",
+      "matter_file": "LU 0110-2026",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22567",
+      "event_item_id": "440193",
+      "matter_id": "79164",
+      "matter_file": "LU 0111-2026",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22567",
+      "event_item_id": "440237",
+      "matter_id": "79062",
+      "matter_file": "LU 0091-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22567",
+      "event_item_id": "440238",
+      "matter_id": "79063",
+      "matter_file": "LU 0092-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22567",
+      "event_item_id": "440239",
+      "matter_id": "79064",
+      "matter_file": "LU 0093-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22567",
+      "event_item_id": "440240",
+      "matter_id": "79163",
+      "matter_file": "LU 0110-2026",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22567",
+      "event_item_id": "440241",
+      "matter_id": "79164",
+      "matter_file": "LU 0111-2026",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22566",
+      "event_item_id": "439845",
+      "matter_id": "79109",
+      "matter_file": "LU 0100-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22566",
+      "event_item_id": "439846",
+      "matter_id": "79110",
+      "matter_file": "LU 0101-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22566",
+      "event_item_id": "439847",
+      "matter_id": "79111",
+      "matter_file": "LU 0102-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22566",
+      "event_item_id": "439848",
+      "matter_id": "79112",
+      "matter_file": "LU 0103-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22566",
+      "event_item_id": "439849",
+      "matter_id": "79113",
+      "matter_file": "LU 0104-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22566",
+      "event_item_id": "439850",
+      "matter_id": "79114",
+      "matter_file": "LU 0105-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22566",
+      "event_item_id": "439851",
+      "matter_id": "79115",
+      "matter_file": "LU 0106-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22566",
+      "event_item_id": "439852",
+      "matter_id": "79116",
+      "matter_file": "LU 0107-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22566",
+      "event_item_id": "439853",
+      "matter_id": "79117",
+      "matter_file": "LU 0108-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22566",
+      "event_item_id": "439854",
+      "matter_id": "79118",
+      "matter_file": "LU 0109-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22566",
+      "event_item_id": "440177",
+      "matter_id": "79118",
+      "matter_file": "LU 0109-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22566",
+      "event_item_id": "440178",
+      "matter_id": "79117",
+      "matter_file": "LU 0108-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22566",
+      "event_item_id": "440179",
+      "matter_id": "79116",
+      "matter_file": "LU 0107-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22566",
+      "event_item_id": "440180",
+      "matter_id": "79115",
+      "matter_file": "LU 0106-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22566",
+      "event_item_id": "440181",
+      "matter_id": "79114",
+      "matter_file": "LU 0105-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22566",
+      "event_item_id": "440182",
+      "matter_id": "79113",
+      "matter_file": "LU 0104-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22566",
+      "event_item_id": "440183",
+      "matter_id": "79112",
+      "matter_file": "LU 0103-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22566",
+      "event_item_id": "440184",
+      "matter_id": "79111",
+      "matter_file": "LU 0102-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22566",
+      "event_item_id": "440185",
+      "matter_id": "79110",
+      "matter_file": "LU 0101-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22566",
+      "event_item_id": "440186",
+      "matter_id": "79109",
+      "matter_file": "LU 0100-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22437",
+      "event_item_id": "439276",
+      "matter_id": "79065",
+      "matter_file": "LU 0094-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22437",
+      "event_item_id": "439277",
+      "matter_id": "79066",
+      "matter_file": "LU 0095-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22437",
+      "event_item_id": "439278",
+      "matter_id": "79067",
+      "matter_file": "LU 0096-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22437",
+      "event_item_id": "439279",
+      "matter_id": "79068",
+      "matter_file": "LU 0097-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22437",
+      "event_item_id": "439280",
+      "matter_id": "79069",
+      "matter_file": "LU 0098-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22437",
+      "event_item_id": "439281",
+      "matter_id": "79070",
+      "matter_file": "LU 0099-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22437",
+      "event_item_id": "439396",
+      "matter_id": "79065",
+      "matter_file": "LU 0094-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22437",
+      "event_item_id": "439397",
+      "matter_id": "79070",
+      "matter_file": "LU 0099-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22437",
+      "event_item_id": "439398",
+      "matter_id": "79069",
+      "matter_file": "LU 0098-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22437",
+      "event_item_id": "439399",
+      "matter_id": "79068",
+      "matter_file": "LU 0097-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22437",
+      "event_item_id": "439400",
+      "matter_id": "79067",
+      "matter_file": "LU 0096-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22437",
+      "event_item_id": "439401",
+      "matter_id": "79066",
+      "matter_file": "LU 0095-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438508",
+      "matter_id": "78872",
+      "matter_file": "LU 0067-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438509",
+      "matter_id": "78873",
+      "matter_file": "LU 0068-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438510",
+      "matter_id": "78874",
+      "matter_file": "LU 0069-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438511",
+      "matter_id": "78875",
+      "matter_file": "LU 0070-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438512",
+      "matter_id": "78876",
+      "matter_file": "LU 0071-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438513",
+      "matter_id": "78877",
+      "matter_file": "LU 0072-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438514",
+      "matter_id": "78878",
+      "matter_file": "LU 0073-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438515",
+      "matter_id": "78879",
+      "matter_file": "LU 0074-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438516",
+      "matter_id": "78880",
+      "matter_file": "LU 0075-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438517",
+      "matter_id": "78881",
+      "matter_file": "LU 0076-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438518",
+      "matter_id": "78882",
+      "matter_file": "LU 0077-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438600",
+      "matter_id": "78882",
+      "matter_file": "LU 0077-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438601",
+      "matter_id": "78881",
+      "matter_file": "LU 0076-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438602",
+      "matter_id": "78880",
+      "matter_file": "LU 0075-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438603",
+      "matter_id": "78879",
+      "matter_file": "LU 0074-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438604",
+      "matter_id": "78878",
+      "matter_file": "LU 0073-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438605",
+      "matter_id": "78877",
+      "matter_file": "LU 0072-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438606",
+      "matter_id": "78876",
+      "matter_file": "LU 0071-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438607",
+      "matter_id": "78875",
+      "matter_file": "LU 0070-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438608",
+      "matter_id": "78874",
+      "matter_file": "LU 0069-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438609",
+      "matter_id": "78873",
+      "matter_file": "LU 0068-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22390",
+      "event_item_id": "438610",
+      "matter_id": "78872",
+      "matter_file": "LU 0067-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22375",
+      "event_item_id": "438171",
+      "matter_id": "78605",
+      "matter_file": "LU 0056-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22375",
+      "event_item_id": "438172",
+      "matter_id": "78606",
+      "matter_file": "LU 0057-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22375",
+      "event_item_id": "438173",
+      "matter_id": "78682",
+      "matter_file": "LU 0058-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22375",
+      "event_item_id": "438174",
+      "matter_id": "78760",
+      "matter_file": "LU 0066-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22375",
+      "event_item_id": "438310",
+      "matter_id": "78605",
+      "matter_file": "LU 0056-2026",
+      "action": "Approved by Subcommittee",
+      "roll_call_rows": 9,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 8
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22375",
+      "event_item_id": "438311",
+      "matter_id": "78606",
+      "matter_file": "LU 0057-2026",
+      "action": "Approved by Subcommittee",
+      "roll_call_rows": 9,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 8
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22375",
+      "event_item_id": "438312",
+      "matter_id": "78682",
+      "matter_file": "LU 0058-2026",
+      "action": "Approved by Subcommittee",
+      "roll_call_rows": 9,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 8
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22375",
+      "event_item_id": "438313",
+      "matter_id": "78760",
+      "matter_file": "LU 0066-2026",
+      "action": "Approved by Subcommittee with Modifications",
+      "roll_call_rows": 9,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 8
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22396",
+      "event_item_id": "437839",
+      "matter_id": "78758",
+      "matter_file": "LU 0064-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22396",
+      "event_item_id": "437840",
+      "matter_id": "78759",
+      "matter_file": "LU 0065-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22396",
+      "event_item_id": "438053",
+      "matter_id": "78758",
+      "matter_file": "LU 0064-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22396",
+      "event_item_id": "438054",
+      "matter_id": "78759",
+      "matter_file": "LU 0065-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22342",
+      "event_item_id": "437195",
+      "matter_id": "78682",
+      "matter_file": "LU 0058-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22342",
+      "event_item_id": "437196",
+      "matter_id": "78606",
+      "matter_file": "LU 0057-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22342",
+      "event_item_id": "437197",
+      "matter_id": "78605",
+      "matter_file": "LU 0056-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22342",
+      "event_item_id": "437292",
+      "matter_id": "78605",
+      "matter_file": "LU 0056-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22342",
+      "event_item_id": "437293",
+      "matter_id": "78606",
+      "matter_file": "LU 0057-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22342",
+      "event_item_id": "437294",
+      "matter_id": "78682",
+      "matter_file": "LU 0058-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22365",
+      "event_item_id": "436792",
+      "matter_id": "78600",
+      "matter_file": "LU 0051-2026",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22365",
+      "event_item_id": "436793",
+      "matter_id": "78601",
+      "matter_file": "LU 0052-2026",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22365",
+      "event_item_id": "436794",
+      "matter_id": "78602",
+      "matter_file": "LU 0053-2026",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22365",
+      "event_item_id": "436795",
+      "matter_id": "78603",
+      "matter_file": "LU 0054-2026",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22365",
+      "event_item_id": "436796",
+      "matter_id": "78604",
+      "matter_file": "LU 0055-2026",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22365",
+      "event_item_id": "436799",
+      "matter_id": "78537",
+      "matter_file": "LU 0049-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22365",
+      "event_item_id": "436800",
+      "matter_id": "78538",
+      "matter_file": "LU 0050-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22365",
+      "event_item_id": "436801",
+      "matter_id": "78409",
+      "matter_file": "LU 0045-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22365",
+      "event_item_id": "436802",
+      "matter_id": "78411",
+      "matter_file": "LU 0046-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22365",
+      "event_item_id": "437043",
+      "matter_id": "78604",
+      "matter_file": "LU 0055-2026",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22365",
+      "event_item_id": "437044",
+      "matter_id": "78603",
+      "matter_file": "LU 0054-2026",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22365",
+      "event_item_id": "437045",
+      "matter_id": "78602",
+      "matter_file": "LU 0053-2026",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22365",
+      "event_item_id": "437046",
+      "matter_id": "78601",
+      "matter_file": "LU 0052-2026",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22365",
+      "event_item_id": "437047",
+      "matter_id": "78600",
+      "matter_file": "LU 0051-2026",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22365",
+      "event_item_id": "437048",
+      "matter_id": "78409",
+      "matter_file": "LU 0045-2026",
+      "action": "Approved by Subcommittee",
+      "roll_call_rows": 9,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 8
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22365",
+      "event_item_id": "437049",
+      "matter_id": "78411",
+      "matter_file": "LU 0046-2026",
+      "action": "Approved by Subcommittee",
+      "roll_call_rows": 9,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 8
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22365",
+      "event_item_id": "437050",
+      "matter_id": "78537",
+      "matter_file": "LU 0049-2026",
+      "action": "Approved by Subcommittee",
+      "roll_call_rows": 9,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 8
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22365",
+      "event_item_id": "437051",
+      "matter_id": "78538",
+      "matter_file": "LU 0050-2026",
+      "action": "Approved by Subcommittee",
+      "roll_call_rows": 9,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 8
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22300",
+      "event_item_id": "436109",
+      "matter_id": "78409",
+      "matter_file": "LU 0045-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22300",
+      "event_item_id": "436110",
+      "matter_id": "78411",
+      "matter_file": "LU 0046-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22300",
+      "event_item_id": "436111",
+      "matter_id": "78414",
+      "matter_file": "LU 0047-2026",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22300",
+      "event_item_id": "436231",
+      "matter_id": "78409",
+      "matter_file": "LU 0045-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22300",
+      "event_item_id": "436232",
+      "matter_id": "78411",
+      "matter_file": "LU 0046-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22300",
+      "event_item_id": "436233",
+      "matter_id": "78414",
+      "matter_file": "LU 0047-2026",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22299",
+      "event_item_id": "436108",
+      "matter_id": "78475",
+      "matter_file": "LU 0048-2026",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22299",
+      "event_item_id": "436236",
+      "matter_id": "78475",
+      "matter_file": "LU 0048-2026",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21642",
+      "event_item_id": "422343",
+      "matter_id": "76124",
+      "matter_file": "LU 0320-2025",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21642",
+      "event_item_id": "422344",
+      "matter_id": "76025",
+      "matter_file": "LU 0313-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21642",
+      "event_item_id": "422345",
+      "matter_id": "76026",
+      "matter_file": "LU 0314-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21642",
+      "event_item_id": "422346",
+      "matter_id": "76027",
+      "matter_file": "LU 0315-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21642",
+      "event_item_id": "422347",
+      "matter_id": "76028",
+      "matter_file": "LU 0316-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21642",
+      "event_item_id": "422386",
+      "matter_id": "76025",
+      "matter_file": "LU 0313-2025",
+      "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+      "roll_call_rows": 7,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 5
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        },
+        {
+          "vote_value": "Bereavement",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "21642",
+      "event_item_id": "422387",
+      "matter_id": "76026",
+      "matter_file": "LU 0314-2025",
+      "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+      "roll_call_rows": 7,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 5
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        },
+        {
+          "vote_value": "Bereavement",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "21642",
+      "event_item_id": "422388",
+      "matter_id": "76027",
+      "matter_file": "LU 0315-2025",
+      "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+      "roll_call_rows": 7,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 5
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        },
+        {
+          "vote_value": "Bereavement",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "21642",
+      "event_item_id": "422389",
+      "matter_id": "76028",
+      "matter_file": "LU 0316-2025",
+      "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+      "roll_call_rows": 7,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 5
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        },
+        {
+          "vote_value": "Bereavement",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "21642",
+      "event_item_id": "422390",
+      "matter_id": "76124",
+      "matter_file": "LU 0320-2025",
+      "action": "P-C Item Approved by Subcommittee with Companion Resolution",
+      "roll_call_rows": 7,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 5
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        },
+        {
+          "vote_value": "Bereavement",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "21770",
+      "event_item_id": "423628",
+      "matter_id": "76290",
+      "matter_file": "LU 0343-2025",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21770",
+      "event_item_id": "423630",
+      "matter_id": "76293",
+      "matter_file": "LU 0344-2025",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21770",
+      "event_item_id": "423631",
+      "matter_id": "76291",
+      "matter_file": "LU 0345-2025",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21770",
+      "event_item_id": "423632",
+      "matter_id": "76292",
+      "matter_file": "LU 0346-2025",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21770",
+      "event_item_id": "423679",
+      "matter_id": "76290",
+      "matter_file": "LU 0343-2025",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21770",
+      "event_item_id": "423680",
+      "matter_id": "76293",
+      "matter_file": "LU 0344-2025",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21770",
+      "event_item_id": "423681",
+      "matter_id": "76291",
+      "matter_file": "LU 0345-2025",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21770",
+      "event_item_id": "423682",
+      "matter_id": "76292",
+      "matter_file": "LU 0346-2025",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21785",
+      "event_item_id": "424121",
+      "matter_id": "76352",
+      "matter_file": "LU 0363-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21785",
+      "event_item_id": "424122",
+      "matter_id": "76290",
+      "matter_file": "LU 0343-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21785",
+      "event_item_id": "424123",
+      "matter_id": "76293",
+      "matter_file": "LU 0344-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21785",
+      "event_item_id": "424124",
+      "matter_id": "76291",
+      "matter_file": "LU 0345-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21785",
+      "event_item_id": "424125",
+      "matter_id": "76292",
+      "matter_file": "LU 0346-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21785",
+      "event_item_id": "424555",
+      "matter_id": "76382",
+      "matter_file": "LU 0364-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21785",
+      "event_item_id": "424756",
+      "matter_id": "76290",
+      "matter_file": "LU 0343-2025",
+      "action": "Approved by Subcommittee",
+      "roll_call_rows": 7,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 7
+        }
+      ]
+    },
+    {
+      "event_id": "21785",
+      "event_item_id": "424757",
+      "matter_id": "76293",
+      "matter_file": "LU 0344-2025",
+      "action": "Approved by Subcommittee",
+      "roll_call_rows": 7,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 7
+        }
+      ]
+    },
+    {
+      "event_id": "21785",
+      "event_item_id": "424758",
+      "matter_id": "76291",
+      "matter_file": "LU 0345-2025",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21785",
+      "event_item_id": "424759",
+      "matter_id": "76292",
+      "matter_file": "LU 0346-2025",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21785",
+      "event_item_id": "424760",
+      "matter_id": "76352",
+      "matter_file": "LU 0363-2025",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "21785",
+      "event_item_id": "424761",
+      "matter_id": "76382",
+      "matter_file": "LU 0364-2025",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22018",
+      "event_item_id": "427113",
+      "matter_id": "76769",
+      "matter_file": "LU 0434-2025",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22018",
+      "event_item_id": "427115",
+      "matter_id": "76770",
+      "matter_file": "LU 0435-2025",
+      "action": "Hearing on P-C Item by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22018",
+      "event_item_id": "427587",
+      "matter_id": "76769",
+      "matter_file": "LU 0434-2025",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22018",
+      "event_item_id": "427588",
+      "matter_id": "76770",
+      "matter_file": "LU 0435-2025",
+      "action": "P-C Item Laid Over by Comm",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22042",
+      "event_item_id": "428138",
+      "matter_id": "76808",
+      "matter_file": "LU 0436-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22042",
+      "event_item_id": "428139",
+      "matter_id": "76809",
+      "matter_file": "LU 0437-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22042",
+      "event_item_id": "428140",
+      "matter_id": "76810",
+      "matter_file": "LU 0438-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22042",
+      "event_item_id": "428141",
+      "matter_id": "76811",
+      "matter_file": "LU 0439-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22042",
+      "event_item_id": "428142",
+      "matter_id": "76621",
+      "matter_file": "LU 0426-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22042",
+      "event_item_id": "428143",
+      "matter_id": "76622",
+      "matter_file": "LU 0427-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22042",
+      "event_item_id": "428144",
+      "matter_id": "76812",
+      "matter_file": "Res 1157-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22042",
+      "event_item_id": "428279",
+      "matter_id": "76621",
+      "matter_file": "LU 0426-2025",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22042",
+      "event_item_id": "428280",
+      "matter_id": "76622",
+      "matter_file": "LU 0427-2025",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22042",
+      "event_item_id": "428281",
+      "matter_id": "76808",
+      "matter_file": "LU 0436-2025",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22042",
+      "event_item_id": "428282",
+      "matter_id": "76809",
+      "matter_file": "LU 0437-2025",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22042",
+      "event_item_id": "428283",
+      "matter_id": "76810",
+      "matter_file": "LU 0438-2025",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22042",
+      "event_item_id": "428284",
+      "matter_id": "76811",
+      "matter_file": "LU 0439-2025",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22042",
+      "event_item_id": "428285",
+      "matter_id": "76812",
+      "matter_file": "Res 1157-2025",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22063",
+      "event_item_id": "428661",
+      "matter_id": "76769",
+      "matter_file": "LU 0434-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22063",
+      "event_item_id": "428662",
+      "matter_id": "76770",
+      "matter_file": "LU 0435-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22063",
+      "event_item_id": "428663",
+      "matter_id": "76808",
+      "matter_file": "LU 0436-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22063",
+      "event_item_id": "428664",
+      "matter_id": "76809",
+      "matter_file": "LU 0437-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22063",
+      "event_item_id": "428665",
+      "matter_id": "76810",
+      "matter_file": "LU 0438-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22063",
+      "event_item_id": "428666",
+      "matter_id": "76811",
+      "matter_file": "LU 0439-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22063",
+      "event_item_id": "428667",
+      "matter_id": "76666",
+      "matter_file": "Res 1109-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22063",
+      "event_item_id": "428668",
+      "matter_id": "76812",
+      "matter_file": "Res 1157-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22063",
+      "event_item_id": "428679",
+      "matter_id": "76845",
+      "matter_file": "LU 0447-2025",
+      "action": "Hearing Held by Committee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22063",
+      "event_item_id": "428728",
+      "matter_id": "76845",
+      "matter_file": "LU 0447-2025",
+      "action": "Filed by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22063",
+      "event_item_id": "428729",
+      "matter_id": "76812",
+      "matter_file": "Res 1157-2025",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22063",
+      "event_item_id": "428730",
+      "matter_id": "76666",
+      "matter_file": "Res 1109-2025",
+      "action": "Laid Over by Subcommittee",
+      "roll_call_rows": 0,
+      "vote_state": "no_roll_call_recorded",
+      "published_vote_values": []
+    },
+    {
+      "event_id": "22063",
+      "event_item_id": "428731",
+      "matter_id": "76811",
+      "matter_file": "LU 0439-2025",
+      "action": "Approved by Subcommittee",
+      "roll_call_rows": 7,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 6
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22063",
+      "event_item_id": "428732",
+      "matter_id": "76810",
+      "matter_file": "LU 0438-2025",
+      "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+      "roll_call_rows": 7,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 6
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22063",
+      "event_item_id": "428733",
+      "matter_id": "76809",
+      "matter_file": "LU 0437-2025",
+      "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+      "roll_call_rows": 7,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 6
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22063",
+      "event_item_id": "428734",
+      "matter_id": "76808",
+      "matter_file": "LU 0436-2025",
+      "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+      "roll_call_rows": 7,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 6
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22063",
+      "event_item_id": "428735",
+      "matter_id": "76770",
+      "matter_file": "LU 0435-2025",
+      "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+      "roll_call_rows": 7,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 6
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "event_id": "22063",
+      "event_item_id": "428736",
+      "matter_id": "76769",
+      "matter_file": "LU 0434-2025",
+      "action": "Approved by Subcommittee with Modifications and Referred to CPC",
+      "roll_call_rows": 7,
+      "vote_state": "roll_call_recorded",
+      "published_vote_values": [
+        {
+          "vote_value": "Affirmative",
+          "rows": 6
+        },
+        {
+          "vote_value": "Absent",
+          "rows": 1
+        }
+      ]
+    }
+  ],
+  "product_surfaces": [
+    "worker/src/lib/meeting_outcomes.mjs#indexVoteSummaries",
+    "entity_resolution/officials/index.mjs#voteBucket",
+    "site/meeting_outcomes_static.mjs#compactVotes",
+    "tools/build_legislative_matter_documents.mjs"
+  ]
+}

@@ -37,6 +37,36 @@ const RECEIPT_PATH = (() => {
   return path.join(receiptDir, candidates.at(-1) || "official_person_vote_retention_2026-08-02.json");
 })();
 const receipt = JSON.parse(readFileSync(RECEIPT_PATH, "utf8"));
+// Every event any dated receipt in the directory names, so provenance is not
+// tied to which single receipt the selector above happened to pick.
+const RECEIPTED_EVENT_IDS = (() => {
+  const receiptDir = path.resolve(
+    new URL("../site/data/legistar_sources/verification_receipts/", import.meta.url).pathname,
+  );
+  const ids = new Set();
+  for (const name of readdirSync(receiptDir)) {
+    if (!name.endsWith(".json")) continue;
+    let doc = null;
+    try {
+      doc = JSON.parse(readFileSync(path.join(receiptDir, name), "utf8"));
+    } catch {
+      continue;
+    }
+    for (const row of Array.isArray(doc.by_event) ? doc.by_event : []) {
+      const id = String(row?.event_id || "").trim();
+      if (id) ids.add(id);
+    }
+    for (const row of Array.isArray(doc.event_items) ? doc.event_items : []) {
+      const id = String(row?.event_id || "").trim();
+      if (id) ids.add(id);
+    }
+    for (const row of Array.isArray(doc.sample_inventory) ? doc.sample_inventory : []) {
+      const id = String(row?.event_id || "").trim();
+      if (id) ids.add(id);
+    }
+  }
+  return ids;
+})();
 const RECEIPT_AUDIT = receipt.after_live_audit
   || receipt[Object.keys(receipt).find((key) => /^after_live_audit_\d{4}_\d{2}_\d{2}$/.test(key))] || {};
 const RETENTION_RATE = Number.isFinite(Number(RECEIPT_AUDIT.person_vote_retention_rate))
@@ -81,15 +111,16 @@ test("official coverage measures the eligible committed cohort and gate outcome 
     new Set((people.source?.eligible_event_ids || []).map((id) => String(id))).size,
   );
   assert.equal(coverage.retained_event_count, RETAINED_EVENT_IDS);
-  // Every retained event is still traceable to a dated live retention receipt,
-  // so the cohort is measured rather than asserted by the artifact alone.
-  const receiptEvents = new Set(
-    (Array.isArray(receipt.by_event) ? receipt.by_event : [])
-      .map((row) => String(row?.event_id || "").trim())
-      .filter(Boolean),
-  );
+  // Every retained event is still traceable to a dated receipt, so the cohort is
+  // measured rather than asserted by the artifact alone. A retention receipt
+  // records the sample it audited; the event-identity receipt records every
+  // event whose item-level roll calls were reacquired, which is what the
+  // published population is now built from.
   for (const eventId of RETAINED_EVENT_ID_SET) {
-    assert.ok(receiptEvents.has(eventId), `event ${eventId} is named in a dated retention receipt`);
+    assert.ok(
+      RECEIPTED_EVENT_IDS.has(eventId),
+      `event ${eventId} is named in a dated retention or vote-identity receipt`,
+    );
   }
   assert.equal(coverage.event_coverage_rate, Number.isFinite(coverage.retained_event_count)
     && Number.isFinite(coverage.eligible_event_count)
