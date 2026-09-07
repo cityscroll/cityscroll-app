@@ -1,16 +1,20 @@
 import assert from "node:assert/strict";
 import { generateKeyPairSync, createVerify } from "node:crypto";
-import { chmod, writeFile } from "node:fs/promises";
+import { chmod, readdir, writeFile } from "node:fs/promises";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import test from "node:test";
 import {
   APP_MINT_FAILURES,
   GITHUB_APP_FILE_VARS,
+  REQUIRED_INSTALLATION_PERMISSIONS,
   TOKEN_REFRESH_MARGIN_MS,
   appCredentialFailureLine,
   buildAppJwt,
   createInstallationTokenSource,
+  grantIsExactlyRequired,
+  permissionDiff,
+  reachesExactlyThisRepository,
   resolveGitHubAppCredential,
 } from "../tools/github_app_identity.mjs";
 import {
@@ -18,7 +22,7 @@ import {
   publishHeartbeat,
   resolveDeliveryIdentity,
 } from "../tools/external_schedule_runner.mjs";
-import { createGitHubClient } from "../tools/external_schedule_outbox.mjs";
+import { createGitHubClient, persistScheduleResult, replayOutbox } from "../tools/external_schedule_outbox.mjs";
 import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 // One key pair for the whole file: generating RSA material is the slowest thing
@@ -62,31 +66,53 @@ async function installedApp(dir, overrides = {}) {
 }
 
 /**
- * A stubbed exchange. It answers the access-token mint and every repository
- * request, and records what it was asked, so a test can assert which credential
- * actually authorized a call without any of them leaving the process.
+ * A stubbed exchange. It answers the access-token mint, the installation's
+ * repository list, and every repository request, and records what it was asked,
+ * so a test can assert which credential actually authorized a call without any
+ * of them leaving the process.
+ *
+ * The repository list is answered separately from the mint on purpose, because
+ * that is the shape of the real provider: an unscoped mint reports a permission
+ * set and a selection but never a list, so the breadth of an installation is
+ * only knowable from the second request.
  */
-function stubTransport({ mints = [], repoStatus = 200 } = {}) {
+function stubTransport({ mints = [], reach = ["cityscroll/cityscroll-app"], reachTotal = null, reachStatus = 200, repoStatus = 200 } = {}) {
   const calls = [];
   let minted = 0;
   return {
     calls,
     get minted() { return minted; },
+    get reads() { return calls.filter((call) => call.url.includes("/installation/repositories")).length; },
     async fetchImpl(url, options = {}) {
-      calls.push({ url, method: options.method || "GET", authorization: options.headers?.Authorization || null });
+      calls.push({ url, method: options.method || "GET", authorization: options.headers?.Authorization || null, body: options.body ?? null });
       if (url.includes("/access_tokens")) {
         const answer = mints[Math.min(minted, mints.length - 1)];
         minted += 1;
         if (answer.status && !answer.body) return { ok: false, status: answer.status, async json() { return {}; } };
         return { ok: true, status: 201, async json() { return answer.body; } };
       }
+      if (url.includes("/installation/repositories")) {
+        if (reachStatus !== 200) return { ok: false, status: reachStatus, async json() { return {}; } };
+        return {
+          ok: true,
+          status: 200,
+          async json() {
+            return { total_count: reachTotal ?? reach.length, repositories: reach.map((full_name) => ({ full_name })) };
+          },
+        };
+      }
       return { ok: true, status: repoStatus, async json() { return []; } };
     },
   };
 }
 
-function mintBody({ token = "ghs-installation-token", expiresAt = "2026-09-06T12:00:00.000Z", permissions = { issues: "write", metadata: "read" }, selection = "selected", repositories = [{ full_name: "cityscroll/cityscroll-app" }] } = {}) {
-  return { token, expires_at: expiresAt, permissions, repository_selection: selection, repositories };
+/**
+ * A mint response in the shape an unscoped exchange actually returns: a token,
+ * an expiry, the installation's own permissions, and its selection — and no
+ * repository list, which is exactly why one is read separately.
+ */
+function mintBody({ token = "ghs-installation-token", expiresAt = "2026-09-06T12:00:00.000Z", permissions = { issues: "write", metadata: "read" }, selection = "selected" } = {}) {
+  return { token, expires_at: expiresAt, permissions, repository_selection: selection };
 }
 
 test("no GitHub App variable at all is a distinct, quiet case, not a failure", () => {
@@ -212,6 +238,10 @@ test("a minted installation token is held for the cycle and refreshed before it 
     assert.equal(exchanges[0].method, "POST");
     assert.equal(exchanges[0].url, `https://api.example.test/app/installations/${INSTALLATION_ID}/access_tokens`);
     assert.match(exchanges[0].authorization, /^Bearer [\w-]+\.[\w-]+\.[\w-]+$/);
+    // The exchange asks for nothing in particular. A request that narrowed the
+    // token would be answered with the narrowing echoed back, and the scope
+    // assertions below would then be reading the request rather than the grant.
+    assert.equal(exchanges[0].body, null, "the mint must not narrow the token it is asserting about");
 
     // What the cycle may publish about the identity: enough to tell two
     // identities apart, and nothing replayable.
@@ -222,6 +252,8 @@ test("a minted installation token is held for the cycle and refreshed before it 
       installation_id: INSTALLATION_ID,
       permissions: ["issues:write", "metadata:read"],
       repository_selection: "selected",
+      repositories: ["cityscroll/cityscroll-app"],
+      failure: null,
       token_expires_at: "2026-09-06T13:00:00.000Z",
     });
     const published = JSON.stringify(summary);
@@ -232,38 +264,72 @@ test("a minted installation token is held for the cycle and refreshed before it 
   });
 });
 
-test("a token that cannot reach this repository, or cannot write issues, is no credential", async () => {
-  await withTempDir("crol-app-assert", async (dir) => {
+test("the agreed grant is the only one accepted: exactly this repository, exactly these permissions", async () => {
+  await withTempDir("crol-app-exact", async (dir) => {
     const { credential } = resolveGitHubAppCredential({ env: await installedApp(dir) });
+
+    // The grant the site owner agreed to, and the only one that resolves to a
+    // usable identity: one repository, two permissions, at those two levels.
+    const exact = stubTransport({ mints: [{ body: mintBody() }] });
+    const accepted = createInstallationTokenSource({
+      credential, owner: OWNER, repo: REPO, fetchImpl: exact.fetchImpl, now: () => NOW,
+    });
+    assert.equal(await accepted.token(), "ghs-installation-token");
+    assert.equal(accepted.failure, null);
+    assert.deepEqual(accepted.summary().permissions, ["issues:write", "metadata:read"]);
+    assert.deepEqual(accepted.summary().repositories, ["cityscroll/cityscroll-app"]);
+    assert.equal(accepted.summary().repository_selection, "selected");
+    // The list is read back once per mint and not once per request.
+    assert.equal(exact.reads, 1);
+    assert.equal(await accepted.token(), "ghs-installation-token");
+    assert.equal(exact.reads, 1);
+
     const cases = [
+      // Broader than agreed, in each of the ways an installation can be.
+      // A second repository is still a grant nobody agreed to, even though this
+      // repository is in the list and every request would have succeeded.
+      ["repository-scope-too-broad", { mints: [{ body: mintBody() }], reach: ["cityscroll/cityscroll-app", "cityscroll/cityscroll-notes"] }],
+      // Installed on every repository the account owns.
+      ["repository-scope-too-broad", { mints: [{ body: mintBody({ selection: "all" }) }] }],
+      // One page shows one repository and the installation says there are more.
+      ["repository-scope-too-broad", { mints: [{ body: mintBody() }], reachTotal: 2 }],
+      // A permission that was never agreed, at any level.
+      ["permissions-not-exact", { mints: [{ body: mintBody({ permissions: { issues: "write", metadata: "read", contents: "read" } }) }] }],
+      ["permissions-not-exact", { mints: [{ body: mintBody({ permissions: { issues: "write", metadata: "read", administration: "write" } }) }] }],
+      // Narrower than agreed is equally not the agreed grant: an identity
+      // missing metadata:read cannot read its own installation back, so it can
+      // never be shown to be scoped as agreed.
+      ["permissions-not-exact", { mints: [{ body: mintBody({ permissions: { issues: "write" } }) }] }],
+      ["permissions-not-exact", { mints: [{ body: mintBody({ permissions: { issues: "write", metadata: "write" } }) }] }],
+      // Cannot do the job at all, which stays its own class.
+      ["issues-write-missing", { mints: [{ body: mintBody({ permissions: { issues: "read", metadata: "read" } }) }] }],
+      ["issues-write-missing", { mints: [{ body: mintBody({ permissions: { metadata: "read" } }) }] }],
       // Installed somewhere else entirely.
-      ["repository-not-covered", mintBody({ repositories: [{ full_name: "someone-else/other-app" }] })],
-      // Selected, but this repository was never added to the selection.
-      ["repository-not-covered", mintBody({ repositories: [] })],
-      // Reaches the repository, but was never granted the one permission the
-      // issue loop exists to use.
-      ["issues-write-missing", mintBody({ permissions: { issues: "read", metadata: "read" } })],
-      ["issues-write-missing", mintBody({ permissions: { metadata: "read" } })],
+      ["repository-not-covered", { mints: [{ body: mintBody() }], reach: ["someone-else/other-app"] }],
+      ["repository-not-covered", { mints: [{ body: mintBody() }], reach: [] }],
+      // The list itself could not be read, so the scope is unproven — which is
+      // not the same as proven wrong, and is not treated as proven right.
+      ["repository-list-unreadable", { mints: [{ body: mintBody() }], reachStatus: 403 }],
     ];
-    for (const [failure, body] of cases) {
-      const transport = stubTransport({ mints: [{ body }] });
+
+    for (const [failure, options] of cases) {
+      const transport = stubTransport(options);
       const source = createInstallationTokenSource({
         credential, owner: OWNER, repo: REPO, fetchImpl: transport.fetchImpl, now: () => NOW,
       });
-      assert.equal(await source.token(), null);
+      assert.equal(await source.token(), null, `${failure} must resolve to no credential`);
       assert.equal(source.failure, `${failure}:201`);
       assert.ok(APP_MINT_FAILURES[failure], `${failure} must be a published class`);
-      // A rejected assertion is not retried request after request.
+      // The class travels on the summary, so a cycle reports why it has no
+      // identity rather than reporting an identity with nothing in it.
+      assert.equal(source.summary().failure, `${failure}:201`);
+      assert.equal(source.summary().token_expires_at, null);
+      // A rejected grant is not retried request after request.
       assert.equal(await source.token(), null);
       assert.equal(transport.minted, 1);
+      // And nothing was delivered under it: the repository was never touched.
+      assert.equal(transport.calls.some((call) => call.url.includes("/repos/")), false);
     }
-
-    // An installation covering every repository on the account covers this one.
-    const all = stubTransport({ mints: [{ body: mintBody({ selection: "all", repositories: undefined }) }] });
-    const wide = createInstallationTokenSource({
-      credential, owner: OWNER, repo: REPO, fetchImpl: all.fetchImpl, now: () => NOW,
-    });
-    assert.equal(await wide.token(), "ghs-installation-token");
 
     // A refused exchange names the status, so a wrong key reads differently
     // from a wrong installation.
@@ -275,6 +341,50 @@ test("a token that cannot reach this repository, or cannot write issues, is no c
     assert.equal(rejected.failure, "exchange-refused:401");
     assert.equal(rejected.summary().token_expires_at, null);
   });
+});
+
+test("a grant broader than the agreed one takes the cycle offline before anything is replayed", async () => {
+  await withTempDir("crol-app-ensure", async (dir) => {
+    const { credential } = resolveGitHubAppCredential({ env: await installedApp(dir) });
+    const transport = stubTransport({
+      mints: [{ body: mintBody() }],
+      reach: ["cityscroll/cityscroll-app", "cityscroll/somewhere-else"],
+    });
+    const source = createInstallationTokenSource({
+      credential, owner: OWNER, repo: REPO, fetchImpl: transport.fetchImpl, now: () => NOW,
+    });
+    // ensure() is what a cycle calls before it delivers: it proves the identity
+    // and hands back the class, so a too-broad grant is a stated offline reason
+    // rather than an error against whichever intent was replayed first.
+    assert.equal(await source.ensure(), "repository-scope-too-broad:201");
+    assert.equal(source.summary().identity_kind, "app");
+    assert.equal(source.summary().repositories.length, 0);
+    assert.equal(transport.calls.some((call) => call.url.includes("/repos/")), false);
+  });
+});
+
+test("the exact-grant predicates name each way a grant can differ", () => {
+  assert.equal(grantIsExactlyRequired({ issues: "write", metadata: "read" }), true);
+  assert.equal(grantIsExactlyRequired({ metadata: "read", issues: "write" }), true, "key order is not part of a grant");
+  assert.equal(grantIsExactlyRequired(REQUIRED_INSTALLATION_PERMISSIONS), true);
+  assert.equal(grantIsExactlyRequired({ issues: "write", metadata: "read", contents: "read" }), false);
+  assert.equal(grantIsExactlyRequired({ issues: "write" }), false);
+  assert.equal(grantIsExactlyRequired({}), false);
+  assert.equal(grantIsExactlyRequired(null), false);
+
+  assert.deepEqual(permissionDiff({ issues: "write", metadata: "read", contents: "read" }), {
+    extra: ["contents"], missing: [], wrong: [],
+  });
+  assert.deepEqual(permissionDiff({ issues: "write" }), { extra: [], missing: ["metadata"], wrong: [] });
+  assert.deepEqual(permissionDiff({ issues: "read", metadata: "read" }), { extra: [], missing: [], wrong: ["issues"] });
+
+  assert.equal(reachesExactlyThisRepository(["cityscroll/cityscroll-app"], 1, OWNER, REPO), true);
+  // The provider's own spelling is not guaranteed to match the runner's.
+  assert.equal(reachesExactlyThisRepository(["CityScroll/CityScroll-App"], 1, OWNER, REPO), true);
+  assert.equal(reachesExactlyThisRepository(["cityscroll/cityscroll-app", "cityscroll/other"], 2, OWNER, REPO), false);
+  assert.equal(reachesExactlyThisRepository(["cityscroll/cityscroll-app"], 4, OWNER, REPO), false, "the count is the provider's, not the page's");
+  assert.equal(reachesExactlyThisRepository([], 0, OWNER, REPO), false);
+  assert.equal(reachesExactlyThisRepository(["someone-else/other"], 1, OWNER, REPO), false);
 });
 
 test("the App identity is authoritative over the token file for the whole cycle", async () => {
@@ -406,6 +516,142 @@ test("the heartbeat says which identity the cycle used and when its token expire
       assert.equal(offline.outbox_delivery_identity, null);
       assert.equal(offline.outbox_delivery_token_expires_at, null);
       assert.equal(offline.outbox_delivery_reason, "GH_APP_PRIVATE_KEY_FILE:malformed");
+    } finally {
+      if (priorKey == null) delete process.env.CITYSCROLL_ADMIN_KEY; else process.env.CITYSCROLL_ADMIN_KEY = priorKey;
+    }
+  });
+});
+
+/** Every file the cycle left behind, as one flat list of path and text. */
+async function filesUnder(dir) {
+  const found = [];
+  for (const entry of await readdir(dir, { withFileTypes: true, recursive: true })) {
+    if (!entry.isFile()) continue;
+    const path = join(entry.parentPath ?? entry.path, entry.name);
+    found.push({ path, text: await readFile(path, "utf8") });
+  }
+  return found;
+}
+
+test("no surface a cycle produces carries the key, the assertion, or a minted token", async () => {
+  await withTempDir("crol-app-no-leak", async (stateDir) => {
+    // Distinctive fixtures, so an assertion fails on a real leak rather than on
+    // a coincidence, and names which byte escaped.
+    const MINTED_TOKEN = "ghs-fixture-minted-token-must-never-be-published";
+    const SECRETS = [
+      ["the minted installation token", MINTED_TOKEN],
+      ["the App private key", PRIVATE_PEM.toString().trim()],
+      // A reflowed or re-wrapped copy of the key would not match the whole PEM,
+      // so one distinctive interior line of the key material is checked too.
+      ["a line of the App private key", PRIVATE_PEM.toString().trim().split("\n").slice(3, 4)[0]],
+    ];
+
+    const priorKey = process.env.CITYSCROLL_ADMIN_KEY;
+    process.env.CITYSCROLL_ADMIN_KEY = "secret";
+    const logged = [];
+    try {
+      const app = await installedApp(stateDir);
+      // Mints once, then refuses every repository request, so this exercises a
+      // delivery failure under a good credential.
+      const transport = stubTransport({ mints: [{ body: mintBody({ token: MINTED_TOKEN }) }], repoStatus: 500 });
+      transport.fetchImpl = (function wrap(inner) {
+        return async (url, options = {}) => {
+          const response = await inner(url, options);
+          return url.includes("/repos/") ? { ok: false, status: 500, async json() { return {}; } } : response;
+        };
+      })(transport.fetchImpl);
+
+      const identity = resolveDeliveryIdentity({
+        env: app,
+        apiBase: "https://api.example.test",
+        fetchImpl: transport.fetchImpl,
+        now: () => NOW,
+        log: (line) => logged.push(line),
+      });
+      assert.equal(identity.kind, "app");
+
+      // One pending intent, so a failed delivery has something to record
+      // against and the outbox writes a last_error to disk.
+      await persistScheduleResult({
+        stateDir,
+        jobId: "leak-probe",
+        runKey: "2026-09-06T11-00",
+        result: { status: "degraded", observed_at: NOW.toISOString() },
+        issue: { mode: "open", title: "A probe intent", body: "A probe intent body." },
+      });
+      const replay = await replayOutbox({ stateDir, github: identity.github });
+      assert.equal(replay.status, "degraded", "the delivery must actually have failed for this to prove anything");
+      assert.equal(replay.errors.length, 1);
+
+      // The assertion is only knowable after a mint has happened.
+      const exchange = transport.calls.find((call) => call.url.includes("/access_tokens"));
+      const jwt = String(exchange.authorization).replace(/^Bearer /, "");
+      assert.match(jwt, /^[\w-]+\.[\w-]+\.[\w-]+$/);
+      SECRETS.push(["the signed App assertion", jwt]);
+      SECRETS.push(["the assertion signature", jwt.split(".")[2]]);
+
+      const summary = identity.source.summary();
+      const heartbeat = await publishHeartbeat(stateDir, NOW, ["leak-probe"], {
+        runId: RUN_ID,
+        sourceRevision: REVISION,
+        outboxDelivery: "credentialed",
+        outboxDeliveryIdentity: identity.kind,
+        outboxDeliveryTokenExpiresAt: summary.token_expires_at,
+        fetchImpl: async () => ({ ok: false, status: 503 }),
+      });
+
+      // (e) a failed mint, whose error reaches the outbox as an intent's
+      // last_error and reaches an operator as a thrown message.
+      const refused = stubTransport({ mints: [{ status: 401 }] });
+      const brokenIdentity = resolveDeliveryIdentity({
+        env: app,
+        apiBase: "https://api.example.test",
+        fetchImpl: refused.fetchImpl,
+        now: () => NOW,
+        log: (line) => logged.push(line),
+      });
+      const mintError = await brokenIdentity.github.listIssues().then(() => null, (error) => error);
+      assert.ok(mintError, "a failed mint must raise rather than request with no credential");
+      const brokenReplay = await replayOutbox({ stateDir, github: brokenIdentity.github });
+
+      // The five surfaces, each named where it fails.
+      const receipt = JSON.stringify({
+        delivery: { status: "credentialed", reason: null, ...summary },
+        replayBefore: replay,
+        replayAfter: brokenReplay,
+        heartbeat,
+      });
+      const surfaces = [
+        ["(b) a log line the cycle wrote", logged.join("\n")],
+        ["(c) the cycle receipt", receipt],
+        ["(d) a heartbeat field", JSON.stringify(heartbeat)],
+        ["(e) the error message from a failed mint", String(mintError?.stack || mintError)],
+        ["(e) the error message from a failed delivery", replay.errors.join("\n")],
+        ["(e) the error recorded against an intent after a failed mint", brokenReplay.errors.join("\n")],
+        ["the published identity summary", JSON.stringify(summary)],
+      ];
+      // (a) every file the cycle wrote, including the outbox intent's
+      // last_error and the persisted heartbeat.
+      const written = await filesUnder(stateDir);
+      assert.ok(written.some((file) => file.path.includes("outbox")), "the cycle must have written an outbox intent");
+      assert.ok(written.some((file) => file.path.includes("heartbeat")), "the cycle must have written a heartbeat");
+      for (const file of written) {
+        // The three credential files are the credential; they are not a surface
+        // the cycle produced, and asserting against them would be circular.
+        if (Object.values(app).includes(file.path)) continue;
+        surfaces.push([`(a) the file the cycle wrote at ${file.path.slice(stateDir.length + 1)}`, file.text]);
+      }
+
+      for (const [surface, text] of surfaces) {
+        for (const [name, secret] of SECRETS) {
+          assert.ok(secret && secret.length > 8, `${name} is not a usable fixture`);
+          assert.equal(text.includes(secret), false, `${name} appears in ${surface}`);
+        }
+      }
+
+      // The proof is only worth something if these surfaces carry real content.
+      assert.match(logged.join("\n") + receipt, /exchange-refused:401/);
+      assert.ok(written.find((file) => file.path.includes("outbox")).text.includes("last_error"));
     } finally {
       if (priorKey == null) delete process.env.CITYSCROLL_ADMIN_KEY; else process.env.CITYSCROLL_ADMIN_KEY = priorKey;
     }

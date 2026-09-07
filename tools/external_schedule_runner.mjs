@@ -547,7 +547,7 @@ export function resolveDeliveryIdentity({
         kind: null,
         github: null,
         reason: `${app.variable}:${app.failure}`,
-        summary: { identity_kind: "app", app_id: null, installation_id: null, permissions: [], token_expires_at: null },
+        summary: { identity_kind: "app", app_id: null, installation_id: null, permissions: [], repository_selection: null, repositories: [], failure: null, token_expires_at: null },
         source: null,
       };
     }
@@ -577,7 +577,7 @@ export function resolveDeliveryIdentity({
     // A file token carries no expiry the cycle can read and no installation to
     // name, so the summary states the kind and leaves the rest empty rather
     // than inventing a field shape the identity cannot fill.
-    summary: { identity_kind: github ? "file" : null, app_id: null, installation_id: null, permissions: [], token_expires_at: null },
+    summary: { identity_kind: github ? "file" : null, app_id: null, installation_id: null, permissions: [], repository_selection: null, repositories: [], failure: null, token_expires_at: null },
     source: null,
   };
 }
@@ -865,8 +865,15 @@ async function main() {
   // variable and the failure class and nothing else, so it can be pasted into
   // a ticket without carrying the credential or the host's layout with it.
   const delivery = resolveDeliveryIdentity();
-  const github = delivery.github;
-  const deliveryReason = delivery.reason;
+  // An App identity is proven before the cycle writes under it. The scope
+  // assertions live at the mint, so this first exchange is where an
+  // installation granted more than the agreed one repository, or more than the
+  // agreed two permissions, resolves to no credential — by class, before a
+  // single intent is replayed, so nothing is delivered under an authority
+  // nobody agreed to and no attempt counter moves because of it.
+  const identityFailure = delivery.source ? await delivery.source.ensure() : null;
+  const github = identityFailure ? null : delivery.github;
+  const deliveryReason = delivery.reason || identityFailure;
   // A cycle that could not read its configured file replays nothing and touches
   // no attempt counter, so every pending intent stays exactly as retryable as
   // it was before the credential broke.

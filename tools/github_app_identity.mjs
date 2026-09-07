@@ -155,21 +155,49 @@ export function buildAppJwt({
 }
 
 /**
- * Whether the installation this token belongs to actually covers the repository
- * the cycle writes to. An App installed somewhere else, or on a selection that
- * no longer includes this repository, is treated as no credential: a token that
- * cannot reach the issue loop is not an identity for it.
+ * The grant this identity is allowed to hold, and nothing else.
+ *
+ * The site owner's decision is an exact scope rather than a sufficient one: the
+ * installation reaches this repository and no other, and carries these two
+ * permissions at these two levels and no others. Stating it as a contract here
+ * lets the runner assert the same thing the intake ceremony asserted when the
+ * credential was installed, so a grant widened afterwards is caught by the
+ * process that uses it rather than only by the process that created it.
  */
-export function tokenCoversRepository(payload, owner, repo) {
-  if (payload?.repository_selection === "all") return true;
-  const list = Array.isArray(payload?.repositories) ? payload.repositories : [];
-  const target = `${owner}/${repo}`.toLowerCase();
-  return list.some((entry) => String(entry?.full_name || "").toLowerCase() === target);
+export const REQUIRED_INSTALLATION_PERMISSIONS = Object.freeze({ issues: "write", metadata: "read" });
+
+/**
+ * How a reported grant differs from the contract, in three separate senses: a
+ * permission that was never agreed, one that was agreed and is absent, and one
+ * held at the wrong level. They are kept apart because they are different
+ * operator actions — remove a permission, accept a pending one, change a level.
+ */
+export function permissionDiff(granted, expected = REQUIRED_INSTALLATION_PERMISSIONS) {
+  const held = granted && typeof granted === "object" ? granted : {};
+  return {
+    extra: Object.keys(held).filter((name) => !(name in expected)).sort(),
+    missing: Object.keys(expected).filter((name) => !(name in held)).sort(),
+    wrong: Object.keys(expected).filter((name) => name in held && held[name] !== expected[name]).sort(),
+  };
 }
 
-/** The one permission the issue loop cannot do without. */
-export function tokenGrantsIssueWrite(payload) {
-  return payload?.permissions?.issues === "write";
+/** Whether a reported grant is the contract exactly, in every one of those senses. */
+export function grantIsExactlyRequired(granted) {
+  const diff = permissionDiff(granted);
+  return !diff.extra.length && !diff.missing.length && !diff.wrong.length;
+}
+
+/**
+ * Whether an installation's repository list is exactly this repository.
+ *
+ * `total` is GitHub's own count rather than the length of the page in hand: an
+ * installation with more repositories than one page holds must read as broader
+ * than agreed, not as whatever the first page happened to show.
+ */
+export function reachesExactlyThisRepository(names, total, owner, repo) {
+  const target = `${owner}/${repo}`.toLowerCase();
+  const list = [...new Set(names.map((name) => String(name || "").toLowerCase()))];
+  return list.length === 1 && list[0] === target && total === 1;
 }
 
 /**
@@ -179,8 +207,11 @@ export function tokenGrantsIssueWrite(payload) {
 export const APP_MINT_FAILURES = {
   "exchange-refused": "the installation token exchange was refused",
   "exchange-unreadable": "the installation token exchange returned nothing this cycle could read",
-  "repository-not-covered": "the installation does not cover this repository",
-  "issues-write-missing": "the installation token does not carry issues:write",
+  "repository-list-unreadable": "the installation's repository list could not be read back",
+  "repository-not-covered": "the installation does not reach this repository",
+  "repository-scope-too-broad": "the installation reaches more than this repository",
+  "issues-write-missing": "the installation does not carry issues:write",
+  "permissions-not-exact": "the installation's permissions are not exactly issues:write and metadata:read",
 };
 
 /**
@@ -212,6 +243,43 @@ export function createInstallationTokenSource({
     return !(at instanceof Date) || Number.isNaN(at.getTime()) || at.getTime() - moment.getTime() <= refreshMarginMs;
   }
 
+  /**
+   * The installation's repository list, read back as the installation rather
+   * than as the request.
+   *
+   * This is the one part of the grant a mint response cannot state: an
+   * unscoped mint reports `repository_selection` but no list, so an
+   * installation on two repositories and an installation on one look
+   * identical until the list is asked for. Reading it costs one request per
+   * mint — roughly one an hour — which is what an exact scope is worth.
+   */
+  async function readRepositories(token) {
+    let response;
+    try {
+      response = await fetchImpl(`${base}/installation/repositories?per_page=100`, {
+        headers: {
+          Accept: "application/vnd.github+json",
+          Authorization: `Bearer ${token}`,
+          "X-GitHub-Api-Version": "2022-11-28",
+        },
+      });
+    } catch {
+      return null;
+    }
+    if (!response?.ok) return null;
+    let payload;
+    try {
+      payload = await response.json();
+    } catch {
+      return null;
+    }
+    const entries = Array.isArray(payload?.repositories) ? payload.repositories : null;
+    if (!entries) return null;
+    const names = entries.map((entry) => String(entry?.full_name || "")).filter(Boolean);
+    if (names.length !== entries.length) return null;
+    return { names, total: Number.isInteger(payload.total_count) ? payload.total_count : names.length };
+  }
+
   async function mint() {
     const moment = now();
     const assertion = buildJwt({ appId: credential.appId, privateKey: credential.privateKey, now: moment });
@@ -222,13 +290,15 @@ export function createInstallationTokenSource({
         headers: {
           Accept: "application/vnd.github+json",
           Authorization: `Bearer ${assertion}`,
-          "Content-Type": "application/json",
           "X-GitHub-Api-Version": "2022-11-28",
         },
-        // The token is asked for scoped to this repository, so an installation
-        // that does not cover it is refused at the exchange rather than handing
-        // back an identity with reach the issue loop never needed.
-        body: JSON.stringify({ repositories: [repo], permissions: { issues: "write", metadata: "read" } }),
+        // Deliberately unscoped. Asking for a narrower token would make the
+        // response describe the request rather than the installation: GitHub
+        // echoes back the repositories and permissions that were asked for, so
+        // an installation granted far more than this identity should hold
+        // would still mint a response that looks exactly right. The token is
+        // therefore taken at the installation's own scope, and the assertions
+        // below establish that this scope is the agreed one.
       });
     } catch {
       // The transport error is deliberately not carried through: it can quote a
@@ -243,18 +313,60 @@ export function createInstallationTokenSource({
       return { token: null, failure: "exchange-unreadable", status: response.status };
     }
     if (!payload?.token || !payload?.expires_at) return { token: null, failure: "exchange-unreadable", status: response.status };
-    if (!tokenCoversRepository(payload, owner, repo)) return { token: null, failure: "repository-not-covered", status: response.status };
-    if (!tokenGrantsIssueWrite(payload)) return { token: null, failure: "issues-write-missing", status: response.status };
     const expiresAt = new Date(payload.expires_at);
     if (Number.isNaN(expiresAt.getTime())) return { token: null, failure: "exchange-unreadable", status: response.status };
+
+    // Permissions first, and from the mint response, so the commonest
+    // misinstallation is named without spending a second request — and so a
+    // grant missing metadata:read is reported as the grant it is rather than
+    // as the repository read it would go on to fail.
+    const permissions = payload.permissions && typeof payload.permissions === "object" ? payload.permissions : {};
+    if (permissions.issues !== "write") return { token: null, failure: "issues-write-missing", status: response.status };
+    if (!grantIsExactlyRequired(permissions)) return { token: null, failure: "permissions-not-exact", status: response.status };
+
+    const selection = payload.repository_selection || null;
+    if (selection === "all") return { token: null, failure: "repository-scope-too-broad", status: response.status };
+    if (selection !== "selected") return { token: null, failure: "exchange-unreadable", status: response.status };
+
+    const reach = await readRepositories(payload.token);
+    if (!reach) return { token: null, failure: "repository-list-unreadable", status: response.status };
+    const target = `${owner}/${repo}`.toLowerCase();
+    if (!reach.names.some((name) => name.toLowerCase() === target)) {
+      return { token: null, failure: "repository-not-covered", status: response.status };
+    }
+    if (!reachesExactlyThisRepository(reach.names, reach.total, owner, repo)) {
+      return { token: null, failure: "repository-scope-too-broad", status: response.status };
+    }
+
     return {
       token: payload.token,
       expiresAt,
-      permissions: payload.permissions || {},
-      repositorySelection: payload.repository_selection || null,
+      permissions,
+      repositorySelection: selection,
+      repositories: [...reach.names].sort(),
       failure: null,
       status: response.status,
     };
+  }
+
+  /**
+   * The current installation token, minted on first use and refreshed when it
+   * is within the safety margin of expiry. Returns null once a mint has
+   * failed, so the cycle reports no delivery identity for the stated reason
+   * rather than retrying an assertion GitHub already rejected.
+   */
+  async function token() {
+    if (failure) return null;
+    if (held && !expiresSoon(held.expiresAt, now())) return held.token;
+    const minted = await mint();
+    if (minted.failure) {
+      failure = minted.status ? `${minted.failure}:${minted.status}` : minted.failure;
+      held = null;
+      return null;
+    }
+    mints += 1;
+    held = minted;
+    return minted.token;
   }
 
   return {
@@ -262,29 +374,26 @@ export function createInstallationTokenSource({
     installationId: credential.installationId,
     get failure() { return failure; },
     get mints() { return mints; },
+    token,
     /**
-     * The current installation token, minted on first use and refreshed when it
-     * is within the safety margin of expiry. Returns null once a mint has
-     * failed, so the cycle reports no delivery identity for the stated reason
-     * rather than retrying an assertion GitHub already rejected.
+     * Prove the identity before the cycle delivers under it.
+     *
+     * The scope assertions live at the mint, so until one has happened the
+     * cycle knows only what it was configured with. Minting here makes a grant
+     * broader than the agreed one resolve to no credential for the whole cycle
+     * — reported by class, with every pending intent's attempt counter
+     * untouched — rather than surfacing as a delivery error against the first
+     * intent that happened to be replayed.
      */
-    async token() {
-      if (failure) return null;
-      if (held && !expiresSoon(held.expiresAt, now())) return held.token;
-      const minted = await mint();
-      if (minted.failure) {
-        failure = minted.status ? `${minted.failure}:${minted.status}` : minted.failure;
-        held = null;
-        return null;
-      }
-      mints += 1;
-      held = minted;
-      return minted.token;
+    async ensure() {
+      await token();
+      return failure;
     },
     /**
      * What the cycle may publish about this identity: which App, which
-     * installation, what GitHub said it may do, and when the held token stops
-     * being usable. No token, no assertion, no key, no path.
+     * installation, exactly what GitHub said it may do and where, why it
+     * resolved to nothing if it did, and when the held token stops being
+     * usable. No token, no assertion, no key, no path.
      */
     summary() {
       return {
@@ -293,6 +402,8 @@ export function createInstallationTokenSource({
         installation_id: credential.installationId,
         permissions: held ? Object.entries(held.permissions).map(([name, level]) => `${name}:${level}`).sort() : [],
         repository_selection: held?.repositorySelection || null,
+        repositories: held?.repositories || [],
+        failure,
         token_expires_at: held ? held.expiresAt.toISOString() : null,
       };
     },
