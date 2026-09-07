@@ -39,6 +39,7 @@ import {
   recordSchedulerHeartbeat,
   recordDeskPublicationHeartbeat,
   schedulerWatchdogSnapshot,
+  applyMonitorFindings,
   dispatchRepairQueue,
   reportRepairResults,
   OPS_ALERT_HISTORY_KEY,
@@ -269,6 +270,16 @@ export async function handleAdminSchedulerHeartbeat(req, env, { now = new Date()
     // It reports what its last bounded repair task did, then leases the next
     // items on this same heartbeat — no second endpoint and no second schedule.
     const reported = await reportRepairResults(env, body.repair_results, { now });
+    // The same cycle also folds in what its monitors just observed. Order
+    // matters: last cycle's outcomes close first, then this cycle's findings
+    // open or advance items, and only then does anything get leased — so a
+    // finding observed in this run is eligible for pickup in this run.
+    const observed = await applyMonitorFindings(env, {
+      findings: body.repair_findings,
+      recovered: body.repair_recovered,
+      now,
+      heartbeat: write.heartbeat,
+    });
     const dispatch = await dispatchRepairQueue(env, { now, runId: write.heartbeat.run_id });
     return json({
       ok: true,
@@ -276,7 +287,13 @@ export async function handleAdminSchedulerHeartbeat(req, env, { now = new Date()
       heartbeat: write.heartbeat,
       repair_queue: {
         reported: reported.applied,
-        recovered: dispatch.recovered,
+        queued: observed.queued,
+        // Two different words on purpose. `recovered` is a condition a monitor
+        // no longer sees; `reconciled` is an item rebuilt after a failed queue
+        // write. Folding them together would hide which one happened.
+        recovered: observed.recovered,
+        rejected: observed.rejected,
+        reconciled: dispatch.recovered,
         items: dispatch.items,
       },
     }, 200);

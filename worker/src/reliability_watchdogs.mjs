@@ -4,6 +4,7 @@ import {
   completeRepairItem,
   leaseRepairItems,
   reconcileRepairQueue,
+  recoverRepairScope,
   repairQueueSentence,
   upsertRepairItem,
 } from "./lib/repair_queue.mjs";
@@ -946,6 +947,70 @@ export async function dispatchRepairQueue(env, { now = new Date(), runId = null,
   const lease = await leaseRepairItems(env, { runId, now, heartbeat, ...(limit ? { limit } : {}) });
   const alerts = await emitRepairJudgmentAlerts(env, lease.judgment, { now });
   return { recovered: recovered.restored, items: lease.items, judgment_alerts: alerts, dispatch: true };
+}
+
+/**
+ * A monitor finding's signature, in the one form the repair rail keys on:
+ * `monitor:<monitor id>:<failure class>[:<subject>]`. It is validated rather
+ * than trusted, because it becomes a stored key and a dispatcher's playbook
+ * selector — the two places a malformed identity would do real damage.
+ */
+export const MONITOR_FINDING_SIGNATURE = /^monitor:[A-Za-z0-9._-]{1,64}:[a-z][a-z-]{1,63}(?::[A-Za-z0-9._-]{1,64})?$/;
+export const MONITOR_FINDING_LIMIT = 25;
+export const MONITOR_RECOVERY_SCOPE_LIMIT = 25;
+
+/**
+ * Fold one cycle's monitor observations into the repair queue.
+ *
+ * This is the step that closes the gap the rail was missing: a degraded monitor
+ * run has always produced human-grade mail and a GitHub issue, and now it also
+ * produces a queue item a playbook can pick up. Upsert semantics do the
+ * deduplication, so a condition on its fifth day advances a repeat counter
+ * rather than opening a fifth item.
+ *
+ * It is deliberately SILENT. Queueing has never been an alert, and these
+ * findings already reached their reader through the monitor's own issue; only
+ * an item that reaches the judgment boundary sends further mail.
+ */
+export async function applyMonitorFindings(env, { findings = [], recovered = [], now = new Date(), heartbeat = null } = {}) {
+  const queued = [];
+  const rejected = [];
+  for (const row of (Array.isArray(findings) ? findings : []).slice(0, MONITOR_FINDING_LIMIT)) {
+    const signature = typeof row?.signature === "string" ? row.signature : "";
+    if (!MONITOR_FINDING_SIGNATURE.test(signature)) {
+      rejected.push({ signature: signature.slice(0, 128) || null, reason: "signature-malformed" });
+      continue;
+    }
+    const write = await upsertRepairItem(env, {
+      signature,
+      guard: row.guard,
+      stage: row.stage,
+      findings: Array.isArray(row.findings) ? row.findings : [],
+      first_seen: row.first_seen,
+      last_seen: row.last_seen,
+      workflow: heartbeat?.workflow || null,
+      source_revision: row.source_revision || heartbeat?.source_revision || null,
+      workflow_run_url: row.workflow_run_url || null,
+      receipt_url: row.receipt_url || null,
+    }, { now, heartbeat });
+    if (write.ok) queued.push({ signature, state: write.item.state, repeat_count: write.item.repeat_count });
+    else rejected.push({ signature, reason: write.reason });
+  }
+
+  const closed = [];
+  for (const scope of (Array.isArray(recovered) ? recovered : []).slice(0, MONITOR_RECOVERY_SCOPE_LIMIT)) {
+    const prefix = typeof scope?.prefix === "string" ? scope.prefix : "";
+    if (!MONITOR_FINDING_SIGNATURE.test(prefix)) {
+      rejected.push({ signature: prefix.slice(0, 128) || null, reason: "scope-malformed" });
+      continue;
+    }
+    const result = await recoverRepairScope(env, {
+      prefix,
+      still_failing: Array.isArray(scope.still_failing) ? scope.still_failing : [],
+    }, { now });
+    closed.push(...result.recovered);
+  }
+  return { queued, recovered: closed, rejected };
 }
 
 /**

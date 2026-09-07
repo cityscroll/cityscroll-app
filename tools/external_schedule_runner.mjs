@@ -33,6 +33,11 @@ import {
   loadPublicationCycleContract,
 } from "./desk_health_publication_cycle.mjs";
 import {
+  mergeRepairFindings,
+  missedSlotFindings,
+  monitorRepairFindings,
+} from "./repair_findings.mjs";
+import {
   STATS_PUBLICATION_ISSUE_MARKER,
   STATS_PUBLICATION_ISSUE_TITLE,
   evaluateStatsPublication,
@@ -806,7 +811,9 @@ export async function settleScheduledSlot(job, options = {}) {
   const { stateDir, now, slot, run = runScheduledJob, log = console.error } = options;
   try {
     const output = await run(job, { stateDir, now, runKey: slot });
-    return { summary: { id: job.id, slot, status: output.result.status }, missed: null, record: null };
+    // The output travels back so the repair rail can read what this monitor
+    // observed. It is the same run, read once, never a second invocation.
+    return { summary: { id: job.id, slot, status: output.result.status }, missed: null, record: null, output };
   } catch (error) {
     const detail = sanitize(String(error?.message || error)).slice(0, 400);
     const record = await recordMissedSlot(stateDir, job.id, slot, MISSED_RUNNER_ERROR, { detail });
@@ -846,7 +853,37 @@ export async function settleScheduledJob(job, options = {}) {
       last_run_status: settled.summary.status,
     } : {}),
   });
-  return { plan, summary: settled.summary, missed };
+  return { plan, summary: settled.summary, missed, output: settled.output || null };
+}
+
+/**
+ * Which unsettled slots are worth repairing, and which are the ledger working.
+ *
+ * A slot recorded as superseded or outside the catch-up window was skipped
+ * deliberately: these are monitors, a later observation subsumes an earlier
+ * one, and the newest outstanding slot ran in this same cycle. Re-running them
+ * would report the same present state again and open the same issue twice,
+ * which is exactly what the ledger exists to avoid.
+ *
+ * A slot that was attempted and threw is different. Nothing was recorded for
+ * it, the ledger has already advanced past it, so no later cycle will try it
+ * again — and a single bounded re-run is a genuine deterministic remedy. That
+ * is the one class that becomes a repair finding.
+ */
+export function missedSlotRepairFindings(missedSlots, jobs, now) {
+  const byJob = new Map();
+  for (const miss of Array.isArray(missedSlots) ? missedSlots : []) {
+    if (miss?.reason !== MISSED_RUNNER_ERROR || !miss.slot) continue;
+    const slots = byJob.get(miss.id) || [];
+    slots.push(miss.slot);
+    byJob.set(miss.id, slots);
+  }
+  const observations = [];
+  for (const [id, slots] of byJob) {
+    const job = (Array.isArray(jobs) ? jobs : []).find((row) => row?.id === id) || { id };
+    observations.push(missedSlotFindings(job, slots, { observedAt: now.toISOString() }));
+  }
+  return observations;
 }
 
 async function pendingOutboxCount(stateDir) {
@@ -1260,11 +1297,19 @@ export async function publishHeartbeat(stateDir, now, dueJobs, options = {}) {
   // then declines to lease rather than promising a pickup it cannot make.
   const repairResults = options.repairResults ?? await readPendingRepairResults(stateDir);
   const canDispatch = options.repairDispatch ?? Boolean(repairDispatchCommand());
+  // The same heartbeat carries what this cycle's monitors just observed. A
+  // degraded run enters the queue as one item per failure signature; a run that
+  // recovered states the scope it evaluated, and the queue closes what is no
+  // longer failing inside it. Both are bounded and redacted before they leave
+  // this host.
+  const observed = options.monitorFindings || { findings: [], recovered: [] };
   const payload = {
     ...base,
     pending_outbox: await pendingOutboxCount(stateDir),
     repair_dispatch: canDispatch,
     repair_results: repairResults,
+    repair_findings: observed.findings || [],
+    repair_recovered: observed.recovered || [],
   };
   delete payload.schema;
   const response = await fetchImpl(url, {
@@ -1308,6 +1353,13 @@ export async function publishHeartbeat(stateDir, now, dueJobs, options = {}) {
     pending_outbox: payload.pending_outbox,
     repair_dispatch: canDispatch,
     repair_reported: repairResults.length,
+    // What this cycle put into the queue and what it closed, so the local
+    // receipt shows the whole loop and not only the pickup half.
+    repair_observed: payload.repair_findings.length,
+    repair_queued: Array.isArray(accepted?.repair_queue?.queued) ? accepted.repair_queue.queued.length : 0,
+    // Named `closed` rather than `recovered` so a count on the receipt is never
+    // confused with the recovery scopes the payload carries.
+    repair_closed: Array.isArray(accepted?.repair_queue?.recovered) ? accepted.repair_queue.recovered.length : 0,
     repair_leased: Array.isArray(accepted?.repair_queue?.items) ? accepted.repair_queue.items.length : 0,
     repair_items: Array.isArray(accepted?.repair_queue?.items) ? accepted.repair_queue.items : [],
   });
@@ -1340,6 +1392,10 @@ async function main() {
   const now = new Date();
   const summaries = [];
   const missedSlots = [];
+  // What each settled monitor observed, folded into repair-queue findings. The
+  // settle path already ran the job, so this reads its result rather than
+  // running anything a second time.
+  const observations = [];
   if (selected) {
     // An operator forcing a run observes the world now; it neither claims nor
     // consumes a scheduled slot, so the ledger is left exactly where it was.
@@ -1347,14 +1403,23 @@ async function main() {
       const settled = await settleScheduledSlot(job, { stateDir, now, slot: runKey(now) });
       summaries.push(settled.summary);
       if (settled.missed) missedSlots.push(settled.missed);
+      if (settled.output) observations.push(monitorRepairFindings(job, settled.output, { now: now.toISOString() }));
     }
   } else {
     for (const job of jobs.jobs) {
       const settled = await settleScheduledJob(job, { stateDir, now });
       if (settled.summary) summaries.push(settled.summary);
       missedSlots.push(...settled.missed);
+      if (settled.output) observations.push(monitorRepairFindings(job, settled.output, { now: now.toISOString() }));
     }
   }
+  // The slot ledger accounts for every slot that passed, so the cycle no longer
+  // has to go looking for one. Of the three ways a slot goes unsettled, only a
+  // slot the cycle attempted and that threw is repairable: the other two name a
+  // slot a later run in this same cycle already subsumed, which is the ledger
+  // working rather than something to re-run.
+  observations.push(...missedSlotRepairFindings(missedSlots, jobs.jobs, now));
+  const monitorFindings = mergeRepairFindings(observations);
   const replayAfter = await replayOutbox({ stateDir, github });
   // Scheduler liveness is a postcondition of the real cycle, distinct from every
   // scheduled-job and digest-shadow receipt. A rejected write makes the cycle fail.
@@ -1371,6 +1436,7 @@ async function main() {
     outboxDeliveryReason: deliveryReason,
     outboxDeliveryIdentity: delivery.kind,
     outboxDeliveryTokenExpiresAt: deliverySummary.token_expires_at,
+    monitorFindings,
   });
   // Repair runs after liveness is proven, on the leases this cycle was granted.
   // Outcomes are reported on the next heartbeat, so a repair never becomes mail
@@ -1389,7 +1455,13 @@ async function main() {
     heartbeat: heartbeatReceipt,
     due: summaries,
     replayAfter,
-    repair: { dispatched: repairResults.length, outcomes: repairResults.map((row) => row.outcome) },
+    repair: {
+      observed: monitorFindings.findings.length,
+      queued: heartbeat.repair_queued ?? 0,
+      closed: heartbeat.repair_closed ?? 0,
+      dispatched: repairResults.length,
+      outcomes: repairResults.map((row) => row.outcome),
+    },
   }, null, 2)}\n`);
   if (heartbeat.status !== "succeeded" || degraded) process.exitCode = 1;
 }

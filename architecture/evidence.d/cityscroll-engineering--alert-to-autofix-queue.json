@@ -2,8 +2,8 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/alert-to-autofix-queue",
   "status": "implemented",
-  "fingerprint": "alert-to-autofix-queue.v1",
-  "updated_at": "2026-09-02T00:00:00.000Z",
+  "fingerprint": "alert-to-autofix-queue.v2",
+  "updated_at": "2026-09-07T00:00:00.000Z",
   "projections": [
     {
       "id": "owner-alert-repair-queue",
@@ -16,6 +16,34 @@
     {
       "id": "owner-alert-repair-dispatch-contract",
       "path": "test/repair_dispatch.test.mjs"
+    },
+    {
+      "id": "monitor-finding-signatures",
+      "path": "tools/repair_findings.mjs"
+    },
+    {
+      "id": "repair-playbook-registry",
+      "path": "tools/repair_playbooks.mjs"
+    },
+    {
+      "id": "repair-dispatcher",
+      "path": "tools/repair_dispatch.mjs"
+    },
+    {
+      "id": "repair-playbook-contract",
+      "path": "test/repair_playbooks.test.mjs"
+    },
+    {
+      "id": "monitor-finding-contract",
+      "path": "test/repair_findings.test.mjs"
+    },
+    {
+      "id": "repair-dispatch-wiring-contract",
+      "path": "test/repair_dispatch_wiring.test.mjs"
+    },
+    {
+      "id": "monitor-to-queue-contract",
+      "path": "worker/test/repair_monitor_findings.test.mjs"
     }
   ]
 }

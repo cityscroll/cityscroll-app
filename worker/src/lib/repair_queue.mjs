@@ -47,6 +47,15 @@ export const REPAIR_STATES = Object.freeze([
   "queued", "leased", "repaired", "needs_judgment",
 ]);
 
+/**
+ * How an item stopped being open. `recovered` is the one a repair did not
+ * cause: the monitor that reported the condition ran again and no longer sees
+ * it. It retires the item exactly as a repair does — and it is a separate word
+ * from `repaired` on purpose, because an operator reading the queue has to be
+ * able to tell a playbook that worked from a condition that went away.
+ */
+export const REPAIR_RESULT_OUTCOMES = Object.freeze(["repaired", "failed", "judgment", "recovered"]);
+
 // Alerts about the repair loop itself never re-enter the repair loop, or a
 // failed fix would queue a repair for its own failure notice.
 export const REPAIR_QUEUE_EXCLUDED_GUARDS = Object.freeze(["ops-repair-judgment"]);
@@ -142,7 +151,7 @@ export function normalizeRepairItem(raw) {
     expires_at: isoOr(raw.lease.expires_at, null),
   } : null;
   const result = raw.result && typeof raw.result === "object" ? {
-    outcome: ["repaired", "failed", "judgment"].includes(raw.result.outcome) ? raw.result.outcome : "failed",
+    outcome: REPAIR_RESULT_OUTCOMES.includes(raw.result.outcome) ? raw.result.outcome : "failed",
     observed_at: isoOr(raw.result.observed_at, null),
     summary: sanitizeText(raw.result.summary),
     run_url: sanitizeLink(raw.result.run_url),
@@ -438,6 +447,8 @@ export async function completeRepairItem(env, report = {}, { now = new Date() } 
     // so a zombie cycle cannot close work another cycle now holds.
     return { ok: false, reason: "lease-mismatch", item, judgment: null };
   }
+  // A dispatcher reports only what it did. `recovered` is the monitor's word,
+  // never a repair task's, so it is not accepted from this direction.
   const outcome = ["repaired", "failed", "judgment"].includes(report.outcome) ? report.outcome : "failed";
   const result = {
     outcome,
@@ -469,6 +480,87 @@ export async function completeRepairItem(env, report = {}, { now = new Date() } 
     item: next,
     judgment: state === "needs_judgment" ? judgmentDescriptor(next, judgmentReason) : null,
   };
+}
+
+/**
+ * The signatures a recovery scope covers: a subject-less signature that IS the
+ * scope, and every signature under it. The prefix is compared with its
+ * separator attached, so `monitor:m:stale` never sweeps up `monitor:m:stale-2`.
+ */
+export function repairScopeMembers(signatures, prefix) {
+  const scope = String(prefix || "");
+  if (!scope) return [];
+  return (Array.isArray(signatures) ? signatures : []).filter((signature) => signature === scope
+    || String(signature).startsWith(`${scope}:`));
+}
+
+export function repairScopeSubject(signature, prefix) {
+  const scope = String(prefix || "");
+  return signature === scope ? null : String(signature).slice(scope.length + 1) || null;
+}
+
+/**
+ * Close an item because the condition stopped happening, not because a repair
+ * fixed it.
+ *
+ * A leased item is left alone: a cycle is holding it, and its own report is the
+ * thing entitled to close it. Everything else retires with a `recovered`
+ * result, which reads differently on the desk from a repair that worked and
+ * from a judgment nobody answered — and a signature that comes back later
+ * reopens the same item, keeping its first-seen and its repeat count.
+ */
+export async function recoverRepairItem(env, signature, { now = new Date(), reason = null } = {}) {
+  const key = String(signature || "").slice(0, 128);
+  if (!key) return { ok: false, reason: "signature-required", item: null };
+  const { item } = await readRepairItem(env, key);
+  if (!item) return { ok: false, reason: "item-not-found", item: null };
+  if (item.state === "leased") return { ok: false, reason: "leased", item };
+  if (isTerminalRepairState(item.state)) return { ok: false, reason: "already-retired", item };
+  const next = normalizeRepairItem({
+    ...item,
+    state: "repaired",
+    lease: null,
+    judgment_reason: null,
+    result: {
+      outcome: "recovered",
+      observed_at: now.toISOString(),
+      summary: sanitizeText(reason) || "the monitor that reported this condition no longer observes it",
+      run_url: item.latest_run_url,
+      receipt_url: item.latest_receipt_url,
+    },
+    updated_at: now.toISOString(),
+  });
+  await persistItem(env, next, { retire: true });
+  return { ok: true, reason: null, item: next };
+}
+
+/**
+ * Close everything in a recovery scope that the monitor no longer reports.
+ *
+ * A monitor run knows what is still failing; it does not know what was failing
+ * before it. So it states the scope it just evaluated and the subjects still
+ * failing inside it, and this closes the rest. That is what lets a monitor
+ * which recovered completely retire its items without having to remember them.
+ */
+export async function recoverRepairScope(env, scope = {}, { now = new Date() } = {}) {
+  const prefix = String(scope.prefix || "");
+  if (!prefix) return { recovered: [], skipped: [] };
+  const stillFailing = new Set((Array.isArray(scope.still_failing) ? scope.still_failing : []).map(String));
+  const index = await readIndex(env?.ALERT_STATE);
+  const recovered = [];
+  const skipped = [];
+  for (const signature of repairScopeMembers(index.signatures, prefix)) {
+    const subject = repairScopeSubject(signature, prefix);
+    if (subject != null && stillFailing.has(subject)) continue;
+    // A scope-level finding carries no subject of its own — one digest
+    // rehearsal, one action-link audit — so for it the question is simply
+    // whether the monitor reported anything still failing in this scope at all.
+    if (subject == null && stillFailing.size) continue;
+    const closed = await recoverRepairItem(env, signature, { now });
+    if (closed.ok) recovered.push(signature);
+    else skipped.push({ signature, reason: closed.reason });
+  }
+  return { recovered, skipped };
 }
 
 /**
