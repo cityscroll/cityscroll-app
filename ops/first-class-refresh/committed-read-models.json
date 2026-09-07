@@ -16,6 +16,16 @@
       "note": "The boundary rebuilds every declared generated family in warehouse/derived_json_build_manifest.json, in the order that manifest fixes, and re-derives each one in check mode immediately after building it. It is the repository's ordered rebuild for derived JSON, so the refresh runs it rather than invoking the covered builders directly. It runs the families one at a time under a single declared cold-build time budget; nothing here fans the builders out in parallel."
     },
     {
+      "id": "agency-entity-records",
+      "command": [
+        "tools/build_agency_entity_publication.mjs"
+      ],
+      "covers": [
+        "tools/build_agency_entity_publication.mjs"
+      ],
+      "note": "Re-derives the published agency entity records the organization dossier and relationship-graph surfaces read. Its inputs are the agency identity crosswalk, the agency constellation rollup and the award-corroborated contract census, so it runs after the derived JSON boundary has settled the constellation half of that set. Needs no retained analytical catalog: a hosted runner can rebuild it from the committed tree."
+    },
+    {
       "id": "source-contract-docs",
       "command": [
         "tools/generate_source_docs.mjs"

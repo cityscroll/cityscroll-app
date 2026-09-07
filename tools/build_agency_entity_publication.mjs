@@ -95,7 +95,10 @@ async function main() {
   const serialized = `${JSON.stringify(doc, null, 2)}\n`;
   const receipt = `${JSON.stringify(receiptFor(doc, digest, serialized), null, 2)}\n`;
 
-  if (process.argv.includes("--check")) {
+  // Check mode is read-only by construction: every mutation below lives inside
+  // the write branch, so the required freshness gate can never touch the tree.
+  const check = process.argv.includes("--check");
+  if (check) {
     for (const output of OUTPUTS) {
       if (await readFile(path.join(ROOT, output), "utf8") !== serialized) {
         throw new Error(`stale agency entity publication: ${output}`);
@@ -108,16 +111,17 @@ async function main() {
     return;
   }
 
-  for (const output of [...OUTPUTS, RECEIPT]) {
-    mkdirSync(path.dirname(path.join(ROOT, output)), { recursive: true });
+  if (!check) {
+    const directories = [...new Set([...OUTPUTS, RECEIPT].map((output) => path.dirname(path.join(ROOT, output))))];
+    for (const directory of directories) mkdirSync(directory, { recursive: true });
+    for (const output of OUTPUTS) await writeFile(path.join(ROOT, output), serialized);
+    await writeFile(path.join(ROOT, RECEIPT), receipt);
+    console.log(JSON.stringify({
+      outputs: OUTPUTS,
+      receipt: RECEIPT,
+      published_agency_count: doc.coverage.published_agency_count,
+    }, null, 2));
   }
-  for (const output of OUTPUTS) await writeFile(path.join(ROOT, output), serialized);
-  await writeFile(path.join(ROOT, RECEIPT), receipt);
-  console.log(JSON.stringify({
-    outputs: OUTPUTS,
-    receipt: RECEIPT,
-    published_agency_count: doc.coverage.published_agency_count,
-  }, null, 2));
 }
 
 main().catch((error) => {
