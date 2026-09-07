@@ -142,6 +142,11 @@ test("the policy documents explicit recovery, invoice authority, and dashboard l
   assert.match(doc, /Cloudflare's final invoice is the authority/);
   assert.match(doc, /dashboard usage\s+may lag/);
   assert.match(doc, /operating budget report links here/);
+  // The bound that froze a production deploy once is a documented contract, not
+  // an incidental constant: the doc must keep naming the composite watermark
+  // form and the fact that a recorded vintage is never shortened to fit.
+  assert.match(doc, /at most 1024 characters/);
+  assert.match(doc, /never shortened to fit/);
 });
 
 test("the disabled incremental flag does not add a rebuild to the ordinary workflow", () => {
