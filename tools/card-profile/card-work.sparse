@@ -311,6 +311,8 @@
 /site/community_board_financial_identity.mjs
 /site/community_board_geography.mjs
 /site/community_board_institution_edges.mjs
+/site/community_board_land_positions.mjs
+/site/community_board_land_positions_boot.mjs
 /site/community_board_links.mjs
 /site/community_board_meeting_index_shards.mjs
 /site/community_board_money.mjs

@@ -1,0 +1,835 @@
+{
+  "schema": "cityscroll.community_board_land_positions.v1",
+  "method": "retained_board_identity_reverse_index_v1",
+  "negative_rule": "A recorded position is one board's advisory recommendation on one application, read back from the identity the retained record already carries. It is never a decision on the project, never a count of meetings, and a recorded tally is the vote on the recommendation motion rather than a count of support for the development.",
+  "generated_at": "2026-09-06T15:58:50.482Z",
+  "source": {
+    "publisher": "NYC Department of City Planning, Zoning Application Portal",
+    "dataset_id": "hgx4-8ukb",
+    "source_url": "https://data.cityofnewyork.us/d/hgx4-8ukb",
+    "observed_on": "2026-09-06T15:58:50.482Z"
+  },
+  "counts": {
+    "retained_projects": 40,
+    "projects_with_observed_recommendations": 22,
+    "board_recommendations": 20,
+    "board_positions": 20,
+    "boards_with_positions": 16,
+    "projects_with_board_positions": 20,
+    "undated_board_recommendations": 0,
+    "unsubmitted_board_recommendations": 0,
+    "unresolved_board_recommendations": 0,
+    "waivers": 1,
+    "positions_without_recorded_tally": 1
+  },
+  "boards": {
+    "bronx-cb-06": {
+      "body_id": "bronx-cb-06",
+      "position_count": 1,
+      "project_count": 1,
+      "recorded_date_count": 1,
+      "positions": [
+        {
+          "project_id": "2023X0149",
+          "project_name": "Sojourner Truth - Mapes Rezoning",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2023X0149",
+          "position": "Unfavorable",
+          "position_class": "unfavorable",
+          "status": "Submitted",
+          "recorded_on": "2026-05-27",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 0,
+            "votes_against": 18,
+            "votes_abstain": 0
+          },
+          "source_record_id": "5f9edb00-e161-f011-bec1-001dd80c031f",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": null,
+              "position": "Conditional Favorable",
+              "position_class": "conditional_favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "5d71dd06-e161-f011-bec1-001dd80c031f"
+            }
+          ]
+        }
+      ]
+    },
+    "brooklyn-cb-01": {
+      "body_id": "brooklyn-cb-01",
+      "position_count": 3,
+      "project_count": 3,
+      "recorded_date_count": 2,
+      "positions": [
+        {
+          "project_id": "2024K0286",
+          "project_name": "200 Kent Avenue Rezoning",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2024K0286",
+          "position": "Conditional Favorable",
+          "position_class": "conditional_favorable",
+          "status": "Submitted",
+          "recorded_on": "2026-04-14",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 28,
+            "votes_against": 0,
+            "votes_abstain": 0
+          },
+          "source_record_id": "987f36a1-43bb-f011-bbd2-001dd8089923",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": "borough-president:brooklyn",
+              "position": "Conditional Favorable",
+              "position_class": "conditional_favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "1f5d4dad-43bb-f011-bbd3-001dd80f20e8"
+            }
+          ]
+        },
+        {
+          "project_id": "2024K0358",
+          "project_name": "Monitor Point",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2024K0358",
+          "position": "Conditional Favorable",
+          "position_class": "conditional_favorable",
+          "status": "Submitted",
+          "recorded_on": "2026-02-10",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 24,
+            "votes_against": 9,
+            "votes_abstain": 0
+          },
+          "source_record_id": "1ce1d2fb-c6da-f011-8544-001dd80c0373",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": null,
+              "position": "Conditional Favorable",
+              "position_class": "conditional_favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "84cefa2d-a994-f011-b4cb-001dd80603ad"
+            }
+          ]
+        },
+        {
+          "project_id": "2025K0287",
+          "project_name": "Monitor Point - 56 Quay Demapping",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2025K0287",
+          "position": "Unfavorable",
+          "position_class": "unfavorable",
+          "status": "Submitted",
+          "recorded_on": "2026-02-10",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 30,
+            "votes_against": 1,
+            "votes_abstain": 0
+          },
+          "source_record_id": "48eb31fc-b34b-f011-877a-001dd80d9613",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": "borough-president:brooklyn",
+              "position": "Conditional Favorable",
+              "position_class": "conditional_favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "d5659b04-b44b-f011-877a-001dd8006beb"
+            }
+          ]
+        }
+      ]
+    },
+    "brooklyn-cb-04": {
+      "body_id": "brooklyn-cb-04",
+      "position_count": 1,
+      "project_count": 1,
+      "recorded_date_count": 1,
+      "positions": [
+        {
+          "project_id": "2024K0196",
+          "project_name": "132 Melrose Street Rezoning",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2024K0196",
+          "position": "Conditional Favorable",
+          "position_class": "conditional_favorable",
+          "status": "Submitted",
+          "recorded_on": "2026-05-20",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 35,
+            "votes_against": 0,
+            "votes_abstain": 0
+          },
+          "source_record_id": "797cb645-43bb-f011-bbd3-001dd8029d6b",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": "borough-president:brooklyn",
+              "position": "Conditional Favorable",
+              "position_class": "conditional_favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "d5244a53-43bb-f011-bbd2-001dd8089923"
+            }
+          ]
+        }
+      ]
+    },
+    "brooklyn-cb-10": {
+      "body_id": "brooklyn-cb-10",
+      "position_count": 1,
+      "project_count": 1,
+      "recorded_date_count": 1,
+      "positions": [
+        {
+          "project_id": "2025K0284",
+          "project_name": "FORT HAMILTON MEWS REZONING",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2025K0284",
+          "position": "Unfavorable",
+          "position_class": "unfavorable",
+          "status": "Submitted",
+          "recorded_on": "2026-05-18",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 31,
+            "votes_against": 3,
+            "votes_abstain": 0
+          },
+          "source_record_id": "36ca2c68-c6f7-f011-8407-001dd80822c1",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": "borough-president:brooklyn",
+              "position": "Favorable",
+              "position_class": "favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "f3d9b274-c6f7-f011-8407-001dd803b4d1"
+            }
+          ]
+        }
+      ]
+    },
+    "brooklyn-cb-13": {
+      "body_id": "brooklyn-cb-13",
+      "position_count": 1,
+      "project_count": 1,
+      "recorded_date_count": 1,
+      "positions": [
+        {
+          "project_id": "2023K0183",
+          "project_name": "2950 West 24th St Rezoning",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2023K0183",
+          "position": "Unfavorable",
+          "position_class": "unfavorable",
+          "status": "Submitted",
+          "recorded_on": "2026-03-25",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 1,
+            "votes_against": 29,
+            "votes_abstain": 5
+          },
+          "source_record_id": "e88ccfda-3c19-f011-998b-001dd806079d",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": null,
+              "position": "Conditional Favorable",
+              "position_class": "conditional_favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "1d11c1dd-3c19-f011-998b-001dd80ba017"
+            }
+          ]
+        }
+      ]
+    },
+    "manhattan-cb-03": {
+      "body_id": "manhattan-cb-03",
+      "position_count": 1,
+      "project_count": 1,
+      "recorded_date_count": 1,
+      "positions": [
+        {
+          "project_id": "2023M0116",
+          "project_name": "St. Augustine's Preservation and Redevelopment",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2023M0116",
+          "position": "Conditional Favorable",
+          "position_class": "conditional_favorable",
+          "status": "Submitted",
+          "recorded_on": "2026-04-28",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 31,
+            "votes_against": 0,
+            "votes_abstain": 0
+          },
+          "source_record_id": "909094a8-e061-f011-bec1-001dd807325d",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": "borough-president:manhattan",
+              "position": "Favorable",
+              "position_class": "favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "e39ad5b3-e061-f011-bec2-001dd80822c1"
+            }
+          ]
+        }
+      ]
+    },
+    "manhattan-cb-04": {
+      "body_id": "manhattan-cb-04",
+      "position_count": 2,
+      "project_count": 2,
+      "recorded_date_count": 1,
+      "positions": [
+        {
+          "project_id": "2023M0213",
+          "project_name": "Dewitt Clinton Park North (629 West 54th Street)",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2023M0213",
+          "position": "Conditional Unfavorable",
+          "position_class": "conditional_unfavorable",
+          "status": "Submitted",
+          "recorded_on": "2026-02-04",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 33,
+            "votes_against": 1,
+            "votes_abstain": 1
+          },
+          "source_record_id": "9ed65e3a-3d79-f011-b4cb-001dd801a871",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": null,
+              "position": "Conditional Favorable",
+              "position_class": "conditional_favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "a0334747-3d79-f011-b4cb-001dd8020d3e"
+            }
+          ]
+        },
+        {
+          "project_id": "2024M0244",
+          "project_name": "Dewitt Clinton Park North (801 Eleventh Avenue)",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2024M0244",
+          "position": "Conditional Unfavorable",
+          "position_class": "conditional_unfavorable",
+          "status": "Submitted",
+          "recorded_on": "2026-02-04",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 33,
+            "votes_against": 1,
+            "votes_abstain": 1
+          },
+          "source_record_id": "e8aa3fca-ed7d-f011-b4cb-001dd80f50ac",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": null,
+              "position": "Conditional Favorable",
+              "position_class": "conditional_favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "43f3b5d2-ed7d-f011-b4cc-001dd8006beb"
+            }
+          ]
+        }
+      ]
+    },
+    "manhattan-cb-05": {
+      "body_id": "manhattan-cb-05",
+      "position_count": 1,
+      "project_count": 1,
+      "recorded_date_count": 1,
+      "positions": [
+        {
+          "project_id": "2025M0252",
+          "project_name": "Flatiron NoMad Major Concessions",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2025M0252",
+          "position": "Conditional Favorable",
+          "position_class": "conditional_favorable",
+          "status": "Submitted",
+          "recorded_on": "2026-04-09",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 31,
+            "votes_against": 1,
+            "votes_abstain": 1
+          },
+          "source_record_id": "221b932f-309e-f011-b4cb-001dd80f20e8",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": "borough-president:manhattan",
+              "position": "Conditional Favorable",
+              "position_class": "conditional_favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "70f07037-309e-f011-b4cc-001dd80821af"
+            }
+          ]
+        }
+      ]
+    },
+    "queens-cb-02": {
+      "body_id": "queens-cb-02",
+      "position_count": 1,
+      "project_count": 1,
+      "recorded_date_count": 1,
+      "positions": [
+        {
+          "project_id": "2025Q0316",
+          "project_name": "Queens CD 2 Walk to Park Site Selection/Acq.",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2025Q0316",
+          "position": "Conditional Favorable",
+          "position_class": "conditional_favorable",
+          "status": "Submitted",
+          "recorded_on": "2026-04-09",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 30,
+            "votes_against": 1,
+            "votes_abstain": 0
+          },
+          "source_record_id": "25a7fad9-0585-f011-b4cb-001dd80e23f5",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": "borough-president:queens",
+              "position": "Conditional Favorable",
+              "position_class": "conditional_favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "a64debe5-0585-f011-b4cb-001dd80e23f5"
+            }
+          ]
+        }
+      ]
+    },
+    "queens-cb-04": {
+      "body_id": "queens-cb-04",
+      "position_count": 1,
+      "project_count": 1,
+      "recorded_date_count": 1,
+      "positions": [
+        {
+          "project_id": "2025Q0142",
+          "project_name": "47-03 108th Street Rezoning",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2025Q0142",
+          "position": "Unfavorable",
+          "position_class": "unfavorable",
+          "status": "Submitted",
+          "recorded_on": "2026-04-14",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 9,
+            "votes_against": 25,
+            "votes_abstain": 0
+          },
+          "source_record_id": "6af92b43-87ba-f011-bbd3-001dd8029d6b",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": null,
+              "position": "Conditional Favorable",
+              "position_class": "conditional_favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "778b4f4e-87ba-f011-bbd2-001dd800f252"
+            }
+          ]
+        }
+      ]
+    },
+    "queens-cb-05": {
+      "body_id": "queens-cb-05",
+      "position_count": 1,
+      "project_count": 1,
+      "recorded_date_count": 1,
+      "positions": [
+        {
+          "project_id": "2022Q0449",
+          "project_name": "63-02 Fresh Pond Road Rezoning",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2022Q0449",
+          "position": "Conditional Favorable",
+          "position_class": "conditional_favorable",
+          "status": "Submitted",
+          "recorded_on": "2026-03-11",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 34,
+            "votes_against": 0,
+            "votes_abstain": 0
+          },
+          "source_record_id": "9abe5577-87ba-f011-bbd2-001dd802fe99",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": null,
+              "position": "Conditional Favorable",
+              "position_class": "conditional_favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "3b25de80-87ba-f011-bbd2-001dd8089923"
+            }
+          ]
+        }
+      ]
+    },
+    "queens-cb-06": {
+      "body_id": "queens-cb-06",
+      "position_count": 1,
+      "project_count": 1,
+      "recorded_date_count": 1,
+      "positions": [
+        {
+          "project_id": "2025Q0247",
+          "project_name": "69-67 108th Street Rezoning",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2025Q0247",
+          "position": "Conditional Favorable",
+          "position_class": "conditional_favorable",
+          "status": "Submitted",
+          "recorded_on": "2026-05-13",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 36,
+            "votes_against": 4,
+            "votes_abstain": 0
+          },
+          "source_record_id": "25fa11d0-14ca-f011-bbd3-001dd80d9613",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": "borough-president:queens",
+              "position": "Conditional Favorable",
+              "position_class": "conditional_favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "336208d7-14ca-f011-bbd3-001dd80f20e8"
+            }
+          ]
+        }
+      ]
+    },
+    "queens-cb-10": {
+      "body_id": "queens-cb-10",
+      "position_count": 1,
+      "project_count": 1,
+      "recorded_date_count": 1,
+      "positions": [
+        {
+          "project_id": "2024Q0219",
+          "project_name": "135-27 Sapphire Street Rezoning",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2024Q0219",
+          "position": "Conditional Favorable",
+          "position_class": "conditional_favorable",
+          "status": "Submitted",
+          "recorded_on": "2026-06-04",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 29,
+            "votes_against": 1,
+            "votes_abstain": 1
+          },
+          "source_record_id": "a20c65ff-6950-f011-8779-001dd80822d8",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": null,
+              "position": "Conditional Favorable",
+              "position_class": "conditional_favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "4598550b-6a50-f011-8779-001dd80822d8"
+            }
+          ]
+        }
+      ]
+    },
+    "queens-cb-12": {
+      "body_id": "queens-cb-12",
+      "position_count": 1,
+      "project_count": 1,
+      "recorded_date_count": 1,
+      "positions": [
+        {
+          "project_id": "2026Q0210",
+          "project_name": "Atlantic Avenue Demapping",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2026Q0210",
+          "position": "Favorable",
+          "position_class": "favorable",
+          "status": "Submitted",
+          "recorded_on": "2026-05-20",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 29,
+            "votes_against": 1,
+            "votes_abstain": 0
+          },
+          "source_record_id": "389b53e2-c10e-f111-8407-001dd80c0373",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": "borough-president:queens",
+              "position": "Favorable",
+              "position_class": "favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "d75a48ea-c10e-f111-8407-001dd80821af"
+            }
+          ]
+        }
+      ]
+    },
+    "staten-island-cb-01": {
+      "body_id": "staten-island-cb-01",
+      "position_count": 2,
+      "project_count": 2,
+      "recorded_date_count": 2,
+      "positions": [
+        {
+          "project_id": "2026R0127",
+          "project_name": "FDNY Cont'd Use of WTC Unit 1688 Victory Blvd",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2026R0127",
+          "position": "Waiver of Recommendation",
+          "position_class": "waiver",
+          "status": "Submitted",
+          "recorded_on": "2026-05-12",
+          "recorded_tally": {
+            "recorded": false,
+            "votes_for": null,
+            "votes_against": null,
+            "votes_abstain": null
+          },
+          "source_record_id": "e96e6be2-7842-f111-88b4-001dd80821af",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": "borough-president:staten-island",
+              "position": "Favorable",
+              "position_class": "favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "048f62d0-7842-f111-88b4-001dd80821af"
+            }
+          ]
+        },
+        {
+          "project_id": "2025R0137",
+          "project_name": "Staten Island Family Court Consolidation",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2025R0137",
+          "position": "Favorable",
+          "position_class": "favorable",
+          "status": "Submitted",
+          "recorded_on": "2026-04-14",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 26,
+            "votes_against": 0,
+            "votes_abstain": 0
+          },
+          "source_record_id": "674fc954-78eb-f011-8544-001dd80821af",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": "borough-president:staten-island",
+              "position": "Conditional Favorable",
+              "position_class": "conditional_favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "87bb4e5b-78eb-f011-8543-001dd80ed938"
+            }
+          ]
+        }
+      ]
+    },
+    "staten-island-cb-02": {
+      "body_id": "staten-island-cb-02",
+      "position_count": 1,
+      "project_count": 1,
+      "recorded_date_count": 1,
+      "positions": [
+        {
+          "project_id": "2026R0186",
+          "project_name": "336 Meredith Avenue Fleet Maintenance Facility",
+          "project_public_status": "In Public Review",
+          "project_portal_url": "https://zap.planning.nyc.gov/projects/2026R0186",
+          "position": "Favorable",
+          "position_class": "favorable",
+          "status": "Submitted",
+          "recorded_on": "2026-04-21",
+          "recorded_tally": {
+            "recorded": true,
+            "votes_for": 18,
+            "votes_against": 0,
+            "votes_abstain": 0
+          },
+          "source_record_id": "8e35fc27-b1fa-f011-8406-001dd80eb6be",
+          "other_positions": [
+            {
+              "representing": "Borough President",
+              "body_ref": "borough-president:staten-island",
+              "position": "Conditional Favorable",
+              "position_class": "conditional_favorable",
+              "status": "Submitted",
+              "recorded_on": null,
+              "recorded_tally": {
+                "recorded": false,
+                "votes_for": null,
+                "votes_against": null,
+                "votes_abstain": null
+              },
+              "source_record_id": "4bd7c2da-aefa-f011-8406-001dd80d6397"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

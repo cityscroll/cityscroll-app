@@ -107,6 +107,15 @@ class FakeElement {
   get open() { return this.hasAttribute("open"); }
   set open(value) { if (value) this.setAttribute("open", ""); else this.removeAttribute("open"); }
 
+  get href() { return this.getAttribute("href") || ""; }
+  set href(value) { this.setAttribute("href", value); }
+  get rel() { return this.getAttribute("rel") || ""; }
+  set rel(value) { this.setAttribute("rel", value); }
+  get target() { return this.getAttribute("target") || ""; }
+  set target(value) { this.setAttribute("target", value); }
+  get type() { return this.getAttribute("type") || ""; }
+  set type(value) { this.setAttribute("type", value); }
+
   get id() { return this.getAttribute("id") || ""; }
   set id(value) { this.setAttribute("id", value); }
   get className() { return this.getAttribute("class") || ""; }
@@ -176,6 +185,17 @@ class FakeElement {
 
   get textContent() {
     return this.children.length ? this.children.map((child) => child.textContent).join("") : this.text;
+  }
+
+  /**
+   * Assigning text is how a binder that refuses to build markup from source
+   * values paints one, so the helper reflects the real thing: existing children
+   * are detached and the node holds exactly the characters it was given.
+   */
+  set textContent(value) {
+    for (const child of this.children) child.parentNode = null;
+    this.children = [];
+    this.text = String(value ?? "");
   }
 
   set innerHTML(html) {

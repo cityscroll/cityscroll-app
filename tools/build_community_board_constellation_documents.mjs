@@ -49,6 +49,15 @@ function sourceRows() {
   } catch (error) {
     communityBoardDistrictProjects = { error: `community_board_district_projects unreadable: ${error.message}` };
   }
+  // The recorded-position index is read the same way and for the same reason:
+  // a board whose positions could not be read must say so rather than build as
+  // though this source held nothing for it.
+  let communityBoardLandPositions;
+  try {
+    communityBoardLandPositions = readJson("site/data/community_board_land_positions.json");
+  } catch (error) {
+    communityBoardLandPositions = { error: `community_board_land_positions unreadable: ${error.message}` };
+  }
   const institutionEdges = {};
   const edgeKeys = new Set();
   const retainEdge = (edge) => {
@@ -117,6 +126,7 @@ function sourceRows() {
     communityBoardPayrollContext,
     communityBoardParticipation,
     communityBoardDistrictProjects,
+    communityBoardLandPositions,
     institutionEdges,
   };
 }
