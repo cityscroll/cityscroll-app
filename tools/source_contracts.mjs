@@ -1,4 +1,5 @@
 import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { validateFirstClassRefreshContracts } from "./first_class_refresh.mjs";
@@ -45,12 +46,133 @@ export function resolveProbeEndpoint(contract) {
   return endpoint.replace(/\{[a-zA-Z0-9_]+\}/g, sample);
 }
 
+/**
+ * Where a source's retained vintage lives, so a freshness finding can name both
+ * clocks: the publisher's own updated stamp and the stamp our retained snapshot
+ * carries. A contract may declare the reference directly; otherwise the
+ * first-class refresh contract that names the source supplies it.
+ */
+export function retainedVintageReference(registry, contract) {
+  const declared = contract?.freshness_contract?.retained_vintage;
+  if (declared?.artifact_path && Array.isArray(declared.vintage_fields) && declared.vintage_fields.length) {
+    return {
+      artifact_path: declared.artifact_path,
+      vintage_fields: [...declared.vintage_fields],
+      declared_by: "freshness_contract.retained_vintage",
+    };
+  }
+  const firstClass = (registry?.first_class_artifacts || [])
+    .find((entry) => entry?.source_contract_id === contract?.id);
+  if (firstClass?.public_artifact_path && firstClass.vintage_fields?.length) {
+    return {
+      artifact_path: firstClass.public_artifact_path,
+      vintage_fields: [...firstClass.vintage_fields],
+      declared_by: `first_class_artifacts.${firstClass.id}`,
+    };
+  }
+  return null;
+}
+
+/**
+ * Read the retained vintage a reference points at. The first declared field
+ * that the artifact actually carries wins, matching the first-class rule that
+ * an acquisition-moved stamp — never a publisher clock — states our vintage.
+ */
+export function readRetainedVintage(reference, root = ROOT) {
+  if (!reference) return null;
+  let artifact;
+  try {
+    artifact = JSON.parse(readFileSync(join(root, reference.artifact_path), "utf8"));
+  } catch {
+    return { ...reference, at: null, field: null, error: "artifact unreadable" };
+  }
+  for (const field of reference.vintage_fields) {
+    const value = artifact?.[field];
+    if (typeof value === "string" && value.trim()) return { ...reference, at: value, field };
+  }
+  return { ...reference, at: null, field: null, error: "no declared vintage field present" };
+}
+
 export function loadSourceContracts() {
   return JSON.parse(readFileSync(REGISTRY_PATH, "utf8"));
 }
 
 export function loadSourceContractFixtures() {
   return JSON.parse(readFileSync(SHAPE_FIXTURE_PATH, "utf8"));
+}
+
+const ISO_INSTANT = /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z)?$/;
+
+/**
+ * A contract may name the publisher column that states the vintage, so the live
+ * monitor and the builder that ingests the source read the same declared field
+ * instead of two different publisher clocks.
+ */
+function validatePublisherVintageField(label, contract, freshness) {
+  const field = freshness.publisher_vintage_field;
+  if (field === undefined) return [];
+  const errors = [];
+  if (typeof field !== "string" || !field.trim()) {
+    errors.push(`${label}: freshness_contract.publisher_vintage_field must be a non-empty string`);
+    return errors;
+  }
+  if (!(contract.required_fields || []).includes(field)) {
+    errors.push(`${label}: freshness_contract.publisher_vintage_field ${field} must be a required field`);
+  }
+  if (freshness.clock_basis !== "publisher_updated") {
+    errors.push(`${label}: freshness_contract.publisher_vintage_field needs clock_basis publisher_updated`);
+  }
+  return errors;
+}
+
+/** Where our retained snapshot states its own vintage, for two-clock findings. */
+function validateRetainedVintage(label, freshness) {
+  const retained = freshness.retained_vintage;
+  if (retained === undefined) return [];
+  const errors = [];
+  if (!retained || typeof retained !== "object") {
+    errors.push(`${label}: freshness_contract.retained_vintage must be an object`);
+    return errors;
+  }
+  if (typeof retained.artifact_path !== "string" || !retained.artifact_path.trim()) {
+    errors.push(`${label}: freshness_contract.retained_vintage.artifact_path must be a path`);
+  }
+  if (!Array.isArray(retained.vintage_fields) || !retained.vintage_fields.length
+    || retained.vintage_fields.some((field) => typeof field !== "string" || !field.trim())) {
+    errors.push(`${label}: freshness_contract.retained_vintage.vintage_fields must be a non-empty string list`);
+  }
+  return errors;
+}
+
+/**
+ * A stable-reference pin replaces an absolute age gate on a source whose rows
+ * only move when the thing they describe is redrawn. The gate becomes "the
+ * publisher has not republished since the vintage we retain", which is the
+ * event that actually needs work, so the limit is keyed to the publisher's own
+ * updated stamp rather than to a number that re-breaches every so often.
+ */
+function validateStableReference(label, freshness) {
+  const pin = freshness.stable_reference;
+  if (pin === undefined) return [];
+  const errors = [];
+  if (!pin || typeof pin !== "object") {
+    errors.push(`${label}: freshness_contract.stable_reference must be an object`);
+    return errors;
+  }
+  for (const field of ["publisher_updated_at", "retained_vintage_at"]) {
+    if (!ISO_INSTANT.test(String(pin[field] || ""))) {
+      errors.push(`${label}: freshness_contract.stable_reference.${field} must be an ISO instant`);
+    }
+  }
+  if (pin.publisher_updated_at !== pin.retained_vintage_at) {
+    errors.push(`${label}: stable_reference pins a publisher vintage we do not retain`);
+  }
+  for (const field of ["observed_on", "method", "evidence", "recheck"]) {
+    if (typeof pin[field] !== "string" || !pin[field].trim()) {
+      errors.push(`${label}: freshness_contract.stable_reference missing ${field}`);
+    }
+  }
+  return errors;
 }
 
 export function validateSourceContracts(registry) {
@@ -111,6 +233,9 @@ export function validateSourceContracts(registry) {
       if (freshness.serve_contract_id !== null && typeof freshness.serve_contract_id !== "string") {
         errors.push(`${label}: freshness_contract.serve_contract_id must be a string or null`);
       }
+      errors.push(...validatePublisherVintageField(label, contract, freshness));
+      errors.push(...validateRetainedVintage(label, freshness));
+      errors.push(...validateStableReference(label, freshness));
     }
 
     const healthPolicy = contract.health_policy;

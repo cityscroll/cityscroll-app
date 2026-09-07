@@ -45,6 +45,42 @@ This is the executable freshness policy. Transient clocks never belong here.
 | `serving_max_age_days` | Independent serving-clock window, or `null`. |
 | `serve_contract_id` | Optional key into `warehouse/lib/serve_publish_contract.mjs`. `null` when there is no named serve contract. |
 | `manual_refresh_condition` | Required prose when `mode` is `manual-conditional`. |
+| `publisher_vintage_field` | Optional publisher column that states the vintage. When present the live probe reads `max(<field>)` from the dataset instead of Socrata's `rowsUpdatedAt`, so it and the builder that ingests the source gate the same declared field. Must be a required field and needs `clock_basis: publisher_updated`. |
+| `retained_vintage` | Optional `{ artifact_path, vintage_fields }` naming where our retained snapshot states its own vintage. The first declared field the artifact carries wins. Absent, the first-class refresh contract for the source supplies it. |
+| `stable_reference` | Optional pin for a source whose rows move only when the thing they describe is redrawn. Replaces the absolute-age gate with "has the publisher republished since the vintage we retain". |
+
+### The two clocks a freshness finding reports
+
+A source contract can drift for two different reasons, and a day count alone
+cannot tell them apart: the publisher stopped publishing, or our acquisition
+stopped landing. Every freshness error from `tools/verify_source_contracts.mjs`
+therefore names both — the publisher clock it measured (`rowsUpdatedAt`, or the
+declared `publisher_vintage_field`) and the vintage our retained snapshot
+states — and says which side is behind. The live probe also prints a
+machine-readable `finding {...}` line per freshness error, which the scheduled
+monitor in `tools/external_schedule_runner.mjs` carries into the acquisition
+receipt and the issue it opens.
+
+Read the sides this way. When the retained vintage is at or after the publisher
+clock we already hold everything the publisher has published, and no refresh can
+clear the finding; the honest question is whether the limit describes the
+publisher's real cadence, answered with a `freshness_policy` measurement rather
+than by widening the limit to make the alert stop. When the retained vintage
+predates the publisher clock the acquisition path is the defect.
+
+### `stable_reference`
+
+| Field | Role |
+| --- | --- |
+| `publisher_updated_at` | The publisher stamp the check pins to. |
+| `retained_vintage_at` | The vintage our snapshot actually holds. Must equal `publisher_updated_at`, so a pin can never claim a publication we did not retain. |
+| `observed_on` | The day both were read. |
+| `method`, `evidence` | Why an absolute-age gate does not describe a defect for this source. |
+| `recheck` | What to run, and what to re-pin, when the publisher republishes. |
+
+A pinned source passes while the publisher stamp is unchanged and fails the
+moment it moves, naming the new stamp. That is the event that needs work; the
+days since a boundary was last redrawn are not.
 
 Mode is how change is expected, not a failure. Historical and pointer sources
 can still be Healthy, Degraded, or Source-unavailable on acquisition or serving

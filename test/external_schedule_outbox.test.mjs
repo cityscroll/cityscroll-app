@@ -19,6 +19,8 @@ import {
   resolveCredentialSource,
   runScheduledJob,
   schedulerRunId,
+  sourceContractIssueBody,
+  sourceFindings,
 } from "../tools/external_schedule_runner.mjs";
 import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
@@ -502,4 +504,48 @@ test("a loaded credential is reported as credentialed, never as installed or ope
     const template = await readFile(new URL("../ops/launchd/com.cityscroll.external-schedules.plist.template", import.meta.url), "utf8");
     assert.match(template, /naming a path neither installs nor verifies the credential/);
   });
+});
+
+test("a source-contract issue names both clocks and which side is stale", () => {
+  const output = [
+    "ok some-other-source: aaaa-bbbb · 3d old (rowsUpdatedAt)",
+    "error nyc-council-members: source is stale (publisher rowsUpdatedAt 2026-04-10, 149 days; limit 90;"
+      + " retained vintage 2026-09-06 from site/data/person_hub_lookup.json retrieved_at;"
+      + " our retained snapshot is at or after the publisher clock, so the publisher has not published since)",
+    `finding ${JSON.stringify({
+      schema: "cityscroll.source_contract_finding.v1",
+      source_contract_id: "nyc-council-members",
+      classification: "stale",
+      publisher_clock_basis: "rowsUpdatedAt",
+      publisher_updated_at: "2026-04-10T18:00:29.000Z",
+      publisher_age_days: 149,
+      limit_days: 90,
+      retained_vintage_at: "2026-09-06T16:04:22.087Z",
+      retained_vintage_artifact: "site/data/person_hub_lookup.json",
+      retained_vintage_field: "retrieved_at",
+      stale_side: "publisher",
+    })}`,
+    "finding {not json at all}",
+  ].join("\n");
+
+  const findings = sourceFindings(output);
+  assert.equal(findings.size, 1);
+  const body = sourceContractIssueBody(
+    { id: "nyc-council-members", detail: "source is stale (149 days; limit 90)" },
+    findings.get("nyc-council-members"),
+  );
+  assert.match(body, /^Classification: stale\./m);
+  assert.match(body, /^Publisher clock \(rowsUpdatedAt\): 2026-04-10T18:00:29\.000Z \(149 days; limit 90\)\.$/m);
+  assert.match(body, /^Our retained vintage: 2026-09-06T16:04:22\.087Z \(site\/data\/person_hub_lookup\.json retrieved_at\)\.$/m);
+  assert.match(body, /^Stale side: the publisher\./m);
+});
+
+test("a source-contract issue without a companion finding still reports the error", () => {
+  const body = sourceContractIssueBody(
+    { id: "city-record", detail: "metadata fetch failed (data.example.gov): ENOTFOUND" },
+    sourceFindings("").get("city-record"),
+  );
+  assert.match(body, /^Classification: outage\./m);
+  assert.match(body, /Detail: metadata fetch failed/m);
+  assert.doesNotMatch(body, /Stale side/);
 });

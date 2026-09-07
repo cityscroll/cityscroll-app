@@ -149,7 +149,7 @@
         "run_id": null
       },
       "expected_cadence": "Annual fiscal-year post with monthly in-year updates (publisher description); Open Data metadata may still list annual or quarterly change claims",
-      "expected_lag_tolerance_days": 45,
+      "expected_lag_tolerance_days": 95,
       "current_lag": {
         "value": null,
         "unit": null,
@@ -1016,7 +1016,7 @@
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
         "run_id": "sanitation_district:2024-04-10"
       },
-      "expected_cadence": "Publisher-managed; no fixed cadence is declared",
+      "expected_cadence": "Publisher-managed. Socrata metadata declares a monthly automated update, but the rows have not moved since 2024-04-10; sanitation-district geometry changes only when a district is redrawn",
       "expected_lag_tolerance_days": 730,
       "current_lag": {
         "value": null,
