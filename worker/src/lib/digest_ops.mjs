@@ -75,6 +75,34 @@ export function toDayLogEntry(result = {}, { day = null } = {}) {
   };
 }
 
+function countable(value) {
+  return Number.isFinite(Number(value)) ? Math.max(0, Number(value)) : 0;
+}
+
+/**
+ * Items a past day actually built into digests, in the unit the shadow rehearsal measures:
+ * new notices plus forecasts, over every entry that produced a digest.
+ *
+ * `totalNotices` cannot serve that comparison. It counts new notices only, and only on entries
+ * that were delivered, so a held, capped or provider-rejected day reports fewer items than it
+ * built. Comparing a rehearsal total against it measures the delivery decision, not the corpus.
+ *
+ * Returns null when the log carries no entries to read, so a caller can fall back to whatever
+ * that log does record rather than treat an unreadable day as a day with nothing in it.
+ */
+export function dayLogBuiltItemTotal(log) {
+  const entries = Array.isArray(log?.entries) ? log.entries : null;
+  if (!entries || entries.length === 0) return null;
+  let total = 0;
+  for (const entry of entries) {
+    if (!entry || entry.error || entry.capped) continue;
+    if (typeof entry.action === "string" && entry.action.startsWith("skipped:")) continue;
+    // A rollup entry already totals its own sections; summing both would double count.
+    total += countable(entry.noticeCount) + countable(entry.forecasts);
+  }
+  return total;
+}
+
 /** True when a day-log entry is a watermark-recovery catch-up send (not a daily drip). */
 export function isCatchUpDayLogEntry(entry, dayLog = null) {
   if (!entry || typeof entry !== "object") return false;

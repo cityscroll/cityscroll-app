@@ -33,7 +33,7 @@ import {
   SEARCH_USAGE_WINDOW_DAYS,
 } from "./search_usage.mjs";
 
-export const OPS_CONTRACT_VERSION = "1.17.0";
+export const OPS_CONTRACT_VERSION = "1.18.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -73,7 +73,7 @@ export const DIGEST_MODES = Object.freeze([
 export const DIGEST_SHADOW = Object.freeze({
   contract: "digest-shadow.v1",
   cron_utc: "0 10 * * *",
-  status_values: ["READY", "NEEDS_ATTENTION"],
+  status_values: ["READY", "DEGRADED_UPSTREAM", "NEEDS_ATTENTION"],
   endpoint: "/admin/digest-shadow",
   storage: {
     binding: "DB",
@@ -83,6 +83,7 @@ export const DIGEST_SHADOW = Object.freeze({
     hold_override_table: "digest_shadow_hold_overrides",
   },
   redline_fields: ["code", "digest_id", "watch_id", "reason", "evidence"],
+  upstream_incident_codes: ["upstream_source_unavailable"],
   redline_codes: [
     "render_error",
     "historical_watch_zero",
@@ -92,7 +93,9 @@ export const DIGEST_SHADOW = Object.freeze({
     "broken_digest_link",
   ],
   monitoring: {
-    poll_status: "HTTP 200 only when READY; NEEDS_ATTENTION returns HTTP 503 with the JSON body",
+    poll_status: "HTTP 200 when READY or DEGRADED_UPSTREAM; NEEDS_ATTENTION returns HTTP 503 with the JSON body",
+    upstream_policy: "A source that did not answer within its retry budget is recorded in upstream_incidents, never in redlines: it names no affected digest, holds no delivery, and reports DEGRADED_UPSTREAM rather than NEEDS_ATTENTION. A source that rejects the query itself stays a redline.",
+    trailing_average_basis: "built_digest_items \u2014 new notices plus forecasts over every day-log entry that built a digest, delivered or not, so a held or capped day cannot lower the baseline the next run is judged against",
     wake: "Scheduled post-rehearsal and post-delivery monitors open or update a repair issue for redlines, missing runs, or open degraded receipts.",
     rerun: "Authenticated POST /admin/digest-shadow rebuilds all previews after a repair; affected_digest_ids scopes diagnosis.",
     delivery_effect: "At 12:45 UTC, only affected_digest_ids still redlined are held from the 13:00 UTC delivery path; unrelated digests remain eligible.",
@@ -103,6 +106,7 @@ export const DIGEST_SHADOW = Object.freeze({
     delivery_boundary_utc: "13:00",
     expires_utc: "14:00",
     retry_policy: "three bounded read attempts with 250ms then 1000ms backoff",
+    source_retry_policy: "digest source reads retry on a transient status up to three attempts with 250ms then 1000ms backoff, bounded by a 4000ms wall clock so one unwell source cannot stall the run",
     unavailable_policy: "use today's persisted state when usable; otherwise fail open loudly",
     missing_run_policy: "fail open loudly while a READY rehearsal is less than 3 days old; hold all at the 3-day boundary",
     recovery_policy: "a READY rehearsal after a dark-period hold triggers automatic catch-up before normal delivery",

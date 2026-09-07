@@ -3,6 +3,8 @@
 
 import { notifyOperator } from "./feedback.mjs";
 
+import { DIGEST_SHADOW_DEGRADED_UPSTREAM } from "./lib/upstream_failure.mjs";
+
 export const DIGEST_SHADOW_HOLD_CONTRACT = "digest-shadow-hold.v1";
 export const DIGEST_SHADOW_HOLD_CUTOFF_UTC = "12:45:00.000Z";
 export const DIGEST_SHADOW_DELIVERY_BOUNDARY_UTC = "13:00:00.000Z";
@@ -169,6 +171,29 @@ export function buildDigestShadowHoldState({
       overridden_digest_ids: [],
       active_digest_ids: [],
       observation: "authenticated successful reruns release the scoped hold state",
+    };
+  }
+
+  // A source that did not answer is not a reason to stop anyone's mail. The rehearsal found no
+  // fault in what we build, so every digest stays eligible and the outage is stated rather than
+  // enforced. Holding here would punish subscribers for an outage they did not cause and would
+  // suppress the very sends the next day's trailing average is measured against.
+  if (summary.status === DIGEST_SHADOW_DEGRADED_UPSTREAM && affected.length === 0) {
+    const sources = Array.isArray(summary.upstream_sources_unavailable)
+      ? summary.upstream_sources_unavailable
+      : [];
+    return {
+      ...base,
+      source_status: "UPSTREAM_SOURCE_UNAVAILABLE",
+      delivery_policy: "ALL_DIGESTS_ELIGIBLE",
+      fail_policy: "fail_open_upstream_unavailable",
+      affected_digest_ids: [],
+      overridden_digest_ids: [],
+      active_digest_ids: [],
+      unavailable_sources: sources,
+      observation: sources.length
+        ? `no fault found in the rehearsal; ${sources.length} source(s) did not answer: ${sources.join(", ")}`
+        : "no fault found in the rehearsal; a source did not answer",
     };
   }
 

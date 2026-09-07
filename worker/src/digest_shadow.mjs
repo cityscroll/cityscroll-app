@@ -9,10 +9,20 @@ import {
   reconcileOntologyDeltaCandidates,
 } from "./lib/ontology_delta_alert.mjs";
 import { describeCollapse, mergeFunnels } from "./lib/digest_funnel.mjs";
+import { dayLogBuiltItemTotal } from "./lib/digest_ops.mjs";
+import {
+  DIGEST_SHADOW_DEGRADED_UPSTREAM,
+  UPSTREAM_UNAVAILABLE,
+  classifyDigestResultError,
+} from "./lib/upstream_failure.mjs";
 
 export const DIGEST_SHADOW_CONTRACT = "digest-shadow.v1";
 export const DIGEST_SHADOW_READY = "READY";
 export const DIGEST_SHADOW_ATTENTION = "NEEDS_ATTENTION";
+// A third outcome, between the other two. The rehearsal ran and found nothing wrong with what we
+// build; a source it reads did not answer. That is a real degradation and it is reported as one,
+// but it is not a redline against our digest and it never holds a subscriber's mail.
+export { DIGEST_SHADOW_DEGRADED_UPSTREAM };
 const HISTORY_DAYS = 30;
 const TRAILING_DAYS = 7;
 const COLLAPSE_RATIO = 0.25;
@@ -82,45 +92,80 @@ function linkProblems(preview) {
   return { hrefs, invalid, unsubscribe, context };
 }
 
+// A zero-item digest has two very different causes, and only one of them is a fault.
+// `matched_row_count` (the watch's own `found`: every row the query returned this run, seen or
+// not) is what separates them. Rows still matching with none of them new is the quiet inbox the
+// digest decision deliberately sends a heartbeat for; no rows matching at all, on a watch that
+// used to match, is a recall drop worth stopping for.
+function evaluationState(entity) {
+  if (entity.skipped) return "skipped";
+  if (entity.error) return "errored";
+  const matched = Number(entity.found);
+  const items = finiteCount(entity.new) + finiteCount(entity.forecasts);
+  if (items === 0 && Number.isFinite(matched) && matched > 0) return "quiet";
+  return "evaluated";
+}
+
+function watchCount(result, entity, { digestId, watchId }) {
+  const matched = Number(entity.found);
+  return {
+    digest_id: digestId,
+    watch_id: watchId,
+    historical_id: entity.sub || entity.watch || entity.queryLabel || "unknown",
+    lens: entity.lens || null,
+    item_count: finiteCount(entity.new) + finiteCount(entity.forecasts),
+    evaluation_state: evaluationState(entity),
+    skip_reason: entity.skipped || null,
+    matched_row_count: Number.isFinite(matched) ? matched : null,
+    digest_action: entity.action || result.action || null,
+  };
+}
+
 function currentWatchCounts(results) {
   const counts = [];
   for (const result of results || []) {
     if (!result?.preview) continue;
+    const digestId = result.previewId || result.sub || result.watch || "unknown";
     if (Array.isArray(result.sections) && result.sections.length) {
       for (const section of result.sections) {
-        counts.push({
-          digest_id: result.previewId || result.sub || result.watch || "unknown",
-          watch_id: section.previewId || section.sub || section.watch || section.queryLabel || "unknown",
-          historical_id: section.sub || section.watch || section.queryLabel || "unknown",
-          lens: section.lens || null,
-          item_count: finiteCount(section.new) + finiteCount(section.forecasts),
-          evaluation_state: section.skipped ? "skipped" : "evaluated",
-          skip_reason: section.skipped || null,
-        });
+        counts.push(watchCount(result, section, {
+          digestId,
+          watchId: section.previewId || section.sub || section.watch || section.queryLabel || "unknown",
+        }));
       }
     } else {
-      counts.push({
-        digest_id: result.previewId || result.sub || result.watch || "unknown",
-        watch_id: result.previewId || result.sub || result.watch || "unknown",
-        historical_id: result.sub || result.watch || "unknown",
-        lens: result.lens || null,
-        item_count: finiteCount(result.new) + finiteCount(result.forecasts),
-        evaluation_state: result.skipped ? "skipped" : "evaluated",
-        skip_reason: result.skipped || null,
-      });
+      counts.push(watchCount(result, result, { digestId, watchId: digestId }));
     }
   }
   return counts;
 }
 
+// The stored day log and the rehearsal must be read in the same unit, or the comparison measures
+// the difference between the two records rather than a change in the corpus. A day-log entry
+// records new notices and forecasts in separate fields, and its rollup sections spell the count
+// `noticeCount` where a live section spells it `new`; both spellings are read here.
+function historicalItemCount(entity) {
+  const declared = entity?.noticeCount ?? entity?.new;
+  return finiteCount(declared) + finiteCount(entity?.forecasts);
+}
+
 function historicalWatchMaximum(logs) {
   const maxima = new Map();
+  const observe = (id, count, day) => {
+    if (!id) return;
+    const previous = maxima.get(id);
+    if (previous && previous.count >= count) return;
+    maxima.set(id, { count, day: day || null });
+  };
   for (const log of logs || []) {
     for (const entry of log?.entries || []) {
-      maxima.set(entry.id, Math.max(maxima.get(entry.id) || 0, finiteCount(entry.noticeCount)));
+      observe(entry.id, historicalItemCount(entry), entry.day || log.day);
       for (const section of entry.sections || []) {
-        const id = section.sub || section.watch || section.queryLabel;
-        if (id) maxima.set(id, Math.max(maxima.get(id) || 0, finiteCount(section.new) + finiteCount(section.forecasts)));
+        observe(
+          section.id || section.sub || section.watch || section.queryLabel,
+          historicalItemCount(section),
+          entry.day || log.day,
+        );
       }
     }
   }
@@ -137,12 +182,22 @@ function redline(code, digestId, reason, evidence, watchId = null) {
   };
 }
 
+function lastGoodPreview(store, digestId) {
+  if (!store || !digestId) return null;
+  const row = typeof store.get === "function" ? store.get(digestId) : store[digestId];
+  if (!row || !row.run_day) return null;
+  return { run_day: String(row.run_day), item_count: finiteCount(row.item_count) };
+}
+
 /** Pure detector + contract builder. */
 export function buildDigestShadowSummary({
   run,
   history = [],
   now = new Date(),
   ontologyDelta = null,
+  // digest_id -> the most recent previously rendered preview for that id, used to say what a
+  // reader is served while a source is unavailable. Read-only; nothing here is re-rendered.
+  lastGoodPreviews = null,
 } = {}) {
   const ranAt = new Date(now).toISOString();
   const day = ranAt.slice(0, 10);
@@ -160,29 +215,53 @@ export function buildDigestShadowSummary({
         watch_id: section.previewId || section.sub || section.watch || section.queryLabel || "unknown",
         lens: section.lens || null,
         item_count: finiteCount(section.new) + finiteCount(section.forecasts),
-        evaluation_state: section.skipped ? "skipped" : "evaluated",
+        evaluation_state: evaluationState(section),
         skip_reason: section.skipped || null,
       }))
       : [{
         watch_id: result.previewId || result.sub || result.watch || "unknown",
         lens: result.lens || null,
         item_count: finiteCount(result.new) + finiteCount(result.forecasts),
-        evaluation_state: result.skipped ? "skipped" : "evaluated",
+        evaluation_state: evaluationState(result),
         skip_reason: result.skipped || null,
       }],
   }));
   const totalItems = previews.reduce((sum, preview) => sum + preview.item_count, 0);
   const redlines = [];
 
+  const upstreamIncidents = [];
   for (const result of results) {
-    if (result?.error) {
-      redlines.push(redline(
-        "render_error",
-        result.previewId || result.sub || result.watch,
-        "The digest build path returned an error.",
-        { error: String(result.error) },
-      ));
+    if (!result?.error) continue;
+    const digestId = result.previewId || result.sub || result.watch;
+    const finding = classifyDigestResultError(result);
+    if (finding?.class === UPSTREAM_UNAVAILABLE) {
+      // Not a redline. The build path did what it was asked; the source did not answer it.
+      const lastGood = lastGoodPreview(lastGoodPreviews, digestId);
+      upstreamIncidents.push({
+        code: "upstream_source_unavailable",
+        digest_id: digestId || "run",
+        watch_id: null,
+        reason: "A source the digest reads did not answer within its retry budget.",
+        evidence: {
+          error: String(result.error),
+          source: finding.source,
+          http_status: finding.http_status,
+          attempts: finding.attempts,
+        },
+        // What a reader of this digest is served while the source is away. Naming the day it was
+        // rendered is the whole point: a reused digest that does not say so is a lie about vintage.
+        degraded_output: lastGood
+          ? { mode: "last_good_digest", served_from_run_day: lastGood.run_day, item_count: lastGood.item_count }
+          : { mode: "none", reason: "no previously rendered digest is stored for this id" },
+      });
+      continue;
     }
+    redlines.push(redline(
+      "render_error",
+      digestId,
+      "The digest build path returned an error.",
+      { error: String(result.error) },
+    ));
   }
 
   for (const preview of previews) {
@@ -213,13 +292,22 @@ export function buildDigestShadowSummary({
   const watchCounts = currentWatchCounts(results);
   const historicMax = historicalWatchMaximum(history);
   for (const watch of watchCounts) {
-    const previousMax = historicMax.get(watch.historical_id) || 0;
-    if (watch.evaluation_state === "evaluated" && watch.item_count === 0 && previousMax > 0) {
+    const previous = historicMax.get(watch.historical_id) || { count: 0, day: null };
+    if (watch.evaluation_state === "evaluated" && watch.item_count === 0 && previous.count > 0) {
       redlines.push(redline(
         "historical_watch_zero",
         watch.digest_id,
         "A watch with prior items is receiving a zero-item digest.",
-        { current_item_count: 0, trailing_max_item_count: previousMax, history_days: HISTORY_DAYS },
+        {
+          current_item_count: 0,
+          // The query returned nothing at all: this is the number that makes the finding a
+          // recall drop rather than a quiet day, so it travels with it.
+          matched_row_count: watch.matched_row_count,
+          digest_action: watch.digest_action,
+          trailing_max_item_count: previous.count,
+          trailing_max_day: previous.day,
+          history_days: HISTORY_DAYS,
+        },
         watch.watch_id,
       ));
     }
@@ -231,13 +319,27 @@ export function buildDigestShadowSummary({
   const selectionFunnel = mergeFunnels(results.map((result) => result?.selection_funnel).filter(Boolean));
   const collapse = describeCollapse(selectionFunnel);
 
+  // Like for like. The rehearsal totals every item it built, delivered or not, new notices and
+  // forecasts together. `totalNotices` totals new notices on delivered entries only, so a day
+  // with holds, caps or a rejecting provider records fewer items than it built — and comparing
+  // this run against that number measures the delivery decision, not the corpus. Worse, it is
+  // self-amplifying: a redline holds digests, the holds lower the average, and the lowered
+  // average manufactures the next explosion. The day log's own entries are read instead, and
+  // only a log with no entries to read falls back to the delivered figure.
   const historicalTotals = history.slice(0, TRAILING_DAYS)
-    .map((log) => Number(log?.totalNotices))
+    .map((log) => {
+      const built = dayLogBuiltItemTotal(log);
+      return built == null ? Number(log?.totalNotices) : built;
+    })
     .filter(Number.isFinite);
   const trailingAverage = historicalTotals.length
     ? historicalTotals.reduce((sum, count) => sum + count, 0) / historicalTotals.length
     : null;
-  if (trailingAverage != null && trailingAverage >= MIN_TRAILING_AVERAGE) {
+  // A source that did not answer is already reported, and is a sufficient explanation for a day
+  // that built fewer items than usual. Raising a second, differently-worded finding for the same
+  // outage would only put a name on it that points at us.
+  const aggregateComparable = upstreamIncidents.length === 0;
+  if (trailingAverage != null && trailingAverage >= MIN_TRAILING_AVERAGE && aggregateComparable) {
     const ratio = totalItems / trailingAverage;
     if (ratio < COLLAPSE_RATIO) {
       redlines.push(redline(
@@ -295,7 +397,11 @@ export function buildDigestShadowSummary({
   const affectedDigestIds = [...new Set(redlines
     .map((item) => item.digest_id)
     .filter((id) => id && id !== "run"))];
-  const status = redlines.length ? DIGEST_SHADOW_ATTENTION : DIGEST_SHADOW_READY;
+  const status = redlines.length
+    ? DIGEST_SHADOW_ATTENTION
+    : upstreamIncidents.length
+      ? DIGEST_SHADOW_DEGRADED_UPSTREAM
+      : DIGEST_SHADOW_READY;
   return {
     contract: DIGEST_SHADOW_CONTRACT,
     run_day: day,
@@ -315,9 +421,19 @@ export function buildDigestShadowSummary({
       yesterday_present: !!yesterday,
     },
     trailing_average: trailingAverage,
+    // The population the average was taken over, so a later reader never has to guess whether
+    // this run was compared against items built or items delivered.
+    trailing_average_basis: "built_digest_items",
+    trailing_average_comparable: aggregateComparable,
     selection_funnel: selectionFunnel,
     collapse_stage: collapse?.stage || null,
     redlines,
+    // Kept apart from redlines on purpose. These say a source was away; they never say our
+    // digest is wrong, and they never name a digest into the delivery hold.
+    upstream_incidents: upstreamIncidents,
+    upstream_sources_unavailable: [...new Set(upstreamIncidents
+      .map((incident) => incident.evidence.source)
+      .filter(Boolean))].sort(),
     affected_digest_ids: affectedDigestIds,
     repair: {
       state: redlines.length ? "dispatch_required" : "none",
@@ -343,6 +459,28 @@ export function buildDigestShadowSummary({
     previews: metadata,
     _rendered_previews: previews,
   };
+}
+
+/**
+ * The most recent previously rendered preview for each named digest id, before `day`.
+ * Only read for digests whose build could not reach a source this run: it is what an operator is
+ * shown in place of a digest that could not be rebuilt, and it is always dated.
+ */
+export async function readLastGoodPreviews(db, digestIds, day) {
+  const found = new Map();
+  const ids = [...new Set((digestIds || []).filter(Boolean).map(String))];
+  if (!db || !ids.length || !day) return found;
+  for (const digestId of ids) {
+    try {
+      const row = await db.prepare(`SELECT run_day, item_count FROM digest_shadow_previews
+        WHERE digest_id = ? AND run_day < ? ORDER BY run_day DESC LIMIT 1`)
+        .bind(digestId, day).first();
+      if (row?.run_day) found.set(digestId, { run_day: row.run_day, item_count: row.item_count });
+    } catch {
+      // A store that cannot answer leaves the incident saying so, which is still honest.
+    }
+  }
+  return found;
 }
 
 async function readHistory(env, day, count = HISTORY_DAYS) {
@@ -421,14 +559,19 @@ export async function runDigestShadow(env, {
     persist: false,
     simulateDryRunCounters: true,
   });
-  const history = await readHistory(env, at.toISOString().slice(0, 10));
+  const day = at.toISOString().slice(0, 10);
+  const history = await readHistory(env, day);
   const candidates = ontologyDeltaCandidates == null
     ? await buildDefaultOntologyDeltaCandidates(env.DB)
     : ontologyDeltaCandidates;
   const ontologyDelta = await reconcileOntologyDeltaCandidates(env.DB, candidates, {
     observedAt: at,
   });
-  const summary = buildDigestShadowSummary({ run, history, now: at, ontologyDelta });
+  const failedDigestIds = (Array.isArray(run?.results) ? run.results : [])
+    .filter((result) => result?.error)
+    .map((result) => result.previewId || result.sub || result.watch);
+  const lastGoodPreviews = await readLastGoodPreviews(env.DB, failedDigestIds, day);
+  const summary = buildDigestShadowSummary({ run, history, now: at, ontologyDelta, lastGoodPreviews });
   await persistDigestShadow(env.DB, summary);
   summary.hold = await recordDigestShadowHoldState(env.DB, summary, { now: at, receiptStore: env.ALERT_STATE });
   await persistDigestShadow(env.DB, summary);
@@ -449,18 +592,41 @@ export async function readDigestShadow(db, { day = null, digestId = null } = {})
       item_count, watch_counts_json
       FROM digest_shadow_previews WHERE run_day = ? AND digest_id = ?`)
     .bind(summary.run_day, digestId).first();
-  if (!preview) return { summary, preview: null };
+  if (preview) return { summary, preview: shapePreview(preview, { runDay: summary.run_day }) };
+  // Nothing was rendered for this id today. When the reason is a source that did not answer, the
+  // last digest we did render is served instead of an empty response — labelled with the day it
+  // was built and the outage that is standing in its place, never presented as today's.
+  const incident = (summary.upstream_incidents || []).find((item) => item.digest_id === digestId);
+  if (!incident) return { summary, preview: null };
+  const stale = await db.prepare(`SELECT run_day, digest_id, recipient_redacted, subject, html,
+      item_count, watch_counts_json
+      FROM digest_shadow_previews WHERE digest_id = ? AND run_day < ? ORDER BY run_day DESC LIMIT 1`)
+    .bind(digestId, summary.run_day).first();
+  if (!stale) return { summary, preview: null, upstream_incident: incident };
   return {
     summary,
+    upstream_incident: incident,
     preview: {
-      run_day: preview.run_day,
-      digest_id: preview.digest_id,
-      recipient: preview.recipient_redacted || null,
-      recipient_redacted: preview.recipient_redacted,
-      subject: preview.subject,
-      html: preview.html,
-      item_count: preview.item_count,
-      watch_counts: JSON.parse(preview.watch_counts_json || "[]"),
+      ...shapePreview(stale, { runDay: summary.run_day }),
+      source_status: "upstream_unavailable",
+      served_from_run_day: stale.run_day,
+      current_for_run_day: false,
     },
+  };
+}
+
+function shapePreview(row, { runDay }) {
+  return {
+    run_day: row.run_day,
+    digest_id: row.digest_id,
+    recipient: row.recipient_redacted || null,
+    recipient_redacted: row.recipient_redacted,
+    subject: row.subject,
+    html: row.html,
+    item_count: row.item_count,
+    watch_counts: JSON.parse(row.watch_counts_json || "[]"),
+    source_status: "current",
+    served_from_run_day: row.run_day,
+    current_for_run_day: row.run_day === runDay,
   };
 }
