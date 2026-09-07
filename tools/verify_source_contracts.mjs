@@ -9,7 +9,9 @@ import {
   classifyMocsFieldCase,
   loadSourceContractFixtures,
   loadSourceContracts,
+  readRetainedVintage,
   resolveProbeEndpoint,
+  retainedVintageReference,
   validateSourceContractFixtures,
   validateSourceContracts,
   verifyCodeReferences,
@@ -31,6 +33,72 @@ export function freshnessLimit(contract) {
 
 function ageDays(epochMs) {
   return (Date.now() - epochMs) / DAY_MS;
+}
+
+/** Socrata floating timestamps carry no zone; the registry reads every clock as UTC. */
+export function parsePublisherInstant(value) {
+  if (typeof value !== "string" || !value.trim()) return NaN;
+  const zoned = /(?:Z|[+-]\d{2}:?\d{2})$/.test(value.trim()) ? value.trim() : `${value.trim()}Z`;
+  return Date.parse(zoned);
+}
+
+function isoDay(epochMs) {
+  return Number.isFinite(epochMs) ? new Date(epochMs).toISOString().slice(0, 10) : "unknown";
+}
+
+let registryMemo = null;
+function registry() {
+  if (!registryMemo) {
+    try { registryMemo = loadSourceContracts(); } catch { registryMemo = { contracts: [], first_class_artifacts: [] }; }
+  }
+  return registryMemo;
+}
+
+/** What our retained snapshot says its own vintage is, for a two-clock finding. */
+export function retainedVintageFor(contract) {
+  const pin = contract?.freshness_contract?.stable_reference;
+  if (pin?.retained_vintage_at) {
+    return { at: pin.retained_vintage_at, artifact_path: null, field: "freshness_contract.stable_reference.retained_vintage_at" };
+  }
+  return readRetainedVintage(retainedVintageReference(registry(), contract));
+}
+
+/**
+ * A freshness finding names both clocks and which side is behind, so the issue
+ * it opens says whether the publisher stopped publishing or our acquisition
+ * stopped landing. Without both dates a reader cannot tell those apart.
+ */
+export function staleFinding(contract, { clockField, publisherAt, limitDays, kind = "source" }) {
+  const retained = retainedVintageFor(contract);
+  const retainedAt = parsePublisherInstant(retained?.at);
+  const age = Math.floor(ageDays(publisherAt));
+  const staleSide = !Number.isFinite(retainedAt)
+    ? "unknown"
+    : (retainedAt >= publisherAt ? "publisher" : "acquisition");
+  const retainedText = Number.isFinite(retainedAt)
+    ? `retained vintage ${isoDay(retainedAt)}${retained.artifact_path ? ` from ${retained.artifact_path} ${retained.field}` : ""}`
+    : "retained vintage not declared";
+  const sideText = {
+    publisher: "our retained snapshot is at or after the publisher clock, so the publisher has not published since",
+    acquisition: "our retained snapshot predates the publisher clock, so acquisition has not landed the publisher's latest",
+    unknown: "no retained vintage is declared, so neither side can be shown as the stale one",
+  }[staleSide];
+  const message = `${contract.id}: ${kind} is stale (publisher ${clockField} ${isoDay(publisherAt)}, ${age} days; limit ${limitDays}; ${retainedText}; ${sideText})`;
+  const error = new Error(message);
+  error.finding = {
+    schema: "cityscroll.source_contract_finding.v1",
+    source_contract_id: contract.id,
+    classification: "stale",
+    publisher_clock_basis: clockField,
+    publisher_updated_at: Number.isFinite(publisherAt) ? new Date(publisherAt).toISOString() : null,
+    publisher_age_days: age,
+    limit_days: limitDays,
+    retained_vintage_at: Number.isFinite(retainedAt) ? new Date(retainedAt).toISOString() : null,
+    retained_vintage_artifact: retained?.artifact_path || null,
+    retained_vintage_field: retained?.field || null,
+    stale_side: staleSide,
+  };
+  return error;
 }
 
 function causeMessage(error) {
@@ -113,16 +181,33 @@ export async function verifySocrata(contract) {
   const missing = contract.required_fields.filter((field) => !fields.has(field));
   if (missing.length) throw new Error(`${contract.id}: missing fields ${missing.join(", ")}`);
   if (!Number.isFinite(metadata.rowsUpdatedAt)) throw new Error(`${contract.id}: no rowsUpdatedAt freshness timestamp`);
-  const age = ageDays(metadata.rowsUpdatedAt * 1000);
-  if (age < -2) throw new Error(`${contract.id}: rowsUpdatedAt is unexpectedly in the future`);
+  // A contract may name the publisher column that states the vintage. Reading it
+  // keeps the monitor on the same declared field the builder ingests, instead of
+  // gating on the row-write stamp while the builder gates on the published one.
+  const vintageField = contract.freshness_contract?.publisher_vintage_field;
+  const publisherAt = vintageField
+    ? await publisherDeclaredVintage(contract, vintageField)
+    : metadata.rowsUpdatedAt * 1000;
+  const clockField = vintageField || "rowsUpdatedAt";
+  const age = ageDays(publisherAt);
+  if (age < -2) throw new Error(`${contract.id}: ${clockField} is unexpectedly in the future`);
 
   // Pointer-class / recon-only sources: existence + schema only (no ingest freshness gate).
   const pointerClass = contract.contract_class === "pointer"
     || contract.stale_policy === "skip"
     || (contract.status === "disabled" && contract.contract_class === "pointer");
+  const pin = contract.freshness_contract?.stable_reference;
   const limit = freshnessLimit(contract);
-  if (!pointerClass && age > limit) {
-    throw new Error(`${contract.id}: source is stale (${Math.floor(age)} days; limit ${limit})`);
+  if (!pointerClass && pin) {
+    const pinned = parsePublisherInstant(pin.publisher_updated_at);
+    if (publisherAt !== pinned) {
+      throw new Error(
+        `${contract.id}: publisher republished (${clockField} ${isoDay(publisherAt)}; `
+        + `pinned stable reference ${isoDay(pinned)}) — re-acquire the retained snapshot and re-pin`,
+      );
+    }
+  } else if (!pointerClass && age > limit) {
+    throw staleFinding(contract, { clockField, publisherAt, limitDays: limit });
   }
 
   const sampleUrl = new URL(`${contract.domain}/resource/${contract.dataset_id}.json`);
@@ -134,9 +219,26 @@ export async function verifySocrata(contract) {
     throw new Error(`${contract.id}: source returned no tabular sample row`);
   }
   if (pointerClass) {
-    return `${contract.dataset_id} · reachable (pointer; freshness not gated; ${Math.max(0, Math.floor(age))}d since rowsUpdatedAt)`;
+    return `${contract.dataset_id} · reachable (pointer; freshness not gated; ${Math.max(0, Math.floor(age))}d since ${clockField})`;
   }
-  return `${contract.dataset_id} · ${Math.max(0, Math.floor(age))}d old`;
+  if (pin) {
+    return `${contract.dataset_id} · stable reference unchanged at ${isoDay(publisherAt)} (${clockField}; ${Math.max(0, Math.floor(age))}d)`;
+  }
+  return `${contract.dataset_id} · ${Math.max(0, Math.floor(age))}d old (${clockField})`;
+}
+
+/** Read the publisher column a contract declares as its vintage. */
+async function publisherDeclaredVintage(contract, field) {
+  const url = new URL(`${contract.domain}/resource/${contract.dataset_id}.json`);
+  url.searchParams.set("$select", `max(${field}) as latest`);
+  const response = await labeledFetch(contract.id, "vintage", url.toString());
+  if (!response.ok) throw new Error(`${contract.id}: vintage HTTP ${response.status}`);
+  const rows = await responseJson(response, contract.id);
+  const latest = parsePublisherInstant(rows?.[0]?.latest);
+  if (!Number.isFinite(latest)) {
+    throw new Error(`${contract.id}: declared publisher vintage field ${field} carries no value`);
+  }
+  return latest;
 }
 
 function checkbookRequest(contract) {
@@ -175,7 +277,12 @@ export async function verifyCheckbook(contract) {
     if (!Number.isFinite(date)) throw new Error(`${contract.id}: no contract registration freshness date`);
     const age = ageDays(date);
     if (age > contract.max_stale_days) {
-      throw new Error(`${contract.id}: latest bounded sample is stale (${Math.floor(age)} days; limit ${contract.max_stale_days})`);
+      throw staleFinding(contract, {
+        clockField: "prime_contract_registration_date",
+        publisherAt: date,
+        limitDays: contract.max_stale_days,
+        kind: "latest bounded sample",
+      });
     }
   }
   return contract.data_type === "Spending"
@@ -195,7 +302,11 @@ async function verifyArcgis(contract) {
   if (!Number.isFinite(edited)) throw new Error(`${contract.id}: no lastEditDate freshness timestamp`);
   const age = ageDays(edited);
   if (age > contract.max_stale_days) {
-    throw new Error(`${contract.id}: source is stale (${Math.floor(age)} days; limit ${contract.max_stale_days})`);
+    throw staleFinding(contract, {
+      clockField: "lastEditDate",
+      publisherAt: edited,
+      limitDays: contract.max_stale_days,
+    });
   }
   const sample = new URL(`${contract.endpoint}/query`);
   sample.search = new URLSearchParams({
@@ -328,7 +439,12 @@ async function verifyJsonMachineEndpoint(contract, probeUrl) {
     if (Number.isFinite(parsed)) {
       const age = ageDays(parsed);
       if (age > contract.max_stale_days) {
-        throw new Error(`${contract.id}: machine endpoint is stale (${Math.floor(age)} days; limit ${contract.max_stale_days})`);
+        throw staleFinding(contract, {
+          clockField: "last-modified",
+          publisherAt: parsed,
+          limitDays: contract.max_stale_days,
+          kind: "machine endpoint",
+        });
       }
       return `JSON machine endpoint · ${Math.max(0, Math.floor(age))}d old`;
     }
@@ -365,7 +481,12 @@ async function verifyJsDumpMachineEndpoint(contract, probeUrl) {
     if (Number.isFinite(parsed)) {
       const age = ageDays(parsed);
       if (age > contract.max_stale_days) {
-        throw new Error(`${contract.id}: machine dump is stale (${Math.floor(age)} days; limit ${contract.max_stale_days})`);
+        throw staleFinding(contract, {
+          clockField: "last-modified",
+          publisherAt: parsed,
+          limitDays: contract.max_stale_days,
+          kind: "machine dump",
+        });
       }
       return `HTML + machine dump · ${Math.max(0, Math.floor(age))}d old`;
     }
@@ -468,7 +589,12 @@ async function verifyRss(contract) {
     if (Number.isFinite(parsed)) {
       const age = ageDays(parsed);
       if (age > contract.max_stale_days) {
-        throw new Error(`${contract.id}: feed is stale (${Math.floor(age)} days; limit ${contract.max_stale_days})`);
+        throw staleFinding(contract, {
+          clockField: "feed publication date",
+          publisherAt: parsed,
+          limitDays: contract.max_stale_days,
+          kind: "feed",
+        });
       }
       return `${Math.max(0, Math.floor(age))}d old`;
     }
@@ -536,6 +662,7 @@ export async function verifySourceContracts({ live = false } = {}) {
   }
 
   const results = [];
+  const findings = [];
   if (live && errors.length === 0) {
     const settled = await mapPool(registry.contracts, LIVE_CONCURRENCY, async (contract) => {
       try {
@@ -551,10 +678,11 @@ export async function verifySourceContracts({ live = false } = {}) {
         const message = reason?.message || String(reason);
         // Never emit a bare "fetch failed" / "TypeError" line.
         errors.push(message.includes(":") ? message : `unknown-source: ${message}`);
+        if (reason?.finding) findings.push(reason.finding);
       }
     }
   }
-  return { errors, results, contracts: registry.contracts.length };
+  return { errors, results, findings, contracts: registry.contracts.length };
 }
 
 async function main() {
@@ -563,6 +691,9 @@ async function main() {
   for (const result of report.results) console.log(`ok ${result.id}: ${result.detail}`);
   if (report.errors.length) {
     for (const error of report.errors) console.error(`error ${error}`);
+    // Machine-readable companion to each freshness error, so the scheduled
+    // monitor records both clocks rather than re-parsing English prose.
+    for (const finding of report.findings) console.error(`finding ${JSON.stringify(finding)}`);
     process.exitCode = 1;
     return;
   }

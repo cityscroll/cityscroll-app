@@ -1,0 +1,4 @@
+{
+  "comment": "A retained snapshot older than the publisher clock, so a freshness finding can be shown naming our acquisition as the stale side.",
+  "retrieved_at": "2025-06-01T00:00:00.000Z"
+}

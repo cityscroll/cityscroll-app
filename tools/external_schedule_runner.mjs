@@ -113,10 +113,53 @@ function sourceHealthy(output) {
   return [...output.matchAll(/^ok ([a-z0-9-]+):/gm)].map((match) => match[1]);
 }
 
+/**
+ * The live verifier prints a machine-readable companion line for every
+ * freshness error. It carries both clocks — the publisher's own updated stamp
+ * and the vintage our retained snapshot states — so the issue this job opens
+ * says which side is stale instead of leaving a bare day count to guess at.
+ */
+export function sourceFindings(output) {
+  const findings = new Map();
+  for (const match of output.matchAll(/^finding (\{.*\})$/gm)) {
+    try {
+      const finding = JSON.parse(match[1]);
+      if (finding?.source_contract_id) findings.set(finding.source_contract_id, finding);
+    } catch { /* a malformed companion line never hides the error it accompanies */ }
+  }
+  return findings;
+}
+
+function clockLines(finding) {
+  if (!finding) return [];
+  const side = {
+    publisher: "Stale side: the publisher. Our retained snapshot is at or after the publisher clock.",
+    acquisition: "Stale side: our acquisition. The publisher has published past our retained snapshot.",
+    unknown: "Stale side: undetermined. This source declares no retained vintage to compare.",
+  }[finding.stale_side] || "Stale side: undetermined.";
+  return [
+    "",
+    `Publisher clock (${finding.publisher_clock_basis}): ${finding.publisher_updated_at || "unknown"} (${finding.publisher_age_days} days; limit ${finding.limit_days}).`,
+    `Our retained vintage: ${finding.retained_vintage_at || "not declared"}`
+      + `${finding.retained_vintage_artifact ? ` (${finding.retained_vintage_artifact} ${finding.retained_vintage_field})` : ""}.`,
+    side,
+  ];
+}
+
 function classify(detail) {
   if (/stale/i.test(detail)) return "stale";
   if (/fetch failed|HTTP 5\d\d|ENOTFOUND|timed out|DNS/i.test(detail)) return "outage";
   return "schema drift";
+}
+
+/** The issue text one drifted source contract opens, naming both clocks. */
+export function sourceContractIssueBody(failure, finding) {
+  return [
+    `Classification: ${classify(failure.detail)}.`,
+    `Source contract: ${failure.id}.`,
+    `Detail: ${failure.detail}`,
+    ...clockLines(finding),
+  ].join("\n");
 }
 
 async function runSourceContracts(job, context) {
@@ -124,6 +167,7 @@ async function runSourceContracts(job, context) {
   const output = `${resultRun.stdout}${resultRun.stderr}`;
   const failures = sourceFailures(output);
   const healthy = sourceHealthy(output);
+  const findings = sourceFindings(output);
   const observed = new Date().toISOString();
   const receipts = [
     ...healthy.map((id) => ({
@@ -142,8 +186,10 @@ async function runSourceContracts(job, context) {
       observed_at: observed,
       status: "failed",
       run_id: `${context.runKey}:${failure.id}`,
-      publisher_clock_basis: null,
-      publisher_updated_at: null,
+      publisher_clock_basis: findings.get(failure.id)?.publisher_clock_basis ?? null,
+      publisher_updated_at: findings.get(failure.id)?.publisher_updated_at ?? null,
+      retained_vintage_at: findings.get(failure.id)?.retained_vintage_at ?? null,
+      stale_side: findings.get(failure.id)?.stale_side ?? null,
       clock_kind: "check",
       exact_error: failure.detail,
     })),
@@ -164,7 +210,10 @@ async function runSourceContracts(job, context) {
   };
   const intents = failures.map((failure) => ({
     result,
-    issue: issueIntent(job, context.runKey, { ...result, body: [`Classification: ${classify(failure.detail)}.`, `Source contract: ${failure.id}.`, `Detail: ${failure.detail}`].join("\n") }, "open", {
+    issue: issueIntent(job, context.runKey, {
+      ...result,
+      body: sourceContractIssueBody(failure, findings.get(failure.id)),
+    }, "open", {
       title: `Live civic-data source contract drift: ${failure.id}`,
       title_aliases: ["Live civic-data source contract drift"],
       body_contains: [`error ${failure.id}:`],

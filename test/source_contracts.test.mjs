@@ -8,6 +8,7 @@ import {
   classifyMocsFieldCase,
   loadSourceContractFixtures,
   loadSourceContracts,
+  readRetainedVintage,
   resolveProbeEndpoint,
   validateSourceContractFixtures,
   validateSourceContracts,
@@ -364,5 +365,198 @@ test("passport-public contracts declare bot-blocked CI egress", () => {
     assert.equal(c.egress_class, "bot_blocked");
     assert.equal(c.landing_probe, "bot_blocked");
     assert.ok(c.endpoint.includes("dataJs"));
+  }
+});
+
+// A drifted source contract has two possible causes that a single day count
+// cannot tell apart: the publisher stopped publishing, or our acquisition
+// stopped landing. Every freshness finding therefore names both clocks.
+
+function socrataMetadata({ rowsUpdatedAt, fields = ["record_id"] }) {
+  return new Response(JSON.stringify({
+    assetType: "dataset",
+    columns: fields.map((fieldName) => ({ fieldName })),
+    rowsUpdatedAt,
+  }), { status: 200, headers: { "Content-Type": "application/json" } });
+}
+
+test("a freshness finding names the publisher clock, our retained vintage, and the stale side", async (t) => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  const published = Date.UTC(2026, 0, 10) / 1000;
+  globalThis.fetch = async () => socrataMetadata({ rowsUpdatedAt: published });
+
+  // Our snapshot post-dates the publisher: the publisher is the stale side.
+  const publisherBehind = {
+    id: "annual-examination-schedule",
+    domain: "https://data.example.gov",
+    dataset_id: "aaaa-bbbb",
+    required_fields: ["record_id"],
+    max_stale_days: 7,
+  };
+  const behind = await verifySocrata(publisherBehind).catch((error) => error);
+  assert.match(behind.message, /publisher rowsUpdatedAt 2026-01-10, \d+ days; limit 7/);
+  assert.match(behind.message, /retained vintage \d{4}-\d{2}-\d{2} from site\/data\/staffing_exams\.json/);
+  assert.match(behind.message, /the publisher has not published since/);
+  assert.equal(behind.finding.stale_side, "publisher");
+  assert.equal(behind.finding.publisher_clock_basis, "rowsUpdatedAt");
+  assert.equal(behind.finding.publisher_updated_at, "2026-01-10T00:00:00.000Z");
+  assert.equal(behind.finding.limit_days, 7);
+  assert.ok(Date.parse(behind.finding.retained_vintage_at) >= Date.parse(behind.finding.publisher_updated_at));
+
+  // Our snapshot predates the publisher: our acquisition is the stale side.
+  const acquisitionBehind = {
+    ...publisherBehind,
+    id: "acquisition-behind",
+    freshness_contract: {
+      mode: "periodic",
+      max_stale_days: 7,
+      clock_basis: "publisher_updated",
+      retained_vintage: {
+        artifact_path: "test/fixtures/source_contracts/retained-vintage.json",
+        vintage_fields: ["missing_field", "retrieved_at"],
+      },
+    },
+  };
+  const stale = await verifySocrata(acquisitionBehind).catch((error) => error);
+  assert.equal(stale.finding.stale_side, "acquisition");
+  assert.match(stale.message, /acquisition has not landed the publisher's latest/);
+
+  // A source with no declared retained vintage says so rather than guessing.
+  const undeclared = await verifySocrata({ ...publisherBehind, id: "field-case" }).catch((error) => error);
+  assert.equal(undeclared.finding.stale_side, "unknown");
+  assert.match(undeclared.message, /retained vintage not declared/);
+});
+
+test("a declared publisher vintage field is the clock the live check reads", async (t) => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  const requested = [];
+  // The row-write stamp is fresh; the published vintage the builder ingests is not.
+  globalThis.fetch = async (url) => {
+    requested.push(String(url));
+    if (String(url).includes("/api/views/")) {
+      return socrataMetadata({ rowsUpdatedAt: Math.floor(Date.now() / 1000), fields: ["record_id", "data_current_as_of"] });
+    }
+    if (String(url).includes("%24select=max%28")) {
+      // Socrata floating timestamps carry no zone; the registry reads them as UTC.
+      return new Response(JSON.stringify([{ latest: "2026-01-10T00:00:00.000" }]), {
+        status: 200, headers: { "Content-Type": "application/json" },
+      });
+    }
+    return new Response(JSON.stringify([{ record_id: "1" }]), {
+      status: 200, headers: { "Content-Type": "application/json" },
+    });
+  };
+  const contract = {
+    id: "field-case",
+    domain: "https://data.example.gov",
+    dataset_id: "aaaa-bbbb",
+    required_fields: ["record_id", "data_current_as_of"],
+    max_stale_days: 7,
+    freshness_contract: {
+      mode: "periodic",
+      max_stale_days: 7,
+      clock_basis: "publisher_updated",
+      publisher_vintage_field: "data_current_as_of",
+    },
+  };
+  const error = await verifySocrata(contract).catch((reason) => reason);
+  assert.equal(error.finding.publisher_clock_basis, "data_current_as_of");
+  assert.equal(error.finding.publisher_updated_at, "2026-01-10T00:00:00.000Z");
+  assert.ok(requested.some((url) => url.includes("max%28data_current_as_of%29")));
+});
+
+test("a stable-reference pin gates on the publisher republishing, not on elapsed days", async (t) => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  const pinned = Date.UTC(2024, 3, 10, 10, 0, 5);
+  const contract = {
+    id: "field-case",
+    domain: "https://data.example.gov",
+    dataset_id: "aaaa-bbbb",
+    required_fields: ["record_id"],
+    max_stale_days: 7,
+    freshness_contract: {
+      mode: "periodic",
+      max_stale_days: 7,
+      clock_basis: "publisher_updated",
+      stable_reference: {
+        publisher_updated_at: "2024-04-10T10:00:05Z",
+        retained_vintage_at: "2024-04-10T10:00:05Z",
+        observed_on: "2026-09-07",
+        method: "pin the publisher stamp",
+        evidence: "unchanged since publication",
+        recheck: "re-acquire and re-pin",
+      },
+    },
+  };
+
+  globalThis.fetch = async (url) => (String(url).includes("/api/views/")
+    ? socrataMetadata({ rowsUpdatedAt: pinned / 1000 })
+    : new Response(JSON.stringify([{ record_id: "1" }]), { status: 200, headers: { "Content-Type": "application/json" } }));
+  const detail = await verifySocrata(contract);
+  assert.match(detail, /stable reference unchanged at 2024-04-10/);
+
+  globalThis.fetch = async (url) => (String(url).includes("/api/views/")
+    ? socrataMetadata({ rowsUpdatedAt: Date.UTC(2026, 8, 1) / 1000 })
+    : new Response(JSON.stringify([{ record_id: "1" }]), { status: 200, headers: { "Content-Type": "application/json" } }));
+  await assert.rejects(verifySocrata(contract), /publisher republished .*re-acquire the retained snapshot/s);
+});
+
+test("a stable-reference pin must name a publisher vintage we actually retain", () => {
+  const registry = loadSourceContracts();
+  const dsny = registry.contracts.find((row) => row.id === "dsny-district-boundaries");
+  const pin = dsny.freshness_contract.stable_reference;
+  assert.equal(pin.publisher_updated_at, pin.retained_vintage_at);
+  // The retained geometry states the same publisher instant the contract pins.
+  const geography = readFileSync(new URL("../site/civic_geography_registry.mjs", import.meta.url), "utf8");
+  assert.ok(geography.includes("dsny-district-boundaries"));
+  const retained = readFileSync(new URL("../tools/build_civic_geography.mjs", import.meta.url), "utf8");
+  assert.match(retained, /source_updated_at: "2024-04-10T10:00:05\.000Z"/);
+  assert.equal(Date.parse(pin.publisher_updated_at), Date.parse("2024-04-10T10:00:05.000Z"));
+
+  const drifted = structuredClone(registry);
+  const target = drifted.contracts.find((row) => row.id === "dsny-district-boundaries");
+  target.freshness_contract.stable_reference.retained_vintage_at = "2026-09-07T00:00:00Z";
+  assert.deepEqual(
+    validateSourceContracts(drifted).filter((error) => error.includes("stable_reference")),
+    ["dsny-district-boundaries: stable_reference pins a publisher vintage we do not retain"],
+  );
+});
+
+test("the exam contract reads the same publisher field and limit its builder ingests", () => {
+  const registry = loadSourceContracts();
+  const contract = registry.contracts.find((row) => row.id === "annual-examination-schedule");
+  const field = contract.freshness_contract.publisher_vintage_field;
+  assert.equal(field, "data_current_as_of");
+  assert.ok(contract.required_fields.includes(field));
+
+  // The builder that ingests this dataset gates the same column at the same
+  // limit, so the two checks can no longer disagree about what "stale" means.
+  const builder = readFileSync(new URL("../tools/build_staffing_exams.mjs", import.meta.url), "utf8");
+  const annual = builder.slice(builder.indexOf('id: "dcas-annual-schedule"'));
+  const limit = Number(annual.match(/stale_after_days: (\d+)/)[1]);
+  assert.equal(limit, contract.max_stale_days);
+  assert.equal(limit, contract.freshness_contract.max_stale_days);
+  assert.equal(limit, contract.freshness_policy.limit_days);
+
+  const retained = JSON.parse(readFileSync(new URL("../site/data/exam_sources/annual_schedule.json", import.meta.url), "utf8"));
+  assert.equal(retained.source.stale_after_days, limit);
+});
+
+test("a limit held against publisher drift records why it was not rebased", () => {
+  const registry = loadSourceContracts();
+  for (const [id, limit] of [["nyc-council-members", 90], ["cfb-campaign-contributions", 30]]) {
+    const contract = registry.contracts.find((row) => row.id === id);
+    assert.equal(contract.max_stale_days, limit, id);
+    assert.equal(contract.freshness_policy.limit_days, limit, id);
+    assert.match(contract.freshness_policy.derivation, /held deliberately/, id);
+    assert.ok(contract.freshness_policy.observed_metadata_lag_days > limit, id);
+    // Both declare where our retained vintage lives, so the finding they keep
+    // raising states which side of the contract is actually behind.
+    const reference = contract.freshness_contract.retained_vintage;
+    assert.ok(reference.artifact_path.startsWith("site/data/"), id);
+    assert.ok(readRetainedVintage(reference).at, id);
   }
 });

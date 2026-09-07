@@ -1130,7 +1130,17 @@
         "application_period_end_date",
         "data_current_as_of"
       ],
-      "max_stale_days": 45,
+      "max_stale_days": 95,
+      "freshness_policy": {
+        "limit_days": 95,
+        "method": "Publisher-declared change frequency reconciled with the limit the ingesting builder already enforces on the same column",
+        "observed_on": "2026-09-07",
+        "declared_cadence_days": 92,
+        "observed_metadata_lag_days": 0,
+        "margin_days": 3,
+        "evidence": "Socrata metadata for 4ptz-hmtc declares Update Frequency Annually with a Data Change Frequency of Quarterly. On 2026-09-07 both publisher clocks agree: rowsUpdatedAt is 2026-07-22T18:57:52Z and max(data_current_as_of) is 2026-07-22, 46 days back. tools/build_staffing_exams.mjs has ingested this dataset against a 95-day allowance on data_current_as_of since the exam artifact was built, so a 45-day contract limit reported drift on a source the builder considered current.",
+        "derivation": "92-day quarterly change frequency + 3-day margin = 95-day limit, the allowance tools/build_staffing_exams.mjs already applies to data_current_as_of"
+      },
       "publisher_cadence": "Annual fiscal-year post with monthly in-year updates (publisher description); Open Data metadata may still list annual or quarterly change claims",
       "product_freshness": "Operator-built into data/staffing_exams.json; the artifact displays its source date. Superseded by the open-competitive schedule page and linked NOEs when application windows are open.",
       "used_for": "Upcoming exam cards and application windows when no current NOE has been published yet.",
@@ -1147,9 +1157,14 @@
       "delivery_tier": "inline-at-build",
       "freshness_contract": {
         "mode": "periodic",
-        "max_stale_days": 45,
+        "max_stale_days": 95,
         "clock_basis": "publisher_updated",
-        "serving_max_age_days": 45,
+        "publisher_vintage_field": "data_current_as_of",
+        "retained_vintage": {
+          "artifact_path": "site/data/staffing_exams.json",
+          "vintage_fields": ["sources_retrieved_as_of"]
+        },
+        "serving_max_age_days": 95,
         "serve_contract_id": null
       },
       "health_policy": {
@@ -1961,7 +1976,7 @@
       "landing_page": "https://data.cityofnewyork.us/d/i6mn-amj2",
       "required_fields": ["district", "districtcode", "objectid", "multipolygon"],
       "max_stale_days": 730,
-      "publisher_cadence": "Publisher-managed; no fixed cadence is declared",
+      "publisher_cadence": "Publisher-managed. Socrata metadata declares a monthly automated update, but the rows have not moved since 2024-04-10; sanitation-district geometry changes only when a district is redrawn",
       "product_freshness": "The 2024-04-10 geometry clock is retained independently from DCP Community Districts and checked as an equivalence/drift canary.",
       "used_for": "Backstage-only sanitation-district ingestion, MapPLUTO QA, and DSNY-to-Community-District congruence drift measurement.",
       "code_references": [
@@ -1973,6 +1988,14 @@
         "mode": "periodic",
         "max_stale_days": 730,
         "clock_basis": "publisher_updated",
+        "stable_reference": {
+          "publisher_updated_at": "2024-04-10T10:00:05Z",
+          "retained_vintage_at": "2024-04-10T10:00:05Z",
+          "observed_on": "2026-09-07",
+          "method": "Pin the publisher's own updated stamp and retain the geometry taken from it, so the gate is whether the publisher has republished rather than how many days have passed",
+          "evidence": "Socrata rowsUpdatedAt for i6mn-amj2 read 1712743205 (2024-04-10T10:00:05Z) on 2026-09-07, unchanged for 880 days, and site/civic_geography_registry.mjs retains sanitation_district at source_updated_at 2024-04-10T10:00:05.000Z. Publisher and retained vintage are the same instant, so no absolute-age number describes a defect here: a 730-day limit only counted the days since the boundaries were last redrawn.",
+          "recheck": "When rowsUpdatedAt moves off this pin the check fails and names the new stamp; re-run tools/build_civic_geography.mjs, then re-pin both fields to the vintage actually retained."
+        },
         "serving_max_age_days": 730,
         "serve_contract_id": null
       },
@@ -2848,6 +2871,14 @@
         "office_id"
       ],
       "max_stale_days": 90,
+      "freshness_policy": {
+        "limit_days": 90,
+        "method": "Publisher cadence measured against the product claim the roster carries, with the limit held rather than rebased",
+        "observed_on": "2026-09-07",
+        "observed_metadata_lag_days": 150,
+        "evidence": "Socrata metadata for uvw5-9znb declares Update Frequency As needed with no automation; rowsUpdatedAt read 2026-04-10T18:00:29Z on 2026-09-07, 149 days back. Our acquisition is current: tools/build_person_hub.mjs last landed on 2026-09-06 and site/data/person_hub_lookup.json carries retrieved_at 2026-09-06, so the gap is entirely publisher-side.",
+        "derivation": "A roster states who currently holds office, so an observed publisher gap is not evidence that a wider limit is safe. The 90-day limit is held deliberately and the finding is left to report the publisher gap it measures."
+      },
       "publisher_cadence": "Council membership roster; term rows accumulate over time",
       "product_freshness": "Host-side rebuild writes site/data/person_hub_lookup.json. council_member_id equals Legistar PersonId for official profiles.",
       "used_for": "Official person identity hub (person hub): district, term, and exact PersonId binding for official profiles, person-level votes, lobby targets, and campaign finance recipients.",
@@ -2897,6 +2928,10 @@
         "mode": "periodic",
         "max_stale_days": 90,
         "clock_basis": "publisher_updated",
+        "retained_vintage": {
+          "artifact_path": "site/data/person_hub_lookup.json",
+          "vintage_fields": ["retrieved_at"]
+        },
         "serving_max_age_days": 90,
         "serve_contract_id": null
       },
@@ -3000,6 +3035,14 @@
         "election"
       ],
       "max_stale_days": 30,
+      "freshness_policy": {
+        "limit_days": 30,
+        "method": "Publisher cadence measured against the product claim the edges carry, with the limit held rather than rebased",
+        "observed_on": "2026-09-07",
+        "observed_metadata_lag_days": 262,
+        "evidence": "Socrata metadata for rjkp-yttg declares Update Frequency As needed with no automation; rowsUpdatedAt read 2025-12-19T15:24:13Z on 2026-09-07, 261 days back. Our retained sample is newer than that publication: site/data/official_cfb_influence_lookup.json carries retrieved_at 2026-08-11T19:22:17.361Z, so the gap is publisher-side.",
+        "derivation": "Disclosure filings accumulate continuously, so a long publisher gap is the finding rather than grounds for a wider limit. The 30-day limit is held deliberately and the finding is left to report the publisher gap it measures."
+      },
       "publisher_cadence": "Periodic CFB disclosure filings",
       "product_freshness": "Host-side sample of modern City Council (officecd=5) rows into official_cfb_influence_lookup.json when gates clear.",
       "used_for": "Donor \u2192 official recipient influence edges on official profiles via person hub name keys (exact unique person-name join on modern City Council officecd=5 sample; partial coverage).",
@@ -3046,6 +3089,10 @@
         "mode": "periodic",
         "max_stale_days": 30,
         "clock_basis": "publisher_updated",
+        "retained_vintage": {
+          "artifact_path": "site/data/official_cfb_influence_lookup.json",
+          "vintage_fields": ["retrieved_at"]
+        },
         "serving_max_age_days": 30,
         "serve_contract_id": null
       },
