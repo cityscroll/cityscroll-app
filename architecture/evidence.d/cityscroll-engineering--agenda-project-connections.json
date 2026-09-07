@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/agenda-project-connections",
+  "status": "implemented",
+  "fingerprint": "agenda-project-connections.v1",
+  "updated_at": "2026-09-07T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "agenda-project-groups-read-model",
+      "path": "site/agenda_project_groups.mjs"
+    }
+  ]
+}

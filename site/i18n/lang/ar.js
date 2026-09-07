@@ -19,6 +19,20 @@
   W.STRINGS = W.STRINGS || {};
   W.STRINGS["ar"] = W.STRINGS["ar"] || {};
   Object.assign(W.STRINGS["ar"], {
+    // A hearing agenda, indexed by the land use projects its matters belong to
+    // (agenda_project_groups.mjs). Counts go through tn(); the publisher's file
+    // numbers, titles and application numbers stay in the source language.
+    agenda_project_groups_heading: "مشاريع استخدام الأراضي في جدول الأعمال هذا",
+    agenda_project_groups_lead_one: "مشروع واحد لاستخدام الأراضي يشمل {linked} من مسائل مجلس المدينة البالغ عددها {total} في جدول الأعمال هذا.",
+    agenda_project_groups_lead_other: "{groups} من مشاريع استخدام الأراضي تشمل {linked} من مسائل مجلس المدينة البالغ عددها {total} في جدول الأعمال هذا.",
+    agenda_project_groups_matters_one: "مسألة واحدة",
+    agenda_project_groups_matters_other: "{n} مسألة",
+    agenda_project_groups_applications: "أرقام الطلبات {values}",
+    agenda_project_groups_expand: "المسائل المقدمة ضمن هذا المشروع",
+    agenda_project_groups_unlinked_one: "مسألة واحدة في جدول الأعمال هذا غير مرتبطة بأي مشروع لاستخدام الأراضي في سجل المصدر هذا، وهي مدرجة أدناه على حدة.",
+    agenda_project_groups_unlinked_other: "{n} من المسائل في جدول الأعمال هذا غير مرتبطة بأي مشروع لاستخدام الأراضي في سجل المصدر هذا، وهي مدرجة أدناه على حدة.",
+    agenda_project_groups_limit: "تُجمع المسائل حسب رقم الطلب البلدي الذي تشترك فيه المسألة والمشروع أصلاً، ولا تُجمع أبداً بحسب تشابه العناوين. ووجودها في جدول الأعمال نفسه لا يعني موقفاً مشتركاً، كما أن جلسة استماع مسجلة أو تأجيلاً مسجلاً هو خطوة في المراجعة وليس قراراً بشأن المشروع. ولا يزال كل بند في جدول الأعمال هذا مدرجاً أدناه بالترتيب الذي يعطيه سجل المصدر.",
+
     scenario_heading: "ما الذي جئت لفعله؟",
     scenario_intro: "اختر مهمة للبدء بمرشحات مفيدة، أو استخدم علامات تبويب الفئات أعلاه.",
     scenario_city_work: "أتقدم بعطاءات لأعمال المدينة",

@@ -1,4 +1,5 @@
 import { officialSourceDisclosure, officialSourceLink } from "./affordance_grammar.mjs";
+import { buildAgendaProjectGroups, renderAgendaProjectGroups } from "./agenda_project_groups.mjs";
 import { resolveMatterDestination } from "./legislative_matter_availability.mjs";
 import { councilMatterFollowMarkup } from "./council_matter_watch.mjs";
 
@@ -217,12 +218,18 @@ export function renderMeetingOutcomesFirstPaint(snapshotOrRecord, requestId) {
       ${label ? `<span class="meeting-badge meeting-badge--${outcomeBucket(label)}">${esc(label)}</span>` : ""}</div>
     </li>`;
   }).join("");
+  // The same agenda, indexed by the land use projects its matters belong to.
+  // It is an index over the list below, never a replacement for it: the agenda
+  // itself is rendered whole either way, and an agenda the accepted bridge never
+  // joined renders no group furniture at all.
+  const projectGroups = renderAgendaProjectGroups(buildAgendaProjectGroups(record.matters));
   return `<section class="meeting-outcomes-static" data-meeting-outcomes-first-paint="1" data-meeting-outcomes-state="present">
     <div class="chain-h">Decision documents and outcomes</div>
     <div class="note">Matched ${eventLink}${event.date ? ` · ${esc(event.date)}` : ""}</div>
     ${officialItems.length
       ? `<div class="meeting-event-docs"><span class="meeting-docs-lbl">Decision documents</span>${officialSourceDisclosure({ items: officialItems, label: "Open official meeting records", className: "meeting-source-disclosure", escape: esc })}</div>`
       : `<div class="note">No decision documents published for this meeting.</div>`}
+    ${projectGroups}
     ${matters ? `<ol class="meeting-agenda">${matters}</ol>` : ""}
   </section>`;
 }

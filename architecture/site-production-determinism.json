@@ -52,6 +52,7 @@
     "site/agency_search_producer.mjs",
     "site/agency_source_identity_contract.mjs",
     "site/agency_vendor_rollup.mjs",
+    "site/agenda_project_groups.mjs",
     "site/alerts_context_carry.mjs",
     "site/alerts_rollup_prefs.mjs",
     "site/analytical_payment_projection.mjs",

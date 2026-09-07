@@ -294,6 +294,63 @@ function ensureMeetingPhaseSpineTools(){
   return meetingPhaseSpineToolsPromise;
 }
 
+// The land-project index over an agenda carries the committed Council land-matter
+// lookup with it, and only a notice that actually reached an outcome ever shows
+// one. It is loaded on that surface rather than with the home page, the same way
+// the phase spine is, and a failed load simply leaves the agenda as it was.
+let agendaProjectGroupToolsPromise=null;
+function ensureAgendaProjectGroupTools(){
+  if(!agendaProjectGroupToolsPromise){
+    agendaProjectGroupToolsPromise=import("../agenda_project_groups.mjs").catch(()=>null);
+  }
+  return agendaProjectGroupToolsPromise;
+}
+
+/**
+ * Keep the reader's place in the grouped agenda across a link out and back.
+ * The browser restores scroll on its own but not an expanded group, and this
+ * list is re-rendered from the read model on the way back, so the open set is
+ * read from and written to this tab's own storage. Expanding still only
+ * expands: it does not navigate, and it saves nothing about the reader.
+ */
+function bindAgendaProjectGroups(root, agendaId, tools){
+  if(!root || !agendaId || !tools || typeof tools.readOpenAgendaProjectGroups !== "function") return;
+  const groups = [...root.querySelectorAll("[data-agenda-project-id]")];
+  if(!groups.length) return;
+  const open = new Set(tools.readOpenAgendaProjectGroups(agendaId));
+  const record = () => {
+    tools.writeOpenAgendaProjectGroups(agendaId, groups
+      .filter(group => group.querySelector(".agenda-project-matters")?.open)
+      .map(group => group.getAttribute("data-agenda-project-id")));
+  };
+  for(const group of groups){
+    const details = group.querySelector(".agenda-project-matters");
+    const projectId = group.getAttribute("data-agenda-project-id") || "";
+    if(!details || !projectId) continue;
+    if(open.has(projectId)) details.open = true;
+    details.addEventListener("toggle", record);
+  }
+}
+
+/**
+ * The reader's own language for the grouped agenda index. Counts are resolved
+ * through tn() so each language picks its own plural form; the publisher's file
+ * numbers, titles and application numbers are never translated.
+ */
+function agendaProjectGroupLabels(){
+  return {
+    heading: t("agenda_project_groups_heading"),
+    lead: ({groups, linked, total}) => tn("agenda_project_groups_lead", groups, {
+      groups: String(groups), linked: String(linked), total: String(total),
+    }),
+    matters: (count) => tn("agenda_project_groups_matters", count),
+    applications: (values) => t("agenda_project_groups_applications", {values}),
+    expand: t("agenda_project_groups_expand"),
+    unlinked: (count) => tn("agenda_project_groups_unlinked", count),
+    limit: t("agenda_project_groups_limit"),
+  };
+}
+
 function meetingPhaseLabel(phase){
   if(!phase) return "—";
   if(phase.label_key) return t(phase.label_key);
@@ -476,7 +533,7 @@ function bindMeetingPhaseUI(root){
   });
 }
 
-function meetingOutcomesHTML(record, notice, phaseTools){
+function meetingOutcomesHTML(record, notice, phaseTools, agendaProjectTools){
   if(!record) return "";
   const join = record.join || {};
   if(!join.matched) return "";
@@ -617,6 +674,21 @@ function meetingOutcomesHTML(record, notice, phaseTools){
     listHTML = `<ol class="meeting-agenda">${listHTML}</ol>`;
   }
 
+  // The same agenda, indexed by the land use projects its matters belong to,
+  // from the same accepted assignments the server-rendered first paint uses.
+  // It sits above the agenda and never edits it: every collapsed matter below
+  // stays exactly where the record put it, joined or not.
+  let projectGroupsHTML = "";
+  if(agendaProjectTools && typeof agendaProjectTools.buildAgendaProjectGroups === "function"){
+    const view = agendaProjectTools.buildAgendaProjectGroups(matters);
+    projectGroupsHTML = view
+      ? agendaProjectTools.renderAgendaProjectGroups(view, {
+        esc: escUiHtml,
+        labels: agendaProjectGroupLabels(),
+      })
+      : "";
+  }
+
   const eventName=event.body_name||event.title||event.event_id||"";
   const eventDate=event.start_time ? fdate(String(event.start_time).slice(0,10)) : (event.event_date || "");
   const eventLink = event.event_url&&eventName
@@ -629,6 +701,7 @@ function meetingOutcomesHTML(record, notice, phaseTools){
     ${matchedNote}
     ${chips.length?`<div class="meeting-summary" role="group" aria-label="${escUiHtml(t("meeting_outcomes_summary_lbl"))}">${chips.join("")}</div>`:""}
     ${eventDocHTML}
+    ${projectGroupsHTML}
     ${listHTML}`;
 }
 
@@ -661,16 +734,23 @@ async function loadMeetingOutcomes(r, el, prefetched=null){
   if(typeof globalThis.mountNoticeActionRail==="function" && $("#nactions")){
     try{ globalThis.mountNoticeActionRail($("#nactions"),r); }catch(_e){}
   }
-  const phaseTools = await ensureMeetingPhaseSpineTools();
+  const [phaseTools, agendaProjectTools] = await Promise.all([
+    ensureMeetingPhaseSpineTools(),
+    ensureAgendaProjectGroupTools(),
+  ]);
   if(!document.contains(el)) return;
-  const liveHTML=meetingOutcomesHTML(data.record, r, phaseTools);
+  const liveHTML=meetingOutcomesHTML(data.record, r, phaseTools, agendaProjectTools);
   if(liveHTML || panelHTML) el.innerHTML = [liveHTML, panelHTML].filter(Boolean).join("");
   bindMeetingPhaseUI(el);
+  bindAgendaProjectGroups(el, r.request_id, agendaProjectTools);
 }
 
+globalThis.agendaProjectGroupLabels = agendaProjectGroupLabels;
+globalThis.bindAgendaProjectGroups = bindAgendaProjectGroups;
 globalThis.bindMeetingPhaseUI = bindMeetingPhaseUI;
 globalThis.collapseMeetingAgenda = collapseMeetingAgenda;
 globalThis.collectRollCallPeople = collectRollCallPeople;
+globalThis.ensureAgendaProjectGroupTools = ensureAgendaProjectGroupTools;
 globalThis.ensureMeetingPhaseSpineTools = ensureMeetingPhaseSpineTools;
 globalThis.isCityCouncilNotice = isCityCouncilNotice;
 globalThis.isMeetingOutcomesEligible = isMeetingOutcomesEligible;
@@ -694,4 +774,5 @@ globalThis.nonCouncilStageLabel = nonCouncilStageLabel;
 globalThis.nonCouncilWhereHTML = nonCouncilWhereHTML;
 globalThis.officialHref = officialHref;
 globalThis.officialIdFromPerson = officialIdFromPerson;
+Object.defineProperty(globalThis, "agendaProjectGroupToolsPromise", { configurable: true, get: () => agendaProjectGroupToolsPromise, set: value => { agendaProjectGroupToolsPromise = value; } });
 Object.defineProperty(globalThis, "meetingPhaseSpineToolsPromise", { configurable: true, get: () => meetingPhaseSpineToolsPromise, set: value => { meetingPhaseSpineToolsPromise = value; } });

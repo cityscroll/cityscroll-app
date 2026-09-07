@@ -19,6 +19,20 @@
   W.STRINGS = W.STRINGS || {};
   W.STRINGS["ur"] = W.STRINGS["ur"] || {};
   Object.assign(W.STRINGS["ur"], {
+    // A hearing agenda, indexed by the land use projects its matters belong to
+    // (agenda_project_groups.mjs). Counts go through tn(); the publisher's file
+    // numbers, titles and application numbers stay in the source language.
+    agenda_project_groups_heading: "اس ایجنڈے میں شامل زمین کے استعمال کے منصوبے",
+    agenda_project_groups_lead_one: "اس ایجنڈے کے {total} سٹی کونسل معاملات میں سے {linked} کا تعلق ایک ہی زمین کے استعمال کے منصوبے سے ہے۔",
+    agenda_project_groups_lead_other: "اس ایجنڈے کے {total} سٹی کونسل معاملات میں سے {linked} کا تعلق {groups} زمین کے استعمال کے منصوبوں سے ہے۔",
+    agenda_project_groups_matters_one: "1 معاملہ",
+    agenda_project_groups_matters_other: "{n} معاملات",
+    agenda_project_groups_applications: "درخواست نمبر {values}",
+    agenda_project_groups_expand: "اس منصوبے کے تحت جمع کرائے گئے معاملات",
+    agenda_project_groups_unlinked_one: "اس ایجنڈے کا ایک معاملہ اس ماخذ ریکارڈ میں کسی زمین کے استعمال کے منصوبے سے منسلک نہیں ہے۔ وہ نیچے الگ سے درج ہے۔",
+    agenda_project_groups_unlinked_other: "اس ایجنڈے کے {n} معاملات اس ماخذ ریکارڈ میں کسی زمین کے استعمال کے منصوبے سے منسلک نہیں ہیں۔ وہ نیچے الگ سے درج ہیں۔",
+    agenda_project_groups_limit: "معاملات کو اس شہری درخواست نمبر کے مطابق گروپ کیا جاتا ہے جو معاملے اور منصوبے میں پہلے سے مشترک ہے، عنوانات کی مشابہت کی بنیاد پر کبھی نہیں۔ ایک ہی ایجنڈے میں شامل ہونا مشترکہ مؤقف نہیں ہے، اور ریکارڈ شدہ سماعت یا التوا جائزے کا ایک مرحلہ ہے، منصوبے پر فیصلہ نہیں۔ اس ایجنڈے کی ہر شے اب بھی نیچے اسی ترتیب سے درج ہے جو ماخذ ریکارڈ دیتا ہے۔",
+
     scenario_heading: "آپ یہاں کیا کرنے آئے ہیں؟",
     scenario_intro: "مفید فلٹرز کے ساتھ شروع کرنے کے لیے ایک کام منتخب کریں، یا اوپر موجود زمرہ ٹیبز استعمال کریں۔",
     scenario_city_work: "میں شہر کے کاموں کے لیے بولی دیتا ہوں",
