@@ -186,7 +186,12 @@ export function materializeCommunityBoardMeetingRow(record, board, observedAt, o
     search_text: record.search_text,
   });
   const institutionEdges = buildCommunityBoardInstitutionEdges([{
-    meeting,
+    // The join's publisher-identifier evidence must come from an identity the
+    // publisher stated. An official-calendar entry has none, and the record id
+    // we derive for it restates the board and the date the join already checks
+    // separately; letting that stand in promoted an edge whose own row
+    // published no publisher identifier at all.
+    meeting: { ...meeting, publisher_identifier: record.publisher_identifier || null },
     source_record: record,
   }], {
     asOf: observedAt,
@@ -210,12 +215,7 @@ export function materializeCommunityBoardMeetingRow(record, board, observedAt, o
     title: record.title,
     category: record.category,
     format: record.format,
-    // The identity the meeting object resolved, not only the one the publisher
-    // stated. A calendar record carries its identity in its own record id, and
-    // reading the raw field alone left the row saying it had no publisher
-    // identifier while the institution edge built from the same meeting was
-    // promoted on one.
-    publisher_identifier: meeting.publisher_identifier || record.publisher_identifier || null,
+    publisher_identifier: record.publisher_identifier,
     publisher_identifiers: record.publisher_identifiers,
     source_role: record.source_role || "upcoming_meetings",
     observed_receipt: record.observed_receipt,

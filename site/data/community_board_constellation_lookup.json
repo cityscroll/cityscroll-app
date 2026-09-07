@@ -8110,7 +8110,7 @@
       "display_name": "Brooklyn Community Board 18",
       "path": "/community-boards/brooklyn-cb-18/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 6,
         "generated_at": "2026-09-06",
         "method": "community_board_constellation_v1"
@@ -8259,10 +8259,10 @@
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:brooklyn-cb-18:2026-06-17:regular-monthly-board-meeting",
           "target_name": "Upcoming & recent proceedings",
-          "count": 1,
-          "state": "matched",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-18%3A2026-06-17%3Aregular-monthly-board-meeting",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-18%3A2026-06-17%3Aregular-monthly-board-meeting",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
           "scope": {
             "board": "brooklyn-cb-18"
           },
@@ -8275,10 +8275,9 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": "nyc-calendar:brooklyn-cb-18:2026-06-17:regular-monthly-board-meeting",
+            "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "source_href": "https://www.nyc.gov/site/brooklyncb18/meetings/calendar.page",
             "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
@@ -8974,7 +8973,7 @@
       "display_name": "Manhattan Community Board 3",
       "path": "/community-boards/manhattan-cb-03/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 6,
         "generated_at": "2026-09-06",
         "method": "community_board_constellation_v1"
@@ -9123,10 +9122,10 @@
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-10:health-seniors-human-services-youth-education-human-rights-committee",
           "target_name": "Upcoming & recent proceedings",
-          "count": 9,
-          "state": "matched",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-10%3Ahealth-seniors-human-services-youth-education-human-rights-committee",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-10%3Ahealth-seniors-human-services-youth-education-human-rights-committee",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
           "scope": {
             "board": "manhattan-cb-03"
           },
@@ -9139,10 +9138,9 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": "nyc-calendar:manhattan-cb-03:2026-09-10:health-seniors-human-services-youth-education-human-rights-committee",
+            "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "source_href": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
             "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
@@ -11816,7 +11814,7 @@
       "display_name": "Queens Community Board 1",
       "path": "/community-boards/queens-cb-01/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 6,
         "generated_at": "2026-09-06",
         "method": "community_board_constellation_v1"
@@ -11965,10 +11963,10 @@
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:queens-cb-01:2026-09-22:full-board-public-hearing-meetings",
           "target_name": "Upcoming & recent proceedings",
-          "count": 1,
-          "state": "matched",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Aqueens-cb-01%3A2026-09-22%3Afull-board-public-hearing-meetings",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Aqueens-cb-01%3A2026-09-22%3Afull-board-public-hearing-meetings",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
           "scope": {
             "board": "queens-cb-01"
           },
@@ -11981,10 +11979,9 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": "nyc-calendar:queens-cb-01:2026-09-22:full-board-public-hearing-meetings",
+            "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "source_href": "https://www.nyc.gov/site/queenscb1/calendar/calendar.page",
             "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
@@ -13523,7 +13520,7 @@
       "display_name": "Queens Community Board 7",
       "path": "/community-boards/queens-cb-07/",
       "summary": {
-        "matched_categories": 3,
+        "matched_categories": 2,
         "category_count": 6,
         "generated_at": "2026-09-06",
         "method": "community_board_constellation_v1"
@@ -13672,10 +13669,10 @@
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:queens-cb-07:2026-09-14:regular-public-hearing-meeting",
           "target_name": "Upcoming & recent proceedings",
-          "count": 1,
-          "state": "matched",
-          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Aqueens-cb-07%3A2026-09-14%3Aregular-public-hearing-meeting",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Aqueens-cb-07%3A2026-09-14%3Aregular-public-hearing-meeting",
+          "count": null,
+          "state": "unknown",
+          "href": null,
+          "canonical_href": null,
           "scope": {
             "board": "queens-cb-07"
           },
@@ -13688,10 +13685,9 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": "nyc-calendar:queens-cb-07:2026-09-14:regular-public-hearing-meeting",
+            "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "source_href": "https://www.nyc.gov/site/queenscb7/meetings/meetings.page",
             "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
