@@ -96,6 +96,7 @@ function hydrateLandRecordLinks(record, selection){
     if(!tools || selection!==landSelectionSeq || !detail.isConnected) return;
     const applicant=detail.querySelector("[data-land-record-applicant]");
     if(applicant) applicant.innerHTML=tools.landRecordApplicantHTML(record.primary_applicant||"—",{escape:escUiHtml});
+    paintSameApplicantProjects(detail,record,selection);
     const placeOptions={
       borough:record.borough,
       labelForCouncilDistrict:value=>t("council_district_short",{n:value}),
@@ -108,6 +109,24 @@ function hydrateLandRecordLinks(record, selection){
       if(host) host.innerHTML=tools.landRecordPlaceHTML(kind,value,placeOptionsWithRegistry);
     }
   });
+}
+
+/* Other retained projects whose published applicant label is byte-for-byte this
+   record's. Grouped over the bounded snapshot the route already loaded, so opening
+   a project adds no publisher request; the module owns the grouping and the copy. */
+let sameApplicantToolsPromise=null;
+async function paintSameApplicantProjects(detail,record,selection){
+  const host=detail?.querySelector("#land-same-applicant-host");
+  if(!host) return;
+  const [tools,projects]=await Promise.all([
+    sameApplicantToolsPromise||=import("../land_same_applicant_projects.mjs").catch(()=>null),
+    loadLandProjectsSnapshot().catch(()=>null),
+  ]);
+  if(!tools||selection!==landSelectionSeq||!host.isConnected) return;
+  host.innerHTML=tools.landSameApplicantProjectsSectionHTML(
+    {record,projects,vintage:landProjectsSnapshotVintage},
+    {t,tn,escape:escUiHtml,formatDate:fdate},
+  );
 }
 
 const ZAPBBL="https://data.cityofnewyork.us/resource/2iga-a6mk.json";
@@ -149,6 +168,7 @@ const LAND_MEETINGS_SNAPSHOT_URL="data/shared_meeting_read_model.json";
 const LAND_PROPERTY_SNAPSHOT_URL="data/property_domain_observations.json";
 let landDefaultSnapshotPromise=null;
 let landUpcomingHearingsPromise=null;
+let landProjectsSnapshotVintage=null;
 let landProjectsSnapshotPromise=null,landBblSnapshotPromise=null,landBblCentroidSnapshotPromise=null,landMeetingsSnapshotPromise=null,landPropertySnapshotPromise=null;
 function loadLandDefaultSnapshot(){
   if(!landDefaultSnapshotPromise){
@@ -169,7 +189,10 @@ function loadLandProjectsSnapshot(){
     landProjectsSnapshotPromise=Promise.all([
       loadLandDefaultSnapshot(),
       loadJsonPreferWorker("/zap-projects-lookup",LAND_PROJECTS_SNAPSHOT_URL,d=>d?.rows?.length),
-    ]).then(([defaults,warehouse])=>mergeLandProjects(warehouse,defaults));
+    ]).then(([defaults,warehouse])=>{
+      landProjectsSnapshotVintage=warehouse?.materialized_at||null;
+      return mergeLandProjects(warehouse,defaults);
+    });
   }
   return landProjectsSnapshotPromise;
 }
@@ -763,7 +786,8 @@ async function landSelect(i, el){
     <div class="agencybar">
       <div><div class="big" style="font-size:17px" data-land-record-applicant>${escUiHtml(r.primary_applicant||"—")}</div><div class="lbl">${t("applicant_lbl")}</div></div>
       <div><div class="big" style="font-size:17px" data-land-record-place-group><span data-land-record-place="borough">${escUiHtml(r.borough||"")}</span>${r.community_district?` · <span data-land-record-place="community">${escUiHtml("CD "+r.community_district)}</span>`:""}${r.cc_district?` · <span data-land-record-place="council">${escUiHtml(t("council_district_short",{n:r.cc_district}))}</span>`:""}</div><div class="lbl">${t("where_lbl")}</div></div>
-    </div>`;
+    </div>
+    <div id="land-same-applicant-host"></div>`;
   const {bits:observedBits}=landObservedDatesView(r);
   if(observedBits.length){
     html+=`<p class="land-observed-dates" data-land-observed-dates="1">${observedBits.join(" · ")}</p>`;

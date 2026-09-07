@@ -1,0 +1,904 @@
+{
+  "schema_version": 1,
+  "feature": "land-same-applicant-projects",
+  "record": "cityscroll-engineering/land-same-applicant-projects",
+  "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+  "data_vintage": "2026-09-06T16:05:05.204Z",
+  "server": "local static server over the built _site, external hosts aborted",
+  "subjects": {
+    "corpus_projects": 244,
+    "repeated_labels": 18,
+    "projects_covered": 44,
+    "pair_label": "GO Quay LLC",
+    "pair_subject": "2024K0358",
+    "pair_other": "2025K0287",
+    "pair_other_name": "Monitor Point - 56 Quay Demapping",
+    "pair_other_status": "In Public Review",
+    "pair_subject_name": "Monitor Point",
+    "largest_label": "DPR - Department of Parks & Recreation NYC",
+    "largest_subject": "2022X0150",
+    "largest_others": [
+      "2023M0452",
+      "2025K0318",
+      "2025Q0314",
+      "2025Q0316",
+      "2026R0186",
+      "P2009M0029",
+      "P2012R0043"
+    ],
+    "person_label": "Eric Palatnik",
+    "person_subject": "2023K0368",
+    "person_other": "2024R0300",
+    "singleton_subject": "2018X0438"
+  },
+  "files": [
+    {
+      "name": "positive-pair-390.png",
+      "bytes": 29874,
+      "sha256": "9da63862ff250e89e1b4fe87ed766a80c1a5f95e436f3ffac2fa646fb031dca0",
+      "route": "/#land/2024K0358",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
+      "specimen": "positive-pair",
+      "assertion": "a repeated exact applicant label lists the other retained project with its published name, source status, milestone and date, and excludes the subject",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": []
+      },
+      "evidence": {
+        "present": true,
+        "open": true,
+        "relation": "lists_same_applicant",
+        "project_ref": "project:2024K0358",
+        "applicant_label": "GO Quay LLC",
+        "shown": 1,
+        "total": 1,
+        "heading": "Other projects listing this applicant",
+        "note": "These projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.",
+        "text": "OTHER PROJECTS LISTING THIS APPLICANT\n1 other project\n\nThese projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.\n\nMonitor Point - 56 Quay Demapping\n2025K0287\nIn Public Review\nAd-hoc - CPC Review of Modification Scope \u00b7 2026-07-01\n\nProject records as of 2026-09-06.",
+        "items": [
+          {
+            "project_id": "2025K0287",
+            "name": "Monitor Point - 56 Quay Demapping",
+            "href": "#land/2025K0287",
+            "status": "In Public Review",
+            "status_field": "public_status",
+            "when": "Ad-hoc - CPC Review of Modification Scope \u00b7 2026-07-01",
+            "when_date": "2026-07-01T00:00:00.000"
+          }
+        ]
+      }
+    },
+    {
+      "name": "positive-largest-390.png",
+      "bytes": 79913,
+      "sha256": "8ffb51482b0862e756b78baf44703d4ebf8a31e0db762c5d622b808a04d9418e",
+      "route": "/#land/2022X0150",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
+      "specimen": "positive-largest",
+      "assertion": "the largest repeated label lists every other retained project in the corpus the page holds, each project id once, and says so when a milestone date is not published",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": []
+      },
+      "evidence": {
+        "present": true,
+        "open": true,
+        "relation": "lists_same_applicant",
+        "project_ref": "project:2022X0150",
+        "applicant_label": "DPR - Department of Parks & Recreation NYC",
+        "shown": 7,
+        "total": 7,
+        "heading": "Other projects listing this applicant",
+        "note": "These projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.",
+        "text": "OTHER PROJECTS LISTING THIS APPLICANT\n7 other projects\n\nThese projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.\n\nAllen Street Mall Demapping\n2023M0452\nCompleted\nMM - Final Letter Sent\nBrooklyn CD 7 Walk to Park Site Selection\n2025K0318\nNoticed\nPC - Prepare Draft Land Use Application \u00b7 2025-10-20\nQueens CD 4 Walk to Park Site Selection/Acq.\n2025Q0314\nNoticed\nPC - Review Draft Land Use Application \u00b7 2025-03-06\nQueens CD 2 Walk to Park Site Selection/Acq.\n2025Q0316\nIn Public Review\nPC - CPC Public Meeting - Vote \u00b7 2026-06-30\n336 Meredith Avenue Fleet Maintenance Facility\n2026R0186\nIn Public Review\nPC - CPC Public Meeting - Vote \u00b7 2026-06-30\nHigh Line Signage Master Plan\nP2009M0029\nFiled\nMilestone date not published\nFRESHKILLS PARK\nP2012R0043\nFiled\nMilestone date not published\n\nProject records as of 2026-09-06.",
+        "items": [
+          {
+            "project_id": "2023M0452",
+            "name": "Allen Street Mall Demapping",
+            "href": "#land/2023M0452",
+            "status": "Completed",
+            "status_field": "public_status",
+            "when": "MM - Final Letter Sent",
+            "when_date": ""
+          },
+          {
+            "project_id": "2025K0318",
+            "name": "Brooklyn CD 7 Walk to Park Site Selection",
+            "href": "#land/2025K0318",
+            "status": "Noticed",
+            "status_field": "public_status",
+            "when": "PC - Prepare Draft Land Use Application \u00b7 2025-10-20",
+            "when_date": "2025-10-20T00:00:00.000"
+          },
+          {
+            "project_id": "2025Q0314",
+            "name": "Queens CD 4 Walk to Park Site Selection/Acq.",
+            "href": "#land/2025Q0314",
+            "status": "Noticed",
+            "status_field": "public_status",
+            "when": "PC - Review Draft Land Use Application \u00b7 2025-03-06",
+            "when_date": "2025-03-06T00:00:00.000"
+          },
+          {
+            "project_id": "2025Q0316",
+            "name": "Queens CD 2 Walk to Park Site Selection/Acq.",
+            "href": "#land/2025Q0316",
+            "status": "In Public Review",
+            "status_field": "public_status",
+            "when": "PC - CPC Public Meeting - Vote \u00b7 2026-06-30",
+            "when_date": "2026-06-30T00:00:00.000"
+          },
+          {
+            "project_id": "2026R0186",
+            "name": "336 Meredith Avenue Fleet Maintenance Facility",
+            "href": "#land/2026R0186",
+            "status": "In Public Review",
+            "status_field": "public_status",
+            "when": "PC - CPC Public Meeting - Vote \u00b7 2026-06-30",
+            "when_date": "2026-06-30T00:00:00.000"
+          },
+          {
+            "project_id": "P2009M0029",
+            "name": "High Line Signage Master Plan",
+            "href": "#land/P2009M0029",
+            "status": "Filed",
+            "status_field": "public_status",
+            "when": "Milestone date not published",
+            "when_date": ""
+          },
+          {
+            "project_id": "P2012R0043",
+            "name": "FRESHKILLS PARK",
+            "href": "#land/P2012R0043",
+            "status": "Filed",
+            "status_field": "public_status",
+            "when": "Milestone date not published",
+            "when_date": ""
+          }
+        ]
+      }
+    },
+    {
+      "name": "positive-person-390.png",
+      "bytes": 27846,
+      "sha256": "668f6d7c9e46824401870d25eaece90f2f92137cd490649dbf88ad072cea27bd",
+      "route": "/#land/2023K0368",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
+      "specimen": "positive-person",
+      "assertion": "a person-shaped applicant is grouped in the applicant position and is never called an owner, developer, parent company, affiliate or subsidiary",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": []
+      },
+      "evidence": {
+        "present": true,
+        "open": true,
+        "relation": "lists_same_applicant",
+        "project_ref": "project:2023K0368",
+        "applicant_label": "Eric Palatnik",
+        "shown": 1,
+        "total": 1,
+        "heading": "Other projects listing this applicant",
+        "note": "These projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.",
+        "text": "OTHER PROJECTS LISTING THIS APPLICANT\n1 other project\n\nThese projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.\n\n198-208 Richmond Terrace\n2024R0300\nIn Public Review\nEAS - City Council Review \u00b7 2026-06-10\n\nProject records as of 2026-09-06.",
+        "items": [
+          {
+            "project_id": "2024R0300",
+            "name": "198-208 Richmond Terrace",
+            "href": "#land/2024R0300",
+            "status": "In Public Review",
+            "status_field": "public_status",
+            "when": "EAS - City Council Review \u00b7 2026-06-10",
+            "when_date": "2026-06-10T00:00:00.000"
+          }
+        ]
+      }
+    },
+    {
+      "name": "translated-es-390.png",
+      "bytes": 32487,
+      "sha256": "5c678182cd846799995c6a921b4f9b8689295bfb45b8923aa964d5606fc69c46",
+      "route": "/?lang=es#land/2024K0358",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
+      "specimen": "translated",
+      "assertion": "the section's own copy is translated while the published project name and source status stay in the source language",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": []
+      },
+      "evidence": {
+        "present": true,
+        "open": true,
+        "relation": "lists_same_applicant",
+        "project_ref": "project:2024K0358",
+        "applicant_label": "GO Quay LLC",
+        "shown": 1,
+        "total": 1,
+        "heading": "Otros proyectos que registran este solicitante",
+        "note": "Estos proyectos registran exactamente el mismo nombre de solicitante en el Zoning Application Portal. Un nombre compartido es una etiqueta publicada compartida: por s\u00ed solo no acredita propiedad com\u00fan, una empresa matriz, una representaci\u00f3n com\u00fan ni una posici\u00f3n pol\u00edtica.",
+        "text": "OTROS PROYECTOS QUE REGISTRAN ESTE SOLICITANTE\n1 proyecto m\u00e1s\n\nEstos proyectos registran exactamente el mismo nombre de solicitante en el Zoning Application Portal. Un nombre compartido es una etiqueta publicada compartida: por s\u00ed solo no acredita propiedad com\u00fan, una empresa matriz, una representaci\u00f3n com\u00fan ni una posici\u00f3n pol\u00edtica.\n\nMonitor Point - 56 Quay Demapping\n2025K0287\nIn Public Review\nAd-hoc - CPC Review of Modification Scope \u00b7 2026-07-01\n\nRegistros de proyectos al 2026-09-06.",
+        "items": [
+          {
+            "project_id": "2025K0287",
+            "name": "Monitor Point - 56 Quay Demapping",
+            "href": "#land/2025K0287",
+            "status": "In Public Review",
+            "status_field": "public_status",
+            "when": "Ad-hoc - CPC Review of Modification Scope \u00b7 2026-07-01",
+            "when_date": "2026-07-01T00:00:00.000"
+          }
+        ]
+      }
+    },
+    {
+      "name": "negative-singleton-390.png",
+      "bytes": 491967,
+      "sha256": "2055cf972b3cfe6b895df9be8c3d9161b62516abba377aaaf779b2fe0f2f0de4",
+      "route": "/#land/2018X0438",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
+      "specimen": "negative-singleton",
+      "assertion": "an applicant label that occurs once in the retained corpus adds no section and no empty furniture",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": []
+      },
+      "evidence": {
+        "present": false,
+        "negative_claim": []
+      }
+    },
+    {
+      "name": "negative-failed-load-390.png",
+      "bytes": 63046,
+      "sha256": "2d16be6a8536955c5348646a7e184b75b4e6bc3d2fb6c83c269e125f2b1f1703",
+      "route": "/#land/2024K0358",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
+      "specimen": "negative-failed-load",
+      "assertion": "a project list that never arrives leaves the applicant area unchanged and never becomes a no-other-projects claim",
+      "axe": null,
+      "evidence": {
+        "present": false,
+        "negative_claim": []
+      }
+    },
+    {
+      "name": "back-navigation-390.png",
+      "bytes": 29874,
+      "sha256": "9da63862ff250e89e1b4fe87ed766a80c1a5f95e436f3ffac2fa646fb031dca0",
+      "route": "/#land/2024K0358 -> /#land/2025K0287 -> back",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
+      "specimen": "back-navigation",
+      "assertion": "each listed project is a reciprocal native link; going back restores the original project and its expanded section",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": []
+      },
+      "evidence": {
+        "forward": {
+          "present": true,
+          "open": true,
+          "relation": "lists_same_applicant",
+          "project_ref": "project:2025K0287",
+          "applicant_label": "GO Quay LLC",
+          "shown": 1,
+          "total": 1,
+          "heading": "Other projects listing this applicant",
+          "note": "These projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.",
+          "text": "OTHER PROJECTS LISTING THIS APPLICANT\n1 other project\n\nThese projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.\n\nMonitor Point\n2024K0358\nIn Public Review\nAd-hoc - CPC Review of Modification Scope \u00b7 2026-07-01\n\nProject records as of 2026-09-06.",
+          "items": [
+            {
+              "project_id": "2024K0358",
+              "name": "Monitor Point",
+              "href": "#land/2024K0358",
+              "status": "In Public Review",
+              "status_field": "public_status",
+              "when": "Ad-hoc - CPC Review of Modification Scope \u00b7 2026-07-01",
+              "when_date": "2026-07-01T00:00:00.000"
+            }
+          ]
+        },
+        "restored": {
+          "present": true,
+          "open": true,
+          "relation": "lists_same_applicant",
+          "project_ref": "project:2024K0358",
+          "applicant_label": "GO Quay LLC",
+          "shown": 1,
+          "total": 1,
+          "heading": "Other projects listing this applicant",
+          "note": "These projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.",
+          "text": "OTHER PROJECTS LISTING THIS APPLICANT\n1 other project\n\nThese projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.\n\nMonitor Point - 56 Quay Demapping\n2025K0287\nIn Public Review\nAd-hoc - CPC Review of Modification Scope \u00b7 2026-07-01\n\nProject records as of 2026-09-06.",
+          "items": [
+            {
+              "project_id": "2025K0287",
+              "name": "Monitor Point - 56 Quay Demapping",
+              "href": "#land/2025K0287",
+              "status": "In Public Review",
+              "status_field": "public_status",
+              "when": "Ad-hoc - CPC Review of Modification Scope \u00b7 2026-07-01",
+              "when_date": "2026-07-01T00:00:00.000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "keyboard-390.png",
+      "bytes": 29966,
+      "sha256": "96256367d4afa4ac1641c09f0655ebeaef98520018515b028968f13344a75abe",
+      "route": "/#land/2024K0358",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
+      "specimen": "keyboard",
+      "assertion": "the disclosure collapses and re-expands from the keyboard alone and never navigates or subscribes",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": []
+      },
+      "evidence": {
+        "present": true,
+        "open": true,
+        "relation": "lists_same_applicant",
+        "project_ref": "project:2024K0358",
+        "applicant_label": "GO Quay LLC",
+        "shown": 1,
+        "total": 1,
+        "heading": "Other projects listing this applicant",
+        "note": "These projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.",
+        "text": "OTHER PROJECTS LISTING THIS APPLICANT\n1 other project\n\nThese projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.\n\nMonitor Point - 56 Quay Demapping\n2025K0287\nIn Public Review\nAd-hoc - CPC Review of Modification Scope \u00b7 2026-07-01\n\nProject records as of 2026-09-06.",
+        "items": [
+          {
+            "project_id": "2025K0287",
+            "name": "Monitor Point - 56 Quay Demapping",
+            "href": "#land/2025K0287",
+            "status": "In Public Review",
+            "status_field": "public_status",
+            "when": "Ad-hoc - CPC Review of Modification Scope \u00b7 2026-07-01",
+            "when_date": "2026-07-01T00:00:00.000"
+          }
+        ]
+      }
+    },
+    {
+      "name": "rtl-ar-390.png",
+      "bytes": 28775,
+      "sha256": "1822eb67108643aa82f4dd34359abfb90d1713cb068f46ad24f5fa2832789ed9",
+      "route": "/?lang=ar#land/2024K0358",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
+      "specimen": "rtl-ar",
+      "assertion": "in a right-to-left language the section reads right-to-left, the published project name stays isolated left-to-right, and the page gains no horizontal scroll",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": []
+      },
+      "evidence": {
+        "present": true,
+        "open": true,
+        "relation": "lists_same_applicant",
+        "project_ref": "project:2024K0358",
+        "applicant_label": "GO Quay LLC",
+        "shown": 1,
+        "total": 1,
+        "heading": "\u0645\u0634\u0627\u0631\u064a\u0639 \u0623\u062e\u0631\u0649 \u062a\u064f\u062f\u0631\u062c \u0645\u0642\u062f\u0651\u0645 \u0627\u0644\u0637\u0644\u0628 \u0646\u0641\u0633\u0647",
+        "note": "\u062a\u0633\u062c\u0651\u0644 \u0647\u0630\u0647 \u0627\u0644\u0645\u0634\u0627\u0631\u064a\u0639 \u0627\u0633\u0645 \u0645\u0642\u062f\u0651\u0645 \u0627\u0644\u0637\u0644\u0628 \u0646\u0641\u0633\u0647 \u062a\u0645\u0627\u0645\u064b\u0627 \u0641\u064a Zoning Application Portal. \u062a\u0637\u0627\u0628\u0642 \u0627\u0644\u0627\u0633\u0645 \u064a\u0639\u0646\u064a \u062a\u0637\u0627\u0628\u0642 \u0627\u0644\u062a\u0633\u0645\u064a\u0629 \u0627\u0644\u0645\u0646\u0634\u0648\u0631\u0629 \u0641\u0642\u0637\u060c \u0648\u0647\u0648 \u0628\u062d\u062f \u0630\u0627\u062a\u0647 \u0644\u0627 \u064a\u062b\u0628\u062a \u0645\u0644\u0643\u064a\u0629 \u0645\u0634\u062a\u0631\u0643\u0629 \u0623\u0648 \u0634\u0631\u0643\u0629 \u0623\u0645\u064b\u0651\u0627 \u0623\u0648 \u062a\u0645\u062b\u064a\u0644\u064b\u0627 \u0645\u0634\u062a\u0631\u0643\u064b\u0627 \u0623\u0648 \u0645\u0648\u0642\u0641\u064b\u0627 \u0633\u064a\u0627\u0633\u064a\u064b\u0627.",
+        "text": "\u0645\u0634\u0627\u0631\u064a\u0639 \u0623\u062e\u0631\u0649 \u062a\u064f\u062f\u0631\u062c \u0645\u0642\u062f\u0651\u0645 \u0627\u0644\u0637\u0644\u0628 \u0646\u0641\u0633\u0647\n\u0645\u0634\u0631\u0648\u0639 \u0622\u062e\u0631 \u0648\u0627\u062d\u062f\n\n\u062a\u0633\u062c\u0651\u0644 \u0647\u0630\u0647 \u0627\u0644\u0645\u0634\u0627\u0631\u064a\u0639 \u0627\u0633\u0645 \u0645\u0642\u062f\u0651\u0645 \u0627\u0644\u0637\u0644\u0628 \u0646\u0641\u0633\u0647 \u062a\u0645\u0627\u0645\u064b\u0627 \u0641\u064a Zoning Application Portal. \u062a\u0637\u0627\u0628\u0642 \u0627\u0644\u0627\u0633\u0645 \u064a\u0639\u0646\u064a \u062a\u0637\u0627\u0628\u0642 \u0627\u0644\u062a\u0633\u0645\u064a\u0629 \u0627\u0644\u0645\u0646\u0634\u0648\u0631\u0629 \u0641\u0642\u0637\u060c \u0648\u0647\u0648 \u0628\u062d\u062f \u0630\u0627\u062a\u0647 \u0644\u0627 \u064a\u062b\u0628\u062a \u0645\u0644\u0643\u064a\u0629 \u0645\u0634\u062a\u0631\u0643\u0629 \u0623\u0648 \u0634\u0631\u0643\u0629 \u0623\u0645\u064b\u0651\u0627 \u0623\u0648 \u062a\u0645\u062b\u064a\u0644\u064b\u0627 \u0645\u0634\u062a\u0631\u0643\u064b\u0627 \u0623\u0648 \u0645\u0648\u0642\u0641\u064b\u0627 \u0633\u064a\u0627\u0633\u064a\u064b\u0627.\n\nMonitor Point - 56 Quay Demapping\n2025K0287\nIn Public Review\nAd-hoc - CPC Review of Modification Scope \u00b7 2026-07-01\n\n\u0633\u062c\u0644\u0627\u062a \u0627\u0644\u0645\u0634\u0627\u0631\u064a\u0639 \u062d\u062a\u0649 2026-09-06.",
+        "items": [
+          {
+            "project_id": "2025K0287",
+            "name": "Monitor Point - 56 Quay Demapping",
+            "href": "#land/2025K0287",
+            "status": "In Public Review",
+            "status_field": "public_status",
+            "when": "Ad-hoc - CPC Review of Modification Scope \u00b7 2026-07-01",
+            "when_date": "2026-07-01T00:00:00.000"
+          }
+        ],
+        "rtl": {
+          "direction": "rtl",
+          "link_dir": "ltr",
+          "link_lang": "en",
+          "document_scroll_width": 390,
+          "viewport_width": 390
+        }
+      }
+    },
+    {
+      "name": "no-javascript-390.png",
+      "bytes": 63601,
+      "sha256": "25818de5e5e3ccdefaffc6f7debcd9c338bc97e7b56ba303dcf344b5122e9390",
+      "route": "/browse/zoning/ (scripting disabled)",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
+      "specimen": "no-javascript",
+      "assertion": "the existing land document renders no project record without script, so this section adds nothing there and makes no claim",
+      "axe": null,
+      "evidence": {
+        "rows": 0,
+        "section": 0,
+        "negative_claim": []
+      }
+    },
+    {
+      "name": "positive-pair-1440.png",
+      "bytes": 31377,
+      "sha256": "0c42f899249c29ff6b484683c7063f5a1c1226c816cda1050ed4b925be73d1d6",
+      "route": "/#land/2024K0358",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
+      "specimen": "positive-pair",
+      "assertion": "a repeated exact applicant label lists the other retained project with its published name, source status, milestone and date, and excludes the subject",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": []
+      },
+      "evidence": {
+        "present": true,
+        "open": true,
+        "relation": "lists_same_applicant",
+        "project_ref": "project:2024K0358",
+        "applicant_label": "GO Quay LLC",
+        "shown": 1,
+        "total": 1,
+        "heading": "Other projects listing this applicant",
+        "note": "These projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.",
+        "text": "OTHER PROJECTS LISTING THIS APPLICANT\n1 other project\n\nThese projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.\n\nMonitor Point - 56 Quay Demapping\n2025K0287\nIn Public Review\nAd-hoc - CPC Review of Modification Scope \u00b7 2026-07-01\n\nProject records as of 2026-09-06.",
+        "items": [
+          {
+            "project_id": "2025K0287",
+            "name": "Monitor Point - 56 Quay Demapping",
+            "href": "#land/2025K0287",
+            "status": "In Public Review",
+            "status_field": "public_status",
+            "when": "Ad-hoc - CPC Review of Modification Scope \u00b7 2026-07-01",
+            "when_date": "2026-07-01T00:00:00.000"
+          }
+        ]
+      }
+    },
+    {
+      "name": "positive-largest-1440.png",
+      "bytes": 82249,
+      "sha256": "60c0fed44a85b41c09ff052471b6a95a32799e1ba4796d9ed3b6bad281dae0cb",
+      "route": "/#land/2022X0150",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
+      "specimen": "positive-largest",
+      "assertion": "the largest repeated label lists every other retained project in the corpus the page holds, each project id once, and says so when a milestone date is not published",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": []
+      },
+      "evidence": {
+        "present": true,
+        "open": true,
+        "relation": "lists_same_applicant",
+        "project_ref": "project:2022X0150",
+        "applicant_label": "DPR - Department of Parks & Recreation NYC",
+        "shown": 7,
+        "total": 7,
+        "heading": "Other projects listing this applicant",
+        "note": "These projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.",
+        "text": "OTHER PROJECTS LISTING THIS APPLICANT\n7 other projects\n\nThese projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.\n\nAllen Street Mall Demapping\n2023M0452\nCompleted\nMM - Final Letter Sent\nBrooklyn CD 7 Walk to Park Site Selection\n2025K0318\nNoticed\nPC - Prepare Draft Land Use Application \u00b7 2025-10-20\nQueens CD 4 Walk to Park Site Selection/Acq.\n2025Q0314\nNoticed\nPC - Review Draft Land Use Application \u00b7 2025-03-06\nQueens CD 2 Walk to Park Site Selection/Acq.\n2025Q0316\nIn Public Review\nPC - CPC Public Meeting - Vote \u00b7 2026-06-30\n336 Meredith Avenue Fleet Maintenance Facility\n2026R0186\nIn Public Review\nPC - CPC Public Meeting - Vote \u00b7 2026-06-30\nHigh Line Signage Master Plan\nP2009M0029\nFiled\nMilestone date not published\nFRESHKILLS PARK\nP2012R0043\nFiled\nMilestone date not published\n\nProject records as of 2026-09-06.",
+        "items": [
+          {
+            "project_id": "2023M0452",
+            "name": "Allen Street Mall Demapping",
+            "href": "#land/2023M0452",
+            "status": "Completed",
+            "status_field": "public_status",
+            "when": "MM - Final Letter Sent",
+            "when_date": ""
+          },
+          {
+            "project_id": "2025K0318",
+            "name": "Brooklyn CD 7 Walk to Park Site Selection",
+            "href": "#land/2025K0318",
+            "status": "Noticed",
+            "status_field": "public_status",
+            "when": "PC - Prepare Draft Land Use Application \u00b7 2025-10-20",
+            "when_date": "2025-10-20T00:00:00.000"
+          },
+          {
+            "project_id": "2025Q0314",
+            "name": "Queens CD 4 Walk to Park Site Selection/Acq.",
+            "href": "#land/2025Q0314",
+            "status": "Noticed",
+            "status_field": "public_status",
+            "when": "PC - Review Draft Land Use Application \u00b7 2025-03-06",
+            "when_date": "2025-03-06T00:00:00.000"
+          },
+          {
+            "project_id": "2025Q0316",
+            "name": "Queens CD 2 Walk to Park Site Selection/Acq.",
+            "href": "#land/2025Q0316",
+            "status": "In Public Review",
+            "status_field": "public_status",
+            "when": "PC - CPC Public Meeting - Vote \u00b7 2026-06-30",
+            "when_date": "2026-06-30T00:00:00.000"
+          },
+          {
+            "project_id": "2026R0186",
+            "name": "336 Meredith Avenue Fleet Maintenance Facility",
+            "href": "#land/2026R0186",
+            "status": "In Public Review",
+            "status_field": "public_status",
+            "when": "PC - CPC Public Meeting - Vote \u00b7 2026-06-30",
+            "when_date": "2026-06-30T00:00:00.000"
+          },
+          {
+            "project_id": "P2009M0029",
+            "name": "High Line Signage Master Plan",
+            "href": "#land/P2009M0029",
+            "status": "Filed",
+            "status_field": "public_status",
+            "when": "Milestone date not published",
+            "when_date": ""
+          },
+          {
+            "project_id": "P2012R0043",
+            "name": "FRESHKILLS PARK",
+            "href": "#land/P2012R0043",
+            "status": "Filed",
+            "status_field": "public_status",
+            "when": "Milestone date not published",
+            "when_date": ""
+          }
+        ]
+      }
+    },
+    {
+      "name": "positive-person-1440.png",
+      "bytes": 28428,
+      "sha256": "5fa46b19e8dc2a752714caff040159f65a918201bf62c8b01f3839f8067aa4a5",
+      "route": "/#land/2023K0368",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
+      "specimen": "positive-person",
+      "assertion": "a person-shaped applicant is grouped in the applicant position and is never called an owner, developer, parent company, affiliate or subsidiary",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": []
+      },
+      "evidence": {
+        "present": true,
+        "open": true,
+        "relation": "lists_same_applicant",
+        "project_ref": "project:2023K0368",
+        "applicant_label": "Eric Palatnik",
+        "shown": 1,
+        "total": 1,
+        "heading": "Other projects listing this applicant",
+        "note": "These projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.",
+        "text": "OTHER PROJECTS LISTING THIS APPLICANT\n1 other project\n\nThese projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.\n\n198-208 Richmond Terrace\n2024R0300\nIn Public Review\nEAS - City Council Review \u00b7 2026-06-10\n\nProject records as of 2026-09-06.",
+        "items": [
+          {
+            "project_id": "2024R0300",
+            "name": "198-208 Richmond Terrace",
+            "href": "#land/2024R0300",
+            "status": "In Public Review",
+            "status_field": "public_status",
+            "when": "EAS - City Council Review \u00b7 2026-06-10",
+            "when_date": "2026-06-10T00:00:00.000"
+          }
+        ]
+      }
+    },
+    {
+      "name": "translated-es-1440.png",
+      "bytes": 33418,
+      "sha256": "57cb2dd104d7048e861a456b2ddf07570b003ba5c6dacd9927c95a31fd0b3c59",
+      "route": "/?lang=es#land/2024K0358",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
+      "specimen": "translated",
+      "assertion": "the section's own copy is translated while the published project name and source status stay in the source language",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": []
+      },
+      "evidence": {
+        "present": true,
+        "open": true,
+        "relation": "lists_same_applicant",
+        "project_ref": "project:2024K0358",
+        "applicant_label": "GO Quay LLC",
+        "shown": 1,
+        "total": 1,
+        "heading": "Otros proyectos que registran este solicitante",
+        "note": "Estos proyectos registran exactamente el mismo nombre de solicitante en el Zoning Application Portal. Un nombre compartido es una etiqueta publicada compartida: por s\u00ed solo no acredita propiedad com\u00fan, una empresa matriz, una representaci\u00f3n com\u00fan ni una posici\u00f3n pol\u00edtica.",
+        "text": "OTROS PROYECTOS QUE REGISTRAN ESTE SOLICITANTE\n1 proyecto m\u00e1s\n\nEstos proyectos registran exactamente el mismo nombre de solicitante en el Zoning Application Portal. Un nombre compartido es una etiqueta publicada compartida: por s\u00ed solo no acredita propiedad com\u00fan, una empresa matriz, una representaci\u00f3n com\u00fan ni una posici\u00f3n pol\u00edtica.\n\nMonitor Point - 56 Quay Demapping\n2025K0287\nIn Public Review\nAd-hoc - CPC Review of Modification Scope \u00b7 2026-07-01\n\nRegistros de proyectos al 2026-09-06.",
+        "items": [
+          {
+            "project_id": "2025K0287",
+            "name": "Monitor Point - 56 Quay Demapping",
+            "href": "#land/2025K0287",
+            "status": "In Public Review",
+            "status_field": "public_status",
+            "when": "Ad-hoc - CPC Review of Modification Scope \u00b7 2026-07-01",
+            "when_date": "2026-07-01T00:00:00.000"
+          }
+        ]
+      }
+    },
+    {
+      "name": "negative-singleton-1440.png",
+      "bytes": 609901,
+      "sha256": "6ccc28d37ef87b41db11da2c53f5cd4a386fe9c05bbf9955c82e97d522694283",
+      "route": "/#land/2018X0438",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
+      "specimen": "negative-singleton",
+      "assertion": "an applicant label that occurs once in the retained corpus adds no section and no empty furniture",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": []
+      },
+      "evidence": {
+        "present": false,
+        "negative_claim": []
+      }
+    },
+    {
+      "name": "negative-failed-load-1440.png",
+      "bytes": 111642,
+      "sha256": "d95366a44802e33ed1851fa2525224138b495bc33304fa3a0d1b6279d6b24903",
+      "route": "/#land/2024K0358",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
+      "specimen": "negative-failed-load",
+      "assertion": "a project list that never arrives leaves the applicant area unchanged and never becomes a no-other-projects claim",
+      "axe": null,
+      "evidence": {
+        "present": false,
+        "negative_claim": []
+      }
+    },
+    {
+      "name": "back-navigation-1440.png",
+      "bytes": 31377,
+      "sha256": "0c42f899249c29ff6b484683c7063f5a1c1226c816cda1050ed4b925be73d1d6",
+      "route": "/#land/2024K0358 -> /#land/2025K0287 -> back",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
+      "specimen": "back-navigation",
+      "assertion": "each listed project is a reciprocal native link; going back restores the original project and its expanded section",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": []
+      },
+      "evidence": {
+        "forward": {
+          "present": true,
+          "open": true,
+          "relation": "lists_same_applicant",
+          "project_ref": "project:2025K0287",
+          "applicant_label": "GO Quay LLC",
+          "shown": 1,
+          "total": 1,
+          "heading": "Other projects listing this applicant",
+          "note": "These projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.",
+          "text": "OTHER PROJECTS LISTING THIS APPLICANT\n1 other project\n\nThese projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.\n\nMonitor Point\n2024K0358\nIn Public Review\nAd-hoc - CPC Review of Modification Scope \u00b7 2026-07-01\n\nProject records as of 2026-09-06.",
+          "items": [
+            {
+              "project_id": "2024K0358",
+              "name": "Monitor Point",
+              "href": "#land/2024K0358",
+              "status": "In Public Review",
+              "status_field": "public_status",
+              "when": "Ad-hoc - CPC Review of Modification Scope \u00b7 2026-07-01",
+              "when_date": "2026-07-01T00:00:00.000"
+            }
+          ]
+        },
+        "restored": {
+          "present": true,
+          "open": true,
+          "relation": "lists_same_applicant",
+          "project_ref": "project:2024K0358",
+          "applicant_label": "GO Quay LLC",
+          "shown": 1,
+          "total": 1,
+          "heading": "Other projects listing this applicant",
+          "note": "These projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.",
+          "text": "OTHER PROJECTS LISTING THIS APPLICANT\n1 other project\n\nThese projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.\n\nMonitor Point - 56 Quay Demapping\n2025K0287\nIn Public Review\nAd-hoc - CPC Review of Modification Scope \u00b7 2026-07-01\n\nProject records as of 2026-09-06.",
+          "items": [
+            {
+              "project_id": "2025K0287",
+              "name": "Monitor Point - 56 Quay Demapping",
+              "href": "#land/2025K0287",
+              "status": "In Public Review",
+              "status_field": "public_status",
+              "when": "Ad-hoc - CPC Review of Modification Scope \u00b7 2026-07-01",
+              "when_date": "2026-07-01T00:00:00.000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "keyboard-1440.png",
+      "bytes": 31411,
+      "sha256": "9646288adfe1aca6a7e0670c2f0f3086d81b0bd03471bd2220115a783780dbb6",
+      "route": "/#land/2024K0358",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
+      "specimen": "keyboard",
+      "assertion": "the disclosure collapses and re-expands from the keyboard alone and never navigates or subscribes",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": []
+      },
+      "evidence": {
+        "present": true,
+        "open": true,
+        "relation": "lists_same_applicant",
+        "project_ref": "project:2024K0358",
+        "applicant_label": "GO Quay LLC",
+        "shown": 1,
+        "total": 1,
+        "heading": "Other projects listing this applicant",
+        "note": "These projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.",
+        "text": "OTHER PROJECTS LISTING THIS APPLICANT\n1 other project\n\nThese projects record exactly the same applicant name in the Zoning Application Portal. A shared name is a shared published label: on its own it does not establish shared ownership, a parent company, common representation, or a political position.\n\nMonitor Point - 56 Quay Demapping\n2025K0287\nIn Public Review\nAd-hoc - CPC Review of Modification Scope \u00b7 2026-07-01\n\nProject records as of 2026-09-06.",
+        "items": [
+          {
+            "project_id": "2025K0287",
+            "name": "Monitor Point - 56 Quay Demapping",
+            "href": "#land/2025K0287",
+            "status": "In Public Review",
+            "status_field": "public_status",
+            "when": "Ad-hoc - CPC Review of Modification Scope \u00b7 2026-07-01",
+            "when_date": "2026-07-01T00:00:00.000"
+          }
+        ]
+      }
+    },
+    {
+      "name": "rtl-ar-1440.png",
+      "bytes": 29828,
+      "sha256": "27e868f3354f70776ac293e758c00e0c7a291f6f9d70f3d6b6105b1748122b00",
+      "route": "/?lang=ar#land/2024K0358",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
+      "specimen": "rtl-ar",
+      "assertion": "in a right-to-left language the section reads right-to-left, the published project name stays isolated left-to-right, and the page gains no horizontal scroll",
+      "axe": {
+        "violations_total": 0,
+        "failing_violations": []
+      },
+      "evidence": {
+        "present": true,
+        "open": true,
+        "relation": "lists_same_applicant",
+        "project_ref": "project:2024K0358",
+        "applicant_label": "GO Quay LLC",
+        "shown": 1,
+        "total": 1,
+        "heading": "\u0645\u0634\u0627\u0631\u064a\u0639 \u0623\u062e\u0631\u0649 \u062a\u064f\u062f\u0631\u062c \u0645\u0642\u062f\u0651\u0645 \u0627\u0644\u0637\u0644\u0628 \u0646\u0641\u0633\u0647",
+        "note": "\u062a\u0633\u062c\u0651\u0644 \u0647\u0630\u0647 \u0627\u0644\u0645\u0634\u0627\u0631\u064a\u0639 \u0627\u0633\u0645 \u0645\u0642\u062f\u0651\u0645 \u0627\u0644\u0637\u0644\u0628 \u0646\u0641\u0633\u0647 \u062a\u0645\u0627\u0645\u064b\u0627 \u0641\u064a Zoning Application Portal. \u062a\u0637\u0627\u0628\u0642 \u0627\u0644\u0627\u0633\u0645 \u064a\u0639\u0646\u064a \u062a\u0637\u0627\u0628\u0642 \u0627\u0644\u062a\u0633\u0645\u064a\u0629 \u0627\u0644\u0645\u0646\u0634\u0648\u0631\u0629 \u0641\u0642\u0637\u060c \u0648\u0647\u0648 \u0628\u062d\u062f \u0630\u0627\u062a\u0647 \u0644\u0627 \u064a\u062b\u0628\u062a \u0645\u0644\u0643\u064a\u0629 \u0645\u0634\u062a\u0631\u0643\u0629 \u0623\u0648 \u0634\u0631\u0643\u0629 \u0623\u0645\u064b\u0651\u0627 \u0623\u0648 \u062a\u0645\u062b\u064a\u0644\u064b\u0627 \u0645\u0634\u062a\u0631\u0643\u064b\u0627 \u0623\u0648 \u0645\u0648\u0642\u0641\u064b\u0627 \u0633\u064a\u0627\u0633\u064a\u064b\u0627.",
+        "text": "\u0645\u0634\u0627\u0631\u064a\u0639 \u0623\u062e\u0631\u0649 \u062a\u064f\u062f\u0631\u062c \u0645\u0642\u062f\u0651\u0645 \u0627\u0644\u0637\u0644\u0628 \u0646\u0641\u0633\u0647\n\u0645\u0634\u0631\u0648\u0639 \u0622\u062e\u0631 \u0648\u0627\u062d\u062f\n\n\u062a\u0633\u062c\u0651\u0644 \u0647\u0630\u0647 \u0627\u0644\u0645\u0634\u0627\u0631\u064a\u0639 \u0627\u0633\u0645 \u0645\u0642\u062f\u0651\u0645 \u0627\u0644\u0637\u0644\u0628 \u0646\u0641\u0633\u0647 \u062a\u0645\u0627\u0645\u064b\u0627 \u0641\u064a Zoning Application Portal. \u062a\u0637\u0627\u0628\u0642 \u0627\u0644\u0627\u0633\u0645 \u064a\u0639\u0646\u064a \u062a\u0637\u0627\u0628\u0642 \u0627\u0644\u062a\u0633\u0645\u064a\u0629 \u0627\u0644\u0645\u0646\u0634\u0648\u0631\u0629 \u0641\u0642\u0637\u060c \u0648\u0647\u0648 \u0628\u062d\u062f \u0630\u0627\u062a\u0647 \u0644\u0627 \u064a\u062b\u0628\u062a \u0645\u0644\u0643\u064a\u0629 \u0645\u0634\u062a\u0631\u0643\u0629 \u0623\u0648 \u0634\u0631\u0643\u0629 \u0623\u0645\u064b\u0651\u0627 \u0623\u0648 \u062a\u0645\u062b\u064a\u0644\u064b\u0627 \u0645\u0634\u062a\u0631\u0643\u064b\u0627 \u0623\u0648 \u0645\u0648\u0642\u0641\u064b\u0627 \u0633\u064a\u0627\u0633\u064a\u064b\u0627.\n\nMonitor Point - 56 Quay Demapping\n2025K0287\nIn Public Review\nAd-hoc - CPC Review of Modification Scope \u00b7 2026-07-01\n\n\u0633\u062c\u0644\u0627\u062a \u0627\u0644\u0645\u0634\u0627\u0631\u064a\u0639 \u062d\u062a\u0649 2026-09-06.",
+        "items": [
+          {
+            "project_id": "2025K0287",
+            "name": "Monitor Point - 56 Quay Demapping",
+            "href": "#land/2025K0287",
+            "status": "In Public Review",
+            "status_field": "public_status",
+            "when": "Ad-hoc - CPC Review of Modification Scope \u00b7 2026-07-01",
+            "when_date": "2026-07-01T00:00:00.000"
+          }
+        ],
+        "rtl": {
+          "direction": "rtl",
+          "link_dir": "ltr",
+          "link_lang": "en",
+          "document_scroll_width": 1440,
+          "viewport_width": 1440
+        }
+      }
+    },
+    {
+      "name": "no-javascript-1440.png",
+      "bytes": 112941,
+      "sha256": "6f64d8631ffb8856c38f757a82efce6630e6b92dcd04661fed20186f639800bc",
+      "route": "/browse/zoning/ (scripting disabled)",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "729f89d67ca9ff147bc1f7ba31ac256915cf3d8b",
+      "data_vintage": "2026-09-06T16:05:05.204Z",
+      "specimen": "no-javascript",
+      "assertion": "the existing land document renders no project record without script, so this section adds nothing there and makes no claim",
+      "axe": null,
+      "evidence": {
+        "rows": 0,
+        "section": 0,
+        "negative_claim": []
+      }
+    }
+  ]
+}
