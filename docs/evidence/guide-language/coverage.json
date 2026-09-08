@@ -151,7 +151,7 @@
       "article": "what-a-public-record-tells-you",
       "locale": "en",
       "status": "complete",
-      "source_sha256": "6b973cb16c23e0b205a533e308727ae6b2bf3d14138097985a77cb7b899b3d02",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
       "required_segments": 75,
       "intentional_source_segments": 1
     },
@@ -303,7 +303,7 @@
       "article": "what-a-public-record-tells-you",
       "locale": "es",
       "status": "complete",
-      "source_sha256": "6b973cb16c23e0b205a533e308727ae6b2bf3d14138097985a77cb7b899b3d02",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
       "required_segments": 75,
       "intentional_source_segments": 1
     },
@@ -455,7 +455,7 @@
       "article": "what-a-public-record-tells-you",
       "locale": "zh-Hans",
       "status": "complete",
-      "source_sha256": "6b973cb16c23e0b205a533e308727ae6b2bf3d14138097985a77cb7b899b3d02",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
       "required_segments": 75,
       "intentional_source_segments": 1
     },
@@ -607,7 +607,7 @@
       "article": "what-a-public-record-tells-you",
       "locale": "ru",
       "status": "complete",
-      "source_sha256": "6b973cb16c23e0b205a533e308727ae6b2bf3d14138097985a77cb7b899b3d02",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
       "required_segments": 75,
       "intentional_source_segments": 1
     },
@@ -759,7 +759,7 @@
       "article": "what-a-public-record-tells-you",
       "locale": "bn",
       "status": "complete",
-      "source_sha256": "6b973cb16c23e0b205a533e308727ae6b2bf3d14138097985a77cb7b899b3d02",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
       "required_segments": 75,
       "intentional_source_segments": 1
     },
@@ -911,7 +911,7 @@
       "article": "what-a-public-record-tells-you",
       "locale": "ht",
       "status": "complete",
-      "source_sha256": "6b973cb16c23e0b205a533e308727ae6b2bf3d14138097985a77cb7b899b3d02",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
       "required_segments": 75,
       "intentional_source_segments": 1
     },
@@ -1063,7 +1063,7 @@
       "article": "what-a-public-record-tells-you",
       "locale": "ko",
       "status": "complete",
-      "source_sha256": "6b973cb16c23e0b205a533e308727ae6b2bf3d14138097985a77cb7b899b3d02",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
       "required_segments": 75,
       "intentional_source_segments": 1
     },
@@ -1215,7 +1215,7 @@
       "article": "what-a-public-record-tells-you",
       "locale": "fr",
       "status": "complete",
-      "source_sha256": "6b973cb16c23e0b205a533e308727ae6b2bf3d14138097985a77cb7b899b3d02",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
       "required_segments": 75,
       "intentional_source_segments": 1
     },
@@ -1367,7 +1367,7 @@
       "article": "what-a-public-record-tells-you",
       "locale": "pl",
       "status": "complete",
-      "source_sha256": "6b973cb16c23e0b205a533e308727ae6b2bf3d14138097985a77cb7b899b3d02",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
       "required_segments": 75,
       "intentional_source_segments": 1
     },
@@ -1519,7 +1519,7 @@
       "article": "what-a-public-record-tells-you",
       "locale": "ar",
       "status": "complete",
-      "source_sha256": "6b973cb16c23e0b205a533e308727ae6b2bf3d14138097985a77cb7b899b3d02",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
       "required_segments": 75,
       "intentional_source_segments": 1
     },
@@ -1671,7 +1671,7 @@
       "article": "what-a-public-record-tells-you",
       "locale": "ur",
       "status": "complete",
-      "source_sha256": "6b973cb16c23e0b205a533e308727ae6b2bf3d14138097985a77cb7b899b3d02",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
       "required_segments": 75,
       "intentional_source_segments": 1
     }

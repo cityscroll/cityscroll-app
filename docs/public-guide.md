@@ -222,6 +222,12 @@ content. The complete rendered sweep is `python3 tools/capture_guide_languages.p
 It checks every page without JavaScript at phone and desktop widths, then exercises
 Spanish, Chinese and Arabic contextual-help and return journeys.
 
+For the isolated accessibility shards, first build the complete CI artifact with
+`node tools/build_cloudflare_pages.mjs --site-dir _site`. Then run
+`tools/run_a11y_ci_shard.sh <shard> primary` with `RUNNER_TEMP` set to an ignored
+temporary directory and `NO_DISCLAIMER_SLOP_MODE=block`. The guide checks use the
+`language-layout`, `rendered-census` and `routes-focus` shards.
+
 Source segments change keys when their wording changes. Article sources, UI
 catalogs and glossary changes also enter the existing guide review dependency
 report. Neither importing drafts nor passing machine checks updates `last_reviewed`

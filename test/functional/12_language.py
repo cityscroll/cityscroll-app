@@ -254,6 +254,16 @@ with sync_playwright() as pw:
     assert linked.evaluate("localStorage.getItem('crol_lang')") == "fr", "picker interaction must persist"
     linked.select_option("#langSelect", "en")
     assert linked.evaluate("new URL(location.href).searchParams.has('lang')") is False
+    # Following's view-changing topic controls must carry the visit override in
+    # their URL, without using the saved device preference as transport.
+    linked.goto(BASE + "following/?lang=es", wait_until="domcontentloaded")
+    wait_for_function(linked, "() => window.LANG === 'es'", label="Following Spanish visit override")
+    with linked.expect_navigation(wait_until="domcontentloaded"):
+        linked.locator('[data-following-primary-choice="topic"] [data-filter-href]').first.click()
+    wait_for_function(linked, "() => window.LANG === 'es'", label="Following topic preserves visit language")
+    assert linked.evaluate("new URL(location.href).searchParams.get('lang')") == "es"
+    assert linked.evaluate("localStorage.getItem('crol_lang')") == "ru"
+    step("OK", "Following topic retains transient language without replacing preference")
     shared.close()
     step("OK", "shared notice language fidelity", "URL override, copy link, preference, replaceState")
 

@@ -476,6 +476,20 @@ async function loadPersonal({ keepExisting = false, focusWatchKey = "" } = {}) {
   }
 }
 
+function wireFollowingScopeNavigation() {
+  root.querySelectorAll('a[data-following-scope-axis], [data-filter-href]').forEach(control => {
+    const attribute = control.hasAttribute("data-filter-href") ? "data-filter-href" : "href";
+    const url = new URL(control.getAttribute(attribute), location.href);
+    if (window.LANG) url.searchParams.set("lang", window.LANG);
+    control.setAttribute(attribute, url.pathname + url.search + url.hash);
+  });
+  installFilterChipNavigation(root, { assign(href) {
+    const url = new URL(href, location.href);
+    if (window.LANG) url.searchParams.set("lang", window.LANG);
+    location.assign(url.href);
+  } });
+}
+
 function adoptFollowingDocument(html) {
   const next = new DOMParser().parseFromString(html, "text/html");
   const nextRoot = next.querySelector("[data-following-root]");
@@ -498,12 +512,7 @@ function adoptFollowingDocument(html) {
     currentForm.replaceWith(nextForm);
     nextForm.addEventListener("submit", preview);
   }
-  root.querySelectorAll('a[data-following-scope-axis]').forEach(link => {
-    const url = new URL(link.href);
-    if (window.LANG) url.searchParams.set("lang", window.LANG);
-    link.href = url.href;
-  });
-  installFilterChipNavigation(root);
+  wireFollowingScopeNavigation();
   wireSubscribe();
   wireRefineLive();
   duplicateWarning();
@@ -676,12 +685,7 @@ async function restoreFromLocation() {
 }
 
 if (root) {
-  root.querySelectorAll('a[data-following-scope-axis]').forEach(link => {
-    const url = new URL(link.href);
-    if (window.LANG) url.searchParams.set("lang", window.LANG);
-    link.href = url.href;
-  });
-  installFilterChipNavigation(root);
+  wireFollowingScopeNavigation();
   wireTabs("create");
   root.querySelector("[data-following-preview-form]")?.addEventListener("submit", preview);
   wireSubscribe();

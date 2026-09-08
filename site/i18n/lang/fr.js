@@ -619,7 +619,7 @@
     guide_text_9c9906552d455974: "Étape 5 — Recommencez avec un autre organisme",
     guide_text_8cfad75044741dcb: "Ouvrez un organisme depuis [People + organizations]({link_a}), sélectionnez un fournisseur sous **{control_b}**, puis ouvrez **{control_c}** sous **{control_d}** pour choisir une attribution. Ne copiez et rouvrez l’adresse qu’après vérification des deux étapes. Si un lien manque, choisissez-en un autre publié ; son absence ici ne prouve pas l’absence d’attribution.",
     guide_text_da42d4d810a96f24: "Pour consulter la preuve d’un lien, choisissez **{control_a}** à côté du titre, annoncé **{control_b}**. Le panneau indique le fondement et la source de ce lien précis.",
-    guide_text_6ea717ed0ff60cb3: "Un document est une publication, pas l’action",
+    guide_text_072f0ce04878ab8e: "Lisez ce que l’organisme a publié",
     guide_text_36ca691a00e42a06: "Presque tout sur {name_a} provient d’une publication d’un organisme de New York : avis dans {name_b}, proposition de règle, demande déposée au Department of City Planning, annonce de concours. La publication est un fait vérifiable. L’action sous-jacente est autre chose, et la publication n’en dit que ce qu’elle a été écrite pour en dire.",
     guide_text_2feb43ec2fe64e03: "{name_a} ne fait pas partie du gouvernement municipal et ne décide rien. Il rassemble les publications et relie chaque document à sa source officielle ; le dernier mot revient donc toujours à la ville.",
     guide_text_f6219e1ddc5e8b14: "Un contrat donne lieu à plusieurs documents",

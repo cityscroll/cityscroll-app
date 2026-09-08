@@ -614,7 +614,7 @@
     guide_text_9c9906552d455974: "Etap 5 — Repete ak yon lòt ajans",
     guide_text_8cfad75044741dcb: "Louvri yon ajans nan [People + organizations]({link_a}), chwazi yon founisè anba **{control_b}**, epi louvri **{control_c}** anba **{control_d}** pou chwazi yon akòdman. Kopye epi relouvri adrès la sèlman apre ou verifye toude etap yo. Si yon koneksyon absan, chwazi yon lòt koneksyon pibliye; absans isit la pa pwouve pa gen akòdman.",
     guide_text_da42d4d810a96f24: "Pou prèv ki dèyè yon koneksyon, chwazi **{control_a}** bò tit li (yo anonse li kòm **{control_b}**). Panèl la nonmen baz ak sous lyen espesifik sa a.",
-    guide_text_6ea717ed0ff60cb3: "Yon dosye se yon piblikasyon, pa aksyon an",
+    guide_text_072f0ce04878ab8e: "Li sa ajans lan pibliye",
     guide_text_36ca691a00e42a06: "Prèske tout sa ki sou {name_a} te kòmanse kòm yon bagay yon ajans Vil New York pibliye: yon avi nan {name_b}, yon pwopozisyon règ, yon demann depoze nan Department of City Planning, yon anons egzamen. Piblikasyon an se yon reyalite ou ka verifye. Aksyon ki dèyè li a se yon lòt bagay, epi piblikasyon an di sèlman sa yo te ekri li pou di sou aksyon sa a.",
     guide_text_2feb43ec2fe64e03: "{name_a} pa fè pati gouvènman vil la epi li pa deside anyen. Li kolekte sa yo pibliye epi konekte chak dosye ak sous ofisyèl li, konsa se vil la menm ki toujou gen dènye mo a.",
     guide_text_f6219e1ddc5e8b14: "Kontra fèt atravè plis pase yon dosye",

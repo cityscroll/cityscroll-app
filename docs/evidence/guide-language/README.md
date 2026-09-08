@@ -11,6 +11,8 @@ Creole, Korean, French, Polish, Arabic and Urdu.
 - `rendered.json` records the no-JavaScript phone and desktop reads for every
   document, plus contextual-help journeys in Spanish, Chinese and Arabic.
 - `journeys.json` records a separate replay of the nine guide-return journeys.
+- `accessibility.json` records the isolated accessibility shards and language-policy
+  regression checks against the complete public build.
 - Product illustrations and their per-article receipts live in `site/media/guide/`.
   The capture rule covers board selection, preview and save confirmation;
   calendar subscription, copy choices and meeting filters; and collection pinning, notes and

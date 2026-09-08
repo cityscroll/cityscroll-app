@@ -22,7 +22,7 @@ sources:
   - Public review of land-use applications, Department of City Planning | https://www.nyc.gov/site/planning/applicants/applicant-portal/step5-ulurp-process.page
 ---
 
-## A record is a publication, not the action
+## Read what the agency published
 
 Almost everything on CityScroll started as something a New York City agency published: a notice in
 The City Record, a proposed rule, an application filed with the Department of City Planning, an exam

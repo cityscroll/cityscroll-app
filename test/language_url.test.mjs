@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { runInNewContext } from "node:vm";
 
 const source = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
 const index = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
@@ -79,4 +80,20 @@ test("picker synchronization replaces the current address without adding history
     "",
     "/?view=compact&lang=es#notice/20260716022",
   ]]);
+});
+
+
+test("loading a language override leaves the saved preference unchanged", () => {
+  const preferences = new Map([["crol_lang", "ru"]]);
+  const context = {
+    URL, URLSearchParams,
+    window: {}, location: { search: "?lang=es" },
+    localStorage: {
+      getItem: key => preferences.get(key),
+      setItem: (key, value) => preferences.set(key, value),
+    },
+  };
+  runInNewContext(source, context);
+  assert.equal(context.window.LANG, "es");
+  assert.equal(preferences.get("crol_lang"), "ru");
 });

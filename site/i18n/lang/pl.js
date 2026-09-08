@@ -623,7 +623,7 @@
     guide_text_9c9906552d455974: "Krok 5 — Powtórz z innym urzędem",
     guide_text_8cfad75044741dcb: "Otwórz urząd z [People + organizations]({link_a}), wybierz dostawcę w **{control_b}**, a następnie **{control_c}** pod **{control_d}**, aby wybrać przyznanie. Kopiuj i otwieraj adres dopiero po sprawdzeniu obu kroków. Przy braku relacji wybierz inne opublikowane powiązanie; brak tutaj nie dowodzi braku przyznania.",
     guide_text_da42d4d810a96f24: "Aby zobaczyć dowody relacji, wybierz **{control_a}** przy tytule (odczytywane **{control_b}**). Panel nazywa podstawę i źródło tego konkretnego odnośnika.",
-    guide_text_6ea717ed0ff60cb3: "Dokument jest publikacją, nie działaniem",
+    guide_text_072f0ce04878ab8e: "Przeczytaj, co opublikował urząd",
     guide_text_36ca691a00e42a06: "Prawie wszystko w {name_a} zaczęło się jako publikacja urzędu Nowego Jorku: ogłoszenie {name_b}, projekt przepisu, wniosek Department of City Planning, zapowiedź egzaminu. Publikacja jest sprawdzalnym faktem. Działanie za nią jest osobne, a publikacja mówi o nim tylko tyle, ile miała powiedzieć.",
     guide_text_2feb43ec2fe64e03: "{name_a} nie jest częścią władz miasta i o niczym nie decyduje. Zbiera publikacje i łączy każdy dokument z oficjalnym źródłem, więc ostatnie słowo zawsze należy do miasta.",
     guide_text_f6219e1ddc5e8b14: "Umowy pojawiają się w wielu dokumentach",

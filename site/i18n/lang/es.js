@@ -615,7 +615,7 @@
     guide_text_9c9906552d455974: "Paso 5 — Repita con otro organismo",
     guide_text_8cfad75044741dcb: "Abra un organismo en [People + organizations]({link_a}), seleccione un proveedor en **{control_b}** y abra **{control_c}** en **{control_d}** para elegir una adjudicación. Copie y vuelva a abrir la dirección solo después de comprobar ambos pasos. Si falta una conexión, elija otra publicada; la ausencia aquí no demuestra que no exista ninguna adjudicación.",
     guide_text_da42d4d810a96f24: "Para ver la evidencia de una conexión, elija **{control_a}** junto al título (anunciado como **{control_b}**). El panel identifica el fundamento y la fuente de ese enlace concreto.",
-    guide_text_6ea717ed0ff60cb3: "Un registro es una publicación, no la acción",
+    guide_text_072f0ce04878ab8e: "Lea lo que publicó el organismo",
     guide_text_36ca691a00e42a06: "Casi todo en {name_a} comenzó como algo publicado por un organismo de la ciudad de Nueva York: un aviso en {name_b}, una propuesta de norma, una solicitud presentada ante Department of City Planning o un anuncio de examen. La publicación es un hecho que puede comprobar. La acción que hay detrás es otra cosa; la publicación solo informa sobre ella hasta donde pretendía hacerlo.",
     guide_text_2feb43ec2fe64e03: "{name_a} no forma parte del gobierno municipal ni decide nada. Recopila lo publicado y enlaza cada registro a su fuente oficial; por eso la última palabra siempre es la de la propia ciudad.",
     guide_text_f6219e1ddc5e8b14: "Los contratos abarcan más de un registro",

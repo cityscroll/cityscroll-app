@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.guide-language-rendered.v1",
-  "captured_at": "2026-09-08T18:57:21.900331+00:00",
+  "captured_at": "2026-09-08T19:42:52.969148+00:00",
   "method": "Local static preview, Chromium, no JavaScript; screenshots retained outside published assets",
   "captures": [
     {
@@ -9,7 +9,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -31,7 +31,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -44,8 +44,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "acd304c7781bfae44da68e4ae2e1ebfbf8f52dd575d92d49241c71349ee5a836",
-      "html_sha256": "fc45017876c09d6fa8ae8275e24e3c329bc549461b9bd02580611778fe43e7b6"
+      "sha256": "4028e4755e3d08ecf1dfe03220762729d1e09da511e23f077e3c323c0e25215a",
+      "html_sha256": "0c863bd5d4ae810bde108b989ef634cfed7139c9b103c9f28e9980a153b16dc2"
     },
     {
       "route": "/guide/understand/how-records-are-connected/",
@@ -53,7 +53,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -75,7 +75,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -97,7 +97,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -119,7 +119,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -141,7 +141,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -163,7 +163,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -185,7 +185,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -207,7 +207,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -229,7 +229,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -251,7 +251,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -273,7 +273,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -295,7 +295,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -317,7 +317,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -339,7 +339,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -361,7 +361,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -383,7 +383,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -405,7 +405,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -427,7 +427,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -449,7 +449,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -471,7 +471,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -484,8 +484,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "9ccbd2885efa148d0be50fe16fc0d1784b71bc875e2e01c1d267a7b378a86901",
-      "html_sha256": "fc45017876c09d6fa8ae8275e24e3c329bc549461b9bd02580611778fe43e7b6"
+      "sha256": "ece76c54df515f7edb43ac2b4be9c28dc0391b52a2e5e60bb534442e84d67d32",
+      "html_sha256": "0c863bd5d4ae810bde108b989ef634cfed7139c9b103c9f28e9980a153b16dc2"
     },
     {
       "route": "/guide/understand/how-records-are-connected/",
@@ -493,7 +493,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -515,7 +515,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -537,7 +537,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -559,7 +559,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -581,7 +581,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -603,7 +603,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -625,7 +625,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -647,7 +647,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -669,7 +669,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -691,7 +691,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -713,7 +713,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -735,7 +735,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -757,7 +757,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -779,7 +779,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -801,7 +801,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -823,7 +823,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -845,7 +845,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -867,7 +867,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -889,7 +889,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -911,7 +911,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -924,8 +924,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "ed4937a70b16da77d494e6790f3c63f49b40ebc9d0067919083175a48111e136",
-      "html_sha256": "0099c0047d4f44aa024c6cfe0698ea37fc0bf290e6c5f2a0fd0553bc35ee3853"
+      "sha256": "c7912a66816803d8bda1e8e2c45f3904c2d60e35536c136bcb87f9ab9704be4d",
+      "html_sha256": "97469d67f42c577b85330d63e79ed34677a975b86bdcc46d856003fdc803d238"
     },
     {
       "route": "/guide/es/understand/how-records-are-connected/",
@@ -933,7 +933,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -955,7 +955,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -977,7 +977,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -999,7 +999,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1021,7 +1021,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1043,7 +1043,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1065,7 +1065,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1087,7 +1087,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1109,7 +1109,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1131,7 +1131,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1153,7 +1153,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1175,7 +1175,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1197,7 +1197,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1219,7 +1219,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1241,7 +1241,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1263,7 +1263,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1285,7 +1285,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1307,7 +1307,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1329,7 +1329,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1351,7 +1351,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1364,8 +1364,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "cddf877436b8d6d29ec00eff6d9f6945b3f1d300694ef7d0d06d35f6727dd392",
-      "html_sha256": "0099c0047d4f44aa024c6cfe0698ea37fc0bf290e6c5f2a0fd0553bc35ee3853"
+      "sha256": "b1cac6dbde6e084a4fc33dac7dd55b6db9f3a2bce10710375bdd9f76679cdbff",
+      "html_sha256": "97469d67f42c577b85330d63e79ed34677a975b86bdcc46d856003fdc803d238"
     },
     {
       "route": "/guide/es/understand/how-records-are-connected/",
@@ -1373,7 +1373,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1395,7 +1395,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1417,7 +1417,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1439,7 +1439,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1461,7 +1461,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1483,7 +1483,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1505,7 +1505,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1527,7 +1527,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1549,7 +1549,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1571,7 +1571,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1593,7 +1593,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1615,7 +1615,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1637,7 +1637,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1659,7 +1659,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1681,7 +1681,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1703,7 +1703,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1725,7 +1725,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1747,7 +1747,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1769,7 +1769,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1791,7 +1791,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1804,8 +1804,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "cee54d6d38e13af670defba30c11059e3eb876206326e555f9542b2c7ce88000",
-      "html_sha256": "8d9f8bcd1c99b326bd8e68d7273dbe61e1562571c1d62ff08ee2dd96270444fb"
+      "sha256": "00e97c855a23c7dfbcfb336999c0cff03a89a181f8e1eb26794ce5f3cbfecb81",
+      "html_sha256": "394eb94eab7e65c0d8539ecadd1b75bf884ad7ed9c9aa35224f7a793b343e110"
     },
     {
       "route": "/guide/zh-Hans/understand/how-records-are-connected/",
@@ -1813,7 +1813,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1835,7 +1835,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1857,7 +1857,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1879,7 +1879,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1901,7 +1901,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1923,7 +1923,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1945,7 +1945,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1967,7 +1967,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -1989,7 +1989,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2011,7 +2011,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2033,7 +2033,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2055,7 +2055,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2077,7 +2077,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2099,7 +2099,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2121,7 +2121,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2143,7 +2143,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2165,7 +2165,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2187,7 +2187,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2209,7 +2209,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2231,7 +2231,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2244,8 +2244,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "276b2cc228321a665d533b2d219d0b6daab7fef23d4328a1c05313b1e813572b",
-      "html_sha256": "8d9f8bcd1c99b326bd8e68d7273dbe61e1562571c1d62ff08ee2dd96270444fb"
+      "sha256": "6c50364660b6f11942f95ed73e2a3728f6567c9a1da3446462162fb0649bff63",
+      "html_sha256": "394eb94eab7e65c0d8539ecadd1b75bf884ad7ed9c9aa35224f7a793b343e110"
     },
     {
       "route": "/guide/zh-Hans/understand/how-records-are-connected/",
@@ -2253,7 +2253,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2275,7 +2275,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2297,7 +2297,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2319,7 +2319,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2341,7 +2341,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2363,7 +2363,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2385,7 +2385,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2407,7 +2407,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2429,7 +2429,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2451,7 +2451,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2473,7 +2473,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2495,7 +2495,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2517,7 +2517,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2539,7 +2539,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2561,7 +2561,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2583,7 +2583,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2605,7 +2605,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2627,7 +2627,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2649,7 +2649,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2671,7 +2671,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2684,8 +2684,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "cfb0028483a2e38e03a272220fe3eb6a77bbc95da2adbeebf5d960bd14b3c56b",
-      "html_sha256": "4d3ec71bdb64014f3de2180551a2766430c5ecf8467de48353c0ad48aa18b955"
+      "sha256": "4f5bcf5956668cda572d4addb27694b5c98a9fdfe23b2894a90df5cd6dcb6f7e",
+      "html_sha256": "286c69175a954b563426b60a71d9a7f5f30ff9351ca71da99b06cba7bdc91720"
     },
     {
       "route": "/guide/ru/understand/how-records-are-connected/",
@@ -2693,7 +2693,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2715,7 +2715,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2737,7 +2737,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2759,7 +2759,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2781,7 +2781,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2803,7 +2803,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2825,7 +2825,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2847,7 +2847,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2869,7 +2869,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2891,7 +2891,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2913,7 +2913,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2935,7 +2935,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2957,7 +2957,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -2979,7 +2979,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3001,7 +3001,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3023,7 +3023,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3045,7 +3045,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3067,7 +3067,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3089,7 +3089,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3111,7 +3111,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3124,8 +3124,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "9b5fd83147fc2e9390a74f37a6c19e75caa468098471b693b6cbfa916a95ced3",
-      "html_sha256": "4d3ec71bdb64014f3de2180551a2766430c5ecf8467de48353c0ad48aa18b955"
+      "sha256": "49e190ef810b147ae33518d2dece33565183d0aad93565b1b53e909cfb3d8931",
+      "html_sha256": "286c69175a954b563426b60a71d9a7f5f30ff9351ca71da99b06cba7bdc91720"
     },
     {
       "route": "/guide/ru/understand/how-records-are-connected/",
@@ -3133,7 +3133,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3155,7 +3155,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3177,7 +3177,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3199,7 +3199,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3221,7 +3221,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3243,7 +3243,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3265,7 +3265,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3287,7 +3287,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3309,7 +3309,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3331,7 +3331,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3353,7 +3353,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3375,7 +3375,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3397,7 +3397,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3419,7 +3419,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3441,7 +3441,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3463,7 +3463,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3485,7 +3485,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3507,7 +3507,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3529,7 +3529,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3551,7 +3551,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3564,8 +3564,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "26bb909c24a4299b76da667eee76836dbea3265f9b229a7409b36f8fdb70a18f",
-      "html_sha256": "37c1627b08b4850db60023bc7402b693dbbfef8dbbf41bf144647309baa59984"
+      "sha256": "1ad3f3a9329d0189d211dee88fa6fbd0bf9a09bb5edf50c764e4c6e70ee41413",
+      "html_sha256": "50002196553a84783ef375ba25ccfd1faf7a899702ac95cca931bf4522f41391"
     },
     {
       "route": "/guide/bn/understand/how-records-are-connected/",
@@ -3573,7 +3573,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3595,7 +3595,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3617,7 +3617,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3639,7 +3639,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3661,7 +3661,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3683,7 +3683,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3705,7 +3705,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3727,7 +3727,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3749,7 +3749,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3771,7 +3771,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3793,7 +3793,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3815,7 +3815,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3837,7 +3837,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3859,7 +3859,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3881,7 +3881,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3903,7 +3903,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3925,7 +3925,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3947,7 +3947,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3969,7 +3969,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -3991,7 +3991,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4004,8 +4004,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "043b94e235ceae96cd49420f2033f024a8a9259450bca1c641679ded93bb342b",
-      "html_sha256": "37c1627b08b4850db60023bc7402b693dbbfef8dbbf41bf144647309baa59984"
+      "sha256": "f54d9d76d5bddaf4f48350e7e7cbd32ce32760f53eb5b2426365d776f66c9c71",
+      "html_sha256": "50002196553a84783ef375ba25ccfd1faf7a899702ac95cca931bf4522f41391"
     },
     {
       "route": "/guide/bn/understand/how-records-are-connected/",
@@ -4013,7 +4013,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4035,7 +4035,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4057,7 +4057,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4079,7 +4079,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4101,7 +4101,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4123,7 +4123,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4145,7 +4145,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4167,7 +4167,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4189,7 +4189,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4211,7 +4211,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4233,7 +4233,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4255,7 +4255,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4277,7 +4277,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4299,7 +4299,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4321,7 +4321,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4343,7 +4343,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4365,7 +4365,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4387,7 +4387,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4409,7 +4409,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4431,7 +4431,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4444,8 +4444,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "58ad7b0e4b8af5636ee7f91e439885daff2d884c511dc86bc0ac6a9955cf6590",
-      "html_sha256": "b023c979c2dc344d1b122f073bd17d9339d4ae591d48edef7eb8f479ba437aeb"
+      "sha256": "c3ba58daff10038ca55421b2795325e5f2d8b7988607af472bb53f8af120eb5e",
+      "html_sha256": "9a1c2bc0fbb1c3bda1c46d35df85dbcc018059c0edbbbb5ae16d81b30c34cad2"
     },
     {
       "route": "/guide/ht/understand/how-records-are-connected/",
@@ -4453,7 +4453,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4475,7 +4475,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4497,7 +4497,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4519,7 +4519,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4541,7 +4541,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4563,7 +4563,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4585,7 +4585,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4607,7 +4607,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4629,7 +4629,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4651,7 +4651,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4673,7 +4673,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4695,7 +4695,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4717,7 +4717,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4739,7 +4739,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4761,7 +4761,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4783,7 +4783,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4805,7 +4805,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4827,7 +4827,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4849,7 +4849,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4871,7 +4871,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4884,8 +4884,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "97eb62d53bad2bb2b378be956109b61f73cf878fab3af577798d6163df34eb39",
-      "html_sha256": "b023c979c2dc344d1b122f073bd17d9339d4ae591d48edef7eb8f479ba437aeb"
+      "sha256": "93775167ee02ccfd758690e064c6d447db6e44f4601f4168827305e610a0da59",
+      "html_sha256": "9a1c2bc0fbb1c3bda1c46d35df85dbcc018059c0edbbbb5ae16d81b30c34cad2"
     },
     {
       "route": "/guide/ht/understand/how-records-are-connected/",
@@ -4893,7 +4893,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4915,7 +4915,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4937,7 +4937,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4959,7 +4959,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -4981,7 +4981,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5003,7 +5003,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5025,7 +5025,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5047,7 +5047,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5069,7 +5069,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5091,7 +5091,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5113,7 +5113,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5135,7 +5135,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5157,7 +5157,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5179,7 +5179,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5201,7 +5201,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5223,7 +5223,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5245,7 +5245,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5267,7 +5267,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5289,7 +5289,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5311,7 +5311,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5324,8 +5324,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "192c0af3a28c383f743dde1aa1c87a4fb31012caa06e6946571e96cd650de7a7",
-      "html_sha256": "da9caa0f8b2a788be126f3d16d53e4dfd97352bc13ca9b96455b36f1d45a3187"
+      "sha256": "0b5c3ef761e9ee61dac431610c27d577070e0fa224080ebb4f21e19562573301",
+      "html_sha256": "2d28492bf0cdcdc1531d6edcff94ccd5624a810b739f8384158e2698e9130f45"
     },
     {
       "route": "/guide/ko/understand/how-records-are-connected/",
@@ -5333,7 +5333,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5355,7 +5355,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5377,7 +5377,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5399,7 +5399,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5421,7 +5421,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5443,7 +5443,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5465,7 +5465,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5487,7 +5487,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5509,7 +5509,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5531,7 +5531,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5553,7 +5553,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5575,7 +5575,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5597,7 +5597,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5619,7 +5619,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5641,7 +5641,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5663,7 +5663,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5685,7 +5685,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5707,7 +5707,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5729,7 +5729,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5751,7 +5751,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5764,8 +5764,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "28b103cb0b9d9486f14317f7257a6e6af80a2673dbe00133dce36969095e1fde",
-      "html_sha256": "da9caa0f8b2a788be126f3d16d53e4dfd97352bc13ca9b96455b36f1d45a3187"
+      "sha256": "b0ceed5a48ca94265bc6137c435bea4b922375b5a529370401013aba8bc39db0",
+      "html_sha256": "2d28492bf0cdcdc1531d6edcff94ccd5624a810b739f8384158e2698e9130f45"
     },
     {
       "route": "/guide/ko/understand/how-records-are-connected/",
@@ -5773,7 +5773,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5795,7 +5795,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5817,7 +5817,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5839,7 +5839,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5861,7 +5861,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5883,7 +5883,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5905,7 +5905,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5927,7 +5927,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5949,7 +5949,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5971,7 +5971,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -5993,7 +5993,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6015,7 +6015,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6037,7 +6037,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6059,7 +6059,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6081,7 +6081,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6103,7 +6103,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6125,7 +6125,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6147,7 +6147,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6169,7 +6169,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6191,7 +6191,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6204,8 +6204,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "de9f2d808f9d2c5574bef2baf162cf06145ca75595458ee62b43430822a5d875",
-      "html_sha256": "d061b841f765784a1fb66c2fd64cc48828067e64689bb3a271b6cca71d76be43"
+      "sha256": "cb11945047f2b554dd0087fd4f05009fbc0ada2b8599fcb1e9d7091053ca2d41",
+      "html_sha256": "33440574785e2662c3c042f62b7f6c4b2522fb7e39f802ba86b351fb8e599eb3"
     },
     {
       "route": "/guide/fr/understand/how-records-are-connected/",
@@ -6213,7 +6213,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6235,7 +6235,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6257,7 +6257,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6279,7 +6279,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6301,7 +6301,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6323,7 +6323,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6345,7 +6345,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6367,7 +6367,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6389,7 +6389,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6411,7 +6411,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6433,7 +6433,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6455,7 +6455,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6477,7 +6477,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6499,7 +6499,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6521,7 +6521,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6543,7 +6543,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6565,7 +6565,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6587,7 +6587,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6609,7 +6609,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6631,7 +6631,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6644,8 +6644,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "48d20367a102d497cd533924faf30377ca5daabbb532b6dbd64588c3cdfe51b3",
-      "html_sha256": "d061b841f765784a1fb66c2fd64cc48828067e64689bb3a271b6cca71d76be43"
+      "sha256": "4b5472baf6c516521ab7e80a76275b44a4453bdb9d505b0665d2bd0be9efdbdb",
+      "html_sha256": "33440574785e2662c3c042f62b7f6c4b2522fb7e39f802ba86b351fb8e599eb3"
     },
     {
       "route": "/guide/fr/understand/how-records-are-connected/",
@@ -6653,7 +6653,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6675,7 +6675,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6697,7 +6697,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6719,7 +6719,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6741,7 +6741,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6763,7 +6763,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6785,7 +6785,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6807,7 +6807,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6829,7 +6829,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6851,7 +6851,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6873,7 +6873,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6895,7 +6895,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6917,7 +6917,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6939,7 +6939,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6961,7 +6961,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -6983,7 +6983,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7005,7 +7005,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7027,7 +7027,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7049,7 +7049,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7071,7 +7071,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7084,8 +7084,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "c5f729ca1e9269166adc928235b8cb5123584e0c9e4ce4bfc4e812fbb5ee96db",
-      "html_sha256": "01486c2413b6ed2f31350f2d65968b7724b959baf0b67c70f6f6cc1a79a91dc8"
+      "sha256": "7396af093e4ad837e9371592340311c04ddfa9cc1c06b9be91511df35a7075ea",
+      "html_sha256": "dafe19a00b9da6b9c24837a4112fcc360a9eaaeafef772fdd2088adfe26231ae"
     },
     {
       "route": "/guide/pl/understand/how-records-are-connected/",
@@ -7093,7 +7093,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7115,7 +7115,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7137,7 +7137,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7159,7 +7159,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7181,7 +7181,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7203,7 +7203,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7225,7 +7225,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7247,7 +7247,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7269,7 +7269,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7291,7 +7291,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7313,7 +7313,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7335,7 +7335,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7357,7 +7357,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7379,7 +7379,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7401,7 +7401,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7423,7 +7423,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7445,7 +7445,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7467,7 +7467,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7489,7 +7489,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7511,7 +7511,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7524,8 +7524,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "d7028133cabdbabecfd870181efd1110f44211e0bd20abafb3470d2ce135b253",
-      "html_sha256": "01486c2413b6ed2f31350f2d65968b7724b959baf0b67c70f6f6cc1a79a91dc8"
+      "sha256": "c6659d30245d43cac8c2db0aec9b939e381f86f08646f1da97663fcf9b80ec90",
+      "html_sha256": "dafe19a00b9da6b9c24837a4112fcc360a9eaaeafef772fdd2088adfe26231ae"
     },
     {
       "route": "/guide/pl/understand/how-records-are-connected/",
@@ -7533,7 +7533,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7555,7 +7555,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7577,7 +7577,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7599,7 +7599,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7621,7 +7621,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7643,7 +7643,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7665,7 +7665,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7687,7 +7687,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7709,7 +7709,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7731,7 +7731,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7753,7 +7753,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7775,7 +7775,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7797,7 +7797,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7819,7 +7819,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7841,7 +7841,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7863,7 +7863,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7885,7 +7885,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7907,7 +7907,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7929,7 +7929,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7951,7 +7951,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7964,8 +7964,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "1c89dacc648c808f878fc32872cccc5d478aafa2f83ce2e9f23041fc83e15792",
-      "html_sha256": "c1ccb9be3d94c5eef44e8980cb7a7423ff7070f90108bb8d93e31a1c98a2144d"
+      "sha256": "94c6db1c15cad00933ba37e43d7ece0cf61aa83eb5b1416392438432abad9e38",
+      "html_sha256": "fae47d3f3f4f28189f7140301ab7311c24ff194641a43e7582f25671e62a0337"
     },
     {
       "route": "/guide/ar/understand/how-records-are-connected/",
@@ -7973,7 +7973,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -7995,7 +7995,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8017,7 +8017,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8039,7 +8039,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8061,7 +8061,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8083,7 +8083,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8105,7 +8105,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8127,7 +8127,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8149,7 +8149,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8171,7 +8171,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8193,7 +8193,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8215,7 +8215,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8237,7 +8237,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8259,7 +8259,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8281,7 +8281,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8303,7 +8303,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8325,7 +8325,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8347,7 +8347,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8369,7 +8369,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8391,7 +8391,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8404,8 +8404,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "dacc5203d38ba04bc666040763101aa64536c42a9b84b56aed60cb4481a0b3ee",
-      "html_sha256": "c1ccb9be3d94c5eef44e8980cb7a7423ff7070f90108bb8d93e31a1c98a2144d"
+      "sha256": "7921443a261e1b7dbffd18afe003b86847a8c90045537bca438dbacc06f4f175",
+      "html_sha256": "fae47d3f3f4f28189f7140301ab7311c24ff194641a43e7582f25671e62a0337"
     },
     {
       "route": "/guide/ar/understand/how-records-are-connected/",
@@ -8413,7 +8413,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8435,7 +8435,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8457,7 +8457,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8479,7 +8479,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8501,7 +8501,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8523,7 +8523,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8545,7 +8545,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8567,7 +8567,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8589,7 +8589,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8611,7 +8611,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8633,7 +8633,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8655,7 +8655,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8677,7 +8677,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8699,7 +8699,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8721,7 +8721,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8743,7 +8743,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8765,7 +8765,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8787,7 +8787,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8809,7 +8809,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8831,7 +8831,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8844,8 +8844,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "d4b6ec2f4d854d7933c27e6ea7617224020108c9cbc89dc29f7ed9a4f0bd1400",
-      "html_sha256": "39baf485bda005b166b68ab20441d2d1e5b79786c89278ddea165b2503966cf7"
+      "sha256": "92a52da9f8bfbc350b370d4a7d0d70e5492c66f395b682728ae250907305dbee",
+      "html_sha256": "c158e25800e2a08de8c515bca79093b2980d070820d8d4cb0dc7e193aee8c6fe"
     },
     {
       "route": "/guide/ur/understand/how-records-are-connected/",
@@ -8853,7 +8853,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8875,7 +8875,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8897,7 +8897,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8919,7 +8919,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8941,7 +8941,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8963,7 +8963,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -8985,7 +8985,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9007,7 +9007,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9029,7 +9029,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9051,7 +9051,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9073,7 +9073,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9095,7 +9095,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9117,7 +9117,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9139,7 +9139,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9161,7 +9161,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9183,7 +9183,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9205,7 +9205,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9227,7 +9227,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9249,7 +9249,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9271,7 +9271,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9284,8 +9284,8 @@
         "no_placeholders": true
       },
       "assertion_holds": true,
-      "sha256": "345080df4b87677be5a75a5d5a9a653978c4fa1c953936d1d7fbba6936ce5272",
-      "html_sha256": "39baf485bda005b166b68ab20441d2d1e5b79786c89278ddea165b2503966cf7"
+      "sha256": "8b393294c516d37059675efebd24f36e030d6b0d92c8c57078df5412eb724c6f",
+      "html_sha256": "c158e25800e2a08de8c515bca79093b2980d070820d8d4cb0dc7e193aee8c6fe"
     },
     {
       "route": "/guide/ur/understand/how-records-are-connected/",
@@ -9293,7 +9293,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9315,7 +9315,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9337,7 +9337,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9359,7 +9359,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9381,7 +9381,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9403,7 +9403,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9425,7 +9425,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9447,7 +9447,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9469,7 +9469,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9491,7 +9491,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9513,7 +9513,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9535,7 +9535,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9557,7 +9557,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9579,7 +9579,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9601,7 +9601,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9623,7 +9623,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9645,7 +9645,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9667,7 +9667,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Tracked guide sources and retained illustration receipts; no civic data acquired",
       "javascript": false,
       "assertions": {
@@ -9696,7 +9696,7 @@
       "article": "/guide/es/how-to/follow-a-community-board/",
       "explanation": "/guide/es/understand/what-a-public-record-tells-you/",
       "return": "/following/?lang=es",
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Retained product documents; disposable Following preview; all outgoing writes intercepted",
       "assertion": "Product contextual help, localized article, explanation, browser Back and product return preserve language and direction",
       "assertion_holds": true,
@@ -9713,7 +9713,7 @@
       "article": "/guide/es/how-to/put-dates-in-your-calendar/",
       "explanation": "/guide/es/understand/dates-and-missing-information/",
       "return": "/now/?lang=es",
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Retained product documents; disposable Following preview; all outgoing writes intercepted",
       "assertion": "Product contextual help, localized article, explanation, browser Back and product return preserve language and direction",
       "assertion_holds": true,
@@ -9730,7 +9730,7 @@
       "article": "/guide/es/how-to/collect-records-and-export-them/",
       "explanation": "/guide/es/understand/what-a-public-record-tells-you/",
       "return": "/?lang=es#investigation",
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Retained product documents; disposable Following preview; all outgoing writes intercepted",
       "assertion": "Product contextual help, localized article, explanation, browser Back and product return preserve language and direction",
       "assertion_holds": true,
@@ -9747,11 +9747,11 @@
       "article": "/guide/zh-Hans/how-to/follow-a-community-board/",
       "explanation": "/guide/zh-Hans/understand/what-a-public-record-tells-you/",
       "return": "/following/?lang=zh-Hans",
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Retained product documents; disposable Following preview; all outgoing writes intercepted",
       "assertion": "Product contextual help, localized article, explanation, browser Back and product return preserve language and direction",
       "assertion_holds": true,
-      "sha256": "c2b279839af4f79a887ed45d6f667ec58546db72ede8e5f7ed04b7f17946ff56"
+      "sha256": "d7556de2ae31d0585e39640258766ed81dcc3ac9e4b069e504567e7ad1b9f903"
     },
     {
       "locale": "zh-Hans",
@@ -9764,7 +9764,7 @@
       "article": "/guide/zh-Hans/how-to/put-dates-in-your-calendar/",
       "explanation": "/guide/zh-Hans/understand/dates-and-missing-information/",
       "return": "/now/?lang=zh-Hans",
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Retained product documents; disposable Following preview; all outgoing writes intercepted",
       "assertion": "Product contextual help, localized article, explanation, browser Back and product return preserve language and direction",
       "assertion_holds": true,
@@ -9781,7 +9781,7 @@
       "article": "/guide/zh-Hans/how-to/collect-records-and-export-them/",
       "explanation": "/guide/zh-Hans/understand/what-a-public-record-tells-you/",
       "return": "/?lang=zh-Hans#investigation",
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Retained product documents; disposable Following preview; all outgoing writes intercepted",
       "assertion": "Product contextual help, localized article, explanation, browser Back and product return preserve language and direction",
       "assertion_holds": true,
@@ -9798,7 +9798,7 @@
       "article": "/guide/ar/how-to/follow-a-community-board/",
       "explanation": "/guide/ar/understand/what-a-public-record-tells-you/",
       "return": "/following/?lang=ar",
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Retained product documents; disposable Following preview; all outgoing writes intercepted",
       "assertion": "Product contextual help, localized article, explanation, browser Back and product return preserve language and direction",
       "assertion_holds": true,
@@ -9815,11 +9815,11 @@
       "article": "/guide/ar/how-to/put-dates-in-your-calendar/",
       "explanation": "/guide/ar/understand/dates-and-missing-information/",
       "return": "/now/?lang=ar",
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Retained product documents; disposable Following preview; all outgoing writes intercepted",
       "assertion": "Product contextual help, localized article, explanation, browser Back and product return preserve language and direction",
       "assertion_holds": true,
-      "sha256": "5c4c6fc8c281651356f41841b15cbddcd8b89f3f3a86843a5c2b26f6097e6280"
+      "sha256": "0f1997999d13d4dfa0a65c2b2bd303d672053e15c0036264f0980a2e54e62dc5"
     },
     {
       "locale": "ar",
@@ -9832,7 +9832,7 @@
       "article": "/guide/ar/how-to/collect-records-and-export-them/",
       "explanation": "/guide/ar/understand/what-a-public-record-tells-you/",
       "return": "/?lang=ar#investigation",
-      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "revision": "2e3e70290263f28cdc3bc2b3f0ac976adbb23545",
       "data_vintage": "Retained product documents; disposable Following preview; all outgoing writes intercepted",
       "assertion": "Product contextual help, localized article, explanation, browser Back and product return preserve language and direction",
       "assertion_holds": true,

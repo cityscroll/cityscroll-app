@@ -615,7 +615,7 @@
     guide_text_9c9906552d455974: "第5步——换一个机构重复",
     guide_text_8cfad75044741dcb: "从[People + organizations]({link_a})打开机构，在**{control_b}**下选择供应商，并在**{control_d}**下打开**{control_c}**以选择中标记录。确认两步后再复制并重新打开地址。如果关联缺失，选择另一个已发布关联；此处缺失不证明不存在中标记录。",
     guide_text_da42d4d810a96f24: "如需关联背后的证据，选择标题旁的**{control_a}**（读作**{control_b}**）。面板说明该特定链接的依据和来源。",
-    guide_text_6ea717ed0ff60cb3: "记录是发布内容，不是行动本身",
+    guide_text_072f0ce04878ab8e: "阅读机构发布的内容",
     guide_text_36ca691a00e42a06: "{name_a}上几乎所有内容都源自纽约市机构发布的信息：{name_b}公告、规则提案、向Department of City Planning提交的申请、考试公告。发布是可以核实的事实，背后的行动是另一回事；发布内容对行动的说明，仅限于原文旨在告知的内容。",
     guide_text_2feb43ec2fe64e03: "{name_a}不属于市政府，也不作任何决定。它收集已发布内容并为每条记录链接官方来源，因此最终以市政府自身内容为准。",
     guide_text_f6219e1ddc5e8b14: "合同涉及不止一条记录",

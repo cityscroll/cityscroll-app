@@ -763,7 +763,7 @@ const STRINGS = {
     guide_text_9c9906552d455974: "Step 5 — Repeat with another agency",
     guide_text_8cfad75044741dcb: "Open an agency from [People + organizations]({link_a}), select a vendor under **{control_b}**, and open **{control_c}** under **{control_d}** to select an award. Copy and reopen the address only after checking both steps. If a connection is absent, choose another published connection. Absence here does not prove no award exists.",
     guide_text_da42d4d810a96f24: "For evidence behind a connection, choose **{control_a}** beside its title (announced as **{control_b}**). The panel names the basis and source for that particular link.",
-    guide_text_6ea717ed0ff60cb3: "A record is a publication, not the action",
+    guide_text_072f0ce04878ab8e: "Read what the agency published",
     guide_text_36ca691a00e42a06: "Almost everything on {name_a} started as something a New York City agency published: a notice in {name_b}, a proposed rule, an application filed with the Department of City Planning, an exam announcement. The publication is a fact you can check. The action behind it is a separate thing, and the publication tells you only as much about that action as it was written to tell you.",
     guide_text_2feb43ec2fe64e03: "{name_a} is not part of city government and decides nothing. It collects what has been published and links each record to the official source, so the last word is always the city's own.",
     guide_text_f6219e1ddc5e8b14: "Contracts happen in more than one record",
@@ -4819,7 +4819,6 @@ if (typeof module !== "undefined" && module.exports !== undefined && typeof requ
   var search = typeof location !== "undefined" ? location.search : "";
   var saved = initialLanguage(search, savedPreference);
   window.LANG = saved;
-  try { if (new URLSearchParams(search).has("lang")) localStorage.setItem("crol_lang", saved); } catch(e) {}
   if (typeof document !== "undefined") {
     document.documentElement.lang = saved;
     var meta = LANG_META[saved];

@@ -125,3 +125,23 @@ test("surface-family and category summaries are stable regardless of fixture ord
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+
+test("publisher URL identifiers are distinct from exposed schema labels", () => {
+  const dir = mkdtempSync(join(tmpdir(), "resident-surface-"));
+  try {
+    const fixture = join(dir, "source.html");
+    const allowlist = join(dir, "allowlist.json");
+    writeAllowlist(allowlist);
+    const source = "<p>Published source: https://publisher.example/reports/project_status.pdf?record_id=7</p>";
+    writeFileSync(fixture, source);
+    const clean = run(["--fixture", fixture, "--allowlist", allowlist, "--json"]);
+    assert.equal(clean.status, 0, clean.stdout);
+    writeFileSync(fixture, source + "<p>raw_field_name</p>");
+    const exposed = run(["--fixture", fixture, "--allowlist", allowlist, "--json"]);
+    assert.equal(exposed.status, 1);
+    assert.deepEqual(JSON.parse(exposed.stdout).unreviewed_findings.map(row => row.term), ["raw_field_name"]);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

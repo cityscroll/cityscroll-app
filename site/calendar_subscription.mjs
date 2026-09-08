@@ -2,7 +2,7 @@ import { calendarFeedUrlForScope, scopeFromRouteHash } from "./scope_v0.mjs";
 import { zoningHearingCalendarOccurrence } from "./zoning_hearing_calendar.mjs";
 import { renderGuideHelpLink } from "./guide_contextual_links.mjs";
 
-const translated = (key, fallback) => globalThis.window?.t?.(key) || fallback;
+const calendarSubscriptionLabel = (key, fallback) => globalThis.window?.t?.(key) || fallback;
 
 export const CALENDAR_SUBSCRIPTION_LABEL = "Subscribe to calendar";
 
@@ -143,7 +143,7 @@ export function renderCalendarSubscriptionAffordance(view, { escape = (value) =>
     rows: view.calendarRows || view.rows,
   });
   if (!details) return "";
-  return `<a class="calendar-subscribe-btn" data-calendar-subscription="scope" data-calendar-subscription-feed="${escape(details.feedUrl)}" data-calendar-subscription-webcal="${escape(details.webcalUrl)}" data-calendar-subscription-label="${escape(details.scopeLabel)}" href="${escape(details.webcalUrl)}" aria-label="${escape(translated("calendar_subscribe_control", CALENDAR_SUBSCRIPTION_LABEL))}">${escape(translated("calendar_subscribe_control", CALENDAR_SUBSCRIPTION_LABEL))}</a>`;
+  return `<a class="calendar-subscribe-btn" data-calendar-subscription="scope" data-calendar-subscription-feed="${escape(details.feedUrl)}" data-calendar-subscription-webcal="${escape(details.webcalUrl)}" data-calendar-subscription-label="${escape(details.scopeLabel)}" href="${escape(details.webcalUrl)}" aria-label="${escape(calendarSubscriptionLabel("calendar_subscribe_control", CALENDAR_SUBSCRIPTION_LABEL))}">${escape(calendarSubscriptionLabel("calendar_subscribe_control", CALENDAR_SUBSCRIPTION_LABEL))}</a>`;
 }
 
 /** Render the browser-side handoff; no external subscription state is represented here. */
@@ -156,17 +156,17 @@ export function renderCalendarSubscriptionHandoff({ feedUrl, webcalUrl, scopeLab
       <h2 id="calendar-subscription-heading">Subscribe to ${escape(scopeLabel)}</h2>
       <p class="calendar-subscription-intro">Keep new and rescheduled events from this scope in your calendar automatically.</p>
       <div class="calendar-subscription-actions">
-        <a class="calendar-subscription-open" data-calendar-subscription-open href="${escape(webcalUrl)}">${escape(translated("calendar_open_subscription", "Open calendar subscription"))}</a>
-        <button class="calendar-subscription-copy" type="button" data-calendar-subscription-copy data-copy-url="${escape(feedUrl)}">${escape(translated("calendar_copy_url", "Copy subscription URL"))}</button>
+        <a class="calendar-subscription-open" data-calendar-subscription-open href="${escape(webcalUrl)}">${escape(calendarSubscriptionLabel("calendar_open_subscription", "Open calendar subscription"))}</a>
+        <button class="calendar-subscription-copy" type="button" data-calendar-subscription-copy data-copy-url="${escape(feedUrl)}">${escape(calendarSubscriptionLabel("calendar_copy_url", "Copy subscription URL"))}</button>
       </div>
       <p class="calendar-subscription-note">No account is required to get this feed. CityScroll cannot tell whether another calendar kept the subscription.</p>
       ${renderGuideHelpLink("calendar", { extraClass: "calendar-subscription-guide-help" })}
       <details class="calendar-subscription-guidance" open>
-        <summary>${escape(translated("calendar_subscribe_how", "How to subscribe"))}</summary>
+        <summary>${escape(calendarSubscriptionLabel("calendar_subscribe_how", "How to subscribe"))}</summary>
         <ul>
-          <li><strong>Apple Calendar / native calendar:</strong> choose <em>${escape(translated("calendar_open_subscription", "Open calendar subscription"))}</em> above, then set the subscription’s <em>Auto-refresh</em> frequency. Updates follow that client setting and are not instantaneous.</li>
-          <li><strong>Google Calendar:</strong> choose <em>${escape(translated("calendar_copy_url", "Copy subscription URL"))}</em>, then use <em>Other calendars → From URL</em> and paste the HTTPS URL. Google says changes to URL-based calendars may take up to 12 hours to appear, so do not rely on a subscribed calendar for last-minute changes.</li>
-          <li><strong>Outlook:</strong> choose <em>${escape(translated("calendar_copy_url", "Copy subscription URL"))}</em>, then use <em>Add calendar → Subscribe from web</em> and paste the HTTPS URL.</li>
+          <li><strong>Apple Calendar / native calendar:</strong> choose <em>${escape(calendarSubscriptionLabel("calendar_open_subscription", "Open calendar subscription"))}</em> above, then set the subscription’s <em>Auto-refresh</em> frequency. Updates follow that client setting and are not instantaneous.</li>
+          <li><strong>Google Calendar:</strong> choose <em>${escape(calendarSubscriptionLabel("calendar_copy_url", "Copy subscription URL"))}</em>, then use <em>Other calendars → From URL</em> and paste the HTTPS URL. Google says changes to URL-based calendars may take up to 12 hours to appear, so do not rely on a subscribed calendar for last-minute changes.</li>
+          <li><strong>Outlook:</strong> choose <em>${escape(calendarSubscriptionLabel("calendar_copy_url", "Copy subscription URL"))}</em>, then use <em>Add calendar → Subscribe from web</em> and paste the HTTPS URL.</li>
           <li><strong>Other calendars:</strong> look for <em>Subscribe from URL</em>, <em>Internet calendar</em>, or a <code>webcal:</code> link. Importing a downloaded file is a one-time copy, not a subscription.</li>
         </ul>
       </details>

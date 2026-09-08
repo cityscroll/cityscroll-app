@@ -16,6 +16,7 @@ from typing import Any
 DEFAULT_ALLOWLIST = pathlib.Path(__file__).with_name("resident_surface_allowlist.json")
 
 SNAKE_CASE = re.compile(r"\b[a-z]+(?:_[a-z0-9]+)+\b")
+PUBLIC_URL = re.compile(r"\bhttps?://[^\s<>\"\']+", re.I)
 LEAK_PATTERNS = (
     (
         "unavailable_debug_copy",
@@ -121,7 +122,9 @@ def matching_exception(finding: dict[str, str], entries: list[dict[str, Any]]) -
 
 def findings_for_text(text: str, surface: dict[str, str], entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
     findings: list[dict[str, Any]] = []
-    for term in sorted(set(SNAKE_CASE.findall(text))):
+    # Published URLs contain identifiers too; those are destinations, not UI schema labels.
+    schema_text = PUBLIC_URL.sub("", text)
+    for term in sorted(set(SNAKE_CASE.findall(schema_text))):
         finding: dict[str, Any] = {**surface, "category": "implementation_schema", "term": term}
         finding["exception_id"] = matching_exception(finding, entries)
         findings.append(finding)
