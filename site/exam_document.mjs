@@ -15,6 +15,8 @@ import { bindCompactMonthCalendar } from "./compact_calendar.mjs";
 import { constellationLink, filterChip, installFilterChipNavigation, officialSourceLink, staticFact } from "./affordance_grammar.mjs";
 import { titleCodeFamilyView } from "./title_code_family.mjs";
 
+export const ELIGIBLE_LIST_GUIDE_HREF = "/guide/understand/flags-and-historical-patterns/#eligible-list-timing";
+
 const DCAS_AGENCY_NAME = "Citywide Administrative Services";
 const DCAS_AGENCY_REF = entityRouteRef("agency", DCAS_AGENCY_NAME);
 const DCAS_AGENCY_HREF = entityHref({ ref: DCAS_AGENCY_REF, label: DCAS_AGENCY_NAME });
@@ -178,7 +180,7 @@ function predictionHTML(exam) {
   return [
     `<p class="exam-prediction-claim" data-prediction-subject="eligible-list-establishment" data-prediction-value="${esc(Number.isFinite(months) ? `${months}-months` : "unknown")}">Expect the eligible list about <strong>${Number.isFinite(months) ? months.toLocaleString("en-US") : "—"} months after applications close.</strong></p>`,
     window ? `<p class="exam-prediction-window">Statistical range ${date(window.p10)}–${date(window.p90)}; median ${date(window.p50)}.</p>` : "",
-    `<p class="exam-muted">${basis} <a href="/about.html#staffing-list-establishment-formula">How this range is calculated</a>.</p>`,
+    `<p class="exam-muted">${basis} <a href="${ELIGIBLE_LIST_GUIDE_HREF}">How this range is calculated</a>.</p>`,
   ].filter(Boolean).join("\n");
 }
 
@@ -250,7 +252,7 @@ export function renderExamDocument(exam, options = {}) {
     ["Starting salary", feeSalary.salary_min != null ? `${money(feeSalary.salary_min)}${feeSalary.salary_max != null ? `–${money(feeSalary.salary_max)}` : ""}` : ""],
     ["Eligibility", exam.eligibility === "promotion" ? "Promotion" : "Open competitive"],
   ].filter(([, value]) => value !== "" && value != null);
-  const script = options.includeScript === false ? "" : `<script defer src="/export_workflows.js"></script><script type="module" src="/exam_document.mjs"></script>`;
+  const script = options.includeScript === false ? "" : `<script type="module" src="/guide_navigation.mjs"></script><script defer src="/export_workflows.js"></script><script type="module" src="/exam_document.mjs"></script>`;
   const actions = renderNodeActions([
     { kind: "source", label: "Apply through the official site", href: applicationURL, primary: true, className: "exam-action", attrs: { "data-exam-action": "apply" } },
     { kind: "source", label: "Read the official exam notice", href: noticeURL, className: "exam-action", attrs: { "data-exam-action": "source" } },

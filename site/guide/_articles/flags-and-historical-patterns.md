@@ -12,7 +12,6 @@ return_to_task: Browse contracts and awards | /browse/contracts/
 related:
   - What a public record tells you | /guide/understand/what-a-public-record-tells-you/
   - What dates and blanks mean | /guide/understand/dates-and-missing-information/
-  - Flags and context, explained, on the About page | /about.html#context
 sources:
   - Red flags in public procurement, Open Contracting Partnership | https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/
   - Opentender integrity indicators | https://opentender.eu/
@@ -31,42 +30,49 @@ Contracting Partnership's
 [red-flags guide](https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/)
 and [Opentender's](https://opentender.eu/) integrity indicators.
 
-## What each note counts
+## What each note counts {#what-each-note-counts}
 
-The exact thresholds, pools and windows behind these live on the About page, in
-[Flags and context, explained](/about.html#context). This table describes what each note measures.
+- **⚑ Short ad window** — the days between when a notice is posted and when the answer is due. We flag it when it is 10 days or fewer and less than half the agency's own median. The median comes from that agency's last 200 notices. Short windows favor incumbents who already knew the work was coming.
 
-| The note | What it looks at | What it cannot tell you |
-| --- | --- | --- |
-| Short ad window | How long a notice was open compared with that agency's own usual practice | Whether the timing was justified. A short window can be entirely proper |
-| Non-competitive method | That the notice itself says a vendor will be chosen without a full contest | Whether that method was the right one. Several of these are lawful and routine |
-| Repeat awards | The same vendor name appearing on several award notices at one agency in a period | Whether they are separate decisions. Orders under one blanket contract count the same as anything else |
-| Context strip | How large an award is against that agency's recent awards, and the vendor's share of them | Anything about merit. It uses published names exactly, and does not merge spellings |
-| Rules adoption lag | How long comparable rules have taken from comments closing to adoption | When this rule will be adopted. It is labelled an estimate and is never a date |
+- **⚑ Non-competitive method** — the notice says it will pick a vendor without a full contest. It may be a deal made through talks, a single chosen source, an urgent buy, or a test project. This can be fair at times. But it is always good to know.
+
+- **⚑ Repeat awards** — the same vendor name shows up on 3 or more award notices at the same agency within 90 days. This can point to task orders under a blanket contract just as much as favoritism. The flag just counts them — you decide what it means.
+
+- **Context strip** — how big an award is, shown as a percentile of that agency's awards in the last 12 months (shown only when the agency has 20 or more awards in that time). It also shows the vendor's share of the agency's award dollars in the same time. We use the exact published name. We do not merge name variants here.
+
+- **Rules adoption lag** estimates the time from comments closing to adoption. The [rules adoption lag formula](https://github.com/cityscroll/cityscroll-app/blob/main/docs/formulas/rules-adoption-lag.md) owns its pools, unfinished-case treatment, and display rules. An estimate is never a confirmed date.
+
+These notes use saved source snapshots. Opening a notice does not fetch fresh numbers from the publisher. Check the record's source date and coverage before relying on a comparison.
 
 All of these read awards **as published**. Published award figures can run ahead of contract
 registration and well ahead of what was actually paid, so a note built on them is describing
 publications, not spending.
 
-## Patterns from past records
+## Patterns from past records {#patterns-from-past-records}
 
 Elsewhere on the site, past public records are used to give a sense of how long something has taken
 before. These are descriptions of what has already happened, not forecasts, and legal deadlines
 always take precedence over them.
 
-| The pattern | What it describes | Where its rule is written |
-| --- | --- | --- |
-| Civil-service eligible-list timing | How long a list has taken to be established after filing closed, from past exams | [Eligible-list timing](/about.html#staffing-list-establishment-formula) |
-| Property sale timing | How long auctions have followed past hearing notices | [Property sale timing](/about.html#property-disposition-timing-formula) |
-| Tax lien sale progression | How often liens at the same stage reached a past cycle's final sale list | [Tax lien progression](/about.html#tax-lien-sale-predictions) |
-| Zoning case history | The usual time range and results for comparable past zoning cases | [What past zoning cases show](/about.html#zoning-base-rates) |
-| Applicant history | An applicant's own past zoning results beside the overall rate | [Applicant history](/about.html#applicant-conditioned-ulurp) |
+## Eligible-list timing {#eligible-list-timing}
 
-Each of these carries its own honesty conditions, and the pages say so where they apply: the eligible
-list comparison uses no applicant names, scores or ranks. A real sale date always replaces the
-property timing pattern. A lien can leave a list for many ordinary reasons, including simply being
-paid. And where a group is too small or the evidence too weak, the site shows a wider group or
-nothing rather than a confident-looking number built on very little.
+CityScroll compares past exams by exam number, from the filing deadline to list establishment. No applicant names, scores, or ranks are used. Small groups or weak test results reduce the display to the citywide median.
+
+## Property sale timing {#property-sale-timing}
+
+The public sample is small. Hearing notices rarely join to later auctions by lot number. The displayed comparison measures auction publication to the scheduled event, not hearing to sale. A real sale date replaces the pattern. See the [property timing formula](https://github.com/cityscroll/cityscroll-app/blob/main/docs/formulas/property-disposition-timing.md).
+
+## Tax lien progression {#tax-lien-progression}
+
+CityScroll shows how often liens at the same stage reached a past cycle's final sale list, not whether a property will be sold or foreclosed. Payment, payment plans, exemptions, corrections, or canceled sales can remove a lien. Weak evidence means group totals and the lot's current status only.
+
+## Zoning case history {#zoning-case-history}
+
+Past cases show time ranges and outcomes, not forecasts. Legal deadlines control. Groups start with the same action type and borough, widening below 20 cases. Long or unfinished cases are excluded from the time range.
+
+## Applicant history {#applicant-history}
+
+At least 20 approved, modified, or disapproved zoning outcomes are needed to show an applicant's history beside the overall rate. Weak name matches or test results mean descriptive history or no display. See the [applicant outcome formula](https://github.com/cityscroll/cityscroll-app/blob/main/docs/formulas/applicant-conditioned-ulurp-outcomes.md).
 
 ## How to read one
 

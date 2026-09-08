@@ -53,4 +53,4 @@ predictive occurrence emission).
 ## Artifacts
 
 - `site/data/zoning_statistics.json` → `applicant_conditioning`
-- Formula surface: `about.html#applicant-conditioned-ulurp`
+- Formula surface: `/guide/understand/flags-and-historical-patterns/#applicant-history`

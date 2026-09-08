@@ -191,7 +191,7 @@ RECORD = {
         "train_from": "2018-01-01",
         "outcome_rates": {"approved": 0.72, "modified": 0.18, "disapproved": 0.1},
         "typical_months": {"low": 8, "high": 18},
-        "formula_url": "about.html#zoning-base-rates",
+        "formula_url": "/guide/understand/flags-and-historical-patterns/#zoning-case-history",
     },
 }
 

@@ -192,6 +192,9 @@ so hiding prose in disclosures cannot stand in for shortening it. Guide tests ch
 steps, action results and consequential distinctions, with no prose or checkpoint
 minimum.
 
+Section links can use an explicit source anchor, such as `## Heading {#stable-section}`.
+The anchor stays the same in every translation; duplicate anchors are rejected.
+
 ## Language parity
 
 The shipping registry in `site/i18n.js` owns guide language coverage. English stays

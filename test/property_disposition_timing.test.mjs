@@ -207,8 +207,9 @@ test("product surface wires estimate chrome, formula, and cohort copy keys", () 
   assert.match(indexHtml, /data-property-disposition-timing="1"/);
   assert.match(indexHtml, /data-prediction-subject="property-sale-timing"/);
   assert.match(indexHtml, /disposition_timing_estimate/);
-  assert.match(indexHtml, /property-disposition-timing-formula/);
+  assert.match(indexHtml, /flags-and-historical-patterns\/\?lang=.*#property-sale-timing/);
   assert.match(i18n, /disposition_timing_estimate_html/);
   assert.match(aboutHtml, /id="property-disposition-timing-formula"/);
-  assert.match(aboutHtml, /phase_duration_ecdf|phase-duration|auction notices/i);
+  const guide = readFileSync(new URL("../site/guide/_articles/flags-and-historical-patterns.md", import.meta.url), "utf8");
+  assert.match(guide, /auction publication to the scheduled event, not hearing to sale/);
 });

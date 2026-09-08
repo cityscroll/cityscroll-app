@@ -139,6 +139,7 @@ test("public read models stay action-first and degrade to cohort statistics", ()
   assert.match(copy, /tax_lien_action_deadline/);
   // Notice-inline cycle context (position + actions) lives in the property module.
   assert.match(index, /taxLienNoticeCycleHTML|data-tax-lien-cycle-context/);
-  assert.match(about, /does not predict that a property will be sold or foreclosed/);
-  assert.match(about, /payment, a payment plan, an exemption, a correction, or a canceled sale/);
+  const guide = readFileSync(new URL("../site/guide/_articles/flags-and-historical-patterns.md", import.meta.url), "utf8");
+  assert.match(guide, /not whether a property will be sold or foreclosed/);
+  assert.match(guide, /Payment, payment plans, exemptions, corrections, or canceled sales/);
 });

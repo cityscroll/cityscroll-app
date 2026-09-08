@@ -214,7 +214,7 @@ function propertyDispositionTimingHTML(estimate){
   const cohortNote=estimate.public_projection==="cohort_statistic_only"
     ?`<div class="note disposition-timing-cohort-note">${t("disposition_timing_cohort_note_html")}</div>`
     :"";
-  const formula=`<div class="lc-pct"><a href="about.html#property-disposition-timing-formula">${t("disposition_timing_formula_link")}</a></div>`;
+  const formula=`<div class="lc-pct"><a href="/guide/understand/flags-and-historical-patterns/?lang=${encodeURIComponent(window.LANG || "en")}#property-sale-timing">${t("disposition_timing_formula_link")}</a></div>`;
   const value=`${estimate.weeks_low??"unknown"}-${estimate.weeks_high??"unknown"}-weeks`;
   return `<div class="note disposition-timing-estimate" data-property-disposition-timing="1" data-prediction-subject="property-sale-timing" data-prediction-value="${escUiHtml(value)}" data-disposition-timing-projection="${escUiHtml(estimate.public_projection||"cohort_statistic_only")}">${t("disposition_timing_estimate_html",{line,tag})}${cohortNote}${formula}</div>`;
 }
@@ -1549,7 +1549,7 @@ function taxLienNoticeCycleHTML(ctx){
     ${parcelBlock}
     ${vintage}
     <p class="tax-lien-meta">${t("tax_lien_cohort_only")}</p>
-    <div class="lc-pct"><a href="about.html#tax-lien-sale-predictions">${t("tax_lien_formula_link")}</a></div>
+    <div class="lc-pct"><a href="/guide/understand/flags-and-historical-patterns/?lang=${encodeURIComponent(window.LANG || "en")}#tax-lien-progression">${t("tax_lien_formula_link")}</a></div>
   </section>`;
 }
 /** Compact list-card note: stage + leave rate + deadline state. */
@@ -1595,7 +1595,7 @@ function taxLienPanelHTML(summary,guide=null){
         <div class="tax-lien-areas"><div class="tax-lien-area" tabindex="0"><h3>${t("tax_lien_borough_heading")}</h3>${taxLienAreaTable(cycle.boroughs,t("borough_label"))}</div><div class="tax-lien-area" tabindex="0"><h3>${t("tax_lien_nta_heading")}</h3><div class="tax-lien-nta-scroll" role="region" tabindex="0" aria-label="${escUiHtml(t("tax_lien_nta_heading"))}">${taxLienAreaTable(cycle.ntas,"NTA")}</div></div></div>
       </div>
     </details>
-    <div class="lc-pct" style="margin-top:10px"><a href="about.html#tax-lien-sale-predictions">${t("tax_lien_formula_link")}</a></div>`;
+    <div class="lc-pct" style="margin-top:10px"><a href="/guide/understand/flags-and-historical-patterns/?lang=${encodeURIComponent(window.LANG || "en")}#tax-lien-progression">${t("tax_lien_formula_link")}</a></div>`;
 }
 async function paintTaxLienSalePanel(){
   const el=$("#tax-lien-sale-panel"); if(!el) return;

@@ -762,7 +762,7 @@ export function attachZoningStatistics(record, model, opts = {}) {
       },
       copy: applicantConditionedCopy(conditioned, cohort, { renderMode }),
       render_mode: renderMode,
-      formula_url: "about.html#applicant-conditioned-ulurp",
+      formula_url: "/guide/understand/flags-and-historical-patterns/#applicant-history",
       display_mode: renderMode === "per_matter"
         ? "conditioned_with_base_rate"
         : "descriptive_history_with_base_rate",
@@ -787,7 +787,7 @@ export function attachZoningStatistics(record, model, opts = {}) {
       display_mode: shipBarPassed && prediction
         ? "cohort_statistic_and_timing"
         : "cohort_statistic_only",
-      formula_url: "about.html#zoning-base-rates",
+      formula_url: "/guide/understand/flags-and-historical-patterns/#zoning-case-history",
       applicant_conditioned: applicantView,
     },
     predictions,

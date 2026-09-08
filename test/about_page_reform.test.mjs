@@ -10,16 +10,15 @@ const localeSources = readdirSync(new URL("lang/", i18nRoot))
   .map((name) => readFileSync(new URL(`lang/${name}`, i18nRoot), "utf8"));
 const shippedCopy = [about, stats, readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8"), ...localeSources].join("\n");
 
-test("About introduces the product and links its primary surfaces before methodology", () => {
-  const section = about.match(/<h2 data-i18n="about_h_what">[\s\S]*?(?=<h2 id="context")/)?.[0] || "";
-  assert.match(section, /<b>Now<\/b>[\s\S]*<b>Near you<\/b>[\s\S]*<b>Following<\/b>[\s\S]*<b>Browse<\/b>[\s\S]*<b>Guide<\/b>/);
-  assert.match(section, /contracts and plans[\s\S]*land use[\s\S]*meetings and votes[\s\S]*job exams[\s\S]*city property sales[\s\S]*rules/i);
-  assert.match(section, /official city publications/);
-  assert.doesNotMatch(section, /Where the data comes from|Data notes|1\.09 million|87\.5%/i);
-  assert.match(section, /<h2 id="explore">Explore CityScroll<\/h2>/);
-  for (const route of ["/now/", "/near-you/", "/following/", "/browse/", "/guide/"]) assert.match(section, new RegExp(`href="${route}"`));
-  assert.match(section, /<h2 id="maintainers">Maintainers<\/h2>/);
-  assert.match(section, /CityScroll is maintained by Anna Bao, James Carroll, Dev Doshi, and Michael Sheehan\. Contact them at <a href="mailto:team@cityscroll\.org">team@cityscroll\.org<\/a>\./);
+test("About introduces the independent product and team with one guide entry", () => {
+  const section = about.split('<h2 data-i18n="about_h_feedback">')[0];
+  assert.match(section, /official city sources/);
+  assert.match(section, /CityScroll is independent/);
+  assert.match(section, /Using CityScroll/);
+  assert.equal((section.match(/href="\/guide\/"/g) || []).length, 1);
+  assert.match(section, /id="maintainers"/);
+  assert.match(section, /Anna Bao, James Carroll, Dev Doshi, and Michael Sheehan/);
+  assert.match(section, /href="mailto:team@cityscroll\.org"/);
   assert.match(section, /href="https:\/\/github\.com\/cityscroll\/cityscroll-app"/);
 });
 
@@ -28,26 +27,23 @@ test("removed data and privacy policy copy is absent and unlinked in every shipp
   assert.doesNotMatch(about, /<h2[^>]*>Where the data comes from<\/h2>|id="data"|id="privacy"/i);
 });
 
-test("each pattern is a compact card with collapsed detail", () => {
-  const ids = [
-    "staffing-list-establishment-formula",
-    "property-disposition-timing-formula",
-    "tax-lien-sale-predictions",
-    "zoning-base-rates",
-    "applicant-conditioned-ulurp",
-  ];
-  for (const id of ids) {
-    const card = about.match(new RegExp(`<article class="pattern-card" id="${id}">([\\s\\S]*?)<\\/article>`))?.[1] || "";
-    assert.match(card, /<h3/);
-    assert.match(card, /<p class="src"/);
-    assert.match(card, /<details><summary>How this works<\/summary>/);
-    assert.ok((card.match(/<li/g) || []).length === 0, `${id} should not restore a long method list`);
-  }
+test("removed manual translations cannot restore the About grids", () => {
+  assert.doesNotMatch(shippedCopy, /about_(?:li_flags_html|p_flags_intro_html|p_flags_footer_html|staffing_formula_html|p_tax_lien_formula_html)\s*:/);
+  assert.doesNotMatch(about, /class="(?:pattern-card|pattern-grid|explore-grid)"/);
+  assert.match(about, /\.legacy-target\{display:none\}/);
+  assert.match(about, /\.legacy-target:target\{display:block/);
 });
 
 test("AI disclosure follows NYC's disclose-review-separate structure", () => {
-  const section = about.match(/<h2 data-i18n="about_h_content">[\s\S]*?(?=<\/main>)/)?.[0] || "";
+  const section = about.match(/<h2 id="content-policy" data-i18n="about_h_content">[\s\S]*?(?=<\/main>)/)?.[0] || "";
   assert.match(section, /generative artificial intelligence \(AI\)/i);
   assert.match(section, /A human reviews and edits this content before it goes live/);
   assert.match(section, /AI does not create or change the official records/);
+});
+
+test("About retains the public flag methodology link and accessible new-tab treatment in every locale", () => {
+  for (const source of [about, readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8"), ...localeSources]) {
+    const decoded = source.replaceAll('\\"', '"');
+    assert.match(decoded, /<a href="https:\/\/www\.open-contracting\.org\/resources\/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks\/" target="_blank" rel="noopener noreferrer">[^<]+<span class="sr-only">[^<]+<\/span><\/a>/);
+  }
 });

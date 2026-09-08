@@ -30,7 +30,7 @@ with sync_playwright() as pw:
         page.wait_for_function("document.querySelector('#dcontext')?.innerHTML.includes('larger than')", timeout=30000)
         ctx_txt = page.locator("#dcontext").inner_text()
         step("OK", "N6 context strip (percentile) on award detail", ctx_txt[:130].replace("\n"," | "))
-        has_link = page.evaluate("!!document.querySelector('#dcontext a[href=\"about.html#context\"]')")
+        has_link = page.evaluate("!!document.querySelector('#dcontext a[href=\"/guide/understand/flags-and-historical-patterns/#what-each-note-counts\"]')")
         step("OK" if has_link else "FAIL", "N6 'how computed' methodology link", "")
     except Exception:
         step("FAIL", "N6 context strip (percentile) on award detail", page.locator("#dcontext").inner_html()[:120])
@@ -79,11 +79,11 @@ with sync_playwright() as pw:
     bad = "short ad window" in sol["html"] and sol["window"] > 10
     step("OK" if not bad else "FAIL", "N5 ad-window flag only when formula holds", json.dumps(sol))
 
-    # ---------- methodology section on about ----------
+    # ---------- canonical methodology section ----------
     p3 = ctx.new_page()
-    p3.goto(BASE + "about.html#context", timeout=30000)
-    ok = p3.evaluate("!!document.getElementById('context') && document.body.textContent.includes('statistical context, not')")
-    step("OK" if ok else "FAIL", "methodology section on about.html#context", "")
+    p3.goto(BASE.rstrip("/") + "/guide/understand/flags-and-historical-patterns/#what-each-note-counts", timeout=30000)
+    ok = p3.evaluate("!!document.getElementById('what-each-note-counts') && document.body.textContent.includes('statistical context, not')")
+    step("OK" if ok else "FAIL", "methodology section on /guide/understand/flags-and-historical-patterns/#what-each-note-counts", "")
     p3.close()
 
     # ---------- regressions ----------

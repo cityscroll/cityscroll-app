@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { createRequire } from "node:module";
 
 import { buildExamProcessSpine } from "../site/exam_process_spine.mjs";
 import { buildExamPhaseView } from "../site/exam_phase_spine.mjs";
-import { renderExamDocument, examDocumentPath } from "../site/exam_document.mjs";
+import { renderExamDocument, examDocumentPath, ELIGIBLE_LIST_GUIDE_HREF } from "../site/exam_document.mjs";
 import { buildTitleCodeFamilyIndex } from "../site/title_code_family.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -17,7 +17,7 @@ const Staffing = require("../site/staffing.js");
 export function examDocumentOutputs(artifact = JSON.parse(readFileSync(join(SITE, "data/staffing_exams.json"), "utf8"))) {
   const today = String(artifact.data_current_as_of || artifact.generated_at || "").slice(0, 10);
   const titleCodeFamilies = buildTitleCodeFamilyIndex(artifact.exams);
-  return (artifact.exams || []).map((exam) => {
+  const outputs = (artifact.exams || []).map((exam) => {
     const spine = buildExamProcessSpine(exam);
     const path = join(SITE, examDocumentPath(exam.exam_number), "index.html");
     const content = renderExamDocument(exam, {
@@ -30,6 +30,27 @@ export function examDocumentOutputs(artifact = JSON.parse(readFileSync(join(SITE
     });
     return [path, content];
   });
+  // Retained exam documents outlive the rolling input window. Refresh navigation
+  // without regenerating their historical facts from today's incomplete corpus.
+  const current = new Set(outputs.map(([path]) => path));
+  const directory = join(SITE, "exams");
+  if (existsSync(directory)) for (const entry of readdirSync(directory)) {
+    const path = join(directory, entry, "index.html");
+    if (!/^\d+$/.test(entry) || current.has(path) || !existsSync(path)) continue;
+    const html = readFileSync(path, "utf8");
+    outputs.push([path, refreshRetainedExamNavigation(html)]);
+  }
+  return outputs;
+}
+
+export function refreshRetainedExamNavigation(html) {
+  const oldHref = "/about.html#staffing-list-establishment-formula";
+  if (!html.includes(oldHref) && !html.includes(ELIGIBLE_LIST_GUIDE_HREF)) return html;
+  let updated = html.replaceAll(oldHref, ELIGIBLE_LIST_GUIDE_HREF);
+  if (!updated.includes('src="/guide_navigation.mjs"')) {
+    updated = updated.replace("</body>", '<script type="module" src="/guide_navigation.mjs"></script></body>');
+  }
+  return updated;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

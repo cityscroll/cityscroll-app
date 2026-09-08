@@ -141,7 +141,7 @@ def about_anchors(page: Page, base: str) -> dict:
     )
     guide = page.evaluate("() => !!document.querySelector('a[href=\"/guide/\"]')")
     flags = page.evaluate(
-        "() => !!document.querySelector('a[href=\"/guide/understand/flags-and-historical-patterns/\"]')"
+        "() => !!document.querySelector('a[href=\"/guide/understand/flags-and-historical-patterns/#what-each-note-counts\"]')"
     )
     holds = all(found.values()) and guide and flags
     return {"assertion_holds": holds, "anchors": found, "guide_link": guide, "flags_link": flags}

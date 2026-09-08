@@ -15,8 +15,8 @@ function accessibilitySection() {
 
 test("About states CityScroll's current accessibility target", () => {
   const section = accessibilitySection();
-  assert.match(section, /CityScroll targets <b>WCAG 2\.2 Level AA<\/b> today/);
-  assert.match(section, /Automated checks cover every public page/);
+  assert.match(section, /CityScroll aims to meet <b>WCAG 2\.2 Level AA<\/b>/);
+  assert.match(section, /feedback form/);
   assert.doesNotMatch(section, /WCAG 2\.1|certified|conforms/i);
 });
 

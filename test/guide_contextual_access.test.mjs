@@ -165,8 +165,23 @@ test("About keeps identity, independence, team, accessibility, feedback, and the
   for (const id of ABOUT_ANCHORS) {
     assert.match(about, new RegExp(`id="${id}"`));
   }
-  assert.match(about, /href="\/guide\/understand\/flags-and-historical-patterns\/"/);
-  assert.match(about, /10 days or fewer/);
+  assert.doesNotMatch(about, /class="(?:explore-grid|pattern-grid|pattern-card)"/);
+  assert.doesNotMatch(about, /10 days or fewer|All numbers come live/);
+  const narrative = [...about.matchAll(/<p[^>]*data-about-narrative[^>]*>(.*?)<\/p>/gs)]
+    .map(match => match[1].replace(/<[^>]*>/g, " ")).join(" ").trim().split(/\s+/);
+  assert.ok(narrative.length >= 200 && narrative.length <= 300, `${narrative.length} authored words`);
+  const destinations = ["what-each-note-counts", "patterns-from-past-records", "eligible-list-timing",
+    "property-sale-timing", "tax-lien-progression", "zoning-case-history", "applicant-history"];
+  const guide = readFileSync(new URL("../site/guide/understand/flags-and-historical-patterns/index.html", import.meta.url), "utf8");
+  for (const [index, id] of ABOUT_ANCHORS.entries()) {
+    const target = destinations[index];
+    assert.ok(about.includes(`class="legacy-target" id="${id}"><a href="/guide/understand/flags-and-historical-patterns/#${target}"`));
+    assert.ok(guide.includes(`id="${target}"`));
+  }
+  assert.match(guide, /10 days or fewer/);
+  assert.match(guide, /saved source snapshots/);
+  assert.match(about, /rel="canonical" href="https:\/\/cityscroll.org\/about.html"/);
+  assert.match(about, /id="content-policy"/);
   assert.doesNotMatch(about, /changelog\.html/i);
 });
 

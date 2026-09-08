@@ -46,16 +46,8 @@
   h3{font-family:var(--font-nameplate);font-size:18px;line-height:1.25;margin:0 0 8px}
   p{margin:10px 0}
   .src{font:14px/1.7 var(--ui);color:var(--ink-soft)}
-  .pattern-grid{display:grid;gap:12px;margin-top:14px}
-  .pattern-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow)}
-  .pattern-card .src{margin:0}
-  .pattern-card details{border-top:1px solid var(--rule);margin-top:12px;padding-top:10px;font:14px/1.6 var(--ui);color:var(--ink-soft)}
-  .pattern-card summary{color:var(--oxblood);cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}
-  .pattern-card details p{margin:6px 0 0}
-  .explore-grid{display:grid;gap:12px;margin-top:14px}
-  .explore-card{display:block;text-decoration:none;color:inherit}
-  .explore-card h3{color:var(--oxblood)}
-  .explore-card p{font:14px/1.6 var(--ui);color:var(--ink-soft);margin:0}
+  .legacy-target{display:none}
+  .legacy-target:target{display:block;border:1px solid var(--rule);padding:12px;scroll-margin-top:20px}
   /* form */
   .card{background:var(--card);border:1px solid var(--rule);border-radius:14px;box-shadow:var(--shadow);padding:18px 20px;margin-top:12px}
   label{display:block;font:600 11px/1 var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
@@ -84,8 +76,8 @@
   .lang-switcher{position:absolute;top:12px;inset-inline-end:22px;z-index:6;display:flex;align-items:center;gap:.35rem;margin:0;justify-content:flex-end}.lang-select{font:600 12px/1.2 ui-sans-serif,system-ui,sans-serif;padding:8px 28px 8px 10px;min-height:36px;min-width:7.5rem;max-width:12rem;border:1px solid var(--rule-strong);border-radius:8px;background:var(--card);color:var(--ink);cursor:pointer;appearance:auto}.lang-select:focus-visible{outline:2px solid var(--blue,#1b3a8f);outline-offset:2px}
   .lang-notice{font:12px/1.4 var(--ui);color:var(--muted);text-align:center;margin-block-start:4px;padding-inline:22px}
   :lang(zh-Hans),:lang(ko),:lang(bn),:lang(ar),:lang(ur){letter-spacing:normal !important;text-transform:none !important}
-  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-radius:0 0 9px 0;font:600 13px/1 var(--ui);text-decoration:none}
-  .skip:focus{left:0}
+  .skip{position:absolute;left:0;top:0;transform:translateY(-200%);z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-radius:0 0 9px 0;font:600 13px/1 var(--ui);text-decoration:none}
+  .skip:focus{transform:none}
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
   :is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
   @media (max-width:560px){
@@ -95,7 +87,7 @@
 </style>
 <link rel="stylesheet" href="brand.css">
 </head>
-<body>
+<body data-guide-links>
 <a class="skip" href="#main" data-i18n="skip_to_content">Skip to content</a>
 <div class="wrap">
 <header>
@@ -131,99 +123,14 @@
 
 <main id="main" tabindex="-1">
 <h2 data-i18n="about_h_what">What this is</h2>
-<p data-i18n-html="about_p_what_html">CityScroll connects official publications to agencies, mandates, parcels, people, and processes, so you can see what New York City government is doing and what you can do next. Use <b>Now</b> for urgent dates. Use <b>Near you</b> for local changes. Use <b>Following</b> for saved watches. Use <b>Browse</b> for contracts and plans, land use, meetings and votes, job exams, city property sales, and rules. Use the <b>Guide</b> to learn how to read a record. The site uses official city publications. CityScroll is independent. It is not part of city government.</p>
+<p data-about-narrative data-i18n-html="about_p_what_html">CityScroll helps you see what New York City government is doing and what you can do next. It brings related public records together and links to the official city sources behind them. CityScroll is independent. It is not part of city government. For dates, decisions, and instructions, check the official notice.</p>
+<p id="explore" data-about-narrative data-i18n-html="about_using_html">Find a record, follow a topic, or check the proof behind a link with <a href="/guide/">Using CityScroll</a>. The guide shows which sources we use. It explains gaps in the data, flags, and past patterns.</p>
 
-<h2 id="explore">Explore CityScroll</h2>
-<div class="explore-grid" aria-label="CityScroll product areas">
-  <a class="pattern-card explore-card" href="/now/">
-    <h3>Now</h3>
-    <p>Deadlines, hearings, meetings, and auctions happening soon.</p>
-  </a>
-  <a class="pattern-card explore-card" href="/near-you/">
-    <h3>Near you</h3>
-    <p>Records and activity tied to a place.</p>
-  </a>
-  <a class="pattern-card explore-card" href="/following/">
-    <h3>Following</h3>
-    <p>Saved searches, watches, and alerts.</p>
-  </a>
-  <a class="pattern-card explore-card" href="/browse/">
-    <h3>Browse</h3>
-    <p>Contracts, staffing and exams, zoning, property, rules, meetings, and votes.</p>
-  </a>
-  <a class="pattern-card explore-card" href="/guide/">
-    <h3>Guide</h3>
-    <p>How to find a record, follow a topic, and read what a public record actually tells you.</p>
-  </a>
-</div>
-
-<h2 id="maintainers">Maintainers</h2>
-<p>CityScroll is maintained by Anna Bao, James Carroll, Dev Doshi, and Michael Sheehan. Contact them at <a href="mailto:team@cityscroll.org">team@cityscroll.org</a>.</p>
-<p class="src">CityScroll is open-source software. <a href="https://github.com/cityscroll/cityscroll-app">View the source on GitHub</a>.</p>
-
-<h2 id="context" data-i18n="about_h_flags">Flags and context, explained</h2>
-<p class="src" data-i18n-html="about_p_flags_intro_html">Procurement notices carry two kinds of computed notes. Both are <b>statistical context, not
-findings or blame</b>. A flag just means "worth a closer look." Every formula has a fair reason behind it. Emergencies
-really happen. Some markets are specialized and have few bidders. Name matching is not perfect. This method follows two guides. One is
-<a href="https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/" target="_blank" rel="noopener noreferrer">the Open Contracting Partnership's red-flags guide<span class="sr-only"> (opens in new tab)</span></a>. The other is
-<a href="https://opentender.eu/" target="_blank" rel="noopener noreferrer">Opentender's<span class="sr-only"> (opens in new tab)</span></a> integrity rules.</p>
-<p class="src">How to read these notes, and what they cannot tell you, is in <a href="/guide/understand/flags-and-historical-patterns/">Flags and historical patterns</a>. The thresholds below stay here so a cited link still lands on the rule.</p>
-<ul class="src" style="margin:8px 0;padding-left:20px" data-i18n-html="about_li_flags_html">
-  <li><b>⚑ Short ad window</b> — the days between when a notice is posted and when the answer is due. We flag
-  it when it is 10 days or fewer and less than half the agency's own median. The median comes from
-  that agency's last 200 notices. Short windows favor incumbents who already knew the work was coming.</li>
-  <li><b>⚑ Non-competitive method</b> — the notice says it will pick a vendor without a full contest. It may be
-  a deal made through talks, a single chosen source, an urgent buy, or a test project. This can be fair at times.
-  But it is always good to know.</li>
-  <li><b>⚑ Repeat awards</b> — the same vendor name shows up on 3 or more award notices at the same agency within
-  90 days. This can point to task orders under a blanket contract just as much as favoritism. The flag just counts
-  them — you decide what it means.</li>
-  <li><b>Context strip</b> — how big an award is, shown as a percentile of that agency's awards in the last 12
-  months (shown only when the agency has 20 or more awards in that time). It also shows the vendor's share of the
-  agency's award dollars in the same time. We use the exact published name. We do not merge name variants here.</li>
-  <li><b>Rules adoption lag (estimate)</b> — after comments close, how long similar Agency Rules usually
-  took to reach a Notice of Adoption. Built from City Record history. Unfinished cases are not treated as
-  fast ones. Uses an agency pool when it has at least 20 past gaps, or the whole city if not. Shown as a dashed
-  “Estimate” segment on the rules timeline, and as one digest line only when the band changes — never as a
-  confirmed date. Full formula:
-  <a href="https://github.com/cityscroll/cityscroll-app/blob/main/docs/formulas/rules-adoption-lag.md">rules adoption lag</a>.</li>
-</ul>
-<p class="src" data-i18n-html="about_p_flags_footer_html">All numbers come live from the <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener noreferrer">City Record Open Data<span class="sr-only"> (opens in new tab)</span></a>
-when you view the notice. These are awards <b>as published</b>. The numbers can lag behind contract
-registration and real payment. Nothing here says anyone did wrong. It just saves you the math.</p>
-
-<h2 id="past-patterns">How past patterns are used</h2>
-<p class="src">Some pages use past public records to add context. These patterns do not replace official dates or predict what will happen. The same explanation page covers <a href="/guide/understand/flags-and-historical-patterns/">how far a past pattern can be trusted</a>.</p>
-<div class="pattern-grid">
-  <article class="pattern-card" id="staffing-list-establishment-formula">
-    <h3 data-i18n="about_staffing_formula_heading">Civil-service eligible-list timing</h3>
-    <p class="src" data-i18n-html="about_staffing_formula_html">CityScroll compares past exams to show how long DCAS may take to set up an eligible list. The comparison uses no applicant names, scores, or ranks.</p>
-    <details><summary>How this works</summary><p>We match exams by exam number and measure from the filing deadline to the date the list was set up. If a group is too small or its test results are weak, CityScroll shows only the citywide middle value.</p></details>
-  </article>
-  <article class="pattern-card" id="property-disposition-timing-formula">
-    <h3>Property sale timing pattern</h3>
-    <p class="src">Some city property notices announce a hearing before they name a sale date. CityScroll may show how many weeks auctions have followed past notices, but it does not predict that a sale will happen.</p>
-    <details><summary>How this works</summary><p>The public set is small, and earlier hearings rarely share the same lot number as later auction notices. A real sale date always replaces the pattern.</p></details>
-  </article>
-  <article class="pattern-card" id="tax-lien-sale-predictions">
-    <h3 data-i18n="about_h_tax_lien_formula">Tax lien sale progression</h3>
-    <p class="src" data-i18n-html="about_p_tax_lien_formula_html">CityScroll shows how often tax liens at the same stage reached a past cycle's final sale list. It does not predict that a property will be sold or foreclosed.</p>
-    <details><summary>How this works</summary><p>A lien may leave the list after payment, a payment plan, an exemption, a correction, or a canceled sale. When the evidence is too weak, the site shows only group totals and the lot's current status.</p></details>
-  </article>
-  <article class="pattern-card" id="zoning-base-rates">
-    <h3>What past zoning cases show</h3>
-    <p class="src">CityScroll uses past zoning cases to show a usual time range and results for similar cases. These are past patterns, not a forecast. Legal deadlines still control.</p>
-    <details><summary>How this works</summary><p>We start with the same action type and borough, then use a wider group if there are fewer than 20 cases. Long or unfinished cases stay out of the time range.</p></details>
-  </article>
-  <article class="pattern-card" id="applicant-conditioned-ulurp">
-    <h3>Applicant history</h3>
-    <p class="src">When an applicant has at least 20 past zoning results, CityScroll may show that history next to the overall result rate. It is context, not a claim that the applicant will win or lose.</p>
-    <details><summary>How this works</summary><p>We compare approved, modified, and disapproved cases. If name matches or past test results are weak, the site labels the result as descriptive history or does not show it.</p></details>
-  </article>
-</div>
+<h2 id="maintainers" data-i18n="about_maintainers">Maintainers</h2>
+<p data-about-narrative data-i18n-html="about_team_html">CityScroll is maintained by Anna Bao, James Carroll, Dev Doshi, and Michael Sheehan. Reach the team at <a href="mailto:team@cityscroll.org">team@cityscroll.org</a>. The site is open source. <a href="https://github.com/cityscroll/cityscroll-app">Read the code on GitHub</a> to see how it works or help make it better.</p>
 
 <h2 data-i18n="about_h_feedback">Send feedback</h2>
-<p class="src" data-i18n="about_p_feedback">Found a bug, want a feature, or have a thought? Send it here. We read everything. No account needed.</p>
+<p class="src" data-about-narrative data-i18n="about_p_feedback">Found a bug, want a feature, or have a thought? Send it here. We read everything. No account needed.</p>
 <p class="src" data-i18n-html="about_email_us_html">Or email us: <a href="mailto:feedback@cityscroll.org">feedback@cityscroll.org</a></p>
 <div class="card">
   <input type="hidden" id="fbcategory" value="bug">
@@ -258,11 +165,19 @@ registration and real payment. Nothing here says anyone did wrong. It just saves
 </div>
 
 <h2 id="accessibility" data-i18n="std_h_self_conformance">Accessibility</h2>
-<p data-i18n-html="std_self_target_html">CityScroll targets <b>WCAG 2.2 Level AA</b> today. Automated checks cover every public page at phone and desktop sizes.</p>
+<p data-about-narrative data-i18n-html="about_access_html">CityScroll aims to meet <b>WCAG 2.2 Level AA</b>. If a page or a tool is hard to use, please tell us in the feedback form. We can then look into it.</p>
 
-<h2 data-i18n="about_h_content">About our content</h2>
-<p data-i18n-html="about_p_content_html">CityScroll uses generative artificial intelligence (AI) to draft headings and plain-language explanations. A human reviews and edits this content before it goes live. AI does not create or change the official records shown on the site.</p>
+<h2 id="content-policy" data-i18n="about_h_content">About our content</h2>
+<p data-about-narrative data-i18n-html="about_p_content_html">CityScroll uses generative artificial intelligence (AI) to draft headings and plain-language explanations. A human reviews and edits this content before it goes live. AI does not create or change the official records shown on the site.</p>
+  <p data-about-narrative data-i18n-html="about_flag_method_html">Our flag methods draw on the <a href="https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/" target="_blank" rel="noopener noreferrer">Open Contracting guide to red flags in public procurement<span class="sr-only"> (opens in new tab)</span></a>.</p>
 
+<p class="legacy-target" id="context"><a href="/guide/understand/flags-and-historical-patterns/#what-each-note-counts" data-i18n="about_destination_0">Flags and thresholds</a></p>
+<p class="legacy-target" id="past-patterns"><a href="/guide/understand/flags-and-historical-patterns/#patterns-from-past-records" data-i18n="about_destination_1">Historical patterns</a></p>
+<p class="legacy-target" id="staffing-list-establishment-formula"><a href="/guide/understand/flags-and-historical-patterns/#eligible-list-timing" data-i18n="about_destination_2">Eligible-list timing</a></p>
+<p class="legacy-target" id="property-disposition-timing-formula"><a href="/guide/understand/flags-and-historical-patterns/#property-sale-timing" data-i18n="about_destination_3">Property sale timing</a></p>
+<p class="legacy-target" id="tax-lien-sale-predictions"><a href="/guide/understand/flags-and-historical-patterns/#tax-lien-progression" data-i18n="about_destination_4">Tax lien progression</a></p>
+<p class="legacy-target" id="zoning-base-rates"><a href="/guide/understand/flags-and-historical-patterns/#zoning-case-history" data-i18n="about_destination_5">Zoning case history</a></p>
+<p class="legacy-target" id="applicant-conditioned-ulurp"><a href="/guide/understand/flags-and-historical-patterns/#applicant-history" data-i18n="about_destination_6">Applicant history</a></p>
 </main>
 <footer class="foot" data-i18n-html="about_foot_html">CityScroll · NYC’s public record, linked · <a href="/guide/">Guide</a> · <a href="stats.html">Stats</a> · <a href="mailto:feedback%40cityscroll.org">Feedback</a> · <a href="index.html">Home</a></footer>
 </div>

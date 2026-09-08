@@ -485,7 +485,7 @@ function examListForecastHTML(exam){
       last:fdate(prediction.predicted_window.p90)
     })}</div>`:"";
   return `<div class="note" data-staffing-list-prediction="1" data-prediction-subject="eligible-list-establishment" data-prediction-value="${escUiHtml(months)}-months">${statistic} ${window}
-    <a href="about.html#staffing-list-establishment-formula">${t("exam_list_prediction_method")}</a></div>`;
+    <a href="/guide/understand/flags-and-historical-patterns/?lang=${encodeURIComponent(window.LANG || "en")}#eligible-list-timing">${t("exam_list_prediction_method")}</a></div>`;
 }
 function examListStatutoryContextHTML(exam){
   const extension=exam?.list_aggregate?.extension_date;

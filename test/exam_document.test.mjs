@@ -14,7 +14,7 @@ import {
 } from "../site/exam_document.mjs";
 import { edgeRequestKind } from "../site/pages_edge.mjs";
 import { migrateLegacyUrl } from "../site/route_migration.mjs";
-import { examDocumentOutputs } from "../tools/build_exam_documents.mjs";
+import { examDocumentOutputs, refreshRetainedExamNavigation } from "../tools/build_exam_documents.mjs";
 import { buildTitleCodeFamilyIndex } from "../site/title_code_family.mjs";
 import { compileSub } from "../worker/src/lib/compile.mjs";
 import { sanitize } from "../worker/src/lib/filter.mjs";
@@ -162,7 +162,8 @@ test("node-page render gate rejects reader-facing cruft", () => {
 
 test("committed exam document pages are reproducible and contain useful no-JavaScript HTML", () => {
   const outputs = examDocumentOutputs();
-  assert.equal(outputs.length, artifact.exams.length);
+  assert.ok(outputs.length >= artifact.exams.length, "current and retained exam documents are checked");
+  for (const exam of artifact.exams) assert.ok(outputs.some(([path]) => path.endsWith(`/exams/${exam.exam_number}/index.html`)));
   for (const [path, html] of outputs) {
     assert.ok(existsSync(path), path);
     assert.equal(readFileSync(path, "utf8"), html, `${path} is stale`);
@@ -203,4 +204,14 @@ test("exam subject references are closed and typed", () => {
   assert.equal(formatSubjectRef("exam", "7016"), "exam:7016");
   assert.deepEqual(parseSubjectRef("exam:7016"), { kind: "exam", id: "7016", ref: "exam:7016" });
   assert.equal(parseSubjectRef("exam:70 16"), null);
+});
+
+
+test("retained exam navigation migrates without replacing historical facts", () => {
+  const before = '<body><p>Retained cohort: 308 exams</p><a href="/about.html#staffing-list-establishment-formula">Method</a></body>';
+  const after = refreshRetainedExamNavigation(before);
+  assert.match(after, /Retained cohort: 308 exams/);
+  assert.match(after, /flags-and-historical-patterns\/#eligible-list-timing/);
+  assert.match(after, /src="\/guide_navigation.mjs"/);
+  assert.equal(refreshRetainedExamNavigation(after), after);
 });
