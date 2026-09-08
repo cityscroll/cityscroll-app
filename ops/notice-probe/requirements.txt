@@ -17,6 +17,13 @@
 # uses (.github/actions/setup-playwright/requirements.txt), so the scheduled
 # measurement and the gate exercise the same Chromium build. Moving one without
 # the other is a test failure, not a silent divergence.
+#
+# The browser build is pinned transitively rather than separately: this
+# Playwright version resolves to Chromium build chromium-1208, browser version
+# 145.0.7632.6, which is what the setup script downloads and what every slot
+# measures with. Recorded here because a version number nobody wrote down is a
+# measurement nobody can reproduce; re-read it from the package's browsers.json
+# when the pin below moves.
 playwright==1.58.0
 # Playwright's own declared dependencies (pyee<14,>=13; greenlet<4.0.0,>=3.1.1).
 pyee==13.0.1
