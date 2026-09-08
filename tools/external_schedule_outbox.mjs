@@ -24,11 +24,13 @@ export function markerFor(event) {
   return `<!-- cityscroll-external-schedule:${event.job_id}:${event.run_key} -->`;
 }
 
-async function atomicWrite(path, value) {
-  await mkdir(join(path, ".."), { recursive: true });
-  const temp = `${path}.${process.pid}.tmp`;
-  await writeFile(temp, `${JSON.stringify(value, null, 2)}\n`, { encoding: "utf8", mode: 0o600 });
-  await rename(temp, path);
+async function atomicWrite(path, value, { check = false } = {}) {
+  if (!check) {
+    await mkdir(join(path, ".."), { recursive: true });
+    const temp = `${path}.${process.pid}.tmp`;
+    await writeFile(temp, `${JSON.stringify(value, null, 2)}\n`, { encoding: "utf8", mode: 0o600 });
+    await rename(temp, path);
+  }
 }
 
 async function readJson(path, fallback = null) {
@@ -40,7 +42,7 @@ async function readJson(path, fallback = null) {
   }
 }
 
-function eventFor({ jobId, runKey, result, issue }) {
+function eventFor({ jobId, runKey, result, issue, now }) {
   return {
     schema: OUTBOX_SCHEMA,
     event_id: eventId(jobId, runKey),
@@ -51,23 +53,24 @@ function eventFor({ jobId, runKey, result, issue }) {
     issue: { ...issue, marker: markerFor({ job_id: jobId, run_key: runKey }) },
     status: "pending",
     attempts: 0,
-    created_at: new Date().toISOString(),
+    created_at: new Date(now).toISOString(),
   };
 }
 
 /** Persist one observation and its one replayable issue intent. Re-running the same
- * scheduled slot replaces the same result/event instead of creating a duplicate. */
-export async function persistScheduleResult({ stateDir, jobId, runKey, eventRunKey = runKey, result, issue }) {
+ * scheduled slot replaces the same result/event instead of creating a duplicate.
+ * Check mode returns the proposed event without creating or replacing files. */
+export async function persistScheduleResult({ stateDir, jobId, runKey, eventRunKey = runKey, result, issue, now = result.observed_at, check = false }) {
   const resultPath = join(stateDir, "results", jobId, `${runKey.replace(/[^a-zA-Z0-9_.-]/g, "_")}.json`);
-  const event = eventFor({ jobId, runKey: eventRunKey, result, issue });
+  const event = eventFor({ jobId, runKey: eventRunKey, result, issue, now });
   const eventPath = join(stateDir, "outbox", `${event.event_id}.json`);
   const previous = await readJson(eventPath);
   if (previous?.status === "delivered") {
     event.status = "delivered";
     event.delivered_at = previous.delivered_at;
   }
-  await atomicWrite(resultPath, { schema: OUTBOX_SCHEMA, job_id: jobId, run_key: runKey, ...result });
-  await atomicWrite(eventPath, event);
+  await atomicWrite(resultPath, { schema: OUTBOX_SCHEMA, job_id: jobId, run_key: runKey, ...result }, { check });
+  await atomicWrite(eventPath, event, { check });
   return { resultPath, eventPath, event };
 }
 
@@ -120,6 +123,12 @@ export async function applyIssueIntent(github, issue) {
       const created = await github.createIssue({ title: issue.title, body: withMarker(issue.body, issue.marker) });
       return { action: "created", issue_number: created.number };
     }
+    // Some monitors need the current condition on the issue itself, including
+    // corrections to an earlier diagnosis. The event marker makes retries safe.
+    if (issue.refresh_existing && !String(existing.body || "").includes(issue.marker)) {
+      await github.updateIssue(existing.number, { title: issue.title, body: withMarker(issue.body, issue.marker) });
+      return { action: "updated", issue_number: existing.number };
+    }
     // The create request may have succeeded before the network timed out. The
     // marker is stored in the issue body as well as comments so that replay
     // does not turn that ambiguous outcome into a duplicate comment.
@@ -146,6 +155,7 @@ export async function applyIssueIntent(github, issue) {
 export function createGitHubClient({ token, owner, repo, apiBase = "https://api.github.com", fetchImpl = fetch }) {
   if (!token) return null;
   const base = `${apiBase.replace(/\/$/, "")}/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`;
+  // determinism-lint: inject network this transport delegates to fetchImpl; tests supply a hermetic client
   async function request(path, options = {}) {
     const response = await fetchImpl(`${base}${path}`, {
       ...options,
@@ -160,14 +170,19 @@ export function createGitHubClient({ token, owner, repo, apiBase = "https://api.
     return response.status === 204 ? null : response.json();
   }
   return {
+    // determinism-lint: inject network request delegates to the injected fetchImpl transport
     listIssues: ({ state = "open" } = {}) => request(`/issues?state=${state}&per_page=100`),
+    // determinism-lint: inject network request delegates to the injected fetchImpl transport
     listComments: (number) => request(`/issues/${number}/comments?per_page=100`),
+    // determinism-lint: inject network request delegates to the injected fetchImpl transport
     createIssue: ({ title, body }) => request("/issues", {
       method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ title, body }),
     }),
+    // determinism-lint: inject network request delegates to the injected fetchImpl transport
     createComment: (number, body) => request(`/issues/${number}/comments`, {
       method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ body }),
     }),
+    // determinism-lint: inject network request delegates to the injected fetchImpl transport
     updateIssue: (number, patch) => request(`/issues/${number}`, {
       method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(patch),
     }),
@@ -178,16 +193,26 @@ export function createGitHubClient({ token, owner, repo, apiBase = "https://api.
  * how much is undeliverable rather than reporting zero of everything. */
 async function pendingIntentCount(outboxDir) {
   let pending = 0;
-  for (const name of (await readdir(outboxDir)).filter((item) => item.endsWith(".json"))) {
+  const names = await readdir(outboxDir).catch((error) => {
+    if (error.code === "ENOENT") return [];
+    throw error;
+  });
+  for (const name of names.filter((item) => item.endsWith(".json"))) {
     const event = await readJson(join(outboxDir, name));
     if (event && event.status !== "delivered") pending += 1;
   }
   return pending;
 }
 
-export async function replayOutbox({ stateDir, github, offlineReason = "github-token-missing" }) {
+export async function replayOutbox({ stateDir, github, now, check = false, offlineReason = "github-token-missing" }) {
   const outboxDir = join(stateDir, "outbox");
-  await mkdir(outboxDir, { recursive: true });
+  if (check) {
+    return { status: "check", delivered: 0, pending: await pendingIntentCount(outboxDir), errors: [] };
+  }
+  const deliveredAt = new Date(now).toISOString();
+  if (!check) {
+    await mkdir(outboxDir, { recursive: true });
+  }
   // No delivery identity is a stated condition, not an empty run: the reason
   // and the backlog travel with the summary so the cycle's own output says why
   // nothing was delivered.
@@ -200,7 +225,7 @@ export async function replayOutbox({ stateDir, github, offlineReason = "github-t
     if (!event || event.status === "delivered") continue;
     try {
       const result = await applyIssueIntent(github, event.issue);
-      await atomicWrite(path, { ...event, status: "delivered", delivered_at: new Date().toISOString(), attempts: event.attempts + 1, replay: result });
+      await atomicWrite(path, { ...event, status: "delivered", delivered_at: deliveredAt, attempts: event.attempts + 1, replay: result });
       summary.delivered += 1;
     } catch (error) {
       summary.status = "degraded";

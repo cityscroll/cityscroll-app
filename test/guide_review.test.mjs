@@ -328,14 +328,14 @@ test("replaying the same run leaves one event and reaches no outward surface", a
     stateDir, jobId: GUIDE_REVIEW_JOB_ID, runKey: built.run_key, result, issue: { mode: "none" },
   });
   assert.equal(first.event.event_id, built.event_id);
-  assert.equal((await replayOutbox({ stateDir, github })).delivered, 1);
+  assert.equal((await replayOutbox({ stateDir, now: result.observed_at, github })).delivered, 1);
 
   const second = await persistScheduleResult({
     stateDir, jobId: GUIDE_REVIEW_JOB_ID, runKey: built.run_key, result, issue: { mode: "none" },
   });
   assert.equal(second.event.event_id, first.event.event_id);
   assert.equal(second.event.status, "delivered");
-  assert.equal((await replayOutbox({ stateDir, github })).delivered, 0);
+  assert.equal((await replayOutbox({ stateDir, now: result.observed_at, github })).delivered, 0);
 });
 
 test("the consumer section groups findings and keeps checking apart from reviewing", () => {

@@ -1,0 +1,22 @@
+{
+  "published": {
+    "available": false,
+    "refresh": {
+      "state": "unavailable",
+      "verified_at": null
+    }
+  },
+  "lineage": {
+    "available": true,
+    "newest_day": null,
+    "missing_days": [
+      "2026-09-04"
+    ],
+    "unrecoverable_days": [
+      "2026-07-01"
+    ],
+    "reconciliation": {
+      "rows": []
+    }
+  }
+}

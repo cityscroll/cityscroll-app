@@ -39,6 +39,7 @@ import {
   monitorRepairFindings,
 } from "./repair_findings.mjs";
 import {
+  STATS_UNPUBLISHED_ISSUE_TITLE,
   STATS_PUBLICATION_ISSUE_MARKER,
   STATS_PUBLICATION_ISSUE_TITLE,
   evaluateStatsPublication,
@@ -79,6 +80,7 @@ function issueIntent(job, run, result, mode, extra = {}) {
     title_aliases: extra.title_aliases || [],
     body_contains: extra.body_contains || [],
     body: issueBody(result, ""),
+    ...(extra.refresh_existing ? { refresh_existing: true } : {}),
   };
   return issue;
 }
@@ -479,8 +481,9 @@ async function runStatsDailySnapshot(job, context) {
   return {
     result,
     issue: issueIntent(job, context.runKey, result, finding.ok ? "close" : "open", {
-      title: STATS_PUBLICATION_ISSUE_TITLE,
-      title_aliases: [STATS_PUBLICATION_ISSUE_TITLE],
+      title: finding.failing_stage === "publisher-not-yet-delivered" ? STATS_UNPUBLISHED_ISSUE_TITLE : STATS_PUBLICATION_ISSUE_TITLE,
+      title_aliases: [STATS_PUBLICATION_ISSUE_TITLE, STATS_UNPUBLISHED_ISSUE_TITLE],
+      refresh_existing: true,
       body_contains: [STATS_PUBLICATION_ISSUE_MARKER],
     }),
   };
@@ -650,11 +653,12 @@ export async function runScheduledJob(job, options = {}) {
       jobId: job.id,
       runKey: context.runKey,
       eventRunKey: `${context.runKey}-source-${index}`,
+      now: context.now,
       result: intent.result,
       issue: intent.issue,
     });
   } else {
-    await persistScheduleResult({ stateDir, jobId: job.id, runKey: context.runKey, result: output.result, issue: output.issue });
+    await persistScheduleResult({ stateDir, now: context.now, jobId: job.id, runKey: context.runKey, result: output.result, issue: output.issue });
   }
   return output;
 }
@@ -1424,7 +1428,7 @@ async function main() {
   // no attempt counter, so every pending intent stays exactly as retryable as
   // it was before the credential broke.
   const outboxDelivery = github ? "credentialed" : "offline";
-  const replayBefore = await replayOutbox({ stateDir, github, offlineReason: deliveryReason });
+  const replayBefore = await replayOutbox({ stateDir, github, now: new Date(), offlineReason: deliveryReason });
   const selected = arg("--job");
   const now = new Date();
   const summaries = [];
@@ -1457,7 +1461,7 @@ async function main() {
   // working rather than something to re-run.
   observations.push(...missedSlotRepairFindings(missedSlots, jobs.jobs, now));
   const monitorFindings = mergeRepairFindings(observations);
-  const replayAfter = await replayOutbox({ stateDir, github });
+  const replayAfter = await replayOutbox({ stateDir, github, now: new Date() });
   // Scheduler liveness is a postcondition of the real cycle, distinct from every
   // scheduled-job and digest-shadow receipt. A rejected write makes the cycle fail.
   // The cycle result travels with the heartbeat so a degraded run cannot read as

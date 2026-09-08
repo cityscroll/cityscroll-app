@@ -32,16 +32,18 @@ export const STATS_PUBLICATION_MONITOR_SCHEMA = "cityscroll.stats_publication_fi
 export const STATS_PUBLICATION_JOB_ID = "stats-daily-snapshot-monitor";
 
 /**
- * One title, for the life of the condition. Repeated observations update this issue rather
+ * One identity, for the life of the condition. Repeated observations update this issue rather
  * than opening another, and the marker keeps the match working even if the title is edited
  * by hand on the way past.
  */
 export const STATS_PUBLICATION_ISSUE_TITLE = "Daily search-use snapshot was not published";
+export const STATS_UNPUBLISHED_ISSUE_TITLE = "Daily search-use summary has not been published yet";
 export const STATS_PUBLICATION_ISSUE_MARKER = "cityscroll-stats-daily-snapshot";
 
 /** The stages a failure can be at, most specific first. A stage outside this set is a defect. */
 export const STATS_PUBLICATION_FAILING_STAGES = Object.freeze([
   "observation-unavailable",
+  "publisher-not-yet-delivered",
   "missing-daily-aggregate",
   "frozen-publisher",
   "divergent-aggregate",
@@ -116,6 +118,22 @@ export function evaluateStatsPublication({ now, observation = {}, budgets = STAT
   }
 
   const newestDay = lineage.newest_day || null;
+  const verifiedMs = instantMs(published?.refresh?.verified_at);
+  // Retention windows describe losses only after publication has begun. An empty
+  // series before the first verification is a delivery state, not sixty missed days.
+  if (newestDay === null && verifiedMs === null) {
+    return {
+      schema: STATS_PUBLICATION_MONITOR_SCHEMA,
+      observed_at: observedAt,
+      promised_day: null,
+      ok: false,
+      failing_stage: "publisher-not-yet-delivered",
+      findings: ["The daily search-use summary has not been published yet. The producing work is the search-usage summary on the Stats page."],
+      notes: [],
+      evidence: { newest_day: null, verified_at: null, refresh_state: published?.refresh?.state || null },
+      budgets,
+    };
+  }
   const missing = Array.isArray(lineage.missing_days) ? lineage.missing_days : [];
   const unrecoverable = Array.isArray(lineage.unrecoverable_days) ? lineage.unrecoverable_days : [];
   const promisedMissing = missing.includes(promised) || (newestDay !== null && newestDay < promised) || newestDay === null;
@@ -127,7 +145,6 @@ export function evaluateStatsPublication({ now, observation = {}, budgets = STAT
 
   // The frozen case: the publisher says it verified recently, and the trend has not moved.
   // Stated separately because it is the one failure a self-report cannot see.
-  const verifiedMs = instantMs(published?.refresh?.verified_at);
   const claimsFresh = published?.refresh?.state === "fresh" || published?.refresh?.state === "stale";
   if (promisedMissing && claimsFresh && verifiedMs !== null && nowMs - verifiedMs <= budgets.publication_grace_hours * HOUR_MS) {
     failingStage = "frozen-publisher";
@@ -194,6 +211,9 @@ export function statsPublicationIssueBody(finding) {
       ...finding.notes,
       marker,
     ].join("\n");
+  }
+  if (finding.failing_stage === "publisher-not-yet-delivered") {
+    return [`Stage: ${finding.failing_stage}.`, "", ...finding.findings, marker].join("\n");
   }
   return [
     `Stage: ${finding.failing_stage}.`,

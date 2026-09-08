@@ -329,7 +329,9 @@ export function monitorRepairFindings(job, output, { now = null } = {}) {
   }
 
   if (runner === "stats-daily-snapshot") {
-    const degraded = result.status !== "healthy";
+    // Awaiting the first publication is sequencing, not a repair or judgment.
+    // Recover the old fault scope too, so a prior misclassification can retire.
+    const degraded = result.status !== "healthy" && result.failing_stage !== "publisher-not-yet-delivered";
     if (degraded) {
       add(finding({
         monitor,
