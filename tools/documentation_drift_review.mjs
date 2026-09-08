@@ -297,7 +297,7 @@ export async function rehearseDocumentationReview({ stateDir, report, previous =
     },
     issue: { mode: "none" },
   });
-  const replay = await replayOutbox({ stateDir, github: NO_MUTATION_CLIENT });
+  const replay = await replayOutbox({ stateDir, now: `${report.checked_at}T00:00:00Z`, github: NO_MUTATION_CLIENT });
   return { event, replay, delta };
 }
 

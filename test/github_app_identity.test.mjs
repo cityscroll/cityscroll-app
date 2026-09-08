@@ -736,7 +736,7 @@ test("no surface a cycle produces carries the key, the assertion, or a minted to
         result: { status: "degraded", observed_at: NOW.toISOString() },
         issue: { mode: "open", title: "A probe intent", body: "A probe intent body." },
       });
-      const replay = await replayOutbox({ stateDir, github: identity.github });
+      const replay = await replayOutbox({ stateDir, now: NOW, github: identity.github });
       assert.equal(replay.status, "degraded", "the delivery must actually have failed for this to prove anything");
       assert.equal(replay.errors.length, 1);
 
@@ -769,7 +769,7 @@ test("no surface a cycle produces carries the key, the assertion, or a minted to
       });
       const mintError = await brokenIdentity.github.listIssues().then(() => null, (error) => error);
       assert.ok(mintError, "a failed mint must raise rather than request with no credential");
-      const brokenReplay = await replayOutbox({ stateDir, github: brokenIdentity.github });
+      const brokenReplay = await replayOutbox({ stateDir, now: NOW, github: brokenIdentity.github });
 
       // The five surfaces, each named where it fails.
       const receipt = JSON.stringify({

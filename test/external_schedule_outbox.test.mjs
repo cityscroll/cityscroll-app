@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { chmod, readFile, writeFile } from "node:fs/promises";
+import { chmod, readFile, readdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import test from "node:test";
 import {
@@ -59,9 +59,9 @@ test("replay creates once, comments once, and closes on recovery", async () => {
     const github = fakeGithub();
     const result = { observed_at: "2026-08-07T11:41:00.000Z", status: "degraded", body: "failure" };
     await persistScheduleResult({ stateDir, jobId: "digest-shadow-monitor", runKey: "failure", result, issue: { mode: "open", title: "Digest shadow run needs attention", body: "failure" } });
-    assert.equal((await replayOutbox({ stateDir, github })).delivered, 1);
+    assert.equal((await replayOutbox({ stateDir, now: "2026-09-08T11:47:00.000Z", github })).delivered, 1);
     await persistScheduleResult({ stateDir, jobId: "digest-shadow-monitor", runKey: "failure", result, issue: { mode: "open", title: "Digest shadow run needs attention", body: "failure" } });
-    assert.equal((await replayOutbox({ stateDir, github })).delivered, 0);
+    assert.equal((await replayOutbox({ stateDir, now: "2026-09-08T11:47:00.000Z", github })).delivered, 0);
     const recovery = await applyIssueIntent(github, { mode: "close", title: "Digest shadow run needs attention", body: "recovered", marker: "recovery-marker" });
     assert.equal(recovery.action, "closed");
     assert.equal(github.issues[0].state, "closed");
@@ -421,7 +421,7 @@ test("the delivery token resolves from the file the trigger names, and an intent
       issue: { mode: "open", title: "Monitor drift", body: "drift" },
     });
 
-    const summary = await replayOutbox({ stateDir, github });
+    const summary = await replayOutbox({ stateDir, now: "2026-09-08T11:47:00.000Z", github });
     assert.equal(summary.status, "ok");
     assert.equal(summary.delivered, 1);
     assert.equal(summary.pending, 0);
@@ -537,7 +537,7 @@ test("a cycle with no usable credential keeps every pending intent retryable and
 
     // Previously this reported pending 0 with no reason, so an undeliverable
     // backlog was indistinguishable from an empty one.
-    const summary = await replayOutbox({ stateDir, github: null, offlineReason: reason });
+    const summary = await replayOutbox({ stateDir, now: "2026-09-08T11:47:00.000Z", github: null, offlineReason: reason });
     assert.equal(summary.status, "offline");
     assert.equal(summary.reason, "GH_TOKEN_FILE:insecure-permissions");
     assert.equal(summary.delivered, 0);
@@ -652,4 +652,28 @@ test("a source-contract issue without a companion finding still reports the erro
   assert.match(body, /^Classification: outage\./m);
   assert.match(body, /Detail: metadata fetch failed/m);
   assert.doesNotMatch(body, /Stale side/);
+});
+
+
+test("outbox timestamps use the supplied clock and check mode leaves no writes or delivery", async () => {
+  await withTempDir("outbox-check", async (stateDir) => {
+    const now = "2026-09-08T11:47:00.000Z";
+    const options = { stateDir, jobId: "stats-daily-snapshot-monitor", runKey: "fixed",
+      now, result: { observed_at: "2026-09-07T10:00:00.000Z" },
+      issue: { mode: "open", title: "Awaiting publication", body: "Not published yet" } };
+    const preview = await persistScheduleResult({ ...options, check: true });
+    assert.equal(preview.event.created_at, now);
+    assert.deepEqual(await readdir(stateDir), []);
+    const noDelivery = { listIssues: async () => { throw new Error("check mode must not call GitHub"); } };
+    assert.equal((await replayOutbox({ stateDir, now, github: noDelivery, check: true })).pending, 0);
+    assert.deepEqual(await readdir(stateDir), []);
+    const saved = await persistScheduleResult(options);
+    const before = await readFile(saved.eventPath, "utf8");
+    assert.equal((await replayOutbox({ stateDir, now, github: noDelivery, check: true })).pending, 1);
+    assert.equal(await readFile(saved.eventPath, "utf8"), before);
+    await replayOutbox({ stateDir, now, github: fakeGithub() });
+    const delivered = JSON.parse(await readFile(saved.eventPath, "utf8"));
+    assert.equal(delivered.created_at, now);
+    assert.equal(delivered.delivered_at, now);
+  });
 });

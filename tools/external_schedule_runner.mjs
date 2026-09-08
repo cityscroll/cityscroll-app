@@ -653,11 +653,12 @@ export async function runScheduledJob(job, options = {}) {
       jobId: job.id,
       runKey: context.runKey,
       eventRunKey: `${context.runKey}-source-${index}`,
+      now: context.now,
       result: intent.result,
       issue: intent.issue,
     });
   } else {
-    await persistScheduleResult({ stateDir, jobId: job.id, runKey: context.runKey, result: output.result, issue: output.issue });
+    await persistScheduleResult({ stateDir, now: context.now, jobId: job.id, runKey: context.runKey, result: output.result, issue: output.issue });
   }
   return output;
 }
@@ -1427,7 +1428,7 @@ async function main() {
   // no attempt counter, so every pending intent stays exactly as retryable as
   // it was before the credential broke.
   const outboxDelivery = github ? "credentialed" : "offline";
-  const replayBefore = await replayOutbox({ stateDir, github, offlineReason: deliveryReason });
+  const replayBefore = await replayOutbox({ stateDir, github, now: new Date(), offlineReason: deliveryReason });
   const selected = arg("--job");
   const now = new Date();
   const summaries = [];
@@ -1460,7 +1461,7 @@ async function main() {
   // working rather than something to re-run.
   observations.push(...missedSlotRepairFindings(missedSlots, jobs.jobs, now));
   const monitorFindings = mergeRepairFindings(observations);
-  const replayAfter = await replayOutbox({ stateDir, github });
+  const replayAfter = await replayOutbox({ stateDir, github, now: new Date() });
   // Scheduler liveness is a postcondition of the real cycle, distinct from every
   // scheduled-job and digest-shadow receipt. A rejected write makes the cycle fail.
   // The cycle result travels with the heartbeat so a degraded run cannot read as
