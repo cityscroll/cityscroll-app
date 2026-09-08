@@ -112,7 +112,7 @@ function canonicalHref(href, asOf) {
 }
 
 const VERIFIED_INTERNAL_ROUTES = [
-  /^\/(?:notices|agencies|vendors|officials|committees)\/[A-Za-z0-9_%~-]+\/?(?:\?.*)?(?:#[A-Za-z0-9_~-]+)?$/,
+  /^\/(?:notices|agencies|vendors|officials|committees|mandates)\/[A-Za-z0-9_%~-]+\/?(?:\?.*)?(?:#[A-Za-z0-9_~-]+)?$/,
   /^\/meetings\/[A-Za-z0-9_%:/.~-]+\/?(?:\?.*)?(?:#[A-Za-z0-9_~-]+)?$/,
   /^\/browse\/(?:contracts|staffing|exams|zoning|property|rules|meetings|people|places)\/?(?:\?.*)?(?:#.*)?$/,
   /^\/browse\/?(?:\?.*)?$/,

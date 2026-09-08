@@ -182,7 +182,6 @@ export function renderGuideArticle(article) {
     <p class="node-kicker">${esc(articleKicker(article))}</p>
     <h1>${esc(article.title)}</h1>
     <p class="node-lede">${esc(article.purpose)}</p>
-    <p class="guide-question">${esc(article.reader_question)}</p>
     ${reviewLine(article.last_reviewed)}
   </header>${noticeSection(article)}
   <div class="guide-body">

@@ -30,7 +30,7 @@ did anything wrong.
 ## How the identification was made
 
 Open **How this connection was made** on a connected record and you get the basis rather than a
-score. There are three kinds, and the difference is worth knowing.
+score. The labels distinguish three kinds of evidence.
 
 | Basis | What it means | How much weight it carries |
 | --- | --- | --- |
@@ -68,6 +68,3 @@ A connection is not a finding. Two records being linked is not evidence that mon
 that an official acted wrongly, or that a decision was made because of the other record. A named
 awardee on a contract does not mean that vendor is currently open to subcontractors, and a vendor
 appearing beside an agency repeatedly is a count, not a conclusion.
-
-Read the connection for what it says — the same thing appears in two places the city published — and
-take the rest from the official sources on either end.

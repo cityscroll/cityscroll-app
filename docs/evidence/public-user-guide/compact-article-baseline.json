@@ -1,0 +1,138 @@
+{
+  "revision": "67adff8bb8331df0cdfd3be1ee380815206f0b0e",
+  "articles": [
+    {
+      "title": "What a public record tells you",
+      "url": "/guide/understand/what-a-public-record-tells-you/",
+      "type": "explanation",
+      "visible_main_path": 1097,
+      "total_body": 1074
+    },
+    {
+      "title": "How records are connected",
+      "url": "/guide/understand/how-records-are-connected/",
+      "type": "explanation",
+      "visible_main_path": 588,
+      "total_body": 559
+    },
+    {
+      "title": "What dates and blanks mean",
+      "url": "/guide/understand/dates-and-missing-information/",
+      "type": "explanation",
+      "visible_main_path": 663,
+      "total_body": 631
+    },
+    {
+      "title": "Flags and historical patterns",
+      "url": "/guide/understand/flags-and-historical-patterns/",
+      "type": "explanation",
+      "visible_main_path": 736,
+      "total_body": 701
+    },
+    {
+      "title": "Find and narrow records",
+      "url": "/guide/how-to/find-and-narrow-records/",
+      "type": "how-to",
+      "visible_main_path": 1056,
+      "total_body": 1021
+    },
+    {
+      "title": "Follow a search and manage your updates",
+      "url": "/guide/how-to/follow-a-search/",
+      "type": "how-to",
+      "visible_main_path": 1051,
+      "total_body": 1015
+    },
+    {
+      "title": "Follow a Community Board",
+      "url": "/guide/how-to/follow-a-community-board/",
+      "type": "how-to",
+      "visible_main_path": 1094,
+      "total_body": 1068
+    },
+    {
+      "title": "Put dates in your calendar",
+      "url": "/guide/how-to/put-dates-in-your-calendar/",
+      "type": "how-to",
+      "visible_main_path": 1128,
+      "total_body": 1095
+    },
+    {
+      "title": "Read a land-use project's next step and documents",
+      "url": "/guide/how-to/read-a-land-use-projects-next-step/",
+      "type": "how-to",
+      "visible_main_path": 990,
+      "total_body": 958
+    },
+    {
+      "title": "Check the evidence behind a connection",
+      "url": "/guide/how-to/check-the-evidence-behind-a-connection/",
+      "type": "how-to",
+      "visible_main_path": 804,
+      "total_body": 771
+    },
+    {
+      "title": "Look at records as of a day",
+      "url": "/guide/how-to/look-at-records-as-of-a-day/",
+      "type": "how-to",
+      "visible_main_path": 848,
+      "total_body": 803
+    },
+    {
+      "title": "Collect records, add notes, and export them",
+      "url": "/guide/how-to/collect-records-and-export-them/",
+      "type": "how-to",
+      "visible_main_path": 1027,
+      "total_body": 987
+    },
+    {
+      "title": "Read a budget request and the answer to it",
+      "url": "/guide/how-to/read-a-budget-request-and-the-answer/",
+      "type": "how-to",
+      "visible_main_path": 1546,
+      "total_body": 1503
+    },
+    {
+      "title": "Glossary",
+      "url": "/guide/reference/glossary/",
+      "type": "reference",
+      "visible_main_path": 945,
+      "total_body": 921
+    },
+    {
+      "title": "Controls and what they give you",
+      "url": "/guide/reference/controls-and-outputs/",
+      "type": "reference",
+      "visible_main_path": 1214,
+      "total_body": 1185
+    },
+    {
+      "title": "Where the records come from",
+      "url": "/guide/reference/sources-and-coverage/",
+      "type": "reference",
+      "visible_main_path": 759,
+      "total_body": 732
+    },
+    {
+      "title": "Explore housing across city records",
+      "url": "/guide/start/explore-housing-across-city-records/",
+      "type": "tutorial",
+      "visible_main_path": 1061,
+      "total_body": 1029
+    },
+    {
+      "title": "Trace a notice to the duty behind it",
+      "url": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
+      "type": "tutorial",
+      "visible_main_path": 1035,
+      "total_body": 992
+    },
+    {
+      "title": "Trace an award and keep the trail",
+      "url": "/guide/start/trace-an-award-and-keep-the-trail/",
+      "type": "tutorial",
+      "visible_main_path": 1063,
+      "total_body": 1017
+    }
+  ]
+}

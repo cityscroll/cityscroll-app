@@ -39,9 +39,7 @@ knowing which kind of source you are reading.
 
 ::: source-coverage
 
-That table is generated from the source registry itself rather than typed here, so it cannot drift
-away from what the site actually reads. The registry also carries what each source is used for and
-how stale it is allowed to get before it is treated as a problem, and it is published in full as
+For each source’s use and refresh requirements, see
 [the source ledger](https://github.com/cityscroll/cityscroll-app/blob/main/docs/data-sources.md).
 
 ## What coverage means
