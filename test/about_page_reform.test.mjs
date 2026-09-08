@@ -40,3 +40,10 @@ test("AI disclosure follows NYC's disclose-review-separate structure", () => {
   assert.match(section, /A human reviews and edits this content before it goes live/);
   assert.match(section, /AI does not create or change the official records/);
 });
+
+test("About retains the public flag methodology link and accessible new-tab treatment in every locale", () => {
+  for (const source of [about, readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8"), ...localeSources]) {
+    const decoded = source.replaceAll('\\"', '"');
+    assert.match(decoded, /<a href="https:\/\/www\.open-contracting\.org\/resources\/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks\/" target="_blank" rel="noopener noreferrer">[^<]+<span class="sr-only">[^<]+<\/span><\/a>/);
+  }
+});

@@ -1,10 +1,11 @@
 # About and guide content ownership
 
-About is an organizational introduction. Its English narrative is 208 words,
-excluding navigation, form labels, privacy notices and compatibility links. The
+About is an organizational introduction. Its English narrative is 227 words,
+including the accessible new-tab notice but excluding navigation, form labels,
+privacy notices and compatibility links. The
 product tour, threshold list and historical-pattern cards are absent from its
 ordinary reading flow. Optional feedback prompts remain collapsed. The reading
-grade is 6.31 against the existing 6.69 baseline; the baseline is unchanged.
+grade is 6.39 against the existing 6.69 baseline; the baseline is unchanged.
 
 ## Section destinations
 
@@ -27,7 +28,7 @@ Each anchor is identical across all eleven language documents.
 
 | Removed content | Canonical destination and treatment |
 | --- | --- |
-| Statistical context, fair explanations, no allegations; procurement methodology sources | Already present in the explanation's opening and reading guidance. |
+| Statistical context, fair explanations, no allegations; procurement methodology sources | Already present in the explanation's opening and reading guidance. About retains one compact Open Contracting methodology link as a public commitment, with accessible new-tab treatment in every locale. |
 | Short advertising window: at most 10 days and less than half the agency median; last 200 notices | Moved once to “What each note counts.” The implementation in `site/app/alerts.mjs` restricts the median inputs to solicitations with valid positive windows. |
 | Noncompetitive selection methods and possible legitimate reasons | Moved once to the same section. |
 | Repeat awards: at least three notices, same published vendor and agency, 90 days; blanket-contract caveat | Moved once to the same section. |

@@ -3414,6 +3414,7 @@
     about_p_what_html: "CityScroll نیویارک شہر کی سرکاری اشاعتوں کو جوڑتا ہے تاکہ آپ سمجھ سکیں کہ شہری حکومت کیا کر رہی ہے اور آپ آگے کیا کر سکتے ہیں۔ یہ متعلقہ ریکارڈ اکٹھے کرتا ہے اور ان کے عوامی ذرائع کے روابط برقرار رکھتا ہے۔ CityScroll آزاد ہے اور شہری حکومت کا حصہ نہیں۔ تاریخوں، فیصلوں اور ہدایات کے لیے سرکاری نوٹس ہی مستند حوالہ ہیں۔",
     about_h_content: "ہمارے مواد کے بارے میں",
     about_p_content_html: "CityScroll عنوانات اور سادہ زبان میں وضاحتوں کے مسودے بنانے کے لیے تخلیقی مصنوعی ذہانت استعمال کرتا ہے۔ مواد شائع ہونے سے پہلے ایک انسان اس کا جائزہ لے کر تدوین کرتا ہے۔ مصنوعی ذہانت سائٹ پر دکھائے گئے سرکاری ریکارڈ نہ بناتی ہے نہ بدلتی ہے۔",
+    about_flag_method_html: "خطرے کی نشان دہی کے ہمارے طریقے <a href=\"https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/\" target=\"_blank\" rel=\"noopener noreferrer\">سرکاری خریداری میں خطرے کی علامات سے متعلق Open Contracting کی رہنما کتاب<span class=\"sr-only\"> (نئے ٹیب میں کھلتا ہے)</span></a> پر مبنی ہیں۔",
     about_h_feedback: "رائے بھیجیں",
     about_p_feedback: "کوئی خرابی ملی، کوئی فیچر چاہیے، یا کوئی خیال ہے؟ اسے یہاں بھیجیں۔ ہم سب کچھ پڑھتے ہیں۔ کسی اکاؤنٹ کی ضرورت نہیں۔",
     about_email_us_html: "یا ہمیں ای میل کریں: <a href=\"mailto:feedback@cityscroll.org\">feedback@cityscroll.org</a>",

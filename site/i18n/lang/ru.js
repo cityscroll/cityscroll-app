@@ -3798,6 +3798,7 @@
     mt_disclaimer: "Этот перевод создан автоматически и ещё не прошёл проверку носителем языка.",
     about_h_content: "О содержании нашего сайта",
     about_p_content_html: "CityScroll использует генеративный искусственный интеллект (ИИ), чтобы готовить черновики заголовков и пояснений простым языком. Перед публикацией человек проверяет и редактирует этот текст. ИИ не создаёт и не меняет официальные записи, показанные на сайте.",
+    about_flag_method_html: "Наши методы выявления рисков опираются на <a href=\"https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/\" target=\"_blank\" rel=\"noopener noreferrer\">руководство Open Contracting по тревожным признакам в государственных закупках<span class=\"sr-only\"> (открывается в новой вкладке)</span></a>.",
     std_h_self_conformance: "Доступность",
     std_self_target_html: "Сегодня CityScroll ориентируется на <b>WCAG 2.2 уровня AA</b>. Автоматические проверки охватывают каждую публичную страницу на экранах телефона и компьютера.",
     // BEGIN GENERATED CAREER GUIDE TRANSLATIONS

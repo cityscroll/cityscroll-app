@@ -3401,6 +3401,7 @@
     about_p_what_html: "CityScroll নিউ ইয়র্ক সিটির সরকারি প্রকাশনাগুলো যুক্ত করে, যাতে আপনি বুঝতে পারেন নগর সরকার কী করছে এবং এরপর আপনি কী করতে পারেন। এটি সংশ্লিষ্ট রেকর্ড একত্র করে এবং তাদের প্রকাশ্য উৎসের লিংক রাখে। CityScroll স্বাধীন এবং নগর সরকারের অংশ নয়। তারিখ, সিদ্ধান্ত ও নির্দেশের জন্য সরকারি বিজ্ঞপ্তিই চূড়ান্ত উৎস।",
     about_h_content: "আমাদের বিষয়বস্তু সম্পর্কে",
     about_p_content_html: "CityScroll শিরোনাম ও সহজ ভাষার ব্যাখ্যার খসড়া তৈরিতে জেনারেটিভ কৃত্রিম বুদ্ধিমত্তা (AI) ব্যবহার করে। প্রকাশের আগে একজন মানুষ এই লেখা পর্যালোচনা ও সম্পাদনা করেন। AI সাইটে দেখানো সরকারি নথি তৈরি বা বদলায় না।",
+    about_flag_method_html: "আমাদের ঝুঁকির সংকেত চিহ্নিত করার পদ্ধতির ভিত্তি হলো <a href=\"https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/\" target=\"_blank\" rel=\"noopener noreferrer\">সরকারি ক্রয়ে ঝুঁকির সংকেত নিয়ে Open Contracting-এর নির্দেশিকা<span class=\"sr-only\"> (নতুন ট্যাবে খুলবে)</span></a>।",
     about_h_feedback: "মতামত পাঠান",
     about_p_feedback: "একটি ত্রুটি পেয়েছেন, একটি বৈশিষ্ট্য চান, বা একটি চিন্তা আছে? এখানে পাঠান। আমরা সবকিছু পড়ি। কোনো অ্যাকাউন্ট প্রয়োজন নেই।",
     about_email_us_html: "অথবা ইমেইল করুন: <a href=\"mailto:feedback@cityscroll.org\">feedback@cityscroll.org</a>",

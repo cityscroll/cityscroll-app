@@ -3440,6 +3440,7 @@
     about_p_what_html: "CityScroll łączy oficjalne publikacje miasta Nowy Jork, aby pomóc zrozumieć działania władz i możliwe następne kroki. Zestawia powiązane dokumenty, zachowując odnośniki do publicznych źródeł. CityScroll jest niezależny i nie jest częścią władz miasta. Oficjalne ogłoszenia pozostają rozstrzygającym źródłem dat, decyzji i instrukcji.",
     about_h_content: "O naszej treści",
     about_p_content_html: "CityScroll używa generatywnej sztucznej inteligencji (AI) do tworzenia szkiców nagłówków i prostych wyjaśnień. Przed publikacją człowiek sprawdza i redaguje te treści. AI nie tworzy ani nie zmienia oficjalnych rejestrów wyświetlanych w serwisie.",
+    about_flag_method_html: "Nasze metody oznaczania ryzyka opierają się na <a href=\"https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/\" target=\"_blank\" rel=\"noopener noreferrer\">poradniku Open Contracting o sygnałach ostrzegawczych w zamówieniach publicznych<span class=\"sr-only\"> (otwiera się w nowej karcie)</span></a>.",
     about_h_feedback: "Wyślij opinię",
     about_p_feedback: "Znalazłeś błąd, chcesz nową funkcję, albo masz przemyślenie? Wyślij je tutaj. Czytamy wszystko. Konto nie jest potrzebne.",
     about_email_us_html: "Albo napisz do nas: <a href=\"mailto:feedback@cityscroll.org\">feedback@cityscroll.org</a>",

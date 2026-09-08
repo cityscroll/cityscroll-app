@@ -3508,6 +3508,7 @@
     about_p_what_html: "CityScroll relie les publications officielles de la ville de New York pour vous aider à comprendre l'action municipale et vos prochaines démarches. Le site rassemble les dossiers liés tout en conservant les liens vers leurs sources publiques. CityScroll est indépendant et ne fait pas partie de la municipalité. Les avis officiels font toujours autorité pour les dates, décisions et instructions.",
     about_h_content: "À propos de notre contenu",
     about_p_content_html: "CityScroll utilise l'intelligence artificielle générative (IA) pour rédiger des ébauches de titres et d'explications en langage clair. Une personne examine et corrige ce contenu avant sa publication. L'IA ne crée ni ne modifie les documents officiels affichés sur le site.",
+    about_flag_method_html: "Nos méthodes de signalement des risques s’appuient sur le <a href=\"https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/\" target=\"_blank\" rel=\"noopener noreferrer\">guide Open Contracting des signaux d’alerte dans les marchés publics<span class=\"sr-only\"> (s’ouvre dans un nouvel onglet)</span></a>.",
     about_h_feedback: "Envoyer des commentaires",
     about_p_feedback: "Vous avez trouvé un bogue, souhaitez une fonctionnalité, ou avez une idée ? Envoyez-la ici. Nous lisons tout. Aucun compte n'est nécessaire.",
     about_email_us_html: "Ou écrivez-nous : <a href=\"mailto:feedback@cityscroll.org\">feedback@cityscroll.org</a>",

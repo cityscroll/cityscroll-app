@@ -3399,6 +3399,7 @@
     about_p_what_html: "CityScroll konekte piblikasyon ofisyèl Vil New York pou ede w konprann sa gouvènman vil la ap fè ak sa ou ka fè apre. Li rasanble dosye ki gen rapò pandan li kenbe lyen sou sous piblik yo. CityScroll endepandan epi li pa fè pati gouvènman vil la. Avi ofisyèl yo toujou se otorite pou dat, desizyon ak enstriksyon.",
     about_h_content: "Sou kontni nou an",
     about_p_content_html: "CityScroll sèvi ak entèlijans atifisyèl jeneratif (AI) pou prepare bouyon tit ak eksplikasyon nan lang senp. Yon moun revize epi korije tèks sa a anvan li pibliye. AI pa kreye oswa chanje dosye ofisyèl sit la montre yo.",
+    about_flag_method_html: "Metòd nou pou siyale risk yo baze sou <a href=\"https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/\" target=\"_blank\" rel=\"noopener noreferrer\">gid Open Contracting sou siy risk nan acha piblik<span class=\"sr-only\"> (ouvri nan yon nouvo onglet)</span></a>.",
     about_h_feedback: "Voye kòmantè",
     about_p_feedback: "Ou jwenn yon erè, ou vle yon fonksyon, oswa ou gen yon lide? Voye l isit la. Nou li tout bagay. Pa bezwen kont.",
     about_email_us_html: "Oswa voye nou yon imèl: <a href=\"mailto:feedback@cityscroll.org\">feedback@cityscroll.org</a>",

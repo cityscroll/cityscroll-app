@@ -3754,6 +3754,7 @@
     mt_disclaimer: "이 번역은 기계로 초벌 번역되었으며 아직 원어민의 검토를 거치지 않았습니다.",
     about_h_content: "이 사이트의 콘텐츠에 대하여",
     about_p_content_html: "CityScroll는 생성형 인공지능(AI)을 사용해 제목과 쉬운 설명의 초안을 작성합니다. 게시 전 사람이 이 내용을 검토하고 편집합니다. AI는 사이트에 표시되는 공식 기록을 만들거나 바꾸지 않습니다.",
+    about_flag_method_html: "위험 신호를 표시하는 방법은 <a href=\"https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/\" target=\"_blank\" rel=\"noopener noreferrer\">Open Contracting의 공공 조달 위험 신호 안내서<span class=\"sr-only\"> (새 탭에서 열림)</span></a>를 참고합니다.",
     // Pluralization note (tn() keys): Korean's CLDR plural rule set has only the "other"
     // category — Intl.PluralRules('ko').select(n) always returns "other", so the "_one"
     // variant below is never actually selected at runtime. The key-parity gate

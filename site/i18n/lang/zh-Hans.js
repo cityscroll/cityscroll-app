@@ -3758,6 +3758,7 @@
     digest_footer_one: "今日 {n} 条通告 · 来自市政公报 · 随时一键取消订阅",
     about_h_content: "关于本网站的内容",
     about_p_content_html: "CityScroll 使用生成式人工智能（AI）起草标题和通俗说明。内容上线前会由人工审核和编辑。AI 不会创建或更改网站显示的官方记录。",
+    about_flag_method_html: "我们的风险标记方法参考了 <a href=\"https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/\" target=\"_blank\" rel=\"noopener noreferrer\">Open Contracting 公共采购风险警示指南<span class=\"sr-only\">（在新标签页中打开）</span></a>。",
     std_h_self_conformance: "无障碍",
     std_self_target_html: "CityScroll 目前以<b>WCAG 2.2 AA 级</b>为目标。自动检查覆盖手机和桌面尺寸下的每个公共页面。",
     // BEGIN GENERATED CAREER GUIDE TRANSLATIONS

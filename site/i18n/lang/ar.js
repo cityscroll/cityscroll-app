@@ -3414,6 +3414,7 @@
     about_p_what_html: "يربط CityScroll منشورات مدينة نيويورك الرسمية لتفهم ما تفعله حكومة المدينة وما يمكنك فعله بعد ذلك. يجمع السجلات ذات الصلة مع الاحتفاظ بروابط مصادرها العامة. CityScroll مستقل وليس جزءًا من حكومة المدينة. وتظل الإعلانات الرسمية المرجع المعتمد للمواعيد والقرارات والتعليمات.",
     about_h_content: "حول محتوانا",
     about_p_content_html: "يستخدم CityScroll الذكاء الاصطناعي التوليدي لصياغة مسودات العناوين والشروح بلغة واضحة. يراجع شخص هذا المحتوى ويحرره قبل نشره. لا ينشئ الذكاء الاصطناعي السجلات الرسمية المعروضة على الموقع ولا يغيرها.",
+    about_flag_method_html: "تستند طرقنا لرصد مؤشرات المخاطر إلى <a href=\"https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/\" target=\"_blank\" rel=\"noopener noreferrer\">دليل Open Contracting لمؤشرات المخاطر في المشتريات العامة<span class=\"sr-only\"> (يفتح في علامة تبويب جديدة)</span></a>.",
     about_h_feedback: "إرسال ملاحظات",
     about_p_feedback: "وجدت خللًا، أو تريد ميزة، أو لديك فكرة؟ أرسلها هنا. نقرأ كل شيء. لا حاجة إلى حساب.",
     about_email_us_html: "أو راسلونا على: <a href=\"mailto:feedback@cityscroll.org\">feedback@cityscroll.org</a>",

@@ -4160,6 +4160,7 @@ const STRINGS = {
     about_p_what_html: "CityScroll helps you see what New York City government is doing and what you can do next. It brings related public records together and links to the official city sources behind them. CityScroll is independent. It is not part of city government. For dates, decisions, and instructions, check the official notice.",
     about_h_content: "About our content",
     about_p_content_html: "CityScroll uses generative artificial intelligence (AI) to draft headings and plain-language explanations. A human reviews and edits this content before it goes live. AI does not create or change the official records shown on the site.",
+    about_flag_method_html: "Our flag methods draw on the <a href=\"https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/\" target=\"_blank\" rel=\"noopener noreferrer\">Open Contracting guide to red flags in public procurement<span class=\"sr-only\"> (opens in new tab)</span></a>.",
     about_h_feedback: "Send feedback",
     about_p_feedback: "Found a bug, want a feature, or have a thought? Send it here. We read everything. No account needed.",
     about_email_us_html: "Or email us: <a href=\"mailto:feedback@cityscroll.org\">feedback@cityscroll.org</a>",
