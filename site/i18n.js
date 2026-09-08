@@ -4145,10 +4145,10 @@ const STRINGS = {
     data_page_h1: "The Data",
 
     // about.html
-    about_using_html: "Start with <a href=\"/guide/\">Using CityScroll</a> for help finding a record, following a topic, or understanding the evidence behind a connection. The guide also explains source coverage, missing information, flags, and historical patterns.",
+    about_using_html: "Find a record, follow a topic, or check the proof behind a link with <a href=\"/guide/\">Using CityScroll</a>. The guide shows which sources we use. It explains gaps in the data, flags, and past patterns.",
     about_maintainers: "Maintainers",
-    about_team_html: "CityScroll is maintained by Anna Bao, James Carroll, Dev Doshi, and Michael Sheehan. Reach the team at <a href=\"mailto:team@cityscroll.org\">team@cityscroll.org</a>. The software is open source: <a href=\"https://github.com/cityscroll/cityscroll-app\">read the code on GitHub</a> to see how the site works or contribute a change.",
-    about_access_html: "CityScroll aims to meet <b>WCAG 2.2 Level AA</b>. If a page or control blocks your access, please describe it in the feedback form so we can investigate.",
+    about_team_html: "CityScroll is maintained by Anna Bao, James Carroll, Dev Doshi, and Michael Sheehan. Reach the team at <a href=\"mailto:team@cityscroll.org\">team@cityscroll.org</a>. The site is open source. <a href=\"https://github.com/cityscroll/cityscroll-app\">Read the code on GitHub</a> to see how it works or help make it better.",
+    about_access_html: "CityScroll aims to meet <b>WCAG 2.2 Level AA</b>. If a page or a tool is hard to use, please tell us in the feedback form. We can then look into it.",
     about_destination_0: "Flags and thresholds",
     about_destination_1: "Historical patterns",
     about_destination_2: "Eligible-list timing",
@@ -4157,7 +4157,7 @@ const STRINGS = {
     about_destination_5: "Zoning case history",
     about_destination_6: "Applicant history",
     about_h_what: "What this is",
-    about_p_what_html: "CityScroll connects official New York City publications so you can understand what city government is doing and what you can do next. It brings related records together while keeping links to their public sources. CityScroll is independent and is not part of city government. Official notices remain the authority for dates, decisions, and instructions.",
+    about_p_what_html: "CityScroll helps you see what New York City government is doing and what you can do next. It brings related public records together and links to the official city sources behind them. CityScroll is independent. It is not part of city government. For dates, decisions, and instructions, check the official notice.",
     about_h_content: "About our content",
     about_p_content_html: "CityScroll uses generative artificial intelligence (AI) to draft headings and plain-language explanations. A human reviews and edits this content before it goes live. AI does not create or change the official records shown on the site.",
     about_h_feedback: "Send feedback",

@@ -12,7 +12,7 @@ const shippedCopy = [about, stats, readFileSync(new URL("../site/i18n.js", impor
 
 test("About introduces the independent product and team with one guide entry", () => {
   const section = about.split('<h2 data-i18n="about_h_feedback">')[0];
-  assert.match(section, /official New York City publications/);
+  assert.match(section, /official city sources/);
   assert.match(section, /CityScroll is independent/);
   assert.match(section, /Using CityScroll/);
   assert.equal((section.match(/href="\/guide\/"/g) || []).length, 1);

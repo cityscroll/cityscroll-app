@@ -1,9 +1,10 @@
 # About and guide content ownership
 
-About is an organizational introduction. Its English narrative is 205 words,
+About is an organizational introduction. Its English narrative is 208 words,
 excluding navigation, form labels, privacy notices and compatibility links. The
 product tour, threshold list and historical-pattern cards are absent from its
-ordinary reading flow. Optional feedback prompts remain collapsed.
+ordinary reading flow. Optional feedback prompts remain collapsed. The reading
+grade is 6.31 against the existing 6.69 baseline; the baseline is unchanged.
 
 ## Section destinations
 
