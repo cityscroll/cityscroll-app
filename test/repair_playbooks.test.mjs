@@ -19,6 +19,7 @@ import {
 } from "../tools/repair_playbooks.mjs";
 import { REPAIR_FAILURE_CLASSES, parseRepairSignature, upstreamFailureEvidence } from "../tools/repair_findings.mjs";
 import { REPAIR_DISPATCH_TIMEOUT_MS } from "../tools/external_schedule_runner.mjs";
+import { FRESHNESS_PATH_ABSENT_REASONS, FRESHNESS_PUBLICATION_PATHS } from "../tools/repair_dispatch.mjs";
 
 const NOW = new Date("2026-09-07T12:00:00.000Z");
 
@@ -77,7 +78,16 @@ function stubContext(overrides = {}) {
       },
     },
     schedule: {
-      async job(id) { return (overrides.jobs || { "source-contracts-live": { id: "source-contracts-live", runner: "source-contracts" } })[id] || null; },
+      async job(id) {
+        const registered = overrides.jobs || {
+          "source-contracts-live": { id: "source-contracts-live", runner: "source-contracts" },
+          // A stand-in for a scheduled job that publishes acquisition receipts.
+          // This cycle registers none; the stub exercises the branch that would
+          // run one, and the real registry is asserted separately.
+          "an-acquisition-publisher": { id: "an-acquisition-publisher", runner: "source-acquisition" },
+        };
+        return registered[id] || null;
+      },
       async runJob(job, options = {}) {
         calls.ranJobs.push({ id: job.id, runKey: options.runKey || null });
         return overrides.runJobResult || { result: { status: "healthy" } };
@@ -90,7 +100,15 @@ function stubContext(overrides = {}) {
     },
     freshness: {
       publicationPath(reasons) {
-        return (reasons || []).includes("acquisition-missing") ? "source-contracts-live" : null;
+        if (overrides.publicationPath !== undefined) return overrides.publicationPath;
+        return (reasons || []).includes("acquisition-missing") ? "an-acquisition-publisher" : null;
+      },
+      pathAbsentReason(reasons) {
+        for (const reason of reasons || []) {
+          const declared = FRESHNESS_PATH_ABSENT_REASONS[reason];
+          if (declared) return declared;
+        }
+        return null;
       },
       async evaluate() {
         calls.evaluated += 1;
@@ -420,7 +438,7 @@ test("a freshness finding whose publication path has not run re-runs it and re-v
   });
   const result = await playbook("freshness-stale").run(context);
   assert.equal(result.outcome, "repaired");
-  assert.deepEqual(context.calls.ranJobs.map((row) => row.id), ["source-contracts-live"]);
+  assert.deepEqual(context.calls.ranJobs.map((row) => row.id), ["an-acquisition-publisher"]);
   assert.equal(context.calls.evaluated, 2, "the watchdog's own check decides, before and after");
 });
 
@@ -437,9 +455,29 @@ test("a publication path that ran and still did not advance the evidence is judg
   });
   const result = await playbook("freshness-stale").run(context);
   assert.equal(result.outcome, "judgment");
-  assert.match(result.summary, /source-contracts-live/);
+  assert.match(result.summary, /an-acquisition-publisher/);
   assert.match(result.summary, /is not advancing this source's evidence/);
   assert.deepEqual(context.calls.ranJobs, []);
+});
+
+test("an acquisition finding with no acquisition publisher says why, not that a path ran", async () => {
+  // The real registry, not a stub: acquisition-missing maps at nothing, because
+  // no scheduled job on this cycle publishes acquisition receipts. The summary
+  // has to say that rather than claiming a publication path ran and failed to
+  // advance the evidence — which is what re-running a check-only job produced,
+  // once per source, every day.
+  const context = stubContext({
+    signature: "monitor:source-freshness-watchdog:freshness-stale:city-record",
+    monitor: "source-freshness-watchdog",
+    subject: "city-record",
+    publicationPath: FRESHNESS_PUBLICATION_PATHS["acquisition-missing"],
+    freshness: [{ status: "STALE", reason_codes: ["acquisition-missing"] }],
+  });
+  const result = await playbook("freshness-stale").run(context);
+  assert.equal(result.outcome, "judgment");
+  assert.match(result.summary, /no scheduled job on this cycle publishes acquisition receipts/);
+  assert.doesNotMatch(result.summary, /did not advance/);
+  assert.equal(context.calls.ranJobs.length, 0, "nothing may be re-run when no path publishes the evidence");
 });
 
 test("a freshness reason with no scheduled publication path is judgment, never a guess", async () => {

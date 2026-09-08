@@ -12,6 +12,7 @@ import {
   aboExternalAwardContractIds,
   aboExternalAwardObservations,
   buildSourceHealthObservations,
+  evaluateFreshnessWatchdog,
   externalScheduleObservations,
   loadSourceHealthInputs,
   receiptSourceIds,
@@ -524,4 +525,78 @@ test("a scheduled probe receipt is attributed to its source contract", () => {
   // leaves the acquisition clock exactly where it was.
   assert.equal(row.freshness_watchdog.acquisition.observed_at, null);
   assert.deepEqual(validateSourceHealthProjection(registry, projection), []);
+});
+
+/* --------------------------------------------------------------------------
+ * The freshness watchdog's two reasons.
+ * ----------------------------------------------------------------------- */
+
+const HEARTBEAT = { observed_at: "2026-08-18T10:00:00.000Z", status: "succeeded", run_id: "cycle-1" };
+
+function watchdog(contractOverrides, observationRow, options = {}) {
+  return evaluateFreshnessWatchdog(
+    contract(contractOverrides),
+    observationRow,
+    { now: NOW, schedulerHeartbeat: HEARTBEAT, ...options },
+  );
+}
+
+test("a publisher's cadence prose is never read as an acquisition this repository owes", () => {
+  // The seven sources that mailed the owner every day looked exactly like this:
+  // a daily-sounding publisher, no acquisition job of ours, and therefore an
+  // acquisition clock that could never advance. Publisher-side freshness is the
+  // live source-contract check's job, measured against max_stale_days.
+  for (const cadence of ["Daily", "Weekly", "Daily advertised procurement opportunities", "Monthly schedule posts; re-check daily while any application window is open"]) {
+    const observed = watchdog({ publisher_cadence: cadence }, { acquired_at: null, checked_at: null });
+    assert.equal(observed.status, "CURRENT", `${cadence} should not raise a finding on prose alone`);
+    assert.deepEqual(observed.reason_codes, []);
+    assert.equal(observed.acquisition.cadence_days, null);
+  }
+});
+
+test("an explicit acquisition cadence still trips when the acquisition clock is behind", () => {
+  const observed = watchdog(
+    { freshness_contract: { mode: "continuous", max_stale_days: 7, clock_basis: "publisher_updated", acquisition_cadence_days: 2 } },
+    { acquired_at: "2026-08-10T12:00:00.000Z", checked_at: "2026-08-18T11:00:00.000Z" },
+  );
+  assert.deepEqual(observed.reason_codes, ["acquisition-missing"]);
+  assert.equal(observed.status, "STALE");
+  assert.equal(observed.acquisition.cadence_days, 2);
+  // A check does not stand in for an acquisition unless the contract says so.
+  assert.equal(observed.acquisition.observed_at, "2026-08-10T12:00:00.000Z");
+  // The bare declaration at the top level is read the same way.
+  const topLevel = watchdog(
+    { acquisition_cadence_days: 2 },
+    { acquired_at: "2026-08-10T12:00:00.000Z", checked_at: null },
+  );
+  assert.deepEqual(topLevel.reason_codes, ["acquisition-missing"]);
+});
+
+test("a checked_acquired contract counts a successful check as its freshness evidence", () => {
+  const base = { mode: "continuous", max_stale_days: 3, clock_basis: "checked_acquired", acquisition_cadence_days: 2 };
+  const checked = watchdog(
+    { freshness_contract: base },
+    { acquired_at: "2026-08-10T12:00:00.000Z", checked_at: "2026-08-18T09:00:00.000Z" },
+  );
+  assert.deepEqual(checked.reason_codes, []);
+  assert.equal(checked.acquisition.observed_at, "2026-08-18T09:00:00.000Z");
+  // Both clocks behind is still a finding.
+  const behind = watchdog(
+    { freshness_contract: base },
+    { acquired_at: "2026-08-10T12:00:00.000Z", checked_at: "2026-08-11T09:00:00.000Z" },
+  );
+  assert.deepEqual(behind.reason_codes, ["acquisition-missing"]);
+});
+
+test("monitor-missing is unchanged by what a contract declares", () => {
+  const noHeartbeat = watchdog({ publisher_cadence: "Daily" }, { acquired_at: null }, { schedulerHeartbeat: null });
+  assert.deepEqual(noHeartbeat.reason_codes, ["monitor-missing"]);
+  assert.equal(noHeartbeat.status, "STALE");
+  assert.equal(noHeartbeat.receipts[0].event_kind, "scheduler-heartbeat");
+  const stale = watchdog(
+    { publisher_cadence: "Daily" },
+    { acquired_at: null },
+    { schedulerHeartbeat: { observed_at: "2026-08-01T10:00:00.000Z", status: "succeeded" } },
+  );
+  assert.deepEqual(stale.reason_codes, ["monitor-missing"]);
 });

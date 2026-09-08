@@ -61,13 +61,34 @@ export const LOCAL_COMMAND_TIMEOUT_MS = 20 * 1000;
 export const EXIT_CODES = Object.freeze({ repaired: 0, failed: 1, judgment: 2, unkeyable: 3 });
 
 /**
+ * The scheduled jobs whose receipts carry `clock_kind: "acquisition"` — the only
+ * kind that advances a source's acquisition clock. A check receipt proves the
+ * publisher still answers and that our retained copy still matches it; it does
+ * not re-acquire anything, so re-running a check-only job can never clear an
+ * `acquisition-missing` finding. This cycle currently schedules no acquisition
+ * publisher at all, and the list says that plainly rather than naming a job that
+ * would run, succeed, and leave the finding exactly where it was.
+ */
+export const ACQUISITION_RECEIPT_PUBLISHERS = Object.freeze([]);
+
+/**
  * Which scheduled job publishes the evidence a freshness reason is about. A
  * reason with no scheduled publisher maps to nothing, and the playbook then
  * names it rather than guessing at a path to re-run.
  */
 export const FRESHNESS_PUBLICATION_PATHS = Object.freeze({
-  "acquisition-missing": "source-contracts-live",
+  "acquisition-missing": null,
   "monitor-missing": null,
+});
+
+/**
+ * Why a reason has no publication path, in the words the judgment summary uses.
+ * Without this the operator reads "no scheduled publication path is registered"
+ * and cannot tell an oversight from a deliberate absence.
+ */
+export const FRESHNESS_PATH_ABSENT_REASONS = Object.freeze({
+  "acquisition-missing": "no scheduled job on this cycle publishes acquisition receipts, so nothing here can advance an acquisition clock; publisher-side freshness is judged separately by the live source-contract check",
+  "monitor-missing": "the scheduler heartbeat is the cycle's own liveness, which a repair running inside that cycle cannot restore",
 });
 
 function stateDirectory(env = process.env) {
@@ -210,6 +231,13 @@ export function createDispatchContext({
         for (const reason of Array.isArray(reasons) ? reasons : []) {
           const path = FRESHNESS_PUBLICATION_PATHS[reason];
           if (path) return path;
+        }
+        return null;
+      },
+      pathAbsentReason(reasons) {
+        for (const reason of Array.isArray(reasons) ? reasons : []) {
+          const declared = FRESHNESS_PATH_ABSENT_REASONS[reason];
+          if (declared) return declared;
         }
         return null;
       },

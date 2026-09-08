@@ -6,10 +6,14 @@ import {
   canonicalOpsFailureSignature,
   dispatchRepairQueue,
   emitOpsAlertOnce,
+  emitRepairJudgmentAlerts,
   recordSchedulerHeartbeat,
   reportRepairResults,
   REPAIR_JUDGMENT_GUARD,
   OPS_ALERT_HISTORY_KEY,
+} from "../src/reliability_watchdogs.mjs";
+import {
+  applyMonitorFindings,
 } from "../src/reliability_watchdogs.mjs";
 import {
   REPAIR_MAX_ATTEMPTS,
@@ -875,4 +879,168 @@ test("A5 the monitor's own words still retire and reopen exactly as they did", a
   assert.equal(again.item.state, "queued");
   assert.equal(again.item.repeat_count, 2);
   assert.equal(again.item.first_seen, "2026-09-01T12:00:20.000Z");
+});
+
+/* --------------------------------------------------------------------------
+ * A6 one condition across many subjects is one decision, not many.
+ * ----------------------------------------------------------------------- */
+
+const FRESHNESS_SOURCES = [
+  "city-record",
+  "dcas-exam-notices",
+  "dcas-vehicle-auction-list",
+  "nys-contract-reporter",
+  "ocp-current-solicitations",
+  "passport-public-contracts",
+  "passport-public-rfx",
+];
+
+function judgment(monitor, failureClass, subject, overrides = {}) {
+  return {
+    signature: `monitor:${monitor}:${failureClass}:${subject}`,
+    guard: monitor,
+    stage: failureClass,
+    reason: "automatic repair stopped after 3 attempt(s) without a fix",
+    first_seen: "2026-09-01T12:00:20Z",
+    last_seen: "2026-09-08T10:30:00Z",
+    attempts: 3,
+    workflow: CYCLE.workflow,
+    source_revision: CYCLE.source_revision,
+    run_url: FINDING.workflow_run_url,
+    receipt_url: FINDING.receipt_url,
+    finding: `${subject}: freshness watchdog is stale`,
+    result_summary: "no scheduled job on this cycle publishes acquisition receipts",
+    ...overrides,
+  };
+}
+
+test("A6 one guard and failure class across many subjects sends exactly one mail", async () => {
+  // Seven near-identical emails inside three minutes is what one condition
+  // across seven sources used to look like, and it repeated every day the
+  // condition lasted. The subjects still each keep their own repair item.
+  const ALERT_STATE = kv();
+  await liveCycle(ALERT_STATE);
+  const mail = captureSends();
+  try {
+    const emitted = await emitRepairJudgmentAlerts(
+      { ALERT_STATE, RESEND_API_KEY: "rk" },
+      FRESHNESS_SOURCES.map((id) => judgment("source-freshness-watchdog", "freshness-stale", id)),
+      { now: at("2026-09-08T10:30:00Z") },
+    );
+    assert.equal(emitted.length, 1);
+    assert.equal(mail.sent.length, 1);
+    assert.equal(emitted[0].signatures.length, 7);
+    const body = mail.sent[0].html;
+    assert.match(body, /Automatic repair needs your decision for source-freshness-watchdog \(freshness-stale\)/);
+    assert.match(body, /7 subject\(s\)/);
+    for (const id of FRESHNESS_SOURCES) assert.ok(body.includes(id), `${id} is not named in the grouped mail`);
+    assert.match(body, /Decide whether to repair them by hand/);
+
+    // The same condition on the same day does not mail again.
+    await emitRepairJudgmentAlerts(
+      { ALERT_STATE, RESEND_API_KEY: "rk" },
+      FRESHNESS_SOURCES.map((id) => judgment("source-freshness-watchdog", "freshness-stale", id)),
+      { now: at("2026-09-08T10:40:00Z") },
+    );
+    assert.equal(mail.sent.length, 1);
+  } finally { mail.restore(); }
+});
+
+test("A6 two failure classes are two decisions and two mails", async () => {
+  const ALERT_STATE = kv();
+  await liveCycle(ALERT_STATE);
+  const mail = captureSends();
+  try {
+    const emitted = await emitRepairJudgmentAlerts(
+      { ALERT_STATE, RESEND_API_KEY: "rk" },
+      [
+        judgment("source-freshness-watchdog", "freshness-stale", "city-record"),
+        judgment("source-freshness-watchdog", "freshness-stale", "passport-public-rfx"),
+        judgment("source-contracts-live", "source-contract-outage", "cfb-campaign-contributions"),
+      ],
+      { now: at("2026-09-08T10:30:00Z") },
+    );
+    assert.equal(emitted.length, 2);
+    assert.equal(mail.sent.length, 2);
+    assert.deepEqual(emitted.map((row) => row.failure_class).sort(), ["freshness-stale", "source-contract-outage"]);
+  } finally { mail.restore(); }
+});
+
+test("A6 a grouped judgment names a long list by its first entries and a count", async () => {
+  const ALERT_STATE = kv();
+  await liveCycle(ALERT_STATE);
+  const mail = captureSends();
+  try {
+    const subjects = Array.from({ length: 12 }, (_unused, index) => `source-${String(index).padStart(2, "0")}`);
+    await emitRepairJudgmentAlerts(
+      { ALERT_STATE, RESEND_API_KEY: "rk" },
+      subjects.map((id) => judgment("source-freshness-watchdog", "freshness-stale", id)),
+      { now: at("2026-09-08T10:30:00Z") },
+    );
+    assert.equal(mail.sent.length, 1);
+    assert.match(mail.sent[0].html, /and 4 more/);
+  } finally { mail.restore(); }
+});
+
+test("A6 a subject the watchdog reads current again closes without a person, and stops mailing", async () => {
+  // The recovery path for closed findings already covers a parked judgment: a
+  // monitor states the scope it evaluated and what is still failing in it, and
+  // everything else in that scope closes. Nothing further reaches the judgment
+  // boundary, so nothing further mails.
+  const ALERT_STATE = kv();
+  const heartbeat = await liveCycle(ALERT_STATE);
+  const env = { ALERT_STATE, RESEND_API_KEY: "rk" };
+  const mail = captureSends();
+  try {
+    const findings = FRESHNESS_SOURCES.map((id) => ({
+      signature: `monitor:source-freshness-watchdog:freshness-stale:${id}`,
+      guard: "source-freshness-watchdog",
+      stage: "freshness-stale",
+      findings: [`${id}: freshness watchdog is stale (acquisition-missing)`],
+      last_seen: "2026-09-08T10:30:00Z",
+    }));
+    const queued = await applyMonitorFindings(env, { findings, now: at("2026-09-08T10:30:00Z"), heartbeat });
+    assert.equal(queued.queued.length, 7);
+    assert.equal(queued.rejected.length, 0);
+    // Queueing is silent; only the judgment boundary mails.
+    assert.equal(mail.sent.length, 0);
+
+    // Every one of them reaches the judgment boundary through the real path:
+    // leased in bounded batches, each reporting that nothing deterministic can
+    // close it. That is one mail for the seven, not seven.
+    let minute = 31;
+    for (let batch = 0; batch < 3; batch += 1) {
+      const pickup = await dispatchRepairQueue(env, { now: at(`2026-09-08T10:${minute}:00Z`), runId: CYCLE.run_id });
+      minute += 1;
+      if (!pickup.items.length) break;
+      await reportRepairResults(env, pickup.items.map((item) => ({
+        signature: item.signature,
+        lease_id: item.lease.lease_id,
+        outcome: "judgment",
+        summary: "no scheduled job on this cycle publishes acquisition receipts",
+      })), { now: at(`2026-09-08T10:${minute}:00Z`) });
+      minute += 1;
+    }
+    for (const id of FRESHNESS_SOURCES) {
+      const parked = (await readRepairItem(env, `monitor:source-freshness-watchdog:freshness-stale:${id}`)).item;
+      assert.equal(parked.state, "needs_judgment", `${id} did not reach the judgment boundary`);
+    }
+    assert.equal(mail.sent.length, 1, "seven parked subjects are one decision, not seven mails");
+
+    // The next cycle: the watchdog reads current for every one of them.
+    const recovered = await applyMonitorFindings(env, {
+      findings: [],
+      recovered: [{ prefix: "monitor:source-freshness-watchdog:freshness-stale", still_failing: [] }],
+      now: at("2026-09-09T10:30:00Z"),
+      heartbeat,
+    });
+    assert.equal(recovered.recovered.length, 7);
+    for (const id of FRESHNESS_SOURCES) {
+      const stored = (await readRepairItem(env, `monitor:source-freshness-watchdog:freshness-stale:${id}`)).item;
+      assert.equal(stored.state, "repaired", `${id} did not close on its own`);
+    }
+    // Nothing reaches the judgment boundary, so the day after sends nothing.
+    await emitRepairJudgmentAlerts(env, [], { now: at("2026-09-09T10:31:00Z") });
+    assert.equal(mail.sent.length, 1);
+  } finally { mail.restore(); }
 });
