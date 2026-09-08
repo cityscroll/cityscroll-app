@@ -36,38 +36,40 @@ const TYPE_LABELS = Object.freeze({
  */
 const EMPTY_GROUP_NOTE = "Articles for this section are being written. Each one is listed here once an editor has checked it against the live site.";
 
-function linkHtml({ label, href }) {
-  return `<a href="${esc(href)}">${esc(label)}</a>`;
+const identity = value => value;
+
+function linkHtml({ label, href }, t = identity) {
+  return `<a href="${esc(href)}">${esc(t(label))}</a>`;
 }
 
-function head({ title, description, canonical }) {
+function head({ title, description, canonical, locale = "en", dir = "ltr", t = identity }) {
   return `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(title)}</title><meta name="description" content="${esc(description)}">
+<html lang="${esc(locale)}" dir="${esc(dir)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(t(title))}</title><meta name="description" content="${esc(t(description))}">
 <link rel="canonical" href="${esc(canonical)}">${renderCivicDocumentAssets("/")}
 <link rel="stylesheet" href="/guide.css"><script type="module" src="/guide_navigation.mjs"></script></head>
-<body><a class="skip" href="#main">Skip to content</a>
-${renderCivicDocumentMast({ current: "guide", surfaceClass: "guide-mast" })}`;
+<body><a class="skip" href="#main">${esc(t("Skip to content"))}</a>
+${renderCivicDocumentMast({ current: "guide", surfaceClass: "guide-mast", translate: t })}`;
 }
 
-function foot() {
-  return `${renderNodeFooter({ text: "CityScroll is an unofficial reading aid. Check each record at its official source.", extraClass: "guide-footer" })}
+function foot(t = identity) {
+  return `${renderNodeFooter({ text: "CityScroll is an unofficial reading aid. Check each record at its official source.", extraClass: "guide-footer", translate: t })}
 </body></html>`;
 }
 
-function reviewLine(date) {
-  return `<p class="node-meta guide-reviewed">Last reviewed ${esc(date)}</p>`;
+function reviewLine(date, t = identity) {
+  return `<p class="node-meta guide-reviewed">${esc(t("Last reviewed {date}").replace("{date}", date))}</p>`;
 }
 
-function articleListItem(article) {
+function articleListItem(article, t = identity) {
   return `<li class="guide-article-item">
-      <a class="guide-article-link" href="${esc(article.url)}">${esc(article.title)}</a>
-      <span class="guide-article-question">${esc(article.reader_question)}</span>
-      <span class="guide-article-meta">${esc(TYPE_LABELS[article.type])} · Last reviewed ${esc(article.last_reviewed)}</span>
+      <a class="guide-article-link" href="${esc(article.url)}">${esc(t(article.title))}</a>
+      <span class="guide-article-question">${esc(t(article.reader_question))}</span>
+      <span class="guide-article-meta">${esc(t(TYPE_LABELS[article.type]))} · ${esc(t("Last reviewed {date}").replace("{date}", article.last_reviewed))}</span>
     </li>`;
 }
 
-function groupSection(group, articles, description) {
+function groupSection(group, articles, description, t = identity) {
   // Sources are loaded in filename order, which is not the order a reader should
   // meet them in. A section lists its articles by their own id, so "follow a
   // search" precedes "follow a Community Board" the way the section was written.
@@ -75,44 +77,44 @@ function groupSection(group, articles, description) {
     .filter((article) => article.type === group.type)
     .sort((left, right) => left.id.localeCompare(right.id, "en", { numeric: true }));
   const body = published.length
-    ? `<ul class="guide-article-list">\n${published.map(articleListItem).join("\n")}\n    </ul>`
-    : `<p class="guide-group-empty">${esc(EMPTY_GROUP_NOTE)}</p>`;
+    ? `<ul class="guide-article-list">\n${published.map(article => articleListItem(article, t)).join("\n")}\n    </ul>`
+    : `<p class="guide-group-empty">${esc(t(EMPTY_GROUP_NOTE))}</p>`;
   return `<section class="node-section guide-group" aria-labelledby="group-${esc(group.id)}">
-    <h2 id="group-${esc(group.id)}">${esc(group.label)}</h2>
+    <h2 id="group-${esc(group.id)}">${esc(t(group.label))}</h2>
     ${description}
     ${body}
   </section>`;
 }
 
 /** The guide home: an orientation and the four reader-facing sections. */
-export function renderGuideHome(home, articles) {
+export function renderGuideHome(home, articles, { translate: t = identity, locale = "en", dir = "ltr" } = {}) {
   const sections = home.sections;
   const groups = GUIDE_GROUPS
-    .map((group) => groupSection(group, articles, sections.get(group.label)))
+    .map((group) => groupSection(group, articles, sections.get(group.label), t))
     .join("\n  ");
   return `${head({
     title: home.page_title,
     description: home.description,
-    canonical: "https://cityscroll.org/guide/",
+    canonical: "https://cityscroll.org/guide/", locale, dir, t,
   })}
 <main class="node-document guide-document" id="main">
   <header class="node-hero guide-hero">
-    <p class="node-kicker">Guide</p>
-    <h1>${esc(home.title)}</h1>
-    <p class="node-lede">${esc(home.purpose)}</p>
-    ${reviewLine(home.last_reviewed)}
+    <p class="node-kicker">${esc(t("Guide"))}</p>
+    <h1>${esc(t(home.title))}</h1>
+    <p class="node-lede">${esc(t(home.purpose))}</p>
+    ${reviewLine(home.last_reviewed, t)}
   </header>
   <section class="node-section guide-orientation" aria-labelledby="guide-orientation">
-    <h2 id="guide-orientation">Where to start</h2>
+    <h2 id="guide-orientation">${esc(t("Where to start"))}</h2>
     ${sections.get("Orientation")}
   </section>
   ${groups}
   <section class="node-section guide-language" aria-labelledby="guide-language">
-    <h2 id="guide-language">About this guide</h2>
+    <h2 id="guide-language">${esc(t("About this guide"))}</h2>
     ${sections.get("About this guide") || ""}
   </section>
 </main>
-${foot()}`;
+${foot(t)}`;
 }
 
 /**
@@ -126,34 +128,34 @@ ${foot()}`;
  * while the method it teaches stays on the page. Neither is generated, and neither
  * appears unless an editor wrote it.
  */
-function noticeSection(article) {
+function noticeSection(article, t = identity) {
   const notices = [];
   if (article.correction) {
-    notices.push(`<p class="guide-notice guide-correction"><strong>Correction:</strong> ${esc(article.correction)}</p>`);
+    notices.push(`<p class="guide-notice guide-correction"><strong>${esc(t("Correction:"))}</strong> ${esc(t(article.correction))}</p>`);
   }
   if (article.historical_note) {
-    notices.push(`<p class="guide-notice guide-historical"><strong>About this example:</strong> ${esc(article.historical_note)}</p>`);
+    notices.push(`<p class="guide-notice guide-historical"><strong>${esc(t("About this example:"))}</strong> ${esc(t(article.historical_note))}</p>`);
   }
   if (!notices.length) return "";
   return `
-  <aside class="guide-notices" aria-label="Notices about this article">
+  <aside class="guide-notices" aria-label="${esc(t("Notices about this article"))}">
     ${notices.join("\n    ")}
   </aside>`;
 }
 
-function relatedSection(article) {
+function relatedSection(article, t = identity) {
   if (!article.related.length) return "";
   return `<section class="node-section guide-related" aria-labelledby="guide-related">
-    <h2 id="guide-related">Related pages</h2>
-    <ul>${article.related.map((item) => `<li>${linkHtml(item)}</li>`).join("")}</ul>
+    <h2 id="guide-related">${esc(t("Related pages"))}</h2>
+    <ul>${article.related.map((item) => `<li>${linkHtml(item, t)}</li>`).join("")}</ul>
   </section>`;
 }
 
-function sourcesSection(article) {
+function sourcesSection(article, t = identity) {
   if (!article.sources.length) return "";
   return `<section class="node-section guide-sources" aria-labelledby="guide-sources">
-    <h2 id="guide-sources">Sources used in this article</h2>
-    <ul>${article.sources.map((item) => `<li>${linkHtml(item)}</li>`).join("")}</ul>
+    <h2 id="guide-sources">${esc(t("Sources used in this article"))}</h2>
+    <ul>${article.sources.map((item) => `<li>${linkHtml(item, t)}</li>`).join("")}</ul>
   </section>`;
 }
 
@@ -162,33 +164,33 @@ function sourcesSection(article) {
  * Reference those are the same word, and a reader gains nothing from being told it
  * twice, so it is said once.
  */
-function articleKicker(article) {
-  const section = article.group.label;
-  const type = TYPE_LABELS[article.type];
+function articleKicker(article, t = identity) {
+  const section = t(article.group.label);
+  const type = t(TYPE_LABELS[article.type]);
   return section === type ? section : `${section} · ${type}`;
 }
 
 /** One guide article. */
-export function renderGuideArticle(article) {
+export function renderGuideArticle(article, { translate: t = identity, locale = "en", dir = "ltr" } = {}) {
   return `${head({
     title: article.page_title || `${article.title} · CityScroll`,
     description: article.description,
-    canonical: `https://cityscroll.org${article.url}`,
+    canonical: `https://cityscroll.org${article.url}`, locale, dir, t,
   })}
 <main class="node-document guide-document guide-article" id="main">
-  <p class="node-back"><a href="${esc(GUIDE_HOME_URL)}">Back to the guide</a></p>
+  <p class="node-back"><a href="${esc(GUIDE_HOME_URL)}">${esc(t("Back to the guide"))}</a></p>
   <header class="node-hero guide-hero">
-    <p class="node-kicker">${esc(articleKicker(article))}</p>
-    <h1>${esc(article.title)}</h1>
-    <p class="node-lede">${esc(article.purpose)}</p>
-    ${reviewLine(article.last_reviewed)}
-  </header>${noticeSection(article)}
+    <p class="node-kicker">${esc(articleKicker(article, t))}</p>
+    <h1>${esc(t(article.title))}</h1>
+    <p class="node-lede">${esc(t(article.purpose))}</p>
+    ${reviewLine(article.last_reviewed, t)}
+  </header>${noticeSection(article, t)}
   <div class="guide-body">
 ${article.bodyHtml}
   </div>
-  ${relatedSection(article)}
-  ${sourcesSection(article)}
-  <p class="guide-return">${linkHtml(article.return_to_task)}</p>
+  ${relatedSection(article, t)}
+  ${sourcesSection(article, t)}
+  <p class="guide-return">${linkHtml(article.return_to_task, t)}</p>
 </main>
-${foot()}`;
+${foot(t)}`;
 }

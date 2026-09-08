@@ -23,7 +23,7 @@ import {
 } from "../rum_stateful_instrumentation.mjs";
 
 const root = document.querySelector("[data-following-root]");
-const msg = (name) => root?.dataset[name] || "";
+const msg = (name) => name === "msgSubmitReady" && window.t ? window.t("following_subscribed") : root?.dataset[name] || "";
 const followingRum = createFollowingRumInstrumentation({
   rum: runtimeRumSemanticMilestones(),
 });
@@ -248,6 +248,7 @@ function wireRefineLive() {
   syncCouncilFieldVisibility(form);
   syncCommunityBoardFieldVisibility(form);
   updateRuleLine();
+  window.applyStrings?.();
 }
 
 function watchCountFromPersonal() {
@@ -475,6 +476,20 @@ async function loadPersonal({ keepExisting = false, focusWatchKey = "" } = {}) {
   }
 }
 
+function wireFollowingScopeNavigation() {
+  root.querySelectorAll('a[data-following-scope-axis], [data-filter-href]').forEach(control => {
+    const attribute = control.hasAttribute("data-filter-href") ? "data-filter-href" : "href";
+    const url = new URL(control.getAttribute(attribute), location.href);
+    if (window.LANG) url.searchParams.set("lang", window.LANG);
+    control.setAttribute(attribute, url.pathname + url.search + url.hash);
+  });
+  installFilterChipNavigation(root, { assign(href) {
+    const url = new URL(href, location.href);
+    if (window.LANG) url.searchParams.set("lang", window.LANG);
+    location.assign(url.href);
+  } });
+}
+
 function adoptFollowingDocument(html) {
   const next = new DOMParser().parseFromString(html, "text/html");
   const nextRoot = next.querySelector("[data-following-root]");
@@ -497,11 +512,12 @@ function adoptFollowingDocument(html) {
     currentForm.replaceWith(nextForm);
     nextForm.addEventListener("submit", preview);
   }
-  installFilterChipNavigation(root);
+  wireFollowingScopeNavigation();
   wireSubscribe();
   wireRefineLive();
   duplicateWarning();
   updateRuleLine();
+  window.applyStrings?.();
 }
 
 function wirePersonalForms() {
@@ -581,9 +597,11 @@ async function preview(event) {
   try {
     const url = new URL(form.action);
     url.search = new URLSearchParams(new FormData(form)).toString();
+    if (window.LANG && window.LANG !== "en") url.searchParams.set("lang", window.LANG);
     const response = await fetch(url, { headers: { Accept: "text/html" } });
     if (!response.ok) throw new Error("preview");
     adoptFollowingDocument(await response.text());
+    window.applyStrings?.();
     if (url.origin === location.origin) history.replaceState({}, "", `${url.pathname}${url.search}`);
     root.querySelector("[data-following-preview-status]")?.replaceChildren(msg("msgPreviewReady"));
   } catch {
@@ -659,6 +677,7 @@ async function restoreFromLocation() {
     const response = await fetch(`${location.pathname}${location.search}`, { headers: { Accept: "text/html" } });
     if (!response.ok) return;
     adoptFollowingDocument(await response.text());
+    window.applyStrings?.();
     wireTabs(requestedTab("create"), { reset: true });
   } catch {
     /* current document remains the last honest state */
@@ -666,7 +685,7 @@ async function restoreFromLocation() {
 }
 
 if (root) {
-  installFilterChipNavigation(root);
+  wireFollowingScopeNavigation();
   wireTabs("create");
   root.querySelector("[data-following-preview-form]")?.addEventListener("submit", preview);
   wireSubscribe();
@@ -680,3 +699,5 @@ if (root) {
   });
   loadPersonal();
 }
+
+window.initSubpageLangSwitcher?.();

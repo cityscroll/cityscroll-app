@@ -46,7 +46,7 @@ Check that the notice opens and the trail contains both the agency-to-vendor and
 steps. Use that notice title to continue from the vendor.
 
 If the trail disappears, use your browser's **Back** button to return to the vendor.
-That navigation has not preserved the path; do not treat opening the notice alone as success.
+That navigation has not preserved the path. Do not treat opening the notice alone as success.
 The finished example linked below is a reference for the expected two-step display, not proof
 that your clicks created it.
 
@@ -55,7 +55,7 @@ that your clicks created it.
 ## Step 4 — Reopen your own trail
 
 When both steps are visible, copy the full browser address and paste it into a new tab.
-Check that both steps and the final award return. The address carries the trail; simply
+Check that both steps and the final award return. The address carries the trail. Simply
 bookmarking the notice without it will not preserve the path.
 
 Read each connection label separately. In the finished reference, **published by agency** connects
@@ -70,7 +70,7 @@ it is not an announcement that subcontracts are available or an invitation to bi
 Open an agency from [People + organizations](/browse/people/), select a vendor under
 **Connected records**, and open **Show all dates** under **On the record — notices naming this vendor** to select an award. Copy and reopen
 the address only after checking both steps. If a connection is absent, choose another published
-connection; absence here does not prove no award exists.
+connection. Absence here does not prove no award exists.
 
 For evidence behind a connection, choose **details** beside its title (announced as
 **View connection details**). The panel names the basis and source for that particular link.

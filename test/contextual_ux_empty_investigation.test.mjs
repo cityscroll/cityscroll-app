@@ -1,3 +1,4 @@
+import { renderGuideHelpLink } from "../site/guide_contextual_links.mjs";
 // cx-02: the empty My investigation state guides the reader to the first
 // find-and-pin step instead of exposing share/freeze/export/print/clear
 // controls with nothing yet to act on. Populated collections must keep every
@@ -64,7 +65,7 @@ function pivotAStub(href, text) { return href ? `<a href="${href}">${text}</a>` 
 function build({ localStorage } = {}) {
   const ls = localStorage || fakeLocalStorage();
   const factory = new Function(
-    "t", "localStorage", "pivotA",
+    "t", "localStorage", "pivotA", "renderGuideHelpLink",
     `"use strict";
      const INVESTIGATION_SIGNAL_TYPE = "signal";
      let invSessionRecognized = false;
@@ -80,7 +81,7 @@ function build({ localStorage } = {}) {
       extractFn("invItemsHtml") +
       "return { invDefaultStore, invStore, invSave, invEmptyGuideHtml, invItemsHtml };",
   );
-  return factory(t, ls, pivotAStub);
+  return factory(t, ls, pivotAStub, renderGuideHelpLink);
 }
 
 const SIX_ACTION_IDS = ["invshare", "invpackage", "invcsv", "invjson", "invprint", "invclear"];

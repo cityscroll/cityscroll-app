@@ -143,7 +143,8 @@ test("calendar handoff, connection evidence, as-of, and empty collections each g
   assert.match(asOf, /How as-of works/);
 
   assert.match(workspace, /invEmptyGuideHtml/);
-  assert.match(workspace, /href="\/guide\/how-to\/collect-records-and-export-them\/"/);
+  assert.match(workspace, /renderGuideHelpLink\("emptyCollection"\)/);
+  assert.equal(helpCount(renderGuideHelpLink("emptyCollection"), "emptyCollection"), 1);
 });
 
 test("guide documents mark Guide current and still link About", () => {
@@ -191,4 +192,23 @@ test("guide step links preserve language and authored task scope without forward
   for (const href of ["https://example.org/", "//example.org/", "#step-2", "/media/guide/example/crop.png"]) {
     assert.equal(guideNavigationHref(href, current), href);
   }
+});
+
+test('guide locale routes preserve scope, explicit English and RTL choices', async () => {
+  const {guideDocumentHref,guideLocaleRedirect,guideNavigationHref} = await import('../site/guide_navigation.mjs');
+  assert.equal(guideDocumentHref('/guide/es/understand/how-records-are-connected/?lang=es#source', 'ar'), '/guide/ar/understand/how-records-are-connected/#source');
+  assert.equal(guideLocaleRedirect('https://cityscroll.org/guide/how-to/follow-a-search/?lang=zh-Hans'), '/guide/zh-Hans/how-to/follow-a-search/');
+  assert.equal(guideLocaleRedirect('https://cityscroll.org/guide/ar/?lang=en', 'ar'), '/guide/?lang=en');
+  assert.equal(guideLocaleRedirect('https://cityscroll.org/guide/ar/', 'es'), null);
+  assert.equal(guideNavigationHref('/following/?lens=meetings#watch', 'https://cityscroll.org/guide/es/how-to/follow-a-search/'), '/following/?lens=meetings&lang=es#watch');
+  assert.equal(guideNavigationHref('/guide/?section=one#start', 'https://cityscroll.org/guide/?lang=en', 'ar'), '/guide/?section=one&lang=en#start');
+});
+
+test('Pages redirects guide query language before serving static no-script documents', async () => {
+  const {default: edge} = await import('../site/pages_edge.mjs');
+  const response = await edge.fetch(new Request('https://cityscroll.org/guide/how-to/follow-a-search/?lang=ar'), {}, {});
+  assert.equal(response.status, 302);
+  assert.equal(response.headers.get('location'), 'https://cityscroll.org/guide/ar/how-to/follow-a-search/');
+  const routes = JSON.parse(readFileSync(new URL('../site/_routes.json', import.meta.url)));
+  assert.ok(routes.include.includes('/guide/*'));
 });

@@ -114,7 +114,7 @@ export function renderAgencyConnectionCards(records = []) {
   const count = connected.length;
   return `<section class="agency-connections" aria-labelledby="agency-connections-heading">
     <div class="agency-connections-heading">
-      <div><p class="agency-connections-kicker">Public relationships</p><h2 id="agency-connections-heading">Connected records</h2></div>
+      <div><p class="agency-connections-kicker">Public relationships</p><h2 id="agency-connections-heading" data-i18n="connected_records_heading">Connected records</h2></div>
       <p class="agency-connections-summary">${count} ${count === 1 ? "kind of connected record" : "kinds of connected records"}</p>
     </div>
     <div class="agency-connection-grid">${cards}</div>
@@ -320,6 +320,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   <link rel="canonical" href="${esc(canonical)}">
   <meta property="og:url" content="${esc(canonical)}">
   ${renderCivicDocumentAssets(assetPrefix)}
+  <script src="${esc((assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`) + "i18n.js")}?v=__I18N_ASSET_VERSION__"></script>
   <style>${agencyConstellationSectionStyles()}</style>
 </head>
 <body>

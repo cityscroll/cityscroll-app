@@ -1,0 +1,30 @@
+{
+  "schema": "cityscroll.guide-accessibility-verification.v1",
+  "environment": "Local Chromium against the complete public build",
+  "build_command": "node tools/build_cloudflare_pages.mjs --site-dir _site",
+  "checks": [
+    {
+      "command": "NO_DISCLAIMER_SLOP_MODE=block tools/run_a11y_ci_shard.sh language-layout primary",
+      "exit_status": 0,
+      "duration_seconds": 8
+    },
+    {
+      "command": "NO_DISCLAIMER_SLOP_MODE=block tools/run_a11y_ci_shard.sh rendered-census primary",
+      "exit_status": 0,
+      "duration_seconds": 167
+    },
+    {
+      "command": "NO_DISCLAIMER_SLOP_MODE=block tools/run_a11y_ci_shard.sh routes-focus primary",
+      "exit_status": 0,
+      "duration_seconds": 204
+    }
+  ],
+  "regression_assertions": [
+    "URL language overrides leave the saved browser preference unchanged; explicit picker changes save it.",
+    "Following topic navigation carries the visit language in its URL.",
+    "The reconstructed inline site and module site both render task routes without duplicate helper declarations.",
+    "The guide heading uses positive copy in English and all ten translated catalogs.",
+    "Publisher URL identifiers are treated as URLs; bare schema field names remain rejected."
+  ],
+  "editorial_review": "These machine checks do not advance article review dates or locale editorial provenance."
+}

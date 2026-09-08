@@ -1,0 +1,161 @@
+{
+  "schema": "cityscroll.guide-language-rendered.v1",
+  "captured_at": "2026-09-08T18:05:03.697657+00:00",
+  "method": "Local static preview, Chromium, no JavaScript; screenshots retained outside published assets",
+  "captures": [],
+  "journeys": [
+    {
+      "locale": "es",
+      "journey": "board",
+      "route": "/following/?lang=es",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "article": "/guide/es/how-to/follow-a-community-board/",
+      "explanation": "/guide/es/understand/what-a-public-record-tells-you/",
+      "return": "/following/?lang=es",
+      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "data_vintage": "Retained product documents; disposable Following preview; all outgoing writes intercepted",
+      "assertion": "Product contextual help, localized article, explanation, browser Back and product return preserve language and direction",
+      "assertion_holds": true,
+      "sha256": "d7556de2ae31d0585e39640258766ed81dcc3ac9e4b069e504567e7ad1b9f903"
+    },
+    {
+      "locale": "es",
+      "journey": "calendar",
+      "route": "/browse/meetings/?lang=es",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "article": "/guide/es/how-to/put-dates-in-your-calendar/",
+      "explanation": "/guide/es/understand/dates-and-missing-information/",
+      "return": "/now/?lang=es",
+      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "data_vintage": "Retained product documents; disposable Following preview; all outgoing writes intercepted",
+      "assertion": "Product contextual help, localized article, explanation, browser Back and product return preserve language and direction",
+      "assertion_holds": true,
+      "sha256": "07e58883c4bab14784ffe80398b4e0ac1888cfc6b8bc00bc6fde77b33e4deb38"
+    },
+    {
+      "locale": "es",
+      "journey": "collection",
+      "route": "/?lang=es#investigation",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "article": "/guide/es/how-to/collect-records-and-export-them/",
+      "explanation": "/guide/es/understand/what-a-public-record-tells-you/",
+      "return": "/?lang=es#investigation",
+      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "data_vintage": "Retained product documents; disposable Following preview; all outgoing writes intercepted",
+      "assertion": "Product contextual help, localized article, explanation, browser Back and product return preserve language and direction",
+      "assertion_holds": true,
+      "sha256": "c75b5553560da5885e60ae5ecce20da6635e4757321c3b152af31ccd7052bd2e"
+    },
+    {
+      "locale": "zh-Hans",
+      "journey": "board",
+      "route": "/following/?lang=zh-Hans",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "article": "/guide/zh-Hans/how-to/follow-a-community-board/",
+      "explanation": "/guide/zh-Hans/understand/what-a-public-record-tells-you/",
+      "return": "/following/?lang=zh-Hans",
+      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "data_vintage": "Retained product documents; disposable Following preview; all outgoing writes intercepted",
+      "assertion": "Product contextual help, localized article, explanation, browser Back and product return preserve language and direction",
+      "assertion_holds": true,
+      "sha256": "d7556de2ae31d0585e39640258766ed81dcc3ac9e4b069e504567e7ad1b9f903"
+    },
+    {
+      "locale": "zh-Hans",
+      "journey": "calendar",
+      "route": "/browse/meetings/?lang=zh-Hans",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "article": "/guide/zh-Hans/how-to/put-dates-in-your-calendar/",
+      "explanation": "/guide/zh-Hans/understand/dates-and-missing-information/",
+      "return": "/now/?lang=zh-Hans",
+      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "data_vintage": "Retained product documents; disposable Following preview; all outgoing writes intercepted",
+      "assertion": "Product contextual help, localized article, explanation, browser Back and product return preserve language and direction",
+      "assertion_holds": true,
+      "sha256": "e0088b821ba26f78db16bba5133afc2f86a42e746383f180aaa56e0abaa43e06"
+    },
+    {
+      "locale": "zh-Hans",
+      "journey": "collection",
+      "route": "/?lang=zh-Hans#investigation",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "article": "/guide/zh-Hans/how-to/collect-records-and-export-them/",
+      "explanation": "/guide/zh-Hans/understand/what-a-public-record-tells-you/",
+      "return": "/?lang=zh-Hans#investigation",
+      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "data_vintage": "Retained product documents; disposable Following preview; all outgoing writes intercepted",
+      "assertion": "Product contextual help, localized article, explanation, browser Back and product return preserve language and direction",
+      "assertion_holds": true,
+      "sha256": "4a995463e5b625c9cefec6f96f0ed4cfd74e5852e787917d896b1bbb41be863f"
+    },
+    {
+      "locale": "ar",
+      "journey": "board",
+      "route": "/following/?lang=ar",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "article": "/guide/ar/how-to/follow-a-community-board/",
+      "explanation": "/guide/ar/understand/what-a-public-record-tells-you/",
+      "return": "/following/?lang=ar",
+      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "data_vintage": "Retained product documents; disposable Following preview; all outgoing writes intercepted",
+      "assertion": "Product contextual help, localized article, explanation, browser Back and product return preserve language and direction",
+      "assertion_holds": true,
+      "sha256": "f2d531b10c0e0909602220fc3552b40a2513e82938855aae37d029bbf66ca618"
+    },
+    {
+      "locale": "ar",
+      "journey": "calendar",
+      "route": "/browse/meetings/?lang=ar",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "article": "/guide/ar/how-to/put-dates-in-your-calendar/",
+      "explanation": "/guide/ar/understand/dates-and-missing-information/",
+      "return": "/now/?lang=ar",
+      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "data_vintage": "Retained product documents; disposable Following preview; all outgoing writes intercepted",
+      "assertion": "Product contextual help, localized article, explanation, browser Back and product return preserve language and direction",
+      "assertion_holds": true,
+      "sha256": "0f1997999d13d4dfa0a65c2b2bd303d672053e15c0036264f0980a2e54e62dc5"
+    },
+    {
+      "locale": "ar",
+      "journey": "collection",
+      "route": "/?lang=ar#investigation",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "article": "/guide/ar/how-to/collect-records-and-export-them/",
+      "explanation": "/guide/ar/understand/what-a-public-record-tells-you/",
+      "return": "/?lang=ar#investigation",
+      "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+      "data_vintage": "Retained product documents; disposable Following preview; all outgoing writes intercepted",
+      "assertion": "Product contextual help, localized article, explanation, browser Back and product return preserve language and direction",
+      "assertion_holds": true,
+      "sha256": "56bcfed07784151aa2e3c2ab6683b57c29d60bdb7d78a7ebcaa5308e9b63c78a"
+    }
+  ]
+}

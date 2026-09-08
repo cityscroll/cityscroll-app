@@ -64,6 +64,203 @@
           "height": 61
         },
         "source_html_sha256": "6dd8bc88ff4677050ebdcd18ef18923ab219d1e4737c8372f5774d9769de9af8"
+      },
+      "locales": {
+        "es": {
+          "locale": "es",
+          "caption": "1. Pin is among the individual record\u2019s actions, beside its print and export controls.",
+          "alt": "The award notice action row, including Pin.",
+          "mobile": {
+            "src": "/media/guide/collect-records-and-export-them/es/pin-record-mobile.png",
+            "width": 344,
+            "height": 165,
+            "captured_at": "2026-09-08T17:34:36.743936+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/notices/20231222103?lang=es",
+            "sha256": "699581b09dc735415ab4fc31c573b62b710964797abefeea0847c76c4a7c827b",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-pin]",
+                "label": "Fijar",
+                "y": 135
+              }
+            ],
+            "crop": {
+              "x": 39,
+              "y": 2396,
+              "width": 312,
+              "height": 165
+            },
+            "source_html_sha256": "81f8eb11ef32b18979286a0dd198907326efe5239a3ad23bc41a5bb4c3b53da4"
+          },
+          "desktop": {
+            "src": "/media/guide/collect-records-and-export-them/es/pin-record-desktop.png",
+            "width": 878,
+            "height": 61,
+            "captured_at": "2026-09-08T17:34:52.944421+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/notices/20231222103?lang=es",
+            "sha256": "34399c413fb7eedd76f7f6621d014cf102af3156b66a162aedbfd5c45c3d8103",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-pin]",
+                "label": "Fijar",
+                "y": 31
+              }
+            ],
+            "crop": {
+              "x": 297,
+              "y": 1646,
+              "width": 846,
+              "height": 61
+            },
+            "source_html_sha256": "81f8eb11ef32b18979286a0dd198907326efe5239a3ad23bc41a5bb4c3b53da4"
+          }
+        },
+        "zh-Hans": {
+          "locale": "zh-Hans",
+          "caption": "1. Pin is among the individual record\u2019s actions, beside its print and export controls.",
+          "alt": "The award notice action row, including Pin.",
+          "mobile": {
+            "src": "/media/guide/collect-records-and-export-them/zh-Hans/pin-record-mobile.png",
+            "width": 344,
+            "height": 165,
+            "captured_at": "2026-09-08T17:37:54.406230+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/notices/20231222103?lang=zh-Hans",
+            "sha256": "7fb82275dd66d0405113f58864b6fd268d1bd0f5e0b1772b773ef1384e63597e",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-pin]",
+                "label": "\u7f6e\u9876",
+                "y": 135
+              }
+            ],
+            "crop": {
+              "x": 39,
+              "y": 2229,
+              "width": 312,
+              "height": 165
+            },
+            "source_html_sha256": "88d699668ba01c96b62ca9703ce9bd95df42c4965bf06e26f69e534529d5255c"
+          },
+          "desktop": {
+            "src": "/media/guide/collect-records-and-export-them/zh-Hans/pin-record-desktop.png",
+            "width": 878,
+            "height": 61,
+            "captured_at": "2026-09-08T17:38:03.220659+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/notices/20231222103?lang=zh-Hans",
+            "sha256": "a711c84908ecabf7bd71fc46a89f4d4578fe3182e14e922380293d47af1b221d",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-pin]",
+                "label": "\u7f6e\u9876",
+                "y": 30
+              }
+            ],
+            "crop": {
+              "x": 297,
+              "y": 1565,
+              "width": 846,
+              "height": 61
+            },
+            "source_html_sha256": "88d699668ba01c96b62ca9703ce9bd95df42c4965bf06e26f69e534529d5255c"
+          }
+        },
+        "ar": {
+          "locale": "ar",
+          "caption": "1. Pin is among the individual record\u2019s actions, beside its print and export controls.",
+          "alt": "The award notice action row, including Pin.",
+          "mobile": {
+            "src": "/media/guide/collect-records-and-export-them/ar/pin-record-mobile.png",
+            "width": 344,
+            "height": 207,
+            "captured_at": "2026-09-08T18:06:20.892826+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/notices/20231222103?lang=ar",
+            "sha256": "193365873cb0c6cdadc13fa5937e2370cba1cedec5b7c1e56dababb92ac7dba7",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-pin]",
+                "label": "\u062a\u062b\u0628\u064a\u062a",
+                "y": 135
+              }
+            ],
+            "crop": {
+              "x": 39,
+              "y": 2294,
+              "width": 312,
+              "height": 207
+            },
+            "source_html_sha256": "584fae80ad4036ee5dad00683a85c871137ecf63d96d06e7dbbfdfce9ca221be"
+          },
+          "desktop": {
+            "src": "/media/guide/collect-records-and-export-them/ar/pin-record-desktop.png",
+            "width": 878,
+            "height": 61,
+            "captured_at": "2026-09-08T18:06:32.032385+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/notices/20231222103?lang=ar",
+            "sha256": "ae7d27f9726996316de99693550f48aa76364b0dbf2e8fabd62862d383b50747",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-pin]",
+                "label": "\u062a\u062b\u0628\u064a\u062a",
+                "y": 30
+              }
+            ],
+            "crop": {
+              "x": 297,
+              "y": 1593,
+              "width": 846,
+              "height": 61
+            },
+            "source_html_sha256": "8285bdf8aa6e8676eae36617dfc82813cc77ef6ff90e9ecf79aec1a211eea797"
+          }
+        }
       }
     },
     "pin-confirmation": {
@@ -129,11 +326,208 @@
           "height": 95
         },
         "source_html_sha256": "c79e831910f1e3d1d6146d0992d3307a292856fb52b5daca215a2ef5306dc5ad"
+      },
+      "locales": {
+        "es": {
+          "locale": "es",
+          "caption": "1. The pinned confirmation gives the item count and opens your investigation.",
+          "alt": "Pinned confirmation link in the same record action row.",
+          "mobile": {
+            "src": "/media/guide/collect-records-and-export-them/es/pin-confirmation-mobile.png",
+            "width": 344,
+            "height": 200,
+            "captured_at": "2026-09-08T17:34:37.048608+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/notices/20231222103?lang=es",
+            "sha256": "7921bdbe7798f2c9b76128a0a2eb25467c84fc5ae63c245281497bee8a3c33f9",
+            "redactions": [],
+            "data_vintage": "Disposable browser collection; no account or remote save",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-guide-crop=\"pin-actions\"] a[href=\"#investigation\"]",
+                "label": "\u2713 Fijado \u2014 abrir investigaci\u00f3n (1)",
+                "y": 135
+              }
+            ],
+            "crop": {
+              "x": 39,
+              "y": 2396,
+              "width": 312,
+              "height": 200
+            },
+            "source_html_sha256": "c291641ad20626e73a458f5b9a7ff1b008095cb258ec5e855cc835b94ae45084"
+          },
+          "desktop": {
+            "src": "/media/guide/collect-records-and-export-them/es/pin-confirmation-desktop.png",
+            "width": 878,
+            "height": 95,
+            "captured_at": "2026-09-08T17:34:53.204983+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/notices/20231222103?lang=es",
+            "sha256": "802827343108be32db4ddbb1a1454019d5b740ab43e627f74b5047477d4315d3",
+            "redactions": [],
+            "data_vintage": "Disposable browser collection; no account or remote save",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-guide-crop=\"pin-actions\"] a[href=\"#investigation\"]",
+                "label": "\u2713 Fijado \u2014 abrir investigaci\u00f3n (1)",
+                "y": 30
+              }
+            ],
+            "crop": {
+              "x": 297,
+              "y": 1647,
+              "width": 846,
+              "height": 95
+            },
+            "source_html_sha256": "c291641ad20626e73a458f5b9a7ff1b008095cb258ec5e855cc835b94ae45084"
+          }
+        },
+        "zh-Hans": {
+          "locale": "zh-Hans",
+          "caption": "1. The pinned confirmation gives the item count and opens your investigation.",
+          "alt": "Pinned confirmation link in the same record action row.",
+          "mobile": {
+            "src": "/media/guide/collect-records-and-export-them/zh-Hans/pin-confirmation-mobile.png",
+            "width": 344,
+            "height": 203,
+            "captured_at": "2026-09-08T17:37:54.680125+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/notices/20231222103?lang=zh-Hans",
+            "sha256": "6085d517c76e073932d2636b59c9f9a2438309c5f0bdb14fb0bec89077311ec4",
+            "redactions": [],
+            "data_vintage": "Disposable browser collection; no account or remote save",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-guide-crop=\"pin-actions\"] a[href=\"#investigation\"]",
+                "label": "\u2713 \u5df2\u7f6e\u9876 \u2014 \u6253\u5f00\u8c03\u67e5\uff081\uff09",
+                "y": 135
+              }
+            ],
+            "crop": {
+              "x": 39,
+              "y": 2229,
+              "width": 312,
+              "height": 203
+            },
+            "source_html_sha256": "b7e976f193fdef7bedeaa97f72d8d74f54ef9ec7586a07e0112697c8da9a5390"
+          },
+          "desktop": {
+            "src": "/media/guide/collect-records-and-export-them/zh-Hans/pin-confirmation-desktop.png",
+            "width": 878,
+            "height": 99,
+            "captured_at": "2026-09-08T17:38:03.516442+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/notices/20231222103?lang=zh-Hans",
+            "sha256": "6c0cd1727567d04ba42db5397ef3df005c7cc8b855706212045d7715331bfc13",
+            "redactions": [],
+            "data_vintage": "Disposable browser collection; no account or remote save",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-guide-crop=\"pin-actions\"] a[href=\"#investigation\"]",
+                "label": "\u2713 \u5df2\u7f6e\u9876 \u2014 \u6253\u5f00\u8c03\u67e5\uff081\uff09",
+                "y": 30
+              }
+            ],
+            "crop": {
+              "x": 297,
+              "y": 1565,
+              "width": 846,
+              "height": 99
+            },
+            "source_html_sha256": "1907f059fb8eacd144dbc6d2a3aa1f3081d26aab208177e6a0ce248239049915"
+          }
+        },
+        "ar": {
+          "locale": "ar",
+          "caption": "1. The pinned confirmation gives the item count and opens your investigation.",
+          "alt": "Pinned confirmation link in the same record action row.",
+          "mobile": {
+            "src": "/media/guide/collect-records-and-export-them/ar/pin-confirmation-mobile.png",
+            "width": 344,
+            "height": 207,
+            "captured_at": "2026-09-08T18:06:21.197588+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/notices/20231222103?lang=ar",
+            "sha256": "b476443044cbcfb989bd2c73a65af38fbfea65d95db59ed756481f84378c5e52",
+            "redactions": [],
+            "data_vintage": "Disposable browser collection; no account or remote save",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-guide-crop=\"pin-actions\"] a[href=\"#investigation\"]",
+                "label": "\u2713 \u0645\u062b\u0628\u0651\u062a \u2014 \u0641\u062a\u062d \u0627\u0644\u062a\u062d\u0642\u064a\u0642 (1)",
+                "y": 135
+              }
+            ],
+            "crop": {
+              "x": 39,
+              "y": 2294,
+              "width": 312,
+              "height": 207
+            },
+            "source_html_sha256": "927e88684b184e3898eca469b6f91477ea7766c9238451dc3506de642db41fdb"
+          },
+          "desktop": {
+            "src": "/media/guide/collect-records-and-export-them/ar/pin-confirmation-desktop.png",
+            "width": 878,
+            "height": 104,
+            "captured_at": "2026-09-08T18:06:32.336721+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/notices/20231222103?lang=ar",
+            "sha256": "625a59d7bdaa23563cc16a8263c9df36b1bfcb5ebf45c1f13a3820f3186774ca",
+            "redactions": [],
+            "data_vintage": "Disposable browser collection; no account or remote save",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-guide-crop=\"pin-actions\"] a[href=\"#investigation\"]",
+                "label": "\u2713 \u0645\u062b\u0628\u0651\u062a \u2014 \u0641\u062a\u062d \u0627\u0644\u062a\u062d\u0642\u064a\u0642 (1)",
+                "y": 31
+              }
+            ],
+            "crop": {
+              "x": 297,
+              "y": 1576,
+              "width": 846,
+              "height": 104
+            },
+            "source_html_sha256": "927e88684b184e3898eca469b6f91477ea7766c9238451dc3506de642db41fdb"
+          }
+        }
       }
     },
     "notes-and-exports": {
       "locale": "en",
-      "caption": "1. Export .csv or Export .json saves a fixed copy. 2. Add a note under a pinned record; click outside it to save.",
+      "caption": "1. Export .csv or Export .json saves a fixed copy. 2. Add a note under a pinned record. Click outside it to save.",
       "alt": "Investigation workspace with file exports above a pinned award and a disposable example note.",
       "mobile": {
         "src": "/media/guide/collect-records-and-export-them/notes-and-exports-mobile.png",
@@ -206,6 +600,239 @@
           "height": 275
         },
         "source_html_sha256": "5ea52de91c8dc3ff996d191c0a28a517bd93c99ee3cd5279da8f5aa580e383d8"
+      },
+      "locales": {
+        "es": {
+          "locale": "es",
+          "caption": "1. Export .csv or Export .json saves a fixed copy. 2. Add a note under a pinned record. Click outside it to save.",
+          "alt": "Investigation workspace with file exports above a pinned award and a disposable example note.",
+          "mobile": {
+            "src": "/media/guide/collect-records-and-export-them/es/notes-and-exports-mobile.png",
+            "width": 344,
+            "height": 652,
+            "captured_at": "2026-09-08T17:34:49.117072+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/#investigation",
+            "sha256": "190467e4c616ae34d1866bf30c24f9e8ade37ed8a7a34eba456342bf6923c658",
+            "redactions": [],
+            "data_vintage": "Disposable local collection and authored example note; no sharing request sent",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#invcsv",
+                "label": "Export .csv",
+                "y": 569
+              },
+              {
+                "number": 2,
+                "selector": "#invitems .invnote",
+                "label": "Note for this pinned item",
+                "y": 175
+              }
+            ],
+            "crop": {
+              "x": 39,
+              "y": 1430,
+              "width": 312,
+              "height": 652
+            },
+            "source_html_sha256": "9c31468c87acfca886f49ad0611138da0b02fa70dcc0d015f7771c9e8c9da1f5"
+          },
+          "desktop": {
+            "src": "/media/guide/collect-records-and-export-them/es/notes-and-exports-desktop.png",
+            "width": 878,
+            "height": 275,
+            "captured_at": "2026-09-08T17:35:06.327075+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/#investigation",
+            "sha256": "12a99204ed79ee021b690c4328a9b11db2c1bce2f17bd013598d2b418f23f2f8",
+            "redactions": [],
+            "data_vintage": "Disposable local collection and authored example note; no sharing request sent",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#invcsv",
+                "label": "Export .csv",
+                "y": 249
+              },
+              {
+                "number": 2,
+                "selector": "#invitems .invnote",
+                "label": "Note for this pinned item",
+                "y": 83
+              }
+            ],
+            "crop": {
+              "x": 297,
+              "y": 1038,
+              "width": 846,
+              "height": 275
+            },
+            "source_html_sha256": "9c31468c87acfca886f49ad0611138da0b02fa70dcc0d015f7771c9e8c9da1f5"
+          }
+        },
+        "zh-Hans": {
+          "locale": "zh-Hans",
+          "caption": "1. Export .csv or Export .json saves a fixed copy. 2. Add a note under a pinned record. Click outside it to save.",
+          "alt": "Investigation workspace with file exports above a pinned award and a disposable example note.",
+          "mobile": {
+            "src": "/media/guide/collect-records-and-export-them/zh-Hans/notes-and-exports-mobile.png",
+            "width": 344,
+            "height": 624,
+            "captured_at": "2026-09-08T17:38:01.750177+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/#investigation",
+            "sha256": "caff5bb51e853e182bf8cbcd8e23921a88c8e83f36477c1f24b77969733c11db",
+            "redactions": [],
+            "data_vintage": "Disposable local collection and authored example note; no sharing request sent",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#invcsv",
+                "label": "\u5bfc\u51fa .csv",
+                "y": 594
+              },
+              {
+                "number": 2,
+                "selector": "#invitems .invnote",
+                "label": "\u6b64\u56fa\u5b9a\u9879\u7684\u5907\u6ce8",
+                "y": 190
+              }
+            ],
+            "crop": {
+              "x": 39,
+              "y": 1393,
+              "width": 312,
+              "height": 624
+            },
+            "source_html_sha256": "2030d02b3a00c7c7885e39dbf85ce64df829b4d754089d8bcb634512aa0bf33d"
+          },
+          "desktop": {
+            "src": "/media/guide/collect-records-and-export-them/zh-Hans/notes-and-exports-desktop.png",
+            "width": 878,
+            "height": 309,
+            "captured_at": "2026-09-08T17:38:16.582431+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/#investigation",
+            "sha256": "4589aca3db907f2f4264d560c56435f62d0e618d31498771d7fa0ef37f9e764b",
+            "redactions": [],
+            "data_vintage": "Disposable local collection and authored example note; no sharing request sent",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#invcsv",
+                "label": "\u5bfc\u51fa .csv",
+                "y": 283
+              },
+              {
+                "number": 2,
+                "selector": "#invitems .invnote",
+                "label": "\u6b64\u56fa\u5b9a\u9879\u7684\u5907\u6ce8",
+                "y": 111
+              }
+            ],
+            "crop": {
+              "x": 297,
+              "y": 1042,
+              "width": 846,
+              "height": 309
+            },
+            "source_html_sha256": "2030d02b3a00c7c7885e39dbf85ce64df829b4d754089d8bcb634512aa0bf33d"
+          }
+        },
+        "ar": {
+          "locale": "ar",
+          "caption": "1. Export .csv or Export .json saves a fixed copy. 2. Add a note under a pinned record. Click outside it to save.",
+          "alt": "Investigation workspace with file exports above a pinned award and a disposable example note.",
+          "mobile": {
+            "src": "/media/guide/collect-records-and-export-them/ar/notes-and-exports-mobile.png",
+            "width": 344,
+            "height": 701,
+            "captured_at": "2026-09-08T18:06:28.868422+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/#investigation",
+            "sha256": "e7178d92c6ee9ef29fda670e0cd936a1868520556b1b843123c33606bb180e5f",
+            "redactions": [],
+            "data_vintage": "Disposable local collection and authored example note; no sharing request sent",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#invcsv",
+                "label": "\u062a\u0635\u062f\u064a\u0631 .csv",
+                "y": 618
+              },
+              {
+                "number": 2,
+                "selector": "#invitems .invnote",
+                "label": "\u0645\u0644\u0627\u062d\u0638\u0629 \u0644\u0647\u0630\u0627 \u0627\u0644\u0639\u0646\u0635\u0631 \u0627\u0644\u0645\u062b\u0628\u0651\u062a",
+                "y": 206
+              }
+            ],
+            "crop": {
+              "x": 39,
+              "y": 1470,
+              "width": 312,
+              "height": 701
+            },
+            "source_html_sha256": "ec0bf91c8745d213410cef2e40a0035f986d8f3b2df1f5d9fcb284c627deb88c"
+          },
+          "desktop": {
+            "src": "/media/guide/collect-records-and-export-them/ar/notes-and-exports-desktop.png",
+            "width": 878,
+            "height": 298,
+            "captured_at": "2026-09-08T18:06:45.440107+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/#investigation",
+            "sha256": "c0d073c316e11c6d3b0e4d945cd06532a9db7aabb3b09a2db2707e9386c3433f",
+            "redactions": [],
+            "data_vintage": "Disposable local collection and authored example note; no sharing request sent",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#invcsv",
+                "label": "\u062a\u0635\u062f\u064a\u0631 .csv",
+                "y": 272
+              },
+              {
+                "number": 2,
+                "selector": "#invitems .invnote",
+                "label": "\u0645\u0644\u0627\u062d\u0638\u0629 \u0644\u0647\u0630\u0627 \u0627\u0644\u0639\u0646\u0635\u0631 \u0627\u0644\u0645\u062b\u0628\u0651\u062a",
+                "y": 94
+              }
+            ],
+            "crop": {
+              "x": 297,
+              "y": 1059,
+              "width": 846,
+              "height": 298
+            },
+            "source_html_sha256": "ec0bf91c8745d213410cef2e40a0035f986d8f3b2df1f5d9fcb284c627deb88c"
+          }
+        }
       }
     }
   }

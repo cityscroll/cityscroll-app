@@ -64,6 +64,203 @@
           "height": 75
         },
         "source_html_sha256": "69f29bb7dd67025921ca8b68706e3a270a024d6881eee69bd1a5e5ce458fb00a"
+      },
+      "locales": {
+        "es": {
+          "locale": "es",
+          "caption": "1. Subscribe to calendar sits in the list toolbar above the meeting records.",
+          "alt": "Meetings list toolbar, including the Subscribe to calendar control.",
+          "mobile": {
+            "src": "/media/guide/put-dates-in-your-calendar/es/calendar-toolbar-mobile.png",
+            "width": 394,
+            "height": 167,
+            "captured_at": "2026-09-08T17:53:52.227350+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/browse/meetings/?lang=es",
+            "sha256": "11f4ab77648a070c4fe70d23b2e176891784994016f268ef97b4a0718ba0d1e4",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#meetings-toolbar [data-calendar-subscription=\"scope\"]",
+                "label": "Suscribirse al calendario",
+                "y": 145
+              }
+            ],
+            "crop": {
+              "x": 14,
+              "y": 1566,
+              "width": 362,
+              "height": 167
+            },
+            "source_html_sha256": "85681709576d75d1f2bc2a5a535090797fe59b3d30d447f00fdc00d0e50ff681"
+          },
+          "desktop": {
+            "src": "/media/guide/put-dates-in-your-calendar/es/calendar-toolbar-desktop.png",
+            "width": 1124,
+            "height": 75,
+            "captured_at": "2026-09-08T17:53:54.146312+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/browse/meetings/?lang=es",
+            "sha256": "8556acd72c0490a04e96a4e50997de41e72b29845a683413e783b39832d9e835",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#meetings-toolbar [data-calendar-subscription=\"scope\"]",
+                "label": "Suscribirse al calendario",
+                "y": 53
+              }
+            ],
+            "crop": {
+              "x": 174,
+              "y": 1165,
+              "width": 1092,
+              "height": 75
+            },
+            "source_html_sha256": "85681709576d75d1f2bc2a5a535090797fe59b3d30d447f00fdc00d0e50ff681"
+          }
+        },
+        "zh-Hans": {
+          "locale": "zh-Hans",
+          "caption": "1. Subscribe to calendar sits in the list toolbar above the meeting records.",
+          "alt": "Meetings list toolbar, including the Subscribe to calendar control.",
+          "mobile": {
+            "src": "/media/guide/put-dates-in-your-calendar/zh-Hans/calendar-toolbar-mobile.png",
+            "width": 394,
+            "height": 133,
+            "captured_at": "2026-09-08T18:07:31.498528+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/browse/meetings/?lang=zh-Hans",
+            "sha256": "6cada12c481431c9d6de3e427e57642b8414d98fc5579835bb2642fb31d21127",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#meetings-toolbar [data-calendar-subscription=\"scope\"]",
+                "label": "\u8ba2\u9605\u65e5\u5386",
+                "y": 109
+              }
+            ],
+            "crop": {
+              "x": 14,
+              "y": 1481,
+              "width": 362,
+              "height": 133
+            },
+            "source_html_sha256": "a2e9f123b617405a45a8b0c44b943b61e81926b9a71f859655f19134a1ca83b1"
+          },
+          "desktop": {
+            "src": "/media/guide/put-dates-in-your-calendar/zh-Hans/calendar-toolbar-desktop.png",
+            "width": 1124,
+            "height": 74,
+            "captured_at": "2026-09-08T18:07:33.494759+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/browse/meetings/?lang=zh-Hans",
+            "sha256": "f8c4e384ea313dcdb5b1a085ab443b2699256a4f72784e731f5cf47e4a885954",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#meetings-toolbar [data-calendar-subscription=\"scope\"]",
+                "label": "\u8ba2\u9605\u65e5\u5386",
+                "y": 51
+              }
+            ],
+            "crop": {
+              "x": 174,
+              "y": 1067,
+              "width": 1092,
+              "height": 74
+            },
+            "source_html_sha256": "a2e9f123b617405a45a8b0c44b943b61e81926b9a71f859655f19134a1ca83b1"
+          }
+        },
+        "ar": {
+          "locale": "ar",
+          "caption": "1. Subscribe to calendar sits in the list toolbar above the meeting records.",
+          "alt": "Meetings list toolbar, including the Subscribe to calendar control.",
+          "mobile": {
+            "src": "/media/guide/put-dates-in-your-calendar/ar/calendar-toolbar-mobile.png",
+            "width": 394,
+            "height": 175,
+            "captured_at": "2026-09-08T18:06:14.135425+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/browse/meetings/?lang=ar",
+            "sha256": "c4f4f32a27c9da148e19fbd645454cd514d09f490a97eb2cdb9ff7fdadd3eb6a",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#meetings-toolbar [data-calendar-subscription=\"scope\"]",
+                "label": "\u0627\u0644\u0627\u0634\u062a\u0631\u0627\u0643 \u0641\u064a \u0627\u0644\u062a\u0642\u0648\u064a\u0645",
+                "y": 150
+              }
+            ],
+            "crop": {
+              "x": 158,
+              "y": 1513,
+              "width": 362,
+              "height": 175
+            },
+            "source_html_sha256": "a09149ada4a16b493b63469b70142d0cbbb052d8a20c2e30163e0a346ae1e5ee"
+          },
+          "desktop": {
+            "src": "/media/guide/put-dates-in-your-calendar/ar/calendar-toolbar-desktop.png",
+            "width": 1124,
+            "height": 74,
+            "captured_at": "2026-09-08T18:06:16.222917+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/browse/meetings/?lang=ar",
+            "sha256": "dd7eda6ea387f0159e5f1efec6890cae19600699b9356db667af2c5c1adbe2d3",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#meetings-toolbar [data-calendar-subscription=\"scope\"]",
+                "label": "\u0627\u0644\u0627\u0634\u062a\u0631\u0627\u0643 \u0641\u064a \u0627\u0644\u062a\u0642\u0648\u064a\u0645",
+                "y": 49
+              }
+            ],
+            "crop": {
+              "x": 174,
+              "y": 1077,
+              "width": 1092,
+              "height": 74
+            },
+            "source_html_sha256": "a09149ada4a16b493b63469b70142d0cbbb052d8a20c2e30163e0a346ae1e5ee"
+          }
+        }
       }
     },
     "calendar-options": {
@@ -141,6 +338,239 @@
           "height": 644
         },
         "source_html_sha256": "70cd27ae24a1a16d3baa0543d49139cbe595dc39442b0965c0d5b6ed1e7c245f"
+      },
+      "locales": {
+        "es": {
+          "locale": "es",
+          "caption": "1. Open calendar subscription opens your calendar app. 2. Copy subscription URL is for apps that ask for a web address.",
+          "alt": "Calendar subscription panel naming Meetings and showing the open and copy options.",
+          "mobile": {
+            "src": "/media/guide/put-dates-in-your-calendar/es/calendar-options-mobile.png",
+            "width": 414,
+            "height": 836,
+            "captured_at": "2026-09-08T17:53:52.630850+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/browse/meetings/?lang=es",
+            "sha256": "ff3c187f87ffab1627d4b76281352d914aa894e8797866f03fb6f6e09844aa84",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-calendar-subscription-dialog][open] a[href^=\"webcal:\"]",
+                "label": "Abrir suscripci\u00f3n al calendario",
+                "y": 171
+              },
+              {
+                "number": 2,
+                "selector": "[data-calendar-subscription-dialog][open] [data-calendar-subscription-copy]",
+                "label": "Copiar URL de suscripci\u00f3n",
+                "y": 223
+              }
+            ],
+            "crop": {
+              "x": 4,
+              "y": 1232,
+              "width": 382,
+              "height": 836
+            },
+            "source_html_sha256": "76f2d046ad7e8bc297577bd92d7b05ce2a71ef0284373191099d79704cf99376"
+          },
+          "desktop": {
+            "src": "/media/guide/put-dates-in-your-calendar/es/calendar-options-desktop.png",
+            "width": 628,
+            "height": 644,
+            "captured_at": "2026-09-08T17:53:54.584152+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/browse/meetings/?lang=es",
+            "sha256": "0accf7caf5859ee670798309d4632455a45a0bf877c762b8b14491085e08e504",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-calendar-subscription-dialog][open] a[href^=\"webcal:\"]",
+                "label": "Abrir suscripci\u00f3n al calendario",
+                "y": 172
+              },
+              {
+                "number": 2,
+                "selector": "[data-calendar-subscription-dialog][open] [data-calendar-subscription-copy]",
+                "label": "Copiar URL de suscripci\u00f3n",
+                "y": 172
+              }
+            ],
+            "crop": {
+              "x": 422,
+              "y": 881,
+              "width": 596,
+              "height": 644
+            },
+            "source_html_sha256": "76f2d046ad7e8bc297577bd92d7b05ce2a71ef0284373191099d79704cf99376"
+          }
+        },
+        "zh-Hans": {
+          "locale": "zh-Hans",
+          "caption": "1. Open calendar subscription opens your calendar app. 2. Copy subscription URL is for apps that ask for a web address.",
+          "alt": "Calendar subscription panel naming Meetings and showing the open and copy options.",
+          "mobile": {
+            "src": "/media/guide/put-dates-in-your-calendar/zh-Hans/calendar-options-mobile.png",
+            "width": 414,
+            "height": 808,
+            "captured_at": "2026-09-08T18:07:31.911809+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/browse/meetings/?lang=zh-Hans",
+            "sha256": "67f822d6ae87b4c306890290312fc73c912f1c0e39491b9f9095cafda8ea62f7",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-calendar-subscription-dialog][open] a[href^=\"webcal:\"]",
+                "label": "\u6253\u5f00\u65e5\u5386\u8ba2\u9605",
+                "y": 171
+              },
+              {
+                "number": 2,
+                "selector": "[data-calendar-subscription-dialog][open] [data-calendar-subscription-copy]",
+                "label": "\u590d\u5236\u8ba2\u9605\u7f51\u5740",
+                "y": 171
+              }
+            ],
+            "crop": {
+              "x": 4,
+              "y": 1143,
+              "width": 382,
+              "height": 808
+            },
+            "source_html_sha256": "bfda7f2922ed8235e499f38e20832d1100a20fb874f68a67a4b5dc5d83e174a5"
+          },
+          "desktop": {
+            "src": "/media/guide/put-dates-in-your-calendar/zh-Hans/calendar-options-desktop.png",
+            "width": 628,
+            "height": 628,
+            "captured_at": "2026-09-08T18:07:33.958920+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/browse/meetings/?lang=zh-Hans",
+            "sha256": "01c82e0708982c94de98d8b2b1a744f813cd46093c4adea3a245fe03de16160e",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-calendar-subscription-dialog][open] a[href^=\"webcal:\"]",
+                "label": "\u6253\u5f00\u65e5\u5386\u8ba2\u9605",
+                "y": 172
+              },
+              {
+                "number": 2,
+                "selector": "[data-calendar-subscription-dialog][open] [data-calendar-subscription-copy]",
+                "label": "\u590d\u5236\u8ba2\u9605\u7f51\u5740",
+                "y": 172
+              }
+            ],
+            "crop": {
+              "x": 422,
+              "y": 790,
+              "width": 596,
+              "height": 628
+            },
+            "source_html_sha256": "bfda7f2922ed8235e499f38e20832d1100a20fb874f68a67a4b5dc5d83e174a5"
+          }
+        },
+        "ar": {
+          "locale": "ar",
+          "caption": "1. Open calendar subscription opens your calendar app. 2. Copy subscription URL is for apps that ask for a web address.",
+          "alt": "Calendar subscription panel naming Meetings and showing the open and copy options.",
+          "mobile": {
+            "src": "/media/guide/put-dates-in-your-calendar/ar/calendar-options-mobile.png",
+            "width": 414,
+            "height": 836,
+            "captured_at": "2026-09-08T18:06:14.547992+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/browse/meetings/?lang=ar",
+            "sha256": "eaf23fc7db0276882a02951ac544100f914a55c28940156b601148de13a67f44",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-calendar-subscription-dialog][open] a[href^=\"webcal:\"]",
+                "label": "\u0641\u062a\u062d \u0627\u0634\u062a\u0631\u0627\u0643 \u0627\u0644\u062a\u0642\u0648\u064a\u0645",
+                "y": 171
+              },
+              {
+                "number": 2,
+                "selector": "[data-calendar-subscription-dialog][open] [data-calendar-subscription-copy]",
+                "label": "\u0646\u0633\u062e \u0639\u0646\u0648\u0627\u0646 URL \u0644\u0644\u0627\u0634\u062a\u0631\u0627\u0643",
+                "y": 171
+              }
+            ],
+            "crop": {
+              "x": 148,
+              "y": 1183,
+              "width": 382,
+              "height": 836
+            },
+            "source_html_sha256": "040714a7b6854af0b09841c3b0f948a9fb02b61e8cccef38bd47042bd992a56e"
+          },
+          "desktop": {
+            "src": "/media/guide/put-dates-in-your-calendar/ar/calendar-options-desktop.png",
+            "width": 628,
+            "height": 670,
+            "captured_at": "2026-09-08T18:06:16.667794+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/browse/meetings/?lang=ar",
+            "sha256": "75eb89f0ecfe7259056cb1242ae439ac20d1400650dc4874871195a2dd2c84e0",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-calendar-subscription-dialog][open] a[href^=\"webcal:\"]",
+                "label": "\u0641\u062a\u062d \u0627\u0634\u062a\u0631\u0627\u0643 \u0627\u0644\u062a\u0642\u0648\u064a\u0645",
+                "y": 171
+              },
+              {
+                "number": 2,
+                "selector": "[data-calendar-subscription-dialog][open] [data-calendar-subscription-copy]",
+                "label": "\u0646\u0633\u062e \u0639\u0646\u0648\u0627\u0646 URL \u0644\u0644\u0627\u0634\u062a\u0631\u0627\u0643",
+                "y": 171
+              }
+            ],
+            "crop": {
+              "x": 422,
+              "y": 779,
+              "width": 596,
+              "height": 670
+            },
+            "source_html_sha256": "040714a7b6854af0b09841c3b0f948a9fb02b61e8cccef38bd47042bd992a56e"
+          }
+        }
       }
     }
   }

@@ -20,8 +20,7 @@ sources:
 
 ## Step 1 — Apply a day
 
-Open [Parks and Recreation](/agencies/parks-and-recreation/#ctl-heading) with JavaScript switched on;
-no account is needed. In the **As of day** panel, enter **1 June 2024** in **As of** and press
+Open [Parks and Recreation](/agencies/parks-and-recreation/#ctl-heading) with JavaScript switched on. No account is needed. In the **As of day** panel, enter **1 June 2024** in **As of** and press
 **Apply**. The date stays selected and the summary counts records dated on or before it.
 The [Parks example link](/agencies/parks-and-recreation/?as_of=2024-06-01) opens the same filtered view.
 
@@ -33,7 +32,7 @@ of what CityScroll knew that day. Undated records are excluded because they cann
 ## Step 2 — Inspect what was set aside
 
 Under the count, open **Later records**. These records have dates after your chosen day.
-Compare the retained and later counts; their values can change as records are added or corrected.
+Compare the retained and later counts. Their values can change as records are added or corrected.
 An empty retained set means no dated records currently linked here meet the cutoff, not that the
 agency did nothing then.
 

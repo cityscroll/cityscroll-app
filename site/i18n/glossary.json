@@ -168,6 +168,12 @@
       "ar": "الإسكان الشامل الإلزامي (MIH)",
       "ur": "لازمی جامع رہائش (MIH)",
       "source": "no official City translation found for the non-es shipping languages — mirrored es's pattern of a descriptive translation plus the (MIH) acronym parenthetical."
+    },
+    "tax_lien": {
+      "en": "Tax lien",
+      "ht": "Privilèj taks",
+      "source": "https://www.nyc.gov/assets/finance/downloads/pdf/lien_sale/generic-90-day-notice_haitian-creole.pdf",
+      "note": "The Department of Finance calls the legal claim a privilèj, including claims for unpaid property taxes. Use privilèj taks for the guide’s tax-specific description; source quotations retain their wording."
     }
   }
 }

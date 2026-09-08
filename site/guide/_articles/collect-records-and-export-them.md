@@ -36,14 +36,13 @@ Check that both records appear under **Investigation workspace · stored only in
 No account is needed. Under a record, type in **add a note…**, then click outside the field to save.
 Reload and check that the note remains.
 
-In an ordinary signed-out visit, the collection stays in this browser; clearing its site data
+In an ordinary signed-out visit, the collection stays in this browser. Clearing its site data
 removes it. A session recognized through a CityScroll email can keep pins across devices.
 
 ## Step 3 — Export a copy
 
 Below the items, choose **Export .csv** for a spreadsheet or **Export .json** for structured data.
-Open the downloaded file and check the records, notes and links. Both files are fixed copies;
-they do not update. **Print dossier** opens the browser's print window to print or save a PDF.
+Open the downloaded file and check the records, notes and links. Both files are fixed copies. They do not update. **Print dossier** opens the browser's print window to print or save a PDF.
 
 ::: figure notes-and-exports
 
@@ -59,7 +58,7 @@ without editing controls. A recipient can import a copy into their own investiga
 ## When an action is unavailable
 
 If sharing reports a server failure, keep the local list and use **Export .csv** or **Export .json**.
-**Freeze research package** requires a supported comparison; for ordinary pinned records use those exports.
+**Freeze research package** requires a supported comparison. For ordinary pinned records use those exports.
 
 Choosing **Clear all** empties the local investigation immediately without confirmation. Use it only when
 ready to remove that list. Existing exported files and shared snapshots remain.

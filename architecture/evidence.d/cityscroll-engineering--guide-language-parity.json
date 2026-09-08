@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/guide-language-parity",
+  "status": "implemented",
+  "fingerprint": "guide-language-parity.v1",
+  "updated_at": "2026-09-08T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "guide-language-catalog",
+      "path": "tools/guide_translation_catalog.mjs"
+    },
+    {
+      "id": "guide-language-import",
+      "path": "tools/import_guide_translations.mjs"
+    },
+    {
+      "id": "guide-document-builder",
+      "path": "tools/build_guide_documents.mjs"
+    },
+    {
+      "id": "guide-navigation",
+      "path": "site/guide_navigation.mjs"
+    },
+    {
+      "id": "guide-language-coverage",
+      "path": "docs/evidence/guide-language/coverage.json"
+    },
+    {
+      "id": "guide-language-rendered",
+      "path": "docs/evidence/guide-language/rendered.json"
+    },
+    {
+      "id": "guide-language-browser-checks",
+      "path": "tools/capture_guide_languages.py"
+    }
+  ]
+}

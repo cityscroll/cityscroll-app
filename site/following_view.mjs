@@ -602,7 +602,7 @@ export function followingWatchIdentityHtml(context, {
     }</p>`
     : "";
   return `<section class="following-watch-identity${className ? ` ${esc(className)}` : ""}" data-following-watch-identity${institution?.canonical_id ? ` data-institution-id="${esc(institution.canonical_id)}"` : ""}>
-    <p class="following-kicker">Watch summary</p><${headingTag}>${esc(heading)}</${headingTag}>
+    <p class="following-kicker" data-i18n="following_watch_summary">Watch summary</p><${headingTag}>${esc(heading)}</${headingTag}>
     <p class="following-identity-rule" aria-live="polite" role="status" aria-atomic="true" data-following-identity-rule>${escText(context.ruleSentence)}</p>
     ${scope}
     ${correction}
@@ -888,6 +888,7 @@ function scopeLinkChip(href, label, { active = false, axis = "", value = "" } = 
     className: `following-scope-link${active ? " on" : ""}`,
     attributes: {
       "data-following-scope-axis": axis,
+      ...(axis === "topic" && value === "meetings" ? { "data-i18n": "quiz_meetings" } : {}),
       "data-following-scope-value": value,
       "data-scope-edge": `following.${axis}.${value || "all"}`,
       "data-filter-href": href,
@@ -922,7 +923,7 @@ function topicPlacePickersHtml(view) {
   ].join("");
   return `<div class="following-scope-pickers" data-following-primary-start>
     <section class="following-scope-block">
-      <p class="following-scope-title">What do you want to follow?</p>
+      <p class="following-scope-title" data-i18n="following_choose_topic">What do you want to follow?</p>
       <div class="following-scope-rail" role="group" aria-label="Topic">
         <p class="following-scope-rail-label">Topic</p>
         <div class="following-scope-links" data-following-topic-scope>
@@ -961,7 +962,7 @@ function scopeHtml(view) {
     ? ""
     : `<p class="following-scope-count" data-scope-count="${esc(String(count))}">${esc(String(count))} matching records</p>`;
   return `<section class="following-scope" data-following-scope-panel aria-labelledby="following-scope-heading">
-    <h2 id="following-scope-heading">Watch criteria</h2>
+    <h2 id="following-scope-heading" data-i18n="following_watch_criteria">Watch criteria</h2>
     <ul class="following-scope-chips" aria-label="Watch criteria">${chips}</ul>
     ${countLine}
   </section>`;
@@ -1024,16 +1025,16 @@ function cadenceCardsHtml(view, { name = "freq", form = "preview" } = {}) {
   const dailyOn = view.frequency !== "weekly";
   const weeklyOn = view.frequency === "weekly";
   return `<fieldset class="following-cadence" data-following-cadence>
-    <legend>Email frequency</legend>
+    <legend data-i18n="following_email_frequency">Email frequency</legend>
     <div class="following-cadence-cards">
       <label class="following-cadence-card${dailyOn ? " is-selected" : ""}">
         <input type="radio" name="${esc(name)}" value="daily"${dailyOn ? " checked" : ""} data-following-freq="daily">
-        <span class="following-cadence-title">Daily</span>
+        <span class="following-cadence-title" data-i18n="freq_daily">Daily</span>
         <span class="following-cadence-copy">Daily when there are matches.</span>
       </label>
       <label class="following-cadence-card${weeklyOn ? " is-selected" : ""}">
         <input type="radio" name="${esc(name)}" value="weekly"${weeklyOn ? " checked" : ""} data-following-freq="weekly">
-        <span class="following-cadence-title">Weekly</span>
+        <span class="following-cadence-title" data-i18n="freq_weekly">Weekly</span>
         <span class="following-cadence-copy">Weekly digest.</span>
       </label>
     </div>
@@ -1049,14 +1050,14 @@ function subscribeHtml(view) {
   }
   if (!view.requested) return "";
   return `<section class="following-subscribe" data-following-subscribe-panel aria-labelledby="following-subscribe-heading">
-    <p class="following-kicker">Delivery</p><h2 id="following-subscribe-heading">Create this watch</h2>
+    <p class="following-kicker">Delivery</p><h2 id="following-subscribe-heading" data-i18n="following_create_heading">Create this watch</h2>
     <form method="post" action="${API_BASE}/subscribe" data-following-subscribe-form>
       <input type="hidden" name="lens" value="${esc(view.lens)}">
       <input type="hidden" name="filter" value="${esc(JSON.stringify(view.filter))}">
       <input type="hidden" name="freq" value="${esc(view.frequency)}" data-following-subscribe-freq>
       <input type="hidden" name="lang" value="en">
-      <label>Email address<input type="email" name="email" required autocomplete="email" inputmode="email" aria-describedby="following-delivery-help"></label>
-      <button type="submit" data-following-subscribe-submit>Create watch</button>
+      <label><span data-i18n="email_label">Email address</span><input type="email" name="email" required autocomplete="email" inputmode="email" aria-describedby="following-delivery-help"></label>
+      <button type="submit" data-following-subscribe-submit data-i18n="following_create_button">Create watch</button>
       <p id="following-delivery-help" class="following-note" data-following-delivery-help>
         Daily sends when there are matches. Weekly digest sends Monday.
       </p>
@@ -1165,7 +1166,7 @@ function controlsHtml(view) {
         : "Next: preview matching records. Choosing a topic or place does not start a watch."
     }</p>
     ${exactMatter ? "" : `<details class="following-refinements"${refinementsOpen}>
-      <summary>Narrow it down</summary>
+      <summary data-i18n="following_refine">Narrow it down</summary>
       <div class="following-refinement-grid">
         <label>Keyword<input name="q" value="${esc(query)}" placeholder="housing, school buses, curb…" data-following-refine="keywords"></label>
         <label>Agency<input name="agency" value="${esc(view.filter.agency || "")}" placeholder="Any agency" data-following-refine="agency"></label>
@@ -1175,9 +1176,9 @@ function controlsHtml(view) {
         </div>
         <div data-following-community-board-field${boardFieldHidden}>
           <fieldset class="following-community-board-picker">
-            <legend>Community Board</legend>
-            <label>Borough<select name="boardBorough" data-following-refine="board-borough">${boardBoroughOptions}</select></label>
-            <label>Board number<select name="boardNumber" data-following-refine="board-number">${boardNumberOptions}</select></label>
+            <legend data-i18n="community_board_pick_label">Community Board</legend>
+            <label><span data-i18n="borough_label">Borough</span><select name="boardBorough" data-following-refine="board-borough">${boardBoroughOptions}</select></label>
+            <label><span data-i18n="following_board_number">Board number</span><select name="boardNumber" data-following-refine="board-number">${boardNumberOptions}</select></label>
           </fieldset>
           <p id="following-community-board-help">Choose a borough and board (1–18). We’ll email its meetings.</p>
         </div>
@@ -1185,7 +1186,7 @@ function controlsHtml(view) {
     </details>`}
     ${view.requested ? cadenceCardsHtml(view) : ""}
     <div class="following-form-actions">
-      <button type="submit" class="following-form-action-preview" data-following-primary-choice="preview" aria-label="${view.requested ? "Update matches" : "Preview matches"} before saving">${view.requested ? "Update matches" : "Preview matches"}</button>
+      <button type="submit" class="following-form-action-preview" data-following-primary-choice="preview" data-i18n="${view.requested ? "following_update_matches" : "following_preview_matches"}" data-i18n-aria="${view.requested ? "following_update_matches" : "following_preview_matches"}" aria-label="${view.requested ? "Update matches" : "Preview matches"} before saving">${view.requested ? "Update matches" : "Preview matches"}</button>
     </div>
     <p data-following-preview-status role="status" aria-live="polite"></p>
   </form>
@@ -1265,7 +1266,7 @@ export function renderFollowingBody(view) {
     ${view.noticeId ? `data-following-focus-kind="notice" data-following-focus-id="${esc(view.noticeId)}"` : view.projectId ? `data-following-focus-kind="project" data-following-focus-id="${esc(view.projectId)}"` : ""}
     ${view.originRoute ? `data-following-origin="${esc(view.originRoute)}"` : ""}>
     <section class="following-hero">
-      <h1>Following</h1>
+      <h1 data-i18n="tab_alerts">Following</h1>
       ${view.requested ? "" : `<p class="following-hero-lead">Choose a topic and a place. Preview matching records, then save that watch with your email.</p>`}
       ${renderGuideHelpLink("following")}
     </section>
@@ -1285,7 +1286,8 @@ export function renderFollowingDocument(view, options = {}) {
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Following · CityScroll</title><meta name="description" content="Preview, create, and manage CityScroll watches and City Council District updates.">
-<link rel="canonical" href="https://cityscroll.org/following/">${renderCivicDocumentAssets(assetPrefix)}</head>
+<link rel="canonical" href="https://cityscroll.org/following/">${renderCivicDocumentAssets(assetPrefix)}
+<script src="${esc(prefix)}i18n.js?v=__I18N_ASSET_VERSION__"></script></head>
 <body><a class="skip" href="#main">Skip to content</a>
 ${renderCivicDocumentMast({ current: "following", siteBase, surfaceClass: "following-mast" })}
 ${renderFollowingBody(view)}

@@ -1,3 +1,4 @@
+import { SELECTABLE_LANGS } from "../site/route_migration.mjs";
 import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -56,7 +57,8 @@ test("masthead brand inventory: every public brand lockup is a home link", () =>
     for (const anchor of brandLockupAnchors(html)) {
       lockups += 1;
       assert.ok(
-        anchor.href && HOME_HREFS.has(anchor.href),
+        anchor.href && (HOME_HREFS.has(anchor.href) ||
+          (/^\/\?lang=/.test(anchor.href) && SELECTABLE_LANGS.includes(anchor.href.slice(7)))),
         `${file}: brand lockup must link home, found href=${JSON.stringify(anchor.href)}`,
       );
       assert.ok(

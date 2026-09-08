@@ -1,3 +1,4 @@
+import { guideLocaleRedirect } from "./guide_navigation.mjs";
 import { BROWSE_FACETS, BROWSE_OBJECTS, buildBrowseView, renderBrowseView } from "./browse_view.mjs";
 import { BROWSE_CONCEPTS } from "./browse_concept_view.mjs";
 import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
@@ -1342,6 +1343,10 @@ function handleDataHealth(request, env) {
 
 export default {
   async fetch(request, env) {
+    if (["GET", "HEAD"].includes(request.method)) {
+      const guideRedirect = guideLocaleRedirect(request.url);
+      if (guideRedirect) return Response.redirect(new URL(guideRedirect, request.url).toString(), 302);
+    }
     if (!env?.ASSETS) return new Response("Static asset binding unavailable", { status: 503 });
     if (!['GET', 'HEAD'].includes(request.method)) return new Response("Method not allowed", { status: 405, headers: { Allow: "GET, HEAD" } });
     const url = new URL(request.url);

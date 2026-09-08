@@ -110,8 +110,8 @@ test("owner extraction preserves representative Browse HTML byte for byte", () =
     }],
   }));
 
-  assert.equal(Buffer.byteLength(examsHtml), 2028);
-  assert.equal(digest(examsHtml), "158d0d8629236d21f3a4a35a50afa6ddb52f111cca8932f8c2d9e71a8fa3c75a");
+  assert.equal(Buffer.byteLength(examsHtml), 2013);
+  assert.equal(digest(examsHtml), "70638951c25cb323c5895823831070de7492888eb462a191516853603836cee3");
   assert.equal(Buffer.byteLength(peopleHtml), 1783);
   assert.equal(digest(peopleHtml), "0f89c8b5cf1c87bf91c37b287052c7a9088527cdb1bd76822024ab9a34760675");
 });

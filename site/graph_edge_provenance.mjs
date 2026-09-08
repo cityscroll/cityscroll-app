@@ -565,9 +565,9 @@ export function renderWhyBelieveControl(claim, { className = "" } = {}) {
     ? claim.cross_spine.confidence
     : "unmatched";
   const classes = ["edge-prov-why", `edge-prov-why-${warrant.id}`, `edge-prov-cross-spine-${crossSpine}`, className].filter(Boolean).join(" ");
-  const aria = "View connection details";
-  const title = "View connection evidence";
-  return `<a class="${esc(classes)}" data-edge-claim="${esc(claim.claim_id)}" data-warrant-class="${esc(warrant.id)}" data-cross-spine-confidence="${esc(crossSpine)}" href="${esc(href)}" aria-label="${esc(aria)}" title="${esc(title)}"><span class="edge-prov-details-label edge-prov-confidence-${esc(crossSpine)}">Details</span></a>`;
+  const aria = globalThis.window?.t?.("connection_details_control") || "Details";
+  const title = globalThis.window?.t?.("connection_evidence_heading") || "Connection evidence";
+  return `<a class="${esc(classes)}" data-edge-claim="${esc(claim.claim_id)}" data-warrant-class="${esc(warrant.id)}" data-cross-spine-confidence="${esc(crossSpine)}" href="${esc(href)}" aria-label="${esc(aria)}" data-i18n-aria="connection_details_control" title="${esc(title)}"><span class="edge-prov-details-label edge-prov-confidence-${esc(crossSpine)}" data-i18n="connection_details_control">${esc(globalThis.window?.t?.("connection_details_control") || "Details")}</span></a>`;
 }
 
 /** Optional compact warrant key (not always-on chrome). */
@@ -603,13 +603,13 @@ export function renderEdgeProvenanceInspector(claim, { open = false } = {}) {
       <p class="edge-prov-how">${esc(connectionHowCopy(claim))}</p>
       ${renderProvenanceAsOf(where.observed_at)}
       <section class="edge-prov-block" aria-labelledby="edge-prov-where-${esc(claim.claim_id)}">
-        <h3 id="edge-prov-where-${esc(claim.claim_id)}">How this connection was made</h3>
+        <h3 id="edge-prov-where-${esc(claim.claim_id)}" data-i18n="connection_how_heading">${esc(globalThis.window?.t?.("connection_how_heading") || "How this connection was made")}</h3>
         <dl class="edge-prov-dl">
           ${renderFieldRow("Relation", claim.relation ? { available: true, value: claim.relation } : null)}
         </dl>
         ${officialSource}
       </section>
-      ${claim.share_href ? `<p class="edge-prov-share"><a class="node-action civic-object-action" data-edge-claim-share="${esc(claim.claim_id)}" href="${esc(claim.share_href)}">Copy link to this connection</a></p>` : ""}
+      ${claim.share_href ? `<p class="edge-prov-share"><a class="node-action civic-object-action" data-edge-claim-share="${esc(claim.claim_id)}" href="${esc(claim.share_href)}" data-i18n="connection_copy_link">${esc(globalThis.window?.t?.("connection_copy_link") || "Copy link to this connection")}</a></p>` : ""}
       ${renderGuideHelpLink("connection")}
     </div>
   </details>`;
@@ -633,7 +633,7 @@ export function renderEdgeProvenancePanel(claims = [], { activeClaimId = null } 
     html: renderEdgeProvenanceInspector(claim, { open: true }),
   }))).replace(/<\/script/gi, "<\\/script");
   return `<section class="edge-prov-panel node-section node-card civic-object-section" id="edge-provenance" data-edge-provenance-panel="1" data-export-class="object_provenance" aria-labelledby="edge-prov-panel-heading"${hiddenAttr}>
-    <h2 id="edge-prov-panel-heading">Connection evidence</h2>
+    <h2 id="edge-prov-panel-heading" data-i18n="connection_evidence_heading">${esc(globalThis.window?.t?.("connection_evidence_heading") || "Connection evidence")}</h2>
     <div class="edge-prov-panel-body" data-edge-prov-body="1">${body}</div>
     <script type="application/json" id="edge-provenance-claims">${claimPayload}</script>
   </section>`;

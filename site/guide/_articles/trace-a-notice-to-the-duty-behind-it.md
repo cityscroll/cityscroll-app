@@ -47,20 +47,19 @@ Compare the citation and required action, then return to the duty page.
 
 Under **Publication evidence**, find the notice's request number, **20260605008**.
 It links the filing you started from back to this duty. This establishes that the filing was published.
-A compliance finding would also need to establish whether the filing met the duty; this page makes no such finding.
+A compliance finding would also need to establish whether the filing met the duty. This page makes no such finding.
 
 ::: figure publication-evidence
 
 ## Step 5 — Try another notice
 
 Open another rule notice from [Rules](/browse/rules/), find **Connected mandate**, then follow
-its duty text and **Source law**. If the block is absent, no supported connection is shown;
-that does not mean no law applies. Check the notice's own official copy instead.
+its duty text and **Source law**. If the block is absent, no supported connection is shown. That does not mean no law applies. Check the notice's own official copy instead.
 
 ## Optional — Watch for later filings
 
 On a notice with **Connected mandate**, select **Watch this mandate** beside the connection.
 Following opens with the duty selected and needs JavaScript switched on. Check **Preview matches**
-there; previewing does not subscribe you. Choose a frequency, enter **Email address** under
+there. Previewing does not subscribe you. Choose a frequency, enter **Email address** under
 **Create this watch**, and press **Create watch** only if you want email updates.
 The page's subscribed confirmation is the saved result.

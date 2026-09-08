@@ -35,6 +35,7 @@ SCRATCH = ROOT / '.artifacts/guide-illustrations'
 VIEWPORTS = [('mobile',390,844),('desktop',1440,900)]
 REVISION = subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
 RECEIPTS = {}
+LOCALE = "en"
 
 
 def node(script, *args):
@@ -75,14 +76,19 @@ def install_routes(page, base, replay_dir):
 
 
 def go(page,base,route,ready=None):
+    if LOCALE != 'en': route += ('&' if '?' in route else '?') + 'lang=' + LOCALE
     page.goto(base.rstrip('/')+route,wait_until='domcontentloaded')
+    if LOCALE != 'en': page.wait_for_function('(language) => document.documentElement.lang === language && window.LANG === language', arg=LOCALE)
     if ready: page.locator(ready).first.wait_for(state='visible',timeout=30000)
     page.wait_for_timeout(500)
 
 
 def crop(page,slug,name,region,marks,caption,alt,variant, *, height=None, provenance='Retained public site data', redactions=None):
+    if LOCALE != 'en':
+        page.wait_for_function('(language) => document.documentElement.lang === language && window.LANG === language',arg=LOCALE)
     regions=region if isinstance(region,list) else [region]
     page.locator(regions[0]).first.scroll_into_view_if_needed()
+    page.evaluate('document.fonts.ready')
     page.wait_for_timeout(150)
     scroll=page.evaluate('({x:scrollX,y:scrollY})')
     boxes=[page.locator(sel).first.bounding_box() for sel in regions]
@@ -102,6 +108,7 @@ def crop(page,slug,name,region,marks,caption,alt,variant, *, height=None, proven
         positions.append({'number':number,'selector':sel,'label':target.inner_text()[:180] or target.get_attribute('aria-label') or target.get_attribute('name'),
                           'y':round(b['y']+scroll['y']+b['height']/2-y)})
     for p in positions: assert 0<=p['y']<=clip['height'],(name,p,clip)
+    clip['x'] += page.evaluate('document.dir === \"rtl\" ? Math.max(0, document.documentElement.scrollWidth - innerWidth) : 0')
     raw=page.screenshot(clip=clip,animations='disabled',full_page=True)
     # Canvas only adds a numbered margin. It never replaces, scales or draws over UI pixels.
     annotate=page.context.new_page()
@@ -117,10 +124,11 @@ def crop(page,slug,name,region,marks,caption,alt,variant, *, height=None, proven
       return {data:canvas.toDataURL('image/png').split(',')[1],width:canvas.width,height:canvas.height};
     }''',{'png':base64.b64encode(raw).decode(),'positions':positions})
     annotate.close()
-    folder=OUT/slug;folder.mkdir(parents=True,exist_ok=True)
+    folder=OUT/slug if LOCALE == 'en' else OUT/slug/LOCALE
+    folder.mkdir(parents=True,exist_ok=True)
     file=folder/f'{name}-{variant}.png';file.write_bytes(base64.b64decode(data['data']))
     receipt=RECEIPTS.setdefault(slug,{'schema':'cityscroll.guide-captures.v1','figures':{}})
-    figure=receipt['figures'].setdefault(name,{'locale':'en','caption':caption,'alt':alt})
+    figure=receipt['figures'].setdefault(name,{'locale':LOCALE,'caption':caption,'alt':alt})
     url=urlsplit(page.url)
     figure[variant]={'src':'/'+str(file.relative_to(ROOT/'site')),'width':data['width'],'height':data['height'],
         'captured_at':datetime.now(timezone.utc).isoformat(),'revision':REVISION,'viewport':page.viewport_size,
@@ -136,11 +144,11 @@ def following(page,base,variant):
     go(page,base,'/following/','[data-following-primary-start]')
     crop(page,watch,'choose-scope','[data-following-primary-start]',
          ['[data-following-primary-choice="topic"]','[data-following-primary-choice="place"]'],
-         '1. Choose a topic. 2. Choose a borough or Any place; these choices have not saved a watch.',
+         '1. Choose a topic. 2. Choose a borough or Any place. These choices have not saved a watch.',
          'Following topic buttons above the borough choices.',variant)
-    page.get_by_text('Hearings and meetings',exact=True).click()
+    page.locator('[data-following-primary-choice="topic"] [data-i18n="quiz_meetings"]').click()
     if page.locator('.following-refinements').get_attribute('open') is None:
-        page.get_by_text('Narrow it down',exact=True).click()
+        page.locator('.following-refinements > summary').click()
     crop(page,board,'board-topic',['[data-following-primary-choice="topic"]','.following-refinements > summary'],
          ['[data-following-primary-choice="topic"]','.following-refinements > summary'],
          '1. Hearings and meetings is selected. 2. Open Narrow it down below the place choices.',
@@ -152,7 +160,7 @@ def following(page,base,variant):
          '1. In Community Board, choose Manhattan in Borough and 7 in Board number.',
          'Community Board picker with Borough set to Manhattan and Board number set to 7.',variant)
     page.locator('[data-following-primary-choice="preview"]').click()
-    page.get_by_text('Watch summary',exact=True).wait_for()
+    page.locator('[data-i18n="following_watch_summary"]').wait_for()
     crop(page,board,'board-preview','[data-following-watch-identity]',
          ['[data-following-identity-rule]'],
          '1. Watch summary must identify Manhattan Community Board 7 before saving.',
@@ -170,7 +178,7 @@ def following(page,base,variant):
          provenance='Disposable signed-out Following preview')
     page.locator('[data-following-subscribe-form] input[type="email"]').fill('reader@example.invalid')
     page.locator('[data-following-subscribe-submit]').click()
-    page.get_by_text("You're subscribed — we'll email you. Manage or unsubscribe anytime.",exact=True).wait_for()
+    page.wait_for_function('document.querySelector("[data-following-submit-status]").textContent === window.t("following_subscribed")')
     crop(page,board,'watch-confirmation','[data-following-subscribe-form]',
          ['[data-following-submit-status]'],
          '1. This confirmation means the save succeeded. Keep the welcome email to manage or stop the watch.',
@@ -231,7 +239,7 @@ def asof(page,base,variant):
     page.locator('[data-ctl-clear]').wait_for(state='visible')
     crop(page,'look-at-records-as-of-a-day','date-result','[data-civic-time-ledger]',
          ['[data-ctl-comparison]','[data-ctl-clear]'],
-         '1. The summary describes the applied cutoff. 2. Clear removes it; later records remain separate.',
+         '1. The summary describes the applied cutoff. 2. Clear removes it. Later records remain separate.',
          'Applied As of day summary and the Clear control.',variant)
     page.locator('[data-ctl-clear]').click()
     page.wait_for_timeout(600)
@@ -260,7 +268,7 @@ def investigation(page,base,variant):
     page.locator('#invcsv').click()
     crop(page,slug,'notes-and-exports',['#invitems','#invcsv','#invjson','#invshare'],
          ['#invcsv','#invitems .invnote'],
-         '1. Export .csv or Export .json saves a fixed copy. 2. Add a note under a pinned record; click outside it to save.',
+         '1. Export .csv or Export .json saves a fixed copy. 2. Add a note under a pinned record. Click outside it to save.',
          'Investigation workspace with file exports above a pinned award and a disposable example note.',variant,
          provenance='Disposable local collection and authored example note; no sharing request sent')
     page.reload(wait_until='domcontentloaded')
@@ -347,7 +355,7 @@ def award(page,base,variant):
     page.locator('.traversal-path[data-traversal-hop-count="1"]').wait_for()
     page.locator('#vendor-on-the-record').wait_for()
     crop(page,slug,'vendor-trail','.traversal-path',['.traversal-path'],
-         '1. The first trail step names the agency and vendor; check it before choosing an award.',
+         '1. The first trail step names the agency and vendor. Check it before choosing an award.',
          'One-step trail from Homeless Services to Lantern Community Services.',variant,
          provenance='Retained public City Record vendor reads acquired by capture_award_trail.py')
     timeline=page.locator('#vendor-on-the-record')
@@ -380,7 +388,7 @@ def award(page,base,variant):
     page.locator('.traversal-path[data-traversal-hop-count="2"]').wait_for()
     assert len(state(page.url)['hops'])==2
     (SCRATCH/f'award-{variant}-url.txt').write_text(urlsplit(copied).path+'?'+urlsplit(copied).query)
-    fresh=page.context.browser.new_context(viewport=page.viewport_size,locale='en-US')
+    fresh=page.context.browser.new_context(viewport=page.viewport_size,locale=LOCALE)
     install_reads(fresh,base,snapshot)
     reopened=fresh.new_page()
     reopened.goto(copied,wait_until='domcontentloaded')
@@ -395,18 +403,24 @@ def award(page,base,variant):
 
 
 def main():
+    global LOCALE
     parser=argparse.ArgumentParser()
     parser.add_argument('--only',default='following,calendar,connection,asof,investigation,housing,duty,land,award')
     parser.add_argument('--site-dir',type=Path,default=ROOT/'.artifacts/guide-preview')
     parser.add_argument('--replay-dir',type=Path,default=SCRATCH)
+    parser.add_argument('--locale',default='en')
     args=parser.parse_args()
+    locales=json.loads(node('import {loadGuideCatalog} from \'./tools/guide_translation_catalog.mjs\'; console.log(JSON.stringify([\'en\',...loadGuideCatalog().SHIPPING_LANGS]))'))
+    if args.locale not in locales: parser.error('Unsupported shipping locale')
+    LOCALE=args.locale
+    SCRATCH.mkdir(parents=True,exist_ok=True)
     server,thread,base=serve(args.site_dir)
     try:
         with sync_playwright() as p:
             browser=p.chromium.launch(headless=True)
             for task in args.only.split(','):
                 for variant,width,height in VIEWPORTS:
-                    context=browser.new_context(viewport={'width':width,'height':height},locale='en-US')
+                    context=browser.new_context(viewport={'width':width,'height':height},locale=LOCALE)
                     page=context.new_page();page.set_default_timeout(15000)
                     install_routes(page,base,args.replay_dir)
                     try: globals()[task](page,base,variant)
@@ -421,7 +435,8 @@ def main():
             folder=OUT/slug;path=folder/'receipt.json'
             old=json.loads(path.read_text()) if path.exists() else {'schema':'cityscroll.guide-captures.v1','figures':{}}
             for key,value in receipt['figures'].items():
-                old['figures'][key]={**old['figures'].get(key,{}),**value}
+                if LOCALE == 'en': old['figures'][key]={**old['figures'].get(key,{}),**value}
+                else: old['figures'][key].setdefault('locales',{})[LOCALE]=value
             path.write_text(json.dumps(old,indent=2)+'\n')
         server.shutdown();server.server_close();thread.join(5)
 

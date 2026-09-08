@@ -76,6 +76,239 @@
           "height": 713
         },
         "source_html_sha256": "79199ec5c315853be82e5da2b7f1058295e702972aab96435ef7dcecce53376f"
+      },
+      "locales": {
+        "es": {
+          "locale": "es",
+          "caption": "1. Search filters the meeting list. 2. More filters reveals Date window, Affected area and Agency.",
+          "alt": "Meeting list filters expanded above the results.",
+          "mobile": {
+            "src": "/media/guide/find-and-narrow-records/es/meeting-filters-mobile.png",
+            "width": 394,
+            "height": 731,
+            "captured_at": "2026-09-08T17:53:53.050908+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/browse/meetings/?lang=es",
+            "sha256": "80b1a13f522b1d265e58cd1422b77a0b18e66c0e6696518f37d9a6561d979679",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#meetingskw",
+                "label": null,
+                "y": 46
+              },
+              {
+                "number": 2,
+                "selector": "#meetings-toolbar details",
+                "label": "M\u00e1s filtros\nPER\u00cdODO\nEsta semana\nPr\u00f3ximos 30 d\u00edas\nTodos los pr\u00f3ximos\nPasado reciente\n\u00c1REA AFECTADA\nTodas las \u00e1reas\nManhattan\nBronx\nBrooklyn\nQueens\nStaten Island\nEn toda la ciudad\nSo",
+                "y": 102
+              }
+            ],
+            "crop": {
+              "x": 14,
+              "y": 1567,
+              "width": 362,
+              "height": 731
+            },
+            "source_html_sha256": "c21db1d5a0dab1e097579817230a17725a4529382cc73cd0874254a41e390654"
+          },
+          "desktop": {
+            "src": "/media/guide/find-and-narrow-records/es/meeting-filters-desktop.png",
+            "width": 1124,
+            "height": 713,
+            "captured_at": "2026-09-08T17:53:55.020996+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/browse/meetings/?lang=es",
+            "sha256": "4105564f05713a47c52467e221a3b0cb32df3adb8b6bb72de767391d7b3dbe64",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#meetingskw",
+                "label": null,
+                "y": 46
+              },
+              {
+                "number": 2,
+                "selector": "#meetings-toolbar details",
+                "label": "M\u00e1s filtros\nPER\u00cdODO\nEsta semana\nPr\u00f3ximos 30 d\u00edas\nTodos los pr\u00f3ximos\nPasado reciente\n\u00c1REA AFECTADA\nTodas las \u00e1reas\nManhattan\nBronx\nBrooklyn\nQueens\nStaten Island\nEn toda la ciudad\nSo",
+                "y": 49
+              }
+            ],
+            "crop": {
+              "x": 174,
+              "y": 1166,
+              "width": 1092,
+              "height": 713
+            },
+            "source_html_sha256": "c21db1d5a0dab1e097579817230a17725a4529382cc73cd0874254a41e390654"
+          }
+        },
+        "zh-Hans": {
+          "locale": "zh-Hans",
+          "caption": "1. Search filters the meeting list. 2. More filters reveals Date window, Affected area and Agency.",
+          "alt": "Meeting list filters expanded above the results.",
+          "mobile": {
+            "src": "/media/guide/find-and-narrow-records/zh-Hans/meeting-filters-mobile.png",
+            "width": 394,
+            "height": 732,
+            "captured_at": "2026-09-08T18:07:32.342793+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/browse/meetings/?lang=zh-Hans",
+            "sha256": "661937555cec4930482320be3aca9c941685bb78bf30e7bca6e5f237adaeee37",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#meetingskw",
+                "label": null,
+                "y": 46
+              },
+              {
+                "number": 2,
+                "selector": "#meetings-toolbar details",
+                "label": "\u66f4\u591a\u7b5b\u9009\n\u65e5\u671f\u8303\u56f4\n\u672c\u5468\n\u672a\u6765 30 \u5929\n\u6240\u6709\u5373\u5c06\u4e3e\u884c\n\u8fd1\u671f\u5df2\u7ed3\u675f\n\u53d7\u5f71\u54cd\u533a\u57df\n\u6240\u6709\u533a\u57df\nManhattan\nBronx\nBrooklyn\nQueens\nStaten Island\n\u5168\u5e02\u8303\u56f4\n\u4ec5\u7ebf\u4e0a/\u865a\u62df\n\u65e0\u5730\u70b9\u4fe1\u53f7\n\u5168\u5e02 / \u65e0\u6cd5\u5b9a\u4f4d\nAttendance\nAny attendance mode\nIn person\nRemote participation",
+                "y": 102
+              }
+            ],
+            "crop": {
+              "x": 14,
+              "y": 1481,
+              "width": 362,
+              "height": 732
+            },
+            "source_html_sha256": "568a4cec135dabc0eefd19a6c4a715687dae0ff66b7376171fbc245c93da2e41"
+          },
+          "desktop": {
+            "src": "/media/guide/find-and-narrow-records/zh-Hans/meeting-filters-desktop.png",
+            "width": 1124,
+            "height": 712,
+            "captured_at": "2026-09-08T18:07:34.489104+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/browse/meetings/?lang=zh-Hans",
+            "sha256": "610d9c85ae6cffca63753520de63501ad92273af96873a1fc23bad2293b9bf1f",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#meetingskw",
+                "label": null,
+                "y": 45
+              },
+              {
+                "number": 2,
+                "selector": "#meetings-toolbar details",
+                "label": "\u66f4\u591a\u7b5b\u9009\n\u65e5\u671f\u8303\u56f4\n\u672c\u5468\n\u672a\u6765 30 \u5929\n\u6240\u6709\u5373\u5c06\u4e3e\u884c\n\u8fd1\u671f\u5df2\u7ed3\u675f\n\u53d7\u5f71\u54cd\u533a\u57df\n\u6240\u6709\u533a\u57df\nManhattan\nBronx\nBrooklyn\nQueens\nStaten Island\n\u5168\u5e02\u8303\u56f4\n\u4ec5\u7ebf\u4e0a/\u865a\u62df\n\u65e0\u5730\u70b9\u4fe1\u53f7\n\u5168\u5e02 / \u65e0\u6cd5\u5b9a\u4f4d\nAttendance\nAny attendance mode\nIn person\nRemote participation",
+                "y": 48
+              }
+            ],
+            "crop": {
+              "x": 174,
+              "y": 1067,
+              "width": 1092,
+              "height": 712
+            },
+            "source_html_sha256": "568a4cec135dabc0eefd19a6c4a715687dae0ff66b7376171fbc245c93da2e41"
+          }
+        },
+        "ar": {
+          "locale": "ar",
+          "caption": "1. Search filters the meeting list. 2. More filters reveals Date window, Affected area and Agency.",
+          "alt": "Meeting list filters expanded above the results.",
+          "mobile": {
+            "src": "/media/guide/find-and-narrow-records/ar/meeting-filters-mobile.png",
+            "width": 394,
+            "height": 732,
+            "captured_at": "2026-09-08T18:06:14.996587+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/browse/meetings/?lang=ar",
+            "sha256": "0ed2b44c93af239469b434e817346b90374b649ec85c49d03e2a1401bd9ca589",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#meetingskw",
+                "label": null,
+                "y": 47
+              },
+              {
+                "number": 2,
+                "selector": "#meetings-toolbar details",
+                "label": "\u0627\u0644\u0645\u0632\u064a\u062f \u0645\u0646 \u0627\u0644\u0645\u0631\u0634\u062d\u0627\u062a\n\u0646\u0637\u0627\u0642 \u0627\u0644\u062a\u0627\u0631\u064a\u062e\n\u0647\u0630\u0627 \u0627\u0644\u0623\u0633\u0628\u0648\u0639\n\u0627\u0644\u062b\u0644\u0627\u062b\u0648\u0646 \u064a\u0648\u0645\u064b\u0627 \u0627\u0644\u0642\u0627\u062f\u0645\u0629\n\u0643\u0644 \u0627\u0644\u0645\u0648\u0627\u0639\u064a\u062f \u0627\u0644\u0642\u0627\u062f\u0645\u0629\n\u0627\u0644\u0645\u0627\u0636\u064a \u0627\u0644\u0642\u0631\u064a\u0628\n\u0627\u0644\u0645\u0646\u0637\u0642\u0629 \u0627\u0644\u0645\u062a\u0623\u062b\u0631\u0629\n\u0643\u0644 \u0627\u0644\u0645\u0646\u0627\u0637\u0642\nManhattan\nBronx\nBrooklyn\nQueens\nStaten Island\n\u0639\u0644\u0649 \u0645",
+                "y": 103
+              }
+            ],
+            "crop": {
+              "x": 158,
+              "y": 1513,
+              "width": 362,
+              "height": 732
+            },
+            "source_html_sha256": "f4de13e1ee305f62900c5da71a7698589702e2d82c5b54332b521be5fb35ffe9"
+          },
+          "desktop": {
+            "src": "/media/guide/find-and-narrow-records/ar/meeting-filters-desktop.png",
+            "width": 1124,
+            "height": 712,
+            "captured_at": "2026-09-08T18:06:17.136354+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/browse/meetings/?lang=ar",
+            "sha256": "0013e22ab0292f37c4334e5a612f95e6fb80f3db821baa70bddb47fe1281d02d",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#meetingskw",
+                "label": null,
+                "y": 45
+              },
+              {
+                "number": 2,
+                "selector": "#meetings-toolbar details",
+                "label": "\u0627\u0644\u0645\u0632\u064a\u062f \u0645\u0646 \u0627\u0644\u0645\u0631\u0634\u062d\u0627\u062a\n\u0646\u0637\u0627\u0642 \u0627\u0644\u062a\u0627\u0631\u064a\u062e\n\u0647\u0630\u0627 \u0627\u0644\u0623\u0633\u0628\u0648\u0639\n\u0627\u0644\u062b\u0644\u0627\u062b\u0648\u0646 \u064a\u0648\u0645\u064b\u0627 \u0627\u0644\u0642\u0627\u062f\u0645\u0629\n\u0643\u0644 \u0627\u0644\u0645\u0648\u0627\u0639\u064a\u062f \u0627\u0644\u0642\u0627\u062f\u0645\u0629\n\u0627\u0644\u0645\u0627\u0636\u064a \u0627\u0644\u0642\u0631\u064a\u0628\n\u0627\u0644\u0645\u0646\u0637\u0642\u0629 \u0627\u0644\u0645\u062a\u0623\u062b\u0631\u0629\n\u0643\u0644 \u0627\u0644\u0645\u0646\u0627\u0637\u0642\nManhattan\nBronx\nBrooklyn\nQueens\nStaten Island\n\u0639\u0644\u0649 \u0645",
+                "y": 48
+              }
+            ],
+            "crop": {
+              "x": 174,
+              "y": 1061,
+              "width": 1092,
+              "height": 712
+            },
+            "source_html_sha256": "f4de13e1ee305f62900c5da71a7698589702e2d82c5b54332b521be5fb35ffe9"
+          }
+        }
       }
     }
   }

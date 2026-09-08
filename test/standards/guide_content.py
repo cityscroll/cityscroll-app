@@ -11,6 +11,7 @@ set of rules for them.
 from __future__ import annotations
 
 import sys
+import re
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[2]
@@ -35,7 +36,11 @@ def main() -> int:
         return 1
 
     failures: list[str] = []
-    failures += page_metadata.check(SITE, pages=pages)
+    shipping = re.findall(r'"([^"]+)"', re.search(r'SHIPPING_LANGS\s*=\s*\[(.*?)\]', (SITE / "i18n.js").read_text(), re.S).group(1))
+    # A complete translation has different character density and expansion from English.
+    # Preserve the source-language bounds and apply bounded localized metadata lengths.
+    limits = {language: (20 if language == "zh-Hans" else 40, 300, 120) for language in shipping}
+    failures += page_metadata.check(SITE, pages=pages, language_limits=limits)
     failures += [f"{page}: generic link text {text!r}" for page, text in link_text.check(SITE, pages=pages)]
     failures += heading_punctuation.check(SITE, pages=pages)
 

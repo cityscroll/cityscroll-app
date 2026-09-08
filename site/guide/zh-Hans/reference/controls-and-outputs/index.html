@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-Hans" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>控件与输出 · CityScroll</title><meta name="description" content="CityScroll上的各控件在使用时做什么——搜索、筛选、关注、日历、链接和导出——以及操作后处于什么状态。">
+<link rel="canonical" href="https://cityscroll.org/guide/zh-Hans/reference/controls-and-outputs/"><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/brand.css">
+<link rel="stylesheet" href="/civic-documents.css">
+<link rel="stylesheet" href="/guide.css"><script type="module" src="/guide_navigation.mjs"></script></head>
+<body><a class="skip" href="#main">跳至正文</a>
+<header class="document-mast guide-mast"><div class="document-mast-inner">
+    <a class="document-brand brand-lockup home" href="/?lang=zh-Hans" aria-label="CityScroll 首页"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+    <path d="M14 5h29l8 8v42a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M43 5v10h8M20 23h22M20 31h22M20 49v-9h7v9h5V36h7v13h5v-6h7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg><span><bdi lang="en" dir="ltr">CityScroll</bdi></span></a>
+    <nav class="document-nav" aria-label="主导航"><a href="/now/?lang=zh-Hans">现在</a><a href="/near-you/?lang=zh-Hans">您附近</a><a href="/following/?lang=zh-Hans">提醒</a><a href="/browse/?lang=zh-Hans">浏览</a><a aria-current="page" href="/guide/zh-Hans/">指南</a></nav>
+  </div></header>
+<nav class="guide-languages" aria-label="语言"><a href="/guide/reference/controls-and-outputs/?lang=en" lang="en" hreflang="en" dir="ltr" data-guide-language="en">English</a><a href="/guide/es/reference/controls-and-outputs/" lang="es" hreflang="es" dir="ltr" data-guide-language="es">Español</a><a href="/guide/zh-Hans/reference/controls-and-outputs/" lang="zh-Hans" hreflang="zh-Hans" dir="ltr" data-guide-language="zh-Hans" aria-current="true">中文（简体）</a><a href="/guide/ru/reference/controls-and-outputs/" lang="ru" hreflang="ru" dir="ltr" data-guide-language="ru">Русский</a><a href="/guide/bn/reference/controls-and-outputs/" lang="bn" hreflang="bn" dir="ltr" data-guide-language="bn">বাংলা</a><a href="/guide/ht/reference/controls-and-outputs/" lang="ht" hreflang="ht" dir="ltr" data-guide-language="ht">Kreyòl ayisyen</a><a href="/guide/ko/reference/controls-and-outputs/" lang="ko" hreflang="ko" dir="ltr" data-guide-language="ko">한국어</a><a href="/guide/fr/reference/controls-and-outputs/" lang="fr" hreflang="fr" dir="ltr" data-guide-language="fr">Français</a><a href="/guide/pl/reference/controls-and-outputs/" lang="pl" hreflang="pl" dir="ltr" data-guide-language="pl">Polski</a><a href="/guide/ar/reference/controls-and-outputs/" lang="ar" hreflang="ar" dir="rtl" data-guide-language="ar">العربية</a><a href="/guide/ur/reference/controls-and-outputs/" lang="ur" hreflang="ur" dir="rtl" data-guide-language="ur">اردو</a></nav>
+<main class="node-document guide-document guide-article" id="main">
+  <p class="node-back"><a href="/guide/zh-Hans/">返回指南</a></p>
+<p class="guide-notice" data-guide-translation-state="machine-drafted">此翻译由机器初步生成，尚未经过母语人士审核。</p>
+  <header class="node-hero guide-hero">
+    <p class="node-kicker">参考</p>
+    <h1>控件及其输出</h1>
+    <p class="node-lede">查阅常用控件、效果以及生成的文件或链接。</p>
+    <p class="node-meta guide-reviewed">上次审阅：2026-09-06</p>
+  </header>
+  <div class="guide-body">
+<h2>查找记录</h2>
+<div class="guide-table" role="region" tabindex="0" aria-label="查找记录"><table><thead><tr><th scope="col">控件</th><th scope="col">用途</th><th scope="col">操作后得到什么</th></tr></thead><tbody><tr><td>搜索</td><td>按您输入的词语搜索记录</td><td>按记录类型分组的结果页，地址中保留您的搜索词</td></tr><tr><td>结果分组</td><td>将结果分为合同、人员与组织、土地、规则、会议和考试，各自显示数量</td><td>在打开记录前即可看到记录类型</td></tr><tr><td>匹配原因</td><td>标明每项结果是在标题、摘要还是记录正文中匹配</td><td>正文匹配时，会引用记录中的对应段落</td></tr><tr><td>范围</td><td>将搜索限定为一种记录类型，而非所有类型</td><td>范围更小的搜索，保存在地址中</td></tr><tr><td>最近的搜索</td><td>列出您搜索过的内容，并提供清除方式</td><td>仅保存在此浏览器中的列表</td></tr><tr><td>浏览</td><td>在单独页面上打开一种记录，无需搜索</td><td>可筛选的列表</td></tr><tr><td>筛选和更多筛选</td><td>按列表具备的属性<bdi lang="en" dir="ltr">Narrow it down</bdi>——关键词、机构、地点、阶段、日期范围、金额</td><td>范围更小的列表，保存在地址中</td></tr><tr><td>关注此搜索</td><td>进入提醒页面，并打开关注设置器</td><td>尚未启动。您仍需预览并确认该关注</td></tr><tr><td>导出<bdi lang="en" dir="ltr">CSV</bdi>、导出Excel和打印</td><td>带走当前查看的列表</td><td>按当前筛选条件生成的列表文件或可打印页面</td></tr></tbody></table></div>
+<p>列表提供哪些筛选项取决于该类记录具备哪些属性：金额属于合同，阶段属于会议。以列表自身显示的筛选项为准。</p>
+<p>搜索和浏览列表在您的浏览器中组装结果，需要<bdi lang="en" dir="ltr">JavaScript</bdi>。单条记录页面以及本指南的所有页面都不需要。</p>
+<h2>关注主题</h2>
+<div class="guide-table" role="region" tabindex="0" aria-label="关注主题"><table><thead><tr><th scope="col">控件</th><th scope="col">用途</th><th scope="col">操作后得到什么</th></tr></thead><tbody><tr><td>创建关注</td><td>根据主题和地点设置关注的标签页</td><td>尚未启动。选择主题或地点不会启动关注</td></tr><tr><td>更多主题</td><td>打开其余主题，包括人事与考试、法定职责，以及每周市议会选区关注</td><td>仍是尚未启动的关注，只是换了主题</td></tr><tr><td>缩小范围</td><td>添加关键词、机构、市议会选区或社区委员会</td><td>范围更小、仍未启动的关注</td></tr><tr><td>选择社区委员会关注</td><td>依次选择行政区和委员会编号</td><td>由两者共同标识的关注，因为仅凭编号会对应多个委员会</td></tr><tr><td>预览匹配结果</td><td>显示此关注会匹配的记录，以及关注内容的摘要</td><td>不会保存任何内容，也不会发送邮件。预览不是订阅</td></tr><tr><td>邮件频率</td><td>有匹配时每天发送，或每周一发送摘要</td><td>您选择的两种频率之一</td></tr><tr><td>创建关注</td><td>使用您输入的电子邮件地址启动关注</td><td>运行中的关注。不会创建账户</td></tr><tr><td>你的关注</td><td>访问已有关注的地方</td><td>提示您需打开<bdi lang="en" dir="ltr">CityScroll</bdi>邮件才能访问，因为没有可登录的账户</td></tr></tbody></table></div>
+<p>阅读<bdi lang="en" dir="ltr">CityScroll</bdi>上的内容不会顺带让您订阅任何东西。启动关注始终需要使用最后这个控件，并输入您自己的电子邮件地址。</p>
+<h2>日期和日历</h2>
+<div class="guide-table" role="region" tabindex="0" aria-label="日期和日历"><table><thead><tr><th scope="col">控件</th><th scope="col">用途</th><th scope="col">操作后得到什么</th></tr></thead><tbody><tr><td>截止前行动</td><td>将仍可采取行动的截止日期与之后的活动分开</td><td>帮助您判断哪些日期需要遵守</td></tr><tr><td>订阅日历</td><td>为当前查看的内容提供订阅</td><td>面板提供两种添加到自己日历的方式</td></tr><tr><td>打开日历订阅</td><td>将订阅源交给您设备上的日历</td><td>由您的日历应用接手</td></tr><tr><td>复制订阅网址</td><td>复制地址，供粘贴到要求输入地址的日历中</td><td>剪贴板中的地址</td></tr></tbody></table></div>
+<p>有两个限制需要了解。<strong>订阅日历</strong>只在当前内容含有可加入日历的活动日期时出现；没有这类日期的列表不会提供此功能，这是如实说明，而非提供空订阅源。此外，地址交给日历应用后，<bdi lang="en" dir="ltr">CityScroll</bdi>无法知道该应用是否保留了订阅、或多久刷新一次——这由您的日历设置决定，有些日历需要数小时才显示变化。</p>
+<h2>保存和分享找到的内容</h2>
+<div class="guide-table" role="region" tabindex="0" aria-label="保存和分享找到的内容"><table><thead><tr><th scope="col">控件</th><th scope="col">用途</th><th scope="col">操作后得到什么</th></tr></thead><tbody><tr><td>地址栏</td><td>保存您的搜索、筛选、所选日期和已查看的关联</td><td>以后按届时发布的记录重建同一视图的链接</td></tr><tr><td>此关联如何建立</td><td>打开关联依据、所述关系及其官方来源</td><td>关联保留在地址中，因此链接包含它</td></tr><tr><td>复制此关联的链接</td><td>复制已选中该关联详情的地址</td><td>剪贴板中的地址</td></tr><tr><td>复制链接</td><td>复制当前记录的地址</td><td>剪贴板中的地址</td></tr><tr><td>来源链接</td><td>打开市政府发布的原始副本。链接名称说明目的地，例如市政公报公告</td><td>市政府页面，在新标签页中打开</td></tr><tr><td>打印或保存<bdi lang="en" dir="ltr">PDF</bdi>，以及下载<bdi lang="en" dir="ltr">JSON</bdi></td><td>带走一条记录</td><td>该记录当前状态的文件</td></tr><tr><td>截至日期</td><td>仅保留日期不晚于所选日期的记录，带有应用和清除控件</td><td>可通过地址分享的指定日期视图</td></tr></tbody></table></div>
+<h2>收集记录</h2>
+<div class="guide-table" role="region" tabindex="0" aria-label="收集记录"><table><thead><tr><th scope="col">控件</th><th scope="col">用途</th><th scope="col">操作后得到什么</th></tr></thead><tbody><tr><td>置顶</td><td>将当前记录添加到您的调查</td><td>仅保存在此浏览器中的收藏</td></tr><tr><td>备注</td><td>为已固定记录添加自己的备注</td><td>仅保存在此浏览器中的备注</td></tr><tr><td>导出 .csv和导出 .json</td><td>下载您收集的内容</td><td>设备上的文件，每项带有链接和固定日期</td></tr><tr><td>打印档案</td><td>为打印准备收藏内容</td><td>可打印页面</td></tr><tr><td>分享（只读链接）</td><td>上传只读快照并提供链接</td><td>任何收件人都可打开、且会到期的链接</td></tr><tr><td>冻结研究包</td><td>将问题及其证据保留为固定版本</td><td>有版本号的资料包，即使出现新记录也保持原样</td></tr><tr><td>清除全部</td><td>清空调查</td><td>空收藏。原有内容保存在此设备上</td></tr></tbody></table></div>
+<p>未登录访问时，固定内容和备注保留在此浏览器中。经识别的邮件会话可跨设备保留固定内容。共享快照包含备注，任何拥有链接的人都可在90天内阅读。导出文件是固定副本；清空本地列表不会删除导出或共享副本。</p>
+<p>程序参数和订阅源请参阅<a href="/api.html?lang=zh-Hans">API页面</a>。</p>
+  </div>
+  <section class="node-section guide-related" aria-labelledby="guide-related">
+    <h2 id="guide-related">相关页面</h2>
+    <ul><li><a href="/guide/zh-Hans/reference/glossary/">本指南术语表</a></li><li><a href="/guide/zh-Hans/reference/sources-and-coverage/">记录来自哪里</a></li><li><a href="/guide/zh-Hans/understand/dates-and-missing-information/">日期与空白的含义</a></li></ul>
+  </section>
+  <section class="node-section guide-sources" aria-labelledby="guide-sources">
+    <h2 id="guide-sources">本文使用的来源</h2>
+    <ul><li><a href="/api.html?lang=zh-Hans"><bdi lang="en" dir="ltr">CityScroll</bdi>公共端点和上游数据</a></li></ul>
+  </section>
+  <p class="guide-return"><a href="/browse/?lang=zh-Hans">按类型浏览公共记录</a></p>
+</main>
+<footer class="node-footer guide-footer"><bdi lang="en" dir="ltr">CityScroll</bdi>是非官方的阅读辅助工具。请在官方来源核查每条记录。 <a href="/guide/zh-Hans/">指南</a>. <a href="/about.html?lang=zh-Hans">关于数据</a>.</footer>
+</body></html>

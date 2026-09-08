@@ -86,7 +86,7 @@
     },
     "vendor-trail": {
       "locale": "en",
-      "caption": "1. The first trail step names the agency and vendor; check it before choosing an award.",
+      "caption": "1. The first trail step names the agency and vendor. Check it before choosing an award.",
       "alt": "One-step trail from Homeless Services to Lantern Community Services.",
       "mobile": {
         "src": "/media/guide/trace-an-award-and-keep-the-trail/vendor-trail-mobile.png",

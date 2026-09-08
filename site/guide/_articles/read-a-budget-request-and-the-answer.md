@@ -35,7 +35,7 @@ label around it moved.
 
 - No account is needed.
 - This works with JavaScript switched off. Every fact this page asks you to read is written into the
-  page itself; the **Inspect** button beside each request only lifts one record out of a long list,
+  page itself. The **Inspect** button beside each request only lifts one record out of a long list,
   and it is not shown at all if scripting is off.
 - Open [Brooklyn Community Board 14](/community-boards/brooklyn-cb-14/) and find the section headed
   **Budget requests this district made to city agencies**.
@@ -43,8 +43,7 @@ label around it moved.
 ## Step 1 — Choose the agency, and keep the choice
 
 The list is grouped by the agency responsible for answering, because a request only means something
-next to the agency it was addressed to. Under **Choose an agency** each name is an ordinary link;
-following one opens that agency's group and puts the choice in the page address.
+next to the agency it was addressed to. Under **Choose an agency** each name is an ordinary link. Following one opens that agency's group and puts the choice in the page address.
 
 Choose **Department of Transportation**. The address now ends in
 `#board-budget-requests-transportation`, which is what makes the choice survive: open a request,
@@ -65,7 +64,7 @@ parts, and they are not the same thing.
   connection to the Church Avenue station is in poor condition in both directions.
 
 Read the board's own words before the heading. The heading tells you which pile the request went
-into; the board's words tell you what was asked for.
+into. The board's words tell you what was asked for.
 
 ## Step 3 — Read the priority number, and what it is a priority within
 
@@ -75,7 +74,7 @@ Three things are packed into that. It is *this board's* order, not the city's. I
 *capital* requests — the ones about building or fixing something, kept apart from expense requests,
 which pay for running a service. And it counts only requests *to this agency*. A priority 01 to the
 Department of Transportation and a priority 01 to the Department of Sanitation are two separate
-first places; neither is ahead of the other, and there is no citywide queue here at all.
+first places. Neither is ahead of the other, and there is no citywide queue here at all.
 
 ## Step 4 — Read the answers in order
 
@@ -131,7 +130,7 @@ board's page, because the board's list is the one kept in the board's own priori
   that date. It is not funding, not a commitment, and not delivery, and a request with a supportive
   answer is not a project that exists.
 - **There is no score.** CityScroll does not total up how often an agency supported or refused
-  requests. The register holds written answers on dates; a percentage would be an invention.
+  requests. The register holds written answers on dates. A percentage would be an invention.
 - **A priority number is not a citywide rank.** See Step 3.
 - **Two requests are two requests.** Requests that read alike, or that concern the same street, keep
   separate rows, separate tracking codes and separate answers. Two neighbouring requests about
@@ -144,7 +143,7 @@ Three different things can leave you looking at no requests, and the page says w
 happened rather than showing you an empty space.
 
 - **The register holds nothing for this board.** The section says so in a sentence about the
-  register. That is not a record that the board asked for nothing; it is what the copies CityScroll
+  register. That is not a record that the board asked for nothing. It is what the copies CityScroll
   holds contain.
 - **The list could not be read.** The section says that instead, and points you at the published
   register so you can go and look yourself. Reload the page to try again. Treat this as a fact about

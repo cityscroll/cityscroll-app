@@ -23,7 +23,7 @@ sources:
 
 Open [Following](/following/). Under **What do you want to follow?**, choose **Hearings and meetings**,
 then open **Narrow it down**. The **Community Board** group appears for this topic.
-Use a browser with JavaScript switched on; you need an email address only when saving.
+Use a browser with JavaScript switched on. You need an email address only when saving.
 
 ::: figure board-topic
 
@@ -32,8 +32,7 @@ Use a browser with JavaScript switched on; you need an email address only when s
 In **Community Board**, set **Borough** to **Manhattan** and **Board number** to **7**.
 Both fields are required to identify **Manhattan Community Board 7**.
 
-A Community Board is numbered within its borough. **City Council District 7** is a different area;
-its watch is under **More topics → City Council District weekly**, not this picker.
+A Community Board is numbered within its borough. **City Council District 7** is a different area. Its watch is under **More topics → City Council District weekly**, not this picker.
 
 ::: figure board-picker
 
@@ -44,7 +43,7 @@ both name **Manhattan Community Board 7**. Previewing saves nothing and sends no
 After changing a choice, press **Update matches** to check it again.
 
 The preview shows matching board meetings. **See current matches** opens a wider district view
-that can include other bodies' meetings; use the preview to check what the watch would email.
+that can include other bodies' meetings. Use the preview to check what the watch would email.
 An empty preview does not prove the board has no meetings. Check its calendar through
 [Community Boards](/community-boards/) if a meeting you expected is missing.
 
@@ -55,12 +54,11 @@ An empty preview does not prove the board has no meetings. Check its calendar th
 ## Step 4 — Save and check the result
 
 Under **Email frequency**, choose **Daily** or **Weekly**. Under **Create this watch**, fill in
-**Email address**, then press **Create watch**. This starts the subscription immediately;
-there is no activation link to click.
+**Email address**, then press **Create watch**. This starts the subscription immediately. There is no activation link to click.
 
 Wait for **You're subscribed — we'll email you. Manage or unsubscribe anytime.**
 Keep the welcome email: its manage link opens the saved watch, where you can change or stop it.
-A failed submission is not a saved watch; follow the error's retry instruction.
+A failed submission is not a saved watch. Follow the error's retry instruction.
 
 ::: figure watch-confirmation
 

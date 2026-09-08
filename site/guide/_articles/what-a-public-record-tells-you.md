@@ -22,7 +22,7 @@ sources:
   - Public review of land-use applications, Department of City Planning | https://www.nyc.gov/site/planning/applicants/applicant-portal/step5-ulurp-process.page
 ---
 
-## A record is a publication, not the action
+## Read what the agency published
 
 Almost everything on CityScroll started as something a New York City agency published: a notice in
 The City Record, a proposed rule, an application filed with the Department of City Planning, an exam
@@ -79,12 +79,12 @@ have different deadlines, and send what you say to different places. They are no
 
 | The invitation | What it is | Where what you say goes |
 | --- | --- | --- |
-| A public hearing | A scheduled session where people speak, or send written testimony | The hearing's testimony record; some bodies publish a transcript, others minutes |
+| A public hearing | A scheduled session where people speak, or send written testimony | The hearing's testimony record. Some bodies publish a transcript, others minutes |
 | A rule comment period | A written window on a proposed agency rule, before a published deadline | The comment record the agency must consider before adopting |
 | Land-use review | Hearings held by the bodies reviewing an application, at their own stages | That body's recommendation or decision record on the project |
 | A contract comment window | A written window on a proposed contract award | The public comment record for that procurement |
 
-Two limits apply to all four. Filing a comment or giving testimony puts your words on the record; no
+Two limits apply to all four. Filing a comment or giving testimony puts your words on the record. No
 official is obliged to reply to you personally, and CityScroll promises no such reply. And a count of
 comments stays a count of comments — a body weighs what was said against the law it works under, so
 comment volume is not a vote and is never reported here as support or opposition.
@@ -103,7 +103,7 @@ Several New York City geographies overlap and share numbers, which makes them ea
 | The object | What it is | Why the difference matters |
 | --- | --- | --- |
 | Community Board | An appointed local board, numbered within a borough | Manhattan Community Board 7 and Brooklyn Community Board 7 are different boards |
-| Community district | The area a Community Board covers | It is a place; the board is a body |
+| Community district | The area a Community Board covers | It is a place. The board is a body |
 | City Council District | The area one Council Member is elected to represent | Numbered citywide, and its boundaries do not follow community districts |
 
 That is why choosing a Community Board on CityScroll takes two steps — a borough, then a number —

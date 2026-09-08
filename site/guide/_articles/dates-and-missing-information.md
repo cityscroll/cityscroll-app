@@ -33,8 +33,7 @@ rather than presenting one as the other.
 ## As of a day
 
 Agency pages carry an **As of day** filter. Give it a date and the page keeps only the linked records
-whose publisher or event date falls on or before that day. The set contains records linked now;
-undated records are excluded.
+whose publisher or event date falls on or before that day. The set contains records linked now. Undated records are excluded.
 Sharing the address reopens the same day.
 
 What it does not do is reconstruct everything CityScroll knew on that date. It filters records by
@@ -67,7 +66,7 @@ the official notice lives.
 
 What it is not is a current invitation. A civil-service exam whose filing window has closed shows
 that window marked closed, and following its apply link will not get you a place. The lesson is
-transferable to a window that is open; the opportunity is not.
+transferable to a window that is open. The opportunity is not.
 
 ## An estimate is not a deadline
 

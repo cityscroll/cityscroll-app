@@ -23,18 +23,18 @@ sources:
 ## Step 1 — Open the project
 
 Open [land-use projects](/browse/zoning/) with JavaScript switched on. Enter the project's name
-in **ZIP or place** above the list; for practice use **Timbale Terrace**. Select its title and check
+in **ZIP or place** above the list. For practice use **Timbale Terrace**. Select its title and check
 project number **2022M0258**. Reading here submits nothing and starts no subscription.
 
 ## Step 2 — Read the stage and authority
 
 In **Where this stands**, read **Current stage**, **Current actor** and **Role** together.
-The role tells you whether the body can decide or only recommend; a recommendation is not approval.
+The role tells you whether the body can decide or only recommend. A recommendation is not approval.
 Then read **Expected next stage** and **Published next opportunity**. The former is the usual next
 step, while the latter is a published chance to participate when a date is available.
 
 Check each date's label before planning around it. A window calculated from statutory review periods
-is not an appointment; clocks can pause. Use a published opportunity's official source to confirm
+is not an appointment. Clocks can pause. Use a published opportunity's official source to confirm
 where and when to participate.
 
 ::: figure project-stage
@@ -43,7 +43,7 @@ where and when to participate.
 
 On the project page, find **Decision documents** and open a document title if one is listed.
 These are a body's published decisions. Application filings, including a **Racial Equity Report**
-where required, serve a different purpose; read whether a report was required and observed before
+where required, serve a different purpose. Read whether a report was required and observed before
 drawing a conclusion from its absence.
 
 Use **Open full ZAP project** in the decision-documents area to open its full record in the city's **Zoning Application Portal**.

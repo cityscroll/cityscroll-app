@@ -57,7 +57,7 @@ function brandMark() {
   </svg>`;
 }
 
-export function renderCivicDocumentMast({ current, siteBase = "", surfaceClass = "", scope = null } = {}) {
+export function renderCivicDocumentMast({ current, siteBase = "", surfaceClass = "", scope = null, translate = value => value } = {}) {
   const base = String(siteBase || "").replace(/\/$/, "");
   const home = base || "/";
   const context = placeContextFromScope(scope);
@@ -72,12 +72,12 @@ export function renderCivicDocumentMast({ current, siteBase = "", surfaceClass =
     // The guide is not a scoped product surface; carrying a place query would
     // look like a filter it does not apply.
     const href = route === "guide" ? raw : appendPlaceContextToHref(raw, context);
-    return `<a${current === route ? ' aria-current="page"' : ""} href="${esc(href)}">${label}</a>`;
+    return `<a${current === route ? ' aria-current="page"' : ""} href="${esc(href)}">${esc(translate(label))}</a>`;
   }).join("");
   const classes = classNames("document-mast", surfaceClass);
   return `<header class="${esc(classes)}"><div class="document-mast-inner">
-    <a class="document-brand brand-lockup home" href="${esc(home)}" aria-label="CityScroll home">${brandMark()}<span>CityScroll</span></a>
-    <nav class="document-nav" aria-label="Primary">${links}</nav>
+    <a class="document-brand brand-lockup home" href="${esc(home)}" aria-label="${esc(translate("CityScroll home"))}">${brandMark()}<span>CityScroll</span></a>
+    <nav class="document-nav" aria-label="${esc(translate("Primary"))}">${links}</nav>
   </div></header>`;
 }
 
@@ -127,8 +127,9 @@ export function renderNodeFooter({
   aboutHref = "/about.html",
   guideHref = "/guide/",
   extraClass = "",
+  translate = value => value,
 } = {}) {
-  return `<footer class="${esc(classNames("node-footer", extraClass))}">${esc(text)} <a href="${esc(guideHref)}">Guide</a>. <a href="${esc(aboutHref)}">About the data</a>.</footer>`;
+  return `<footer class="${esc(classNames("node-footer", extraClass))}">${esc(translate(text))} <a href="${esc(guideHref)}">${esc(translate("Guide"))}</a>. <a href="${esc(aboutHref)}">${esc(translate("About the data"))}</a>.</footer>`;
 }
 
 /**

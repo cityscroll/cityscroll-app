@@ -592,7 +592,7 @@ test("shared agency template leads with compact actions and connected-record car
   assert.match(primaryActions, /href="#edge-provenance"[^>]*>Connection evidence<\/a>/);
   assert.doesNotMatch(primaryActions, /Expected mandate events|Report mandates|Rulemaking mandates|Interactive profile|Copy link|Print|Download/);
 
-  assert.match(connectedRecords, /<h2 id="agency-connections-heading">Connected records<\/h2>/);
+  assert.match(connectedRecords, /<h2 id="agency-connections-heading"[^>]*>Connected records<\/h2>/);
   assert.match(connectedRecords, /5 kinds of connected records/);
   assert.equal((connectedRecords.match(/class="agency-connection-card"/g) || []).length, 5);
   assert.equal((connectedRecords.match(/class="agency-connection-action"/g) || []).length, 5);

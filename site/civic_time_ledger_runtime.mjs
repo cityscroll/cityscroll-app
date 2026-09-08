@@ -399,6 +399,7 @@ async function hydrateAgencyRelationships(main, href) {
     main.dataset.civicObjectDeferredState = "ready";
     const nowView = payload.view || null;
     wireAgencyDocument(main, nowView, { viewHref: payload.view_href || main.dataset.civicObjectViewHref });
+    window.applyStrings?.();
     return { nowView, state: "ready" };
   } catch (error) {
     if (host) {
@@ -453,6 +454,7 @@ export function mountAgencyCivicTimeLedger(root = document) {
 
 // Auto-mount on agency constellation documents.
 if (typeof document !== "undefined") {
+  window.initSubpageLangSwitcher?.();
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => mountAgencyCivicTimeLedger(document), { once: true });
   } else {

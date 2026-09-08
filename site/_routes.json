@@ -18,7 +18,8 @@
     "/exams/*",
     "/following/packs/*",
     "/districts/council/*",
-    "/browse/*"
+    "/browse/*",
+    "/guide/*"
   ],
   "exclude": [
     "/stats.html"

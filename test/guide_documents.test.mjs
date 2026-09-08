@@ -21,10 +21,11 @@ import { GUIDE_GROUPS, GuideSourceError, escapeHtml, parseGuideArticle, parseGui
 import { GuideSourceCoverageError, guideSourceCoverageTable } from "../site/guide_source_coverage.mjs";
 import { renderGuideArticle, renderGuideHome } from "../site/guide_view.mjs";
 import { guideWordCounts } from "../tools/guide_word_counts.mjs";
-import { internalLinkFailures, loadGuide, renderGuideDocuments } from "../tools/build_guide_documents.mjs";
+import { internalLinkFailures, loadGuide, renderGuideDocuments, guideTranslationUnits } from "../tools/build_guide_documents.mjs";
 
 const { home, articles } = loadGuide();
-const documents = renderGuideDocuments();
+const allDocuments = renderGuideDocuments();
+const documents = new Map([...allDocuments].filter(([path]) => !/\/guide\/(?:[a-z]{2}|zh-Hans)\//.test(path)));
 const homeHtml = readFileSync(new URL("../site/guide/index.html", import.meta.url), "utf8");
 const tutorial = articles.find((article) => article.id === "T1");
 const tutorialHtml = readFileSync(
@@ -80,7 +81,7 @@ test("every internal link on a published guide page resolves", () => {
 });
 
 test("the guide home says which language it is published in", () => {
-  assert.match(textOf(homeHtml), /published in English first/);
+  assert.match(textOf(homeHtml), /Choose a language to read the guide/);
 });
 
 /* ------------------------------------------------------- the first tutorial */
@@ -397,7 +398,7 @@ test("the calendar guide claims nothing about what an external calendar did", ()
 
 test("the calendar guide gives a date-only deadline no invented time", () => {
   const text = textOf(howToHtml.get("H4"));
-  assert.match(text, /does not invent a time/);
+  assert.match(text, /supplies no clock time for a date-only event/);
   assert.match(text, /date-only deadlines as all-day entries/);
   // The surest way to check the article invents no time is that it contains none.
   const clock = /\b\d{1,2}:\d{2}\b/.exec(text);
@@ -408,7 +409,7 @@ test("one event and a continuing subscription stay two different things", () => 
   const text = textOf(howToHtml.get("H4"));
   assert.match(text, /one-time copy: it will not update if the event changes/);
   assert.match(text, /Importing a downloaded file is a one-time copy/);
-  assert.match(text, /only a URL your calendar keeps fetching is a subscription/);
+  assert.match(text, /Only a URL your calendar keeps fetching is a subscription/);
 });
 
 /* ----- H5: unknown project facts are stated as unknown (A5) */
@@ -852,4 +853,98 @@ test("a same-page fragment must name an anchor that page actually renders", () =
   ]);
   const failures = internalLinkFailures(named, articles);
   assert.ok(failures.some((failure) => /not-a-real-anchor/.test(failure)), failures.join("\n"));
+});
+
+// Build-time localization uses the same product dictionaries and placeholders.
+const { loadGuideCatalog, guideTranslator, guideTranslationUnit, reconcileGuideDraft, markGuideSourceLanguage } = await import('../tools/guide_translation_catalog.mjs');
+
+test('guide translation refuses missing prose and copied English instead of completing coverage', () => {
+  const catalog = loadGuideCatalog();
+  const source = 'Open the calendar and check the dates.';
+  const unit = guideTranslationUnit(source, catalog);
+  assert.throws(() => guideTranslator(catalog, 'es')(source), /Incomplete guide translation/);
+  catalog.STRINGS.es[unit.key] = unit.template;
+  assert.throws(() => guideTranslator(catalog, 'es')(source), /Incomplete guide translation/);
+  catalog.STRINGS.es[unit.key] = 'Abre el calendario y comprueba las fechas.';
+  assert.equal(guideTranslator(catalog, 'es')(source), 'Abre el calendario y comprueba las fechas.');
+  assert.throws(() => guideTranslator(catalog, 'es')('Open the calendar and check the deadline.'), /Incomplete guide translation/);
+});
+
+test('guide translation retains authored links and resolves control names from the UI catalog', () => {
+  const catalog = loadGuideCatalog();
+  const source = 'Open [Following](/following/?step=choose) and choose **Preview matches**.';
+  const unit = guideTranslationUnit(source, catalog);
+  assert.ok(Object.values(unit.bindings).some(binding => binding.key), 'real UI terms are bound');
+  catalog.STRINGS.es[unit.key] = unit.template.replace('Open ', 'Abre ').replace(' and choose ', ' y elige ');
+  const result = guideTranslator(catalog, 'es')(source);
+  assert.ok(result.includes('](/following/?step=choose)'));
+  for (const binding of Object.values(unit.bindings).filter(binding => binding.key)) {
+    assert.ok(result.includes(catalog.STRINGS.es[binding.key]));
+  }
+  catalog.STRINGS.es[unit.key] = 'Abre el calendario.';
+  assert.throws(() => guideTranslator(catalog, 'es')(source), /changed placeholders/);
+});
+
+test('localized figure paths must match their declared interface language', () => {
+  const figure = { ...FIGURE, locale: 'es', localeLabel: 'Español',
+    mobile: { ...FIGURE.mobile, src: '/media/guide/follow-a-community-board/es/picker-mobile.png' },
+    desktop: { ...FIGURE.desktop, src: '/media/guide/follow-a-community-board/es/picker-desktop.png' } };
+  const html = renderGuideFigure('test', 'picker', figure, value => value === 'Interface language: {language}' ? 'Idioma de la interfaz: {language}' : value);
+  assert.match(html, /Idioma de la interfaz: Español/);
+  assert.throws(() => renderGuideFigure('test', 'picker', { ...figure, locale: 'ar' }), GuideSourceError);
+});
+
+test('every shipping language has all article bodies, chrome and static navigation', () => {
+  const catalog = loadGuideCatalog();
+  assert.equal(allDocuments.size, (articles.length + 1) * (catalog.SHIPPING_LANGS.length + 1));
+  for (const locale of catalog.SHIPPING_LANGS) {
+    for (const article of articles) {
+      const route = article.url.replace('/guide/', `/guide/${locale}/`);
+      const pair = [...allDocuments].find(([path]) => path.endsWith(`${route}index.html`));
+      assert.ok(pair, `${locale}: ${article.url}`);
+      const html = pair[1];
+      assert.ok(html.includes(`<html lang="${locale}" dir="${catalog.LANG_META[locale].dir}"`));
+      assert.ok(html.includes('data-guide-translation-state="machine-drafted"'));
+      assert.ok(html.includes(`href="/guide/${locale}/"`));
+      assert.ok(html.includes('lang=' + locale), 'product return retains language');
+      assert.doesNotMatch(html, /\{(?:control|name|link|preserved)_[a-z]+\}/);
+      assert.equal((html.match(/<h2\b/g)||[]).length, ([...documents].find(([path]) => path.endsWith(`${article.url}index.html`))[1].match(/<h2\b/g)||[]).length);
+    }
+  }
+});
+
+test('coverage fails when a paragraph falls back and review inputs retain editorial dates', async () => {
+  const {guideCoverageMatrix} = await import('../tools/build_guide_documents.mjs');
+  const catalog = loadGuideCatalog();
+  const complete = guideCoverageMatrix(catalog);
+  assert.equal(complete.rows.length, articles.length * (catalog.SHIPPING_LANGS.length + 1));
+  assert.ok(complete.rows.every(row => row.status === 'complete'));
+  const paragraph = [...guideTranslationUnits(catalog).values()].find(unit => unit.source.includes('type a word such as'));
+  catalog.STRINGS.es[paragraph.key] = paragraph.template;
+  assert.ok(guideCoverageMatrix(catalog).rows.some(row => row.locale === 'es' && row.status === 'incomplete'));
+  for (const article of articles) {
+    assert.ok(article.depends_on.includes('site/i18n/lang/es.js'));
+    assert.ok(article.depends_on.includes('site/i18n/glossary.json'));
+    assert.ok(article.depends_on.includes(`site/guide/_articles/${article.url.split('/').filter(Boolean).at(-1)}.md`));
+    assert.equal(article.last_reviewed, loadGuide().articles.find(other => other.id === article.id).last_reviewed);
+  }
+});
+
+
+test('draft terminology migration leaves ordinary translated prose intact', () => {
+  const catalog = loadGuideCatalog();
+  const source = "Step 1 — Open a connection's details";
+  const unit = guideTranslationUnit(source, catalog);
+  const draft = 'Paso 1 — Abra los detalles de una conexión';
+  const row = reconcileGuideDraft(unit, draft, catalog, {details: 'detalles'}, 'es');
+  assert.equal(row.translated, draft);
+});
+
+
+test('retained source titles have an explicit reading language without marking translated emphasis', () => {
+  const unit = guideTranslationUnit('Read **Update to Parks List** and **Details**.', loadGuideCatalog());
+  const html = '<html><head></head><body><strong>Update to Parks List</strong><strong>Detalles</strong></body></html>';
+  const marked = markGuideSourceLanguage(html, new Map([[unit.key, unit]]));
+  assert.ok(marked.includes('<bdi lang="en" dir="ltr">Update to Parks List</bdi>'));
+  assert.ok(marked.includes('<strong>Detalles</strong>'));
 });

@@ -1,0 +1,1679 @@
+{
+  "schema": "cityscroll.guide-language-coverage.v1",
+  "rule": "Every paragraph, heading, list item, table cell, caption, alt text and navigation label must resolve in the product dictionary. Missing or copied English prose is incomplete. Bound UI controls, official names, identifiers, dates and URLs are intentional source content.",
+  "editorial_review": "Machine checks do not advance article dates or locale editorial provenance.",
+  "rows": [
+    {
+      "article": "check-the-evidence-behind-a-connection",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "419b2bfebade1c4037932cae88f52db40f2e769801d690cf96392f1da233c162",
+      "required_segments": 37,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "collect-records-and-export-them",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "9b2e477398d8c59e0e32fcdd51bbe57e88397bc1f02e4d38096a234d8c068a44",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "controls-and-outputs",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "9dd082dee93f075a2894df63222821b59f91b50a4fe3b23a3b236f22aba39bd1",
+      "required_segments": 108,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "dates-and-missing-information",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "b3d611a3fe6267bdb88da70bc6b3b762c2ade7e12fac5a7a9d13f2ca5d08fed1",
+      "required_segments": 54,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "explore-housing-across-city-records",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "21bb47b7b78f3f1f89e8f2dd72b2b7d30e1f63a7ddc22c8125165ace0cf352fc",
+      "required_segments": 41,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "find-and-narrow-records",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "9bd526f610fc217ac4dcb56de4ee49023772a8aa84d4c1bf6078a955bd6df72e",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "flags-and-historical-patterns",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
+      "required_segments": 69,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-community-board",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "83765538af92f8383c616dd6cb9eeb9fa5b1968294b0387591eb4fabca646d5a",
+      "required_segments": 46,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-search",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "glossary",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "53a441bc62e1ea7e407e45108501eaae3358d77a810cf2eb04166864eba1b578",
+      "required_segments": 124,
+      "intentional_source_segments": 2
+    },
+    {
+      "article": "how-records-are-connected",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "161323bcb4b2e105c640cbd80319886e64a53a40a56eee5182bcd0d23ff0df27",
+      "required_segments": 44,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "look-at-records-as-of-a-day",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "f203fe71e6049eff8e5f0c210774170927b314d6d6c92867d871486944aca236",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "put-dates-in-your-calendar",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "5a6772093d2239fe745390546d5f6ec7b1d56c979659a77938ed86f9aae83601",
+      "required_segments": 43,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-budget-request-and-the-answer",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "bbd1805bfc326257315817859b4cc11ca3770cd6d21c5fa01417ebe75b1be0e9",
+      "required_segments": 71,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-land-use-projects-next-step",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
+      "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "sources-and-coverage",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
+      "required_segments": 59,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-a-notice-to-the-duty-behind-it",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "13b574fb4fad664247b485dfa594208c201b8b3d251a9297d99c488fa3b1bffe",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-an-award-and-keep-the-trail",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "0b3659d1375c0f5bfb58571df9c394e5fc088c1f2951ccfed3c0bfe38049815e",
+      "required_segments": 45,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "what-a-public-record-tells-you",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
+      "required_segments": 75,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "check-the-evidence-behind-a-connection",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "419b2bfebade1c4037932cae88f52db40f2e769801d690cf96392f1da233c162",
+      "required_segments": 36,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "collect-records-and-export-them",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "9b2e477398d8c59e0e32fcdd51bbe57e88397bc1f02e4d38096a234d8c068a44",
+      "required_segments": 41,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "controls-and-outputs",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "9dd082dee93f075a2894df63222821b59f91b50a4fe3b23a3b236f22aba39bd1",
+      "required_segments": 108,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "dates-and-missing-information",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "b3d611a3fe6267bdb88da70bc6b3b762c2ade7e12fac5a7a9d13f2ca5d08fed1",
+      "required_segments": 54,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "explore-housing-across-city-records",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "21bb47b7b78f3f1f89e8f2dd72b2b7d30e1f63a7ddc22c8125165ace0cf352fc",
+      "required_segments": 41,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "find-and-narrow-records",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "9bd526f610fc217ac4dcb56de4ee49023772a8aa84d4c1bf6078a955bd6df72e",
+      "required_segments": 37,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "flags-and-historical-patterns",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
+      "required_segments": 69,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-community-board",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "83765538af92f8383c616dd6cb9eeb9fa5b1968294b0387591eb4fabca646d5a",
+      "required_segments": 45,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-search",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "required_segments": 37,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "glossary",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "53a441bc62e1ea7e407e45108501eaae3358d77a810cf2eb04166864eba1b578",
+      "required_segments": 124,
+      "intentional_source_segments": 2
+    },
+    {
+      "article": "how-records-are-connected",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "161323bcb4b2e105c640cbd80319886e64a53a40a56eee5182bcd0d23ff0df27",
+      "required_segments": 44,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "look-at-records-as-of-a-day",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "f203fe71e6049eff8e5f0c210774170927b314d6d6c92867d871486944aca236",
+      "required_segments": 37,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "put-dates-in-your-calendar",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "5a6772093d2239fe745390546d5f6ec7b1d56c979659a77938ed86f9aae83601",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-budget-request-and-the-answer",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "bbd1805bfc326257315817859b4cc11ca3770cd6d21c5fa01417ebe75b1be0e9",
+      "required_segments": 71,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-land-use-projects-next-step",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
+      "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "sources-and-coverage",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
+      "required_segments": 59,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-a-notice-to-the-duty-behind-it",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "13b574fb4fad664247b485dfa594208c201b8b3d251a9297d99c488fa3b1bffe",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-an-award-and-keep-the-trail",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "0b3659d1375c0f5bfb58571df9c394e5fc088c1f2951ccfed3c0bfe38049815e",
+      "required_segments": 45,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "what-a-public-record-tells-you",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
+      "required_segments": 75,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "check-the-evidence-behind-a-connection",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "419b2bfebade1c4037932cae88f52db40f2e769801d690cf96392f1da233c162",
+      "required_segments": 36,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "collect-records-and-export-them",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "9b2e477398d8c59e0e32fcdd51bbe57e88397bc1f02e4d38096a234d8c068a44",
+      "required_segments": 41,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "controls-and-outputs",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "9dd082dee93f075a2894df63222821b59f91b50a4fe3b23a3b236f22aba39bd1",
+      "required_segments": 108,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "dates-and-missing-information",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "b3d611a3fe6267bdb88da70bc6b3b762c2ade7e12fac5a7a9d13f2ca5d08fed1",
+      "required_segments": 54,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "explore-housing-across-city-records",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "21bb47b7b78f3f1f89e8f2dd72b2b7d30e1f63a7ddc22c8125165ace0cf352fc",
+      "required_segments": 41,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "find-and-narrow-records",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "9bd526f610fc217ac4dcb56de4ee49023772a8aa84d4c1bf6078a955bd6df72e",
+      "required_segments": 37,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "flags-and-historical-patterns",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
+      "required_segments": 69,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-community-board",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "83765538af92f8383c616dd6cb9eeb9fa5b1968294b0387591eb4fabca646d5a",
+      "required_segments": 45,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-search",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "required_segments": 37,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "glossary",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "53a441bc62e1ea7e407e45108501eaae3358d77a810cf2eb04166864eba1b578",
+      "required_segments": 124,
+      "intentional_source_segments": 2
+    },
+    {
+      "article": "how-records-are-connected",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "161323bcb4b2e105c640cbd80319886e64a53a40a56eee5182bcd0d23ff0df27",
+      "required_segments": 44,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "look-at-records-as-of-a-day",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "f203fe71e6049eff8e5f0c210774170927b314d6d6c92867d871486944aca236",
+      "required_segments": 37,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "put-dates-in-your-calendar",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "5a6772093d2239fe745390546d5f6ec7b1d56c979659a77938ed86f9aae83601",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-budget-request-and-the-answer",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "bbd1805bfc326257315817859b4cc11ca3770cd6d21c5fa01417ebe75b1be0e9",
+      "required_segments": 71,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-land-use-projects-next-step",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
+      "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "sources-and-coverage",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
+      "required_segments": 59,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-a-notice-to-the-duty-behind-it",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "13b574fb4fad664247b485dfa594208c201b8b3d251a9297d99c488fa3b1bffe",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-an-award-and-keep-the-trail",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "0b3659d1375c0f5bfb58571df9c394e5fc088c1f2951ccfed3c0bfe38049815e",
+      "required_segments": 45,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "what-a-public-record-tells-you",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
+      "required_segments": 75,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "check-the-evidence-behind-a-connection",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "419b2bfebade1c4037932cae88f52db40f2e769801d690cf96392f1da233c162",
+      "required_segments": 37,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "collect-records-and-export-them",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "9b2e477398d8c59e0e32fcdd51bbe57e88397bc1f02e4d38096a234d8c068a44",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "controls-and-outputs",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "9dd082dee93f075a2894df63222821b59f91b50a4fe3b23a3b236f22aba39bd1",
+      "required_segments": 108,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "dates-and-missing-information",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "b3d611a3fe6267bdb88da70bc6b3b762c2ade7e12fac5a7a9d13f2ca5d08fed1",
+      "required_segments": 54,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "explore-housing-across-city-records",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "21bb47b7b78f3f1f89e8f2dd72b2b7d30e1f63a7ddc22c8125165ace0cf352fc",
+      "required_segments": 41,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "find-and-narrow-records",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "9bd526f610fc217ac4dcb56de4ee49023772a8aa84d4c1bf6078a955bd6df72e",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "flags-and-historical-patterns",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
+      "required_segments": 69,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-community-board",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "83765538af92f8383c616dd6cb9eeb9fa5b1968294b0387591eb4fabca646d5a",
+      "required_segments": 46,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-search",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "glossary",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "53a441bc62e1ea7e407e45108501eaae3358d77a810cf2eb04166864eba1b578",
+      "required_segments": 124,
+      "intentional_source_segments": 2
+    },
+    {
+      "article": "how-records-are-connected",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "161323bcb4b2e105c640cbd80319886e64a53a40a56eee5182bcd0d23ff0df27",
+      "required_segments": 44,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "look-at-records-as-of-a-day",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "f203fe71e6049eff8e5f0c210774170927b314d6d6c92867d871486944aca236",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "put-dates-in-your-calendar",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "5a6772093d2239fe745390546d5f6ec7b1d56c979659a77938ed86f9aae83601",
+      "required_segments": 43,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-budget-request-and-the-answer",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "bbd1805bfc326257315817859b4cc11ca3770cd6d21c5fa01417ebe75b1be0e9",
+      "required_segments": 71,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-land-use-projects-next-step",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
+      "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "sources-and-coverage",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
+      "required_segments": 59,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-a-notice-to-the-duty-behind-it",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "13b574fb4fad664247b485dfa594208c201b8b3d251a9297d99c488fa3b1bffe",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-an-award-and-keep-the-trail",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "0b3659d1375c0f5bfb58571df9c394e5fc088c1f2951ccfed3c0bfe38049815e",
+      "required_segments": 45,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "what-a-public-record-tells-you",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
+      "required_segments": 75,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "check-the-evidence-behind-a-connection",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "419b2bfebade1c4037932cae88f52db40f2e769801d690cf96392f1da233c162",
+      "required_segments": 37,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "collect-records-and-export-them",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "9b2e477398d8c59e0e32fcdd51bbe57e88397bc1f02e4d38096a234d8c068a44",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "controls-and-outputs",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "9dd082dee93f075a2894df63222821b59f91b50a4fe3b23a3b236f22aba39bd1",
+      "required_segments": 108,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "dates-and-missing-information",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "b3d611a3fe6267bdb88da70bc6b3b762c2ade7e12fac5a7a9d13f2ca5d08fed1",
+      "required_segments": 54,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "explore-housing-across-city-records",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "21bb47b7b78f3f1f89e8f2dd72b2b7d30e1f63a7ddc22c8125165ace0cf352fc",
+      "required_segments": 41,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "find-and-narrow-records",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "9bd526f610fc217ac4dcb56de4ee49023772a8aa84d4c1bf6078a955bd6df72e",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "flags-and-historical-patterns",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
+      "required_segments": 69,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-community-board",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "83765538af92f8383c616dd6cb9eeb9fa5b1968294b0387591eb4fabca646d5a",
+      "required_segments": 46,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-search",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "glossary",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "53a441bc62e1ea7e407e45108501eaae3358d77a810cf2eb04166864eba1b578",
+      "required_segments": 124,
+      "intentional_source_segments": 2
+    },
+    {
+      "article": "how-records-are-connected",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "161323bcb4b2e105c640cbd80319886e64a53a40a56eee5182bcd0d23ff0df27",
+      "required_segments": 44,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "look-at-records-as-of-a-day",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "f203fe71e6049eff8e5f0c210774170927b314d6d6c92867d871486944aca236",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "put-dates-in-your-calendar",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "5a6772093d2239fe745390546d5f6ec7b1d56c979659a77938ed86f9aae83601",
+      "required_segments": 43,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-budget-request-and-the-answer",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "bbd1805bfc326257315817859b4cc11ca3770cd6d21c5fa01417ebe75b1be0e9",
+      "required_segments": 71,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-land-use-projects-next-step",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
+      "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "sources-and-coverage",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
+      "required_segments": 59,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-a-notice-to-the-duty-behind-it",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "13b574fb4fad664247b485dfa594208c201b8b3d251a9297d99c488fa3b1bffe",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-an-award-and-keep-the-trail",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "0b3659d1375c0f5bfb58571df9c394e5fc088c1f2951ccfed3c0bfe38049815e",
+      "required_segments": 45,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "what-a-public-record-tells-you",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
+      "required_segments": 75,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "check-the-evidence-behind-a-connection",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "419b2bfebade1c4037932cae88f52db40f2e769801d690cf96392f1da233c162",
+      "required_segments": 37,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "collect-records-and-export-them",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "9b2e477398d8c59e0e32fcdd51bbe57e88397bc1f02e4d38096a234d8c068a44",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "controls-and-outputs",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "9dd082dee93f075a2894df63222821b59f91b50a4fe3b23a3b236f22aba39bd1",
+      "required_segments": 108,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "dates-and-missing-information",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "b3d611a3fe6267bdb88da70bc6b3b762c2ade7e12fac5a7a9d13f2ca5d08fed1",
+      "required_segments": 54,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "explore-housing-across-city-records",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "21bb47b7b78f3f1f89e8f2dd72b2b7d30e1f63a7ddc22c8125165ace0cf352fc",
+      "required_segments": 41,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "find-and-narrow-records",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "9bd526f610fc217ac4dcb56de4ee49023772a8aa84d4c1bf6078a955bd6df72e",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "flags-and-historical-patterns",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
+      "required_segments": 69,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-community-board",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "83765538af92f8383c616dd6cb9eeb9fa5b1968294b0387591eb4fabca646d5a",
+      "required_segments": 46,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-search",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "glossary",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "53a441bc62e1ea7e407e45108501eaae3358d77a810cf2eb04166864eba1b578",
+      "required_segments": 124,
+      "intentional_source_segments": 2
+    },
+    {
+      "article": "how-records-are-connected",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "161323bcb4b2e105c640cbd80319886e64a53a40a56eee5182bcd0d23ff0df27",
+      "required_segments": 44,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "look-at-records-as-of-a-day",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "f203fe71e6049eff8e5f0c210774170927b314d6d6c92867d871486944aca236",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "put-dates-in-your-calendar",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "5a6772093d2239fe745390546d5f6ec7b1d56c979659a77938ed86f9aae83601",
+      "required_segments": 43,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-budget-request-and-the-answer",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "bbd1805bfc326257315817859b4cc11ca3770cd6d21c5fa01417ebe75b1be0e9",
+      "required_segments": 71,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-land-use-projects-next-step",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
+      "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "sources-and-coverage",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
+      "required_segments": 59,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-a-notice-to-the-duty-behind-it",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "13b574fb4fad664247b485dfa594208c201b8b3d251a9297d99c488fa3b1bffe",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-an-award-and-keep-the-trail",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "0b3659d1375c0f5bfb58571df9c394e5fc088c1f2951ccfed3c0bfe38049815e",
+      "required_segments": 45,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "what-a-public-record-tells-you",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
+      "required_segments": 75,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "check-the-evidence-behind-a-connection",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "419b2bfebade1c4037932cae88f52db40f2e769801d690cf96392f1da233c162",
+      "required_segments": 37,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "collect-records-and-export-them",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "9b2e477398d8c59e0e32fcdd51bbe57e88397bc1f02e4d38096a234d8c068a44",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "controls-and-outputs",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "9dd082dee93f075a2894df63222821b59f91b50a4fe3b23a3b236f22aba39bd1",
+      "required_segments": 108,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "dates-and-missing-information",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "b3d611a3fe6267bdb88da70bc6b3b762c2ade7e12fac5a7a9d13f2ca5d08fed1",
+      "required_segments": 54,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "explore-housing-across-city-records",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "21bb47b7b78f3f1f89e8f2dd72b2b7d30e1f63a7ddc22c8125165ace0cf352fc",
+      "required_segments": 41,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "find-and-narrow-records",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "9bd526f610fc217ac4dcb56de4ee49023772a8aa84d4c1bf6078a955bd6df72e",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "flags-and-historical-patterns",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
+      "required_segments": 69,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-community-board",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "83765538af92f8383c616dd6cb9eeb9fa5b1968294b0387591eb4fabca646d5a",
+      "required_segments": 46,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-search",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "glossary",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "53a441bc62e1ea7e407e45108501eaae3358d77a810cf2eb04166864eba1b578",
+      "required_segments": 124,
+      "intentional_source_segments": 2
+    },
+    {
+      "article": "how-records-are-connected",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "161323bcb4b2e105c640cbd80319886e64a53a40a56eee5182bcd0d23ff0df27",
+      "required_segments": 44,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "look-at-records-as-of-a-day",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "f203fe71e6049eff8e5f0c210774170927b314d6d6c92867d871486944aca236",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "put-dates-in-your-calendar",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "5a6772093d2239fe745390546d5f6ec7b1d56c979659a77938ed86f9aae83601",
+      "required_segments": 43,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-budget-request-and-the-answer",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "bbd1805bfc326257315817859b4cc11ca3770cd6d21c5fa01417ebe75b1be0e9",
+      "required_segments": 71,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-land-use-projects-next-step",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
+      "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "sources-and-coverage",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
+      "required_segments": 59,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-a-notice-to-the-duty-behind-it",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "13b574fb4fad664247b485dfa594208c201b8b3d251a9297d99c488fa3b1bffe",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-an-award-and-keep-the-trail",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "0b3659d1375c0f5bfb58571df9c394e5fc088c1f2951ccfed3c0bfe38049815e",
+      "required_segments": 45,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "what-a-public-record-tells-you",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
+      "required_segments": 75,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "check-the-evidence-behind-a-connection",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "419b2bfebade1c4037932cae88f52db40f2e769801d690cf96392f1da233c162",
+      "required_segments": 37,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "collect-records-and-export-them",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "9b2e477398d8c59e0e32fcdd51bbe57e88397bc1f02e4d38096a234d8c068a44",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "controls-and-outputs",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "9dd082dee93f075a2894df63222821b59f91b50a4fe3b23a3b236f22aba39bd1",
+      "required_segments": 108,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "dates-and-missing-information",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "b3d611a3fe6267bdb88da70bc6b3b762c2ade7e12fac5a7a9d13f2ca5d08fed1",
+      "required_segments": 54,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "explore-housing-across-city-records",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "21bb47b7b78f3f1f89e8f2dd72b2b7d30e1f63a7ddc22c8125165ace0cf352fc",
+      "required_segments": 41,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "find-and-narrow-records",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "9bd526f610fc217ac4dcb56de4ee49023772a8aa84d4c1bf6078a955bd6df72e",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "flags-and-historical-patterns",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
+      "required_segments": 69,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-community-board",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "83765538af92f8383c616dd6cb9eeb9fa5b1968294b0387591eb4fabca646d5a",
+      "required_segments": 46,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-search",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "glossary",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "53a441bc62e1ea7e407e45108501eaae3358d77a810cf2eb04166864eba1b578",
+      "required_segments": 124,
+      "intentional_source_segments": 2
+    },
+    {
+      "article": "how-records-are-connected",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "161323bcb4b2e105c640cbd80319886e64a53a40a56eee5182bcd0d23ff0df27",
+      "required_segments": 44,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "look-at-records-as-of-a-day",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "f203fe71e6049eff8e5f0c210774170927b314d6d6c92867d871486944aca236",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "put-dates-in-your-calendar",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "5a6772093d2239fe745390546d5f6ec7b1d56c979659a77938ed86f9aae83601",
+      "required_segments": 43,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-budget-request-and-the-answer",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "bbd1805bfc326257315817859b4cc11ca3770cd6d21c5fa01417ebe75b1be0e9",
+      "required_segments": 71,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-land-use-projects-next-step",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
+      "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "sources-and-coverage",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
+      "required_segments": 59,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-a-notice-to-the-duty-behind-it",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "13b574fb4fad664247b485dfa594208c201b8b3d251a9297d99c488fa3b1bffe",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-an-award-and-keep-the-trail",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "0b3659d1375c0f5bfb58571df9c394e5fc088c1f2951ccfed3c0bfe38049815e",
+      "required_segments": 45,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "what-a-public-record-tells-you",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
+      "required_segments": 75,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "check-the-evidence-behind-a-connection",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "419b2bfebade1c4037932cae88f52db40f2e769801d690cf96392f1da233c162",
+      "required_segments": 37,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "collect-records-and-export-them",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "9b2e477398d8c59e0e32fcdd51bbe57e88397bc1f02e4d38096a234d8c068a44",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "controls-and-outputs",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "9dd082dee93f075a2894df63222821b59f91b50a4fe3b23a3b236f22aba39bd1",
+      "required_segments": 108,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "dates-and-missing-information",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "b3d611a3fe6267bdb88da70bc6b3b762c2ade7e12fac5a7a9d13f2ca5d08fed1",
+      "required_segments": 54,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "explore-housing-across-city-records",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "21bb47b7b78f3f1f89e8f2dd72b2b7d30e1f63a7ddc22c8125165ace0cf352fc",
+      "required_segments": 41,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "find-and-narrow-records",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "9bd526f610fc217ac4dcb56de4ee49023772a8aa84d4c1bf6078a955bd6df72e",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "flags-and-historical-patterns",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
+      "required_segments": 69,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-community-board",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "83765538af92f8383c616dd6cb9eeb9fa5b1968294b0387591eb4fabca646d5a",
+      "required_segments": 46,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-search",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "glossary",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "53a441bc62e1ea7e407e45108501eaae3358d77a810cf2eb04166864eba1b578",
+      "required_segments": 124,
+      "intentional_source_segments": 2
+    },
+    {
+      "article": "how-records-are-connected",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "161323bcb4b2e105c640cbd80319886e64a53a40a56eee5182bcd0d23ff0df27",
+      "required_segments": 44,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "look-at-records-as-of-a-day",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "f203fe71e6049eff8e5f0c210774170927b314d6d6c92867d871486944aca236",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "put-dates-in-your-calendar",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "5a6772093d2239fe745390546d5f6ec7b1d56c979659a77938ed86f9aae83601",
+      "required_segments": 43,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-budget-request-and-the-answer",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "bbd1805bfc326257315817859b4cc11ca3770cd6d21c5fa01417ebe75b1be0e9",
+      "required_segments": 71,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-land-use-projects-next-step",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
+      "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "sources-and-coverage",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
+      "required_segments": 59,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-a-notice-to-the-duty-behind-it",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "13b574fb4fad664247b485dfa594208c201b8b3d251a9297d99c488fa3b1bffe",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-an-award-and-keep-the-trail",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "0b3659d1375c0f5bfb58571df9c394e5fc088c1f2951ccfed3c0bfe38049815e",
+      "required_segments": 45,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "what-a-public-record-tells-you",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
+      "required_segments": 75,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "check-the-evidence-behind-a-connection",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "419b2bfebade1c4037932cae88f52db40f2e769801d690cf96392f1da233c162",
+      "required_segments": 36,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "collect-records-and-export-them",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "9b2e477398d8c59e0e32fcdd51bbe57e88397bc1f02e4d38096a234d8c068a44",
+      "required_segments": 41,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "controls-and-outputs",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "9dd082dee93f075a2894df63222821b59f91b50a4fe3b23a3b236f22aba39bd1",
+      "required_segments": 108,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "dates-and-missing-information",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "b3d611a3fe6267bdb88da70bc6b3b762c2ade7e12fac5a7a9d13f2ca5d08fed1",
+      "required_segments": 54,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "explore-housing-across-city-records",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "21bb47b7b78f3f1f89e8f2dd72b2b7d30e1f63a7ddc22c8125165ace0cf352fc",
+      "required_segments": 41,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "find-and-narrow-records",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "9bd526f610fc217ac4dcb56de4ee49023772a8aa84d4c1bf6078a955bd6df72e",
+      "required_segments": 37,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "flags-and-historical-patterns",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
+      "required_segments": 69,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-community-board",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "83765538af92f8383c616dd6cb9eeb9fa5b1968294b0387591eb4fabca646d5a",
+      "required_segments": 45,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-search",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "required_segments": 37,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "glossary",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "53a441bc62e1ea7e407e45108501eaae3358d77a810cf2eb04166864eba1b578",
+      "required_segments": 124,
+      "intentional_source_segments": 2
+    },
+    {
+      "article": "how-records-are-connected",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "161323bcb4b2e105c640cbd80319886e64a53a40a56eee5182bcd0d23ff0df27",
+      "required_segments": 44,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "look-at-records-as-of-a-day",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "f203fe71e6049eff8e5f0c210774170927b314d6d6c92867d871486944aca236",
+      "required_segments": 37,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "put-dates-in-your-calendar",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "5a6772093d2239fe745390546d5f6ec7b1d56c979659a77938ed86f9aae83601",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-budget-request-and-the-answer",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "bbd1805bfc326257315817859b4cc11ca3770cd6d21c5fa01417ebe75b1be0e9",
+      "required_segments": 71,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-land-use-projects-next-step",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
+      "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "sources-and-coverage",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
+      "required_segments": 59,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-a-notice-to-the-duty-behind-it",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "13b574fb4fad664247b485dfa594208c201b8b3d251a9297d99c488fa3b1bffe",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-an-award-and-keep-the-trail",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "0b3659d1375c0f5bfb58571df9c394e5fc088c1f2951ccfed3c0bfe38049815e",
+      "required_segments": 45,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "what-a-public-record-tells-you",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
+      "required_segments": 75,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "check-the-evidence-behind-a-connection",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "419b2bfebade1c4037932cae88f52db40f2e769801d690cf96392f1da233c162",
+      "required_segments": 37,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "collect-records-and-export-them",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "9b2e477398d8c59e0e32fcdd51bbe57e88397bc1f02e4d38096a234d8c068a44",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "controls-and-outputs",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "9dd082dee93f075a2894df63222821b59f91b50a4fe3b23a3b236f22aba39bd1",
+      "required_segments": 108,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "dates-and-missing-information",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "b3d611a3fe6267bdb88da70bc6b3b762c2ade7e12fac5a7a9d13f2ca5d08fed1",
+      "required_segments": 54,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "explore-housing-across-city-records",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "21bb47b7b78f3f1f89e8f2dd72b2b7d30e1f63a7ddc22c8125165ace0cf352fc",
+      "required_segments": 41,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "find-and-narrow-records",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "9bd526f610fc217ac4dcb56de4ee49023772a8aa84d4c1bf6078a955bd6df72e",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "flags-and-historical-patterns",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
+      "required_segments": 69,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-community-board",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "83765538af92f8383c616dd6cb9eeb9fa5b1968294b0387591eb4fabca646d5a",
+      "required_segments": 46,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "follow-a-search",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "glossary",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "53a441bc62e1ea7e407e45108501eaae3358d77a810cf2eb04166864eba1b578",
+      "required_segments": 124,
+      "intentional_source_segments": 2
+    },
+    {
+      "article": "how-records-are-connected",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "161323bcb4b2e105c640cbd80319886e64a53a40a56eee5182bcd0d23ff0df27",
+      "required_segments": 44,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "look-at-records-as-of-a-day",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "f203fe71e6049eff8e5f0c210774170927b314d6d6c92867d871486944aca236",
+      "required_segments": 38,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "put-dates-in-your-calendar",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "5a6772093d2239fe745390546d5f6ec7b1d56c979659a77938ed86f9aae83601",
+      "required_segments": 43,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-budget-request-and-the-answer",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "bbd1805bfc326257315817859b4cc11ca3770cd6d21c5fa01417ebe75b1be0e9",
+      "required_segments": 71,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "read-a-land-use-projects-next-step",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
+      "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "sources-and-coverage",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
+      "required_segments": 59,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-a-notice-to-the-duty-behind-it",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "13b574fb4fad664247b485dfa594208c201b8b3d251a9297d99c488fa3b1bffe",
+      "required_segments": 42,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "trace-an-award-and-keep-the-trail",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "0b3659d1375c0f5bfb58571df9c394e5fc088c1f2951ccfed3c0bfe38049815e",
+      "required_segments": 45,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "what-a-public-record-tells-you",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "fe4ef2884e4ecdd078a6b5dd9168ad22582cc09da676e1a658299a5fbf9d870d",
+      "required_segments": 75,
+      "intentional_source_segments": 1
+    }
+  ]
+}
