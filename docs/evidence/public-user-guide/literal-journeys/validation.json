@@ -1,0 +1,68 @@
+{
+  "record": "ccf422a8ff4de",
+  "environment": {
+    "CROL_BUILD_DAY": "2026-09-08T23:40:59.000Z"
+  },
+  "commands": [
+    {
+      "command": "node tools/build_primary_documents.mjs",
+      "exit_status": 0
+    },
+    {
+      "command": "node --test test/primary_document_routes.test.mjs",
+      "exit_status": 0
+    },
+    {
+      "command": "node --test test/guide_documents.test.mjs test/guide_contextual_access.test.mjs test/route_migration.test.mjs",
+      "exit_status": 0
+    },
+    {
+      "command": "node --test test/civic_time_ledger_runtime.test.mjs",
+      "exit_status": 0
+    },
+    {
+      "command": "node tools/build_guide_documents.mjs --check",
+      "exit_status": 0
+    },
+    {
+      "command": "python3 test/standards/guide_content.py",
+      "exit_status": 0
+    },
+    {
+      "command": "python3 tools/capture_guide_journeys.py --resume",
+      "exit_status": 0
+    },
+    {
+      "command": "python3 tools/capture_guide_release.py --site-dir .artifacts/guide-preview --record ccf422a8ff4de --manifest docs/evidence/public-user-guide/literal-journeys/guide-release.json --output-dir .artifacts/guide-journeys/release --note 'Guide document checks supporting the literal journey observations.'",
+      "exit_status": 0
+    },
+    {
+      "command": "python3 tools/capture_guide_product_access.py --site-dir .artifacts/guide-preview --record ccf422a8ff4de --manifest docs/evidence/public-user-guide/literal-journeys/product-access.json --output-dir .artifacts/guide-journeys/product-access",
+      "exit_status": 0
+    },
+    {
+      "command": "node tools/build_guide_review.mjs --check",
+      "exit_status": 0
+    },
+    {
+      "command": "make prepush",
+      "exit_status": 0
+    }
+  ],
+  "journeys": {
+    "passed": 40,
+    "default_language_regressions_passed": 2,
+    "capture_count": 92
+  },
+  "supporting_captures": {
+    "guide_release": {
+      "captures": 44,
+      "journeys": 8
+    },
+    "product_access": {
+      "captures": 6,
+      "journeys": 8
+    }
+  },
+  "required_gate": "passed"
+}

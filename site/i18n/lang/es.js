@@ -18,6 +18,9 @@
   W.STRINGS["es"] = W.STRINGS["es"] || {};
   Object.assign(W.STRINGS["es"], {
     // BEGIN GUIDE TRANSLATIONS
+    guide_text_a79aae29f4b3dde6: "En la página de una reunión, elija `Add to calendar` entre sus acciones. Este control solo aparece cuando el registro incluye una hora. Abra el archivo descargado en su aplicación de calendario y compruebe el título, la fecha y la hora del evento.",
+    guide_text_427f9ea76a2de8cd: "Abra [{control_b}]({link_a}) y seleccione el título de una reunión para abrir su página.",
+    guide_text_0bd019485364f283: "Si el panel de filtros tapa la barra de herramientas, cierre **{control_a}** y elija **{control_b}**.",
     guide_text_260313e4ac64571f: "{name_a} reúne registros públicos que los organismos de la ciudad de Nueva York ya publican —contratos, solicitudes de uso del suelo, normas, reuniones, exámenes de empleo público y los organismos y organizaciones relacionados— y mantiene cada uno enlazado a su fuente oficial.",
     guide_text_641498d11bf44328: "Si esta es su primera visita, empiece por el primer tutorial. Usa una búsqueda real, dura unos diez minutos y no necesita una cuenta ni una dirección de correo electrónico para seguirlo. Los dos siguientes siguen un aviso publicado hasta la ley que lo fundamenta, y un organismo hasta una organización a la que paga y una adjudicación.",
     guide_text_65173c70d8e1e737: "Si ya tiene una tarea, vaya directamente a Cómo hacer. Si un registro le plantea dudas sobre su significado o contiene una palabra desconocida, Comprender y Referencia las resuelven sin exigirle completar primero una lección.",
@@ -42,7 +45,7 @@
     guide_text_d05504aea51fa236: "{control_a} desplegada, con fundamento de la coincidencia, fuente y control para copiar el enlace.",
     guide_text_be58a1edd1426736: "1. Lea la {control_b} del registro seleccionado. 2. {control_a} vuelve a abrir este panel.",
     guide_text_d20609214f01766f: "Paso 3 — Vuelva a abrir la evidencia desde su enlace",
-    guide_text_a3ccbb7c032c92e8: "Al pie del panel, elija **{control_a}**. Pegue la dirección en una pestaña nueva. Compruebe que la **{control_b}** del mismo registro esté desplegada. Guarde esta dirección junto a la afirmación que respalda.",
+    guide_text_312343a6336957ec: "Al pie del panel, elija **{control_a}**. Copie la dirección completa del navegador y péguela en una pestaña nueva. Compruebe que la **{control_b}** del mismo registro esté desplegada. Guarde esta dirección junto a la afirmación que respalda.",
     guide_text_07b6d5bba6d2a50f: "Cuando no hay fuente o panel",
     guide_text_8a552edcc3e77c2e: "Algunas conexiones de contratos no tienen una fuente de aviso separada. Abra el título enlazado del registro en el panel y use el enlace a la fuente de ese registro. La falta de evidencia de la fuente no demuestra que no exista relación. Si una dirección copiada no abre ningún panel, vuelva a **{control_a}** y use **{control_b}** para seleccionar una conexión que aparezca actualmente en la página. Sin {name_c}, lea los registros directamente; el panel no está disponible.",
     guide_text_9881cfd03e31b031: "Paso 1 — Fije dos registros",
@@ -201,7 +204,7 @@
     guide_text_5530d25128c1ac7c: "Paso 3 — Compare un resultado de norma",
     guide_text_55e95127303b94fe: "Use el botón **Atrás** del navegador para volver a [la búsqueda de vivienda]({link_a}). En **{control_b}**, lea la explicación de coincidencia de un resultado. Una coincidencia de pasaje cita la frase publicada que contiene su tema. Las normas incluyen propuestas y normas definitivas: compruebe la etapa del registro antes de interpretarlo como una oportunidad abierta para comentar. Una norma definitiva no es una propuesta.",
     guide_text_df72aa973eb6890e: "Paso 4 — Compruebe la copia oficial",
-    guide_text_22300906a19d5e3f: "Para un resultado con un pasaje citado, abra **{control_a}** junto al pasaje. Compruebe el título, el organismo y la etapa en la copia publicada por la ciudad. Si no aparece ningún resultado con pasaje, abra el título de un resultado y use su enlace **Registro oficial**. Ahora tiene una fuente en la que apoyarse, más allá de una coincidencia de búsqueda.",
+    guide_text_0e96f40a327fd396: "Para un resultado con un pasaje citado, abra **{control_a}** junto al pasaje. Compruebe el título, el organismo y la etapa en la copia publicada por la ciudad. Si no aparece ningún resultado con pasaje, abra el título de un resultado y use su enlace **{control_b}**. Ahora tiene una fuente en la que apoyarse, más allá de una coincidencia de búsqueda.",
     guide_text_eb866cdf15b53292: "Pasaje de una norma en la búsqueda de vivienda, con su enlace Fuente oficial.",
     guide_text_2712bc39b88d6845: "1. Fuente oficial junto a un pasaje citado abre la copia del editor. Compruebe el título, el organismo y la etapa.",
     guide_text_bf4f9211b28b970e: "Paso 5 — Guarde y repita la búsqueda",
@@ -552,7 +555,7 @@
     guide_text_155dffce1f52e88a: "Una fuente inaccesible no es lo mismo que una fuente sin contenido y el sitio distingue ambas cosas. Una página que no pudo cargar sus registros lo indica; la solución es reintentar o abrir la fuente oficial. Esta distinción evita interpretar un fallo temporal como ausencia de registros.",
     guide_text_1246343e3818e6a0: "También ocurre a la inversa. Un conjunto realmente vacío indica que lo está, en vez de mostrar un error y dejarle adivinar.",
     guide_text_b3b11affa410f453: "Paso 1 — Abra el aviso",
-    guide_text_c7c8004ef03ca42b: "Abra [el aviso de norma definitiva de Sanitation]({link_a}). No necesita una cuenta y las páginas del aviso y del deber pueden leerse sin {name_b}. Compruebe el título: **{name_c} Final Rule re Implementation Dates for the {name_d} North and Upper {name_e} Commercial Waste Zones**. Abra **Official record** junto a las acciones del aviso para comparar la copia municipal y después regrese.",
+    guide_text_07ca7987f158f484: "Abra [el aviso de norma definitiva de Sanitation]({link_a}). No necesita una cuenta y las páginas del aviso y del deber pueden leerse sin {name_c}. Compruebe el título: **{name_d} Final Rule re Implementation Dates for the {name_e} North and Upper {name_f} Commercial Waste Zones**. Abra **{control_b}** junto a las acciones del aviso para comparar la copia municipal y después regrese.",
     guide_text_6bf12cfc0cc49972: "Paso 2 — Siga la obligación legal",
     guide_text_a8f2256a501403ce: "En el aviso, busque **Connected mandate**. Lea **Rules filing for this duty**, la relación, y **New York City Charter § 753(e)(2)**, la cita. Seleccione el texto del deber relativo a regular empresas de residuos comerciales. Se abre [el deber de Sanitation]({link_a}), con su organismo, acción exigida y cita.",
     guide_text_1737e30a162a7433: "Connected mandate en el aviso de la norma de Sanitation, con enlace al deber, relación y cita de la Charter.",

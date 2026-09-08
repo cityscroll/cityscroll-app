@@ -25,7 +25,7 @@ sources:
 Open [the Sanitation final rule notice](/notices/20260605008). No account is needed, and the notice
 and duty pages read without JavaScript. Check the title: **DSNY Final Rule re Implementation Dates
 for the Brooklyn North and Upper Manhattan Commercial Waste Zones**.
-Open **Official record** beside the notice's actions to compare the city's copy, then return.
+Open **View in City Record** beside the notice's actions to compare the city's copy, then return.
 
 ## Step 2 — Follow the duty
 

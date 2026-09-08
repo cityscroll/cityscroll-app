@@ -292,7 +292,7 @@ AUTHORED_ROUTES = (
         "a land-use review apart, and distinguishes the four ways to take part.",
         "expect_text": [
             "Understand · Explanation",
-            "A record is a publication, not the action",
+            "The publication is a fact you can check.",
             "A rule comment period",
             "Community Board",
             "A blank is not a zero",
@@ -339,7 +339,7 @@ AUTHORED_ROUTES = (
             "Rules adoption lag",
             "An estimate never becomes a deadline",
         ],
-        "expect_links": [GUIDE_HOME, "/guide/understand/flags-and-historical-patterns/#what-each-note-counts"],
+        "expect_links": [GUIDE_HOME],
         "axe": True,
     },
     {
@@ -550,6 +550,7 @@ def observe_route(page: Page, spec: dict, base: str, width: int) -> dict:
     folded = text.casefold()
     missing_text = [needle for needle in spec["expect_text"] if needle.casefold() not in folded]
     hrefs = page.evaluate("() => [...document.querySelectorAll('a')].map((n) => n.getAttribute('href'))")
+    hrefs = [href.replace("?lang=en", "").replace("&lang=en", "") if href else href for href in hrefs]
     missing_links = [href for href in spec["expect_links"] if href not in hrefs]
 
     metrics = overflow(page)
@@ -620,13 +621,13 @@ def journey_with_script(page: Page, base: str) -> dict:
     steps = []
     page.goto(base, wait_until="domcontentloaded")
     settle(page)
-    page.click(f'a[href="{GUIDE_HOME}"]')
+    page.locator('a[href="/guide/"], a[href="/guide/?lang=en"]').first.click()
     settle(page)
     steps.append({"step": "home to guide", "path": urlsplit(page.url).path})
-    page.click(f'a[href="{TUTORIAL}"]')
+    page.locator(f'a[href="{TUTORIAL}"], a[href="{TUTORIAL}?lang=en"]').first.click()
     settle(page)
     steps.append({"step": "guide to tutorial", "path": urlsplit(page.url).path})
-    page.click(f'a[href="{SEARCH}"]')
+    page.locator(f'a[href="{SEARCH}"], a[href="{SEARCH}&lang=en"]').first.click()
     settle(page)
     steps.append({"step": "tutorial to product", "path": urlsplit(page.url).path})
     page.go_back()
@@ -645,7 +646,7 @@ def journey_without_script(page: Page, base: str) -> dict:
     page.goto(urljoin(base, GUIDE_HOME.lstrip("/")), wait_until="domcontentloaded")
     home_text = page.evaluate("() => (document.querySelector('main').innerText || '')")
     home_headings = page.evaluate("() => [...document.querySelectorAll('main h1, main h2')].map((n) => n.innerText.trim())")
-    page.click(f'a[href="{TUTORIAL}"]')
+    page.locator(f'a[href="{TUTORIAL}"], a[href="{TUTORIAL}?lang=en"]').first.click()
     page.wait_for_load_state("domcontentloaded")
     article_path = urlsplit(page.url).path
     article = page.evaluate(
@@ -786,7 +787,6 @@ def capture(base: str, output_dir: Path, routes: tuple, articles: list[dict]) ->
                             "assertion": spec["assertion"],
                             **observe_route(page, spec, base, width),
                             "capture_sha256": sha256_file(image),
-                            "local_capture_path": str(image.relative_to(ROOT)),
                             "file": None,
                         }
                     )

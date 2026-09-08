@@ -26,6 +26,9 @@
   W.STRINGS["pl"] = W.STRINGS["pl"] || {};
   Object.assign(W.STRINGS["pl"], {
     // BEGIN GUIDE TRANSLATIONS
+    guide_text_a79aae29f4b3dde6: "Na stronie posiedzenia wybierz `Add to calendar` wśród działań. Element występuje tylko przy podanej godzinie. Otwórz pobrany plik w kalendarzu i sprawdź tytuł, datę i godzinę.",
+    guide_text_427f9ea76a2de8cd: "Otwórz [{control_b}]({link_a}) i wybierz tytuł spotkania, aby otworzyć jego stronę.",
+    guide_text_0bd019485364f283: "Jeśli panel filtrów zasłania pasek narzędzi, zamknij **{control_a}** i wybierz **{control_b}**.",
     guide_text_260313e4ac64571f: "{name_a} zbiera publiczne dokumenty, które urzędy Nowego Jorku już publikują — umowy, wnioski dotyczące użytkowania gruntów, przepisy, posiedzenia, egzaminy do służby cywilnej oraz powiązane urzędy i organizacje — i zachowuje przy każdym odnośnik do oficjalnego źródła.",
     guide_text_641498d11bf44328: "Jeśli jesteś tu po raz pierwszy, zacznij od pierwszej lekcji. Korzysta z jednego rzeczywistego wyszukiwania, zajmuje około dziesięciu minut i nie wymaga konta ani adresu e-mail. Następne dwie prowadzą od opublikowanego ogłoszenia do stojącej za nim ustawy oraz od urzędu przez opłacaną przez niego organizację do jednego przyznania umowy.",
     guide_text_65173c70d8e1e737: "Jeśli masz już zadanie, przejdź od razu do części „Jak to zrobić”. Jeśli dokument budzi pytanie o znaczenie albo zawiera nieznane słowo, części „Zrozum” i „Materiały referencyjne” odpowiedzą bez konieczności przechodzenia lekcji.",
@@ -50,7 +53,7 @@
     guide_text_d05504aea51fa236: "Rozwinięty panel {control_a} z podstawą dopasowania, źródłem i kopiowaniem odnośnika.",
     guide_text_be58a1edd1426736: "1. Przeczytaj {control_b} wybranego dokumentu. 2. {control_a} ponownie otwiera ten panel.",
     guide_text_d20609214f01766f: "Krok 3 — Otwórz dowody ponownie z odnośnika",
-    guide_text_a3ccbb7c032c92e8: "Na dole panelu wybierz **{control_a}**. Wklej adres w nowej karcie. Sprawdź, czy **{control_b}** tego samego dokumentu jest rozwinięty. Zachowaj adres wraz z twierdzeniem, które wspiera.",
+    guide_text_312343a6336957ec: "Na dole panelu wybierz **{control_a}**. Skopiuj pełny adres z paska adresu przeglądarki i wklej go w nowej karcie. Sprawdź, czy **{control_b}** tego samego dokumentu jest rozwinięty. Zachowaj adres wraz z twierdzeniem, które wspiera.",
     guide_text_07b6d5bba6d2a50f: "Gdy nie ma źródła lub panelu",
     guide_text_8a552edcc3e77c2e: "Niektóre powiązania umów nie mają osobnego ogłoszenia źródłowego. Otwórz tytuł powiązanego dokumentu w panelu i użyj jego własnego odnośnika do źródła. Brak dowodów źródłowych nie dowodzi braku relacji. Jeśli skopiowany adres nie otwiera panelu, wróć do **{control_a}** i użyj **{control_b}**, aby wybrać powiązanie obecne na stronie. Bez {name_c} czytaj dokumenty bezpośrednio; panel jest niedostępny.",
     guide_text_9881cfd03e31b031: "Krok 1 — Przypnij dwa dokumenty",
@@ -209,7 +212,7 @@
     guide_text_5530d25128c1ac7c: "Krok 3 — Porównaj wynik przepisu",
     guide_text_55e95127303b94fe: "Przyciskiem przeglądarki **Wstecz** wróć do [wyszukiwania housing]({link_a}). W **{control_b}** przeczytaj wyjaśnienie dopasowania. Dopasowanie fragmentu cytuje opublikowane zdanie z Twoim tematem. Rules obejmują projekty i wersje ostateczne: sprawdź etap przed uznaniem, że nadal można komentować. Ostateczny przepis nie jest projektem.",
     guide_text_df72aa973eb6890e: "Krok 4 — Sprawdź oficjalną kopię",
-    guide_text_22300906a19d5e3f: "Przy wyniku z cytatem otwórz obok **{control_a}**. Sprawdź tytuł, urząd i etap w kopii miasta. Gdy nie ma wyniku z fragmentem, otwórz tytuł wyniku i użyj **Official record**. Masz teraz źródło, na którym można polegać, nie tylko dopasowanie wyszukiwania.",
+    guide_text_0e96f40a327fd396: "Przy wyniku z cytatem otwórz obok **{control_a}**. Sprawdź tytuł, urząd i etap w kopii miasta. Gdy nie ma wyniku z fragmentem, otwórz tytuł wyniku i użyj **{control_b}**. Masz teraz źródło, na którym można polegać, nie tylko dopasowanie wyszukiwania.",
     guide_text_eb866cdf15b53292: "Fragment przepisu w wynikach housing z odnośnikiem Official source.",
     guide_text_2712bc39b88d6845: "1. Official source obok cytatu otwiera kopię wydawcy. Sprawdź tytuł, urząd i etap.",
     guide_text_bf4f9211b28b970e: "Krok 5 — Zachowaj i powtórz wyszukiwanie",
@@ -560,7 +563,7 @@
     guide_text_155dffce1f52e88a: "Niedostępne źródło różni się od źródła bez informacji, a witryna je rozdziela. Strona mówi, gdy nie mogła wczytać dokumentów; wyjściem jest ponowienie lub otwarcie oficjalnego źródła. Rozróżnienie zapobiega uznaniu chwilowej awarii za brak dokumentów.",
     guide_text_1246343e3818e6a0: "Działa to także odwrotnie: rzeczywiście pusty zbiór mówi, że jest pusty, zamiast pokazywać błąd i pozostawiać domysły.",
     guide_text_b3b11affa410f453: "Krok 1 — Otwórz ogłoszenie",
-    guide_text_c7c8004ef03ca42b: "Otwórz [ogłoszenie ostatecznego przepisu Sanitation]({link_a}). Konto nie jest potrzebne; strony ogłoszenia i obowiązku czyta się bez {name_b}. Sprawdź tytuł: **{name_c} Final Rule re Implementation Dates for the {name_d} North and Upper {name_e} Commercial Waste Zones**. Otwórz **Official record** przy działaniach, porównaj kopię miasta i wróć.",
+    guide_text_07ca7987f158f484: "Otwórz [ogłoszenie ostatecznego przepisu Sanitation]({link_a}). Konto nie jest potrzebne; strony ogłoszenia i obowiązku czyta się bez {name_c}. Sprawdź tytuł: **{name_d} Final Rule re Implementation Dates for the {name_e} North and Upper {name_f} Commercial Waste Zones**. Otwórz **{control_b}** przy działaniach, porównaj kopię miasta i wróć.",
     guide_text_6bf12cfc0cc49972: "Krok 2 — Przejdź do obowiązku",
     guide_text_a8f2256a501403ce: "W ogłoszeniu znajdź **Connected mandate**. Przeczytaj relację **Rules filing for this duty** i podstawę **New York City Charter § 753(e)(2)**. Wybierz tekst obowiązku regulowania działalności odpadów komercyjnych. Otwiera [obowiązek Sanitation]({link_a}) z urzędem, wymaganym działaniem i podstawą.",
     guide_text_1737e30a162a7433: "Connected mandate w ogłoszeniu Sanitation z odnośnikiem obowiązku, relacją i podstawą Charter.",

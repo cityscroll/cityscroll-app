@@ -9,6 +9,9 @@ purpose: Create an email watch for one Community Board and keep the link that ma
 description: Pick a borough and a board number to watch one Community Board, tell it apart from a City Council District, and read what its matches really cover.
 last_reviewed: 2026-09-08
 return_to_task: Open Following | /following/
+depends_on:
+  - site/i18n.js
+  - site/following_view.mjs
 related:
   - Follow a search and manage your updates | /guide/how-to/follow-a-search/
   - Find and narrow records | /guide/how-to/find-and-narrow-records/

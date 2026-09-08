@@ -22,6 +22,9 @@
   W.STRINGS["fr"] = W.STRINGS["fr"] || {};
   Object.assign(W.STRINGS["fr"], {
     // BEGIN GUIDE TRANSLATIONS
+    guide_text_a79aae29f4b3dde6: "Sur la page d’une réunion, choisissez `Add to calendar` parmi ses actions. Cette commande n’apparaît que lorsque le document comporte une heure. Ouvrez le fichier téléchargé dans votre calendrier et vérifiez le titre, la date et l’heure de l’événement.",
+    guide_text_427f9ea76a2de8cd: "Ouvrez [{control_b}]({link_a}) et sélectionnez le titre d’une réunion pour ouvrir sa page.",
+    guide_text_0bd019485364f283: "Si le panneau des filtres masque la barre d’outils, fermez **{control_a}** et choisissez **{control_b}**.",
     guide_text_260313e4ac64571f: "{name_a} rassemble les documents publics que les organismes de la ville de New York publient déjà — contrats, demandes d’utilisation des sols, règles, réunions, concours de la fonction publique et organismes et organisations associés — et conserve pour chacun un lien vers sa source officielle.",
     guide_text_641498d11bf44328: "Si c’est votre première visite, commencez par le premier tutoriel. Il utilise une recherche réelle, dure environ dix minutes et ne nécessite ni compte ni adresse électronique. Les deux suivants remontent d’un avis publié à la loi qui le fonde, puis suivent un organisme jusqu’à une organisation qu’il rémunère et une attribution.",
     guide_text_65173c70d8e1e737: "Si vous avez déjà une tâche en tête, allez directement à Comment faire. Si un document vous interroge sur son sens ou contient un mot inconnu, Comprendre et Référence répondent à ces questions sans vous obliger à suivre d’abord une leçon.",
@@ -46,7 +49,7 @@
     guide_text_d05504aea51fa236: "{control_a} déployé, avec le fondement du rapprochement, la source et la commande de copie du lien.",
     guide_text_be58a1edd1426736: "1. Lisez {control_b} pour le document sélectionné. 2. {control_a} rouvre ce panneau.",
     guide_text_d20609214f01766f: "Étape 3 — Rouvrez la preuve depuis son lien",
-    guide_text_a3ccbb7c032c92e8: "Au bas du panneau, choisissez **{control_a}**. Collez l’adresse dans un nouvel onglet. Vérifiez que **{control_b}** est déployé pour le même document. Conservez cette adresse avec l’affirmation qu’elle étaye.",
+    guide_text_312343a6336957ec: "Au bas du panneau, choisissez **{control_a}**. Copiez l’adresse complète du navigateur et collez-la dans un nouvel onglet. Vérifiez que **{control_b}** est déployé pour le même document. Conservez cette adresse avec l’affirmation qu’elle étaye.",
     guide_text_07b6d5bba6d2a50f: "Lorsqu’il n’y a ni source ni panneau",
     guide_text_8a552edcc3e77c2e: "Certains liens de contrats n’ont pas de source d’avis distincte. Ouvrez le titre du document dans le panneau et utilisez son propre lien de source. L’absence de preuve de source ne démontre pas l’absence de relation. Si une adresse copiée n’ouvre aucun panneau, revenez à **{control_a}** et utilisez **{control_b}** pour sélectionner un lien présent sur la page. Sans {name_c}, lisez directement les documents ; le panneau est indisponible.",
     guide_text_9881cfd03e31b031: "Étape 1 — Épinglez deux documents",
@@ -205,7 +208,7 @@
     guide_text_5530d25128c1ac7c: "Étape 3 — Comparez un résultat de règle",
     guide_text_55e95127303b94fe: "Utilisez le bouton **Retour** du navigateur pour revenir à [la recherche de logement]({link_a}). Dans **{control_b}**, lisez l’explication de correspondance d’un résultat. Une correspondance dans un passage cite la phrase publiée contenant votre sujet. Les règles comprennent des propositions et des règles définitives : vérifiez l’étape du document avant d’y voir une occasion encore ouverte de commenter. Une règle définitive n’est pas une proposition.",
     guide_text_df72aa973eb6890e: "Étape 4 — Vérifiez la copie officielle",
-    guide_text_22300906a19d5e3f: "Pour un résultat avec un passage cité, ouvrez **{control_a}** à côté du passage. Vérifiez le titre, l’organisme et l’étape dans la copie publiée par la ville. Si aucun résultat avec passage n’apparaît, ouvrez le titre d’un résultat et utilisez son lien **Official record**. Vous disposez désormais d’une source sur laquelle vous appuyer, au-delà d’une correspondance de recherche.",
+    guide_text_0e96f40a327fd396: "Pour un résultat avec un passage cité, ouvrez **{control_a}** à côté du passage. Vérifiez le titre, l’organisme et l’étape dans la copie publiée par la ville. Si aucun résultat avec passage n’apparaît, ouvrez le titre d’un résultat et utilisez son lien **{control_b}**. Vous disposez désormais d’une source sur laquelle vous appuyer, au-delà d’une correspondance de recherche.",
     guide_text_eb866cdf15b53292: "Passage d’une règle dans la recherche de logement, avec son lien Official source.",
     guide_text_2712bc39b88d6845: "1. Official source à côté d’un passage cité ouvre la copie de l’éditeur. Vérifiez le titre, l’organisme et l’étape.",
     guide_text_bf4f9211b28b970e: "Étape 5 — Conservez et répétez la recherche",
@@ -556,7 +559,7 @@
     guide_text_155dffce1f52e88a: "Une source inaccessible n’est pas une source sans contenu ; le site distingue les deux. Une page qui n’a pas pu charger ses documents le dit ; réessayer ou ouvrir la source officielle permet d’avancer. Cette distinction évite de lire une panne temporaire comme une absence de documents.",
     guide_text_1246343e3818e6a0: "L’inverse vaut aussi. Un ensemble réellement vide l’indique, au lieu d’afficher une erreur et de vous laisser deviner.",
     guide_text_b3b11affa410f453: "Étape 1 — Ouvrez l’avis",
-    guide_text_c7c8004ef03ca42b: "Ouvrez [l’avis de règle définitive de Sanitation]({link_a}). Aucun compte n’est nécessaire, et les pages de l’avis et du devoir sont lisibles sans {name_b}. Vérifiez le titre : **{name_c} Final Rule re Implementation Dates for the {name_d} North and Upper {name_e} Commercial Waste Zones**. Ouvrez **Official record** à côté des actions pour comparer la copie municipale, puis revenez.",
+    guide_text_07ca7987f158f484: "Ouvrez [l’avis de règle définitive de Sanitation]({link_a}). Aucun compte n’est nécessaire, et les pages de l’avis et du devoir sont lisibles sans {name_c}. Vérifiez le titre : **{name_d} Final Rule re Implementation Dates for the {name_e} North and Upper {name_f} Commercial Waste Zones**. Ouvrez **{control_b}** à côté des actions pour comparer la copie municipale, puis revenez.",
     guide_text_6bf12cfc0cc49972: "Étape 2 — Suivez le devoir",
     guide_text_a8f2256a501403ce: "Dans l’avis, trouvez **Connected mandate**. Lisez **Rules filing for this duty**, la relation, et **New York City Charter § 753(e)(2)**, la citation. Sélectionnez le texte du devoir concernant la réglementation des entreprises de déchets commerciaux. Il ouvre [le devoir de Sanitation]({link_a}), avec son organisme, l’action requise et la citation.",
     guide_text_1737e30a162a7433: "Connected mandate dans l’avis de règle de Sanitation, avec le lien du devoir, la relation et la citation de la Charter.",

@@ -9,6 +9,9 @@ purpose: Inspect a connection and copy a link that reopens its evidence.
 description: Open the receipt behind any connection CityScroll draws between two records, read what it claims, and keep a link that reopens the same panel.
 last_reviewed: 2026-09-08
 return_to_task: Open the connection this guide uses | /agencies/parks-and-recreation/?claim=rules%3Anotice%3A20260521021
+depends_on:
+  - site/i18n.js
+  - site/graph_edge_provenance.mjs
 related:
   - Trace an award and keep the trail | /guide/start/trace-an-award-and-keep-the-trail/
   - Trace a notice to the duty behind it | /guide/start/trace-a-notice-to-the-duty-behind-it/
@@ -45,7 +48,7 @@ This supports the stated connection, not a finding of compliance or wrongdoing.
 
 ## Step 3 — Reopen the evidence from its link
 
-At the bottom of the panel, choose **Copy link to this connection**. Paste the address into a new tab.
+At the bottom of the panel, choose **Copy link to this connection**. Copy the full browser address and paste it into a new tab.
 Check that the same record's **Connection evidence** is expanded. Keep this address with the claim
 it supports.
 

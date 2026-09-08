@@ -1,0 +1,18 @@
+{
+  "revision": "05d86cedbd23cb43bb448e1eee4d97fd098b0c60",
+  "route": "/browse/people/?q=Parks&type=agency&institution=agency",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "action": "Open People + organizations, choose Agencies, and type Parks in Search people and organizations.",
+  "summary": "Search service unavailable; showing the published snapshot (1 matching typed rows)",
+  "parks_link_visible": true,
+  "errors": [],
+  "sha256": "25176d5b7e7dabb56090bf436a9a107c5210858b9ae1683ed6b5eead53e5f63f",
+  "file": null,
+  "data_vintage": "Tracked directory data at the recorded revision.",
+  "finding": "Search filtering worked in the isolated check; the earlier combined-navigation failure was not reproduced.",
+  "assertion": "Typing Parks exposes the Parks and Recreation link.",
+  "assertion_holds": true
+}

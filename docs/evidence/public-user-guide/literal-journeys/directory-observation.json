@@ -1,0 +1,20 @@
+{
+  "revision": "05d86cedbd23cb43bb448e1eee4d97fd098b0c60",
+  "route": "/agencies/?q=Parks",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "action": "Open Agencies and type Parks in Search by name or acronym (agency-directory-query).",
+  "visible_before": 161,
+  "visible_after": 1,
+  "summary": "Showing 1 of 161 public bodies matching \u201cParks\u201d.",
+  "parks_link_visible": true,
+  "errors": [],
+  "sha256": "a14a308452b368ce42c759e20844c694c8d1e47f86d63f3f414c3fb80959796c",
+  "file": null,
+  "data_vintage": "Tracked directory data at the recorded revision.",
+  "finding": "Search filtering worked in the isolated check; the earlier combined-navigation failure was not reproduced.",
+  "assertion": "Typing Parks exposes the Parks and Recreation link.",
+  "assertion_holds": true
+}

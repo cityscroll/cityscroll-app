@@ -9,6 +9,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
+import { runInNewContext } from "node:vm";
 
 import {
   GUIDE_HELP,
@@ -226,4 +227,64 @@ test('Pages redirects guide query language before serving static no-script docum
   assert.equal(response.headers.get('location'), 'https://cityscroll.org/guide/ar/how-to/follow-a-search/');
   const routes = JSON.parse(readFileSync(new URL('../site/_routes.json', import.meta.url)));
   assert.ok(routes.include.includes('/guide/*'));
+});
+
+test('home Guide links carry the selected language through the existing runtime and Pages redirect', async () => {
+  const { guideLocaleRedirect } = await import('../site/guide_navigation.mjs');
+  const anchors = [...home.matchAll(/<a\b([^>]*href="\/guide\/"[^>]*)>/g)].map(match => ({
+    href: '/guide/', attributes: match[1],
+    getAttribute() { return this.href; },
+    setAttribute(key, value) { if (key === 'href') this.href = value; },
+  }));
+  assert.equal(anchors.length, 2, 'both home entries retain a static no-script fallback');
+  const document = {
+    querySelectorAll(selector) {
+      // Match the real home anchors against the guide-link selectors used by the runtime.
+      return anchors.filter(anchor => selector.split(',').some(part => {
+        const rule = part.trim();
+        return rule === 'a[href^="/guide/"]' ||
+          (rule === 'a[data-i18n="footer_guide"]' && anchor.attributes.includes('data-i18n="footer_guide"'));
+      }));
+    },
+    getElementById() { return null; },
+    documentElement: { dataset: {}, style: { setProperty() {} } },
+  };
+  const context = { window: {}, document, URL, location: { href: 'https://cityscroll.org/?lang=es&token=example' } };
+  runInNewContext(i18n, context);
+  for (const locale of ['es', 'zh-Hans', 'ar', 'en']) {
+    context.window.LANG = locale;
+    context.window.applyStrings();
+    for (const anchor of anchors) {
+      assert.equal(anchor.href, `/guide/?lang=${locale}`);
+      assert.equal(guideLocaleRedirect(new URL(anchor.href, context.location.href).href),
+        locale === 'en' ? null : `/guide/${locale}/`);
+      assert.ok(!anchor.href.includes('token='));
+    }
+  }
+});
+
+test('investigation links retain language despite the document root base URL', () => {
+  assert.match(home, /href="#investigation"[^>]*data-i18n="footer_investigation"/);
+  const links = ['#investigation', '/#investigation/shared/example'].map(href => ({
+    href, getAttribute() { return this.href; }, setAttribute(_key, value) { this.href = value; },
+  }));
+  const document = {
+    baseURI: 'https://cityscroll.org/',
+    querySelectorAll(selector) { return selector === 'a[href*="#investigation"]' ? links : []; },
+    getElementById() { return null; },
+    documentElement: { dataset: {}, style: { setProperty() {} } },
+  };
+  const context = { window: {}, document, URL, location: { href: 'https://cityscroll.org/vendors/example/?lang=es&token=example' } };
+  runInNewContext(i18n, context);
+  for (const locale of ['es', 'zh-Hans', 'ar', 'en']) {
+    context.window.LANG = locale;
+    context.window.applyStrings();
+    for (const link of links) {
+      const url = new URL(link.href, document.baseURI);
+      assert.equal(url.searchParams.get('lang'), locale === 'en' ? null : locale);
+      assert.equal(url.pathname, '/');
+      assert.match(url.hash, /^#investigation/);
+      assert.ok(!url.searchParams.has('token'));
+    }
+  }
 });
