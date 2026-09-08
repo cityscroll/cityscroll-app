@@ -102,6 +102,8 @@ def install_reads(context, base, snapshot):
             route.fulfill(status=200 if row else 404, json={"row": row})
         elif url.netloc == urlsplit(base).netloc:
             route.continue_()
+        elif request.resource_type == "script":
+            route.fulfill(status=200, content_type="application/javascript", body="")
         else:
             # Optional enrichments are unavailable in this offline replay. No
             # browser request can acquire publisher data or mutate a real account.
@@ -124,6 +126,8 @@ def capture():
                     context = browser.new_context(viewport={"width": width, "height": height})
                     mutations = install_reads(context, base, snapshot)
                     page = context.new_page()
+                    errors = []
+                    page.on("pageerror", lambda error, errors=errors: errors.append(str(error)))
                     steps = []
                     page.goto(base.rstrip("/") + AGENCY, wait_until="domcontentloaded")
                     link = page.locator(f'a[data-pivot-schema][href="/vendors/{quote(stem, safe="")}/"]').first
@@ -156,11 +160,13 @@ def capture():
                     copied = page.url
                     before = state(copied)
                     steps.append({"action": "Copy the complete browser address", "url": path(copied)})
+                    assert not errors, f"Clicked journey page errors: {errors}"
                     context.close()
 
                     fresh = browser.new_context(viewport={"width": width, "height": height})
                     install_reads(fresh, base, snapshot)
                     replay = fresh.new_page()
+                    replay.on("pageerror", lambda error, errors=errors: errors.append(str(error)))
                     replay.goto(copied, wait_until="domcontentloaded")
                     replay.locator('.traversal-path[data-traversal-hop-count="2"]').wait_for()
                     replay.locator("[data-notice-id] .rolename").wait_for()
@@ -183,7 +189,10 @@ def capture():
                     assert unknown_hidden
                     replay.goto(base + "#investigation", wait_until="domcontentloaded")
                     replay.get_by_text("0 pinned items", exact=False).wait_for()
-                    journeys.append({"chain": ordinal, "viewport_width": width, "steps": steps, "hop_count": 2, "back_hop_count": 1, "restart": AGENCY, "unknown_connection_panel_hidden": unknown_hidden, "fresh_collection_empty": True, "blocked_mutations": mutations})
+                    replay.goto(base + "#task/can-i-bid", wait_until="domcontentloaded")
+                    replay.locator("#taskview .task-card").first.wait_for()
+                    assert not errors, f"Restored journey or task route page errors: {errors}"
+                    journeys.append({"chain": ordinal, "viewport_width": width, "steps": steps, "hop_count": 2, "back_hop_count": 1, "restart": AGENCY, "unknown_connection_panel_hidden": unknown_hidden, "fresh_collection_empty": True, "task_route_loaded": True, "page_errors": errors, "blocked_mutations": mutations})
                     fresh.close()
                     print(f"Chain {ordinal}, {width}px: created, copied, reopened, back and restart passed.", flush=True)
             browser.close()
