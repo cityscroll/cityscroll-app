@@ -1,4 +1,5 @@
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
+import { decodeTraversalPath, TRAVERSAL_QUERY_KEY } from "./traversal_path.mjs";
 import { ANALYTICAL_PROJECTION_QUERY_KEYS } from "./analytical_projection.mjs";
 import {
   EXAMS_SURFACE,
@@ -106,7 +107,7 @@ export const LEGACY_ROUTE_PARAMETERS = Object.freeze({
   alerts: new Set(["lens", "view", "from", "notice", ...COMMON_FILTERS]),
 });
 
-const NOTICE_PARAMETERS = new Set(["w", "focus"]);
+const NOTICE_PARAMETERS = new Set(["w", "focus", TRAVERSAL_QUERY_KEY]);
 
 function safeUrl(value, origin) {
   const raw = String(value || "").trim();
@@ -137,7 +138,10 @@ function targetUrl(path, sourceUrl, fragmentParams, allowed) {
   const unsupported = [];
   for (const [key, value] of fragmentParams) {
     if (key === "lang") continue;
-    if (allowed.has(key)) params.append(key, value);
+    const walk = key === TRAVERSAL_QUERY_KEY ? decodeTraversalPath(value) : null;
+    const validWalk = !walk || (walk.status === "active" && walk.hops.length > 0
+      && fragmentParams.getAll(TRAVERSAL_QUERY_KEY).length === 1);
+    if (allowed.has(key) && validWalk) params.append(key, value);
     else unsupported.push(key);
   }
   if (unsupported.length) params.set("legacy", "unsupported-filter");
@@ -197,7 +201,7 @@ export function migrateLegacyUrl(value, { origin = CANONICAL_ORIGIN } = {}) {
       linkClass: safeLanguage(params.get("lang")) || safeLanguage(url.searchParams.get("lang"))
         ? "translated notice permalink" : "notice permalink",
       ...mapped,
-      parameterRule: "Preserve a validated lang value plus bounded watch (w) and focus parameters; discard every other fragment parameter.",
+      parameterRule: "Preserve validated language and traversal state plus watch (w) and focus parameters; disclose unsupported fragment parameters.",
       forwardingBehavior: "The legacy root shim calls location.replace() with the canonical notice document URL.",
       migrated: true,
     };
