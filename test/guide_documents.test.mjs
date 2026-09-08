@@ -557,6 +557,22 @@ const FIGURE = {
   desktop: { src: "/media/guide/follow-a-community-board/picker-desktop.png", width: 650, height: 300 },
 };
 
+test("each compact procedure places validated mobile and desktop captures beside its steps", () => {
+  for (const article of compactProcedures) {
+    const figures = [...article.bodyHtml.matchAll(/<figure\b[\s\S]*?<\/figure>/g)];
+    assert.ok(figures.length, article.title);
+    for (const [figure] of figures) {
+      assert.match(figure, /<source media="\(max-width: 600px\)"/);
+      assert.match(figure, /English interface\./);
+      assert.match(figure, /Enlarge phone image/);
+      assert.match(figure, /Enlarge desktop image/);
+    }
+    const withoutFigures = article.bodyHtml.replace(/<figure\b[\s\S]*?<\/figure>/g, "");
+    assert.match(withoutFigures, /Step 1/);
+    assert.match(withoutFigures, /<strong>/);
+  }
+});
+
 test("figures require named safe assets, dimensions, accessible text and explicit language", () => {
   const html = renderGuideFigure("test", "picker", FIGURE);
   assert.match(html, /<picture><source media="\(max-width: 600px\)"/);

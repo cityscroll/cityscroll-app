@@ -7,7 +7,7 @@ url: /guide/how-to/check-the-evidence-behind-a-connection/
 reader_question: Why does this say two records are connected?
 purpose: Inspect a connection and copy a link that reopens its evidence.
 description: Open the receipt behind any connection CityScroll draws between two records, read what it claims, and keep a link that reopens the same panel.
-last_reviewed: 2026-09-05
+last_reviewed: 2026-09-08
 return_to_task: Open the connection this guide uses | /agencies/parks-and-recreation/?claim=rules%3Anotice%3A20260521021
 related:
   - Trace an award and keep the trail | /guide/start/trace-an-award-and-keep-the-trail/
@@ -30,6 +30,8 @@ for Disability Membership Fee**, if present. The
 [example connection link](/agencies/parks-and-recreation/?claim=rules%3Anotice%3A20260521021)
 opens that panel directly when the record is available.
 
+::: figure connection-trigger
+
 ## Step 2 — Read the basis and source
 
 In **Connection evidence**, read the match label and date. In the example,
@@ -39,6 +41,8 @@ Open **City Record notice** in the panel to compare the official source, then re
 
 This supports the stated connection, not a finding of compliance or wrongdoing.
 [How records are connected](/guide/understand/how-records-are-connected/) explains the other match labels.
+
+::: figure connection-panel
 
 ## Step 3 — Reopen the evidence from its link
 

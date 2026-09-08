@@ -1,0 +1,1494 @@
+{
+  "schema": "cityscroll.guide-figure-checks.v1",
+  "locale_navigation_and_back": true,
+  "captures": [
+    {
+      "route": "/guide/how-to/check-the-evidence-behind-a-connection/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:46:59.618067+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/check-the-evidence-behind-a-connection/connection-trigger-mobile.png",
+          "width": 356,
+          "height": 173,
+          "alt": "Parks rule record with its Details link beside the title."
+        },
+        {
+          "src": "/media/guide/check-the-evidence-behind-a-connection/connection-panel-mobile.png",
+          "width": 356,
+          "height": 538,
+          "alt": "Expanded Connection evidence with match basis, source and copy-link control."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "ba8b599f4bbec3099d2418c083426d6d0e51fc354b9689b267d71770f735cc85"
+    },
+    {
+      "route": "/guide/start/explore-housing-across-city-records/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:47:07.054015+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/explore-housing-across-city-records/agency-result-mobile.png",
+          "width": 362,
+          "height": 519,
+          "alt": "Housing search results showing the Housing Preservation and Development agency entry."
+        },
+        {
+          "src": "/media/guide/explore-housing-across-city-records/agency-arrival-mobile.png",
+          "width": 406,
+          "height": 289,
+          "alt": "Housing Preservation and Development agency heading after selecting the search result."
+        },
+        {
+          "src": "/media/guide/explore-housing-across-city-records/rule-source-mobile.png",
+          "width": 362,
+          "height": 318,
+          "alt": "A rule passage in the housing search with its Official source link."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "7afa14b3e622401d6e436eb51ab62eea9298c3ac512816c71726420bb54db7ae"
+    },
+    {
+      "route": "/guide/how-to/find-and-narrow-records/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:47:09.443883+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/find-and-narrow-records/meeting-filters-mobile.png",
+          "width": 408,
+          "height": 732,
+          "alt": "Meeting list filters expanded above the results."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "3ca177de31a4b99214909a89c41386ad648fc86372fb4c4c98c3029a68cedd3b"
+    },
+    {
+      "route": "/guide/how-to/follow-a-community-board/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:47:14.389792+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/follow-a-community-board/board-topic-mobile.png",
+          "width": 406,
+          "height": 492,
+          "alt": "The selected Hearings and meetings topic and the Narrow it down disclosure in Following."
+        },
+        {
+          "src": "/media/guide/follow-a-community-board/board-picker-mobile.png",
+          "width": 406,
+          "height": 262,
+          "alt": "Community Board picker with Borough set to Manhattan and Board number set to 7."
+        },
+        {
+          "src": "/media/guide/follow-a-community-board/board-preview-mobile.png",
+          "width": 406,
+          "height": 389,
+          "alt": "The watch summary identifies Manhattan Community Board 7 in a disposable preview."
+        },
+        {
+          "src": "/media/guide/follow-a-community-board/board-criteria-mobile.png",
+          "width": 406,
+          "height": 217,
+          "alt": "Watch criteria names the topic and Manhattan Community Board 7."
+        },
+        {
+          "src": "/media/guide/follow-a-community-board/watch-confirmation-mobile.png",
+          "width": 356,
+          "height": 294,
+          "alt": "A disposable successful-save example showing the subscribed confirmation and an empty email field."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "607e1db1094a9d294dcd5e6dab713a94efe004916379f17644d8a88099fc6718"
+    },
+    {
+      "route": "/guide/how-to/follow-a-search/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:47:17.444506+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/follow-a-search/choose-scope-mobile.png",
+          "width": 406,
+          "height": 397,
+          "alt": "Following topic buttons above the borough choices."
+        },
+        {
+          "src": "/media/guide/follow-a-search/create-watch-mobile.png",
+          "width": 356,
+          "height": 247,
+          "alt": "Create this watch form with an empty Email address and Create watch button."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "549886f5e782e3e95736572d00a3a18dbcc94725abfa8ba15c49a41d6e619983"
+    },
+    {
+      "route": "/guide/how-to/look-at-records-as-of-a-day/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:47:20.490849+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/look-at-records-as-of-a-day/date-field-mobile.png",
+          "width": 406,
+          "height": 353,
+          "alt": "As of day panel with date field filled and Apply beside it."
+        },
+        {
+          "src": "/media/guide/look-at-records-as-of-a-day/date-result-mobile.png",
+          "width": 406,
+          "height": 383,
+          "alt": "Applied As of day summary and the Clear control."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "2e6d2c7b47560ac691aadc9a35a7a772f9686f6a01576e9ce0b825c387f0c267"
+    },
+    {
+      "route": "/guide/how-to/put-dates-in-your-calendar/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:47:23.503210+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/put-dates-in-your-calendar/calendar-toolbar-mobile.png",
+          "width": 394,
+          "height": 168,
+          "alt": "Meetings list toolbar, including the Subscribe to calendar control."
+        },
+        {
+          "src": "/media/guide/put-dates-in-your-calendar/calendar-options-mobile.png",
+          "width": 414,
+          "height": 836,
+          "alt": "Calendar subscription panel naming Meetings and showing the open and copy options."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "ec9e66405b1b834af57c1bc3942ca334e61772a6c243c27507aeda6c3dfdeb28"
+    },
+    {
+      "route": "/guide/how-to/read-a-land-use-projects-next-step/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:47:26.529709+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/read-a-land-use-projects-next-step/project-stage-mobile.png",
+          "width": 360,
+          "height": 820,
+          "alt": "Where this stands for Timbale Terrace, including the current authority and next opportunity state."
+        },
+        {
+          "src": "/media/guide/read-a-land-use-projects-next-step/project-documents-mobile.png",
+          "width": 360,
+          "height": 237,
+          "alt": "Decision documents for Timbale Terrace with links to the published files."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "1fbf6b14a3fb9d777952352120a0f6d95620db6d9afda724c949c0961459c69c"
+    },
+    {
+      "route": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:47:30.172750+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/connected-duty-mobile.png",
+          "width": 344,
+          "height": 272,
+          "alt": "Connected mandate in the Sanitation rule notice with its duty link, relation and Charter citation."
+        },
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/duty-source-mobile.png",
+          "width": 406,
+          "height": 490,
+          "alt": "Sanitation mandate heading, required action and Source law link."
+        },
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/publication-evidence-mobile.png",
+          "width": 406,
+          "height": 178,
+          "alt": "Publication evidence on the duty page includes the Sanitation notice request number."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "968d6a876422e1f8130a9caea52ea3aaec00d643a1c44f84c761288bb3f56c43"
+    },
+    {
+      "route": "/guide/how-to/check-the-evidence-behind-a-connection/",
+      "viewport": {
+        "width": 195,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:47:37.721226+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/check-the-evidence-behind-a-connection/connection-trigger-mobile.png",
+          "width": 356,
+          "height": 173,
+          "alt": "Parks rule record with its Details link beside the title."
+        },
+        {
+          "src": "/media/guide/check-the-evidence-behind-a-connection/connection-panel-mobile.png",
+          "width": 356,
+          "height": 538,
+          "alt": "Expanded Connection evidence with match basis, source and copy-link control."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "6004c88d5ef1696ce8af1907ad67ca744054c1ad4e1dae39191d3a5bf260d769"
+    },
+    {
+      "route": "/guide/start/explore-housing-across-city-records/",
+      "viewport": {
+        "width": 195,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:47:45.094646+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/explore-housing-across-city-records/agency-result-mobile.png",
+          "width": 362,
+          "height": 519,
+          "alt": "Housing search results showing the Housing Preservation and Development agency entry."
+        },
+        {
+          "src": "/media/guide/explore-housing-across-city-records/agency-arrival-mobile.png",
+          "width": 406,
+          "height": 289,
+          "alt": "Housing Preservation and Development agency heading after selecting the search result."
+        },
+        {
+          "src": "/media/guide/explore-housing-across-city-records/rule-source-mobile.png",
+          "width": 362,
+          "height": 318,
+          "alt": "A rule passage in the housing search with its Official source link."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "317160738c1d2b93169fa6902e71b6b5cdf0043734c623dcbed82fe38c945397"
+    },
+    {
+      "route": "/guide/how-to/find-and-narrow-records/",
+      "viewport": {
+        "width": 195,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:47:47.420249+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/find-and-narrow-records/meeting-filters-mobile.png",
+          "width": 408,
+          "height": 732,
+          "alt": "Meeting list filters expanded above the results."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "a2b367ee7945a09404c23165a1d1e67cf8169efd445c82c7b1702172b3893433"
+    },
+    {
+      "route": "/guide/how-to/follow-a-community-board/",
+      "viewport": {
+        "width": 195,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:47:52.367656+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/follow-a-community-board/board-topic-mobile.png",
+          "width": 406,
+          "height": 492,
+          "alt": "The selected Hearings and meetings topic and the Narrow it down disclosure in Following."
+        },
+        {
+          "src": "/media/guide/follow-a-community-board/board-picker-mobile.png",
+          "width": 406,
+          "height": 262,
+          "alt": "Community Board picker with Borough set to Manhattan and Board number set to 7."
+        },
+        {
+          "src": "/media/guide/follow-a-community-board/board-preview-mobile.png",
+          "width": 406,
+          "height": 389,
+          "alt": "The watch summary identifies Manhattan Community Board 7 in a disposable preview."
+        },
+        {
+          "src": "/media/guide/follow-a-community-board/board-criteria-mobile.png",
+          "width": 406,
+          "height": 217,
+          "alt": "Watch criteria names the topic and Manhattan Community Board 7."
+        },
+        {
+          "src": "/media/guide/follow-a-community-board/watch-confirmation-mobile.png",
+          "width": 356,
+          "height": 294,
+          "alt": "A disposable successful-save example showing the subscribed confirmation and an empty email field."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "86b4aaa0b1582b0122688bc4457fa5c4e069935297be7d00fe292fc51b257e4c"
+    },
+    {
+      "route": "/guide/how-to/follow-a-search/",
+      "viewport": {
+        "width": 195,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:47:55.329154+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/follow-a-search/choose-scope-mobile.png",
+          "width": 406,
+          "height": 397,
+          "alt": "Following topic buttons above the borough choices."
+        },
+        {
+          "src": "/media/guide/follow-a-search/create-watch-mobile.png",
+          "width": 356,
+          "height": 247,
+          "alt": "Create this watch form with an empty Email address and Create watch button."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "7f7df381fbe8c66ec7b462313dcc65192e4ca3e69dbc59638a6a8332110734a7"
+    },
+    {
+      "route": "/guide/how-to/look-at-records-as-of-a-day/",
+      "viewport": {
+        "width": 195,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:47:58.289422+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/look-at-records-as-of-a-day/date-field-mobile.png",
+          "width": 406,
+          "height": 353,
+          "alt": "As of day panel with date field filled and Apply beside it."
+        },
+        {
+          "src": "/media/guide/look-at-records-as-of-a-day/date-result-mobile.png",
+          "width": 406,
+          "height": 383,
+          "alt": "Applied As of day summary and the Clear control."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "42c0490e675f00188fdf3785c6d93b71868c8357cbf6b10e87adb8203f9951f8"
+    },
+    {
+      "route": "/guide/how-to/put-dates-in-your-calendar/",
+      "viewport": {
+        "width": 195,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:48:01.249431+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/put-dates-in-your-calendar/calendar-toolbar-mobile.png",
+          "width": 394,
+          "height": 168,
+          "alt": "Meetings list toolbar, including the Subscribe to calendar control."
+        },
+        {
+          "src": "/media/guide/put-dates-in-your-calendar/calendar-options-mobile.png",
+          "width": 414,
+          "height": 836,
+          "alt": "Calendar subscription panel naming Meetings and showing the open and copy options."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "783c19838f3d299c57ecf49c75719276010217b0cab1dc18373c9f621fed2829"
+    },
+    {
+      "route": "/guide/how-to/read-a-land-use-projects-next-step/",
+      "viewport": {
+        "width": 195,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:48:04.239452+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/read-a-land-use-projects-next-step/project-stage-mobile.png",
+          "width": 360,
+          "height": 820,
+          "alt": "Where this stands for Timbale Terrace, including the current authority and next opportunity state."
+        },
+        {
+          "src": "/media/guide/read-a-land-use-projects-next-step/project-documents-mobile.png",
+          "width": 360,
+          "height": 237,
+          "alt": "Decision documents for Timbale Terrace with links to the published files."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "85a2edab1999ee7aaca84b33cf9045101fcb0307937bf154cb57e1633b4b0f5d"
+    },
+    {
+      "route": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
+      "viewport": {
+        "width": 195,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:48:07.881168+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/connected-duty-mobile.png",
+          "width": 344,
+          "height": 272,
+          "alt": "Connected mandate in the Sanitation rule notice with its duty link, relation and Charter citation."
+        },
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/duty-source-mobile.png",
+          "width": 406,
+          "height": 490,
+          "alt": "Sanitation mandate heading, required action and Source law link."
+        },
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/publication-evidence-mobile.png",
+          "width": 406,
+          "height": 178,
+          "alt": "Publication evidence on the duty page includes the Sanitation notice request number."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "459b35a6126bc559326d00ae2029f0112acf5f5ba41223b8119b1a4f5396b409"
+    },
+    {
+      "route": "/guide/how-to/check-the-evidence-behind-a-connection/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:48:15.364104+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/check-the-evidence-behind-a-connection/connection-trigger-desktop.png",
+          "width": 699,
+          "height": 153,
+          "alt": "Parks rule record with its Details link beside the title."
+        },
+        {
+          "src": "/media/guide/check-the-evidence-behind-a-connection/connection-panel-desktop.png",
+          "width": 699,
+          "height": 451,
+          "alt": "Expanded Connection evidence with match basis, source and copy-link control."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "ab7ed7e27b7e263f69ee86fc51562af9a479b7743c7384e80c9f732e8eda801d"
+    },
+    {
+      "route": "/guide/start/explore-housing-across-city-records/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:48:22.641191+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/explore-housing-across-city-records/agency-result-desktop.png",
+          "width": 527,
+          "height": 392,
+          "alt": "Housing search results showing the Housing Preservation and Development agency entry."
+        },
+        {
+          "src": "/media/guide/explore-housing-across-city-records/agency-arrival-desktop.png",
+          "width": 1072,
+          "height": 281,
+          "alt": "Housing Preservation and Development agency heading after selecting the search result."
+        },
+        {
+          "src": "/media/guide/explore-housing-across-city-records/rule-source-desktop.png",
+          "width": 527,
+          "height": 260,
+          "alt": "A rule passage in the housing search with its Official source link."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "a2b974c2cbdbbf89b1749ffbe9b7dead1d3a2290a53e3bebc3c7aee01c599e66"
+    },
+    {
+      "route": "/guide/how-to/find-and-narrow-records/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:48:25.031221+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/find-and-narrow-records/meeting-filters-desktop.png",
+          "width": 1124,
+          "height": 713,
+          "alt": "Meeting list filters expanded above the results."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "538e909a3e5c04a44d37682041985e80dd06df6912adf9b6aa9a763089380515"
+    },
+    {
+      "route": "/guide/how-to/follow-a-community-board/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:48:30.031625+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/follow-a-community-board/board-topic-desktop.png",
+          "width": 1072,
+          "height": 387,
+          "alt": "The selected Hearings and meetings topic and the Narrow it down disclosure in Following."
+        },
+        {
+          "src": "/media/guide/follow-a-community-board/board-picker-desktop.png",
+          "width": 382,
+          "height": 267,
+          "alt": "Community Board picker with Borough set to Manhattan and Board number set to 7."
+        },
+        {
+          "src": "/media/guide/follow-a-community-board/board-preview-desktop.png",
+          "width": 1072,
+          "height": 313,
+          "alt": "The watch summary identifies Manhattan Community Board 7 in a disposable preview."
+        },
+        {
+          "src": "/media/guide/follow-a-community-board/board-criteria-desktop.png",
+          "width": 379,
+          "height": 427,
+          "alt": "Watch criteria names the topic and Manhattan Community Board 7."
+        },
+        {
+          "src": "/media/guide/follow-a-community-board/watch-confirmation-desktop.png",
+          "width": 329,
+          "height": 294,
+          "alt": "A disposable successful-save example showing the subscribed confirmation and an empty email field."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "b7af3872f479b5c697603436d905ffa6280919bdb7e4146cd52acac2ec41cebe"
+    },
+    {
+      "route": "/guide/how-to/follow-a-search/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:48:33.047466+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/follow-a-search/choose-scope-desktop.png",
+          "width": 1072,
+          "height": 294,
+          "alt": "Following topic buttons above the borough choices."
+        },
+        {
+          "src": "/media/guide/follow-a-search/create-watch-desktop.png",
+          "width": 329,
+          "height": 247,
+          "alt": "Create this watch form with an empty Email address and Create watch button."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "85cb448e8f16633643c3253bb2c514e4d57e5d2f3a052e01a290ee68863c6c09"
+    },
+    {
+      "route": "/guide/how-to/look-at-records-as-of-a-day/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:48:36.031597+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/look-at-records-as-of-a-day/date-field-desktop.png",
+          "width": 749,
+          "height": 238,
+          "alt": "As of day panel with date field filled and Apply beside it."
+        },
+        {
+          "src": "/media/guide/look-at-records-as-of-a-day/date-result-desktop.png",
+          "width": 749,
+          "height": 268,
+          "alt": "Applied As of day summary and the Clear control."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "3dfecfc032ef39fc3be4431fb63e645bdea45e6f0ea51862f952e73a15fc8bc5"
+    },
+    {
+      "route": "/guide/how-to/put-dates-in-your-calendar/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:48:39.034211+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/put-dates-in-your-calendar/calendar-toolbar-desktop.png",
+          "width": 1124,
+          "height": 75,
+          "alt": "Meetings list toolbar, including the Subscribe to calendar control."
+        },
+        {
+          "src": "/media/guide/put-dates-in-your-calendar/calendar-options-desktop.png",
+          "width": 628,
+          "height": 644,
+          "alt": "Calendar subscription panel naming Meetings and showing the open and copy options."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "c7d7d665599abb4a54702b9449f8460d81b0521b4b40b41916f1c5aae6734099"
+    },
+    {
+      "route": "/guide/how-to/read-a-land-use-projects-next-step/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:48:42.041086+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/read-a-land-use-projects-next-step/project-stage-desktop.png",
+          "width": 686,
+          "height": 599,
+          "alt": "Where this stands for Timbale Terrace, including the current authority and next opportunity state."
+        },
+        {
+          "src": "/media/guide/read-a-land-use-projects-next-step/project-documents-desktop.png",
+          "width": 686,
+          "height": 154,
+          "alt": "Decision documents for Timbale Terrace with links to the published files."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "8221d8c520de78b641a00503fe5ae34cc9a48433f9dda5ac8f2734db8fe93f56"
+    },
+    {
+      "route": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:48:45.701171+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/connected-duty-desktop.png",
+          "width": 878,
+          "height": 141,
+          "alt": "Connected mandate in the Sanitation rule notice with its duty link, relation and Charter citation."
+        },
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/duty-source-desktop.png",
+          "width": 729,
+          "height": 472,
+          "alt": "Sanitation mandate heading, required action and Source law link."
+        },
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/publication-evidence-desktop.png",
+          "width": 729,
+          "height": 191,
+          "alt": "Publication evidence on the duty page includes the Sanitation notice request number."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "e4dc11d370546f276fa68d9113dccefe5d5874365ae9dbb51e1ddcfd03890ae8"
+    },
+    {
+      "route": "/guide/how-to/check-the-evidence-behind-a-connection/",
+      "viewport": {
+        "width": 720,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:48:53.299038+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/check-the-evidence-behind-a-connection/connection-trigger-desktop.png",
+          "width": 699,
+          "height": 153,
+          "alt": "Parks rule record with its Details link beside the title."
+        },
+        {
+          "src": "/media/guide/check-the-evidence-behind-a-connection/connection-panel-desktop.png",
+          "width": 699,
+          "height": 451,
+          "alt": "Expanded Connection evidence with match basis, source and copy-link control."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "48b997d40a56e5ff49d355fb7c19eb644dd206f8f5dc377b298ac8ac9c68e3f3"
+    },
+    {
+      "route": "/guide/start/explore-housing-across-city-records/",
+      "viewport": {
+        "width": 720,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:49:00.607564+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/explore-housing-across-city-records/agency-result-desktop.png",
+          "width": 527,
+          "height": 392,
+          "alt": "Housing search results showing the Housing Preservation and Development agency entry."
+        },
+        {
+          "src": "/media/guide/explore-housing-across-city-records/agency-arrival-desktop.png",
+          "width": 1072,
+          "height": 281,
+          "alt": "Housing Preservation and Development agency heading after selecting the search result."
+        },
+        {
+          "src": "/media/guide/explore-housing-across-city-records/rule-source-desktop.png",
+          "width": 527,
+          "height": 260,
+          "alt": "A rule passage in the housing search with its Official source link."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "70f1b867a3be451aa7724b1f25fc844e86ff67ae0bee0196aa5b23043b649d47"
+    },
+    {
+      "route": "/guide/how-to/find-and-narrow-records/",
+      "viewport": {
+        "width": 720,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:49:02.940211+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/find-and-narrow-records/meeting-filters-desktop.png",
+          "width": 1124,
+          "height": 713,
+          "alt": "Meeting list filters expanded above the results."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "07d780d39629ff75047f5bfc200d3cb451b2780d39ee880ce6c541a32690560a"
+    },
+    {
+      "route": "/guide/how-to/follow-a-community-board/",
+      "viewport": {
+        "width": 720,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:49:08.044513+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/follow-a-community-board/board-topic-desktop.png",
+          "width": 1072,
+          "height": 387,
+          "alt": "The selected Hearings and meetings topic and the Narrow it down disclosure in Following."
+        },
+        {
+          "src": "/media/guide/follow-a-community-board/board-picker-desktop.png",
+          "width": 382,
+          "height": 267,
+          "alt": "Community Board picker with Borough set to Manhattan and Board number set to 7."
+        },
+        {
+          "src": "/media/guide/follow-a-community-board/board-preview-desktop.png",
+          "width": 1072,
+          "height": 313,
+          "alt": "The watch summary identifies Manhattan Community Board 7 in a disposable preview."
+        },
+        {
+          "src": "/media/guide/follow-a-community-board/board-criteria-desktop.png",
+          "width": 379,
+          "height": 427,
+          "alt": "Watch criteria names the topic and Manhattan Community Board 7."
+        },
+        {
+          "src": "/media/guide/follow-a-community-board/watch-confirmation-desktop.png",
+          "width": 329,
+          "height": 294,
+          "alt": "A disposable successful-save example showing the subscribed confirmation and an empty email field."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "e8a73621bda77e1bbe731a6f1001a99889726f68e0887dfb48b3ecdb80407824"
+    },
+    {
+      "route": "/guide/how-to/follow-a-search/",
+      "viewport": {
+        "width": 720,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:49:11.138906+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/follow-a-search/choose-scope-desktop.png",
+          "width": 1072,
+          "height": 294,
+          "alt": "Following topic buttons above the borough choices."
+        },
+        {
+          "src": "/media/guide/follow-a-search/create-watch-desktop.png",
+          "width": 329,
+          "height": 247,
+          "alt": "Create this watch form with an empty Email address and Create watch button."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "bc96ec054804a5c4b6354e5743194c8abf240ac89930bac9818dad3604bcf58c"
+    },
+    {
+      "route": "/guide/how-to/look-at-records-as-of-a-day/",
+      "viewport": {
+        "width": 720,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:49:14.242789+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/look-at-records-as-of-a-day/date-field-desktop.png",
+          "width": 749,
+          "height": 238,
+          "alt": "As of day panel with date field filled and Apply beside it."
+        },
+        {
+          "src": "/media/guide/look-at-records-as-of-a-day/date-result-desktop.png",
+          "width": 749,
+          "height": 268,
+          "alt": "Applied As of day summary and the Clear control."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "13924bc1d898a7203711bfcf4f4592d4253d7722c6a57e234324a5c9c434eaaf"
+    },
+    {
+      "route": "/guide/how-to/put-dates-in-your-calendar/",
+      "viewport": {
+        "width": 720,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:49:17.401118+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/put-dates-in-your-calendar/calendar-toolbar-desktop.png",
+          "width": 1124,
+          "height": 75,
+          "alt": "Meetings list toolbar, including the Subscribe to calendar control."
+        },
+        {
+          "src": "/media/guide/put-dates-in-your-calendar/calendar-options-desktop.png",
+          "width": 628,
+          "height": 644,
+          "alt": "Calendar subscription panel naming Meetings and showing the open and copy options."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "1c6d90cb89bf55babcadcaef6d076c3f757e9bcf3dae9af7c5f3daa7ecc1ed6a"
+    },
+    {
+      "route": "/guide/how-to/read-a-land-use-projects-next-step/",
+      "viewport": {
+        "width": 720,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:49:20.570899+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/read-a-land-use-projects-next-step/project-stage-desktop.png",
+          "width": 686,
+          "height": 599,
+          "alt": "Where this stands for Timbale Terrace, including the current authority and next opportunity state."
+        },
+        {
+          "src": "/media/guide/read-a-land-use-projects-next-step/project-documents-desktop.png",
+          "width": 686,
+          "height": 154,
+          "alt": "Decision documents for Timbale Terrace with links to the published files."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "4e1a49604ef2bc874218a74f439d273cbb7c3f985887989b3b18a552df7291ad"
+    },
+    {
+      "route": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
+      "viewport": {
+        "width": 720,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:49:24.468380+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/connected-duty-desktop.png",
+          "width": 878,
+          "height": 141,
+          "alt": "Connected mandate in the Sanitation rule notice with its duty link, relation and Charter citation."
+        },
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/duty-source-desktop.png",
+          "width": 729,
+          "height": 472,
+          "alt": "Sanitation mandate heading, required action and Source law link."
+        },
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/publication-evidence-desktop.png",
+          "width": 729,
+          "height": 191,
+          "alt": "Publication evidence on the duty page includes the Sanitation notice request number."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "ccf96aa570c0b9fe51706c6a09dd4b090ce133576e77a9ac06a49ee6b8a27ba4"
+    },
+    {
+      "route": "/guide/how-to/collect-records-and-export-them/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:51:06.144577+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/collect-records-and-export-them/pin-record-mobile.png",
+          "width": 344,
+          "height": 148,
+          "alt": "The award notice action row, including Pin."
+        },
+        {
+          "src": "/media/guide/collect-records-and-export-them/pin-confirmation-mobile.png",
+          "width": 344,
+          "height": 199,
+          "alt": "Pinned confirmation link in the same record action row."
+        },
+        {
+          "src": "/media/guide/collect-records-and-export-them/notes-and-exports-mobile.png",
+          "width": 344,
+          "height": 652,
+          "alt": "Investigation workspace with file exports above a pinned award and a disposable example note."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "f9cf691d5b6f79a4421bdbcb943f328d50ad518e577bbfb3a5b814a2aaf16f4b"
+    },
+    {
+      "route": "/guide/start/trace-an-award-and-keep-the-trail/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:51:10.565130+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/trace-an-award-and-keep-the-trail/vendor-connection-mobile.png",
+          "width": 356,
+          "height": 173,
+          "alt": "Lantern Community Services vendor connection on the Homeless Services agency page."
+        },
+        {
+          "src": "/media/guide/trace-an-award-and-keep-the-trail/vendor-trail-mobile.png",
+          "width": 394,
+          "height": 199,
+          "alt": "One-step trail from Homeless Services to Lantern Community Services."
+        },
+        {
+          "src": "/media/guide/trace-an-award-and-keep-the-trail/award-connection-mobile.png",
+          "width": 344,
+          "height": 127,
+          "alt": "The Integrated Commercial Hotels Program award title in the vendor\u2019s dated notice list."
+        },
+        {
+          "src": "/media/guide/trace-an-award-and-keep-the-trail/award-trail-mobile.png",
+          "width": 394,
+          "height": 477,
+          "alt": "Two-step agency-to-vendor-to-award trail and the final award heading."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "ea2dc1df1588f06010be6a22546131a85dea0016ffbedc6450556ade53027dce"
+    },
+    {
+      "route": "/guide/how-to/collect-records-and-export-them/",
+      "viewport": {
+        "width": 195,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:51:14.584622+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/collect-records-and-export-them/pin-record-mobile.png",
+          "width": 344,
+          "height": 148,
+          "alt": "The award notice action row, including Pin."
+        },
+        {
+          "src": "/media/guide/collect-records-and-export-them/pin-confirmation-mobile.png",
+          "width": 344,
+          "height": 199,
+          "alt": "Pinned confirmation link in the same record action row."
+        },
+        {
+          "src": "/media/guide/collect-records-and-export-them/notes-and-exports-mobile.png",
+          "width": 344,
+          "height": 652,
+          "alt": "Investigation workspace with file exports above a pinned award and a disposable example note."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "d765ad72e3806ed9937df61c036cb47b3ed0993508dceca64ef1a2f8312b9385"
+    },
+    {
+      "route": "/guide/start/trace-an-award-and-keep-the-trail/",
+      "viewport": {
+        "width": 195,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:51:19.099143+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/trace-an-award-and-keep-the-trail/vendor-connection-mobile.png",
+          "width": 356,
+          "height": 173,
+          "alt": "Lantern Community Services vendor connection on the Homeless Services agency page."
+        },
+        {
+          "src": "/media/guide/trace-an-award-and-keep-the-trail/vendor-trail-mobile.png",
+          "width": 394,
+          "height": 199,
+          "alt": "One-step trail from Homeless Services to Lantern Community Services."
+        },
+        {
+          "src": "/media/guide/trace-an-award-and-keep-the-trail/award-connection-mobile.png",
+          "width": 344,
+          "height": 127,
+          "alt": "The Integrated Commercial Hotels Program award title in the vendor\u2019s dated notice list."
+        },
+        {
+          "src": "/media/guide/trace-an-award-and-keep-the-trail/award-trail-mobile.png",
+          "width": 394,
+          "height": 477,
+          "alt": "Two-step agency-to-vendor-to-award trail and the final award heading."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "0eb45653a5eca31630b1acc1913bb7fd8d0d98c4734caa7637598a7e8d10f31c"
+    },
+    {
+      "route": "/guide/how-to/collect-records-and-export-them/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:51:22.972711+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/collect-records-and-export-them/pin-record-desktop.png",
+          "width": 878,
+          "height": 61,
+          "alt": "The award notice action row, including Pin."
+        },
+        {
+          "src": "/media/guide/collect-records-and-export-them/pin-confirmation-desktop.png",
+          "width": 878,
+          "height": 95,
+          "alt": "Pinned confirmation link in the same record action row."
+        },
+        {
+          "src": "/media/guide/collect-records-and-export-them/notes-and-exports-desktop.png",
+          "width": 878,
+          "height": 275,
+          "alt": "Investigation workspace with file exports above a pinned award and a disposable example note."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "c30cf3a67f03da7b587ac6055536d8d60cde8cf75473ad4306da6f40826e234d"
+    },
+    {
+      "route": "/guide/start/trace-an-award-and-keep-the-trail/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:51:28.573889+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/trace-an-award-and-keep-the-trail/vendor-connection-desktop.png",
+          "width": 679,
+          "height": 99,
+          "alt": "Lantern Community Services vendor connection on the Homeless Services agency page."
+        },
+        {
+          "src": "/media/guide/trace-an-award-and-keep-the-trail/vendor-trail-desktop.png",
+          "width": 928,
+          "height": 92,
+          "alt": "One-step trail from Homeless Services to Lantern Community Services."
+        },
+        {
+          "src": "/media/guide/trace-an-award-and-keep-the-trail/award-connection-desktop.png",
+          "width": 878,
+          "height": 55,
+          "alt": "The Integrated Commercial Hotels Program award title in the vendor\u2019s dated notice list."
+        },
+        {
+          "src": "/media/guide/trace-an-award-and-keep-the-trail/award-trail-desktop.png",
+          "width": 1124,
+          "height": 244,
+          "alt": "Two-step agency-to-vendor-to-award trail and the final award heading."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "5552c9d4b4ec365e18b6c89c141dd3eaaefcfd640064b590f2fbb4046cdcfd7b"
+    },
+    {
+      "route": "/guide/how-to/collect-records-and-export-them/",
+      "viewport": {
+        "width": 720,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:51:32.422119+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/collect-records-and-export-them/pin-record-desktop.png",
+          "width": 878,
+          "height": 61,
+          "alt": "The award notice action row, including Pin."
+        },
+        {
+          "src": "/media/guide/collect-records-and-export-them/pin-confirmation-desktop.png",
+          "width": 878,
+          "height": 95,
+          "alt": "Pinned confirmation link in the same record action row."
+        },
+        {
+          "src": "/media/guide/collect-records-and-export-them/notes-and-exports-desktop.png",
+          "width": 878,
+          "height": 275,
+          "alt": "Investigation workspace with file exports above a pinned award and a disposable example note."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "84e671c7c1e24d5f746c78866313d3104841f72ed8d0a0d7626178e705be9788"
+    },
+    {
+      "route": "/guide/start/trace-an-award-and-keep-the-trail/",
+      "viewport": {
+        "width": 720,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+      "captured_at": "2026-09-08T15:51:36.741899+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/trace-an-award-and-keep-the-trail/vendor-connection-desktop.png",
+          "width": 679,
+          "height": 99,
+          "alt": "Lantern Community Services vendor connection on the Homeless Services agency page."
+        },
+        {
+          "src": "/media/guide/trace-an-award-and-keep-the-trail/vendor-trail-desktop.png",
+          "width": 928,
+          "height": 92,
+          "alt": "One-step trail from Homeless Services to Lantern Community Services."
+        },
+        {
+          "src": "/media/guide/trace-an-award-and-keep-the-trail/award-connection-desktop.png",
+          "width": 878,
+          "height": 55,
+          "alt": "The Integrated Commercial Hotels Program award title in the vendor\u2019s dated notice list."
+        },
+        {
+          "src": "/media/guide/trace-an-award-and-keep-the-trail/award-trail-desktop.png",
+          "width": 1124,
+          "height": 244,
+          "alt": "Two-step agency-to-vendor-to-award trail and the final award heading."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "8d869af008bb376528f6ddb9f38546b2e0e7f26680eab7cb5d3d80497d1063b6"
+    }
+  ]
+}

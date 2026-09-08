@@ -1,0 +1,349 @@
+{
+  "schema": "cityscroll.guide-captures.v1",
+  "figures": {
+    "vendor-connection": {
+      "locale": "en",
+      "caption": "1. Select Lantern Community Services under the agency\u2019s Connected records to start a trail.",
+      "alt": "Lantern Community Services vendor connection on the Homeless Services agency page.",
+      "mobile": {
+        "src": "/media/guide/trace-an-award-and-keep-the-trail/vendor-connection-mobile.png",
+        "width": 356,
+        "height": 173,
+        "captured_at": "2026-09-08T15:50:13.961162+00:00",
+        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/agencies/homeless-services/",
+        "sha256": "bb714dc17513e8393f88a0caa06f72e4db589970dcd6dce884b29510ea70a8f0",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "a[data-pivot-schema][href=\"/vendors/LANTERN%20COMMUNITY%20SERVICES/\"]",
+            "label": "\u25c6\nLANTERN COMMUNITY SERVICES INC\npublished by agency",
+            "y": 60
+          }
+        ],
+        "crop": {
+          "x": 33,
+          "y": 27688,
+          "width": 324,
+          "height": 173
+        },
+        "source_html_sha256": "2bffd063d8313d1a847f3b36fbbbdd8ea073fd41f6738fa838dfdb46af77d550",
+        "journey_checks": {
+          "click_created_two_hops": true,
+          "reload": true,
+          "fresh_browser_context": true
+        },
+        "public_read_snapshot": {
+          "captured_at": "2026-09-08T15:33:44.995268+00:00",
+          "sha256": "719f52a0bdf8cb179f434c2345e51fbc67c3291b10fe3d812e27755c12e999f7"
+        }
+      },
+      "desktop": {
+        "src": "/media/guide/trace-an-award-and-keep-the-trail/vendor-connection-desktop.png",
+        "width": 679,
+        "height": 99,
+        "captured_at": "2026-09-08T15:50:17.010451+00:00",
+        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/agencies/homeless-services/",
+        "sha256": "4afe3cf2c19b227d9416caf98ae0549805c7130b6d833110b4319e797ca7eb66",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "a[data-pivot-schema][href=\"/vendors/LANTERN%20COMMUNITY%20SERVICES/\"]",
+            "label": "\u25c6\nLANTERN COMMUNITY SERVICES INC\npublished by agency",
+            "y": 35
+          }
+        ],
+        "crop": {
+          "x": 225,
+          "y": 20017,
+          "width": 647,
+          "height": 99
+        },
+        "source_html_sha256": "2bffd063d8313d1a847f3b36fbbbdd8ea073fd41f6738fa838dfdb46af77d550",
+        "journey_checks": {
+          "click_created_two_hops": true,
+          "reload": true,
+          "fresh_browser_context": true
+        },
+        "public_read_snapshot": {
+          "captured_at": "2026-09-08T15:33:44.995268+00:00",
+          "sha256": "719f52a0bdf8cb179f434c2345e51fbc67c3291b10fe3d812e27755c12e999f7"
+        }
+      }
+    },
+    "vendor-trail": {
+      "locale": "en",
+      "caption": "1. The first trail step names the agency and vendor; check it before choosing an award.",
+      "alt": "One-step trail from Homeless Services to Lantern Community Services.",
+      "mobile": {
+        "src": "/media/guide/trace-an-award-and-keep-the-trail/vendor-trail-mobile.png",
+        "width": 394,
+        "height": 199,
+        "captured_at": "2026-09-08T15:50:14.530279+00:00",
+        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/vendors/LANTERN%20COMMUNITY%20SERVICES/?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQyIiwibmFtZSI6IuKXhkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL0xBTlRFUk4lMjBDT01NVU5JVFklMjBTRVJWSUNFUy8ifSwic2NvcGUiOm51bGx9XX0",
+        "sha256": "fb60fc0b33bf3337d1621ee0bb0dd682f0d6441cbf9f6756e15bb3d34def5d68",
+        "redactions": [],
+        "data_vintage": "Retained public City Record vendor reads acquired by capture_award_trail.py",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": ".traversal-path",
+            "label": "\u2039\nDepartment of Homeless Services\npublished by agency \u2192\n\u25c6LANTERN COMMUNITY SERVICES INC published by agency\n\u21ba",
+            "y": 99
+          }
+        ],
+        "crop": {
+          "x": 14,
+          "y": 1123,
+          "width": 362,
+          "height": 199
+        },
+        "source_html_sha256": "0bda2d5473f76b07184819a68de0f37aa06ca490cea1bd6897391b89daf868d3",
+        "journey_checks": {
+          "click_created_two_hops": true,
+          "reload": true,
+          "fresh_browser_context": true
+        },
+        "public_read_snapshot": {
+          "captured_at": "2026-09-08T15:33:44.995268+00:00",
+          "sha256": "719f52a0bdf8cb179f434c2345e51fbc67c3291b10fe3d812e27755c12e999f7"
+        }
+      },
+      "desktop": {
+        "src": "/media/guide/trace-an-award-and-keep-the-trail/vendor-trail-desktop.png",
+        "width": 928,
+        "height": 92,
+        "captured_at": "2026-09-08T15:50:17.591980+00:00",
+        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/vendors/LANTERN%20COMMUNITY%20SERVICES/?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQyIiwibmFtZSI6IuKXhkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL0xBTlRFUk4lMjBDT01NVU5JVFklMjBTRVJWSUNFUy8ifSwic2NvcGUiOm51bGx9XX0",
+        "sha256": "e12b6d4910a884ae3511cb49853b1161b8dc4b514701c143f39bdcb3beb250a9",
+        "redactions": [],
+        "data_vintage": "Retained public City Record vendor reads acquired by capture_award_trail.py",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": ".traversal-path",
+            "label": "\u2039\nDepartment of Homeless Services\npublished by agency \u2192\n\u25c6LANTERN COMMUNITY SERVICES INC published by agency\n\u21ba",
+            "y": 46
+          }
+        ],
+        "crop": {
+          "x": 272,
+          "y": 775,
+          "width": 896,
+          "height": 92
+        },
+        "source_html_sha256": "0bda2d5473f76b07184819a68de0f37aa06ca490cea1bd6897391b89daf868d3",
+        "journey_checks": {
+          "click_created_two_hops": true,
+          "reload": true,
+          "fresh_browser_context": true
+        },
+        "public_read_snapshot": {
+          "captured_at": "2026-09-08T15:33:44.995268+00:00",
+          "sha256": "719f52a0bdf8cb179f434c2345e51fbc67c3291b10fe3d812e27755c12e999f7"
+        }
+      }
+    },
+    "award-connection": {
+      "locale": "en",
+      "caption": "1. Under On the record, open Show all dates and select the award title to continue the trail.",
+      "alt": "The Integrated Commercial Hotels Program award title in the vendor\u2019s dated notice list.",
+      "mobile": {
+        "src": "/media/guide/trace-an-award-and-keep-the-trail/award-connection-mobile.png",
+        "width": 344,
+        "height": 127,
+        "captured_at": "2026-09-08T15:50:14.814987+00:00",
+        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/vendors/LANTERN%20COMMUNITY%20SERVICES/?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQyIiwibmFtZSI6IuKXhkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL0xBTlRFUk4lMjBDT01NVU5JVFklMjBTRVJWSUNFUy8ifSwic2NvcGUiOm51bGx9XX0",
+        "sha256": "10fc0d75b2ec77bdb478529866d7626f7e55ef23f2a312e7131fa8c34283285b",
+        "redactions": [],
+        "data_vintage": "Retained public City Record award response; no prepared trail URL used",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "a[data-pivot-target-kind=\"notice\"][href=\"#notice/20260729015\"]:visible",
+            "label": "\u25c6\nIntegrated Commercial Hotels Program",
+            "y": 69
+          }
+        ],
+        "crop": {
+          "x": 39,
+          "y": 2795,
+          "width": 312,
+          "height": 127
+        },
+        "source_html_sha256": "416cb5db75b08f8ac72d72da8fa36d05b681c5a85b6af3d2f1edd473126d39e2",
+        "journey_checks": {
+          "click_created_two_hops": true,
+          "reload": true,
+          "fresh_browser_context": true
+        },
+        "public_read_snapshot": {
+          "captured_at": "2026-09-08T15:33:44.995268+00:00",
+          "sha256": "719f52a0bdf8cb179f434c2345e51fbc67c3291b10fe3d812e27755c12e999f7"
+        }
+      },
+      "desktop": {
+        "src": "/media/guide/trace-an-award-and-keep-the-trail/award-connection-desktop.png",
+        "width": 878,
+        "height": 55,
+        "captured_at": "2026-09-08T15:50:17.898566+00:00",
+        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/vendors/LANTERN%20COMMUNITY%20SERVICES/?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQyIiwibmFtZSI6IuKXhkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL0xBTlRFUk4lMjBDT01NVU5JVFklMjBTRVJWSUNFUy8ifSwic2NvcGUiOm51bGx9XX0",
+        "sha256": "95ab54a2f4d99f3a7aade25d0ec3a83f4e7530f34034548ef1d6fa3fbdad7783",
+        "redactions": [],
+        "data_vintage": "Retained public City Record award response; no prepared trail URL used",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "a[data-pivot-target-kind=\"notice\"][href=\"#notice/20260729015\"]:visible",
+            "label": "\u25c6\nIntegrated Commercial Hotels Program",
+            "y": 27
+          }
+        ],
+        "crop": {
+          "x": 297,
+          "y": 1910,
+          "width": 846,
+          "height": 55
+        },
+        "source_html_sha256": "416cb5db75b08f8ac72d72da8fa36d05b681c5a85b6af3d2f1edd473126d39e2",
+        "journey_checks": {
+          "click_created_two_hops": true,
+          "reload": true,
+          "fresh_browser_context": true
+        },
+        "public_read_snapshot": {
+          "captured_at": "2026-09-08T15:33:44.995268+00:00",
+          "sha256": "719f52a0bdf8cb179f434c2345e51fbc67c3291b10fe3d812e27755c12e999f7"
+        }
+      }
+    },
+    "award-trail": {
+      "locale": "en",
+      "caption": "1. Both connections remain in the trail. 2. The award is the final record. Copy the full address to keep both steps.",
+      "alt": "Two-step agency-to-vendor-to-award trail and the final award heading.",
+      "mobile": {
+        "src": "/media/guide/trace-an-award-and-keep-the-trail/award-trail-mobile.png",
+        "width": 394,
+        "height": 477,
+        "captured_at": "2026-09-08T15:50:15.476745+00:00",
+        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/notices/20260729015?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQyIiwibmFtZSI6IuKXhkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL0xBTlRFUk4lMjBDT01NVU5JVFklMjBTRVJWSUNFUy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIiwibmFtZSI6IkxhbnRlcm4gQ29tbXVuaXR5IFNlcnZpY2VzIEluYy4iLCJocmVmIjoiL3ZlbmRvcnMvTEFOVEVSTiUyMENPTU1VTklUWSUyMFNFUlZJQ0VTLyJ9LCJyZWxhdGlvbiI6IkF3YXJkIiwiZGVzdGluYXRpb24iOnsia2luZCI6Im5vdGljZSIsImlkIjoiMjAyNjA3MjkwMTUiLCJuYW1lIjoiSW50ZWdyYXRlZCBDb21tZXJjaWFsIEhvdGVscyBQcm9ncmFtIiwiaHJlZiI6IiNub3RpY2UvMjAyNjA3MjkwMTUifSwic2NvcGUiOm51bGx9XX0",
+        "sha256": "48396983f47e74703e164154559495fb86c74f6ef33013fda4962367624d9225",
+        "redactions": [],
+        "data_vintage": "Click-created trail after navigation repair; retained public City Record reads",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": ".traversal-path",
+            "label": "\u2039\nDepartment of Homeless Services\npublished by agency \u2192\n\u25c6LANTERN COMMUNITY SERVICES INC published by agency\nAward \u2192\nIntegrated Commercial Hotels Program\n\u21ba",
+            "y": 142
+          },
+          {
+            "number": 2,
+            "selector": "[data-notice-id] .rolename",
+            "label": "INTEGRATED COMMERCIAL HOTELS PROGRAM",
+            "y": 440
+          }
+        ],
+        "crop": {
+          "x": 14,
+          "y": 1123,
+          "width": 362,
+          "height": 477
+        },
+        "source_html_sha256": "50fbd10e0457ae5609ba411d2ba3299e4010c10ba6bc4f597efb56db241593ad",
+        "journey_checks": {
+          "click_created_two_hops": true,
+          "reload": true,
+          "fresh_browser_context": true
+        },
+        "public_read_snapshot": {
+          "captured_at": "2026-09-08T15:33:44.995268+00:00",
+          "sha256": "719f52a0bdf8cb179f434c2345e51fbc67c3291b10fe3d812e27755c12e999f7"
+        }
+      },
+      "desktop": {
+        "src": "/media/guide/trace-an-award-and-keep-the-trail/award-trail-desktop.png",
+        "width": 1124,
+        "height": 244,
+        "captured_at": "2026-09-08T15:50:18.503741+00:00",
+        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/notices/20260729015?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQyIiwibmFtZSI6IuKXhkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL0xBTlRFUk4lMjBDT01NVU5JVFklMjBTRVJWSUNFUy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIiwibmFtZSI6IkxhbnRlcm4gQ29tbXVuaXR5IFNlcnZpY2VzIEluYy4iLCJocmVmIjoiL3ZlbmRvcnMvTEFOVEVSTiUyMENPTU1VTklUWSUyMFNFUlZJQ0VTLyJ9LCJyZWxhdGlvbiI6IkF3YXJkIiwiZGVzdGluYXRpb24iOnsia2luZCI6Im5vdGljZSIsImlkIjoiMjAyNjA3MjkwMTUiLCJuYW1lIjoiSW50ZWdyYXRlZCBDb21tZXJjaWFsIEhvdGVscyBQcm9ncmFtIiwiaHJlZiI6IiNub3RpY2UvMjAyNjA3MjkwMTUifSwic2NvcGUiOm51bGx9XX0",
+        "sha256": "ed6b17cf23146ea3dbd82862ff1dae759c9b07292cfd22996b39344bc90ea9fc",
+        "redactions": [],
+        "data_vintage": "Click-created trail after navigation repair; retained public City Record reads",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": ".traversal-path",
+            "label": "\u2039\nDepartment of Homeless Services\npublished by agency \u2192\n\u25c6LANTERN COMMUNITY SERVICES INC published by agency\nAward \u2192\nIntegrated Commercial Hotels Program\n\u21ba",
+            "y": 46
+          },
+          {
+            "number": 2,
+            "selector": "[data-notice-id] .rolename",
+            "label": "INTEGRATED COMMERCIAL HOTELS PROGRAM",
+            "y": 214
+          }
+        ],
+        "crop": {
+          "x": 174,
+          "y": 775,
+          "width": 1092,
+          "height": 244
+        },
+        "source_html_sha256": "50fbd10e0457ae5609ba411d2ba3299e4010c10ba6bc4f597efb56db241593ad",
+        "journey_checks": {
+          "click_created_two_hops": true,
+          "reload": true,
+          "fresh_browser_context": true
+        },
+        "public_read_snapshot": {
+          "captured_at": "2026-09-08T15:33:44.995268+00:00",
+          "sha256": "719f52a0bdf8cb179f434c2345e51fbc67c3291b10fe3d812e27755c12e999f7"
+        }
+      }
+    }
+  }
+}

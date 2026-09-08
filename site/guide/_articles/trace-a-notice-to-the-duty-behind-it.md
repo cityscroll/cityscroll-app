@@ -7,7 +7,7 @@ url: /guide/start/trace-a-notice-to-the-duty-behind-it/
 reader_question: How do I get from a published notice to the law that required it?
 purpose: Follow a Sanitation rule notice to its legal duty, source law and publication evidence.
 description: Follow one real Sanitation rule from the notice the city published back to the Charter duty behind it, and learn where a published record stops.
-last_reviewed: 2026-09-05
+last_reviewed: 2026-09-08
 return_to_task: Open the Sanitation notice this tutorial uses | /notices/20260605008
 related:
   - Explore housing across city records | /guide/start/explore-housing-across-city-records/
@@ -34,16 +34,22 @@ and **New York City Charter § 753(e)(2)**, the citation. Select the duty text a
 commercial waste businesses. It opens [the Sanitation duty](/mandates/64116-001/), with its
 agency, required action and citation.
 
+::: figure connected-duty
+
 ## Step 3 — Check the law
 
 On the duty page, open **Source law**. The underlying legislation opens at its official source.
 Compare the citation and required action, then return to the duty page.
+
+::: figure duty-source
 
 ## Step 4 — Close the loop
 
 Under **Publication evidence**, find the notice's request number, **20260605008**.
 It links the filing you started from back to this duty. This establishes that the filing was published.
 A compliance finding would also need to establish whether the filing met the duty; this page makes no such finding.
+
+::: figure publication-evidence
 
 ## Step 5 — Try another notice
 

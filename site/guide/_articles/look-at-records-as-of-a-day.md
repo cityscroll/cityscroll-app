@@ -7,7 +7,7 @@ url: /guide/how-to/look-at-records-as-of-a-day/
 reader_question: What did an agency's record set look like on a given day?
 purpose: Filter an agency to a chosen date and share or clear that view.
 description: Filter an agency page down to the records dated on or before a day you choose, share the result, and learn what that filter cannot tell you.
-last_reviewed: 2026-09-05
+last_reviewed: 2026-09-08
 return_to_task: Open the Parks page filtered to a day | /agencies/parks-and-recreation/?as_of=2024-06-01
 related:
   - Check the evidence behind a connection | /guide/how-to/check-the-evidence-behind-a-connection/
@@ -20,13 +20,15 @@ sources:
 
 ## Step 1 — Apply a day
 
-Open [Parks and Recreation](/agencies/parks-and-recreation/) with JavaScript switched on;
+Open [Parks and Recreation](/agencies/parks-and-recreation/#ctl-heading) with JavaScript switched on;
 no account is needed. In the **As of day** panel, enter **1 June 2024** in **As of** and press
 **Apply**. The date stays selected and the summary counts records dated on or before it.
 The [Parks example link](/agencies/parks-and-recreation/?as_of=2024-06-01) opens the same filtered view.
 
 This filters currently linked records by their event or publication date. It is not a reconstruction
 of what CityScroll knew that day. Undated records are excluded because they cannot be placed on a timeline.
+
+::: figure date-field
 
 ## Step 2 — Inspect what was set aside
 
@@ -46,6 +48,8 @@ Share that address to repeat the filter against the records available when opene
 Next to **Apply**, choose **Clear**, which appears after a date is set.
 The date selection clears and the page again invites you to pick a day. Repeat these steps
 on another agency from [People + organizations](/browse/people/) when you need a different cutoff.
+
+::: figure date-result
 
 ## When the filter does not apply
 

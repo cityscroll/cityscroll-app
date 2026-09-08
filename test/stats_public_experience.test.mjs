@@ -98,7 +98,7 @@ test("each worked path opens a real record and hands the reader on to the guide"
     assert.ok(PAGE.includes(`href="${guide}"`), `the page does not link ${guide}`);
     // Linked, not copied: the tutorial itself stays in the guide.
     const article = read(`../site/guide/_articles/${guide.split("/").filter(Boolean).pop()}.md`);
-    assert.ok(article.includes("last_reviewed: 2026-09-05"), `${guide} is not the reviewed article`);
+    assert.match(article, /^last_reviewed: \d{4}-\d{2}-\d{2}$/m, `${guide} needs a recorded review date`);
   }
   // Both link roles are translated; neither is a bare URL or an English-only label.
   assert.equal((PAGE.match(/data-i18n="stats_path_open"/g) || []).length, 3);

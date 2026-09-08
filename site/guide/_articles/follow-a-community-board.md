@@ -7,7 +7,7 @@ url: /guide/how-to/follow-a-community-board/
 reader_question: How do I watch what happens at my community board?
 purpose: Create an email watch for one Community Board and keep the link that manages it.
 description: Pick a borough and a board number to watch one Community Board, tell it apart from a City Council District, and read what its matches really cover.
-last_reviewed: 2026-09-05
+last_reviewed: 2026-09-08
 return_to_task: Open Following | /following/
 related:
   - Follow a search and manage your updates | /guide/how-to/follow-a-search/
@@ -25,6 +25,8 @@ Open [Following](/following/). Under **What do you want to follow?**, choose **H
 then open **Narrow it down**. The **Community Board** group appears for this topic.
 Use a browser with JavaScript switched on; you need an email address only when saving.
 
+::: figure board-topic
+
 ## Step 2 — Choose the borough and board
 
 In **Community Board**, set **Borough** to **Manhattan** and **Board number** to **7**.
@@ -32,6 +34,8 @@ Both fields are required to identify **Manhattan Community Board 7**.
 
 A Community Board is numbered within its borough. **City Council District 7** is a different area;
 its watch is under **More topics → City Council District weekly**, not this picker.
+
+::: figure board-picker
 
 ## Step 3 — Preview the watch
 
@@ -44,6 +48,10 @@ that can include other bodies' meetings; use the preview to check what the watch
 An empty preview does not prove the board has no meetings. Check its calendar through
 [Community Boards](/community-boards/) if a meeting you expected is missing.
 
+::: figure board-preview
+
+::: figure board-criteria
+
 ## Step 4 — Save and check the result
 
 Under **Email frequency**, choose **Daily** or **Weekly**. Under **Create this watch**, fill in
@@ -53,6 +61,8 @@ there is no activation link to click.
 Wait for **You're subscribed — we'll email you. Manage or unsubscribe anytime.**
 Keep the welcome email: its manage link opens the saved watch, where you can change or stop it.
 A failed submission is not a saved watch; follow the error's retry instruction.
+
+::: figure watch-confirmation
 
 ## When the preview cannot load
 

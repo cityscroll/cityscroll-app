@@ -17,11 +17,13 @@ export function guideNavigationHref(href, current, savedLanguage = "en") {
 }
 
 if (typeof document !== "undefined") {
-  let saved = "en";
-  try { saved = localStorage.getItem("crol_lang") || "en"; } catch { /* Private browsing. */ }
+  const authored = new WeakMap();
   const update = () => {
+    let saved = "en";
+    try { saved = localStorage.getItem("crol_lang") || "en"; } catch { /* Private browsing. */ }
     for (const link of document.querySelectorAll('a[href^="/"]')) {
-      link.setAttribute("href", guideNavigationHref(link.getAttribute("href"), location.href, saved));
+      if (!authored.has(link)) authored.set(link, link.getAttribute("href"));
+      link.setAttribute("href", guideNavigationHref(authored.get(link), location.href, saved));
     }
   };
   update();

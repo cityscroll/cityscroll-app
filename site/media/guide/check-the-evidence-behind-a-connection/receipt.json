@@ -1,0 +1,147 @@
+{
+  "schema": "cityscroll.guide-captures.v1",
+  "figures": {
+    "connection-trigger": {
+      "locale": "en",
+      "caption": "1. Choose Details beside this record title under Connected records.",
+      "alt": "Parks rule record with its Details link beside the title.",
+      "mobile": {
+        "src": "/media/guide/check-the-evidence-behind-a-connection/connection-trigger-mobile.png",
+        "width": 356,
+        "height": 173,
+        "captured_at": "2026-09-08T15:39:19.524471+00:00",
+        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/agencies/parks-and-recreation/",
+        "sha256": "b4c6576ef43e60e7f9d83ab2bb1e3e79d78402cf56cabf9a37f8629703ee9617",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "a[data-edge-claim=\"rules:notice:20260521021\"]",
+            "label": "details",
+            "y": 112
+          }
+        ],
+        "crop": {
+          "x": 33,
+          "y": 52521,
+          "width": 324,
+          "height": 173
+        },
+        "source_html_sha256": "4fe350f403a58d7bab4e3f91f89ff37ee3e1ad584e861b55c0c35c84e19e8f61"
+      },
+      "desktop": {
+        "src": "/media/guide/check-the-evidence-behind-a-connection/connection-trigger-desktop.png",
+        "width": 699,
+        "height": 153,
+        "captured_at": "2026-09-08T15:39:20.855161+00:00",
+        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/agencies/parks-and-recreation/",
+        "sha256": "d9becff5961971f66fbc9247a191b7aff529aa144ce0f870f1f180e98402e229",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "a[data-edge-claim=\"rules:notice:20260521021\"]",
+            "label": "details",
+            "y": 91
+          }
+        ],
+        "crop": {
+          "x": 225,
+          "y": 36316,
+          "width": 667,
+          "height": 153
+        },
+        "source_html_sha256": "4fe350f403a58d7bab4e3f91f89ff37ee3e1ad584e861b55c0c35c84e19e8f61"
+      }
+    },
+    "connection-panel": {
+      "locale": "en",
+      "caption": "1. Read the selected record\u2019s Connection evidence. 2. Copy link to this connection reopens this panel.",
+      "alt": "Expanded Connection evidence with match basis, source and copy-link control.",
+      "mobile": {
+        "src": "/media/guide/check-the-evidence-behind-a-connection/connection-panel-mobile.png",
+        "width": 356,
+        "height": 538,
+        "captured_at": "2026-09-08T15:39:19.832730+00:00",
+        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/agencies/parks-and-recreation/?claim=rules%3Anotice%3A20260521021",
+        "sha256": "3477758ea926afa8212ce996f99e4980912b3aa04c47f616e9b91b63987f24ad",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": ".edge-prov-inspector[open] summary",
+            "label": "Evidence",
+            "y": 30
+          },
+          {
+            "number": 2,
+            "selector": "[data-edge-claim-share=\"rules:notice:20260521021\"]",
+            "label": "Copy link to this connection",
+            "y": 438
+          }
+        ],
+        "crop": {
+          "x": 33,
+          "y": 57623,
+          "width": 324,
+          "height": 538
+        },
+        "source_html_sha256": "ea3c105e50001dfb005c257fde22fdca1a8499d1413d13cf7321b5bba82e4916"
+      },
+      "desktop": {
+        "src": "/media/guide/check-the-evidence-behind-a-connection/connection-panel-desktop.png",
+        "width": 699,
+        "height": 451,
+        "captured_at": "2026-09-08T15:39:22.624014+00:00",
+        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/agencies/parks-and-recreation/?claim=rules%3Anotice%3A20260521021",
+        "sha256": "0e12bb6d11c726a6b8528f96d5c0794934e0ee020f0bf105cddae8fcd4168877",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": ".edge-prov-inspector[open] summary",
+            "label": "Evidence",
+            "y": 31
+          },
+          {
+            "number": 2,
+            "selector": "[data-edge-claim-share=\"rules:notice:20260521021\"]",
+            "label": "Copy link to this connection",
+            "y": 371
+          }
+        ],
+        "crop": {
+          "x": 225,
+          "y": 39487,
+          "width": 667,
+          "height": 451
+        },
+        "source_html_sha256": "ea3c105e50001dfb005c257fde22fdca1a8499d1413d13cf7321b5bba82e4916"
+      }
+    }
+  }
+}

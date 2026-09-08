@@ -1,0 +1,147 @@
+{
+  "schema": "cityscroll.guide-captures.v1",
+  "figures": {
+    "calendar-toolbar": {
+      "locale": "en",
+      "caption": "1. Subscribe to calendar sits in the list toolbar above the meeting records.",
+      "alt": "Meetings list toolbar, including the Subscribe to calendar control.",
+      "mobile": {
+        "src": "/media/guide/put-dates-in-your-calendar/calendar-toolbar-mobile.png",
+        "width": 394,
+        "height": 168,
+        "captured_at": "2026-09-08T15:39:15.653895+00:00",
+        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/browse/meetings/",
+        "sha256": "91d37962536695b5ce33be54c64005d9e4b0e05056bc2c9d68bbe176fb4ca05d",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "#meetings-toolbar [data-calendar-subscription=\"scope\"]",
+            "label": "Subscribe to calendar",
+            "y": 146
+          }
+        ],
+        "crop": {
+          "x": 14,
+          "y": 1502,
+          "width": 362,
+          "height": 168
+        },
+        "source_html_sha256": "46f4bf4079d8c2701090d7f792dc52dce84c6b9cbeec5aead9c23fb8846cda6e"
+      },
+      "desktop": {
+        "src": "/media/guide/put-dates-in-your-calendar/calendar-toolbar-desktop.png",
+        "width": 1124,
+        "height": 75,
+        "captured_at": "2026-09-08T15:39:17.571356+00:00",
+        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/browse/meetings/",
+        "sha256": "beda59662f1f3eaa1d388b1e8dd88241d23873b7b05f6bba025e0c45f7020fa3",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "#meetings-toolbar [data-calendar-subscription=\"scope\"]",
+            "label": "Subscribe to calendar",
+            "y": 53
+          }
+        ],
+        "crop": {
+          "x": 174,
+          "y": 1070,
+          "width": 1092,
+          "height": 75
+        },
+        "source_html_sha256": "46f4bf4079d8c2701090d7f792dc52dce84c6b9cbeec5aead9c23fb8846cda6e"
+      }
+    },
+    "calendar-options": {
+      "locale": "en",
+      "caption": "1. Open calendar subscription opens your calendar app. 2. Copy subscription URL is for apps that ask for a web address.",
+      "alt": "Calendar subscription panel naming Meetings and showing the open and copy options.",
+      "mobile": {
+        "src": "/media/guide/put-dates-in-your-calendar/calendar-options-mobile.png",
+        "width": 414,
+        "height": 836,
+        "captured_at": "2026-09-08T15:39:16.077890+00:00",
+        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/browse/meetings/",
+        "sha256": "100563db1ff9783b5f7687f8d8880b54721b33ca985b8aa02a5342ac5b1fd555",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "[data-calendar-subscription-dialog][open] a[href^=\"webcal:\"]",
+            "label": "Open calendar subscription",
+            "y": 171
+          },
+          {
+            "number": 2,
+            "selector": "[data-calendar-subscription-dialog][open] [data-calendar-subscription-copy]",
+            "label": "Copy subscription URL",
+            "y": 223
+          }
+        ],
+        "crop": {
+          "x": 4,
+          "y": 1169,
+          "width": 382,
+          "height": 836
+        },
+        "source_html_sha256": "4ba251257d6afa1bd8ce02d7e2ea3695e099e5b13f067a78abe02ba394679bac"
+      },
+      "desktop": {
+        "src": "/media/guide/put-dates-in-your-calendar/calendar-options-desktop.png",
+        "width": 628,
+        "height": 644,
+        "captured_at": "2026-09-08T15:39:17.993357+00:00",
+        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/browse/meetings/",
+        "sha256": "fa6486d4d3f813e334769e67a2fd175ffa881ce28b8b1be48d3ab42d1cb0e1e8",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "[data-calendar-subscription-dialog][open] a[href^=\"webcal:\"]",
+            "label": "Open calendar subscription",
+            "y": 172
+          },
+          {
+            "number": 2,
+            "selector": "[data-calendar-subscription-dialog][open] [data-calendar-subscription-copy]",
+            "label": "Copy subscription URL",
+            "y": 172
+          }
+        ],
+        "crop": {
+          "x": 422,
+          "y": 786,
+          "width": 596,
+          "height": 644
+        },
+        "source_html_sha256": "4ba251257d6afa1bd8ce02d7e2ea3695e099e5b13f067a78abe02ba394679bac"
+      }
+    }
+  }
+}

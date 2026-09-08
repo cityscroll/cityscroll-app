@@ -7,7 +7,7 @@ url: /guide/how-to/read-a-land-use-projects-next-step/
 reader_question: What happens next on this project, and where are its documents?
 purpose: Check a project’s current stage, next published opportunity and official documents.
 description: Open a land-use project, read which body acts next and when that is known, and get to the real filed documents at the city's own portal.
-last_reviewed: 2026-09-05
+last_reviewed: 2026-09-08
 return_to_task: Browse land-use projects | /browse/zoning/
 related:
   - Put dates in your calendar | /guide/how-to/put-dates-in-your-calendar/
@@ -37,6 +37,8 @@ Check each date's label before planning around it. A window calculated from stat
 is not an appointment; clocks can pause. Use a published opportunity's official source to confirm
 where and when to participate.
 
+::: figure project-stage
+
 ## Step 3 — Open the filed documents
 
 On the project page, find **Decision documents** and open a document title if one is listed.
@@ -47,6 +49,8 @@ drawing a conclusion from its absence.
 Use **Open full ZAP project** in the decision-documents area to open its full record in the city's **Zoning Application Portal**.
 Check that the project number matches and open the filed document there. If no document is listed
 on CityScroll, use that same portal record to check the released package.
+
+::: figure project-documents
 
 ## When a stage or date is unknown
 

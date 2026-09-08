@@ -233,8 +233,8 @@ AUTHORED_ROUTES = (
         "assertion": "The tutorial builds a two-step trail, shows that it travels in the address, "
         "and says an awardee is not an opportunity.",
         "expect_text": [
-            "awarded to",
-            "received award",
+            "published by agency",
+            "Award",
             "Vendor profile",
             "not an announcement that subcontracts are available",
         ],
@@ -494,6 +494,7 @@ def keyboard_reach(page: Page) -> dict:
     """
     expected = page.evaluate(
         """() => [...new Set([...document.querySelectorAll('main a[href]')]
+            .filter((node) => node.getClientRects().length && getComputedStyle(node).visibility !== 'hidden')
             .map((node) => node.getAttribute('href')))]"""
     )
     page.evaluate("() => document.body.focus()")

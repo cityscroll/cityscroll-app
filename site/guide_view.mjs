@@ -2,7 +2,8 @@
  * Documents for the public guide at /guide/.
  *
  * The guide home and every guide article are plain static documents: prose,
- * headings, source links and ordinary navigation, with no script of their own.
+ * headings, source links and ordinary navigation. An optional module carries the
+ * selected language into product links.
  * A reader with JavaScript switched off gets the whole article, and an article
  * says at the step itself when the product surface it sends them to needs
  * script to work.
