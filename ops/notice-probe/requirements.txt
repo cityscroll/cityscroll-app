@@ -1,0 +1,30 @@
+# Runtime for the scheduled Notice synthetic probe (tools/run_notice_synthetic_probe.py).
+#
+# The probe runs from launchd, which starts an agent with the system default
+# PATH and no login shell. A bare `python3` there resolves to the macOS system
+# interpreter, which carries no Playwright, so the probe exited on its import
+# line before it could measure anything and the only symptom was a failed slot.
+# The runtime is therefore a project-scoped virtual environment built from this
+# file, never a global or user-site install: it can be rebuilt from the
+# repository, removed with a single directory delete, and cannot drift with an
+# unrelated package on the host.
+#
+# Every distribution is pinned exactly, including the transitive ones, because
+# the setup script installs with --no-deps: a resolver free to pick a version is
+# a measurement whose browser build nobody wrote down.
+#
+# The Playwright pin is deliberately the same one the repository's browser gate
+# uses (.github/actions/setup-playwright/requirements.txt), so the scheduled
+# measurement and the gate exercise the same Chromium build. Moving one without
+# the other is a test failure, not a silent divergence.
+#
+# The browser build is pinned transitively rather than separately: this
+# Playwright version resolves to Chromium build chromium-1208, browser version
+# 145.0.7632.6, which is what the setup script downloads and what every slot
+# measures with. Recorded here because a version number nobody wrote down is a
+# measurement nobody can reproduce; re-read it from the package's browsers.json
+# when the pin below moves.
+playwright==1.58.0
+# Playwright's own declared dependencies (pyee<14,>=13; greenlet<4.0.0,>=3.1.1).
+pyee==13.0.1
+greenlet==3.5.5

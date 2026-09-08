@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { readFile, readdir, mkdir, writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { hostname } from "node:os";
 import { spawn, spawnSync } from "node:child_process";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -501,6 +502,24 @@ async function runStatsDailySnapshot(job, context) {
 export const NOTICE_SYNTHETIC_PROBE_ESCALATION = 3;
 export const NOTICE_SYNTHETIC_PROBE_PAGES = "data/performance/notice-synthetic-probe-pages.json";
 const NOTICE_SYNTHETIC_PROBE_SCRIPT = "tools/run_notice_synthetic_probe.py";
+// The probe drives a browser, and launchd starts this cycle with the system
+// default PATH and no login shell: a bare `python3` there is the macOS system
+// interpreter, which carries no Playwright. The probe is therefore run on a
+// project-scoped runtime built by its own setup script, named absolutely
+// relative to this checkout rather than searched for.
+export const NOTICE_SYNTHETIC_PROBE_RUNTIME_PYTHON = "ops/notice-probe/.venv/bin/python3";
+export const NOTICE_SYNTHETIC_PROBE_SETUP_COMMAND = "tools/setup_notice_probe_runtime.sh";
+// A missing runtime is a setup fault, not a measurement. It gets one named
+// error so the slot log says which of the two it was without anyone having to
+// read an interpreter traceback.
+export const NOTICE_SYNTHETIC_PROBE_RUNTIME_MISSING = `probe runtime not set up: run ${NOTICE_SYNTHETIC_PROBE_SETUP_COMMAND}`;
+
+export function noticeSyntheticProbePython(env = process.env) {
+  // An explicit override is honoured verbatim so a rehearsal can point at
+  // another environment; otherwise the runtime is this checkout's own.
+  const configured = env.CROL_NOTICE_SYNTHETIC_PROBE_PYTHON;
+  return configured ? { path: configured, managed: false } : { path: join(ROOT, NOTICE_SYNTHETIC_PROBE_RUNTIME_PYTHON), managed: true };
+}
 
 export function noticeSyntheticProbeIssueMode(consecutiveFailures, previousConsecutiveFailures) {
   if (consecutiveFailures >= NOTICE_SYNTHETIC_PROBE_ESCALATION) return "open";
@@ -547,17 +566,31 @@ async function runNoticeSyntheticProbe(job, context) {
 
   // The probe is spawned exactly as it is documented, with no credential: it
   // visits public pages and the observation path needs no key.
-  const command = context.probeRunner || (() => runProcess(
-    process.env.CROL_NOTICE_SYNTHETIC_PROBE_PYTHON || "python3",
-    [
-      NOTICE_SYNTHETIC_PROBE_SCRIPT,
-      "--pages", job.pages || NOTICE_SYNTHETIC_PROBE_PAGES,
-      "--base", process.env.CITYSCROLL_PUBLIC_BASE || "https://cityscroll.org",
-      "--run-key", context.runKey,
-      "--out", resultPath,
-    ],
-    { cwd: ROOT },
-  ));
+  const python = noticeSyntheticProbePython();
+  const command = context.probeRunner || (async () => {
+    // Checked before spawning rather than after: an absent interpreter exits
+    // 127 with nothing said, and an interpreter without the package exits on
+    // an import line. Both are the same operator fault, and reporting it here
+    // is what keeps that fault out of the measurement's own failure classes.
+    if (!existsSync(python.path)) {
+      return {
+        code: 1,
+        stdout: "",
+        stderr: `${NOTICE_SYNTHETIC_PROBE_RUNTIME_MISSING}\n  no interpreter at ${python.path}${python.managed ? "" : " (selected by CROL_NOTICE_SYNTHETIC_PROBE_PYTHON)"}\n`,
+      };
+    }
+    return runProcess(
+      python.path,
+      [
+        NOTICE_SYNTHETIC_PROBE_SCRIPT,
+        "--pages", job.pages || NOTICE_SYNTHETIC_PROBE_PAGES,
+        "--base", process.env.CITYSCROLL_PUBLIC_BASE || "https://cityscroll.org",
+        "--run-key", context.runKey,
+        "--out", resultPath,
+      ],
+      { cwd: ROOT },
+    );
+  });
   const run = await command({ resultPath, runKey: context.runKey, job });
   await writeFile(join(dir, `${context.runKey}.log`), `${run.stdout || ""}${run.stderr || ""}`, "utf8");
 

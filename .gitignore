@@ -155,6 +155,13 @@ tools/law_mandates/cache/
 tools/law_mandates/output/
 tools/law_mandates/private/
 .venv-playwright/
+# The Notice synthetic probe's project-scoped runtime: a virtual environment, a
+# browser build, and the receipt naming what was installed. It is host state
+# rebuilt by tools/setup_notice_probe_runtime.sh from the pinned requirements
+# file, which is the tracked part.
+ops/notice-probe/.venv/
+ops/notice-probe/browsers/
+ops/notice-probe/runtime-receipt.json
 civic-content-gates/*.egg-info/
 
 # PHC-07 capture scratch (rendered fragments only, never images)

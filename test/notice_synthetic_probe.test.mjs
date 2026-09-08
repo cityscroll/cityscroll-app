@@ -7,17 +7,21 @@
 // synthetic end to end, bounded in what it costs, and quiet unless the probe
 // itself is broken.
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { execFileSync } from "node:child_process";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { after, test } from "node:test";
 
 import {
   NOTICE_SYNTHETIC_PROBE_ESCALATION,
   NOTICE_SYNTHETIC_PROBE_PAGES,
+  NOTICE_SYNTHETIC_PROBE_RUNTIME_MISSING,
+  NOTICE_SYNTHETIC_PROBE_RUNTIME_PYTHON,
+  NOTICE_SYNTHETIC_PROBE_SETUP_COMMAND,
   noticeSyntheticProbeBody,
   noticeSyntheticProbeIssueMode,
+  noticeSyntheticProbePython,
   runScheduledJob,
 } from "../tools/external_schedule_runner.mjs";
 import { RUM_MEASUREMENT_GROUPS } from "../tools/lib/rum_measurement_groups.mjs";
@@ -241,4 +245,173 @@ test("escalation and the reported body are decided by named, testable rules", ()
     noticeSyntheticProbeBody({ status: "degraded", pages_listed: 8, pages_visited: 6, observations_emitted: 18, traffic_class: "synthetic", failures: [{ path: "/notices/1/", reason: "page_unreachable", http_status: 404 }] }, 1),
     /Unreachable: \/notices\/1\/ \(page_unreachable 404\)/,
   );
+});
+
+// --- The runtime the probe drives a browser with -----------------------------
+//
+// The first scheduled slot failed on `from playwright.sync_api import
+// sync_playwright`. launchd hands the cycle the system default PATH and no
+// login shell, so a bare `python3` there was the operating system's own
+// interpreter, which carries no Playwright and no browser. The probe exited
+// before it could measure anything and the slot looked like any other failed
+// slot. These cases hold the runtime to being the checkout's own, pinned, and
+// unmistakable in the log when it is absent.
+
+const ROOT_DIR = new URL("../", import.meta.url).pathname.replace(/\/$/, "");
+const RUNTIME_REQUIREMENTS = join(ROOT_DIR, "ops/notice-probe/requirements.txt");
+const SETUP_SCRIPT = join(ROOT_DIR, NOTICE_SYNTHETIC_PROBE_SETUP_COMMAND);
+const INSTALLER = join(ROOT_DIR, "tools/install_external_schedule_launchd.sh");
+const PLIST_TEMPLATE = "ops/launchd/com.cityscroll.external-schedules.plist.template";
+
+test("the scheduler resolves the probe interpreter absolutely instead of searching a PATH", () => {
+  const resolved = noticeSyntheticProbePython({});
+  assert.equal(resolved.path, join(ROOT_DIR, NOTICE_SYNTHETIC_PROBE_RUNTIME_PYTHON));
+  assert.equal(resolved.managed, true);
+  // The environment the runtime lives in is inside the checkout, so it is
+  // rebuilt from the repository and removed by deleting a directory.
+  assert.match(NOTICE_SYNTHETIC_PROBE_RUNTIME_PYTHON, /^ops\/notice-probe\/\.venv\//);
+  assert.equal(/^python3?$/.test(NOTICE_SYNTHETIC_PROBE_RUNTIME_PYTHON), false, "the probe interpreter is a bare name");
+
+  // A rehearsal against another environment is still possible, and is taken
+  // verbatim rather than merged with the managed path.
+  const overridden = noticeSyntheticProbePython({ CROL_NOTICE_SYNTHETIC_PROBE_PYTHON: "/elsewhere/bin/python3" });
+  assert.deepEqual(overridden, { path: "/elsewhere/bin/python3", managed: false });
+});
+
+test("the runtime is pinned exactly and shares the browser gate's Playwright version", () => {
+  const requirements = readFileSync(RUNTIME_REQUIREMENTS, "utf8");
+  const pins = requirements.split("\n").map((line) => line.trim()).filter((line) => line && !line.startsWith("#"));
+  assert.ok(pins.length >= 1, "the runtime pins nothing");
+  for (const pin of pins) {
+    assert.match(pin, /^[A-Za-z0-9_.-]+==[0-9][^\s]*$/, `${pin} is not an exact pin`);
+  }
+  // The transitive distributions are pinned too, because the setup script
+  // installs with --no-deps: a resolver free to choose is a measurement whose
+  // browser build nobody wrote down.
+  const setup = readFileSync(SETUP_SCRIPT, "utf8");
+  assert.match(setup, /--no-deps/);
+  assert.ok(pins.length >= 2, "only the top-level distribution is pinned while --no-deps is used");
+
+  // One Playwright version across the repository: the scheduled measurement
+  // and the browser gate exercise the same Chromium build.
+  const gate = readFileSync(join(ROOT_DIR, ".github/actions/setup-playwright/requirements.txt"), "utf8");
+  const gatePin = gate.match(/^playwright==\S+$/m);
+  const runtimePin = requirements.match(/^playwright==\S+$/m);
+  assert.ok(gatePin && runtimePin, "one of the two Playwright pins is missing");
+  assert.equal(runtimePin[0], gatePin[0], "the probe runtime and the browser gate pin different Playwright versions");
+});
+
+test("the browser is installed inside the checkout rather than into a shared cache", () => {
+  const setup = readFileSync(SETUP_SCRIPT, "utf8");
+  assert.match(setup, /PLAYWRIGHT_BROWSERS_PATH="\$browsers_dir"/);
+  assert.match(setup, /browsers_dir="\$runtime_dir\/browsers"/);
+  // Nothing may reach a global or user-site interpreter: an install that
+  // escapes the checkout cannot be undone by removing the checkout's runtime.
+  assert.equal(/pip install[^\n]*--user/.test(setup), false, "the setup script installs outside the environment");
+  assert.equal(/ms-playwright/.test(setup), false, "the setup script names the shared browser cache");
+
+  const ignored = readFileSync(join(ROOT_DIR, ".gitignore"), "utf8");
+  for (const path of ["ops/notice-probe/.venv/", "ops/notice-probe/browsers/", "ops/notice-probe/runtime-receipt.json"]) {
+    assert.ok(ignored.includes(path), `${path} is host state and is not ignored`);
+  }
+});
+
+test("an absent runtime is reported by its own name and never mistaken for a measurement", async () => {
+  const stateDir = scratch();
+  const previous = process.env.CROL_NOTICE_SYNTHETIC_PROBE_PYTHON;
+  process.env.CROL_NOTICE_SYNTHETIC_PROBE_PYTHON = join(scratch(), "no-such-runtime/bin/python3");
+  let output;
+  try {
+    output = await runScheduledJob(job, { stateDir, now: new Date("2026-09-14T02:07:00.000Z") });
+  } finally {
+    if (previous === undefined) delete process.env.CROL_NOTICE_SYNTHETIC_PROBE_PYTHON;
+    else process.env.CROL_NOTICE_SYNTHETIC_PROBE_PYTHON = previous;
+  }
+
+  // The slot log is where an operator reads this, so the named error has to be
+  // in the file rather than only in a return value.
+  const log = readFileSync(join(stateDir, "jobs", job.id, "2026-09-14T02-07.log"), "utf8");
+  assert.match(log, /probe runtime not set up: run tools\/setup_notice_probe_runtime\.sh/);
+  assert.match(log, /no interpreter at/);
+  assert.equal(NOTICE_SYNTHETIC_PROBE_RUNTIME_MISSING, `probe runtime not set up: run ${NOTICE_SYNTHETIC_PROBE_SETUP_COMMAND}`);
+  assert.equal(output.result.status, "degraded");
+  assert.equal(output.result.consecutive_failures, 1);
+  // One bad slot still escalates nothing; the setup fault is legible from the
+  // first slot without an issue being filed for it.
+  assert.equal(output.issue.mode, "none");
+});
+
+test("the probe reports the same named error for a runtime with no package and one with no browser", () => {
+  const stub = scratch();
+  const emptyBrowsers = join(scratch(), "browsers");
+  mkdirSync(emptyBrowsers, { recursive: true });
+
+  // A stub package on PYTHONPATH shadows whatever the host happens to have, so
+  // both absences are exercised the same way on any machine.
+  mkdirSync(join(stub, "playwright"), { recursive: true });
+  writeFileSync(join(stub, "playwright", "__init__.py"), "");
+  writeFileSync(join(stub, "playwright", "sync_api.py"), 'raise ImportError("stub: no sync_api")\n');
+  assert.throws(
+    () => execFileSync("python3", [PROBE_SCRIPT, "--check-runtime"], {
+      stdio: "pipe",
+      env: { ...process.env, PYTHONPATH: stub, PLAYWRIGHT_BROWSERS_PATH: emptyBrowsers },
+    }),
+    (error) => {
+      const stderr = String(error.stderr);
+      assert.match(stderr, /probe runtime not set up: run tools\/setup_notice_probe_runtime\.sh/);
+      assert.match(stderr, /no Playwright for/);
+      return true;
+    },
+  );
+
+  // The package present with no browser build is the same fault to an
+  // operator — the same command repairs it — so it reports the same name.
+  writeFileSync(join(stub, "playwright", "sync_api.py"), "def sync_playwright():\n    raise AssertionError('never launched')\n");
+  assert.throws(
+    () => execFileSync("python3", [PROBE_SCRIPT, "--check-runtime"], {
+      stdio: "pipe",
+      env: { ...process.env, PYTHONPATH: stub, PLAYWRIGHT_BROWSERS_PATH: emptyBrowsers },
+    }),
+    (error) => {
+      const stderr = String(error.stderr);
+      assert.match(stderr, /probe runtime not set up: run tools\/setup_notice_probe_runtime\.sh/);
+      assert.match(stderr, /no Chromium build under/);
+      return true;
+    },
+  );
+});
+
+test("rendering the job trigger says whether the probe runtime exists yet", () => {
+  // Rendered against a throwaway copy of the checkout, so the result does not
+  // depend on whether this particular machine has already run setup, and so
+  // nothing is written to a real launch-agent directory.
+  const fake = scratch();
+  mkdirSync(join(fake, "tools"), { recursive: true });
+  mkdirSync(join(fake, dirname(PLIST_TEMPLATE)), { recursive: true });
+  copyFileSync(INSTALLER, join(fake, "tools/install_external_schedule_launchd.sh"));
+  copyFileSync(join(ROOT_DIR, PLIST_TEMPLATE), join(fake, PLIST_TEMPLATE));
+
+  const home = join(scratch(), "home");
+  mkdirSync(home, { recursive: true });
+  const rendered = execFileSync("bash", [join(fake, "tools/install_external_schedule_launchd.sh")], {
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "pipe"],
+    env: {
+      ...process.env,
+      HOME: home,
+      CITYSCROLL_INSTALL_RENDER_ONLY: "1",
+      CROL_EXTERNAL_SCHEDULE_STATE_DIR: join(scratch(), "state"),
+    },
+  });
+  assert.match(rendered, /rendered .*com\.cityscroll\.external-schedules\.plist without loading it/);
+
+  // The trigger renders fine with no runtime present. That is exactly why the
+  // installer has to say so: configuring the schedule is not installing the
+  // browser the probe drives.
+  const plist = readFileSync(join(home, "Library/LaunchAgents/com.cityscroll.external-schedules.plist"), "utf8");
+  assert.match(plist, /external_schedule_runner\.mjs/);
+  assert.equal(/__[A-Z_]+__/.test(plist), false, "the rendered trigger still carries a placeholder");
+  const installer = readFileSync(INSTALLER, "utf8");
+  assert.match(installer, /probe runtime not set up/);
+  assert.match(installer, /tools\/setup_notice_probe_runtime\.sh/);
 });

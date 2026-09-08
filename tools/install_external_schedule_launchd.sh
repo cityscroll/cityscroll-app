@@ -123,6 +123,23 @@ elif [ "$app_configured" = 0 ] && [ -n "$(find "$gh_token_file" -perm +077 2>/de
   echo "  tighten it with: chmod 600 $gh_token_file" >&2
 fi
 
+# The Notice synthetic probe drives a browser, and launchd hands the cycle the
+# system default PATH: it therefore runs on a project-scoped runtime this
+# checkout builds for itself rather than on whatever python3 happens to resolve.
+# Configuring the trigger does not create that runtime, so say whether it is
+# there instead of leaving the operator to find out from a failed slot.
+probe_python="$root/ops/notice-probe/.venv/bin/python3"
+probe_browsers="$root/ops/notice-probe/browsers"
+if [ ! -x "$probe_python" ]; then
+  echo "warning: the Notice synthetic probe runtime is absent; every slot will report 'probe runtime not set up' until it is built" >&2
+  echo "  build it with: $root/tools/setup_notice_probe_runtime.sh" >&2
+elif ! ls -d "$probe_browsers"/chromium-* >/dev/null 2>&1; then
+  echo "warning: the Notice synthetic probe runtime has no browser build; every slot will report 'probe runtime not set up' until it is installed" >&2
+  echo "  install it with: $root/tools/setup_notice_probe_runtime.sh" >&2
+else
+  echo "note: the Notice synthetic probe runs $probe_python with its browser under $probe_browsers" >&2
+fi
+
 if [ -z "$repair_command" ]; then
   echo "warning: the repair dispatcher is disabled; the cycle will declare repair_dispatch false, lease nothing, and leave every monitor finding to a person" >&2
 elif [ "$repair_command" = "$repair_launcher" ]; then
