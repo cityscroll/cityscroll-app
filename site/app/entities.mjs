@@ -791,7 +791,7 @@ function ensureVendorPhaseSpineTools(){
 
 function vendorTimelineFlatHTML(rows){
   return (rows || []).map(r=>`<div class="tl"><span class="tldate">${fdate(r.start_date)}</span>
-      <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), noticeDisplayTitle(r))}</span>
+      <span class="tlreason">${vendorRecordLinkHTML(r)}</span>
       <span class="rmeta" style="margin:0">${escUiHtml(r.type_of_notice_description||"")} · ${pivotA(agencyHref(r.agency_name), r.agency_name||"")}</span>
       ${money(r.contract_amount)?`<span class="tlsal">${money(r.contract_amount)}</span>`:""}</div>`).join("");
 }
@@ -815,7 +815,7 @@ function vendorPhaseYearAggHTML(agg, phaseId, idx){
   if(agg.count === 1){
     const m = agg.members[0] || {};
     const noticeLink = m.request_id
-      ? pivotA("#notice/" + encodeURIComponent(m.request_id), cleanText(m.title) || m.request_id)
+      ? vendorRecordLinkHTML(m, cleanText(m.title) || m.request_id)
       : escUiHtml(cleanText(m.title) || "—");
     const meta = [
       m.date ? fdate(m.date) : "",
@@ -842,7 +842,7 @@ function vendorPhaseYearAggHTML(agg, phaseId, idx){
     <ul class="vendor-phase-dates" id="${listId}">
       ${(agg.members || []).map(m => {
         const link = m.request_id
-          ? pivotA("#notice/" + encodeURIComponent(m.request_id), fdate(m.date) || m.request_id)
+          ? vendorRecordLinkHTML(m, fdate(m.date) || m.request_id)
           : (m.date ? fdate(m.date) : "—");
         const bits = [
           link,
@@ -952,7 +952,7 @@ function vendorChronoRowHTML(m){
   const date = m.date ? fdate(m.date) : "—";
   let label = "";
   if(m.kind === "notice" && m.request_id){
-    label = `<b>${escUiHtml(m.notice_type || t("lifecycle_stage_award"))}</b> — ${pivotA("#notice/"+encodeURIComponent(m.request_id), noticeDisplayTitle({title:m.title,request_id:m.request_id}))}`;
+    label = `<b>${escUiHtml(m.notice_type || t("lifecycle_stage_award"))}</b> — ${vendorRecordLinkHTML(m)}`;
   } else {
     label = `<b>${escUiHtml(m.title || m.stage || "—")}</b>`;
   }
@@ -1230,6 +1230,24 @@ async function showVendor(name, initialTab){
   announce(t("meta_vendor_profile_announce",{name:cleanText(profile.display)}));
   focusItemRouteTarget(box.querySelector(".route-item"));
   applyActiveHistoryRouteScroll();
+}
+
+function vendorRecordLinkHTML(record, label){
+  const title = noticeDisplayTitle(record);
+  return constellationLink({
+    href: "#notice/" + encodeURIComponent(record.request_id),
+    label: label || title,
+    className: "entity-constellation-link",
+    attributes: {
+      "data-pivot-schema": "cityscroll.edge_summary.v1",
+      "data-pivot-status": "accepted",
+      "data-pivot-relation-label": tSection(record.notice_type || record.type_of_notice_description) || t("coverage_record_notice"),
+      "data-pivot-target-kind": "notice",
+      "data-pivot-target-id": record.request_id,
+      "data-pivot-target-name": title,
+    },
+    escape: escUiHtml,
+  });
 }
 
 globalThis.VENDOR_SUFFIX = VENDOR_SUFFIX;

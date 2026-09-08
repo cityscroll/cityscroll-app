@@ -15,10 +15,10 @@ const CSV_PATH = join(ROOT, "docs/url-migration-map.csv");
 const MARKDOWN_PATH = join(ROOT, "docs/url-migration-map.md");
 
 const PATTERN_ROWS = [
-  ["notice permalink", "/#notice/{request_id}", "/notices/{request_id}", "Preserve bounded w and focus fragment parameters.", "Legacy root location.replace().", "/#notice/20240515016"],
-  ["index-document notice permalink", "/index.html#notice/{request_id}", "/notices/{request_id}", "Preserve bounded w and focus fragment parameters.", "Legacy index-document location.replace().", "/index.html#notice/20240515016"],
-  ["translated notice permalink", "/?lang={lang}#notice/{request_id}", "/notices/{request_id}?lang={lang}", "Preserve only a selectable language plus bounded w and focus parameters.", "Legacy root location.replace().", "/?lang=es#notice/20240515016"],
-  ["translated index-document notice permalink", "/index.html?lang={lang}#notice/{request_id}", "/notices/{request_id}?lang={lang}", "Preserve only a selectable language plus bounded w and focus parameters.", "Legacy index-document location.replace().", "/index.html?lang=es#notice/20240515016"],
+  ["notice permalink", "/#notice/{request_id}", "/notices/{request_id}", "Preserve validated walk state plus w and focus fragment parameters.", "Legacy root location.replace().", "/#notice/20240515016"],
+  ["index-document notice permalink", "/index.html#notice/{request_id}", "/notices/{request_id}", "Preserve validated walk state plus w and focus fragment parameters.", "Legacy index-document location.replace().", "/index.html#notice/20240515016"],
+  ["translated notice permalink", "/?lang={lang}#notice/{request_id}", "/notices/{request_id}?lang={lang}", "Preserve selectable language and validated walk state plus w and focus parameters.", "Legacy root location.replace().", "/?lang=es#notice/20240515016"],
+  ["translated index-document notice permalink", "/index.html?lang={lang}#notice/{request_id}", "/notices/{request_id}?lang={lang}", "Preserve selectable language and validated walk state plus w and focus parameters.", "Legacy index-document location.replace().", "/index.html?lang=es#notice/20240515016"],
   ["watched notice permalink", "/#notice/{request_id}?w={encoded_watch}&focus={anchor}", "/notices/{request_id}?w={encoded_watch}&focus={anchor}", "Preserve bounded w and focus values; validate their contents in the notice island.", "Legacy root location.replace().", "/#notice/20240515016?w=%7B%22lens%22%3A%22money%22%7D&focus=follow-the-dollars"],
   ["exam permalink", "/#exam/{exam_number}", "/exams/{exam_number}/", "Preserve only a selectable language value in the canonical exam document query.", "Legacy root location.replace().", "/#exam/7016"],
   ["translated exam permalink", "/?lang={lang}#exam/{exam_number}", "/exams/{exam_number}/?lang={lang}", "Preserve only a selectable language value in the canonical exam document query.", "Legacy root location.replace().", "/?lang=es#exam/7016"],

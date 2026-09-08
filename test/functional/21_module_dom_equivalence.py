@@ -138,6 +138,7 @@ def flatten_helper(
     path: pathlib.Path,
     stack: tuple[pathlib.Path, ...] = (),
     flattened: set[pathlib.Path] | None = None,
+    scoped: bool = False,
 ) -> str:
     """Inline a pure helper's local named-import graph for the pre-split fixture."""
     if flattened is None:
@@ -168,6 +169,27 @@ def flatten_helper(
         return f"const {match.group(1)} = globalThis.CrolActions || {{}};"
 
     source = NAMESPACE_LOCAL_IMPORT.sub(inline_namespace_import, source)
+    if scoped:
+        def scoped_import(match: re.Match[str]) -> str:
+            specifier = re.search(r'from\s+["\']([^"\']+)', match.group(0)).group(1)
+            helper_path = (path.parent / specifier).resolve()
+            assert helper_path.is_file(), f"scoped helper import missing: {specifier}"
+            dependency = strip_module_exports(flatten_helper(
+                helper_path, (*stack, path.resolve()), scoped=True,
+            ))
+            bindings = re.search(r'\{([^}]+)\}', match.group(0)).group(1)
+            imports = [re.split(r"\s+as\s+", item.strip())
+                       for item in bindings.split(",") if item.strip()]
+            # Keep private declarations inside their original module's closure.
+            # Flattening a transitive graph into one scope can both fail parsing
+            # (const/function collisions) and silently replace helper functions.
+            members = ",".join(item[0] for item in imports)
+            targets = ",".join(":".join(item) for item in imports)
+            return f"const {{{targets}}}=(()=>{{\n{dependency}\nreturn {{{members}}};\n}})();"
+
+        source = STATIC_LOCAL_IMPORT.sub(scoped_import, source)
+        source = STATIC_PARENT_IMPORT.sub(scoped_import, source)
+        return source
     nested_sources = []  # Source: local helper imports matched by STATIC_LOCAL_IMPORT.
     for helper_name in STATIC_LOCAL_IMPORT.findall(source):
         helper_path = path.parent / helper_name
@@ -230,7 +252,7 @@ def reconstruct_inline_site(target: pathlib.Path) -> None:
         assert helper_path.is_file(), f"namespace helper import missing: {helper_name}"
         # Namespace helpers are wrapped in their own IIFE, so each one needs
         # its transitive dependencies available inside that closure.
-        helper_source = flatten_helper(helper_path)
+        helper_source = flatten_helper(helper_path, scoped=True)
         export_source = helper_path.read_text()
         exports = []  # Source: export declarations parsed from the helper's own module.
         for name in EXPORTED_NAME.findall(export_source):

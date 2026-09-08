@@ -74,11 +74,6 @@ function render() {
     document.querySelector(".traversal-path")?.remove();
     return;
   }
-  const existing = document.querySelector(".traversal-path");
-  if (existing) {
-    if (existing.outerHTML !== markup) existing.outerHTML = markup;
-    return;
-  }
   const activePane = document.querySelector(".tabpane.active");
   const host = document.querySelector(["[data-near-you-root]", ".near-head"].join(" "))
     || activePane?.querySelector("#noticeview")
@@ -86,7 +81,15 @@ function render() {
     || activePane?.querySelector("#browseview")
     || document.querySelector("main");
   if (!host) return;
-  host.insertAdjacentHTML(host.matches("main") ? "afterbegin" : "afterbegin", markup);
+  const existing = document.querySelector(".traversal-path");
+  if (existing?.parentElement === host) {
+    if (existing.outerHTML !== markup) existing.outerHTML = markup;
+    return;
+  }
+  // A clean notice route can hydrate after the initial shell. Keep its restored
+  // trail with the active document instead of leaving it in a now-hidden pane.
+  existing?.remove();
+  host.insertAdjacentHTML("afterbegin", markup);
 }
 
 function updateBackControls() {

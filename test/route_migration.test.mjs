@@ -2,6 +2,48 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 
 import { canonicalizeBrowseUrl, migrateLegacyUrl } from "../site/route_migration.mjs";
+import { appendTraversalHop, decodeTraversalPath, traversalFromHref, traversalBackHref, traversalRestartHref } from "../site/traversal_path.mjs";
+
+test("an agency to vendor to award trail survives notice forwarding and fresh URL replay", () => {
+  // Synthetic identities: this regression must not depend on a rolling publisher window.
+  const agency = { kind: "agency", id: "example-agency", name: "Example agency", href: "/agencies/example-agency/" };
+  const vendor = { kind: "vendor", id: "example-vendor", name: "Example vendor", href: "/vendors/example-vendor/" };
+  const award = { kind: "notice", id: "example-award", name: "Example award", href: "#notice/example-award" };
+  const first = appendTraversalHop(vendor.href, { source: agency, relation: "published by agency", destination: vendor });
+  const second = appendTraversalHop(award.href, { source: vendor, relation: "received award", destination: award }, traversalFromHref(first.href));
+  const mapped = migrateLegacyUrl(`/?lang=es${second.href}&focus=source`);
+  const copied = new URL(mapped.target, "https://cityscroll.org");
+  assert.equal(copied.pathname, "/notices/example-award");
+  assert.equal(copied.searchParams.get("lang"), "es");
+  assert.equal(copied.searchParams.get("focus"), "source");
+  assert.deepEqual(mapped.unsupported, []);
+  // Only the copied address is supplied: no session state or prepared final token.
+  const reopened = traversalFromHref(copied.href);
+  assert.equal(reopened.hops.length, 2);
+  assert.deepEqual(reopened, second.state);
+  assert.equal(traversalFromHref(traversalBackHref(reopened)).hops.length, 1);
+  assert.equal(traversalRestartHref(reopened), agency.href);
+  const duplicate = migrateLegacyUrl(`${second.href}&walk=${copied.searchParams.get("walk")}`);
+  assert.equal(duplicate.target, "/notices/example-award?legacy=unsupported-filter");
+  assert.deepEqual(duplicate.unsupported, ["walk"]);
+});
+
+test("notice forwarding rejects malformed, oversized and unsupported walk payloads", () => {
+  const encode = (value) => Buffer.from(JSON.stringify(value)).toString("base64url");
+  for (const token of ["not-json", "a".repeat(6001), encode({ schema: "unknown", version: 1 }),
+    encode({ schema: "cityscroll.traversal.v1", version: 1, hops: [{ source: { href: "/unsupported/" }, destination: { href: "/notices/example" } }] })]) {
+    assert.equal(decodeTraversalPath(token).status, "held");
+    const mapped = migrateLegacyUrl(`/#notice/example?walk=${token}`);
+    assert.equal(mapped.target, "/notices/example?legacy=unsupported-filter");
+    assert.deepEqual(mapped.unsupported, ["walk"]);
+  }
+  assert.equal(migrateLegacyUrl("/#notice/example").target, "/notices/example");
+  for (const hops of [undefined, "invalid", []]) {
+    const token = encode({ schema: "cityscroll.traversal.v1", version: 1, hops });
+    assert.equal(migrateLegacyUrl(`/#notice/example?walk=${token}`).target, "/notices/example?legacy=unsupported-filter");
+  }
+  assert.equal(migrateLegacyUrl("/#money?walk=not-json").target, "/browse/contracts/?legacy=unsupported-filter");
+});
 
 test("legacy fragment mappings remain finite and preserve language through docs", () => {
   assert.equal(migrateLegacyUrl("/#exam/7016").target, "/exams/7016/");

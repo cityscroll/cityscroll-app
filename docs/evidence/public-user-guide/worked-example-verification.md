@@ -224,3 +224,91 @@ identifier, the empty as-of day, and the whole collection journey with a stand-i
 share response — were made by driving the public deploy in a headless browser.
 They are recorded here rather than as a committed check, because a required gate
 must not depend on a rolling publisher record still being in the window.
+
+## Correction to the earlier acceptance claims — 2026-09-08
+
+This addendum corrects the interpretation of the evidence for the
+[advanced-article delivery](https://github.com/cityscroll/cityscroll-app/pull/1720).
+The dated observations and historical delivery receipts above remain intact.
+A rendered destination, a link inventory, and a completed user journey prove
+different things. The following statuses apply to the claims made from that
+earlier evidence; they do not certify the later integrated guide revision.
+
+| Earlier claim | What its cited evidence establishes | Corrected status |
+| --- | --- | --- |
+| A1: all five lessons teach a repeatable method; the award lesson reconstructs the trail | The T3 observation explicitly records the second-hop failure. Opening a supplied two-hop address proves rendering and replay, not creation by following the lesson. The delivery contains five advanced articles; the receipt's description of three articles is incomplete. | Contradicted for trail creation in the earlier delivery. New route-repair observations belong in the separate award-trail record; they cannot retrospectively validate the old click path or certify every revised lesson. |
+| A2: duty, publication, a joined observation and compliance remain distinct; an awardee is not an open subcontract opportunity | The field-name test checks vocabulary only. The T2 and T3 boundary observations above and the articles' actual statements provide the substantive evidence: publication is not compliance, and an awardee is not an invitation to bid. | Supported by the cited article passages and dated observations, not by the vocabulary test. No new compliance finding or opportunity is inferred. |
+| A3: dated filtering does not reconstruct everything the site knew on that day | H7 directly records unfiltered, filtered and empty results, explains the record-date basis, and expressly denies a reconstruction of historical site knowledge. | Supported within that dated observation's scope. It does not prove a system-history query or current record counts. |
+| A4: browser storage, sync, downloads and sharing are distinct; mutations use disposable or mocked state | H8 records local pins, downloaded CSV/JSON and a mocked share response/read-only snapshot. The anonymous pins response establishes only that the visitor was unrecognized. | Supported for the local, export and mocked-share observations. Recognized-session server sync and deployed share persistence were not exercised and remain unproven by this receipt. |
+| A5: positive, missing-evidence, undated and empty-collection cases were replayed | The guide's empty-section test renders an empty article category, not an investigation. H6 directly records missing/unknown connection evidence and H8 directly records an empty workspace. H7 explains undated exclusions but does not retain a separate undated-record replay. | Supported for the dated positive, missing-evidence and empty-workspace observations. The empty-section test provides no collection coverage; a separate undated-case replay is not established. |
+| A6: every lesson returns to the actual product destination | The guide-home link test checks incoming article links. The product-access capture checks one housing tutorial/explanation route; it does not exercise all five advanced lessons' return links, task state or return position. | Not established. Direct return-to-product acceptance remains open until the relevant lesson journeys are followed. |
+
+The bounded navigation repair is tracked by alias `ccf422a8ff4de`. Its A4 and A7
+remain open for integrated acceptance after the related guide changes. This
+addendum changes no historical receipt and does not substitute weekly upkeep,
+text checks, or a guide-home link test for a completed resident journey.
+
+## Award trail repair: direct method verification
+
+The candidate at `760e182c7` repairs three connected failures: the vendor's
+record links did not opt into traversal, notice forwarding discarded the walk,
+and a fresh notice load could leave the restored trail inside a hidden initial
+pane. The notice allowlist now accepts one valid, non-empty walk; malformed,
+oversized, unsupported and duplicate walk payloads remain rejected. Back removes
+one hop, and Restart returns to the agency without a walk.
+
+The [capture manifest](award-trail/capture-manifest.json) records the exact
+before/after addresses, public source-query URLs and response hashes, module
+hashes, viewports, assertions and image hashes. Images remain outside Git.
+This is **local candidate evidence using snapshotted public reads**, not a
+deployment receipt. The records come from the City's City Record dataset
+`dg92-zbpx`; acquisition is explicit and separate from browser replay. No
+prepared walk token is an input to either create-a-trail journey.
+
+| Chain | Vendor selected under Connected records | Award selected under On the record → Show all dates |
+| --- | --- | --- |
+| First | LANTERN COMMUNITY SERVICES INC | Integrated Commercial Hotels Program, notice 20260729015 |
+| Second | VOLUNTEERS OF AMERICA GREATER NEW YORK INC | Integrated Commercial Hotels Program, notice 20260729014 |
+
+Both begin at [Homeless Services](https://cityscroll.org/agencies/homeless-services/).
+Click the named vendor, expand **Show all dates** under **On the record**, then
+click the named award. Copy the complete browser address and paste it into a
+fresh browser session. Each result visibly restores two hops. The first hop's
+label is **published by agency**; the second uses the notice's translated type,
+**Award** in English. The vendor connection and the award are separate joins.
+
+| Acceptance for alias ccf422a8ff4de | Direct evidence and boundary |
+| --- | --- |
+| A1 | Both real chains were created by clicks, forwarded to notice documents, and reopened in fresh browser contexts at 390×844 and 1440×900. Back restored one hop; Restart cleared the trail at the agency. |
+| A2 | The second vendor and distinct award repeat the same controls. The copied address is captured only after the second click; the demo's prebuilt address is never supplied. |
+| A3 | The correction table above reviews all six earlier claims without deleting their historical receipts. |
+| A5 | Public acquisition uses GET only. Browser replay uses isolated contexts and recorded public read models; all outbound mutations are intercepted. An unknown connection keeps its mounted evidence panel hidden, and a fresh investigation shows zero pinned items. |
+| A6 | Frozen synthetic route/link/hydration tests are independent of the manual real-record observation tool. Named live awards are not required by deployment gates. |
+| A4 and A7 | Open for integrated acceptance of the revised guide. The concurrent article revision owns tutorial prose; this repair changes no article prose and certifies neither all revised journeys nor language/illustration parity. |
+
+Reproduction (each focused test and capture command completed with exit 0):
+
+```sh
+node --test test/guide_documents.test.mjs test/guide_contextual_access.test.mjs test/route_migration.test.mjs
+node --test test/award_trail_navigation.test.mjs test/traversal_path.test.mjs
+node --test test/no_live_external_reads.test.mjs test/notice_cold_path.test.mjs test/url_migration_map.test.mjs
+node tools/build_primary_documents.mjs
+node tools/build_agency_constellation_documents.mjs
+node tools/build_public_site.mjs --source-dir . --site-dir _site
+python3 tools/capture_guide_product_access.py --manifest "$PWD/docs/evidence/public-user-guide/award-trail/guide-product-access.json"
+python3 tools/capture_award_trail.py --acquire
+python3 tools/capture_award_trail.py
+```
+
+Use a full checkout, Python Playwright and Chromium. The capture tool documents
+the acquisition/replay separation; a later absence of either example calls for
+another observed chain, not a changed deterministic regression expectation.
+The companion [product-access receipt](award-trail/guide-product-access.json)
+retains its six rendered captures and eight reachability checks. Its one
+housing tutorial/explanation journey is not proof of all advanced lessons.
+
+Read-only public observation also found that the vendor-profile endpoint returned
+`missing-index` and the vendor view eventually populated through its fallback.
+That availability delay is separate from the navigation repair and is not
+described here as a successful deployed route fix. No source-refresh, account,
+subscription, email or public API capability behavior changed.

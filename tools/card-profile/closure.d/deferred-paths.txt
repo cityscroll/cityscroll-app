@@ -10,6 +10,7 @@ data/geography/oracles/moda-v2025.09.29.json
 data/geography/qa/first_four_pluto_cross_checks.json
 data/geography/qa/first_four_point_canaries.json
 data/geography/qa/sanitation_community_district_equivalence.json
+data/performance/notice-synthetic-probe-pages.json
 data/repair-queue-register.v1.json
 entity_resolution/cross_domain/project_agency_vendor_evidence.json
 entity_resolution/eval/audits/2026-07-31/receipt.json

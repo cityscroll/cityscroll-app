@@ -1,0 +1,293 @@
+{
+  "schema_version": 1,
+  "capture_mode": "local_candidate_with_snapshotted_public_reads",
+  "repository_revision": "066ceaf024c39b9c681f1cd234ef371ced50e31b",
+  "candidate_module_sha256": {
+    "site/route_migration.mjs": "2ed4ef70b008444a18b52c3d7308ffb84284cb7a87a7e7e379040b329199f5e8",
+    "site/app/entities.mjs": "7f09b923eba6c18667c96a0fd452355b4a38c4205d6b35bb0aae3c70c46dcc1d",
+    "site/app/traversal.mjs": "f693d3bf035ad4cb4b10af97f6fb395a7539ac5c98b8731667d8bca16b1d9eb9"
+  },
+  "source_observations": [
+    {
+      "vendor": "LANTERN COMMUNITY SERVICES",
+      "kind": "aggregate",
+      "url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json?%24where=upper%28vendor_name%29+like+%27%25LANTERN+COMMUNITY+SERVICES%25%27+AND+type_of_notice_description%3D%27Award%27+AND+contract_amount+%3C+10000000000&%24select=vendor_name%2Cagency_name%2Ccount%281%29+as+n%2Csum%28contract_amount%29+as+t%2Cmin%28start_date%29+as+first%2Cmax%28start_date%29+as+last&%24group=vendor_name%2Cagency_name&%24limit=1000",
+      "sha256": "730fa6110716cdda6ca1431536738d541c781e39fd355012a47378cd421e49eb",
+      "rows": 6
+    },
+    {
+      "vendor": "LANTERN COMMUNITY SERVICES",
+      "kind": "notices",
+      "url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json?%24where=upper%28vendor_name%29+like+%27%25LANTERN+COMMUNITY+SERVICES%25%27+AND+type_of_notice_description%3D%27Award%27+AND+contract_amount+%3C+10000000000&%24order=start_date+DESC%2Crequest_id+DESC&%24limit=15",
+      "sha256": "198b88befb04b2bf40ee63316ffbade68549de6b5e3059a343a944e7f933e89b",
+      "rows": 15
+    },
+    {
+      "vendor": "VOLUNTEERS OF AMERICA GREATER NEW YORK",
+      "kind": "aggregate",
+      "url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json?%24where=upper%28vendor_name%29+like+%27%25VOLUNTEERS+OF+AMERICA+GREATER+NEW+YORK%25%27+AND+type_of_notice_description%3D%27Award%27+AND+contract_amount+%3C+10000000000&%24select=vendor_name%2Cagency_name%2Ccount%281%29+as+n%2Csum%28contract_amount%29+as+t%2Cmin%28start_date%29+as+first%2Cmax%28start_date%29+as+last&%24group=vendor_name%2Cagency_name&%24limit=1000",
+      "sha256": "a9dd8539139810c9378f6ea4a88ee89d280422126ac8eb594c9023796d76b849",
+      "rows": 19
+    },
+    {
+      "vendor": "VOLUNTEERS OF AMERICA GREATER NEW YORK",
+      "kind": "notices",
+      "url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json?%24where=upper%28vendor_name%29+like+%27%25VOLUNTEERS+OF+AMERICA+GREATER+NEW+YORK%25%27+AND+type_of_notice_description%3D%27Award%27+AND+contract_amount+%3C+10000000000&%24order=start_date+DESC%2Crequest_id+DESC&%24limit=15",
+      "sha256": "7514d7da4ea500fc115f439d3ca43c659ef988d0d0dd61ba10ab8dffc4e07bdc",
+      "rows": 15
+    }
+  ],
+  "data_vintage": "2026-09-08T14:02:41.886519+00:00",
+  "captures": [
+    {
+      "id": "chain-1-390",
+      "route": "/notices/20260729015?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQyIiwibmFtZSI6IuKXhkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL0xBTlRFUk4lMjBDT01NVU5JVFklMjBTRVJWSUNFUy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIiwibmFtZSI6IkxhbnRlcm4gQ29tbXVuaXR5IFNlcnZpY2VzIEluYy4iLCJocmVmIjoiL3ZlbmRvcnMvTEFOVEVSTiUyMENPTU1VTklUWSUyMFNFUlZJQ0VTLyJ9LCJyZWxhdGlvbiI6IkF3YXJkIiwiZGVzdGluYXRpb24iOnsia2luZCI6Im5vdGljZSIsImlkIjoiMjAyNjA3MjkwMTUiLCJuYW1lIjoiSW50ZWdyYXRlZCBDb21tZXJjaWFsIEhvdGVscyBQcm9ncmFtIiwiaHJlZiI6IiNub3RpY2UvMjAyNjA3MjkwMTUifSwic2NvcGUiOm51bGx9XX0",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "066ceaf024c39b9c681f1cd234ef371ced50e31b",
+      "data_vintage": "2026-09-08T14:02:41.886519+00:00",
+      "assertion": "A fresh session restores the two-hop trail created by clicking agency, vendor and award connections.",
+      "assertion_holds": true,
+      "sha256": "976172667f1d1cb9f8df291e4546fa9603f05ed5803c46634a424fb5236d1854",
+      "file": null,
+      "trail_text": "\u2039\nDepartment of Homeless Services\npublished by agency \u2192\n\u25c6LANTERN COMMUNITY SERVICES INC published by agency\nAward \u2192\nIntegrated Commercial Hotels Program\n\u21ba"
+    },
+    {
+      "id": "chain-2-390",
+      "route": "/notices/20260729014?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQ1IiwibmFtZSI6IuKXhlZPTFVOVEVFUlMgT0YgQU1FUklDQSBHUkVBVEVSIE5FVyBZT1JLIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL1ZPTFVOVEVFUlMlMjBPRiUyMEFNRVJJQ0ElMjBHUkVBVEVSJTIwTkVXJTIwWU9SSy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IlZPTFVOVEVFUlMgT0YgQU1FUklDQSBHUkVBVEVSIE5FVyBZT1JLIiwibmFtZSI6IlZvbHVudGVlcnMgT2YgQW1lcmljYSBHcmVhdGVyIE5ldyBZb3JrIEluYy4iLCJocmVmIjoiL3ZlbmRvcnMvVk9MVU5URUVSUyUyME9GJTIwQU1FUklDQSUyMEdSRUFURVIlMjBORVclMjBZT1JLLyJ9LCJyZWxhdGlvbiI6IkF3YXJkIiwiZGVzdGluYXRpb24iOnsia2luZCI6Im5vdGljZSIsImlkIjoiMjAyNjA3MjkwMTQiLCJuYW1lIjoiSW50ZWdyYXRlZCBDb21tZXJjaWFsIEhvdGVscyBQcm9ncmFtIiwiaHJlZiI6IiNub3RpY2UvMjAyNjA3MjkwMTQifSwic2NvcGUiOm51bGx9XX0",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "066ceaf024c39b9c681f1cd234ef371ced50e31b",
+      "data_vintage": "2026-09-08T14:02:41.886519+00:00",
+      "assertion": "A fresh session restores the two-hop trail created by clicking agency, vendor and award connections.",
+      "assertion_holds": true,
+      "sha256": "3ba7e7c7dbf8fecca12297cec5ac7f579bd0da77a232dae45964dc42a8e98c96",
+      "file": null,
+      "trail_text": "\u2039\nDepartment of Homeless Services\npublished by agency \u2192\n\u25c6VOLUNTEERS OF AMERICA GREATER NEW YORK INC published by agency\nAward \u2192\nIntegrated Commercial Hotels Program\n\u21ba"
+    },
+    {
+      "id": "chain-1-1440",
+      "route": "/notices/20260729015?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQyIiwibmFtZSI6IuKXhkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL0xBTlRFUk4lMjBDT01NVU5JVFklMjBTRVJWSUNFUy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIiwibmFtZSI6IkxhbnRlcm4gQ29tbXVuaXR5IFNlcnZpY2VzIEluYy4iLCJocmVmIjoiL3ZlbmRvcnMvTEFOVEVSTiUyMENPTU1VTklUWSUyMFNFUlZJQ0VTLyJ9LCJyZWxhdGlvbiI6IkF3YXJkIiwiZGVzdGluYXRpb24iOnsia2luZCI6Im5vdGljZSIsImlkIjoiMjAyNjA3MjkwMTUiLCJuYW1lIjoiSW50ZWdyYXRlZCBDb21tZXJjaWFsIEhvdGVscyBQcm9ncmFtIiwiaHJlZiI6IiNub3RpY2UvMjAyNjA3MjkwMTUifSwic2NvcGUiOm51bGx9XX0",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "066ceaf024c39b9c681f1cd234ef371ced50e31b",
+      "data_vintage": "2026-09-08T14:02:41.886519+00:00",
+      "assertion": "A fresh session restores the two-hop trail created by clicking agency, vendor and award connections.",
+      "assertion_holds": true,
+      "sha256": "e30e43fb3cd90343f9f62cf826975c62c1fb863aba4b8b60ade8814d1d5b96a7",
+      "file": null,
+      "trail_text": "\u2039\nDepartment of Homeless Services\npublished by agency \u2192\n\u25c6LANTERN COMMUNITY SERVICES INC published by agency\nAward \u2192\nIntegrated Commercial Hotels Program\n\u21ba"
+    },
+    {
+      "id": "chain-2-1440",
+      "route": "/notices/20260729014?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQ1IiwibmFtZSI6IuKXhlZPTFVOVEVFUlMgT0YgQU1FUklDQSBHUkVBVEVSIE5FVyBZT1JLIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL1ZPTFVOVEVFUlMlMjBPRiUyMEFNRVJJQ0ElMjBHUkVBVEVSJTIwTkVXJTIwWU9SSy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IlZPTFVOVEVFUlMgT0YgQU1FUklDQSBHUkVBVEVSIE5FVyBZT1JLIiwibmFtZSI6IlZvbHVudGVlcnMgT2YgQW1lcmljYSBHcmVhdGVyIE5ldyBZb3JrIEluYy4iLCJocmVmIjoiL3ZlbmRvcnMvVk9MVU5URUVSUyUyME9GJTIwQU1FUklDQSUyMEdSRUFURVIlMjBORVclMjBZT1JLLyJ9LCJyZWxhdGlvbiI6IkF3YXJkIiwiZGVzdGluYXRpb24iOnsia2luZCI6Im5vdGljZSIsImlkIjoiMjAyNjA3MjkwMTQiLCJuYW1lIjoiSW50ZWdyYXRlZCBDb21tZXJjaWFsIEhvdGVscyBQcm9ncmFtIiwiaHJlZiI6IiNub3RpY2UvMjAyNjA3MjkwMTQifSwic2NvcGUiOm51bGx9XX0",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "066ceaf024c39b9c681f1cd234ef371ced50e31b",
+      "data_vintage": "2026-09-08T14:02:41.886519+00:00",
+      "assertion": "A fresh session restores the two-hop trail created by clicking agency, vendor and award connections.",
+      "assertion_holds": true,
+      "sha256": "9a3f3c900a9eaf45d3be45a61a6c3cc871a9f1293a52e05da2b5c23854824342",
+      "file": null,
+      "trail_text": "\u2039\nDepartment of Homeless Services\npublished by agency \u2192\n\u25c6VOLUNTEERS OF AMERICA GREATER NEW YORK INC published by agency\nAward \u2192\nIntegrated Commercial Hotels Program\n\u21ba"
+    }
+  ],
+  "journeys": [
+    {
+      "chain": 1,
+      "viewport_width": 390,
+      "steps": [
+        {
+          "action": "Open agency; select the named vendor under Connected records",
+          "url": "/agencies/homeless-services/",
+          "control": "\u25c6\nLANTERN COMMUNITY SERVICES INC\npublished by agency"
+        },
+        {
+          "action": "Expand Show all dates under On the record",
+          "url": "/vendors/LANTERN%20COMMUNITY%20SERVICES/?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQyIiwibmFtZSI6IuKXhkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL0xBTlRFUk4lMjBDT01NVU5JVFklMjBTRVJWSUNFUy8ifSwic2NvcGUiOm51bGx9XX0",
+          "control": "Show all dates"
+        },
+        {
+          "action": "Select the award connection",
+          "url": "/vendors/LANTERN%20COMMUNITY%20SERVICES/?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQyIiwibmFtZSI6IuKXhkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL0xBTlRFUk4lMjBDT01NVU5JVFklMjBTRVJWSUNFUy8ifSwic2NvcGUiOm51bGx9XX0",
+          "control": "\u25c6\nIntegrated Commercial Hotels Program",
+          "href": "#notice/20260729015"
+        },
+        {
+          "action": "Copy the complete browser address",
+          "url": "/notices/20260729015?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQyIiwibmFtZSI6IuKXhkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL0xBTlRFUk4lMjBDT01NVU5JVFklMjBTRVJWSUNFUy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIiwibmFtZSI6IkxhbnRlcm4gQ29tbXVuaXR5IFNlcnZpY2VzIEluYy4iLCJocmVmIjoiL3ZlbmRvcnMvTEFOVEVSTiUyMENPTU1VTklUWSUyMFNFUlZJQ0VTLyJ9LCJyZWxhdGlvbiI6IkF3YXJkIiwiZGVzdGluYXRpb24iOnsia2luZCI6Im5vdGljZSIsImlkIjoiMjAyNjA3MjkwMTUiLCJuYW1lIjoiSW50ZWdyYXRlZCBDb21tZXJjaWFsIEhvdGVscyBQcm9ncmFtIiwiaHJlZiI6IiNub3RpY2UvMjAyNjA3MjkwMTUifSwic2NvcGUiOm51bGx9XX0"
+        },
+        {
+          "action": "Paste the copied address into a fresh browser session",
+          "url": "/notices/20260729015?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQyIiwibmFtZSI6IuKXhkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL0xBTlRFUk4lMjBDT01NVU5JVFklMjBTRVJWSUNFUy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIiwibmFtZSI6IkxhbnRlcm4gQ29tbXVuaXR5IFNlcnZpY2VzIEluYy4iLCJocmVmIjoiL3ZlbmRvcnMvTEFOVEVSTiUyMENPTU1VTklUWSUyMFNFUlZJQ0VTLyJ9LCJyZWxhdGlvbiI6IkF3YXJkIiwiZGVzdGluYXRpb24iOnsia2luZCI6Im5vdGljZSIsImlkIjoiMjAyNjA3MjkwMTUiLCJuYW1lIjoiSW50ZWdyYXRlZCBDb21tZXJjaWFsIEhvdGVscyBQcm9ncmFtIiwiaHJlZiI6IiNub3RpY2UvMjAyNjA3MjkwMTUifSwic2NvcGUiOm51bGx9XX0"
+        }
+      ],
+      "hop_count": 2,
+      "back_hop_count": 1,
+      "restart": "/agencies/homeless-services/",
+      "unknown_connection_panel_hidden": true,
+      "fresh_collection_empty": true,
+      "task_route_loaded": true,
+      "page_errors": [],
+      "blocked_mutations": [
+        {
+          "method": "POST",
+          "path": "/events"
+        },
+        {
+          "method": "POST",
+          "path": "/events"
+        }
+      ]
+    },
+    {
+      "chain": 2,
+      "viewport_width": 390,
+      "steps": [
+        {
+          "action": "Open agency; select the named vendor under Connected records",
+          "url": "/agencies/homeless-services/",
+          "control": "\u25c6\nVOLUNTEERS OF AMERICA GREATER NEW YORK INC\npublished by agency"
+        },
+        {
+          "action": "Expand Show all dates under On the record",
+          "url": "/vendors/VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK/?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQ1IiwibmFtZSI6IuKXhlZPTFVOVEVFUlMgT0YgQU1FUklDQSBHUkVBVEVSIE5FVyBZT1JLIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL1ZPTFVOVEVFUlMlMjBPRiUyMEFNRVJJQ0ElMjBHUkVBVEVSJTIwTkVXJTIwWU9SSy8ifSwic2NvcGUiOm51bGx9XX0",
+          "control": "Show all dates"
+        },
+        {
+          "action": "Select the award connection",
+          "url": "/vendors/VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK/?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQ1IiwibmFtZSI6IuKXhlZPTFVOVEVFUlMgT0YgQU1FUklDQSBHUkVBVEVSIE5FVyBZT1JLIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL1ZPTFVOVEVFUlMlMjBPRiUyMEFNRVJJQ0ElMjBHUkVBVEVSJTIwTkVXJTIwWU9SSy8ifSwic2NvcGUiOm51bGx9XX0",
+          "control": "\u25c6\nIntegrated Commercial Hotels Program",
+          "href": "#notice/20260729014"
+        },
+        {
+          "action": "Copy the complete browser address",
+          "url": "/notices/20260729014?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQ1IiwibmFtZSI6IuKXhlZPTFVOVEVFUlMgT0YgQU1FUklDQSBHUkVBVEVSIE5FVyBZT1JLIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL1ZPTFVOVEVFUlMlMjBPRiUyMEFNRVJJQ0ElMjBHUkVBVEVSJTIwTkVXJTIwWU9SSy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IlZPTFVOVEVFUlMgT0YgQU1FUklDQSBHUkVBVEVSIE5FVyBZT1JLIiwibmFtZSI6IlZvbHVudGVlcnMgT2YgQW1lcmljYSBHcmVhdGVyIE5ldyBZb3JrIEluYy4iLCJocmVmIjoiL3ZlbmRvcnMvVk9MVU5URUVSUyUyME9GJTIwQU1FUklDQSUyMEdSRUFURVIlMjBORVclMjBZT1JLLyJ9LCJyZWxhdGlvbiI6IkF3YXJkIiwiZGVzdGluYXRpb24iOnsia2luZCI6Im5vdGljZSIsImlkIjoiMjAyNjA3MjkwMTQiLCJuYW1lIjoiSW50ZWdyYXRlZCBDb21tZXJjaWFsIEhvdGVscyBQcm9ncmFtIiwiaHJlZiI6IiNub3RpY2UvMjAyNjA3MjkwMTQifSwic2NvcGUiOm51bGx9XX0"
+        },
+        {
+          "action": "Paste the copied address into a fresh browser session",
+          "url": "/notices/20260729014?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQ1IiwibmFtZSI6IuKXhlZPTFVOVEVFUlMgT0YgQU1FUklDQSBHUkVBVEVSIE5FVyBZT1JLIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL1ZPTFVOVEVFUlMlMjBPRiUyMEFNRVJJQ0ElMjBHUkVBVEVSJTIwTkVXJTIwWU9SSy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IlZPTFVOVEVFUlMgT0YgQU1FUklDQSBHUkVBVEVSIE5FVyBZT1JLIiwibmFtZSI6IlZvbHVudGVlcnMgT2YgQW1lcmljYSBHcmVhdGVyIE5ldyBZb3JrIEluYy4iLCJocmVmIjoiL3ZlbmRvcnMvVk9MVU5URUVSUyUyME9GJTIwQU1FUklDQSUyMEdSRUFURVIlMjBORVclMjBZT1JLLyJ9LCJyZWxhdGlvbiI6IkF3YXJkIiwiZGVzdGluYXRpb24iOnsia2luZCI6Im5vdGljZSIsImlkIjoiMjAyNjA3MjkwMTQiLCJuYW1lIjoiSW50ZWdyYXRlZCBDb21tZXJjaWFsIEhvdGVscyBQcm9ncmFtIiwiaHJlZiI6IiNub3RpY2UvMjAyNjA3MjkwMTQifSwic2NvcGUiOm51bGx9XX0"
+        }
+      ],
+      "hop_count": 2,
+      "back_hop_count": 1,
+      "restart": "/agencies/homeless-services/",
+      "unknown_connection_panel_hidden": true,
+      "fresh_collection_empty": true,
+      "task_route_loaded": true,
+      "page_errors": [],
+      "blocked_mutations": [
+        {
+          "method": "POST",
+          "path": "/events"
+        },
+        {
+          "method": "POST",
+          "path": "/events"
+        }
+      ]
+    },
+    {
+      "chain": 1,
+      "viewport_width": 1440,
+      "steps": [
+        {
+          "action": "Open agency; select the named vendor under Connected records",
+          "url": "/agencies/homeless-services/",
+          "control": "\u25c6\nLANTERN COMMUNITY SERVICES INC\npublished by agency"
+        },
+        {
+          "action": "Expand Show all dates under On the record",
+          "url": "/vendors/LANTERN%20COMMUNITY%20SERVICES/?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQyIiwibmFtZSI6IuKXhkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL0xBTlRFUk4lMjBDT01NVU5JVFklMjBTRVJWSUNFUy8ifSwic2NvcGUiOm51bGx9XX0",
+          "control": "Show all dates"
+        },
+        {
+          "action": "Select the award connection",
+          "url": "/vendors/LANTERN%20COMMUNITY%20SERVICES/?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQyIiwibmFtZSI6IuKXhkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL0xBTlRFUk4lMjBDT01NVU5JVFklMjBTRVJWSUNFUy8ifSwic2NvcGUiOm51bGx9XX0",
+          "control": "\u25c6\nIntegrated Commercial Hotels Program",
+          "href": "#notice/20260729015"
+        },
+        {
+          "action": "Copy the complete browser address",
+          "url": "/notices/20260729015?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQyIiwibmFtZSI6IuKXhkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL0xBTlRFUk4lMjBDT01NVU5JVFklMjBTRVJWSUNFUy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIiwibmFtZSI6IkxhbnRlcm4gQ29tbXVuaXR5IFNlcnZpY2VzIEluYy4iLCJocmVmIjoiL3ZlbmRvcnMvTEFOVEVSTiUyMENPTU1VTklUWSUyMFNFUlZJQ0VTLyJ9LCJyZWxhdGlvbiI6IkF3YXJkIiwiZGVzdGluYXRpb24iOnsia2luZCI6Im5vdGljZSIsImlkIjoiMjAyNjA3MjkwMTUiLCJuYW1lIjoiSW50ZWdyYXRlZCBDb21tZXJjaWFsIEhvdGVscyBQcm9ncmFtIiwiaHJlZiI6IiNub3RpY2UvMjAyNjA3MjkwMTUifSwic2NvcGUiOm51bGx9XX0"
+        },
+        {
+          "action": "Paste the copied address into a fresh browser session",
+          "url": "/notices/20260729015?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQyIiwibmFtZSI6IuKXhkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL0xBTlRFUk4lMjBDT01NVU5JVFklMjBTRVJWSUNFUy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIiwibmFtZSI6IkxhbnRlcm4gQ29tbXVuaXR5IFNlcnZpY2VzIEluYy4iLCJocmVmIjoiL3ZlbmRvcnMvTEFOVEVSTiUyMENPTU1VTklUWSUyMFNFUlZJQ0VTLyJ9LCJyZWxhdGlvbiI6IkF3YXJkIiwiZGVzdGluYXRpb24iOnsia2luZCI6Im5vdGljZSIsImlkIjoiMjAyNjA3MjkwMTUiLCJuYW1lIjoiSW50ZWdyYXRlZCBDb21tZXJjaWFsIEhvdGVscyBQcm9ncmFtIiwiaHJlZiI6IiNub3RpY2UvMjAyNjA3MjkwMTUifSwic2NvcGUiOm51bGx9XX0"
+        }
+      ],
+      "hop_count": 2,
+      "back_hop_count": 1,
+      "restart": "/agencies/homeless-services/",
+      "unknown_connection_panel_hidden": true,
+      "fresh_collection_empty": true,
+      "task_route_loaded": true,
+      "page_errors": [],
+      "blocked_mutations": [
+        {
+          "method": "POST",
+          "path": "/events"
+        },
+        {
+          "method": "POST",
+          "path": "/events"
+        }
+      ]
+    },
+    {
+      "chain": 2,
+      "viewport_width": 1440,
+      "steps": [
+        {
+          "action": "Open agency; select the named vendor under Connected records",
+          "url": "/agencies/homeless-services/",
+          "control": "\u25c6\nVOLUNTEERS OF AMERICA GREATER NEW YORK INC\npublished by agency"
+        },
+        {
+          "action": "Expand Show all dates under On the record",
+          "url": "/vendors/VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK/?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQ1IiwibmFtZSI6IuKXhlZPTFVOVEVFUlMgT0YgQU1FUklDQSBHUkVBVEVSIE5FVyBZT1JLIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL1ZPTFVOVEVFUlMlMjBPRiUyMEFNRVJJQ0ElMjBHUkVBVEVSJTIwTkVXJTIwWU9SSy8ifSwic2NvcGUiOm51bGx9XX0",
+          "control": "Show all dates"
+        },
+        {
+          "action": "Select the award connection",
+          "url": "/vendors/VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK/?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQ1IiwibmFtZSI6IuKXhlZPTFVOVEVFUlMgT0YgQU1FUklDQSBHUkVBVEVSIE5FVyBZT1JLIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL1ZPTFVOVEVFUlMlMjBPRiUyMEFNRVJJQ0ElMjBHUkVBVEVSJTIwTkVXJTIwWU9SSy8ifSwic2NvcGUiOm51bGx9XX0",
+          "control": "\u25c6\nIntegrated Commercial Hotels Program",
+          "href": "#notice/20260729014"
+        },
+        {
+          "action": "Copy the complete browser address",
+          "url": "/notices/20260729014?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQ1IiwibmFtZSI6IuKXhlZPTFVOVEVFUlMgT0YgQU1FUklDQSBHUkVBVEVSIE5FVyBZT1JLIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL1ZPTFVOVEVFUlMlMjBPRiUyMEFNRVJJQ0ElMjBHUkVBVEVSJTIwTkVXJTIwWU9SSy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IlZPTFVOVEVFUlMgT0YgQU1FUklDQSBHUkVBVEVSIE5FVyBZT1JLIiwibmFtZSI6IlZvbHVudGVlcnMgT2YgQW1lcmljYSBHcmVhdGVyIE5ldyBZb3JrIEluYy4iLCJocmVmIjoiL3ZlbmRvcnMvVk9MVU5URUVSUyUyME9GJTIwQU1FUklDQSUyMEdSRUFURVIlMjBORVclMjBZT1JLLyJ9LCJyZWxhdGlvbiI6IkF3YXJkIiwiZGVzdGluYXRpb24iOnsia2luZCI6Im5vdGljZSIsImlkIjoiMjAyNjA3MjkwMTQiLCJuYW1lIjoiSW50ZWdyYXRlZCBDb21tZXJjaWFsIEhvdGVscyBQcm9ncmFtIiwiaHJlZiI6IiNub3RpY2UvMjAyNjA3MjkwMTQifSwic2NvcGUiOm51bGx9XX0"
+        },
+        {
+          "action": "Paste the copied address into a fresh browser session",
+          "url": "/notices/20260729014?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQ1IiwibmFtZSI6IuKXhlZPTFVOVEVFUlMgT0YgQU1FUklDQSBHUkVBVEVSIE5FVyBZT1JLIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL1ZPTFVOVEVFUlMlMjBPRiUyMEFNRVJJQ0ElMjBHUkVBVEVSJTIwTkVXJTIwWU9SSy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IlZPTFVOVEVFUlMgT0YgQU1FUklDQSBHUkVBVEVSIE5FVyBZT1JLIiwibmFtZSI6IlZvbHVudGVlcnMgT2YgQW1lcmljYSBHcmVhdGVyIE5ldyBZb3JrIEluYy4iLCJocmVmIjoiL3ZlbmRvcnMvVk9MVU5URUVSUyUyME9GJTIwQU1FUklDQSUyMEdSRUFURVIlMjBORVclMjBZT1JLLyJ9LCJyZWxhdGlvbiI6IkF3YXJkIiwiZGVzdGluYXRpb24iOnsia2luZCI6Im5vdGljZSIsImlkIjoiMjAyNjA3MjkwMTQiLCJuYW1lIjoiSW50ZWdyYXRlZCBDb21tZXJjaWFsIEhvdGVscyBQcm9ncmFtIiwiaHJlZiI6IiNub3RpY2UvMjAyNjA3MjkwMTQifSwic2NvcGUiOm51bGx9XX0"
+        }
+      ],
+      "hop_count": 2,
+      "back_hop_count": 1,
+      "restart": "/agencies/homeless-services/",
+      "unknown_connection_panel_hidden": true,
+      "fresh_collection_empty": true,
+      "task_route_loaded": true,
+      "page_errors": [],
+      "blocked_mutations": [
+        {
+          "method": "POST",
+          "path": "/events"
+        },
+        {
+          "method": "POST",
+          "path": "/events"
+        }
+      ]
+    }
+  ]
+}
