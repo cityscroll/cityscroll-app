@@ -301,13 +301,38 @@ function renderInline(sourceName, text) {
   html = html.replace(/`([^`]+)`/g, (_, code) => `<code>${code}</code>`);
   html = html.replace(/\*\*([^*]+)\*\*/g, (_, strong) => `<strong>${strong}</strong>`);
   html = html.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, label, href) => {
-    const external = /^https?:/i.test(href);
-    const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : "";
-    return `<a href="${escapeHtml(href)}"${attrs}>${label}</a>`;
+    if (!/^(?:\/(?!\/)|https?:\/\/|#)/i.test(href)) fail(sourceName, "unsupported link protocol");
+    return `<a href="${href}">${label}</a>`;
   });
   const leftover = html.match(/\[[^\]]*\]\([^)]*\)/);
   if (leftover) fail(sourceName, `link ${leftover[0]} is not written as [label](href)`);
   return html;
+}
+
+/** A named, real UI crop. Metadata is supplied by the article's capture receipt. */
+export function renderGuideFigure(sourceName, id, spec) {
+  if (!/^[a-z][a-z0-9-]*$/.test(id) || !spec) fail(sourceName, `unknown figure ${id}`);
+  for (const key of ["alt", "caption"]) {
+    if (typeof spec[key] !== "string" || !spec[key].trim() || PRIVATE_LEAK.test(spec[key])) {
+      fail(sourceName, `figure ${id} needs public ${key} text`);
+    }
+  }
+  if (spec.locale !== "en") fail(sourceName, `figure ${id}: only explicitly labelled English captures are supported`);
+  for (const variant of ["mobile", "desktop"]) {
+    const asset = spec[variant];
+    if (!asset || !/^\/media\/guide\/[a-z0-9-]+\/[a-z0-9-]+\.png$/.test(asset.src)
+        || ![asset.width, asset.height].every(value => Number.isInteger(value) && value > 0 && value <= 2000)) {
+      fail(sourceName, `figure ${id} needs a safe ${variant} asset and bounded dimensions`);
+    }
+  }
+  const { mobile, desktop } = spec;
+  return `<figure class="guide-figure" id="figure-${id}">`
+    + `<picture><source media="(max-width: 600px)" srcset="${mobile.src}" width="${mobile.width}" height="${mobile.height}">`
+    + `<img src="${desktop.src}" width="${desktop.width}" height="${desktop.height}" alt="${escapeHtml(spec.alt)}" loading="lazy" decoding="async"></picture>`
+    + `<figcaption><strong>English interface.</strong> ${escapeHtml(spec.caption)} `
+    + `<a class="guide-enlarge-mobile" href="${mobile.src}">Enlarge phone image: ${escapeHtml(id.replaceAll("-", " "))}</a>`
+    + `<a class="guide-enlarge-desktop" href="${desktop.src}">Enlarge desktop image: ${escapeHtml(id.replaceAll("-", " "))}</a>`
+    + `</figcaption></figure>`;
 }
 
 /**
@@ -349,6 +374,7 @@ function renderBlocks(sourceName, body, includes = {}) {
   // A table takes its accessible name from the heading it sits under, so the
   // heading a reader has just read is also what a screen reader announces.
   let heading = null;
+  const figures = new Set();
 
   const takeWhile = (predicate) => {
     const taken = [];
@@ -369,6 +395,14 @@ function renderBlocks(sourceName, body, includes = {}) {
       continue;
     }
 
+    const figure = line.match(/^::: figure ([a-z][a-z0-9-]*)\s*$/);
+    if (figure) {
+      if (figures.has(figure[1])) fail(sourceName, `duplicate figure ${figure[1]}`);
+      figures.add(figure[1]);
+      html.push(renderGuideFigure(sourceName, figure[1], includes.figures?.[figure[1]]));
+      index += 1;
+      continue;
+    }
     const include = line.match(/^:::\s+([a-z][a-z0-9-]*)\s*$/);
     if (include) {
       const spec = includes[include[1]];

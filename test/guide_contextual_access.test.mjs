@@ -178,3 +178,17 @@ test("README stays an entry point and sends walkthroughs to the guide", () => {
   assert.doesNotMatch(readme, /ontology\/registry\.v0\.json/);
   assert.doesNotMatch(readme, /changelog\.html/);
 });
+import { guideNavigationHref } from "../site/guide_navigation.mjs";
+
+test("guide step links preserve language and authored task scope without forwarding credentials", () => {
+  const current = "https://cityscroll.org/guide/how-to/look-at-records-as-of-a-day/?lang=es&email=private&token=secret&q=unrelated";
+  assert.equal(guideNavigationHref("/agencies/parks-and-recreation/?as_of=2024-06-01#civic-time-ledger", current),
+    "/agencies/parks-and-recreation/?as_of=2024-06-01&lang=es#civic-time-ledger");
+  assert.equal(guideNavigationHref("/search/?q=housing", current), "/search/?q=housing&lang=es");
+  assert.equal(guideNavigationHref("/search/?q=housing", "https://cityscroll.org/guide/", "zh-Hans"), "/search/?q=housing&lang=zh-Hans");
+  assert.equal(guideNavigationHref("/search/", "https://cityscroll.org/guide/?lang=en", "es"), "/search/?lang=en");
+  assert.equal(guideNavigationHref("/search/", "https://cityscroll.org/guide/?lang=invalid", "invalid"), "/search/");
+  for (const href of ["https://example.org/", "//example.org/", "#step-2", "/media/guide/example/crop.png"]) {
+    assert.equal(guideNavigationHref(href, current), href);
+  }
+});
