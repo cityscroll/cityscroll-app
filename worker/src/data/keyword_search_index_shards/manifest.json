@@ -1,15 +1,15 @@
 {
   "schema": "cityscroll.keyword_search_index.v1",
   "version": 1,
-  "generated_at": "2026-09-07T14:25:25.750Z",
+  "generated_at": "2026-09-08T12:18:37.211Z",
   "match_mode": "keyword",
   "representation": "family-sharded-compressed",
   "shard_schema": "cityscroll.keyword_search_index_shard.v1",
   "logical_index": {
-    "sha256": "766ac52b185e149b71675e1694d8559ddb8164518c85a20bbff91f7876cee9f2",
-    "bytes": 72540724,
+    "sha256": "667f8fd2619a9212192c7884e51d5af9b22a72cec2cc93f313f29c1b75d82f03",
+    "bytes": 72400718,
     "family_count": 11,
-    "document_count": 21878
+    "document_count": 21838
   },
   "build_receipt": {
     "source_artifacts": {
@@ -41,12 +41,12 @@
   },
   "coherence_receipt": {
     "schema": "cityscroll.procurement_index_coherence.v1",
-    "source_model_fingerprint": "1cd36f24b4784701a513bfc5fd26f343086af15c3afe6e3f9a4929f1f0a3976e",
-    "generated_at": "2026-09-07T13:02:33.872Z",
-    "selected_row_count": 34858,
+    "source_model_fingerprint": "7cb632c191af38fc57255ac72d5de49f49dbaa6e90fecc88934a39807f6d9071",
+    "generated_at": "2026-09-08T11:46:02.334Z",
+    "selected_row_count": 34856,
     "artifact_hashes": {
-      "shared_procurement_read_model": "b2cdf9d1cbb873792463055b9d42505a21d82f998946e430ff210a7d4981fb02",
-      "keyword_search_procurements": "09880b94b3b0dd92f9e51361edbe8b63305c5c2c035ab1e9aada8c0811c2be61"
+      "shared_procurement_read_model": "b9ca6581e4bf5932a36d0195b69f566291773a2b109622536fd49809efd30e6c",
+      "keyword_search_procurements": "76d6652dc0855fff845f3aed90d58bb74600fdccd07decfc2ff97b6d84204d73"
     }
   },
   "shards": [
@@ -56,12 +56,12 @@
       "gzip_path": "people.json.gz",
       "document_count": 219,
       "uncompressed_bytes": 277844,
-      "gzip_bytes": 13798,
-      "brotli_bytes": 11360,
-      "sha256": "e2160a2bc815048805fa95fb789be98b4bc9be9e8a1e0d47b92369297062b90a",
-      "gzip_sha256": "18e1d17407ca3bdb3a3c8d1c16f115cdaeed2267a3734b0ef3f95518ca3fa8a4",
-      "brotli_sha256": "5971fe646a7c48cb5201941b1644e171b67f227c908d771a99385337df09e8c4",
-      "receipt_sha256": "9b19d0227883c6dcecdde002b003b8a45adc9f5c574f6cdef0d5ff972d506b07"
+      "gzip_bytes": 13796,
+      "brotli_bytes": 11359,
+      "sha256": "42362ba25b7e9ebc7f47dd2d6d10e1042a23c2ffcf22c8bb6fb1337db1735c3d",
+      "gzip_sha256": "2164c939d7050fe74799952da012bbf3b55c1054c56cd3c6164878ccfe2ef5fa",
+      "brotli_sha256": "7fece493cfb9c67afacba16fb969752964c15c3bf6a521633e5d0de3bd9bfae1",
+      "receipt_sha256": "0053ce90a44969311fbadfd234b3ae5516f3cd87df0bcb29ea04ba53515c2cbc"
     },
     {
       "family": "agencies",
@@ -69,12 +69,12 @@
       "gzip_path": "agencies.json.gz",
       "document_count": 86,
       "uncompressed_bytes": 207259,
-      "gzip_bytes": 10486,
-      "brotli_bytes": 8730,
-      "sha256": "caa6fb512cf07ff0192f38e2bec21d4ed7e5c30f1dd8e1e0b89d0000c40cbe04",
-      "gzip_sha256": "e170c6e3b7b8d14ec66dbe1fbe83c2a82c3a2cddb7c3a88df00d119d76903437",
-      "brotli_sha256": "226ae6fb1434eceb56777fe119417b6dcc9b9e1d168c20f29a52e40d6bd2a229",
-      "receipt_sha256": "eafb2daa79141fae2e1503f2ec1f166c85d3a9840f54de7596d508c782540475"
+      "gzip_bytes": 10493,
+      "brotli_bytes": 8735,
+      "sha256": "1b7543827fa5b29ca88d980c0d0da5e864b9c111911cf22d5f71296a9c7d0954",
+      "gzip_sha256": "8528ff3033e7a5c88967cd79fbbbbdd0255914a71f8ed820f3be97cd3be6c988",
+      "brotli_sha256": "9c9f09e2f0125a2f0971c9e65e7bdd7fd69b6db2c075ba430ed0784807e18874",
+      "receipt_sha256": "014a39ab973ca29f4560023476f7ddbf8ec6474a98108f9403b1e321080a55f6"
     },
     {
       "family": "people-organizations",
@@ -82,12 +82,12 @@
       "gzip_path": "people-organizations.json.gz",
       "document_count": 86,
       "uncompressed_bytes": 207283,
-      "gzip_bytes": 10507,
+      "gzip_bytes": 10515,
       "brotli_bytes": 8740,
-      "sha256": "f1d7a39ecaf8fe004d9bcd9cc24e2cacbf292d1cb7956a6ef48951f92a41a469",
-      "gzip_sha256": "6b1d35abbbc102e778f1d7a9807fadb31851c903d54dfe59b5dcca2d4000740e",
-      "brotli_sha256": "df247badb7ca2498b2eeb4925e7ab2512fd57b3cbde22527ea0dca3a68e7d5ce",
-      "receipt_sha256": "e49e82a94b38d1f64eca5ecc996682ddad2a9b3a9898719f9a6fc42f03115e03"
+      "sha256": "ce4e64b8ff0f0a8178ce0740648ed0b7f5fb64513ef28886e3465fffe5ade930",
+      "gzip_sha256": "a44636c931fdac93f58d634493ad8bc3f57f00ecbe8b3823edc294c5e1fce122",
+      "brotli_sha256": "84984b6489c9f4292dcfefa3d81f38692febe1e29370d520dc6cd3028661d4c1",
+      "receipt_sha256": "1734fe2dcd9b3e1923574338a9065b6bf97b28782f5ce95835cfd7404271b7fd"
     },
     {
       "family": "vendors",
@@ -98,7 +98,7 @@
       "gzip_bytes": 12572,
       "brotli_bytes": 10968,
       "sha256": "6673466a0f78eafd4fec5ac002126a6dd79a0d41674d64f3021d878dc434e3cb",
-      "gzip_sha256": "fad1a4c7398357abfd4fcc7d175fa4fe334ca84001e542d3b90e316c4183c6aa",
+      "gzip_sha256": "45a1fa3bc530ee2d1c20f98acf230873067c90a7962e1be88bf4a8caf5faf15f",
       "brotli_sha256": "23eeda4cddb6fecadca1d2521c573144a78214e2fc7911b3fefc4ee4e9af0035",
       "receipt_sha256": "71bec7619b279e8b786b8c398a3e8cd1f0b87c32b86bc98ad9451ade26b1291e"
     },
@@ -107,13 +107,13 @@
       "path": "community_boards.json.br",
       "gzip_path": "community_boards.json.gz",
       "document_count": 59,
-      "uncompressed_bytes": 79025,
+      "uncompressed_bytes": 78935,
       "gzip_bytes": 3562,
       "brotli_bytes": 2631,
-      "sha256": "a635a9d87ffdc849fabd560133dd19628ffbfdcc7d57699fd08f8cbed8c5b359",
-      "gzip_sha256": "b05e519280899f84cc7512f8cfa858556e57805f64b6b6fab2f8dfd8805cd153",
-      "brotli_sha256": "df9cafd07c3e41619ac93b80cf1085003b29d5fa87540151df1aae0ef8ca4f7d",
-      "receipt_sha256": "e76d52526a1e00beb10ab28768ced9480cf26e93c389970ef249f474f7851d0f"
+      "sha256": "f10926f0ec11732b397645c21878535070319a018caa358010480abe0de93288",
+      "gzip_sha256": "a19cb36c507b2ab36a06e0dd3020dbf76bb48389c63e6cfc31d1b0e3af3262f8",
+      "brotli_sha256": "242e5f71416fda3411814188b0f2457f001da9604d0886363ee5971c29ceb543",
+      "receipt_sha256": "1c59768febdc0df4574e5fa4de94f480b7b9d8554f03b86073ee8c57a3dfcd37"
     },
     {
       "family": "land",
@@ -121,25 +121,25 @@
       "gzip_path": "land.json.gz",
       "document_count": 238,
       "uncompressed_bytes": 307119,
-      "gzip_bytes": 20692,
+      "gzip_bytes": 20693,
       "brotli_bytes": 17419,
-      "sha256": "964cbd0e51279d38be07f6e6ef256c5134cd430284334ac2b7cd7577b9dc20a4",
-      "gzip_sha256": "bfd673ecb0243e8e78f99bf04bb1b95f7dbc08939e55ed0f7ec60b8b8ff1387e",
-      "brotli_sha256": "e37563ffe7a26ff0727ca4f7ac696e7e3c2834d6e072c11c674123ad5801f5b5",
-      "receipt_sha256": "8e577933a986a3030349ccc2f20e1c3b3219be382ad4df436e950e21d88e27a6"
+      "sha256": "24a789e3294e37b481cfa60b9c4b963e33b6f8ed20ef69aad928b25c39d2d7cd",
+      "gzip_sha256": "02f80629ff2883605d10b9ea5d1e18c2d50eadd94c4b01bbd0de8e2ac51d3668",
+      "brotli_sha256": "09181a7664667c4ad7ef04ec6726fadee3a2eff1f02843126c923e0f1e2a36ae",
+      "receipt_sha256": "92354fddf2eed9438246196e4fca714f64387bc542e916279a231ca50c8dd8e9"
     },
     {
       "family": "meetings",
       "path": "meetings.json.br",
       "gzip_path": "meetings.json.gz",
-      "document_count": 530,
-      "uncompressed_bytes": 1126225,
-      "gzip_bytes": 82005,
-      "brotli_bytes": 56341,
-      "sha256": "0f3437427961284752074b53d2fdfb9c9179145b71c85470496b3e6d01d97b56",
-      "gzip_sha256": "802257e192f4e5909b6174d0db27b855a6039e8c766f2e854f43760d688fe2a2",
-      "brotli_sha256": "c6f327c4c77ad5b7e9a3e9440e2d0a576ab9e601b55ed9399a335f2fab7ad9c6",
-      "receipt_sha256": "00f57c4fbe54c02bd76fa9b1f18f18383d72e8bee1a68607f33ed2805b68ee85"
+      "document_count": 491,
+      "uncompressed_bytes": 994175,
+      "gzip_bytes": 68000,
+      "brotli_bytes": 49505,
+      "sha256": "046b0127a6a890b8617422f9f2edf1bcb028f77dd3193f04c011fe897ff2a318",
+      "gzip_sha256": "5cee59aeecb731831adb8fc008a216a6e771c512b5b553d90fcef364d64cdd75",
+      "brotli_sha256": "11f9727ad4ddd6d11c966875f23cd924dbcfe33478e738a0efb623c54f1fc5ea",
+      "receipt_sha256": "5ce2a1b4a36a2aa64693bf723e9f0d5afa19011922340c71aa3ff500adaa84aa"
     },
     {
       "family": "exams",
@@ -148,11 +148,11 @@
       "document_count": 226,
       "uncompressed_bytes": 284363,
       "gzip_bytes": 12161,
-      "brotli_bytes": 8902,
-      "sha256": "7eb38c8eeff3b0fed0945a32e9d523326eedf531c00895c3e1de52248d2e7a16",
-      "gzip_sha256": "f015ba226c4cb9e6e216eae3be2703b40d4db524dc7bc816d8360e4e805a6d77",
-      "brotli_sha256": "b420cf375d90320d718ad87d51269e64e00994147a7ac5c4adec9e77ad6db9cf",
-      "receipt_sha256": "124cab2a7be87a9258d51fa89535be7892987214c7e7d12c02f14863cf4ecf2c"
+      "brotli_bytes": 8898,
+      "sha256": "9818c744bb347c1f773d4e3f3fa531b01360d159bfe4895d0d9ea669147a83a0",
+      "gzip_sha256": "d2e74750d67814daf90d3a8d59b066706959c3a60ddcc2bf87064fd3cad75569",
+      "brotli_sha256": "dd3f07038f336335480b5888fa9115bb2038bbcf0c7ae9899d57fd558bd7d45d",
+      "receipt_sha256": "ff53e5a0c16e64d2263e14893b3dd8e4daa0c0481fc81c58f9fcf9e572221560"
     },
     {
       "family": "parcels",
@@ -163,7 +163,7 @@
       "gzip_bytes": 22575,
       "brotli_bytes": 16943,
       "sha256": "5d88e5a3e87816874d7908b466dcfab10d6af0840d79e983aab2a684e11b9b79",
-      "gzip_sha256": "7ec4f9b432adcd54d23b324c3640209f2a0d5fb879dc5caa99ab0b1983f17629",
+      "gzip_sha256": "60a77a27920e9c272666969f0c5975cd5faed97e81e39d482e259cb3aa072d57",
       "brotli_sha256": "dbf72db6210e2da5617ace9e175b9e5cf57f4e4265006a2fc8781d73919acf5f",
       "receipt_sha256": "2ae60431180d3f5a34582f30e5b4ddfaa895206420ef56e9aad17e2b70d66dbd"
     },
@@ -173,25 +173,25 @@
       "gzip_path": "committees.json.gz",
       "document_count": 98,
       "uncompressed_bytes": 240315,
-      "gzip_bytes": 49797,
-      "brotli_bytes": 48968,
-      "sha256": "51b2051073e67c76534939d2f5a4eb70e4f341ce2d6a936b5cf8d2d16dd72aad",
-      "gzip_sha256": "f20ceaee5a7f906991f6ff7b35a0018acc82b972fd9c46311154f8dc079ab410",
-      "brotli_sha256": "58d6698cd2ed1fe5b96b5361c877faefe2608d03a68301c811185d55c3a68d88",
-      "receipt_sha256": "d5f704df13cdde420f3c32bc0cfaf488d5ef9914ab746c5b5eb3a31cf861e33d"
+      "gzip_bytes": 49795,
+      "brotli_bytes": 48963,
+      "sha256": "d204b1a38492cd2448fcc334d87a12bb20c36c846a162d264f58f020e8807933",
+      "gzip_sha256": "eb2be07714db47c71021671daf9acf3435350d1d80e0bb2bc7d579204afa7345",
+      "brotli_sha256": "4332dce50f3378f0a6e40beaf6e41e6b3c72fbac4713f213e6be4cb07d347990",
+      "receipt_sha256": "7f39c0e8e9cb761005910e27de9647e7fc1dafb35ad3a888a07a44983304ecdd"
     },
     {
       "family": "procurements",
       "path": "procurements.json.br",
       "gzip_path": "procurements.json.gz",
-      "document_count": 19885,
-      "uncompressed_bytes": 62675905,
-      "gzip_bytes": 3381216,
-      "brotli_bytes": 2502936,
-      "sha256": "e2ea252f1ee5e287b29fcf82ac1cd1893050b8f2bb2e073bcc16c275537425e3",
-      "gzip_sha256": "df32670f2d78d2978cdb23f0a25a0d3a3c5a84fcfd6e2e00620eb0c84de40be2",
-      "brotli_sha256": "0c184356f32a6551b9a993413b86f300f9da4b02377d30ea932bceaff0e897bc",
-      "receipt_sha256": "44b4f02f3cef3a07e95013d771abdfd886ff5bb3410c62e576d7f5392cd4a532"
+      "document_count": 19884,
+      "uncompressed_bytes": 62673122,
+      "gzip_bytes": 3380985,
+      "brotli_bytes": 2502477,
+      "sha256": "e1ec442bae8c6c9dfdf59645e6c5d18ac63be17885cf126ac141e753ab33bf4e",
+      "gzip_sha256": "56a90f94484e0b132c9b9dc0500412f6d082f64a97d76683e9271d9b9d7c1137",
+      "brotli_sha256": "01cfad10a28e3cb2b62e57717c3ba8a670b32c45059bbd920f4c3b07ed98fb84",
+      "receipt_sha256": "234cbfd644227677183f38af118fc5ed3aabd2140f393a0e3d07c7feecb1d048"
     }
   ]
 }

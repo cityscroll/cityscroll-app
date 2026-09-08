@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.city_record_meeting_notice_materialization.v1",
-  "generated_at": "2026-09-07T13:15:46.599Z",
-  "as_of": "2026-09-07",
+  "generated_at": "2026-09-08T12:16:25.229Z",
+  "as_of": "2026-09-08",
   "source": {
     "system": "city_record",
     "dataset_id": "dg92-zbpx",

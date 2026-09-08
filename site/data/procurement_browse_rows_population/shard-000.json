@@ -151535,37 +151535,6 @@
       ]
     },
     {
-      "procurement_id": "procurement:contract:CT104320261408506",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104320261408506",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104320261408506:JOHNSON CONTROLS INC:prime-vendor:2025-12-17"
-      ],
-      "start_date": "2025-09-07",
-      "end_date": "2025-12-16",
-      "agency_id": null,
-      "agency_name": "City University Construction Fund",
-      "short_title": "Contract CT104320261408506",
-      "pin": null,
-      "contract_id": "CT104320261408506",
-      "contract_amount": 9197637.19,
-      "vendor_name": "JOHNSON CONTROLS INC",
-      "official_url": null,
-      "selection_method_description": null,
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "City University Construction Fund · JOHNSON CONTROLS INC · $9,197,637.19",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ]
-    },
-    {
       "procurement_id": "procurement:contract:CT104320261408942",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104320261408942",
       "procurement_stages": [
@@ -520116,6 +520085,37 @@
         "registered"
       ],
       "additional_description_1": "Department of Health and Mental Hygiene · ZIPCAR INC · $27.03",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620271403301",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620271403301",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620271403301:NEW YORK STATE INDUSTRIES FOR THE DISABLED INC:prime-vendor:2026-08-28"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2026-10-01",
+      "agency_id": null,
+      "agency_name": "Department of Health and Mental Hygiene",
+      "short_title": "Contract CT181620271403301",
+      "pin": null,
+      "contract_id": "CT181620271403301",
+      "contract_amount": 1154.25,
+      "vendor_name": "NEW YORK STATE INDUSTRIES FOR THE DISABLED INC",
+      "official_url": null,
+      "selection_method_description": null,
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Health and Mental Hygiene · NEW YORK STATE INDUSTRIES FOR THE DISABLED INC · $1,154.25",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [

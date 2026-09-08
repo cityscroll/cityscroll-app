@@ -2,8 +2,8 @@
   "schema": "cityscroll.analytics_performance_evidence.v1",
   "projection_contract": "cityscroll.analytical_projection.v1",
   "fact": "public_performance_evidence_coverage",
-  "generated_at": "2026-09-07T13:02:33.872Z",
-  "snapshot_date": "2026-09-07",
+  "generated_at": "2026-09-08T11:46:02.334Z",
+  "snapshot_date": "2026-09-08",
   "population_definition": "Registered contracts joined to accepted public performance-evidence passages; no located passage remains explicitly unresolved.",
   "source_coverage": [
     {

@@ -27,7 +27,7 @@
       "vintage_field": "generated_at",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 19885,
+      "value": 19884,
       "reason": null
     },
     {
@@ -71,7 +71,7 @@
       "vintage_field": "sources.city_record.generated_at",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 530,
+      "value": 491,
       "reason": null
     },
     {
@@ -82,7 +82,7 @@
       "vintage_field": "generated_at",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 411,
+      "value": 372,
       "reason": null
     },
     {
@@ -234,8 +234,8 @@
       "source_system": "checkbook_contracts",
       "source_contract_id": "checkbook-contracts",
       "registered": true,
-      "served_observations": 9080,
-      "declared_input_rows": 9080,
+      "served_observations": 9078,
+      "declared_input_rows": 9078,
       "specimen": {
         "source_observation_ref": "checkbook_contracts:contract:registered:CT100220261405927:SELECTIVE INSURANCE COMPANY OF AMERICA:prime-vendor:2025-11-12",
         "procurement_id": "procurement:contract:CT100220261405927",
@@ -439,7 +439,7 @@
             "unit_id": "exams",
             "route": "/browse/exams/",
             "served_records": 226,
-            "evidence_vintage": "2026-09-07T00:00:00.000Z"
+            "evidence_vintage": "2026-09-08T00:00:00.000Z"
           }
         ]
       }
@@ -520,7 +520,7 @@
             "unit_id": "registered-contracts",
             "route": "/browse/contracts/",
             "served_records": 26822,
-            "evidence_vintage": "2026-09-07T00:00:00.000Z"
+            "evidence_vintage": "2026-09-08T00:00:00.000Z"
           }
         ]
       }
@@ -621,8 +621,8 @@
           {
             "unit_id": "public-meetings",
             "route": "/browse/meetings/",
-            "served_records": 530,
-            "evidence_vintage": "2026-09-07T13:15:46.599Z"
+            "served_records": 491,
+            "evidence_vintage": "2026-09-08T12:16:25.229Z"
           },
           {
             "unit_id": "properties",
@@ -634,13 +634,13 @@
             "unit_id": "rules",
             "route": "/browse/rules/",
             "served_records": 100,
-            "evidence_vintage": "2026-09-07T13:17:09.974Z"
+            "evidence_vintage": "2026-09-08T12:18:37.211Z"
           },
           {
             "unit_id": "staffing-notices",
             "route": "/browse/staffing/",
             "served_records": 80,
-            "evidence_vintage": "2026-09-06T16:04:24.651Z"
+            "evidence_vintage": "2026-09-08T12:16:53.591Z"
           }
         ]
       }
@@ -980,8 +980,8 @@
           {
             "unit_id": "board-meetings",
             "route": "/browse/meetings/",
-            "served_records": 411,
-            "evidence_vintage": "2026-09-07T13:14:16.382Z"
+            "served_records": 372,
+            "evidence_vintage": "2026-09-08T11:50:29.758Z"
           }
         ]
       }
@@ -1035,7 +1035,7 @@
             "unit_id": "committee-memberships",
             "route": "/browse/people/",
             "served_records": 1143,
-            "evidence_vintage": "2026-09-06T15:47:21.000Z"
+            "evidence_vintage": "2026-09-08T11:42:25.000Z"
           }
         ]
       }
@@ -1051,13 +1051,13 @@
             "unit_id": "officials",
             "route": "/browse/people/",
             "served_records": 215,
-            "evidence_vintage": "2026-09-06T16:04:22.087Z"
+            "evidence_vintage": "2026-09-08T12:16:52.974Z"
           },
           {
             "unit_id": "organizations",
             "route": "/browse/people/",
             "served_records": 1369,
-            "evidence_vintage": "2026-09-06T16:04:22.087Z"
+            "evidence_vintage": "2026-09-08T12:16:52.974Z"
           }
         ]
       }
@@ -1268,7 +1268,7 @@
             "unit_id": "land-hearings",
             "route": "/browse/zoning/",
             "served_records": 169,
-            "evidence_vintage": "2026-09-06T16:04:14.693Z"
+            "evidence_vintage": "2026-09-08T12:16:23.689Z"
           }
         ]
       }
@@ -1297,7 +1297,7 @@
             "unit_id": "land-projects",
             "route": "/browse/zoning/",
             "served_records": 238,
-            "evidence_vintage": "2026-09-06T16:05:05.204Z"
+            "evidence_vintage": "2026-09-08T12:18:17.296Z"
           }
         ]
       }

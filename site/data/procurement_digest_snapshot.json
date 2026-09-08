@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.procurement_digest_snapshot.v1",
-  "generated_at": "2026-09-07T13:02:33.872Z",
-  "row_count": 7195,
+  "generated_at": "2026-09-08T11:46:02.334Z",
+  "row_count": 7194,
   "rows": [
     {
       "procurement_id": "procurement:contract:8000000863",
@@ -125386,41 +125386,6 @@
       "type_of_notice_description": null
     },
     {
-      "procurement_id": "procurement:contract:CT104320261408506",
-      "digest_id": "procurement:contract:CT104320261408506",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104320261408506",
-      "short_title": "Contract CT104320261408506",
-      "agency_name": "City University Construction Fund",
-      "vendor_name": "JOHNSON CONTROLS INC",
-      "contract_amount": 9197637.19,
-      "start_date": "2025-12-17",
-      "pin": null,
-      "contract_id": "CT104320261408506",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104320261408506:checkbook_contracts:contract:registered:CT104320261408506:JOHNSON CONTROLS INC:prime-vendor:2025-12-17:registered",
-          "state": "registered",
-          "effective_at": "2025-12-17",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104320261408506:JOHNSON CONTROLS INC:prime-vendor:2025-12-17",
-          "source_receipt_ref": "materialized:contract:registered:CT104320261408506:JOHNSON CONTROLS INC:prime-vendor:2025-12-17",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104320261408506"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
       "procurement_id": "procurement:contract:CT104320261408942",
       "digest_id": "procurement:contract:CT104320261408942",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104320261408942",
@@ -204276,6 +204241,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT184620268807386",
+      "digest_id": "procurement:contract:CT184620268807386",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268807386",
+      "short_title": "Contract CT184620268807386",
+      "agency_name": "Department of Parks and Recreation",
+      "vendor_name": "Antonio Natale Landscaping Inc",
+      "contract_amount": 2870290,
+      "start_date": "2026-07-21",
+      "pin": "84626B0034001",
+      "contract_id": "CT184620268807386",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT184620268807386:checkbook_contracts:contract:registered:CT184620268807386:ANTONIO NATALE LANDSCAPING INC:prime-vendor:2026-07-21:registered",
+          "state": "registered",
+          "effective_at": "2026-07-21",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT184620268807386:ANTONIO NATALE LANDSCAPING INC:prime-vendor:2026-07-21",
+          "source_receipt_ref": "materialized:contract:registered:CT184620268807386:ANTONIO NATALE LANDSCAPING INC:prime-vendor:2026-07-21",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT184620268807386"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT184620268807392",
       "digest_id": "procurement:contract:CT184620268807392",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268807392",
@@ -211586,41 +211586,6 @@
           "source_receipt_ref": "materialized:contract:85024B0021001:5185838",
           "publisher_state": "Registered",
           "evidence_href": "https://a0333-passportpublic.nyc.gov/contracts.html"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT185020258808049",
-      "digest_id": "procurement:contract:CT185020258808049",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT185020258808049",
-      "short_title": "Contract CT185020258808049",
-      "agency_name": "Department of Design and Construction",
-      "vendor_name": "OHEL CHILDREN'S HOME AND FAMILY SERVICES INC.",
-      "contract_amount": 748358,
-      "start_date": "2025-06-10",
-      "pin": "85025L0037001",
-      "contract_id": "CT185020258808049",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT185020258808049:checkbook_contracts:contract:registered:CT185020258808049:OHEL CHILDREN'S HOME AND FAMILY SERVICES INC.:prime-vendor:2025-06-10:registered",
-          "state": "registered",
-          "effective_at": "2025-06-10",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT185020258808049:OHEL CHILDREN'S HOME AND FAMILY SERVICES INC.:prime-vendor:2025-06-10",
-          "source_receipt_ref": "materialized:contract:registered:CT185020258808049:OHEL CHILDREN'S HOME AND FAMILY SERVICES INC.:prime-vendor:2025-06-10",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT185020258808049"
         }
       ],
       "type_of_notice_description": null

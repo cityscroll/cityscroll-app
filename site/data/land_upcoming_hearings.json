@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-09-06T16:04:14.693Z",
+  "generated_at": "2026-09-08T12:16:23.689Z",
   "sources": [
     "zap-api-dispositions",
     "zap-api-milestones"
@@ -9,7 +9,7 @@
   "materialization": {
     "method": "zap_published_hearing_sweep_v2",
     "mode": "live",
-    "today": "2026-09-06",
+    "today": "2026-09-08",
     "projects_listed": 235,
     "projects_fetched": 234,
     "projects_failed": 1,
@@ -2794,46 +2794,6 @@
       "community_district": "Q14",
       "cc_district": "32",
       "milestone_id": "46ec6068-6ba7-ef11-8a6a-001dd80552a0",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-11-30",
-      "hearing_at": "2026-11-30T05:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-11-30T05:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2024R0289",
-      "project_name": "Arbutus Ave Lot 54_SRD DOS",
-      "public_status": "Filed",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2024R0289",
-      "borough": "Staten Island",
-      "community_district": "R03",
-      "cc_district": null,
-      "milestone_id": "cc8e49a1-395b-ef11-bfe2-001dd809d9d4",
       "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
       "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
       "event_class": "cpc_pre_hearing_review_session",
@@ -6274,6 +6234,46 @@
       "community_district": "Q11",
       "cc_district": "19",
       "milestone_id": "f2e67a3f-d38c-ef11-ac21-001dd80552a0",
+      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "event_class": "cpc_pre_hearing_review_session",
+      "representing": "City Planning Commission",
+      "phase_id": "cpc",
+      "hearing_date": "2026-12-14",
+      "hearing_at": "2026-12-14T05:00:00.000Z",
+      "hearing_location_raw": null,
+      "venue_address": null,
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [],
+      "maps_url": null,
+      "parse_status": "published_date_only",
+      "provenance": {
+        "field": "dcp-reviewmeetingdate",
+        "source": "zap-api-milestones",
+        "value": "2026-12-14T05:00:00.000Z",
+        "title": {
+          "field": "milestonename",
+          "value": "Review Session - Pre-Hearing Review / Post Referral"
+        },
+        "classification": {
+          "method": "exact_published_title_v1",
+          "event_class": "cpc_pre_hearing_review_session"
+        },
+        "derived": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-milestones",
+      "project_id": "2024R0289",
+      "project_name": "Arbutus Ave Lot 54_SRD DOS",
+      "public_status": "Filed",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2024R0289",
+      "borough": "Staten Island",
+      "community_district": "R03",
+      "cc_district": null,
+      "milestone_id": "cc8e49a1-395b-ef11-bfe2-001dd809d9d4",
       "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
       "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
       "event_class": "cpc_pre_hearing_review_session",
