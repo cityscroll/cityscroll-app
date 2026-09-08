@@ -23,6 +23,9 @@ test("an agency to vendor to award trail survives notice forwarding and fresh UR
   assert.deepEqual(reopened, second.state);
   assert.equal(traversalFromHref(traversalBackHref(reopened)).hops.length, 1);
   assert.equal(traversalRestartHref(reopened), agency.href);
+  const duplicate = migrateLegacyUrl(`${second.href}&walk=${copied.searchParams.get("walk")}`);
+  assert.equal(duplicate.target, "/notices/example-award?legacy=unsupported-filter");
+  assert.deepEqual(duplicate.unsupported, ["walk"]);
 });
 
 test("notice forwarding rejects malformed, oversized and unsupported walk payloads", () => {
