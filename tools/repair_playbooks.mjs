@@ -247,7 +247,12 @@ async function freshnessStale(context) {
   const reasons = Array.isArray(before.reason_codes) ? before.reason_codes : [];
   const path = context.freshness.publicationPath(reasons);
   if (!path) {
-    return outcome("judgment", `${subject}: the freshness watchdog is stale for ${reasons.join(", ") || "no recorded reason"}, and no scheduled publication path is registered for that reason, so what should have advanced has to be decided rather than inferred`);
+    // Deliberately not "the path ran and did not advance": there is no path.
+    // The registry states which scheduled jobs publish acquisition receipts,
+    // and a reason with none of them behind it says why rather than naming a
+    // check-only job that would run, succeed, and change nothing.
+    const why = context.freshness.pathAbsentReason?.(reasons) || null;
+    return outcome("judgment", `${subject}: the freshness watchdog is stale for ${reasons.join(", ") || "no recorded reason"}, and no scheduled publication path is registered for that reason${why ? ` — ${why}` : ""}. What should have advanced has to be decided rather than inferred.`);
   }
   const job = await context.schedule.job(path);
   if (!job) {
@@ -314,10 +319,10 @@ export const REPAIR_PLAYBOOKS = Object.freeze([
     monitor: "source-freshness-watchdog",
     failure_class: "freshness-stale",
     budget_ms: 5 * 60 * SECOND,
-    precondition: "a scheduled publication path is registered for the watchdog's reason and its own receipt has not advanced",
+    precondition: "a scheduled publication path that publishes acquisition receipts is registered for the watchdog's reason, and its own receipt has not advanced",
     remedy: "re-run that publication path's scheduled command once",
     verification: "re-run the freshness watchdog for that one source contract",
-    judgment_when: "the publication path ran recently and the evidence still did not advance, or no scheduled path is registered for the reason",
+    judgment_when: "the publication path ran recently and the evidence still did not advance, or no scheduled path is registered for the reason — for which the summary names why there is none rather than reporting a run that never happened",
     run: freshnessStale,
   }),
 ]);

@@ -761,32 +761,116 @@ export function repairJudgmentParagraph(judgment) {
     + ` The queue has parked it and will not keep retrying it today.`;
 }
 
+/** How many subjects a grouped judgment names before it counts the rest. */
+export const REPAIR_JUDGMENT_SUBJECT_LIMIT = 8;
+
 /**
- * One readable alert per repair that reached the judgment boundary. It is a
- * distinct signature from the finding it came from, and its own guard is
- * excluded from the queue, so a failed fix can never queue a repair for its own
- * failure notice.
+ * The guard and failure class a judgment belongs to — the group one mail covers.
+ *
+ * A monitor finding's signature is `monitor:<monitor>:<class>[:<subject>]`, so
+ * the class comes from the signature where there is one and from the item's own
+ * stage otherwise. Grouping on the class rather than the subject is the whole
+ * point: one condition affecting seven sources is one decision for the owner,
+ * not seven identical questions three minutes apart.
+ */
+export function repairJudgmentGroupKey(judgment) {
+  const guard = String(judgment?.guard || "reliability").slice(0, 80);
+  const parts = String(judgment?.signature || "").split(":");
+  const fromSignature = parts[0] === "monitor" && parts.length >= 3 ? parts[2] : "";
+  const failureClass = String(fromSignature || judgment?.stage || "unknown").slice(0, 64);
+  return { guard, failure_class: failureClass, key: `${guard}:${failureClass}` };
+}
+
+/** The subject a judgment is about, where its signature names one. */
+export function repairJudgmentSubject(judgment) {
+  const parts = String(judgment?.signature || "").split(":");
+  if (parts[0] === "monitor" && parts.length === 4) return parts[3];
+  return null;
+}
+
+function subjectList(subjects) {
+  const shown = subjects.slice(0, REPAIR_JUDGMENT_SUBJECT_LIMIT);
+  const rest = subjects.length - shown.length;
+  return `${shown.join(", ")}${rest > 0 ? `, and ${rest} more` : ""}`;
+}
+
+function earliest(values) {
+  return values.filter(Boolean).sort()[0] || null;
+}
+
+function latest(values) {
+  return values.filter(Boolean).sort().at(-1) || null;
+}
+
+/**
+ * The decision the owner has to make when one condition parked several subjects.
+ * It names the class once, lists what it affected, and asks the single question
+ * that covers all of them.
+ */
+export function repairJudgmentGroupParagraph(group, judgments) {
+  const subjects = [...new Set(judgments.map(repairJudgmentSubject).filter(Boolean))].sort();
+  const first = judgments[0];
+  const affected = subjects.length
+    ? `${subjects.length} subject(s): ${subjectList(subjects)}`
+    : `${judgments.length} finding(s)`;
+  const run = first.run_url ? ` Workflow run: ${first.run_url}.` : "";
+  const receipt = first.receipt_url ? ` Raw receipt: ${first.receipt_url}.` : "";
+  const detail = first.result_summary ? ` The attempt reported: ${first.result_summary}.` : "";
+  return `Automatic repair needs your decision for ${group.guard} (${group.failure_class}), affecting ${affected}.`
+    + ` Failing since ${earliest(judgments.map((row) => row.first_seen)) || "an unrecorded time"};`
+    + ` last seen ${latest(judgments.map((row) => row.last_seen)) || "an unrecorded time"}.`
+    + ` Automatic repair did not fix them: ${first.reason}.${detail}${run}${receipt}`
+    + ` Decide whether to repair them by hand or change what the guard expects.`
+    + ` The queue has parked them and will not keep retrying them today.`;
+}
+
+/**
+ * One readable alert per guard and failure class that reached the judgment
+ * boundary in this cycle. It is a distinct signature from the findings it came
+ * from, and its own guard is excluded from the queue, so a failed fix can never
+ * queue a repair for its own failure notice.
+ *
+ * The grouping is the mail's alone. Each subject keeps its own repair item, its
+ * own receipts, and its own recovery, so nothing about what the rail tracks or
+ * closes changes — what changes is that one condition across many subjects asks
+ * the owner once instead of once per subject, every day it lasts.
  */
 export async function emitRepairJudgmentAlerts(env, judgments = [], { now = new Date() } = {}) {
-  const emitted = [];
-  for (const judgment of judgments) {
+  const groups = new Map();
+  for (const judgment of Array.isArray(judgments) ? judgments : []) {
     if (!judgment) continue;
+    const group = repairJudgmentGroupKey(judgment);
+    if (!groups.has(group.key)) groups.set(group.key, { group, members: [] });
+    groups.get(group.key).members.push(judgment);
+  }
+  const emitted = [];
+  for (const { group, members } of groups.values()) {
+    const first = members[0];
+    const single = members.length === 1;
     const alert = await emitOpsAlertOnce(env, {
       guard: REPAIR_JUDGMENT_GUARD,
-      stage: judgment.stage,
-      fingerprint: `repair-judgment:${judgment.signature}`,
-      subject: `CityScroll automatic repair needs a decision: ${judgment.guard}`,
-      findings: [`automatic repair could not fix ${judgment.guard}: ${judgment.finding}`],
-      paragraph: repairJudgmentParagraph(judgment),
-      workflow: judgment.workflow,
-      source_revision: judgment.source_revision,
-      workflow_run_url: judgment.run_url,
-      receipt_url: judgment.receipt_url,
-      first_seen: judgment.first_seen,
+      stage: first.stage,
+      fingerprint: `repair-judgment:${group.guard}:${group.failure_class}`,
+      subject: `CityScroll automatic repair needs a decision: ${group.guard}`,
+      findings: [single
+        ? `automatic repair could not fix ${group.guard}: ${first.finding}`
+        : `automatic repair could not fix ${members.length} ${group.failure_class} finding(s) for ${group.guard}`],
+      paragraph: single ? repairJudgmentParagraph(first) : repairJudgmentGroupParagraph(group, members),
+      workflow: first.workflow,
+      source_revision: first.source_revision,
+      workflow_run_url: first.run_url,
+      receipt_url: first.receipt_url,
+      first_seen: earliest(members.map((row) => row.first_seen)) || first.first_seen,
       last_seen: now.toISOString(),
       now,
     });
-    emitted.push({ signature: judgment.signature, sent: alert.sent, reason: alert.reason });
+    emitted.push({
+      guard: group.guard,
+      failure_class: group.failure_class,
+      signatures: members.map((row) => row.signature),
+      sent: alert.sent,
+      reason: alert.reason,
+    });
   }
   return emitted;
 }

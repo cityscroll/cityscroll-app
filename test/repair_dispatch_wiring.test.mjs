@@ -14,6 +14,8 @@ import { fileURLToPath } from "node:url";
 import { withTempDir, withTempDirSync } from "../tools/lib/with_temp_dir.mjs";
 import {
   EXIT_CODES,
+  ACQUISITION_RECEIPT_PUBLISHERS,
+  FRESHNESS_PATH_ABSENT_REASONS,
   FRESHNESS_PUBLICATION_PATHS,
   REPAIR_RECEIPT_ATTEMPT_LIMIT,
   dispatchRepairItem,
@@ -255,13 +257,37 @@ test("the heartbeat carries what the monitors observed alongside what the repair
 
 test("every freshness reason maps to a scheduled path or to nothing at all", () => {
   // A reason silently absent from this map would read as "no path registered"
-  // for the wrong cause, so the map is stated rather than defaulted.
-  assert.equal(FRESHNESS_PUBLICATION_PATHS["acquisition-missing"], "source-contracts-live");
+  // for the wrong cause, so the map is stated rather than defaulted, and a
+  // reason with no path states why it has none.
+  assert.equal(FRESHNESS_PUBLICATION_PATHS["acquisition-missing"], null);
   assert.equal(FRESHNESS_PUBLICATION_PATHS["monitor-missing"], null);
+  for (const reason of Object.keys(FRESHNESS_PUBLICATION_PATHS)) {
+    if (FRESHNESS_PUBLICATION_PATHS[reason]) continue;
+    assert.ok(FRESHNESS_PATH_ABSENT_REASONS[reason], `${reason} has no path and no stated reason for having none`);
+  }
   const jobs = JSON.parse(readFileSync(join(ROOT, "tools", "external_schedule_jobs.json"), "utf8"));
   for (const path of Object.values(FRESHNESS_PUBLICATION_PATHS)) {
     if (!path) continue;
     assert.ok(jobs.jobs.some((job) => job.id === path), `${path} is not a registered scheduled job`);
+  }
+  for (const path of ACQUISITION_RECEIPT_PUBLISHERS) {
+    assert.ok(jobs.jobs.some((job) => job.id === path), `${path} is not a registered scheduled job`);
+  }
+});
+
+test("an acquisition reason may only name a job that actually publishes an acquisition receipt", () => {
+  // A check receipt proves the publisher still answers; it does not re-acquire
+  // anything. Mapping acquisition-missing at a check-only job made every attempt
+  // land in judgment by construction, once per source, every day.
+  const path = FRESHNESS_PUBLICATION_PATHS["acquisition-missing"];
+  if (path) {
+    assert.ok(
+      ACQUISITION_RECEIPT_PUBLISHERS.includes(path),
+      `${path} does not publish acquisition receipts, so re-running it can never clear acquisition-missing`,
+    );
+  } else {
+    assert.equal(ACQUISITION_RECEIPT_PUBLISHERS.length, 0, "an acquisition publisher is scheduled but no reason maps to it");
+    assert.match(FRESHNESS_PATH_ABSENT_REASONS["acquisition-missing"], /acquisition receipts/);
   }
 });
 

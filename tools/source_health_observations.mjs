@@ -432,18 +432,41 @@ function sortedRuns(items) {
     });
 }
 
-function cadenceDays(contract) {
+/**
+ * How often THIS repository has undertaken to re-acquire a contract's evidence.
+ *
+ * It is read only from an explicit declaration, never inferred from the
+ * publisher's cadence. A publisher that posts daily says how often new material
+ * appears upstream; it says nothing about whether anything here is scheduled to
+ * go and fetch it. Deriving one from the other made `acquisition-missing` fire
+ * for every source with a daily-sounding cadence and no owned acquisition job —
+ * a finding no local remedy could ever clear, because there was no acquisition
+ * to have missed. Publisher-side freshness is judged by the live source-contract
+ * check against `max_stale_days`, which is where it belongs.
+ */
+function acquisitionCadenceDays(contract) {
   const explicit = Number(
     contract?.freshness_contract?.acquisition_cadence_days
     ?? contract?.acquisition_cadence_days,
   );
-  if (Number.isFinite(explicit) && explicit > 0) return explicit;
-  const text = String(contract?.acquisition_cadence || contract?.publisher_cadence || "").toLowerCase();
-  if (/daily|each day|every day/.test(text)) return 1;
-  if (/weekly|each week|every week/.test(text)) return 7;
-  const every = text.match(/every\s+(\d+)\s+days?/);
-  if (every) return Number(every[1]);
-  return null;
+  return Number.isFinite(explicit) && explicit > 0 ? explicit : null;
+}
+
+/**
+ * The clock an explicit acquisition cadence is measured against.
+ *
+ * A contract whose declared basis is `checked_acquired` treats a successful
+ * check as the freshness evidence — the check is what proves the retained copy
+ * still matches the publisher — so the newer of the two clocks is the honest
+ * one. Every other basis is measured against the acquisition clock alone.
+ */
+function acquisitionEvidenceAt(contract, observation) {
+  const acquiredAt = validAt(observation?.acquired_at);
+  if (String(contract?.freshness_contract?.clock_basis || "") !== "checked_acquired") return acquiredAt;
+  const checkedAt = validAt(observation?.checked_at);
+  if (!acquiredAt) return checkedAt;
+  if (!checkedAt) return acquiredAt;
+  return Date.parse(checkedAt) >= Date.parse(acquiredAt) ? checkedAt : acquiredAt;
 }
 
 function missingRunId(sourceId, at) {
@@ -451,9 +474,16 @@ function missingRunId(sourceId, at) {
 }
 
 /**
- * Daily scheduler liveness is deliberately independent from source cadence.
- * A source can be weekly and still require the daily monitor heartbeat to
- * prove that its next acquisition is intentionally not due.
+ * The freshness watchdog, and the two reasons it may report.
+ *
+ * | Reason | Raised when | Not raised when |
+ * | --- | --- | --- |
+ * | `monitor-missing` | the scheduler heartbeat is absent or older than the expected number of slots | unchanged by anything a contract declares — daily scheduler liveness is deliberately independent from source cadence, so a weekly source still requires the daily heartbeat to prove its next acquisition is intentionally not due |
+ * | `acquisition-missing` | the contract declares an explicit owned acquisition cadence (`freshness_contract.acquisition_cadence_days`, or `acquisition_cadence_days`) and the evidence clock it is measured against is older than that cadence | the contract declares no acquisition cadence — publisher cadence prose is never read as one, because publisher-side freshness is judged by the live source-contract check against `max_stale_days` |
+ *
+ * The evidence clock for `acquisition-missing` is `acquired_at`, except where
+ * the contract declares `clock_basis: "checked_acquired"`, in which case it is
+ * the newer of `checked_at` and `acquired_at`.
  */
 export function evaluateFreshnessWatchdog(contract, observation = {}, options = {}) {
   const now = validAt(options.now);
@@ -466,8 +496,8 @@ export function evaluateFreshnessWatchdog(contract, observation = {}, options = 
     reasons.push("monitor-missing");
   }
 
-  const dueDays = cadenceDays(contract);
-  const acquiredAt = validAt(observation?.acquired_at);
+  const dueDays = acquisitionCadenceDays(contract);
+  const acquiredAt = acquisitionEvidenceAt(contract, observation);
   const acquisitionAgeDays = acquiredAt ? (Date.parse(now) - Date.parse(acquiredAt)) / 86_400_000 : Infinity;
   if (dueDays != null && acquisitionAgeDays > dueDays) reasons.push("acquisition-missing");
 
