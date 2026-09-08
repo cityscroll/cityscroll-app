@@ -39,6 +39,7 @@ import {
   monitorRepairFindings,
 } from "./repair_findings.mjs";
 import {
+  STATS_UNPUBLISHED_ISSUE_TITLE,
   STATS_PUBLICATION_ISSUE_MARKER,
   STATS_PUBLICATION_ISSUE_TITLE,
   evaluateStatsPublication,
@@ -79,6 +80,7 @@ function issueIntent(job, run, result, mode, extra = {}) {
     title_aliases: extra.title_aliases || [],
     body_contains: extra.body_contains || [],
     body: issueBody(result, ""),
+    ...(extra.refresh_existing ? { refresh_existing: true } : {}),
   };
   return issue;
 }
@@ -479,8 +481,9 @@ async function runStatsDailySnapshot(job, context) {
   return {
     result,
     issue: issueIntent(job, context.runKey, result, finding.ok ? "close" : "open", {
-      title: STATS_PUBLICATION_ISSUE_TITLE,
-      title_aliases: [STATS_PUBLICATION_ISSUE_TITLE],
+      title: finding.failing_stage === "publisher-not-yet-delivered" ? STATS_UNPUBLISHED_ISSUE_TITLE : STATS_PUBLICATION_ISSUE_TITLE,
+      title_aliases: [STATS_PUBLICATION_ISSUE_TITLE, STATS_UNPUBLISHED_ISSUE_TITLE],
+      refresh_existing: true,
       body_contains: [STATS_PUBLICATION_ISSUE_MARKER],
     }),
   };

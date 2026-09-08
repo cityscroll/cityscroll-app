@@ -120,6 +120,12 @@ export async function applyIssueIntent(github, issue) {
       const created = await github.createIssue({ title: issue.title, body: withMarker(issue.body, issue.marker) });
       return { action: "created", issue_number: created.number };
     }
+    // Some monitors need the current condition on the issue itself, including
+    // corrections to an earlier diagnosis. The event marker makes retries safe.
+    if (issue.refresh_existing && !String(existing.body || "").includes(issue.marker)) {
+      await github.updateIssue(existing.number, { title: issue.title, body: withMarker(issue.body, issue.marker) });
+      return { action: "updated", issue_number: existing.number };
+    }
     // The create request may have succeeded before the network timed out. The
     // marker is stored in the issue body as well as comments so that replay
     // does not turn that ambiguous outcome into a duplicate comment.

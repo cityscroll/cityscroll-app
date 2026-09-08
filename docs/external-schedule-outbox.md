@@ -6,6 +6,20 @@ Each run writes a result under `CROL_EXTERNAL_SCHEDULE_STATE_DIR` and an issue i
 
 The scheduler can be run by launchd or cron. For launchd, set `CROL_EXTERNAL_SCHEDULE_STATE_DIR` and run `tools/install_external_schedule_launchd.sh` on the independent host. The runner also accepts `--job <id>` for a manual rehearsal and `--state-dir <path>` for a disposable test state directory. Its GitHub token is the issue loop's delivery identity: a dedicated account's fine-grained token scoped to Issues read/write on this repository only, and nothing else. It reaches the runner the same way the admin key does, as a path rather than a value: set `GH_TOKEN_FILE` (or `GITHUB_TOKEN_FILE`) to a file holding only the token, owned by the scheduler account and mode 0600 (`umask 177 && printf %s "$GH_TOKEN" > "$GH_TOKEN_FILE"`). `tools/install_external_schedule_launchd.sh` writes that path into the trigger alongside `CITYSCROLL_ADMIN_KEY_FILE`, so no secret is ever written into the plist. Configuring the variable makes the file authoritative for the whole cycle: a file that is absent, empty, unreadable, not a regular file, or readable by more than its owner resolves to no token and is never quietly replaced by an inline `GH_TOKEN`/`GITHUB_TOKEN` export or by an interactive GitHub CLI session on the host, so a misinstalled credential cannot file or close an issue under a person's account. An inline export is honoured only where no file variable is configured at all, which is how a workstation rehearsal still runs. Without a usable token the runner logs one line naming the variable and the failure class and nothing else, the cycle's replay summary carries `status: offline` with that reason, every pending intent keeps its attempt count and stays retryable, and the heartbeat reports `outbox_delivery: "offline"` with the same reason so a backlog is visibly undeliverable rather than merely unattempted. A cycle that did load a token reports `outbox_delivery: "credentialed"`, which states only that: naming a path, or holding a submitted credential, is never evidence that the identity is installed, correct, or accepted, and only a delivery attempt or the read-only checks below can establish that. The same cycle also reports `outbox_delivery_identity` (`app` or `file`) and `outbox_delivery_token_expires_at`, because two cycles can both read `credentialed` while writing under entirely different authorities; the identity kind is what tells them apart, and a moving expiry is what shows an App cycle still refreshing. `LEGISTAR_API_TOKEN` and `CITYSCROLL_ADMIN_KEY` are read from the scheduler environment when the corresponding live probes require them. Each invocation publishes a heartbeat to the private Worker reliability endpoint (override with `CITYSCROLL_SCHEDULER_HEARTBEAT_URL`); the independent hourly check alerts the ops mailbox when the heartbeat expires or the local outbox is non-empty.
 
+The `stats-daily-snapshot-monitor` distinguishes two publication states. With no stored day
+and no verified instant, `publisher-not-yet-delivered` means the daily search-use summary
+has not been published yet: the producing work is the search-usage summary on the Stats page.
+This state has no promised day, missing-days list, or retention-loss count, and creates no
+repair item or judgment email. Its issue uses the same identity as a missed snapshot; replay
+updates the existing title and body to correct an earlier loss diagnosis, without opening a
+duplicate. The ordinary recovery path closes it once publication satisfies the daily promise.
+
+Once a stored day or verified instant exists, an absent promised day remains
+`missing-daily-aggregate` (or `frozen-publisher` when a recent verification claims success).
+The existing grace period, dated gaps, and receipt-retention arithmetic apply in this state,
+and actual failures continue through the repair classification. A verification alone cannot
+prove that the promised dated aggregate exists.
+
 Verification:
 
 ```bash

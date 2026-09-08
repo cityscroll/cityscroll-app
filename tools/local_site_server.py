@@ -15,6 +15,7 @@ import urllib.error
 import urllib.request
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from socketserver import TCPServer
 
 
 READINESS_TIMEOUT_SECONDS = 30.0
@@ -174,6 +175,13 @@ class _RobustThreadingHTTPServer(ThreadingHTTPServer):
     # class attribute so server_bind()/server_activate() apply it at listen()
     # time, rather than after the socket is already listening.
     request_queue_size = 128
+
+    def server_bind(self):
+        # HTTPServer resolves the bind address with getfqdn before serving. A
+        # local preview needs no reverse DNS, and an unavailable resolver can
+        # otherwise delay readiness until its network timeout expires.
+        TCPServer.server_bind(self)
+        self.server_name, self.server_port = self.socket.getsockname()[:2]
 
 
 def port_number(value: str) -> int:

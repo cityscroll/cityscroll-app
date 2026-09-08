@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { spawn } from "node:child_process";
+import { execFileSync, spawn } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { createServer } from "node:http";
 import { tmpdir } from "node:os";
@@ -329,4 +329,37 @@ test("local site server does not publish readiness for an artifact without index
   const exitCode = await new Promise((resolve) => child.once("close", resolve));
   assert.notEqual(exitCode, 0);
   assert.equal(existsSync(ready), false);
+});
+
+
+test("local server becomes ready without waiting for reverse DNS", () => {
+  const result = JSON.parse(execFileSync("python3", ["-c", `
+import functools, json, socket, threading, time
+from unittest.mock import patch
+from tools.local_site_server import QuietHandler, _RobustThreadingHTTPServer, probe_base
+
+def slow_lookup(host):
+    time.sleep(2)
+    return "delayed.example"
+
+with patch.object(socket, "getfqdn", side_effect=slow_lookup) as lookup:
+    started = time.monotonic()
+    server = _RobustThreadingHTTPServer(("127.0.0.1", 0), functools.partial(QuietHandler, directory="site"))
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        probe_base(f"http://127.0.0.1:{server.server_port}/")
+        print(json.dumps({"elapsed": time.monotonic() - started, "lookup_calls": lookup.call_count,
+                          "host": server.server_name, "port": server.server_port,
+                          "bound_port": server.socket.getsockname()[1]}))
+    finally:
+        server.shutdown()
+        thread.join()
+        server.server_close()
+`], { cwd: ROOT, encoding: "utf8", timeout: 10000 }));
+  assert.equal(result.lookup_calls, 0, "startup must not depend on the resolver");
+  assert.ok(result.elapsed < 1, `startup took ${result.elapsed}s`);
+  assert.equal(result.host, "127.0.0.1");
+  assert.ok(result.port > 0);
+  assert.equal(result.port, result.bound_port);
 });

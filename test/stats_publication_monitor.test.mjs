@@ -11,6 +11,7 @@ import test from "node:test";
 import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 import {
+  STATS_UNPUBLISHED_ISSUE_TITLE,
   STATS_PUBLICATION_ISSUE_MARKER,
   STATS_PUBLICATION_ISSUE_TITLE,
   STATS_PUBLICATION_JOB_ID,
@@ -18,6 +19,8 @@ import {
   promisedSnapshotDay,
   statsPublicationIssueBody,
 } from "../tools/stats_publication_monitor.mjs";
+import { applyIssueIntent } from "../tools/external_schedule_outbox.mjs";
+import { monitorRepairFindings } from "../tools/repair_findings.mjs";
 import { runScheduledJob } from "../tools/external_schedule_runner.mjs";
 
 const NOW = "2026-09-06T12:00:00Z";
@@ -204,5 +207,94 @@ test("a missing admin credential is a configuration fault, not a publication fai
     if (inherited !== undefined) process.env.CITYSCROLL_ADMIN_KEY = inherited;
     if (inheritedAlias !== undefined) process.env.ADMIN_KEY = inheritedAlias;
   }
+  });
+});
+
+
+test("no stored day or verified instant means publication has not started", () => {
+  const observation = specimen("unpublished");
+  const finding = evaluateStatsPublication({ now: NOW, observation });
+  assert.equal(finding.failing_stage, "publisher-not-yet-delivered");
+  assert.equal(finding.promised_day, null);
+  assert.equal(Object.hasOwn(finding.evidence, "missing_days"), false);
+  assert.equal(Object.hasOwn(finding.evidence, "unrecoverable_days"), false);
+  assert.deepEqual(finding.notes, []);
+  assert.match(statsPublicationIssueBody(finding), /search-usage summary on the Stats page/);
+  assert.doesNotMatch(JSON.stringify(finding), /missing_days|unrecoverable|cannot be recovered/);
+
+  observation.lineage.newest_day = "2026-09-01";
+  const missing = evaluateStatsPublication({ now: NOW, observation });
+  assert.equal(missing.failing_stage, "missing-daily-aggregate");
+  assert.equal(missing.promised_day, "2026-09-04");
+  assert.deepEqual(missing.evidence.missing_days, ["2026-09-04"]);
+  assert.deepEqual(missing.evidence.unrecoverable_days, ["2026-07-01"]);
+  assert.match(missing.notes.join(" "), /1 day\(s\).*cannot be recovered/);
+
+  observation.lineage.newest_day = null;
+  observation.published.refresh = { state: "fresh", verified_at: NOW };
+  assert.equal(evaluateStatsPublication({ now: NOW, observation }).failing_stage, "frozen-publisher");
+});
+
+test("unpublished runs correct the existing issue once, skip repair, and close on first publication", async () => {
+  await withTempDir("stats-first-publication", async (stateDir) => {
+    const job = { id: STATS_PUBLICATION_JOB_ID, runner: "stats-daily-snapshot", issue_title: STATS_PUBLICATION_ISSUE_TITLE };
+    const inherited = process.env.CITYSCROLL_ADMIN_KEY;
+    process.env.CITYSCROLL_ADMIN_KEY = "specimen-key";
+    const issues = [{ number: 1831, title: STATS_PUBLICATION_ISSUE_TITLE, body: "60 day(s) cannot be recovered", state: "open" }];
+    let updates = 0;
+    const github = {
+      listIssues: async () => issues.filter((issue) => issue.state === "open"),
+      updateIssue: async (number, patch) => { updates++; Object.assign(issues.find((issue) => issue.number === number), patch); },
+      createIssue: async (issue) => { const created = { ...issue, number: 1832, state: "open" }; issues.push(created); return created; },
+      listComments: async () => [],
+      createComment: async () => {},
+    };
+    const run = async (observation, slot) => {
+      const output = await runScheduledJob(job, {
+        stateDir, now: new Date(NOW), runKey: slot,
+        fetchImpl: async (url) => ({ ok: true, json: async () => String(url).includes("/admin/stats")
+          ? { search_usage_lineage: { series: observation.lineage } }
+          : { search_usage: observation.published } }),
+      });
+      const events = readdirSync(join(stateDir, "outbox")).map((name) => JSON.parse(readFileSync(join(stateDir, "outbox", name), "utf8")));
+      return { output, intent: events.find((event) => event.run_key === slot).issue };
+    };
+    try {
+      const first = await run(specimen("unpublished"), "2026-09-06T12-00");
+      assert.equal(first.output.issue.mode, "open");
+      assert.equal(first.intent.title, STATS_UNPUBLISHED_ISSUE_TITLE);
+      assert.ok(first.intent.title_aliases.includes(STATS_PUBLICATION_ISSUE_TITLE));
+      const repairs = monitorRepairFindings(job, first.output);
+      assert.deepEqual(repairs.findings, []);
+      assert.equal(repairs.recovered.length, 1, "prior false repair faults can retire");
+      assert.equal((await applyIssueIntent(github, first.intent)).action, "updated");
+      assert.equal((await applyIssueIntent(github, first.intent)).action, "already-recorded");
+      assert.equal(updates, 1);
+      assert.equal(issues[0].title, STATS_UNPUBLISHED_ISSUE_TITLE);
+      assert.doesNotMatch(issues[0].body, /cannot be recovered|missing_days|Promised day/);
+      const repeated = await run(specimen("unpublished"), "2026-09-06T13-00");
+      await applyIssueIntent(github, repeated.intent);
+      assert.equal(issues.length, 1);
+
+      const recovered = specimen("recovered");
+      const closing = await run(recovered, "2026-09-06T14-00");
+      assert.equal(closing.intent.mode, "close");
+      await applyIssueIntent(github, closing.intent);
+      assert.equal(issues[0].state, "closed");
+
+      const observation = specimen("unpublished");
+      observation.lineage.newest_day = "2026-09-01";
+      const missing = await run(observation, "2026-09-06T15-00");
+      assert.equal(missing.intent.mode, "open");
+      assert.equal(missing.intent.title, STATS_PUBLICATION_ISSUE_TITLE);
+      assert.match(monitorRepairFindings(job, missing.output).findings[0].signature, /:stats-snapshot-missing:missing-daily-aggregate$/);
+      // With no existing issue, the same unpublished intent creates just one.
+      await applyIssueIntent(github, repeated.intent);
+      await applyIssueIntent(github, repeated.intent);
+      assert.equal(issues.filter((issue) => issue.state === "open").length, 1);
+    } finally {
+      if (inherited === undefined) delete process.env.CITYSCROLL_ADMIN_KEY;
+      else process.env.CITYSCROLL_ADMIN_KEY = inherited;
+    }
   });
 });
