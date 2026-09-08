@@ -3,7 +3,7 @@
   "figures": {
     "choose-scope": {
       "locale": "en",
-      "caption": "1. Choose a topic. 2. Choose a borough or Any place; these choices have not saved a watch.",
+      "caption": "1. Choose a topic. 2. Choose a borough or Any place. These choices have not saved a watch.",
       "alt": "Following topic buttons above the borough choices.",
       "mobile": {
         "src": "/media/guide/follow-a-search/choose-scope-mobile.png",
@@ -76,6 +76,239 @@
           "height": 294
         },
         "source_html_sha256": "2883af41f11930d09a0fad1d7006881411fc91a28054e38b8175481c06e14768"
+      },
+      "locales": {
+        "es": {
+          "locale": "es",
+          "caption": "1. Choose a topic. 2. Choose a borough or Any place. These choices have not saved a watch.",
+          "alt": "Following topic buttons above the borough choices.",
+          "mobile": {
+            "src": "/media/guide/follow-a-search/es/choose-scope-mobile.png",
+            "width": 406,
+            "height": 397,
+            "captured_at": "2026-09-08T17:53:46.371933+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/following/?lang=es",
+            "sha256": "1797f85e7cfb4986e670778f1b1884460ebd2e7fd812111b4a3000cfcb8b9fcb",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-following-primary-choice=\"topic\"]",
+                "label": "Contracts and RFPs\nZoning\nProperty\nRules\nAudiencias y reuniones",
+                "y": 108
+              },
+              {
+                "number": 2,
+                "selector": "[data-following-primary-choice=\"place\"]",
+                "label": "Any place\nManhattan\nBrooklyn\nQueens\nBronx\nStaten Island",
+                "y": 341
+              }
+            ],
+            "crop": {
+              "x": 8,
+              "y": 574,
+              "width": 374,
+              "height": 397
+            },
+            "source_html_sha256": "4f8faf92416de71b222d59480d93bd8d7581ccdc59fb08095560ff84d9039385"
+          },
+          "desktop": {
+            "src": "/media/guide/follow-a-search/es/choose-scope-desktop.png",
+            "width": 1072,
+            "height": 294,
+            "captured_at": "2026-09-08T17:53:49.250247+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/following/?lang=es",
+            "sha256": "5ed1ef0079d20626fe691940c4a28df22341419b0b44bca7623a22e0e09a3b8c",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-following-primary-choice=\"topic\"]",
+                "label": "Contracts and RFPs\nZoning\nProperty\nRules\nAudiencias y reuniones",
+                "y": 83
+              },
+              {
+                "number": 2,
+                "selector": "[data-following-primary-choice=\"place\"]",
+                "label": "Any place\nManhattan\nBrooklyn\nQueens\nBronx\nStaten Island",
+                "y": 263
+              }
+            ],
+            "crop": {
+              "x": 200,
+              "y": 568,
+              "width": 1040,
+              "height": 294
+            },
+            "source_html_sha256": "4f8faf92416de71b222d59480d93bd8d7581ccdc59fb08095560ff84d9039385"
+          }
+        },
+        "zh-Hans": {
+          "locale": "zh-Hans",
+          "caption": "1. Choose a topic. 2. Choose a borough or Any place. These choices have not saved a watch.",
+          "alt": "Following topic buttons above the borough choices.",
+          "mobile": {
+            "src": "/media/guide/follow-a-search/zh-Hans/choose-scope-mobile.png",
+            "width": 406,
+            "height": 397,
+            "captured_at": "2026-09-08T17:37:38.310954+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/following/?lang=zh-Hans",
+            "sha256": "0a977343b03fe385aa6499f5b874059d96ddd8b217cd7b3778c560bed80be455",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-following-primary-choice=\"topic\"]",
+                "label": "Contracts and RFPs\nZoning\nProperty\nRules\n\u542c\u8bc1\u4f1a\u548c\u4f1a\u8bae",
+                "y": 108
+              },
+              {
+                "number": 2,
+                "selector": "[data-following-primary-choice=\"place\"]",
+                "label": "Any place\nManhattan\nBrooklyn\nQueens\nBronx\nStaten Island",
+                "y": 341
+              }
+            ],
+            "crop": {
+              "x": 8,
+              "y": 574,
+              "width": 374,
+              "height": 397
+            },
+            "source_html_sha256": "b9ce806172fa81070eae02d708d0dde917227e8127c4fc73b49aaf2e8a3b5302"
+          },
+          "desktop": {
+            "src": "/media/guide/follow-a-search/zh-Hans/choose-scope-desktop.png",
+            "width": 1072,
+            "height": 294,
+            "captured_at": "2026-09-08T17:37:47.188974+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/following/?lang=zh-Hans",
+            "sha256": "92e09c74b25b63586a7115cf359c718c4b00b86ac76c308b55df19f341dde587",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-following-primary-choice=\"topic\"]",
+                "label": "Contracts and RFPs\nZoning\nProperty\nRules\n\u542c\u8bc1\u4f1a\u548c\u4f1a\u8bae",
+                "y": 83
+              },
+              {
+                "number": 2,
+                "selector": "[data-following-primary-choice=\"place\"]",
+                "label": "Any place\nManhattan\nBrooklyn\nQueens\nBronx\nStaten Island",
+                "y": 263
+              }
+            ],
+            "crop": {
+              "x": 200,
+              "y": 568,
+              "width": 1040,
+              "height": 294
+            },
+            "source_html_sha256": "b9ce806172fa81070eae02d708d0dde917227e8127c4fc73b49aaf2e8a3b5302"
+          }
+        },
+        "ar": {
+          "locale": "ar",
+          "caption": "1. Choose a topic. 2. Choose a borough or Any place. These choices have not saved a watch.",
+          "alt": "Following topic buttons above the borough choices.",
+          "mobile": {
+            "src": "/media/guide/follow-a-search/ar/choose-scope-mobile.png",
+            "width": 406,
+            "height": 397,
+            "captured_at": "2026-09-08T18:06:08.108225+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/following/?lang=ar",
+            "sha256": "d21fc4b3a49b4aff119748cad39fc17623497ace0ce5f4d8f55e5ba18932ced0",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-following-primary-choice=\"topic\"]",
+                "label": "Contracts and RFPs\nZoning\nProperty\nRules\n\u062c\u0644\u0633\u0627\u062a \u0627\u0644\u0627\u0633\u062a\u0645\u0627\u0639 \u0648\u0627\u0644\u0627\u062c\u062a\u0645\u0627\u0639\u0627\u062a",
+                "y": 108
+              },
+              {
+                "number": 2,
+                "selector": "[data-following-primary-choice=\"place\"]",
+                "label": "Any place\nManhattan\nBrooklyn\nQueens\nBronx\nStaten Island",
+                "y": 341
+              }
+            ],
+            "crop": {
+              "x": 8,
+              "y": 574,
+              "width": 374,
+              "height": 397
+            },
+            "source_html_sha256": "918e358a15b46f5a64f9f73eeaa840b2b344d0e2dc702910fa9ca957906c60a9"
+          },
+          "desktop": {
+            "src": "/media/guide/follow-a-search/ar/choose-scope-desktop.png",
+            "width": 1072,
+            "height": 294,
+            "captured_at": "2026-09-08T18:06:11.015454+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/following/?lang=ar",
+            "sha256": "7a023809ecc29b729f70507d0411dd5f5292819128ee423e1e738d2f6be0632e",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-following-primary-choice=\"topic\"]",
+                "label": "Contracts and RFPs\nZoning\nProperty\nRules\n\u062c\u0644\u0633\u0627\u062a \u0627\u0644\u0627\u0633\u062a\u0645\u0627\u0639 \u0648\u0627\u0644\u0627\u062c\u062a\u0645\u0627\u0639\u0627\u062a",
+                "y": 83
+              },
+              {
+                "number": 2,
+                "selector": "[data-following-primary-choice=\"place\"]",
+                "label": "Any place\nManhattan\nBrooklyn\nQueens\nBronx\nStaten Island",
+                "y": 263
+              }
+            ],
+            "crop": {
+              "x": 200,
+              "y": 568,
+              "width": 1040,
+              "height": 294
+            },
+            "source_html_sha256": "918e358a15b46f5a64f9f73eeaa840b2b344d0e2dc702910fa9ca957906c60a9"
+          }
+        }
       }
     },
     "create-watch": {
@@ -153,6 +386,239 @@
           "height": 247
         },
         "source_html_sha256": "bd86bfb51d6a5d14d168895a5c9dc0c775ef9e7a1259a6d3ffae0c542c6a2d5d"
+      },
+      "locales": {
+        "es": {
+          "locale": "es",
+          "caption": "1. Enter Email address only when ready. 2. Create watch starts email updates when the request succeeds.",
+          "alt": "Create this watch form with an empty Email address and Create watch button.",
+          "mobile": {
+            "src": "/media/guide/follow-a-search/es/create-watch-mobile.png",
+            "width": 356,
+            "height": 247,
+            "captured_at": "2026-09-08T17:53:47.913058+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/following?lens=meetings&filter=%7B%7D&freq=daily&q=&agency=&council=&boardBorough=Manhattan&boardNumber=7&lang=es",
+            "sha256": "f9aa0889f803758f3fed89bb8d82210ad22b58ee09999ee682960247ffb1db4e",
+            "redactions": [],
+            "data_vintage": "Disposable signed-out Following preview",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-following-subscribe-form] input[type=\"email\"]",
+                "label": "email",
+                "y": 57
+              },
+              {
+                "number": 2,
+                "selector": "[data-following-subscribe-submit]",
+                "label": "Crear seguimiento",
+                "y": 115
+              }
+            ],
+            "crop": {
+              "x": 33,
+              "y": 3017,
+              "width": 324,
+              "height": 247
+            },
+            "source_html_sha256": "630db10ba2b645ce31586c74eaa27caf903a512e602cd1942ea66799e15dbb64"
+          },
+          "desktop": {
+            "src": "/media/guide/follow-a-search/es/create-watch-desktop.png",
+            "width": 329,
+            "height": 247,
+            "captured_at": "2026-09-08T17:53:50.804585+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/following?lens=meetings&filter=%7B%7D&freq=daily&q=&agency=&council=&boardBorough=Manhattan&boardNumber=7&lang=es",
+            "sha256": "b015bf971c96b01858147ff5797fc84bd41f244eaa3443a6eed4b03e85639a9a",
+            "redactions": [],
+            "data_vintage": "Disposable signed-out Following preview",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-following-subscribe-form] input[type=\"email\"]",
+                "label": "email",
+                "y": 57
+              },
+              {
+                "number": 2,
+                "selector": "[data-following-subscribe-submit]",
+                "label": "Crear seguimiento",
+                "y": 115
+              }
+            ],
+            "crop": {
+              "x": 918,
+              "y": 2208,
+              "width": 297,
+              "height": 247
+            },
+            "source_html_sha256": "630db10ba2b645ce31586c74eaa27caf903a512e602cd1942ea66799e15dbb64"
+          }
+        },
+        "zh-Hans": {
+          "locale": "zh-Hans",
+          "caption": "1. Enter Email address only when ready. 2. Create watch starts email updates when the request succeeds.",
+          "alt": "Create this watch form with an empty Email address and Create watch button.",
+          "mobile": {
+            "src": "/media/guide/follow-a-search/zh-Hans/create-watch-mobile.png",
+            "width": 356,
+            "height": 247,
+            "captured_at": "2026-09-08T17:37:39.919856+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/following?lens=meetings&filter=%7B%7D&freq=daily&q=&agency=&council=&boardBorough=Manhattan&boardNumber=7&lang=zh-Hans",
+            "sha256": "cf66d29faec79418d55ae86c5bcfa806e507935bc5e16131a5b95badae260da4",
+            "redactions": [],
+            "data_vintage": "Disposable signed-out Following preview",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-following-subscribe-form] input[type=\"email\"]",
+                "label": "email",
+                "y": 57
+              },
+              {
+                "number": 2,
+                "selector": "[data-following-subscribe-submit]",
+                "label": "\u521b\u5efa\u5173\u6ce8",
+                "y": 115
+              }
+            ],
+            "crop": {
+              "x": 33,
+              "y": 3017,
+              "width": 324,
+              "height": 247
+            },
+            "source_html_sha256": "7db337ec01ff407c4783a4b9b3b4d6dd6a74b367de5fa8af97a2955ba0d25bd4"
+          },
+          "desktop": {
+            "src": "/media/guide/follow-a-search/zh-Hans/create-watch-desktop.png",
+            "width": 329,
+            "height": 248,
+            "captured_at": "2026-09-08T17:37:48.730068+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/following?lens=meetings&filter=%7B%7D&freq=daily&q=&agency=&council=&boardBorough=Manhattan&boardNumber=7&lang=zh-Hans",
+            "sha256": "9ad77dda3fc71e6f44be887aabb6363d1449e94158dc1366adf0c9dae6f933c9",
+            "redactions": [],
+            "data_vintage": "Disposable signed-out Following preview",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-following-subscribe-form] input[type=\"email\"]",
+                "label": "email",
+                "y": 58
+              },
+              {
+                "number": 2,
+                "selector": "[data-following-subscribe-submit]",
+                "label": "\u521b\u5efa\u5173\u6ce8",
+                "y": 116
+              }
+            ],
+            "crop": {
+              "x": 918,
+              "y": 2166,
+              "width": 297,
+              "height": 248
+            },
+            "source_html_sha256": "7db337ec01ff407c4783a4b9b3b4d6dd6a74b367de5fa8af97a2955ba0d25bd4"
+          }
+        },
+        "ar": {
+          "locale": "ar",
+          "caption": "1. Enter Email address only when ready. 2. Create watch starts email updates when the request succeeds.",
+          "alt": "Create this watch form with an empty Email address and Create watch button.",
+          "mobile": {
+            "src": "/media/guide/follow-a-search/ar/create-watch-mobile.png",
+            "width": 356,
+            "height": 247,
+            "captured_at": "2026-09-08T18:06:09.675096+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/following?lens=meetings&filter=%7B%7D&freq=daily&q=&agency=&council=&boardBorough=Manhattan&boardNumber=7&lang=ar",
+            "sha256": "0135731cd37e92cdb0d9fff5a32ef596d283bfe0c2c4c616fb322d779452a24e",
+            "redactions": [],
+            "data_vintage": "Disposable signed-out Following preview",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-following-subscribe-form] input[type=\"email\"]",
+                "label": "email",
+                "y": 57
+              },
+              {
+                "number": 2,
+                "selector": "[data-following-subscribe-submit]",
+                "label": "\u0625\u0646\u0634\u0627\u0621 \u0645\u062a\u0627\u0628\u0639\u0629",
+                "y": 115
+              }
+            ],
+            "crop": {
+              "x": 33,
+              "y": 3017,
+              "width": 324,
+              "height": 247
+            },
+            "source_html_sha256": "2464099abe6163be880b7bec0bcd39fee2bb55519aba819c47c87a27eee07d16"
+          },
+          "desktop": {
+            "src": "/media/guide/follow-a-search/ar/create-watch-desktop.png",
+            "width": 329,
+            "height": 248,
+            "captured_at": "2026-09-08T18:06:12.628874+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/following?lens=meetings&filter=%7B%7D&freq=daily&q=&agency=&council=&boardBorough=Manhattan&boardNumber=7&lang=ar",
+            "sha256": "ed985bf6df1b3f1c369f889fd0ef25a2d42f3b9155ce1fbf45eb8843c8e7d1b1",
+            "redactions": [],
+            "data_vintage": "Disposable signed-out Following preview",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-following-subscribe-form] input[type=\"email\"]",
+                "label": "email",
+                "y": 58
+              },
+              {
+                "number": 2,
+                "selector": "[data-following-subscribe-submit]",
+                "label": "\u0625\u0646\u0634\u0627\u0621 \u0645\u062a\u0627\u0628\u0639\u0629",
+                "y": 116
+              }
+            ],
+            "crop": {
+              "x": 225,
+              "y": 2166,
+              "width": 297,
+              "height": 248
+            },
+            "source_html_sha256": "2464099abe6163be880b7bec0bcd39fee2bb55519aba819c47c87a27eee07d16"
+          }
+        }
       }
     }
   }

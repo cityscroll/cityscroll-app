@@ -168,10 +168,12 @@ rather than by the product:
   controls. Never substitute generated UI or a whole page shrunk to unreadable text.
   The ordinary enlargement links work by keyboard and without JavaScript; browser
   Back returns to the article. Complete text directions remain beside every figure.
-- Captures currently show the English interface and say so in every caption.
-  Translated articles must pair captions with captures of the same UI language;
-  do not silently reuse an English image as a localized screenshot. Localized
-  capture production belongs with the guide translation work.
+- Capture representative board, calendar and collection controls in Spanish,
+  Simplified Chinese and Arabic with `--locale`. Store these product variants in
+  `site/media/guide/<article>/<locale>/` and extend the article receipt's `locales`.
+  Other illustrations explicitly identify the English interface. Their captions
+  translate the explanation while retaining the control labels shown in the image;
+  an English image is never described as a localized capture.
 - Product links use existing routes and anchors, retain their authored task scope,
   and carry the selected language through the optional `site/guide_navigation.mjs`.
   The guide never forwards arbitrary parameters, account tokens or email addresses.
@@ -189,3 +191,39 @@ body, excluding navigation and link destinations. Count the total body separatel
 so hiding prose in disclosures cannot stand in for shortening it. Guide tests check
 steps, action results and consequential distinctions, with no prose or checkpoint
 minimum.
+
+## Language parity
+
+The shipping registry in `site/i18n.js` owns guide language coverage. English stays
+at `/guide/`; other languages have static `/guide/<locale>/` documents. Pages
+redirects an explicit `?lang=` to the matching document before JavaScript runs.
+Language links work without script, and optional navigation enhancement preserves
+saved preferences, product scope and browser Back.
+
+The guide uses the product's existing `STRINGS` dictionaries and
+`site/i18n/glossary.json`. `tools/guide_translation_catalog.mjs` extracts complete
+source segments, protects URLs and official identifiers, and binds named controls
+to product dictionary keys. It refuses missing translations, copied English prose
+and changed placeholders. Localized metadata retains complete meaning within
+language-aware length bounds; English keeps the existing 120–160-character rule.
+
+Extract drafts with `node tools/build_guide_documents.mjs --extract`. Import a
+reviewed locale draft through `tools/import_guide_translations.mjs --units <json>
+--draft <json>`; add `--write` after validation. Draft JSON maps extracted keys to
+translations and records unresolved rejections. Import rejects unresolved entries
+and writes into the existing dictionary blocks, so the normal i18n key, glossary,
+placeholder, reference and fallback checks cover the guide too.
+
+Rebuild with `node tools/build_guide_documents.mjs`. Its committed
+[`coverage matrix`](evidence/guide-language/coverage.json) contains one row per
+article and shipping locale. A missing or unchanged English paragraph is incomplete;
+protected identifiers and bound control labels are tracked as intentional source
+content. The complete rendered sweep is `python3 tools/capture_guide_languages.py`.
+It checks every page without JavaScript at phone and desktop widths, then exercises
+Spanish, Chinese and Arabic contextual-help and return journeys.
+
+Source segments change keys when their wording changes. Article sources, UI
+catalogs and glossary changes also enter the existing guide review dependency
+report. Neither importing drafts nor passing machine checks updates `last_reviewed`
+or `I18N_PROVENANCE`. Machine-drafted locales retain their resident-facing disclosure
+until an editor records review through the existing process.

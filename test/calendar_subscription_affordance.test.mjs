@@ -83,7 +83,7 @@ test("Browse renders a subscription sibling only for eligible dated rows", () =>
     }],
   }, new URLSearchParams("agency=City%20Planning"));
   const html = renderBrowseView(eligible);
-  assert.match(html, /class="calendar-subscribe-btn"[^>]+aria-label="Subscribe to calendar for this scope"/);
+  assert.match(html, /class="calendar-subscribe-btn"[^>]+aria-label="Subscribe to calendar"/);
   assert.match(html, />Subscribe to calendar<\/a>/);
   assert.doesNotMatch(html, /ui-object-card-action-rail|What can I do now/);
 

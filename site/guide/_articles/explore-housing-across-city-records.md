@@ -36,7 +36,7 @@ sources:
 ## Step 1 — Search for housing
 
 Open the [CityScroll front page](/), type **housing** in the search box and press **Search**.
-Search needs JavaScript switched on; no account or email address is needed.
+Search needs JavaScript switched on. No account or email address is needed.
 The results page shows your word and groups such as **Contracts**, **People + organizations**,
 **Land**, **Rules**, **Meetings**, and **Exams**. Counts vary with the published records.
 
@@ -76,4 +76,4 @@ The [glossary](/guide/reference/glossary/) explains unfamiliar record types with
 ## When a source cannot load
 
 A failed source is unknown, not a group with no records. Reload the search or use the record's
-official link; an empty group alone does not establish that nothing happened.
+official link. An empty group alone does not establish that nothing happened.

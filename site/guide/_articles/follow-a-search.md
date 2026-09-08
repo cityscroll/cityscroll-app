@@ -23,7 +23,7 @@ sources:
 Open [Following](/following/) with JavaScript switched on. Under **What do you want to follow?**,
 choose a topic such as **Contracts and RFPs**. Under **Where?**, choose a borough or **Any place**.
 Open **Narrow it down** to add a keyword or agency. The selected choices describe an unsaved watch.
-No account or password is needed; this is separate from the city's own account system.
+No account or password is needed. This is separate from the city's own account system.
 
 ::: figure choose-scope
 
@@ -35,17 +35,16 @@ nothing is saved and no email is sent. Change a choice and press **Update matche
 
 The message **No matches now — still watch for new** means the loaded preview is empty. You can save a watch
 for future records, or widen a criterion and preview again. If the preview is **not ready**, use
-its retry control; the current matches are unknown.
+its retry control. The current matches are unknown.
 
 ## Step 3 — Create the watch
 
 Under **Email frequency**, choose **Daily** (on days with matches) or **Weekly** (Monday digest).
 Under **Create this watch**, enter **Email address** and press **Create watch**.
-The watch exists as soon as the request succeeds; there is no confirmation email to click.
+The watch exists as soon as the request succeeds. There is no confirmation email to click.
 
 Check for **You're subscribed — we'll email you. Manage or unsubscribe anytime.**
-Keep the welcome email's manage link. If the page reports an error, use its retry instruction;
-an error does not confirm enrollment.
+Keep the welcome email's manage link. If the page reports an error, use its retry instruction. An error does not confirm enrollment.
 
 ::: figure create-watch
 
@@ -60,6 +59,6 @@ immediately, so use it only when that is what you want.
 
 Under **Your watches**, an unrecognized browser asks you to open a CityScroll email.
 Use that email's manage link. A link reported as **invalid or expired** needs replacing with the
-link in a recent email. If saved watches cannot load, use the offered retry; that failure does
+link in a recent email. If saved watches cannot load, use the offered retry. That failure does
 not mean they were deleted. A watch link reported as unrecognized has saved nothing: choose
 a topic on Following and start again.

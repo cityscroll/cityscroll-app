@@ -22,7 +22,7 @@ sources:
 ## Step 1 — Choose the dates
 
 Open [Now](/now/) with JavaScript switched on. No account or email address is needed.
-**Act by** lists action deadlines; **Happening soon** lists events. Read the row's date and
+**Act by** lists action deadlines. **Happening soon** lists events. Read the row's date and
 open its title to check the published record before saving it.
 
 ## Step 2 — Save one event
@@ -32,11 +32,11 @@ when the record has a clock time. Open the downloaded file in your calendar app 
 event's title, date and time.
 
 This is a one-time copy: it will not update if the event changes. If only a day is published,
-the control is absent; CityScroll does not invent a time. For a continuing list, use the next step.
+the control is absent. CityScroll supplies no clock time for a date-only event. For a continuing list, use the next step.
 
 ## Step 3 — Open a calendar subscription
 
-Open [Meetings](/browse/meetings/). Enter a topic in **Search**; open **More filters** to choose
+Open [Meetings](/browse/meetings/). Enter a topic in **Search**. Open **More filters** to choose
 **Date window** or **Affected area**. Then choose **Subscribe to calendar** in the toolbar above the records. The control appears only when
 the list contains dated items. If absent, widen the filters until dated records appear.
 The panel names the list you are about to subscribe to.
@@ -47,14 +47,13 @@ The panel names the list you are about to subscribe to.
 
 In that panel, choose the route your app supports:
 
-- **Open calendar subscription** opens your device's calendar app. Add the subscription there;
-  in Apple Calendar, set its **Auto-refresh** frequency.
+- **Open calendar subscription** opens your device's calendar app. Add the subscription there. In Apple Calendar, set its **Auto-refresh** frequency.
 - **Copy subscription URL** copies an address. In Google Calendar, paste it under
-  **Other calendars → From URL**; in Outlook, use **Add calendar → Subscribe from web**.
+  **Other calendars → From URL**. In Outlook, use **Add calendar → Subscribe from web**.
 
 Check in your calendar app that it lists a subscribed calendar and displays the expected dates.
 CityScroll cannot confirm that a subscription was added or refreshed. Importing a downloaded file
-is a one-time copy; only a URL your calendar keeps fetching is a subscription.
+is a one-time copy. Only a URL your calendar keeps fetching is a subscription.
 
 Subscriptions keep date-only deadlines as all-day entries and mark cancelled events as cancelled.
 Updates follow your calendar app's refresh schedule. Check the official record for last-minute changes.

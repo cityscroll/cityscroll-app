@@ -30,6 +30,8 @@ import {
   guideSourceCoverageTable,
 } from "../site/guide_source_coverage.mjs";
 import { renderGuideArticle, renderGuideHome, GUIDE_HOME_URL } from "../site/guide_view.mjs";
+import { loadGuideCatalog, guideTranslator, markGuideSourceLanguage, guideUnitIsSourceOnly } from "./guide_translation_catalog.mjs";
+import { guideDocumentHref } from "../site/guide_navigation.mjs";
 import { ROUTE_INVENTORY } from "./pages_route_parity.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -103,14 +105,14 @@ function byReadingOrder(left, right) {
   return left.id.localeCompare(right.id);
 }
 
-export function loadGuide() {
-  const home = parseGuideHome("site/guide/_home.md", readFileSync(HOME_SOURCE, "utf8"));
+export function loadGuide({ translate = value => value, locale = "en" } = {}) {
+  const home = parseGuideHome("site/guide/_home.md", readFileSync(HOME_SOURCE, "utf8"), { translate });
   const includes = generatedTables();
   const articles = readdirSync(ARTICLE_DIR)
     .filter((name) => name.endsWith(".md"))
     .sort()
     .map((name) => parseGuideArticle(`site/guide/_articles/${name}`, readFileSync(join(ARTICLE_DIR, name), "utf8"), {
-      ...includes, figures: loadGuideFigures(name.replace(/\.md$/, "")),
+      ...includes, translate, figures: loadGuideFigures(name.replace(/\.md$/, ""), locale),
     }))
     .sort(byReadingOrder);
 
@@ -121,21 +123,34 @@ export function loadGuide() {
       seen.set(key, article);
     }
   }
+  const languages = loadGuideCatalog().SHIPPING_LANGS;
+  for (const article of articles) {
+    article.depends_on = [...new Set([...article.depends_on,
+      `site/guide/_articles/${article.url.split("/").filter(Boolean).at(-1)}.md`,
+      "site/guide/_home.md", "site/i18n.js", "site/i18n/glossary.json", "tools/guide_translation_catalog.mjs",
+      ...languages.map(language => `site/i18n/lang/${language}.js`),
+    ])];
+  }
   return { home, articles };
 }
 
 /** Validate actual PNG bytes against the per-article public capture receipt. */
-export function loadGuideFigures(slug) {
+export function loadGuideFigures(slug, locale = "en") {
   const path = join(SITE, "media", "guide", slug, "receipt.json");
   if (!existsSync(path)) return {};
   const receipt = JSON.parse(readFileSync(path, "utf8"));
   if (receipt.schema !== "cityscroll.guide-captures.v1" || !receipt.figures) {
     throw new GuideSourceError(`invalid guide capture receipt: ${slug}`);
   }
-  for (const [id, figure] of Object.entries(receipt.figures)) {
+  const languages = loadGuideCatalog().LANG_META;
+  const figures = Object.fromEntries(Object.entries(receipt.figures).map(([id, figure]) => {
+    const selected = figure.locales?.[locale] || figure;
+    return [id, {...selected, localeLabel: languages[selected.locale]?.label}];
+  }));
+  for (const [id, figure] of Object.entries(figures)) {
     for (const variant of ["mobile", "desktop"]) {
       const asset = figure[variant];
-      if (!asset || !new RegExp(`^/media/guide/${slug}/[a-z0-9-]+\\.png$`).test(asset.src)) {
+      if (!asset || !new RegExp(`^/media/guide/${slug}/(?:[a-z]{2}/|zh-Hans/)?[a-z0-9-]+\\.png$`).test(asset.src)) {
         throw new GuideSourceError(`${slug}/${id}: invalid ${variant} asset path`);
       }
       const bytes = readFileSync(join(SITE, asset.src));
@@ -151,7 +166,7 @@ export function loadGuideFigures(slug) {
       }
     }
   }
-  return receipt.figures;
+  return figures;
 }
 
 function documentPathFor(route) {
@@ -238,32 +253,110 @@ export function internalLinkFailures(documents, articles) {
   return failures;
 }
 
-export function renderGuideDocuments() {
-  const { home, articles } = loadGuide();
+/** Extract the exact sentence templates used by the renderer, for catalog drafting. */
+export function guideTranslationUnits(catalog = loadGuideCatalog()) {
+  const translate = guideTranslator(catalog);
+  const { home, articles } = loadGuide({ translate });
+  renderGuideHome(home, articles, { translate });
+  for (const article of articles) renderGuideArticle(article, { translate });
+  return translate.units;
+}
+
+function languageLinks(route, locale, catalog, locales) {
+  return `<nav class="guide-languages" aria-label="${catalog.STRINGS[locale].lang_switcher_label}">` +
+    locales.map(lang => {
+      const href = guideDocumentHref(route, lang) + (lang === 'en' ? '?lang=en' : '');
+      return `<a href="${href}" lang="${lang}" hreflang="${lang}" dir="${catalog.LANG_META[lang].dir}" data-guide-language="${lang}"${lang === locale ? ' aria-current="true"' : ''}>${catalog.LANG_META[lang].label}</a>`;
+    }).join('') + '</nav>';
+}
+
+function localizedDocument(html, route, locale, catalog, units, locales) {
+  const rewritten = html.replace(/href="(\/(?!\/)[^"]*)"/g, (whole, href) => {
+    if (href.startsWith('/media/') || href.startsWith('/guide.css') || !href.includes('/')) return whole;
+    if (href.startsWith('/guide/')) return `href="${guideDocumentHref(href, locale)}"`;
+    if (locale === 'en' || /\.(?:css|js|mjs)(?:\?|$)/.test(href)) return whole;
+    const target = new URL(href.replaceAll('&amp;', '&'), 'https://cityscroll.org');
+    target.searchParams.set('lang', locale);
+    return `href="${(target.pathname + target.search + target.hash).replaceAll('&', '&amp;')}"`;
+  });
+  const notice = locale === 'en' ? '' : `<p class="guide-notice" data-guide-translation-state="${catalog.I18N_PROVENANCE[locale].state}">${catalog.STRINGS[locale].mt_disclaimer}</p>`;
+  const result = rewritten.replace('<main ', languageLinks(route, locale, catalog, locales) + '\n<main ')
+    .replace('  <header class="node-hero', notice + '\n  <header class="node-hero')
+    .replace(`href="https://cityscroll.org${route}"`, `href="https://cityscroll.org${guideDocumentHref(route, locale)}"`);
+  return locale === 'en' ? result : markGuideSourceLanguage(result, units);
+}
+
+export function renderGuideDocuments({ catalog = loadGuideCatalog(), locales = ['en', ...catalog.SHIPPING_LANGS] } = {}) {
   const documents = new Map();
-  documents.set(join(SITE, "guide/index.html"), renderGuideHome(home, articles));
-  for (const article of articles) {
-    documents.set(outputPathFor(article.url), renderGuideArticle(article));
+  const allArticles = [];
+  for (const locale of locales) {
+    const translate = guideTranslator(catalog, locale);
+    const { home, articles } = loadGuide({ translate, locale });
+    const options = { translate, locale, dir: catalog.LANG_META[locale].dir };
+    for (const [route, html] of [[GUIDE_HOME_URL, renderGuideHome(home, articles, options)],
+      ...articles.map(article => [article.url, renderGuideArticle(article, options)])]) {
+      documents.set(outputPathFor(guideDocumentHref(route, locale)), localizedDocument(html, route, locale, catalog, translate.units, locales));
+    }
+    allArticles.push({ url: guideDocumentHref(GUIDE_HOME_URL, locale) });
+    allArticles.push(...articles.map(article => ({ ...article, url: guideDocumentHref(article.url, locale) })));
   }
   const failures = internalLinkFailures(
-    [...documents].map(([path, html]) => [path.slice(ROOT.length + 1), html]),
-    articles,
+    [...documents].map(([path, html]) => [path.slice(ROOT.length + 1), html]), allArticles,
   );
   if (failures.length) throw new GuideSourceError(failures.join("\n"));
   return documents;
 }
 
+/** Per-document completeness uses the same strict translator as the build. */
+export function guideCoverageMatrix(catalog = loadGuideCatalog()) {
+  const rows = [];
+  const tables = generatedTables();
+  for (const locale of ['en', ...catalog.SHIPPING_LANGS]) {
+    for (const name of readdirSync(ARTICLE_DIR).filter(name => name.endsWith('.md')).sort()) {
+      const translate = guideTranslator(catalog, locale);
+      const source = readFileSync(join(ARTICLE_DIR, name), 'utf8');
+      let article, failure = null;
+      try {
+        article = parseGuideArticle(`site/guide/_articles/${name}`, source, {
+          ...tables, translate, figures: loadGuideFigures(name.replace(/\.md$/, ''), locale),
+        });
+        renderGuideArticle(article, {translate, locale, dir: catalog.LANG_META[locale].dir});
+      } catch (error) { failure = error.message; }
+      const units = [...translate.units.values()];
+      rows.push({article: name.replace(/\.md$/, ''), locale,
+        status: failure ? 'incomplete' : 'complete',
+        source_sha256: createHash('sha256').update(source).digest('hex'),
+        required_segments: units.filter(unit => !guideUnitIsSourceOnly(unit)).length,
+        intentional_source_segments: units.filter(guideUnitIsSourceOnly).length,
+        ...(failure ? {failure} : {}),
+      });
+    }
+  }
+  return {schema: 'cityscroll.guide-language-coverage.v1',
+    rule: 'Every paragraph, heading, list item, table cell, caption, alt text and navigation label must resolve in the product dictionary. Missing or copied English prose is incomplete. Bound UI controls, official names, identifiers, dates and URLs are intentional source content.',
+    editorial_review: 'Machine checks do not advance article dates or locale editorial provenance.', rows};
+}
+
 function main(argv) {
+  if (argv.includes('--extract')) {
+    process.stdout.write(JSON.stringify([...guideTranslationUnits().values()], null, 2) + '\n');
+    return 0;
+  }
   const check = argv.includes("--check");
   let documents;
   try {
     documents = renderGuideDocuments();
+    const coverage = guideCoverageMatrix();
+    const incomplete = coverage.rows.filter(row => row.status !== 'complete');
+    if (incomplete.length) throw new GuideSourceError(`${incomplete.length} incomplete article-language pairs`);
+    documents.set(join(ROOT, 'docs/evidence/guide-language/coverage.json'), JSON.stringify(coverage, null, 2) + '\n');
   } catch (error) {
     if (!(error instanceof GuideSourceError) && !(error instanceof GuideSourceCoverageError)) throw error;
     console.error(error.message);
     return 1;
   }
 
+  const pageCount = [...documents.keys()].filter(path => path.endsWith(".html")).length;
   const stale = [];
   for (const [path, html] of documents) {
     const current = existsSync(path) ? readFileSync(path, "utf8") : null;
@@ -280,10 +373,10 @@ function main(argv) {
       console.error("Run: node tools/build_guide_documents.mjs");
       return 1;
     }
-    console.log(`Guide documents ok (${documents.size} pages)`);
+    console.log(`Guide documents ok (${pageCount} pages; coverage current)`);
     return 0;
   }
-  console.log(stale.length ? `wrote ${stale.join(", ")}` : `Guide documents unchanged (${documents.size} pages)`);
+  console.log(stale.length ? `wrote ${stale.join(", ")}` : `Guide documents unchanged (${pageCount} pages; coverage current)`);
   return 0;
 }
 

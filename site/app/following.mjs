@@ -23,7 +23,7 @@ import {
 } from "../rum_stateful_instrumentation.mjs";
 
 const root = document.querySelector("[data-following-root]");
-const msg = (name) => root?.dataset[name] || "";
+const msg = (name) => name === "msgSubmitReady" && window.t ? window.t("following_subscribed") : root?.dataset[name] || "";
 const followingRum = createFollowingRumInstrumentation({
   rum: runtimeRumSemanticMilestones(),
 });
@@ -248,6 +248,7 @@ function wireRefineLive() {
   syncCouncilFieldVisibility(form);
   syncCommunityBoardFieldVisibility(form);
   updateRuleLine();
+  window.applyStrings?.();
 }
 
 function watchCountFromPersonal() {
@@ -497,11 +498,17 @@ function adoptFollowingDocument(html) {
     currentForm.replaceWith(nextForm);
     nextForm.addEventListener("submit", preview);
   }
+  root.querySelectorAll('a[data-following-scope-axis]').forEach(link => {
+    const url = new URL(link.href);
+    if (window.LANG) url.searchParams.set("lang", window.LANG);
+    link.href = url.href;
+  });
   installFilterChipNavigation(root);
   wireSubscribe();
   wireRefineLive();
   duplicateWarning();
   updateRuleLine();
+  window.applyStrings?.();
 }
 
 function wirePersonalForms() {
@@ -581,9 +588,11 @@ async function preview(event) {
   try {
     const url = new URL(form.action);
     url.search = new URLSearchParams(new FormData(form)).toString();
+    if (window.LANG && window.LANG !== "en") url.searchParams.set("lang", window.LANG);
     const response = await fetch(url, { headers: { Accept: "text/html" } });
     if (!response.ok) throw new Error("preview");
     adoptFollowingDocument(await response.text());
+    window.applyStrings?.();
     if (url.origin === location.origin) history.replaceState({}, "", `${url.pathname}${url.search}`);
     root.querySelector("[data-following-preview-status]")?.replaceChildren(msg("msgPreviewReady"));
   } catch {
@@ -659,6 +668,7 @@ async function restoreFromLocation() {
     const response = await fetch(`${location.pathname}${location.search}`, { headers: { Accept: "text/html" } });
     if (!response.ok) return;
     adoptFollowingDocument(await response.text());
+    window.applyStrings?.();
     wireTabs(requestedTab("create"), { reset: true });
   } catch {
     /* current document remains the last honest state */
@@ -666,6 +676,11 @@ async function restoreFromLocation() {
 }
 
 if (root) {
+  root.querySelectorAll('a[data-following-scope-axis]').forEach(link => {
+    const url = new URL(link.href);
+    if (window.LANG) url.searchParams.set("lang", window.LANG);
+    link.href = url.href;
+  });
   installFilterChipNavigation(root);
   wireTabs("create");
   root.querySelector("[data-following-preview-form]")?.addEventListener("submit", preview);
@@ -680,3 +695,5 @@ if (root) {
   });
   loadPersonal();
 }
+
+window.initSubpageLangSwitcher?.();

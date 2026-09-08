@@ -20,8 +20,7 @@ sources:
 
 ## Step 1 — Open a connection's details
 
-Open [Parks and Recreation](/agencies/parks-and-recreation/) with JavaScript switched on;
-no account is needed. Under **Connected records**, choose **details** beside a record's title
+Open [Parks and Recreation](/agencies/parks-and-recreation/) with JavaScript switched on. No account is needed. Under **Connected records**, choose **details** beside a record's title
 (announced as **View connection details** by a screen reader).
 A **Connection evidence** panel opens for that record.
 
@@ -55,4 +54,4 @@ it supports.
 Some contract connections have no separate notice source. Open the linked record title in the
 panel and use that record's own source link. Missing source evidence is not proof of no relationship.
 If a copied address opens no panel, return to **Connected records** and use **details** to select
-a connection currently on the page. Without JavaScript, read the records directly; the panel is unavailable.
+a connection currently on the page. Without JavaScript, read the records directly. The panel is unavailable.

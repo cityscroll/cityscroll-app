@@ -41,10 +41,9 @@ Definitions, controls, and coverage to look up while you work.
 ## About this guide
 
 Every article carries the date an editor last checked it against the live site. That date is written
-by hand after the check; it does not move when the site is rebuilt.
+by hand after the check. It does not move when the site is rebuilt.
 
-These pages are published in English first. The rest of CityScroll offers other languages, and guide
-articles will follow through the site's usual translation process — until then, treat what you read
-here as the English version.
+Choose a language to read the guide. Translations use the same control names as the rest of
+CityScroll. Official names, identifiers and quoted source text keep their original language.
 
 Something here wrong or missing? The [feedback form on the About page](/about.html) reaches the people who maintain it, and needs no account.

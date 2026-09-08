@@ -152,14 +152,14 @@
   border-collapse: collapse;
   font-size: 1rem;
   line-height: 1.55;
-  text-align: left;
+  text-align: start;
 }
 
 .guide-document .guide-body caption {
   margin-bottom: var(--space-3);
   color: var(--color-text-soft);
   font-size: .9375rem;
-  text-align: left;
+  text-align: start;
 }
 
 .guide-document .guide-body th,
@@ -241,3 +241,19 @@
   .guide-figure .guide-enlarge-mobile { display: block; }
   .guide-figure .guide-enlarge-desktop { display: none; }
 }
+
+.guide-languages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1rem;
+  max-width: var(--measure, 72rem);
+  margin: 1rem auto;
+  padding-inline: 1rem;
+  font-family: var(--font-interface);
+}
+.guide-languages a { min-height: 24px; overflow-wrap: anywhere; }
+.guide-languages [aria-current] { font-weight: 700; text-decoration-thickness: 3px; }
+.guide-document { min-width: 0; overflow-wrap: anywhere; }
+.guide-document bdi { unicode-bidi: isolate; }
+html[lang="ur"] .guide-document { line-height: 1.9; }
+html[lang="ar"] .guide-document, html[lang="bn"] .guide-document { line-height: 1.8; }

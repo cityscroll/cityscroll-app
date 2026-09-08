@@ -99,7 +99,7 @@ test("Following create flow presents preview-first CTA text", () => {
   assert.match(html, /data-following-journey="choose"/);
   assert.doesNotMatch(html, /data-following-subscribe-form/);
   assert.match(html, /class="following-refinements"/);
-  assert.match(html, /<summary>Narrow it down<\/summary>/);
+  assert.match(html, /<summary[^>]*>Narrow it down<\/summary>/);
 });
 
 test("Following requested flow keeps one rule sentence and no confirmation step", () => {
@@ -127,7 +127,7 @@ test("Following requested watch surface exposes create-watch submit state with s
     matchCount: 7,
   }, templates));
 
-  assert.match(requestedHtml, /<h2 id="following-subscribe-heading">Create this watch<\/h2>/);
+  assert.match(requestedHtml, /<h2 id="following-subscribe-heading"[^>]*>Create this watch<\/h2>/);
   assert.match(requestedHtml, /<form[^>]+method="post"[^>]+data-following-subscribe-form/);
   assert.match(requestedHtml, /name="freq" value="daily"/);
   assert.match(requestedHtml, /name="email"/);

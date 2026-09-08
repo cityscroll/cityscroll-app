@@ -76,11 +76,244 @@
           "height": 238
         },
         "source_html_sha256": "bb281289acf3518ead3769c82ecd5e0be7296c724ebd3cb3247293c55ce277d6"
+      },
+      "locales": {
+        "es": {
+          "locale": "es",
+          "caption": "1. Set As of to 1 June 2024. 2. Apply filters the linked records by that day.",
+          "alt": "As of day panel with date field filled and Apply beside it.",
+          "mobile": {
+            "src": "/media/guide/look-at-records-as-of-a-day/es/date-field-mobile.png",
+            "width": 406,
+            "height": 353,
+            "captured_at": "2026-09-08T18:37:51.938676+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/agencies/parks-and-recreation/?lang=es",
+            "sha256": "5f330b5e7c892ebd0b5ca02e0d097c728f5189d1b5278d8770d8f4fa2a05cd8b",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#ctl-as-of",
+                "label": "as_of",
+                "y": 145
+              },
+              {
+                "number": 2,
+                "selector": "[data-ctl-form] button",
+                "label": "Aplicar",
+                "y": 195
+              }
+            ],
+            "crop": {
+              "x": 8,
+              "y": 37139,
+              "width": 374,
+              "height": 353
+            },
+            "source_html_sha256": "2dacef265c2f37bec269fbc3755c07a1488d00b8740fc67b89871debb9c009a8"
+          },
+          "desktop": {
+            "src": "/media/guide/look-at-records-as-of-a-day/es/date-field-desktop.png",
+            "width": 749,
+            "height": 238,
+            "captured_at": "2026-09-08T18:37:54.465324+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/agencies/parks-and-recreation/?lang=es",
+            "sha256": "06d9e8d4b4bde75f6a556f84719b1b70d0528de0b6172598e8f7d17e361927ff",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#ctl-as-of",
+                "label": "as_of",
+                "y": 153
+              },
+              {
+                "number": 2,
+                "selector": "[data-ctl-form] button",
+                "label": "Aplicar",
+                "y": 153
+              }
+            ],
+            "crop": {
+              "x": 200,
+              "y": 25282,
+              "width": 717,
+              "height": 238
+            },
+            "source_html_sha256": "2dacef265c2f37bec269fbc3755c07a1488d00b8740fc67b89871debb9c009a8"
+          }
+        },
+        "zh-Hans": {
+          "locale": "zh-Hans",
+          "caption": "1. Set As of to 1 June 2024. 2. Apply filters the linked records by that day.",
+          "alt": "As of day panel with date field filled and Apply beside it.",
+          "mobile": {
+            "src": "/media/guide/look-at-records-as-of-a-day/zh-Hans/date-field-mobile.png",
+            "width": 406,
+            "height": 353,
+            "captured_at": "2026-09-08T18:38:01.939436+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/agencies/parks-and-recreation/?lang=zh-Hans",
+            "sha256": "3b230e58f3bae356a5a5765cc325125a02156ce9effef2ea35cd110fd5f802b1",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#ctl-as-of",
+                "label": "as_of",
+                "y": 145
+              },
+              {
+                "number": 2,
+                "selector": "[data-ctl-form] button",
+                "label": "\u5e94\u7528",
+                "y": 195
+              }
+            ],
+            "crop": {
+              "x": 8,
+              "y": 37139,
+              "width": 374,
+              "height": 353
+            },
+            "source_html_sha256": "2715f68359aeec72e02b1e99cc9b5b04ccb6548d41cc30e19cf9ff024c7c841e"
+          },
+          "desktop": {
+            "src": "/media/guide/look-at-records-as-of-a-day/zh-Hans/date-field-desktop.png",
+            "width": 749,
+            "height": 238,
+            "captured_at": "2026-09-08T18:38:04.541296+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/agencies/parks-and-recreation/?lang=zh-Hans",
+            "sha256": "ca393d137cfe7f7eeba75b3b289f9fc1ae32537c1f76f7f3a27876985877d83c",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#ctl-as-of",
+                "label": "as_of",
+                "y": 153
+              },
+              {
+                "number": 2,
+                "selector": "[data-ctl-form] button",
+                "label": "\u5e94\u7528",
+                "y": 153
+              }
+            ],
+            "crop": {
+              "x": 200,
+              "y": 25282,
+              "width": 717,
+              "height": 238
+            },
+            "source_html_sha256": "2715f68359aeec72e02b1e99cc9b5b04ccb6548d41cc30e19cf9ff024c7c841e"
+          }
+        },
+        "ar": {
+          "locale": "ar",
+          "caption": "1. Set As of to 1 June 2024. 2. Apply filters the linked records by that day.",
+          "alt": "As of day panel with date field filled and Apply beside it.",
+          "mobile": {
+            "src": "/media/guide/look-at-records-as-of-a-day/ar/date-field-mobile.png",
+            "width": 406,
+            "height": 353,
+            "captured_at": "2026-09-08T18:38:11.043141+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/agencies/parks-and-recreation/?lang=ar",
+            "sha256": "3625762475b33c5b4154c98719b9e7e3304e7a8eca6bcb534796b3c52ad3febf",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#ctl-as-of",
+                "label": "as_of",
+                "y": 145
+              },
+              {
+                "number": 2,
+                "selector": "[data-ctl-form] button",
+                "label": "\u062a\u0637\u0628\u064a\u0642",
+                "y": 195
+              }
+            ],
+            "crop": {
+              "x": 8,
+              "y": 37139,
+              "width": 374,
+              "height": 353
+            },
+            "source_html_sha256": "08d95209a9bf6faacf255fb825c6f9d7b630a8c885d88c7751a3bb74687c3e47"
+          },
+          "desktop": {
+            "src": "/media/guide/look-at-records-as-of-a-day/ar/date-field-desktop.png",
+            "width": 749,
+            "height": 238,
+            "captured_at": "2026-09-08T18:38:13.607894+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/agencies/parks-and-recreation/?lang=ar",
+            "sha256": "e5148defae71360ef64102863ab1bcf8b47b3221ec60fcb22455245d0fdb6724",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "#ctl-as-of",
+                "label": "as_of",
+                "y": 153
+              },
+              {
+                "number": 2,
+                "selector": "[data-ctl-form] button",
+                "label": "\u062a\u0637\u0628\u064a\u0642",
+                "y": 153
+              }
+            ],
+            "crop": {
+              "x": 523,
+              "y": 25282,
+              "width": 717,
+              "height": 238
+            },
+            "source_html_sha256": "08d95209a9bf6faacf255fb825c6f9d7b630a8c885d88c7751a3bb74687c3e47"
+          }
+        }
       }
     },
     "date-result": {
       "locale": "en",
-      "caption": "1. The summary describes the applied cutoff. 2. Clear removes it; later records remain separate.",
+      "caption": "1. The summary describes the applied cutoff. 2. Clear removes it. Later records remain separate.",
       "alt": "Applied As of day summary and the Clear control.",
       "mobile": {
         "src": "/media/guide/look-at-records-as-of-a-day/date-result-mobile.png",
@@ -153,6 +386,239 @@
           "height": 268
         },
         "source_html_sha256": "5559f4dc827453ccec3d90d20e4862b00013a30ce87749feef6fa563894e87aa"
+      },
+      "locales": {
+        "es": {
+          "locale": "es",
+          "caption": "1. The summary describes the applied cutoff. 2. Clear removes it. Later records remain separate.",
+          "alt": "Applied As of day summary and the Clear control.",
+          "mobile": {
+            "src": "/media/guide/look-at-records-as-of-a-day/es/date-result-mobile.png",
+            "width": 406,
+            "height": 383,
+            "captured_at": "2026-09-08T18:37:52.779853+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/agencies/parks-and-recreation/?as_of=2024-06-01",
+            "sha256": "b61732133ff01efb7aadde763201c276cea50e56049ef6093815bf042f469a4d",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-ctl-comparison]",
+                "label": "2 of 37 dated records on or before 2024-06-01 \u00b7 23 later",
+                "y": 298
+              },
+              {
+                "number": 2,
+                "selector": "[data-ctl-clear]",
+                "label": "Clear",
+                "y": 247
+              }
+            ],
+            "crop": {
+              "x": 8,
+              "y": 37139,
+              "width": 374,
+              "height": 383
+            },
+            "source_html_sha256": "70d7822dc1b561489006ff8cda7515e05dfe8c09791cce9332ff98afd97346fb"
+          },
+          "desktop": {
+            "src": "/media/guide/look-at-records-as-of-a-day/es/date-result-desktop.png",
+            "width": 749,
+            "height": 268,
+            "captured_at": "2026-09-08T18:37:55.298983+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/agencies/parks-and-recreation/?as_of=2024-06-01",
+            "sha256": "760cbb6259bbc69ae2c0c778a7ade7e68ad92dfeaba1fa55f8aa61f2200be4bd",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-ctl-comparison]",
+                "label": "2 of 37 dated records on or before 2024-06-01 \u00b7 23 later",
+                "y": 194
+              },
+              {
+                "number": 2,
+                "selector": "[data-ctl-clear]",
+                "label": "Clear",
+                "y": 153
+              }
+            ],
+            "crop": {
+              "x": 200,
+              "y": 25282,
+              "width": 717,
+              "height": 268
+            },
+            "source_html_sha256": "70d7822dc1b561489006ff8cda7515e05dfe8c09791cce9332ff98afd97346fb"
+          }
+        },
+        "zh-Hans": {
+          "locale": "zh-Hans",
+          "caption": "1. The summary describes the applied cutoff. 2. Clear removes it. Later records remain separate.",
+          "alt": "Applied As of day summary and the Clear control.",
+          "mobile": {
+            "src": "/media/guide/look-at-records-as-of-a-day/zh-Hans/date-result-mobile.png",
+            "width": 406,
+            "height": 383,
+            "captured_at": "2026-09-08T18:38:02.798038+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/agencies/parks-and-recreation/?as_of=2024-06-01",
+            "sha256": "67b7b86571fa353c0816336f4b47ad5fe5fbf2ebb90f9907b9189bfd182a949c",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-ctl-comparison]",
+                "label": "2 of 37 dated records on or before 2024-06-01 \u00b7 23 later",
+                "y": 298
+              },
+              {
+                "number": 2,
+                "selector": "[data-ctl-clear]",
+                "label": "Clear",
+                "y": 247
+              }
+            ],
+            "crop": {
+              "x": 8,
+              "y": 37139,
+              "width": 374,
+              "height": 383
+            },
+            "source_html_sha256": "f11767811e9a226e5a8ff4fcac6e1adb940b1ea55f086678f0fd42ab7675db6d"
+          },
+          "desktop": {
+            "src": "/media/guide/look-at-records-as-of-a-day/zh-Hans/date-result-desktop.png",
+            "width": 749,
+            "height": 268,
+            "captured_at": "2026-09-08T18:38:05.381758+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/agencies/parks-and-recreation/?as_of=2024-06-01",
+            "sha256": "12e77c956549ba58a4f2b4218a4727c4ff94749dca623c0c112d1de75c4dc8fc",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-ctl-comparison]",
+                "label": "2 of 37 dated records on or before 2024-06-01 \u00b7 23 later",
+                "y": 194
+              },
+              {
+                "number": 2,
+                "selector": "[data-ctl-clear]",
+                "label": "Clear",
+                "y": 153
+              }
+            ],
+            "crop": {
+              "x": 200,
+              "y": 25282,
+              "width": 717,
+              "height": 268
+            },
+            "source_html_sha256": "f11767811e9a226e5a8ff4fcac6e1adb940b1ea55f086678f0fd42ab7675db6d"
+          }
+        },
+        "ar": {
+          "locale": "ar",
+          "caption": "1. The summary describes the applied cutoff. 2. Clear removes it. Later records remain separate.",
+          "alt": "Applied As of day summary and the Clear control.",
+          "mobile": {
+            "src": "/media/guide/look-at-records-as-of-a-day/ar/date-result-mobile.png",
+            "width": 406,
+            "height": 383,
+            "captured_at": "2026-09-08T18:38:11.924897+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "route": "/agencies/parks-and-recreation/?as_of=2024-06-01",
+            "sha256": "81d8c47b493373824220d8d4d6bf0fa6905d79676a17e4f28901f59047146d5a",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-ctl-comparison]",
+                "label": "2 of 37 dated records on or before 2024-06-01 \u00b7 23 later",
+                "y": 298
+              },
+              {
+                "number": 2,
+                "selector": "[data-ctl-clear]",
+                "label": "Clear",
+                "y": 247
+              }
+            ],
+            "crop": {
+              "x": 8,
+              "y": 37139,
+              "width": 374,
+              "height": 383
+            },
+            "source_html_sha256": "01629dae4e4ab311db2fea32fc52ade778e18814f950572c7c46e0c8955e14f1"
+          },
+          "desktop": {
+            "src": "/media/guide/look-at-records-as-of-a-day/ar/date-result-desktop.png",
+            "width": 749,
+            "height": 268,
+            "captured_at": "2026-09-08T18:38:14.504756+00:00",
+            "revision": "3f8cfff67cb38f27d7f3c037e1a3750ef18b4ee0",
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "route": "/agencies/parks-and-recreation/?as_of=2024-06-01",
+            "sha256": "99c273a29a6daa2a38af127515243d72e3e9637bdf265987b2717c117ee51f92",
+            "redactions": [],
+            "data_vintage": "Retained public site data",
+            "callouts": [
+              {
+                "number": 1,
+                "selector": "[data-ctl-comparison]",
+                "label": "2 of 37 dated records on or before 2024-06-01 \u00b7 23 later",
+                "y": 194
+              },
+              {
+                "number": 2,
+                "selector": "[data-ctl-clear]",
+                "label": "Clear",
+                "y": 153
+              }
+            ],
+            "crop": {
+              "x": 523,
+              "y": 25282,
+              "width": 717,
+              "height": 268
+            },
+            "source_html_sha256": "01629dae4e4ab311db2fea32fc52ade778e18814f950572c7c46e0c8955e14f1"
+          }
+        }
       }
     }
   }

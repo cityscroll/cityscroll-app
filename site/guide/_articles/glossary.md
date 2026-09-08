@@ -39,13 +39,13 @@ sources:
 
 | Term | What it means | Why it is easy to confuse |
 | --- | --- | --- |
-| Agency | A city department or office that publishes and acts | Agencies are renamed; a renamed agency keeps one page here |
+| Agency | A city department or office that publishes and acts | Agencies are renamed. A renamed agency keeps one page here |
 | Community Board | An appointed local board, numbered inside a borough | Board 7 exists in more than one borough, so a number alone is not a board |
-| Community district | The area a Community Board covers | It is a place; the board is a body |
+| Community district | The area a Community Board covers | It is a place. The board is a body |
 | City Council District | The area one Council Member represents, numbered citywide | Its lines do not follow community district lines |
 | Borough president | The elected office for one of the five boroughs, which reviews land-use applications | Its recommendation is not the decision |
 | City Planning Commission | The body that reviews land-use applications before the City Council | One stage of a review, not the end of it |
-| Vendor | An organization named on a procurement record | The published name is used exactly; spellings are not merged |
+| Vendor | An organization named on a procurement record | The published name is used exactly. Spellings are not merged |
 
 ## Connections and evidence
 

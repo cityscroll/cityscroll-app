@@ -63,8 +63,7 @@ always this last control, with your own email address typed into it.
 | Copy subscription URL | Copies the address to paste into a calendar that asks for one | An address on your clipboard |
 
 Two limits are worth knowing. **Subscribe to calendar** appears only where what you are looking at
-has dated events a calendar could hold; on a listing with no such dates it is not offered, and that
-is the honest answer rather than an empty feed. And once the address has reached your calendar app,
+has dated events a calendar could hold. On a listing with no such dates it is not offered, so no empty feed is offered. And once the address has reached your calendar app,
 CityScroll cannot
 tell whether your calendar kept the subscription or how often it refreshes — that is a setting in
 your calendar, and some of them take hours to show a change.
@@ -95,6 +94,6 @@ your calendar, and some of them take hours to show a change.
 
 In a signed-out visit, pins and notes stay in this browser. Recognized email sessions can keep pins
 across devices. A shared snapshot includes notes and is readable by anyone with its link for 90 days.
-Exports are fixed copies; clearing the local list does not delete exported or shared copies.
+Exports are fixed copies. Clearing the local list does not delete exported or shared copies.
 
 For program parameters and feeds, use [the API page](/api.html).

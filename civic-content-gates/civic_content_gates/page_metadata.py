@@ -23,20 +23,23 @@ MAX_TITLE = 60
 SEPARATOR = "·"
 
 
-def check(site_root: Path, pages: Optional[Sequence[str]] = None) -> list[str]:
+def check(site_root: Path, pages: Optional[Sequence[str]] = None, *, language_limits=None) -> list[str]:
     site_root = Path(site_root)
     pages = _util.resolve_pages(pages)
     failures = []
     for page in pages:
         src = (site_root / page).read_text(encoding="utf-8")
 
+        language = re.search(r'<html\b[^>]*\blang="([^"]+)"', src)
+        limits = (language_limits or {}).get(language.group(1) if language else "en", (MIN_DESC, MAX_DESC, MAX_TITLE))
+        min_desc, max_desc, max_title = limits
         title_m = TITLE_RE.search(src)
         if not title_m:
             failures.append(f"{page}: missing <title>")
         else:
             title = title_m.group(1)
-            if len(title) > MAX_TITLE:
-                failures.append(f"{page}: title is {len(title)} chars (must be <{MAX_TITLE}): {title!r}")
+            if len(title) > max_title:
+                failures.append(f"{page}: title is {len(title)} chars (must be <{max_title}): {title!r}")
             if SEPARATOR not in title:
                 failures.append(f"{page}: title missing the house separator {SEPARATOR!r}: {title!r}")
 
@@ -45,10 +48,10 @@ def check(site_root: Path, pages: Optional[Sequence[str]] = None) -> list[str]:
             failures.append(f"{page}: missing <meta name=\"description\">")
         else:
             desc = desc_m.group(1)
-            if not (MIN_DESC <= len(desc) <= MAX_DESC):
+            if not (min_desc <= len(desc) <= max_desc):
                 failures.append(
                     f"{page}: meta description is {len(desc)} chars "
-                    f"(must be {MIN_DESC}-{MAX_DESC}): {desc!r}")
+                    f"(must be {min_desc}-{max_desc}): {desc!r}")
     return failures
 
 

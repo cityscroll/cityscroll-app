@@ -194,7 +194,7 @@ test("inspector panel and why-control render warrant classes without fabricating
   assert.match(why, />Details</);
   assert.doesNotMatch(why, />unmatched</);
   assert.match(why, /data-warrant-class="exact"/);
-  assert.match(why, /aria-label="View connection details"/);
+  assert.match(why, /aria-label="Details"/);
   assert.match(why, /claim=contracts%3Anotice%3A20030224002/);
 
   const panel = renderEdgeProvenancePanel([exact, reviewed], {

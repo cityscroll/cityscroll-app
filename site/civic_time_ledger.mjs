@@ -510,7 +510,7 @@ export function renderCivicTimeLedgerPanel({
 
   const arrivedList = day && Array.isArray(summary?.arrived_after) && summary.arrived_after.length
     ? `<details class="ctl-arrived">
-        <summary>Later records (${escCivicTime(String(summary.arrived_after.length))}${summary.arrived_after.length >= 40 ? "+" : ""})</summary>
+        <summary><span data-i18n="as_of_later_control">${escCivicTime(globalThis.window?.t?.("as_of_later_control") || "Later records")}</span> (${escCivicTime(String(summary.arrived_after.length))}${summary.arrived_after.length >= 40 ? "+" : ""})</summary>
         <ul class="node-record-list ctl-arrived-list">${summary.arrived_after.map((row) =>
           `<li class="node-record"><div class="node-record-main">${escCivicTime(row.label || row.id)}</div><span class="muted node-muted">${escCivicTime(row.category_id || "")}${row.date ? ` · ${escCivicTime(row.date)}` : ""}</span></li>`).join("")}</ul>
       </details>`
@@ -518,7 +518,7 @@ export function renderCivicTimeLedgerPanel({
 
   return `<section class="node-section node-card civic-object-section ctl-panel" data-civic-time-ledger="1" data-as-of="${escCivicTime(day || "")}" data-export-class="object_provenance" aria-labelledby="ctl-heading">
     <div class="ctl-head">
-      <h2 id="ctl-heading">As of day</h2>
+      <h2 id="ctl-heading" data-i18n="as_of_day_control">${escCivicTime(globalThis.window?.t?.("as_of_day_control") || "As of day")}</h2>
       <details class="ctl-how">
         <summary aria-label="How as-of works">?</summary>
         <p>Shows only linked records whose publisher or event date is on or before the day you pick. Share the URL to reopen the same day.</p>
@@ -527,10 +527,10 @@ export function renderCivicTimeLedgerPanel({
     </div>
     <p class="ctl-lede">Filter ${escCivicTime(subjectLabel)} by date.</p>
     <form class="ctl-form" method="get" action="${action}" data-ctl-form>
-      <label class="ctl-label" for="ctl-as-of">As of</label>
+      <label class="ctl-label" for="ctl-as-of" data-i18n="as_of_date_control">${escCivicTime(globalThis.window?.t?.("as_of_date_control") || "As of")}</label>
       <div class="ctl-form-row">
         <input class="ctl-input" id="ctl-as-of" name="${escCivicTime(AS_OF_QUERY_KEY)}" type="date" value="${escCivicTime(day || "")}" data-ctl-as-of>
-        <button class="node-action civic-object-action primary ctl-submit" type="submit">Apply</button>
+        <button class="node-action civic-object-action primary ctl-submit" type="submit" data-i18n="as_of_apply_control">${escCivicTime(globalThis.window?.t?.("as_of_apply_control") || "Apply")}</button>
         <a class="node-action civic-object-action ctl-clear" href="${action}" data-ctl-clear${day ? "" : " hidden"}>Clear</a>
       </div>
     </form>

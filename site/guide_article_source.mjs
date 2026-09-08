@@ -310,28 +310,29 @@ function renderInline(sourceName, text) {
 }
 
 /** A named, real UI crop. Metadata is supplied by the article's capture receipt. */
-export function renderGuideFigure(sourceName, id, spec) {
+export function renderGuideFigure(sourceName, id, spec, translate = value => value) {
   if (!/^[a-z][a-z0-9-]*$/.test(id) || !spec) fail(sourceName, `unknown figure ${id}`);
   for (const key of ["alt", "caption"]) {
     if (typeof spec[key] !== "string" || !spec[key].trim() || PRIVATE_LEAK.test(spec[key])) {
       fail(sourceName, `figure ${id} needs public ${key} text`);
     }
   }
-  if (spec.locale !== "en") fail(sourceName, `figure ${id}: only explicitly labelled English captures are supported`);
+  if (!["en", "es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"].includes(spec.locale)) fail(sourceName, `figure ${id}: unsupported capture locale`);
   for (const variant of ["mobile", "desktop"]) {
     const asset = spec[variant];
-    if (!asset || !/^\/media\/guide\/[a-z0-9-]+\/[a-z0-9-]+\.png$/.test(asset.src)
+    if (!asset || (spec.locale !== "en" && !asset.src?.includes(`/${spec.locale}/`)) || !/^\/media\/guide\/[a-z0-9-]+\/(?:[a-z]{2}\/|zh-Hans\/)?[a-z0-9-]+\.png$/.test(asset.src)
         || ![asset.width, asset.height].every(value => Number.isInteger(value) && value > 0 && value <= 2000)) {
       fail(sourceName, `figure ${id} needs a safe ${variant} asset and bounded dimensions`);
     }
   }
   const { mobile, desktop } = spec;
-  return `<figure class="guide-figure" id="figure-${id}">`
+  const imageText = translate.withUILocale?.(spec.locale) || translate;
+  return `<figure class="guide-figure" id="figure-${id}" data-guide-image-language="${spec.locale}">`
     + `<picture><source media="(max-width: 600px)" srcset="${mobile.src}" width="${mobile.width}" height="${mobile.height}">`
-    + `<img src="${desktop.src}" width="${desktop.width}" height="${desktop.height}" alt="${escapeHtml(spec.alt)}" loading="lazy" decoding="async"></picture>`
-    + `<figcaption><strong>English interface.</strong> ${escapeHtml(spec.caption)} `
-    + `<a class="guide-enlarge-mobile" href="${mobile.src}">Enlarge phone image: ${escapeHtml(id.replaceAll("-", " "))}</a>`
-    + `<a class="guide-enlarge-desktop" href="${desktop.src}">Enlarge desktop image: ${escapeHtml(id.replaceAll("-", " "))}</a>`
+    + `<img src="${desktop.src}" width="${desktop.width}" height="${desktop.height}" alt="${escapeHtml(imageText(spec.alt))}" loading="lazy" decoding="async"></picture>`
+    + `<figcaption><strong>${escapeHtml(translate(spec.locale === "en" ? "English interface." : "Interface language: {language}").replace("{language}", spec.localeLabel || spec.locale))}</strong> ${escapeHtml(imageText(spec.caption))} `
+    + `<a class="guide-enlarge-mobile" aria-label="${escapeHtml(translate("Enlarge phone image"))}: ${escapeHtml(imageText(spec.alt))}" href="${mobile.src}">${escapeHtml(translate("Enlarge phone image"))}</a>`
+    + `<a class="guide-enlarge-desktop" aria-label="${escapeHtml(translate("Enlarge desktop image"))}: ${escapeHtml(imageText(spec.alt))}" href="${desktop.src}">${escapeHtml(translate("Enlarge desktop image"))}</a>`
     + `</figcaption></figure>`;
 }
 
@@ -343,20 +344,20 @@ export function renderGuideFigure(sourceName, id, spec) {
  * carries a name. `label` is the name; a spec that also wants the name shown gives
  * a `caption`.
  */
-function renderTable(sourceName, { label, caption, columns, rows }) {
+function renderTable(sourceName, { label, caption, columns, rows }, translate = value => value) {
   if (!label) fail(sourceName, "a table needs a name — put it under a heading, or give the generated table a caption");
   if (!columns?.length) fail(sourceName, "a table needs a header row");
   const cells = (values, tag) => values
-    .map((value) => `<${tag}${tag === "th" ? ' scope="col"' : ""}>${renderInline(sourceName, value)}</${tag}>`)
+    .map((value) => `<${tag}${tag === "th" ? ' scope="col"' : ""}>${renderInline(sourceName, translate(value))}</${tag}>`)
     .join("");
   for (const row of rows) {
     if (row.length !== columns.length) {
       fail(sourceName, `table row has ${row.length} cells but the header has ${columns.length}: ${JSON.stringify(row.join(" | "))}`);
     }
   }
-  const captionHtml = caption ? `<caption>${renderInline(sourceName, caption)}</caption>` : "";
+  const captionHtml = caption ? `<caption>${renderInline(sourceName, translate(caption))}</caption>` : "";
   const body = rows.map((row) => `<tr>${cells(row, "td")}</tr>`).join("");
-  return `<div class="guide-table" role="region" tabindex="0" aria-label="${escapeHtml(label)}">`
+  return `<div class="guide-table" role="region" tabindex="0" aria-label="${escapeHtml(translate(label))}">`
     + `<table>${captionHtml}<thead><tr>${cells(columns, "th")}</tr></thead><tbody>${body}</tbody></table></div>`;
 }
 
@@ -368,6 +369,8 @@ function tableCells(line) {
 }
 
 function renderBlocks(sourceName, body, includes = {}) {
+  const translate = includes.translate || (value => value);
+  const inline = value => renderInline(sourceName, translate(value));
   const lines = body.split("\n");
   const html = [];
   let index = 0;
@@ -390,7 +393,7 @@ function renderBlocks(sourceName, body, includes = {}) {
     if (headingMatch) {
       const level = headingMatch[1].length;
       heading = headingMatch[2].trim();
-      html.push(`<h${level}>${renderInline(sourceName, heading)}</h${level}>`);
+      html.push(`<h${level}>${inline(heading)}</h${level}>`);
       index += 1;
       continue;
     }
@@ -399,7 +402,7 @@ function renderBlocks(sourceName, body, includes = {}) {
     if (figure) {
       if (figures.has(figure[1])) fail(sourceName, `duplicate figure ${figure[1]}`);
       figures.add(figure[1]);
-      html.push(renderGuideFigure(sourceName, figure[1], includes.figures?.[figure[1]]));
+      html.push(renderGuideFigure(sourceName, figure[1], includes.figures?.[figure[1]], translate));
       index += 1;
       continue;
     }
@@ -407,7 +410,7 @@ function renderBlocks(sourceName, body, includes = {}) {
     if (include) {
       const spec = includes[include[1]];
       if (!spec) fail(sourceName, `no owner generates a "${include[1]}" table`);
-      html.push(renderTable(sourceName, { label: spec.caption || heading, ...spec }));
+      html.push(renderTable(sourceName, { label: spec.caption || heading, ...spec }, translate));
       index += 1;
       continue;
     }
@@ -421,7 +424,7 @@ function renderBlocks(sourceName, body, includes = {}) {
         label: heading,
         columns: tableCells(rows[0]),
         rows: rows.slice(2).map(tableCells),
-      }));
+      }, translate));
       continue;
     }
 
@@ -431,8 +434,8 @@ function renderBlocks(sourceName, body, includes = {}) {
         .join(" ");
       const labelled = quoted.match(/^([A-Z][^:]{0,40}):\s*(.*)$/);
       const inner = labelled
-        ? `<strong>${renderInline(sourceName, labelled[1])}:</strong> ${renderInline(sourceName, labelled[2])}`
-        : renderInline(sourceName, quoted);
+        ? `<strong>${inline(labelled[1])}:</strong> ${inline(labelled[2])}`
+        : inline(quoted);
       html.push(`<p class="guide-checkpoint">${inner}</p>`);
       continue;
     }
@@ -452,7 +455,7 @@ function renderBlocks(sourceName, body, includes = {}) {
         else if (items.length) items[items.length - 1] += ` ${candidate.trim()}`;
         else fail(sourceName, `list continuation with no item above it: ${JSON.stringify(candidate)}`);
       }
-      const rendered = items.map((item) => `<li>${renderInline(sourceName, item)}</li>`);
+      const rendered = items.map((item) => `<li>${inline(item)}</li>`);
       html.push(`<${ordered ? "ol" : "ul"}>${rendered.join("")}</${ordered ? "ol" : "ul"}>`);
       continue;
     }
@@ -462,7 +465,7 @@ function renderBlocks(sourceName, body, includes = {}) {
     }
 
     const paragraph = takeWhile((candidate) => candidate.trim() && !/^(#{2,3}\s|>\s|-\s|\d+\.\s)/.test(candidate));
-    html.push(`<p>${renderInline(sourceName, paragraph.map((part) => part.trim()).join(" "))}</p>`);
+    html.push(`<p>${inline(paragraph.map((part) => part.trim()).join(" "))}</p>`);
   }
   return html.join("\n");
 }
@@ -471,12 +474,12 @@ function renderBlocks(sourceName, body, includes = {}) {
  * Split a body into `## Heading` sections, keeping each section's rendered HTML.
  * Used by the guide home, whose sections are addressed by name.
  */
-export function splitSections(sourceName, body) {
+export function splitSections(sourceName, body, includes = {}) {
   const sections = new Map();
   let heading = null;
   let buffer = [];
   const flush = () => {
-    if (heading !== null) sections.set(heading, renderBlocks(sourceName, buffer.join("\n")));
+    if (heading !== null) sections.set(heading, renderBlocks(sourceName, buffer.join("\n"), includes));
   };
   for (const line of body.replace(/\r\n/g, "\n").split("\n")) {
     const match = line.match(/^##\s+(.*)$/);
@@ -544,7 +547,7 @@ export function parseGuideArticle(sourceName, text, includes = {}) {
 }
 
 /** Parse the guide-home source: front matter plus one section per named heading. */
-export function parseGuideHome(sourceName, text) {
+export function parseGuideHome(sourceName, text, includes = {}) {
   const { fields, body } = parseFrontMatter(sourceName, text);
   rejectUnknownKeys(sourceName, fields, ALLOWED_HOME_KEYS);
   rejectPrivateValues(sourceName, fields);
@@ -556,7 +559,7 @@ export function parseGuideHome(sourceName, text) {
   if (!ISO_DATE.test(home.last_reviewed)) {
     fail(sourceName, `last_reviewed must be an explicit YYYY-MM-DD date, got ${JSON.stringify(home.last_reviewed)}`);
   }
-  const sections = splitSections(sourceName, body);
+  const sections = splitSections(sourceName, body, includes);
   for (const heading of ["Orientation", ...GUIDE_GROUPS.map((group) => group.label), "About this guide"]) {
     if (!sections.get(heading)) fail(sourceName, `guide home is missing a "## ${heading}" section`);
   }

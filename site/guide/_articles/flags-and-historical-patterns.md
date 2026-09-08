@@ -63,12 +63,12 @@ always take precedence over them.
 | Applicant history | An applicant's own past zoning results beside the overall rate | [Applicant history](/about.html#applicant-conditioned-ulurp) |
 
 Each of these carries its own honesty conditions, and the pages say so where they apply: the eligible
-list comparison uses no applicant names, scores or ranks; a real sale date always replaces the
-property timing pattern; a lien can leave a list for many ordinary reasons, including simply being
-paid; and where a group is too small or the evidence too weak, the site shows a wider group or
+list comparison uses no applicant names, scores or ranks. A real sale date always replaces the
+property timing pattern. A lien can leave a list for many ordinary reasons, including simply being
+paid. And where a group is too small or the evidence too weak, the site shows a wider group or
 nothing rather than a confident-looking number built on very little.
 
-## How to read one honestly
+## How to read one
 
 - **Treat it as a question, not an answer.** The useful next step after a flag is opening the record
   and its official source.

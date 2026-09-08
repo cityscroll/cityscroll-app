@@ -718,7 +718,7 @@ test("one conformance run aligns rules, reports, meetings, contracts, and zoning
   assert.match(html, /data-conformance-category="contracts"/);
   assert.match(html, /data-conformance-category="zoning"/);
   assert.match(html, /Data as of 2026-08-15/);
-  assert.match(html, /View connection details/);
+  assert.match(html, /aria-label="Details"/);
   assert.doesNotMatch(html, /not a compliance|not a verdict|disclaimer|pipeline|detector/i);
 });
 
