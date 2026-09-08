@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
   EDGE_SUMMARY_SCHEMA,
+  entityPivotRouteStatus,
   normalizeEdgeSummaryRecord,
   rankEdgeSummaryRecords,
   renderEdgeSummaryProvenance,
@@ -343,4 +344,14 @@ test("connection evidence is readable, finite, and keeps raw provenance opt-in",
   assert.match(html, /href="https:\/\/data\.cityofnewyork\.us\/d\/a9md-ynri"/);
   assert.match(html, />NYC Open Data<span aria-hidden="true">↗<\/span>/);
   assert.doesNotMatch(html, /Technical details|Source record|Source fields|Matching method|Link record|Resolution run|a9md-ynri:exam:7002:agency:816|exam_no|list_agency_code/);
+});
+
+
+test("mandate record routes are supported while malformed destinations remain closed", () => {
+  for (const href of ["/mandates/64116-001", "/mandates/64116-001/", "/mandates/64116-001?as_of=2024-06-01"]) {
+    assert.equal(entityPivotRouteStatus(href).verified, true, href);
+  }
+  for (const href of ["/mandates/", "/mandates/64116-001/extra", "/mandates/<id>", "/mandate/64116-001"]) {
+    assert.equal(entityPivotRouteStatus(href).verified, false, href);
+  }
 });

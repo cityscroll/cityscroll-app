@@ -34,9 +34,7 @@ and [Opentender's](https://opentender.eu/) integrity indicators.
 ## What each note counts
 
 The exact thresholds, pools and windows behind these live on the About page, in
-[Flags and context, explained](/about.html#context). They are kept in one place on purpose: a
-threshold repeated in two places is a threshold that will eventually disagree with itself. This is
-what each note is about.
+[Flags and context, explained](/about.html#context). This table describes what each note measures.
 
 | The note | What it looks at | What it cannot tell you |
 | --- | --- | --- |

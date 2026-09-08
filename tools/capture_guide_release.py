@@ -125,10 +125,6 @@ def derived_route_spec(article: dict) -> dict:
         f"Last reviewed {article['last_reviewed']}",
         article["return_to_task"]["label"],
     ]
-    # A lesson carries checkpoints; an explanation or a reference page has no task
-    # to check off, so requiring one of those to say "Checkpoint" would be wrong.
-    if article["type"] in ("tutorial", "how-to"):
-        expect_text.insert(3, "Checkpoint")
     return {
         "id": f"guide-article-{article['id'].lower()}",
         "route": article["url"],
@@ -204,12 +200,12 @@ AUTHORED_ROUTES = (
         "id": "guide-tutorial",
         "route": TUTORIAL,
         "assertion": "The first tutorial loads directly with its type, review date, steps, "
-        "checkpoints, sources and a link back to the task.",
+        "action results, sources and a link back to the task.",
         "expect_text": [
             "Explore housing across city records",
             "Start here · Tutorial",
             "Last reviewed",
-            "Checkpoint",
+            "Step 1",
             "Official source",
             "Try this search yourself",
         ],
@@ -255,7 +251,7 @@ AUTHORED_ROUTES = (
             "How this connection was made",
             "Matched by a published record",
             "Copy link to this connection",
-            "precomputed PASSPort contract graph",
+            "no separate notice source",
         ],
         "expect_links": [GUIDE_HOME],
         "axe": True,
@@ -654,7 +650,9 @@ def journey_without_script(page: Page, base: str) -> dict:
     article = page.evaluate(
         """() => ({
             headings: [...document.querySelectorAll('main h1, main h2, main h3')].map((n) => n.innerText.trim()),
-            paragraphs: document.querySelectorAll('main p').length,
+            hasBody: !!document.querySelector('.guide-body')?.textContent.trim(),
+            hasOfficialSource: (document.querySelector('.guide-body')?.textContent || '').includes('Official source'),
+            hasOutcome: !!document.querySelector('.node-lede')?.textContent.trim(),
             sourceLinks: [...document.querySelectorAll('main a[href^="http"]')].map((n) => n.getAttribute('href')),
             backToGuide: !!document.querySelector(`main a[href="${'/guide/'}"]`),
             returnToTask: !!document.querySelector('main .guide-return a'),
@@ -667,8 +665,9 @@ def journey_without_script(page: Page, base: str) -> dict:
         "Start here" in home_text
         and "Using CityScroll" in home_headings
         and article_path == TUTORIAL
-        and len(article["headings"]) >= 8
-        and article["paragraphs"] >= 15
+        and "Step 1 — Search for housing" in article["headings"]
+        and article["hasOfficialSource"]
+        and article["hasOutcome"]
         and bool(article["sourceLinks"])
         and article["backToGuide"]
         and article["returnToTask"]
@@ -737,7 +736,8 @@ def articles_without_script(page: Page, base: str, articles: list[dict]) -> dict
         state = page.evaluate(
             """(returnHref) => ({
                 headings: [...document.querySelectorAll('main h1, main h2, main h3')].length,
-                paragraphs: document.querySelectorAll('main p').length,
+                hasBody: !!document.querySelector('.guide-body')?.textContent.trim(),
+                hasOutcome: !!document.querySelector('.node-lede')?.textContent.trim(),
                 backToGuide: !!document.querySelector('main a[href="/guide/"]'),
                 returnToTask: !!document.querySelector(
                     `main .guide-return a[href="${returnHref.replace(/"/g, '\\"')}"]`),
@@ -748,8 +748,8 @@ def articles_without_script(page: Page, base: str, articles: list[dict]) -> dict
         state["id"] = article["id"]
         state["url"] = article["url"]
         state["holds"] = (
-            state["headings"] >= 4
-            and state["paragraphs"] >= 5
+            state["hasBody"]
+            and state["hasOutcome"]
             and state["backToGuide"]
             and state["returnToTask"]
             and article["last_reviewed"] in state["reviewed"]
@@ -888,7 +888,7 @@ def main() -> int:
         "schema_version": 1,
         "record": args.record,
         "capture_mode": "local_static_site_playwright_no_committed_image",
-        "base": "local static site build (site/)",
+        "base": "local static preview of tracked guide documents",
         "repository_revision": repository_revision(),
         "repository_state": working_tree_state(),
         "note": args.note or (

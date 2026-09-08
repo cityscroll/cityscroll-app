@@ -19,12 +19,6 @@ sources:
   - Take a civil-service exam, Department of Citywide Administrative Services | https://www.nyc.gov/site/dcas/employment/take-an-exam.page
 ---
 
-## How to use this page
-
-These are the terms you meet in the records and in this guide. They come from the journeys the guide
-teaches rather than from city government at large. Where a term has an exact meaning somewhere else
-on the site, this page gives the plain sense and points at the page that owns the detail.
-
 ## Records and publications
 
 | Term | What it means | Where you meet it |

@@ -41,7 +41,7 @@ document, so a prose change shows its rendered result in the diff.
 ## Adding an article
 
 1. Write `site/guide/_articles/<slug>.md`. Copy the front matter from an existing
-   article; every field in it appears on the page.
+   article; reader questions describe entries on the guide home, while outcomes introduce articles.
 2. Check the article against the live site, then write today's date into
    `last_reviewed`.
 3. Register the new route in `tools/pages_route_parity.mjs`, `site/sitemap.xml`,
@@ -51,7 +51,11 @@ document, so a prose change shows its rendered result in the diff.
 4. Run `node tools/build_guide_documents.mjs`, then
    `node --test test/guide_documents.test.mjs`,
    `python3 test/standards/guide_content.py` and
-   `python3 tools/capture_guide_release.py`. The capture asks the builder which
+   `node tools/build_community_board_constellation_documents.mjs`,
+   `node tools/prepare_guide_preview.mjs`, then
+   `python3 tools/capture_guide_release.py --site-dir .artifacts/guide-preview`.
+   The preview links existing site files and renders guide-linked mandate documents
+   from retained data; it downloads no publisher records. The capture asks the builder which
    articles exist, so a new one is covered the moment it is written; add an entry
    to that tool's authored route table to say what this page in particular must
    contain, which is worth more than the derived floor it falls back to.
@@ -125,31 +129,43 @@ about it is now wrong, so a review date only ever moves when a person moves it.
 A how-to answers a task the reader already has, so it is shaped by the task
 rather than by the product:
 
-- Open with the task, then what the reader needs before starting, then a link to
-  the real place they start from. End with the state they can observe when they
-  are done.
+- Show the title, one short outcome and the review date, then start the steps.
+  Keep indispensable setup with the first action, and each expected result beside
+  the action that produces it. Do not repeat the outcome as a reader question,
+  introduction, checkpoint and closing recap.
 - Name a control with the words on the screen, and say where a control only
   appears under a condition. A step that tells a reader to press something they
   cannot see is worse than no step.
 - Say what an action commits them to at the moment they take it. Where two
   similar controls carry different commitments — a preview and a saved watch, one
   event and a continuing subscription — the difference is the article's job.
-- Cover the empty and unknown cases in the article, not in a separate page. An
-  empty result, an unrecognized session and an unpublished date are ordinary
-  outcomes, and a guide that only describes the happy path is wrong most days.
+- Describe real empty or unknown outcomes where they affect the task, with a
+  usable next action. Optional troubleshooting is for alternate outcomes, not
+  a required section or a place to store deleted prose. Link reusable background
+  to its existing explanation or reference owner; delete repeated framing.
 - Claim nothing about a system CityScroll cannot see. It cannot tell whether
   another calendar kept a subscription, and the article says so.
 
 ## Writing
 
-- One reader question per article. If it needs two, it is two articles.
+- Keep each article on its existing reader task. Do not add articles to house
+  repetition removed from another page.
 - Use the words on the screen. A reader should never need to know what the code
   calls a thing.
-- Say what the reader should be able to see, rather than showing a screenshot of it.
-  A checkpoint stays true at any zoom level, in a screen reader, and after a redesign
-  that a screenshot would survive only as a lie. It is also why the guide commits no
-  images.
+- State the visible result beside its action; instructions must remain complete
+  without images. Give exact control labels, locations and the conditions that
+  reveal them so the same steps can be illustrated or translated.
 - Never promise a number of results. Records roll; the shape of the answer is the
   lesson.
 - If a step needs an interactive product surface, say so at that step. The article
   itself keeps working without script.
+
+## Measuring an editorial reduction
+
+[`compact-articles.md`](evidence/public-user-guide/compact-articles.md) records the
+before/after audit and the reasons for substantial removals. The rendered prose
+counter in `tools/guide_word_counts.mjs` includes the outcome and visible article
+body, excluding navigation and link destinations. Count the total body separately
+so hiding prose in disclosures cannot stand in for shortening it. Guide tests check
+steps, action results and consequential distinctions, with no prose or checkpoint
+minimum.

@@ -5,7 +5,7 @@ title: Controls and what they give you
 page_title: Controls and outputs · CityScroll
 url: /guide/reference/controls-and-outputs/
 reader_question: What can this control do, and what do I get back?
-purpose: Every control a reader can operate on CityScroll, what it changes, and what you are left holding afterwards.
+purpose: Look up common controls, their effects and the files or links they produce.
 description: What each control on CityScroll does when you use it — searching, filtering, following, calendars, links and exports — and what state you are left in.
 last_reviewed: 2026-09-06
 return_to_task: Browse public records by type | /browse/
@@ -16,15 +16,6 @@ related:
 sources:
   - CityScroll public endpoints and upstream data | /api.html
 ---
-
-## What this page covers
-
-The controls a reader operates, and the state each one leaves you in. Feeds, endpoints and the
-parameters a program can send stay with [the API page](/api.html), which is their owner; this page is
-about what is on the screen.
-
-Some of these controls need JavaScript, because the surface they sit on assembles its results in your
-browser. Where that is so, it is said in the row.
 
 ## Finding records
 
@@ -102,7 +93,8 @@ your calendar, and some of them take hours to show a change.
 | Freeze research package | Preserves a question and its evidence as a fixed version | A versioned package that stays as it was, even after newer records arrive |
 | Clear all | Empties the investigation | An empty collection. What was in it was on this device |
 
-The difference between these is where the records are. Pinning and notes live in the browser you used
-and travel to no other device. An export is a file you now hold. A shared link is a copy that has left
-your browser and that anyone with the link can read. A frozen package is a fixed version that does
-not follow later data.
+In a signed-out visit, pins and notes stay in this browser. Recognized email sessions can keep pins
+across devices. A shared snapshot includes notes and is readable by anyone with its link for 90 days.
+Exports are fixed copies; clearing the local list does not delete exported or shared copies.
+
+For program parameters and feeds, use [the API page](/api.html).

@@ -29,10 +29,6 @@ The City Record, a proposed rule, an application filed with the Department of Ci
 announcement. The publication is a fact you can check. The action behind it is a separate thing, and
 the publication tells you only as much about that action as it was written to tell you.
 
-That distinction does most of the work on this site. A notice saying an agency intends to award a
-contract is evidence that the agency published that intention on that day. It is not proof the
-contract was signed, registered, or paid.
-
 CityScroll is not part of city government and decides nothing. It collects what has been published
 and links each record to the official source, so the last word is always the city's own.
 
