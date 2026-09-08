@@ -35,7 +35,7 @@ def base_rate() -> dict:
             f"{cohort['typical_months']['high']} months after certification."
         ),
         "display_mode": "cohort_statistic_and_timing",
-        "formula_url": "about.html#zoning-base-rates",
+        "formula_url": "/guide/understand/flags-and-historical-patterns/#zoning-case-history",
     }
 
 

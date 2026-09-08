@@ -176,13 +176,14 @@ test("committed materialization passes the ship bar and attaches an unconditione
 test("land timeline renders the base-rate register and links to a compact explainer", () => {
   const index = SITE_SOURCE;
   const about = readFileSync(new URL("../site/about.html", import.meta.url), "utf8");
+  const guide = readFileSync(new URL("../site/guide/_articles/flags-and-historical-patterns.md", import.meta.url), "utf8");
   const worker = readFileSync(new URL("../worker/src/zap_outcomes.mjs", import.meta.url), "utf8");
   assert.match(index, /function landZoningStatisticsHTML/);
   assert.match(index, /data-zoning-base-rate/);
   assert.match(index, /land_zoning_base_rate_authority_html/);
   assert.match(about, /id="zoning-base-rates"/);
-  assert.match(about, /past zoning cases to show a usual time range and results for similar cases/);
-  assert.match(about, /same action type and borough, then use a wider group if there are fewer than 20 cases/);
+  assert.match(guide, /Past cases show time ranges and outcomes, not forecasts/);
+  assert.match(guide, /same action type and borough, widening below 20 cases/);
   assert.match(worker, /attachZoningStatistics/);
   assert.match(worker, /zoning_statistics\.json/);
 });
@@ -378,16 +379,17 @@ test("committed materialization ships applicant conditioning with n>=20 and fals
   assert.ok(["descriptive_history", "per_matter"].includes(applicant.render_mode));
 });
 
-test("About and the land UI state applicant-history constraints", () => {
+test("Guide and the land UI state applicant-history constraints", () => {
   const index = SITE_SOURCE;
   const about = readFileSync(new URL("../site/about.html", import.meta.url), "utf8");
+  const guide = readFileSync(new URL("../site/guide/_articles/flags-and-historical-patterns.md", import.meta.url), "utf8");
   const i18n = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
   assert.match(index, /function landApplicantConditionedHTML/);
   assert.match(index, /data-applicant-conditioned/);
   assert.match(about, /id="applicant-conditioned-ulurp"/);
-  assert.match(about, /at least 20 past zoning results/);
-  assert.match(about, /If name matches or past test results are weak/);
-  assert.match(about, /descriptive history or does not show it/);
+  assert.match(guide, /At least 20 approved, modified, or disapproved zoning outcomes/);
+  assert.match(guide, /Weak name matches or test results/);
+  assert.match(guide, /descriptive history or no display/);
   assert.match(i18n, /land_applicant_conditioned_predict_html/);
   assert.match(i18n, /compared with \{p0\}% overall/);
 });

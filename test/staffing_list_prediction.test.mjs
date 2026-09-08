@@ -107,12 +107,13 @@ test("materialized staffing artifact exposes only cohort statistics below the sh
 test("exam phase spine links to the compact eligible-list timing explainer", () => {
   assert.match(indexHtml, /data-staffing-list-prediction="1"/);
   assert.match(indexHtml, /data-staffing-list-law-context="1"/);
-  assert.match(indexHtml, /staffing-list-establishment-formula/);
+  assert.match(indexHtml, /flags-and-historical-patterns\/\?lang=.*#eligible-list-timing/);
   assert.match(indexHtml, /data-prediction-subject="eligible-list-establishment"/);
   assert.match(indexHtml, /data-prediction-value=/);
   assert.match(i18n, /Past exams like this show an eligible list about/);
   assert.doesNotMatch(i18n, /exam_list_prediction_cohort_html:\s*"Predicted based on/);
   assert.match(aboutHtml, /id="staffing-list-establishment-formula"/);
-  assert.match(aboutHtml, /uses no applicant names, scores, or ranks/);
-  assert.match(aboutHtml, /match exams by exam number and measure from the filing deadline to the date the list was set up/);
+  const guide = readFileSync(new URL("../site/guide/_articles/flags-and-historical-patterns.md", import.meta.url), "utf8");
+  assert.match(guide, /No applicant names, scores, or ranks/);
+  assert.match(guide, /by exam number, from the filing deadline to list establishment/);
 });

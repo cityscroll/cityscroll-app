@@ -377,6 +377,7 @@ function renderBlocks(sourceName, body, includes = {}) {
   // A table takes its accessible name from the heading it sits under, so the
   // heading a reader has just read is also what a screen reader announces.
   let heading = null;
+  const headingIds = new Set();
   const figures = new Set();
 
   const takeWhile = (predicate) => {
@@ -392,8 +393,11 @@ function renderBlocks(sourceName, body, includes = {}) {
     const headingMatch = line.match(/^(#{2,3})\s+(.*)$/);
     if (headingMatch) {
       const level = headingMatch[1].length;
-      heading = headingMatch[2].trim();
-      html.push(`<h${level}>${inline(heading)}</h${level}>`);
+      const named = headingMatch[2].trim().match(/^(.*?) \{#([a-z][a-z0-9-]*)\}$/);
+      heading = named ? named[1] : headingMatch[2].trim();
+      if (named && headingIds.has(named[2])) fail(sourceName, `duplicate heading anchor: ${named[2]}`);
+      if (named) headingIds.add(named[2]);
+      html.push(`<h${level}${named ? ` id="${named[2]}"` : ""}>${inline(heading)}</h${level}>`);
       index += 1;
       continue;
     }

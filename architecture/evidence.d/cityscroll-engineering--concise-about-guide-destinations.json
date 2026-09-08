@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/concise-about-guide-destinations",
+  "status": "implemented",
+  "fingerprint": "concise-about-guide-destinations.v1",
+  "updated_at": "2026-09-08T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "cx-03-past-task-feedback-form",
+      "path": "site/about.html"
+    },
+    {
+      "id": "guide-explanation-flags",
+      "path": "site/guide/_articles/flags-and-historical-patterns.md"
+    },
+    {
+      "id": "guide-article-source-format",
+      "path": "site/guide_article_source.mjs"
+    },
+    {
+      "id": "guide-contextual-access-contracts",
+      "path": "test/guide_contextual_access.test.mjs"
+    },
+    {
+      "id": "concise-about-rendered-proof",
+      "path": "docs/evidence/concise-about/capture-manifest.json"
+    }
+  ]
+}

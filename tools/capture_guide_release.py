@@ -339,7 +339,7 @@ AUTHORED_ROUTES = (
             "Rules adoption lag",
             "An estimate never becomes a deadline",
         ],
-        "expect_links": [GUIDE_HOME, "/about.html#context"],
+        "expect_links": [GUIDE_HOME, "/guide/understand/flags-and-historical-patterns/#what-each-note-counts"],
         "axe": True,
     },
     {

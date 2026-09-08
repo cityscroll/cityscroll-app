@@ -35,7 +35,7 @@ def base_rate() -> dict:
             f"{cohort['typical_months']['high']} months after certification."
         ),
         "display_mode": "cohort_statistic_and_timing",
-        "formula_url": "about.html#zoning-base-rates",
+        "formula_url": "/guide/understand/flags-and-historical-patterns/#zoning-case-history",
     }
 
 
@@ -71,7 +71,7 @@ def applicant_conditioned(base: dict) -> dict:
         },
         "copy": copy,
         "render_mode": render_mode,
-        "formula_url": "about.html#applicant-conditioned-ulurp",
+        "formula_url": "/guide/understand/flags-and-historical-patterns/#applicant-history",
         "display_mode": (
             "conditioned_with_base_rate"
             if render_mode == "per_matter"

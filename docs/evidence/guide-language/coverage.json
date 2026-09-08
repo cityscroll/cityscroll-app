@@ -55,8 +55,8 @@
       "article": "flags-and-historical-patterns",
       "locale": "en",
       "status": "complete",
-      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
-      "required_segments": 69,
+      "source_sha256": "55afc31f2b9f8f02cf34d7becaa5bdf589bbe46b733d710d43c36a38dd5280ac",
+      "required_segments": 43,
       "intentional_source_segments": 1
     },
     {
@@ -207,8 +207,8 @@
       "article": "flags-and-historical-patterns",
       "locale": "es",
       "status": "complete",
-      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
-      "required_segments": 69,
+      "source_sha256": "55afc31f2b9f8f02cf34d7becaa5bdf589bbe46b733d710d43c36a38dd5280ac",
+      "required_segments": 43,
       "intentional_source_segments": 1
     },
     {
@@ -359,8 +359,8 @@
       "article": "flags-and-historical-patterns",
       "locale": "zh-Hans",
       "status": "complete",
-      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
-      "required_segments": 69,
+      "source_sha256": "55afc31f2b9f8f02cf34d7becaa5bdf589bbe46b733d710d43c36a38dd5280ac",
+      "required_segments": 43,
       "intentional_source_segments": 1
     },
     {
@@ -511,8 +511,8 @@
       "article": "flags-and-historical-patterns",
       "locale": "ru",
       "status": "complete",
-      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
-      "required_segments": 69,
+      "source_sha256": "55afc31f2b9f8f02cf34d7becaa5bdf589bbe46b733d710d43c36a38dd5280ac",
+      "required_segments": 43,
       "intentional_source_segments": 1
     },
     {
@@ -663,8 +663,8 @@
       "article": "flags-and-historical-patterns",
       "locale": "bn",
       "status": "complete",
-      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
-      "required_segments": 69,
+      "source_sha256": "55afc31f2b9f8f02cf34d7becaa5bdf589bbe46b733d710d43c36a38dd5280ac",
+      "required_segments": 43,
       "intentional_source_segments": 1
     },
     {
@@ -815,8 +815,8 @@
       "article": "flags-and-historical-patterns",
       "locale": "ht",
       "status": "complete",
-      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
-      "required_segments": 69,
+      "source_sha256": "55afc31f2b9f8f02cf34d7becaa5bdf589bbe46b733d710d43c36a38dd5280ac",
+      "required_segments": 43,
       "intentional_source_segments": 1
     },
     {
@@ -967,8 +967,8 @@
       "article": "flags-and-historical-patterns",
       "locale": "ko",
       "status": "complete",
-      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
-      "required_segments": 69,
+      "source_sha256": "55afc31f2b9f8f02cf34d7becaa5bdf589bbe46b733d710d43c36a38dd5280ac",
+      "required_segments": 43,
       "intentional_source_segments": 1
     },
     {
@@ -1119,8 +1119,8 @@
       "article": "flags-and-historical-patterns",
       "locale": "fr",
       "status": "complete",
-      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
-      "required_segments": 69,
+      "source_sha256": "55afc31f2b9f8f02cf34d7becaa5bdf589bbe46b733d710d43c36a38dd5280ac",
+      "required_segments": 43,
       "intentional_source_segments": 1
     },
     {
@@ -1271,8 +1271,8 @@
       "article": "flags-and-historical-patterns",
       "locale": "pl",
       "status": "complete",
-      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
-      "required_segments": 69,
+      "source_sha256": "55afc31f2b9f8f02cf34d7becaa5bdf589bbe46b733d710d43c36a38dd5280ac",
+      "required_segments": 43,
       "intentional_source_segments": 1
     },
     {
@@ -1423,8 +1423,8 @@
       "article": "flags-and-historical-patterns",
       "locale": "ar",
       "status": "complete",
-      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
-      "required_segments": 69,
+      "source_sha256": "55afc31f2b9f8f02cf34d7becaa5bdf589bbe46b733d710d43c36a38dd5280ac",
+      "required_segments": 43,
       "intentional_source_segments": 1
     },
     {
@@ -1575,8 +1575,8 @@
       "article": "flags-and-historical-patterns",
       "locale": "ur",
       "status": "complete",
-      "source_sha256": "693c3913e9902c1480c395433d55a9ee27732f321d0f9349e1698aa4397d3373",
-      "required_segments": 69,
+      "source_sha256": "55afc31f2b9f8f02cf34d7becaa5bdf589bbe46b733d710d43c36a38dd5280ac",
+      "required_segments": 43,
       "intentional_source_segments": 1
     },
     {

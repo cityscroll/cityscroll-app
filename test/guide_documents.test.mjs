@@ -948,3 +948,17 @@ test('retained source titles have an explicit reading language without marking t
   assert.ok(marked.includes('<bdi lang="en" dir="ltr">Update to Parks List</bdi>'));
   assert.ok(marked.includes('<strong>Detalles</strong>'));
 });
+
+
+test("explicit section anchors stay stable when headings are translated", () => {
+  const source = MINIMAL.replace("## A heading", "## A heading {#stable-section}");
+  const english = parseGuideArticle("fixture.md", source);
+  assert.match(english.bodyHtml, /<h2 id="stable-section">A heading<\/h2>/);
+  assert.throws(() => parseGuideArticle("fixture.md", source + "\n## Another {#stable-section}\n\nMore prose.\n"), /duplicate heading anchor/);
+  for (const locale of ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"]) {
+    const html = readFileSync(new URL(`../site/guide/${locale}/understand/flags-and-historical-patterns/index.html`, import.meta.url), "utf8");
+    for (const id of ["what-each-note-counts", "patterns-from-past-records", "eligible-list-timing", "property-sale-timing", "tax-lien-progression", "zoning-case-history", "applicant-history"]) {
+      assert.ok(html.includes(`id="${id}"`), `${locale} ${id}`);
+    }
+  }
+});

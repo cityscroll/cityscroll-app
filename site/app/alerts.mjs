@@ -1048,7 +1048,7 @@ const SECTION_LENS = {"Procurement":"money","Public Hearings and Meetings":"meet
 /* ===================== RED FLAGS & BENCHMARKS (context, never accusations) =====================
    OCP/Opentender-style computable signals + comparative stats, computed live per view from small
    SODA aggregates and cached per agency for the session. Formulas + false-positive modes are
-   documented on about.html#context, which every flag links to. */
+   documented on /guide/understand/flags-and-historical-patterns/#what-each-note-counts, which every flag links to. */
 const BM_CACHE = {};
 // determinism-lint: allow clock a rolling twelve-month benchmark window is relative to now by definition; it bounds a SODA aggregate, not a rendered date.
 const yearCut = () => new Date(Date.now()-365*86400000).toISOString().slice(0,10) + "T00:00:00";

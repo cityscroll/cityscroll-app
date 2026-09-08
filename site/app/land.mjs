@@ -1110,7 +1110,7 @@ function landApplicantConditionedHTML(stats){
       p0:String(baseApproved)
     })}${confChip}</p>
     <p class="base-rate-authority">${t("land_applicant_conditioned_authority_html",{
-      link:`<a href="${escUiHtml(ac.formula_url||t("land_applicant_conditioned_formula_url"))}">${t("land_applicant_conditioned_formula_link")}</a>`
+      link:`<a href="${escUiHtml(t("land_applicant_conditioned_formula_url").replace("/#", `/?lang=${encodeURIComponent(window.LANG || "en")}#`))}">${t("land_applicant_conditioned_formula_link")}</a>`
     })}</p>
   </div>`;
 }
@@ -1138,7 +1138,7 @@ function landZoningStatisticsHTML(record){
     })}</p>
     ${applicantBlock}
     <p class="base-rate-authority">${t("land_zoning_base_rate_authority_html",{
-      link:`<a href="${escUiHtml(stats.formula_url||t("land_zoning_base_rate_formula_url"))}">${t("land_zoning_base_rate_formula_link")}</a>`
+      link:`<a href="${escUiHtml(t("land_zoning_base_rate_formula_url").replace("/#", `/?lang=${encodeURIComponent(window.LANG || "en")}#`))}">${t("land_zoning_base_rate_formula_link")}</a>`
     })}</p>
   </aside>`;
 }

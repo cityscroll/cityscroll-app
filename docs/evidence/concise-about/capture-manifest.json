@@ -1,0 +1,611 @@
+{
+  "schema": "cityscroll.about-capture.v1",
+  "captures": [
+    {
+      "stage": "before",
+      "locale": "en",
+      "route": "/about.html?lang=en",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "13e3c9f925d31e572695868924a6134378b136b739f21a3931bec346781d6880",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "df1374f86283bc981ff9307c5f5067d672c2c9e3271dd85a0b8faad8783724cb",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "source_state": "committed revision"
+    },
+    {
+      "stage": "before",
+      "locale": "en",
+      "route": "/about.html?lang=en",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "13e3c9f925d31e572695868924a6134378b136b739f21a3931bec346781d6880",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "be69cb858a6c52df29847af0c80df71919c57b74ac0eb183ec121a2890e0ef20",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "source_state": "committed revision"
+    },
+    {
+      "stage": "after",
+      "locale": "en",
+      "route": "/about.html?lang=en",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "edfcbde685fa0e87fb0c6c828dab04bf86f39ef22d5d911c469c7c411b8e01ad",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "authored_words": 205,
+      "destinations": {
+        "context": "/guide/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "en",
+      "route": "/about.html?lang=en",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "ad443aee580f3c434c5c1ba4ce568ad94f115a2ab67db297616f83c9f8db45c4",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "authored_words": 205,
+      "destinations": {
+        "context": "/guide/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "es",
+      "route": "/about.html?lang=es",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "bcff6a327036ce48d2c7667e5bdbb46feb5fbeba3657cd3a29de681833667bb4",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "destinations": {
+        "context": "/guide/es/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/es/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/es/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/es/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/es/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/es/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/es/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "es",
+      "route": "/about.html?lang=es",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "616c7a093ef57e084452bcf27cb442bb1e09d0c86ea79064cb4d4f228da200e8",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "destinations": {
+        "context": "/guide/es/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/es/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/es/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/es/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/es/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/es/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/es/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "zh-Hans",
+      "route": "/about.html?lang=zh-Hans",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "6dd4b4e584f614ac2606a547c797dc70c3a92f3a1703feb80269cc73e3869c5e",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "destinations": {
+        "context": "/guide/zh-Hans/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/zh-Hans/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/zh-Hans/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/zh-Hans/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/zh-Hans/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/zh-Hans/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/zh-Hans/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "zh-Hans",
+      "route": "/about.html?lang=zh-Hans",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "e597642ddc843be70bc71935ffc186c29558908dd3b39707d3021c8047a55d05",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "destinations": {
+        "context": "/guide/zh-Hans/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/zh-Hans/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/zh-Hans/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/zh-Hans/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/zh-Hans/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/zh-Hans/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/zh-Hans/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "ru",
+      "route": "/about.html?lang=ru",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "31baf6aea0bc3f9b948e5881d91575e9d675eff146190353995b048e8071c8d1",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "destinations": {
+        "context": "/guide/ru/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/ru/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/ru/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/ru/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/ru/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/ru/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/ru/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "ru",
+      "route": "/about.html?lang=ru",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "601565624173cec1eac12aa1a6c62626280d9d11a55b4fbc57c28d9e1815567e",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "destinations": {
+        "context": "/guide/ru/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/ru/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/ru/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/ru/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/ru/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/ru/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/ru/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "bn",
+      "route": "/about.html?lang=bn",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "70d8d7962817413c167d720d5daa484d6c7dd31369b47b05730e21ff991cc91c",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "destinations": {
+        "context": "/guide/bn/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/bn/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/bn/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/bn/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/bn/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/bn/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/bn/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "bn",
+      "route": "/about.html?lang=bn",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "7274359eab63bd64976c4260551961de8237a36d49d68106f7cf93268cb0383e",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "destinations": {
+        "context": "/guide/bn/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/bn/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/bn/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/bn/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/bn/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/bn/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/bn/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "ht",
+      "route": "/about.html?lang=ht",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "64cfdff5c4a678dc819489a74b1fd9811510401f0100aa3b151cefe7770205bd",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "destinations": {
+        "context": "/guide/ht/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/ht/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/ht/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/ht/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/ht/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/ht/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/ht/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "ht",
+      "route": "/about.html?lang=ht",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "fc8fc0d3dc03e3123508518aa926f9c793e02ad4a8f9c88ced4e671a7ba716ca",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "destinations": {
+        "context": "/guide/ht/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/ht/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/ht/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/ht/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/ht/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/ht/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/ht/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "ko",
+      "route": "/about.html?lang=ko",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "b2fbf73a497466aaa30e573df25187e5388c3e877d32105f07cfd9741fd7d4b5",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "destinations": {
+        "context": "/guide/ko/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/ko/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/ko/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/ko/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/ko/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/ko/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/ko/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "ko",
+      "route": "/about.html?lang=ko",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "c0e56606cb964d0451b085b3e98b58c375a77bd017d9034bed0c7ba1822bc0ee",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "destinations": {
+        "context": "/guide/ko/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/ko/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/ko/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/ko/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/ko/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/ko/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/ko/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "fr",
+      "route": "/about.html?lang=fr",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "7aa0034ac1d1f05f79d45cf0bd84fa1ba2f50cd17945103aeee21d6f1d6c8787",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "destinations": {
+        "context": "/guide/fr/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/fr/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/fr/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/fr/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/fr/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/fr/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/fr/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "fr",
+      "route": "/about.html?lang=fr",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "e6e7ec73e59112d5b72983b2fed9f268c88e2088627ff76a1387973bfff87e37",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "destinations": {
+        "context": "/guide/fr/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/fr/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/fr/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/fr/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/fr/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/fr/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/fr/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "pl",
+      "route": "/about.html?lang=pl",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "5a102fbec993c2f06948cf3e4b3c41ab85199a78ae89d4086724b1b4f6c05698",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "destinations": {
+        "context": "/guide/pl/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/pl/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/pl/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/pl/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/pl/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/pl/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/pl/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "pl",
+      "route": "/about.html?lang=pl",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "65304870ff6d5a7a428d7e359651b45581ed965bd7f12ec67b7442bf3c1820c0",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "destinations": {
+        "context": "/guide/pl/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/pl/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/pl/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/pl/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/pl/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/pl/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/pl/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "ar",
+      "route": "/about.html?lang=ar",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "0a079d8a26c0d03a4d31a97a512785e5aa3cbc8c49dd0cea61730350be5d1f72",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "destinations": {
+        "context": "/guide/ar/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/ar/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/ar/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/ar/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/ar/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/ar/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/ar/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "ar",
+      "route": "/about.html?lang=ar",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "9498f586e2283ce5ade6a08a4d5c896723616e176753fb69118a07c4b01a3513",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "destinations": {
+        "context": "/guide/ar/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/ar/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/ar/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/ar/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/ar/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/ar/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/ar/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "ur",
+      "route": "/about.html?lang=ur",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "2e217de6887ba0f3cc1260b8aa90f255aa461a6dd8c99b9acf7e2d50ce8d11df",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "destinations": {
+        "context": "/guide/ur/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/ur/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/ur/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/ur/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/ur/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/ur/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/ur/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    },
+    {
+      "stage": "after",
+      "locale": "ur",
+      "route": "/about.html?lang=ur",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "3266851e30fead25e43627bbea275d25906b429a",
+      "source_sha256": "bc6a18da4af9571fa8326fc1ba89296a57670d1d1d636e24f6051cc1b4fb453f",
+      "data_vintage": "Authored page; no civic dataset or live writes used",
+      "sha256": "b89eb36f8277b7be8db92714b4855004548403d36905da7afd754e4e6da937c9",
+      "assertion": "About renders in the selected language and direction without horizontal overflow",
+      "assertion_holds": true,
+      "destinations": {
+        "context": "/guide/ur/understand/flags-and-historical-patterns/#what-each-note-counts",
+        "past-patterns": "/guide/ur/understand/flags-and-historical-patterns/#patterns-from-past-records",
+        "staffing-list-establishment-formula": "/guide/ur/understand/flags-and-historical-patterns/#eligible-list-timing",
+        "property-disposition-timing-formula": "/guide/ur/understand/flags-and-historical-patterns/#property-sale-timing",
+        "tax-lien-sale-predictions": "/guide/ur/understand/flags-and-historical-patterns/#tax-lien-progression",
+        "zoning-base-rates": "/guide/ur/understand/flags-and-historical-patterns/#zoning-case-history",
+        "applicant-conditioned-ulurp": "/guide/ur/understand/flags-and-historical-patterns/#applicant-history"
+      },
+      "mocked_feedback": "One intercepted POST; empty input and disclosure sent none; success cleared fields; privacy visible",
+      "source_state": "captured source identified by source_sha256"
+    }
+  ]
+}
