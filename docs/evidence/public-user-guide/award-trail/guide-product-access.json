@@ -3,7 +3,7 @@
   "record": "guide-product-access",
   "capture_mode": "local_static_site_playwright_no_committed_image",
   "base": "local static site build (site/)",
-  "repository_revision": "760e182c7a2f19276b64a06aec1f4a5f2cf419f7",
+  "repository_revision": "066ceaf024c39b9c681f1cd234ef371ced50e31b",
   "repository_state": "uncommitted changes present at capture time",
   "note": "Reachability evidence for connecting the published guide to the product. The run covers home \u2192 Guide \u2192 an example \u2192 a relevant explanation \u2192 the product, About's preserved anchors, and Following's one help link, at 390px and 1440px. Screenshots stay under .artifacts/; only sha256 values are committed.",
   "data_vintage": "Not applicable: these documents are tracked prose and chrome, not civic records.",

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "capture_mode": "local_candidate_with_snapshotted_public_reads",
-  "repository_revision": "760e182c7a2f19276b64a06aec1f4a5f2cf419f7",
+  "repository_revision": "066ceaf024c39b9c681f1cd234ef371ced50e31b",
   "candidate_module_sha256": {
     "site/route_migration.mjs": "2ed4ef70b008444a18b52c3d7308ffb84284cb7a87a7e7e379040b329199f5e8",
     "site/app/entities.mjs": "7f09b923eba6c18667c96a0fd452355b4a38c4205d6b35bb0aae3c70c46dcc1d",
@@ -46,11 +46,11 @@
         "width": 390,
         "height": 844
       },
-      "revision": "760e182c7a2f19276b64a06aec1f4a5f2cf419f7",
+      "revision": "066ceaf024c39b9c681f1cd234ef371ced50e31b",
       "data_vintage": "2026-09-08T14:02:41.886519+00:00",
       "assertion": "A fresh session restores the two-hop trail created by clicking agency, vendor and award connections.",
       "assertion_holds": true,
-      "sha256": "b4121fdab9f8152023f1ef1d4916c41771e6797afb146fc4d67353baa7c68040",
+      "sha256": "976172667f1d1cb9f8df291e4546fa9603f05ed5803c46634a424fb5236d1854",
       "file": null,
       "trail_text": "\u2039\nDepartment of Homeless Services\npublished by agency \u2192\n\u25c6LANTERN COMMUNITY SERVICES INC published by agency\nAward \u2192\nIntegrated Commercial Hotels Program\n\u21ba"
     },
@@ -61,11 +61,11 @@
         "width": 390,
         "height": 844
       },
-      "revision": "760e182c7a2f19276b64a06aec1f4a5f2cf419f7",
+      "revision": "066ceaf024c39b9c681f1cd234ef371ced50e31b",
       "data_vintage": "2026-09-08T14:02:41.886519+00:00",
       "assertion": "A fresh session restores the two-hop trail created by clicking agency, vendor and award connections.",
       "assertion_holds": true,
-      "sha256": "34560cb0541ab943fc342f746bafcf812435f803071139caf75acd80f6f2914d",
+      "sha256": "3ba7e7c7dbf8fecca12297cec5ac7f579bd0da77a232dae45964dc42a8e98c96",
       "file": null,
       "trail_text": "\u2039\nDepartment of Homeless Services\npublished by agency \u2192\n\u25c6VOLUNTEERS OF AMERICA GREATER NEW YORK INC published by agency\nAward \u2192\nIntegrated Commercial Hotels Program\n\u21ba"
     },
@@ -76,11 +76,11 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "760e182c7a2f19276b64a06aec1f4a5f2cf419f7",
+      "revision": "066ceaf024c39b9c681f1cd234ef371ced50e31b",
       "data_vintage": "2026-09-08T14:02:41.886519+00:00",
       "assertion": "A fresh session restores the two-hop trail created by clicking agency, vendor and award connections.",
       "assertion_holds": true,
-      "sha256": "ced7ec544bea61f6fc2979170279e64af792d8db9c485eecac05f0c2123436b6",
+      "sha256": "e30e43fb3cd90343f9f62cf826975c62c1fb863aba4b8b60ade8814d1d5b96a7",
       "file": null,
       "trail_text": "\u2039\nDepartment of Homeless Services\npublished by agency \u2192\n\u25c6LANTERN COMMUNITY SERVICES INC published by agency\nAward \u2192\nIntegrated Commercial Hotels Program\n\u21ba"
     },
@@ -91,11 +91,11 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "760e182c7a2f19276b64a06aec1f4a5f2cf419f7",
+      "revision": "066ceaf024c39b9c681f1cd234ef371ced50e31b",
       "data_vintage": "2026-09-08T14:02:41.886519+00:00",
       "assertion": "A fresh session restores the two-hop trail created by clicking agency, vendor and award connections.",
       "assertion_holds": true,
-      "sha256": "bef4e1c48828c99dcc77023a88d1599f8dc3639bc2e75a871306e47b14f91861",
+      "sha256": "9a3f3c900a9eaf45d3be45a61a6c3cc871a9f1293a52e05da2b5c23854824342",
       "file": null,
       "trail_text": "\u2039\nDepartment of Homeless Services\npublished by agency \u2192\n\u25c6VOLUNTEERS OF AMERICA GREATER NEW YORK INC published by agency\nAward \u2192\nIntegrated Commercial Hotels Program\n\u21ba"
     }
@@ -135,6 +135,8 @@
       "restart": "/agencies/homeless-services/",
       "unknown_connection_panel_hidden": true,
       "fresh_collection_empty": true,
+      "task_route_loaded": true,
+      "page_errors": [],
       "blocked_mutations": [
         {
           "method": "POST",
@@ -180,6 +182,8 @@
       "restart": "/agencies/homeless-services/",
       "unknown_connection_panel_hidden": true,
       "fresh_collection_empty": true,
+      "task_route_loaded": true,
+      "page_errors": [],
       "blocked_mutations": [
         {
           "method": "POST",
@@ -225,6 +229,8 @@
       "restart": "/agencies/homeless-services/",
       "unknown_connection_panel_hidden": true,
       "fresh_collection_empty": true,
+      "task_route_loaded": true,
+      "page_errors": [],
       "blocked_mutations": [
         {
           "method": "POST",
@@ -270,6 +276,8 @@
       "restart": "/agencies/homeless-services/",
       "unknown_connection_panel_hidden": true,
       "fresh_collection_empty": true,
+      "task_route_loaded": true,
+      "page_errors": [],
       "blocked_mutations": [
         {
           "method": "POST",
