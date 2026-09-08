@@ -20,6 +20,7 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
 
 import { entityPivotRouteStatus } from "../site/edge_summary.mjs";
 import { parseGuideArticle, parseGuideHome, GuideSourceError } from "../site/guide_article_source.mjs";
@@ -108,7 +109,9 @@ export function loadGuide() {
   const articles = readdirSync(ARTICLE_DIR)
     .filter((name) => name.endsWith(".md"))
     .sort()
-    .map((name) => parseGuideArticle(`site/guide/_articles/${name}`, readFileSync(join(ARTICLE_DIR, name), "utf8"), includes))
+    .map((name) => parseGuideArticle(`site/guide/_articles/${name}`, readFileSync(join(ARTICLE_DIR, name), "utf8"), {
+      ...includes, figures: loadGuideFigures(name.replace(/\.md$/, "")),
+    }))
     .sort(byReadingOrder);
 
   const seen = new Map();
@@ -119,6 +122,36 @@ export function loadGuide() {
     }
   }
   return { home, articles };
+}
+
+/** Validate actual PNG bytes against the per-article public capture receipt. */
+export function loadGuideFigures(slug) {
+  const path = join(SITE, "media", "guide", slug, "receipt.json");
+  if (!existsSync(path)) return {};
+  const receipt = JSON.parse(readFileSync(path, "utf8"));
+  if (receipt.schema !== "cityscroll.guide-captures.v1" || !receipt.figures) {
+    throw new GuideSourceError(`invalid guide capture receipt: ${slug}`);
+  }
+  for (const [id, figure] of Object.entries(receipt.figures)) {
+    for (const variant of ["mobile", "desktop"]) {
+      const asset = figure[variant];
+      if (!asset || !new RegExp(`^/media/guide/${slug}/[a-z0-9-]+\\.png$`).test(asset.src)) {
+        throw new GuideSourceError(`${slug}/${id}: invalid ${variant} asset path`);
+      }
+      const bytes = readFileSync(join(SITE, asset.src));
+      if (!bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))
+          || bytes.readUInt32BE(16) !== asset.width || bytes.readUInt32BE(20) !== asset.height
+          || createHash("sha256").update(bytes).digest("hex") !== asset.sha256) {
+        throw new GuideSourceError(`${slug}/${id}: PNG dimensions or digest do not match ${variant}`);
+      }
+      if (!/^\d{4}-\d{2}-\d{2}T/.test(asset.captured_at)
+          || !/^[a-f0-9]{40}$/.test(asset.revision) || !asset.route?.startsWith("/")
+          || !Array.isArray(asset.redactions) || !asset.viewport?.width) {
+        throw new GuideSourceError(`${slug}/${id}: missing capture provenance`);
+      }
+    }
+  }
+  return receipt.figures;
 }
 
 function documentPathFor(route) {

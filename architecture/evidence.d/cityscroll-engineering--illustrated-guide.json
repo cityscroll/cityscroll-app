@@ -1,0 +1,41 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/illustrated-guide",
+  "status": "implemented",
+  "fingerprint": "illustrated-guide.v1",
+  "updated_at": "2026-09-08T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "guide-article-source-format",
+      "path": "site/guide_article_source.mjs"
+    },
+    {
+      "id": "guide-navigation",
+      "path": "site/guide_navigation.mjs"
+    },
+    {
+      "id": "guide-document-builder",
+      "path": "tools/build_guide_documents.mjs"
+    },
+    {
+      "id": "guide-illustration-capture",
+      "path": "tools/capture_guide_illustrations.py"
+    },
+    {
+      "id": "guide-figure-browser-checks",
+      "path": "tools/verify_guide_figures.py"
+    },
+    {
+      "id": "guide-document-contracts",
+      "path": "test/guide_documents.test.mjs"
+    },
+    {
+      "id": "guide-authoring",
+      "path": "docs/public-guide.md"
+    },
+    {
+      "id": "guide-figure-evidence",
+      "path": "docs/evidence/illustrated-guide/capture-manifest.json"
+    }
+  ]
+}

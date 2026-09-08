@@ -46,6 +46,10 @@ In **People + organizations**, select an agency title, such as **Housing Preserv
 when it appears. The agency page names the agency and groups its connected records by kind.
 If this group is empty, try another agency-related word in the search field.
 
+::: figure agency-result
+
+::: figure agency-arrival
+
 ## Step 3 — Compare a rule result
 
 Use your browser's **Back** button to return to [the housing search](/search/?q=housing).
@@ -59,6 +63,8 @@ For a result with a quoted passage, open **Official source** beside that passage
 Check the title, agency and stage on the city's published copy. If no passage result appears,
 open a result's title and use its **Official record** link instead.
 You now have a source you can rely on, rather than just a search match.
+
+::: figure rule-source
 
 ## Step 5 — Keep and repeat the search
 

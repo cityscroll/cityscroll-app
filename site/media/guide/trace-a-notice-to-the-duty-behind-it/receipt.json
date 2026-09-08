@@ -1,0 +1,200 @@
+{
+  "schema": "cityscroll.guide-captures.v1",
+  "figures": {
+    "connected-duty": {
+      "locale": "en",
+      "caption": "1. Select the duty text under Connected mandate. The relation and Charter citation explain this link.",
+      "alt": "Connected mandate in the Sanitation rule notice with its duty link, relation and Charter citation.",
+      "mobile": {
+        "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/connected-duty-mobile.png",
+        "width": 344,
+        "height": 273,
+        "captured_at": "2026-09-08T15:54:58.673353+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/notices/20260605008",
+        "sha256": "8a1570baa0a220a0013de0ddf795b8d4ca6dcdbcf471e42e3a377e2737dac813",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "[data-connected-mandate] a[href^=\"/mandates/\"]",
+            "label": "\u25c6\nMandate \u00b7 Regulate the conduct of businesses authorized to collect commercial waste in commercial waste zones and establish and enforce specified standards and requirements.",
+            "y": 103
+          }
+        ],
+        "crop": {
+          "x": 39,
+          "y": 1626,
+          "width": 312,
+          "height": 273
+        },
+        "source_html_sha256": "a4a33a74130b8ac324bd3002ca16aa299c1baa847853412d9fc03f08f3522e83"
+      },
+      "desktop": {
+        "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/connected-duty-desktop.png",
+        "width": 878,
+        "height": 141,
+        "captured_at": "2026-09-08T15:55:01.938292+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/notices/20260605008",
+        "sha256": "69d08a8bfa2958cc21ec7f0ce88c4fb2dff59908d563b9b2797bfec4ceac5f5a",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "[data-connected-mandate] a[href^=\"/mandates/\"]",
+            "label": "\u25c6\nMandate \u00b7 Regulate the conduct of businesses authorized to collect commercial waste in commercial waste zones and establish and enforce specified standards and requirements.",
+            "y": 63
+          }
+        ],
+        "crop": {
+          "x": 297,
+          "y": 1139,
+          "width": 846,
+          "height": 141
+        },
+        "source_html_sha256": "a4a33a74130b8ac324bd3002ca16aa299c1baa847853412d9fc03f08f3522e83"
+      }
+    },
+    "duty-source": {
+      "locale": "en",
+      "caption": "1. Source law opens the legislation behind the duty. Compare its citation and required action.",
+      "alt": "Sanitation mandate heading, required action and Source law link.",
+      "mobile": {
+        "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/duty-source-mobile.png",
+        "width": 406,
+        "height": 490,
+        "captured_at": "2026-09-08T15:54:58.974289+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/mandates/64116-001",
+        "sha256": "4378bed030de96c0e713f0e02ba314477ccda2cf2b01bf0852e8c8e545ac8acc",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": ".node-source-link",
+            "label": "Source law\n\u2197",
+            "y": 420
+          }
+        ],
+        "crop": {
+          "x": 8,
+          "y": 548,
+          "width": 374,
+          "height": 490
+        },
+        "source_html_sha256": "41f8ffff4ea3476dbc1fadf8b5d8dadc893e6b3b31b7c5da63832f2a62bc5c5a"
+      },
+      "desktop": {
+        "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/duty-source-desktop.png",
+        "width": 729,
+        "height": 472,
+        "captured_at": "2026-09-08T15:55:02.251778+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/mandates/64116-001",
+        "sha256": "93cd3729af1e5e9c9bf1aadc5799d8fdafe4bcf7ba639ec2cdee5ba249c9d2e5",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": ".node-source-link",
+            "label": "Source law\n\u2197",
+            "y": 400
+          }
+        ],
+        "crop": {
+          "x": 200,
+          "y": 682,
+          "width": 697,
+          "height": 472
+        },
+        "source_html_sha256": "41f8ffff4ea3476dbc1fadf8b5d8dadc893e6b3b31b7c5da63832f2a62bc5c5a"
+      }
+    },
+    "publication-evidence": {
+      "locale": "en",
+      "caption": "1. Publication evidence links back to request 20260605008, the filing you started from.",
+      "alt": "Publication evidence on the duty page includes the Sanitation notice request number.",
+      "mobile": {
+        "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/publication-evidence-mobile.png",
+        "width": 406,
+        "height": 178,
+        "captured_at": "2026-09-08T15:54:59.234762+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/mandates/64116-001",
+        "sha256": "a880ecd856cbdd4366d715c87aec66ed693faec5d5f432e5429cbd3512d1be0d",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "[data-mandate-inverse-links] a[href*=\"20260605008\"]",
+            "label": "Notice evidence \u00b7 20260605008",
+            "y": 110
+          }
+        ],
+        "crop": {
+          "x": 8,
+          "y": 1196,
+          "width": 374,
+          "height": 178
+        },
+        "source_html_sha256": "41f8ffff4ea3476dbc1fadf8b5d8dadc893e6b3b31b7c5da63832f2a62bc5c5a"
+      },
+      "desktop": {
+        "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/publication-evidence-desktop.png",
+        "width": 729,
+        "height": 191,
+        "captured_at": "2026-09-08T15:55:02.477662+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/mandates/64116-001",
+        "sha256": "c4a59bbd60836a3fdd0b0cf662b4cfc31dab54fde71a7ca5f024a23720764dcc",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "[data-mandate-inverse-links] a[href*=\"20260605008\"]",
+            "label": "Notice evidence \u00b7 20260605008",
+            "y": 122
+          }
+        ],
+        "crop": {
+          "x": 200,
+          "y": 1303,
+          "width": 697,
+          "height": 191
+        },
+        "source_html_sha256": "41f8ffff4ea3476dbc1fadf8b5d8dadc893e6b3b31b7c5da63832f2a62bc5c5a"
+      }
+    }
+  }
+}

@@ -155,6 +155,26 @@ rather than by the product:
 - State the visible result beside its action; instructions must remain complete
   without images. Give exact control labels, locations and the conditions that
   reveal them so the same steps can be illustrated or translated.
+- Pair difficult controls and changed states with real UI crops, using
+  `::: figure <name>` beside the matching step. The named figure comes from
+  `site/media/guide/<article-slug>/receipt.json`. It requires mobile and desktop
+  PNGs, dimensions, alt text, a numbered caption and an explicit capture locale.
+  `tools/capture_guide_illustrations.py` produces these public product assets and
+  their capture date, revision, source route, viewport, digest and redaction record.
+  Pages serves them through its existing static media mechanism. Product illustrations
+  live in `site/media/guide/`; verification screenshots remain ignored, with only
+  manifests under `docs/evidence/`.
+- Each crop keeps its surrounding landmark and uses numbered callouts outside
+  controls. Never substitute generated UI or a whole page shrunk to unreadable text.
+  The ordinary enlargement links work by keyboard and without JavaScript; browser
+  Back returns to the article. Complete text directions remain beside every figure.
+- Captures currently show the English interface and say so in every caption.
+  Translated articles must pair captions with captures of the same UI language;
+  do not silently reuse an English image as a localized screenshot. Localized
+  capture production belongs with the guide translation work.
+- Product links use existing routes and anchors, retain their authored task scope,
+  and carry the selected language through the optional `site/guide_navigation.mjs`.
+  The guide never forwards arbitrary parameters, account tokens or email addresses.
 - Never promise a number of results. Records roll; the shape of the answer is the
   lesson.
 - If a step needs an interactive product surface, say so at that step. The article

@@ -1,0 +1,346 @@
+{
+  "schema": "cityscroll.guide-captures.v1",
+  "figures": {
+    "board-topic": {
+      "locale": "en",
+      "caption": "1. Hearings and meetings is selected. 2. Open Narrow it down below the place choices.",
+      "alt": "The selected Hearings and meetings topic and the Narrow it down disclosure in Following.",
+      "mobile": {
+        "src": "/media/guide/follow-a-community-board/board-topic-mobile.png",
+        "width": 406,
+        "height": 492,
+        "captured_at": "2026-09-08T15:54:17.853490+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/following?lens=meetings&filter=%7B%7D&freq=daily&step=choose",
+        "sha256": "2a7f311f247e0e12516b990d709aa54ea710c85b743677a9d4f1a9053f38fcdd",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "[data-following-primary-choice=\"topic\"]",
+            "label": "Contracts and RFPs\nZoning\nProperty\nRules\nHearings and meetings",
+            "y": 56
+          },
+          {
+            "number": 2,
+            "selector": ".following-refinements > summary",
+            "label": "Narrow it down",
+            "y": 461
+          }
+        ],
+        "crop": {
+          "x": 8,
+          "y": 626,
+          "width": 374,
+          "height": 492
+        },
+        "source_html_sha256": "f13a2463c1fe531d2c4e32d8cee509ede27905e2d2f7eca0fc9439e0fa02c3c5"
+      },
+      "desktop": {
+        "src": "/media/guide/follow-a-community-board/board-topic-desktop.png",
+        "width": 1072,
+        "height": 387,
+        "captured_at": "2026-09-08T15:54:20.544563+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/following?lens=meetings&filter=%7B%7D&freq=daily&step=choose",
+        "sha256": "55223664e44c85969c07502ee0406e773977f70020ca8e32e52b94ee7ed94dc4",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "[data-following-primary-choice=\"topic\"]",
+            "label": "Contracts and RFPs\nZoning\nProperty\nRules\nHearings and meetings",
+            "y": 30
+          },
+          {
+            "number": 2,
+            "selector": ".following-refinements > summary",
+            "label": "Narrow it down",
+            "y": 357
+          }
+        ],
+        "crop": {
+          "x": 200,
+          "y": 621,
+          "width": 1040,
+          "height": 387
+        },
+        "source_html_sha256": "f13a2463c1fe531d2c4e32d8cee509ede27905e2d2f7eca0fc9439e0fa02c3c5"
+      }
+    },
+    "board-picker": {
+      "locale": "en",
+      "caption": "1. In Community Board, choose Manhattan in Borough and 7 in Board number.",
+      "alt": "Community Board picker with Borough set to Manhattan and Board number set to 7.",
+      "mobile": {
+        "src": "/media/guide/follow-a-community-board/board-picker-mobile.png",
+        "width": 406,
+        "height": 262,
+        "captured_at": "2026-09-08T15:54:18.118376+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/following?lens=meetings&filter=%7B%7D&freq=daily&step=choose",
+        "sha256": "9d47c43f4a05dd06bc39923ca070006db1d8180b7dcc84a521c0dee777e00543",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": ".following-community-board-picker",
+            "label": "Community Board\nBOROUGH\nChoose a borough\nManhattan\nBronx\nBrooklyn\nQueens\nStaten Island\nBOARD NUMBER\nChoose a board\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18",
+            "y": 89
+          }
+        ],
+        "crop": {
+          "x": 8,
+          "y": 1281,
+          "width": 374,
+          "height": 262
+        },
+        "source_html_sha256": "96c22b45dead4fa72058d6cada32f3a6c516c4e4711cd786ec7cab3156d0d47d"
+      },
+      "desktop": {
+        "src": "/media/guide/follow-a-community-board/board-picker-desktop.png",
+        "width": 382,
+        "height": 267,
+        "captured_at": "2026-09-08T15:54:20.797224+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/following?lens=meetings&filter=%7B%7D&freq=daily&step=choose",
+        "sha256": "5ee3f428c75e00a6a39090d07be17314acdc54bc5a2a9be17437c3b1619f8c2a",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": ".following-community-board-picker",
+            "label": "Community Board\nBOROUGH\nChoose a borough\nManhattan\nBronx\nBrooklyn\nQueens\nStaten Island\nBOARD NUMBER\nChoose a board\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18",
+            "y": 90
+          }
+        ],
+        "crop": {
+          "x": 890,
+          "y": 1003,
+          "width": 350,
+          "height": 267
+        },
+        "source_html_sha256": "96c22b45dead4fa72058d6cada32f3a6c516c4e4711cd786ec7cab3156d0d47d"
+      }
+    },
+    "board-preview": {
+      "locale": "en",
+      "caption": "1. Watch summary must identify Manhattan Community Board 7 before saving.",
+      "alt": "The watch summary identifies Manhattan Community Board 7 in a disposable preview.",
+      "mobile": {
+        "src": "/media/guide/follow-a-community-board/board-preview-mobile.png",
+        "width": 406,
+        "height": 389,
+        "captured_at": "2026-09-08T15:54:18.435956+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/following?lens=meetings&filter=%7B%7D&freq=daily&q=&agency=&council=&boardBorough=Manhattan&boardNumber=7",
+        "sha256": "e37a92504ace32d01035966d93ee069e84e8bef071237259d67c67bf8c8f25e8",
+        "redactions": [],
+        "data_vintage": "Disposable empty-preview fixture rendered by following_view.mjs; no watch created",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "[data-following-identity-rule]",
+            "label": "Notify me when meetings for Manhattan Community Board 7 are published.",
+            "y": 122
+          }
+        ],
+        "crop": {
+          "x": 8,
+          "y": 2094,
+          "width": 374,
+          "height": 389
+        },
+        "source_html_sha256": "bd86bfb51d6a5d14d168895a5c9dc0c775ef9e7a1259a6d3ffae0c542c6a2d5d"
+      },
+      "desktop": {
+        "src": "/media/guide/follow-a-community-board/board-preview-desktop.png",
+        "width": 1072,
+        "height": 313,
+        "captured_at": "2026-09-08T15:54:21.120030+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/following?lens=meetings&filter=%7B%7D&freq=daily&q=&agency=&council=&boardBorough=Manhattan&boardNumber=7",
+        "sha256": "eeb2d53890e975fe36c68d516cc0e00192fa55d445e8b2d84b99f8aef2fe74b6",
+        "redactions": [],
+        "data_vintage": "Disposable empty-preview fixture rendered by following_view.mjs; no watch created",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "[data-following-identity-rule]",
+            "label": "Notify me when meetings for Manhattan Community Board 7 are published.",
+            "y": 119
+          }
+        ],
+        "crop": {
+          "x": 200,
+          "y": 1741,
+          "width": 1040,
+          "height": 313
+        },
+        "source_html_sha256": "bd86bfb51d6a5d14d168895a5c9dc0c775ef9e7a1259a6d3ffae0c542c6a2d5d"
+      }
+    },
+    "watch-confirmation": {
+      "locale": "en",
+      "caption": "1. This confirmation means the save succeeded. Keep the welcome email to manage or stop the watch.",
+      "alt": "A disposable successful-save example showing the subscribed confirmation and an empty email field.",
+      "mobile": {
+        "src": "/media/guide/follow-a-community-board/watch-confirmation-mobile.png",
+        "width": 356,
+        "height": 294,
+        "captured_at": "2026-09-08T15:54:19.189777+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/following?lens=meetings&filter=%7B%7D&freq=daily&q=&agency=&council=&boardBorough=Manhattan&boardNumber=7",
+        "sha256": "6c29b6e31f578edbcade1776aadc378a75e0147ad766c6bf856162376e9c71a8",
+        "redactions": [
+          "Disposable email cleared by the production success handler before capture"
+        ],
+        "data_vintage": "Disposable successful subscription response; all outgoing writes intercepted; no email sent",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "[data-following-submit-status]",
+            "label": "You're subscribed \u2014 we'll email you. Manage or unsubscribe anytime.",
+            "y": 262
+          }
+        ],
+        "crop": {
+          "x": 33,
+          "y": 3017,
+          "width": 324,
+          "height": 294
+        },
+        "source_html_sha256": "df6f38be068ea047e615617fe8456e71afb38a51dceced1990322ba2d3180ee1"
+      },
+      "desktop": {
+        "src": "/media/guide/follow-a-community-board/watch-confirmation-desktop.png",
+        "width": 329,
+        "height": 294,
+        "captured_at": "2026-09-08T15:54:21.886143+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/following?lens=meetings&filter=%7B%7D&freq=daily&q=&agency=&council=&boardBorough=Manhattan&boardNumber=7",
+        "sha256": "1074cfda861c2d159f52197d2fca40c73aa752da03d01754a782311c5e0505b9",
+        "redactions": [
+          "Disposable email cleared by the production success handler before capture"
+        ],
+        "data_vintage": "Disposable successful subscription response; all outgoing writes intercepted; no email sent",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "[data-following-submit-status]",
+            "label": "You're subscribed \u2014 we'll email you. Manage or unsubscribe anytime.",
+            "y": 262
+          }
+        ],
+        "crop": {
+          "x": 918,
+          "y": 2208,
+          "width": 297,
+          "height": 294
+        },
+        "source_html_sha256": "df6f38be068ea047e615617fe8456e71afb38a51dceced1990322ba2d3180ee1"
+      }
+    },
+    "board-criteria": {
+      "locale": "en",
+      "caption": "1. Watch criteria also names Manhattan Community Board 7. Zero matches means this loaded preview is empty.",
+      "alt": "Watch criteria names the topic and Manhattan Community Board 7.",
+      "mobile": {
+        "src": "/media/guide/follow-a-community-board/board-criteria-mobile.png",
+        "width": 406,
+        "height": 217,
+        "captured_at": "2026-09-08T15:54:18.676249+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/following?lens=meetings&filter=%7B%7D&freq=daily&q=&agency=&council=&boardBorough=Manhattan&boardNumber=7",
+        "sha256": "9ffd6d6cd716325e90b3606db174766a5f4fc1359c40ffd343dbb919a70b7441",
+        "redactions": [],
+        "data_vintage": "Disposable empty-preview fixture rendered by following_view.mjs; no watch created",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": ".following-scope-chips",
+            "label": "Hearings and meetings\nManhattan Community Board 7",
+            "y": 115
+          }
+        ],
+        "crop": {
+          "x": 8,
+          "y": 2482,
+          "width": 374,
+          "height": 217
+        },
+        "source_html_sha256": "bd86bfb51d6a5d14d168895a5c9dc0c775ef9e7a1259a6d3ffae0c542c6a2d5d"
+      },
+      "desktop": {
+        "src": "/media/guide/follow-a-community-board/board-criteria-desktop.png",
+        "width": 379,
+        "height": 427,
+        "captured_at": "2026-09-08T15:54:21.345608+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/following?lens=meetings&filter=%7B%7D&freq=daily&q=&agency=&council=&boardBorough=Manhattan&boardNumber=7",
+        "sha256": "b7048cb6af5aad8b75b89fff1609ebd3384a7744aecce0e9686678ea4111d7ba",
+        "redactions": [],
+        "data_vintage": "Disposable empty-preview fixture rendered by following_view.mjs; no watch created",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": ".following-scope-chips",
+            "label": "Hearings and meetings\nManhattan Community Board 7",
+            "y": 128
+          }
+        ],
+        "crop": {
+          "x": 200,
+          "y": 2053,
+          "width": 347,
+          "height": 427
+        },
+        "source_html_sha256": "bd86bfb51d6a5d14d168895a5c9dc0c775ef9e7a1259a6d3ffae0c542c6a2d5d"
+      }
+    }
+  }
+}

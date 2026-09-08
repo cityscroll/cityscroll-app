@@ -7,7 +7,7 @@ url: /guide/how-to/collect-records-and-export-them/
 reader_question: How do I keep a set of records together and take them with me?
 purpose: Pin records, save notes, and choose between a local export and a shared copy.
 description: Pin real records into one investigation, annotate them, take them away as a file, and learn exactly where each copy lives and who can read it.
-last_reviewed: 2026-09-05
+last_reviewed: 2026-09-08
 return_to_task: Open your investigation | /#investigation
 related:
   - Trace an award and keep the trail | /guide/start/trace-an-award-and-keep-the-trail/
@@ -25,6 +25,10 @@ Among the record's actions, choose **Pin**. The confirmation links to the worksp
 item count. Open [the named organization](/vendors/HOUSING%20OPTIONS%20GERIATRIC%20ASSOCIATION%20RESOURCES/)
 and choose **Pin** there too. Pin appears on individual records, not search results.
 
+::: figure pin-record
+
+::: figure pin-confirmation
+
 ## Step 2 — Add and check a note
 
 Open **My investigation** in the page footer, or [your investigation](/#investigation).
@@ -37,13 +41,15 @@ removes it. A session recognized through a CityScroll email can keep pins across
 
 ## Step 3 — Export a copy
 
-Above the items, choose **Export .csv** for a spreadsheet or **Export .json** for structured data.
+Below the items, choose **Export .csv** for a spreadsheet or **Export .json** for structured data.
 Open the downloaded file and check the records, notes and links. Both files are fixed copies;
 they do not update. **Print dossier** opens the browser's print window to print or save a PDF.
 
+::: figure notes-and-exports
+
 ## Step 4 — Share only after checking the notes
 
-Read your notes before choosing **Share read-only link** above the items. This uploads a snapshot,
+Read your notes before choosing **Share read-only link** below the items. This uploads a snapshot,
 including notes, to CityScroll. Anyone with the link can read it without a password for **90 days**.
 It is separate from your local list and does not follow later edits.
 

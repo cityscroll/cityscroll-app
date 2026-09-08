@@ -233,8 +233,8 @@ AUTHORED_ROUTES = (
         "assertion": "The tutorial builds a two-step trail, shows that it travels in the address, "
         "and says an awardee is not an opportunity.",
         "expect_text": [
-            "awarded to",
-            "received award",
+            "published by agency",
+            "Award",
             "Vendor profile",
             "not an announcement that subcontracts are available",
         ],
@@ -494,6 +494,7 @@ def keyboard_reach(page: Page) -> dict:
     """
     expected = page.evaluate(
         """() => [...new Set([...document.querySelectorAll('main a[href]')]
+            .filter((node) => node.getClientRects().length && getComputedStyle(node).visibility !== 'hidden')
             .map((node) => node.getAttribute('href')))]"""
     )
     page.evaluate("() => document.body.focus()")
@@ -887,7 +888,7 @@ def main() -> int:
     manifest = {
         "schema_version": 1,
         "record": args.record,
-        "capture_mode": "local_static_site_playwright_no_committed_image",
+        "capture_mode": "local_static_site_playwright_manifest_proof",
         "base": "local static preview of tracked guide documents",
         "repository_revision": repository_revision(),
         "repository_state": working_tree_state(),
@@ -905,10 +906,10 @@ def main() -> int:
             "path and only their sha256 is recorded, per docs/capture-manifest-guard.md."
         ),
         "data_vintage": (
-            "Not applicable to the guide documents: they are prose built from tracked sources and "
-            "contain no civic records. Their review dates are editorial facts recorded in the "
-            "article sources, not observations of live data. The search document is served from "
-            "the local build and its results are not asserted."
+            "Guide prose is built from tracked sources; review dates are recorded editorial facts. "
+            "Illustrated public records retain their capture date, source route, revision and data "
+            "provenance in the matching site/media/guide article receipt. The search document is "
+            "served from the local build and its results are not asserted by this release check."
         ),
         "viewports": [
             {"name": name, "width": width, "height": height} for name, width, height in VIEWPORTS

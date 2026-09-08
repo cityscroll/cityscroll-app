@@ -326,9 +326,13 @@ function wireAgencyDocument(main, nowView, { viewHref = null } = {}) {
     const form = main.querySelector("[data-ctl-form]");
     form?.addEventListener("submit", async (event) => {
       event.preventDefault();
+      // Preserve the submitted date before hydration replaces the form. The
+      // first Apply must use the reader's entry, just like subsequent submits.
+      const day = normalizeAsOfDay(form.querySelector("[data-ctl-as-of]")?.value);
       const view = await loader();
+      const next = sharePath(view.path, { asOf: day, claim: currentClaimId() });
+      history.pushState({ as_of: day }, "", next);
       wireAgencyDocument(main, view);
-      applyAsOf(main, view, parseAsOfFromSearch(location.search));
     }, { once: true });
     main.querySelector('[data-object-export="json"]')?.addEventListener("click", async (event) => {
       event.preventDefault();

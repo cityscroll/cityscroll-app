@@ -1,0 +1,200 @@
+{
+  "schema": "cityscroll.guide-captures.v1",
+  "figures": {
+    "agency-result": {
+      "locale": "en",
+      "caption": "1. Select the agency title in People + organizations to open its connected records.",
+      "alt": "Housing search results showing the Housing Preservation and Development agency entry.",
+      "mobile": {
+        "src": "/media/guide/explore-housing-across-city-records/agency-result-mobile.png",
+        "width": 362,
+        "height": 519,
+        "captured_at": "2026-09-08T15:54:54.555998+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/search/?q=housing",
+        "sha256": "24175183c52eee9b3d09933924b6e4ed404983abec038237f524b56878ae00e8",
+        "redactions": [],
+        "data_vintage": "Retained public reads of /search and /search/candidates for housing; curl acquisition; source vintages in response",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "a[href=\"/agencies/housing-preservation-and-development/\"]",
+            "label": "Department of Housing Preservation and Development",
+            "y": 333
+          }
+        ],
+        "crop": {
+          "x": 30,
+          "y": 9749,
+          "width": 330,
+          "height": 519
+        },
+        "source_html_sha256": "07e06b8d97c990847dba003155e38ddd69bff7a7c369e72d5e708ebad1d9b137"
+      },
+      "desktop": {
+        "src": "/media/guide/explore-housing-across-city-records/agency-result-desktop.png",
+        "width": 527,
+        "height": 392,
+        "captured_at": "2026-09-08T15:54:56.661060+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/search/?q=housing",
+        "sha256": "4c51de037228ea1c7c7f876b5d6e5b1acfd241f83f2ac2cf695d151ece25e9ec",
+        "redactions": [],
+        "data_vintage": "Retained public reads of /search and /search/candidates for housing; curl acquisition; source vintages in response",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "a[href=\"/agencies/housing-preservation-and-development/\"]",
+            "label": "Department of Housing Preservation and Development",
+            "y": 255
+          }
+        ],
+        "crop": {
+          "x": 737,
+          "y": 907,
+          "width": 495,
+          "height": 392
+        },
+        "source_html_sha256": "07e06b8d97c990847dba003155e38ddd69bff7a7c369e72d5e708ebad1d9b137"
+      }
+    },
+    "agency-arrival": {
+      "locale": "en",
+      "caption": "1. The destination heading confirms the agency. Its connected records are grouped below.",
+      "alt": "Housing Preservation and Development agency heading after selecting the search result.",
+      "mobile": {
+        "src": "/media/guide/explore-housing-across-city-records/agency-arrival-mobile.png",
+        "width": 406,
+        "height": 289,
+        "captured_at": "2026-09-08T15:54:54.884880+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/agencies/housing-preservation-and-development/",
+        "sha256": "a87d402d54a718a7628f9b8574e411f49ab81cc81527d6f540d3d91c2c595ef2",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "main h1",
+            "label": "Department of Housing Preservation and Development",
+            "y": 111
+          }
+        ],
+        "crop": {
+          "x": 8,
+          "y": 227,
+          "width": 374,
+          "height": 289
+        },
+        "source_html_sha256": "7674c83215ff8f91bbf5c04fa74d3c22deada54269606bbc8ca78fe900092fb6"
+      },
+      "desktop": {
+        "src": "/media/guide/explore-housing-across-city-records/agency-arrival-desktop.png",
+        "width": 1072,
+        "height": 281,
+        "captured_at": "2026-09-08T15:54:57.031408+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/agencies/housing-preservation-and-development/",
+        "sha256": "64cd09b1dca403db23832d15e6efc2c9efff7b16363a5a206e4e4a05d57bee98",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "main h1",
+            "label": "Department of Housing Preservation and Development",
+            "y": 119
+          }
+        ],
+        "crop": {
+          "x": 200,
+          "y": 185,
+          "width": 1040,
+          "height": 281
+        },
+        "source_html_sha256": "7674c83215ff8f91bbf5c04fa74d3c22deada54269606bbc8ca78fe900092fb6"
+      }
+    },
+    "rule-source": {
+      "locale": "en",
+      "caption": "1. Official source beside a quoted passage opens the publisher\u2019s copy. Check its title, agency and stage.",
+      "alt": "A rule passage in the housing search with its Official source link.",
+      "mobile": {
+        "src": "/media/guide/explore-housing-across-city-records/rule-source-mobile.png",
+        "width": 362,
+        "height": 318,
+        "captured_at": "2026-09-08T15:54:55.635217+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/search/?q=housing",
+        "sha256": "3ab60c1d88a414d52a7a90b9865f98d2ae67f44db5abb7ed725aa5d6240f9b7b",
+        "redactions": [],
+        "data_vintage": "Retained public housing search response; passage text and source link unchanged",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "[data-guide-crop=\"rule-passage\"] a[href^=\"https:\"]",
+            "label": "Official source\n\u2197",
+            "y": 276
+          }
+        ],
+        "crop": {
+          "x": 30,
+          "y": 15654,
+          "width": 330,
+          "height": 318
+        },
+        "source_html_sha256": "54de39114defc10b12132121ceeb73217a0373c7497148087eb1204b473e56d6"
+      },
+      "desktop": {
+        "src": "/media/guide/explore-housing-across-city-records/rule-source-desktop.png",
+        "width": 527,
+        "height": 260,
+        "captured_at": "2026-09-08T15:54:57.474182+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/search/?q=housing",
+        "sha256": "a6503f1a1cc3f1a6c3b118d24053e67bc9a151ffbd59094f1bf3bb1bb4bb974d",
+        "redactions": [],
+        "data_vintage": "Retained public housing search response; passage text and source link unchanged",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "[data-guide-crop=\"rule-passage\"] a[href^=\"https:\"]",
+            "label": "Official source\n\u2197",
+            "y": 217
+          }
+        ],
+        "crop": {
+          "x": 737,
+          "y": 7798,
+          "width": 495,
+          "height": 260
+        },
+        "source_html_sha256": "54de39114defc10b12132121ceeb73217a0373c7497148087eb1204b473e56d6"
+      }
+    }
+  }
+}

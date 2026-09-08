@@ -7,7 +7,7 @@ url: /guide/how-to/put-dates-in-your-calendar/
 reader_question: How do I get these dates into my own calendar?
 purpose: Add a single event or subscribe to a dated list, then check the result in your calendar app.
 description: Add one city event to your calendar, or subscribe to a whole list of them, and know exactly which of the two you did and what it can promise.
-last_reviewed: 2026-09-05
+last_reviewed: 2026-09-08
 return_to_task: Open Now | /now/
 related:
   - Follow a search and manage your updates | /guide/how-to/follow-a-search/
@@ -41,6 +41,8 @@ Open [Meetings](/browse/meetings/). Enter a topic in **Search**; open **More fil
 the list contains dated items. If absent, widen the filters until dated records appear.
 The panel names the list you are about to subscribe to.
 
+::: figure calendar-toolbar
+
 ## Step 4 — Add the subscription in your calendar app
 
 In that panel, choose the route your app supports:
@@ -56,6 +58,8 @@ is a one-time copy; only a URL your calendar keeps fetching is a subscription.
 
 Subscriptions keep date-only deadlines as all-day entries and mark cancelled events as cancelled.
 Updates follow your calendar app's refresh schedule. Check the official record for last-minute changes.
+
+::: figure calendar-options
 
 ## When dates are missing
 

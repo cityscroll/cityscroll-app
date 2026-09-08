@@ -1508,6 +1508,9 @@
   #meetings-toolbar .field.kw{flex:1 1 320px}
   #meetings-toolbar .lens-toolbar-actions{margin-inline-start:auto}
   #meetings-toolbar .lens-more-content{inset-inline-start:auto;inset-inline-end:0}
+  @media (max-width:600px){
+    #meetings-toolbar .lens-more-content{inset-inline-start:0;inset-inline-end:auto;max-width:calc(100vw - 48px)}
+  }
   .meetings-method-copy{max-width:var(--measure);margin:var(--space-2) 0 0;padding:var(--space-3);border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-canvas-subtle);font:13px/1.5 var(--font-interface);color:var(--color-text-soft)}
   .meetings-rail-label{font:600 11px/1.2 var(--font-sc);letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-muted);margin:var(--space-3) 0 var(--space-2)}
   .meetings-location-control{align-self:flex-end}

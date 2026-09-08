@@ -1,8 +1,7 @@
 /*
  * Public guide (/guide/) — the few rules the shared node-document styles in
  * civic-documents.css do not already cover: the article list on the guide home,
- * the reading measure for long prose, and the checkpoint callout a tutorial uses
- * where another article would have put a screenshot.
+ * the reading measure for prose, instructional figures, and text checkpoints.
  *
  * Everything else (document width, hero, section rhythm, footer, colours, type)
  * comes from brand.css and civic-documents.css, so the guide reads as part of the
@@ -40,9 +39,7 @@
   gap: var(--space-2);
 }
 
-/* A checkpoint is what this guide uses instead of a screenshot: the reader is
-   told in words what they should be able to see, which stays readable at any
-   zoom level, in a screen reader, and when the page it describes changes. */
+/* Text checkpoints complement figures and remain usable if an image cannot load. */
 .guide-document .guide-checkpoint {
   margin: var(--space-4) 0;
   padding: var(--space-3) var(--space-4);
@@ -220,4 +217,27 @@
   border-inline-start: 4px solid var(--color-caution);
   background: var(--color-canvas-subtle);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.guide-figure {
+  margin: var(--space-5) 0 var(--space-6);
+  min-width: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.guide-figure picture { display: block; background: var(--color-canvas-subtle); }
+.guide-figure img { display: block; width: 100%; height: auto; color: var(--color-text); }
+.guide-figure figcaption {
+  padding: var(--space-3);
+  font-family: var(--font-interface);
+  font-size: .9375rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.guide-figure figcaption a { display: block; min-height: 24px; padding-block: 4px; }
+.guide-figure .guide-enlarge-mobile { display: none; }
+@media (max-width: 600px) {
+  .guide-figure .guide-enlarge-mobile { display: block; }
+  .guide-figure .guide-enlarge-desktop { display: none; }
 }

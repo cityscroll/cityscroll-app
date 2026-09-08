@@ -17,7 +17,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-import { GUIDE_GROUPS, GuideSourceError, escapeHtml, parseGuideArticle, parseGuideHome } from "../site/guide_article_source.mjs";
+import { GUIDE_GROUPS, GuideSourceError, escapeHtml, parseGuideArticle, parseGuideHome, renderGuideFigure } from "../site/guide_article_source.mjs";
 import { GuideSourceCoverageError, guideSourceCoverageTable } from "../site/guide_source_coverage.mjs";
 import { renderGuideArticle, renderGuideHome } from "../site/guide_view.mjs";
 import { guideWordCounts } from "../tools/guide_word_counts.mjs";
@@ -538,12 +538,57 @@ test("the first unfamiliar term in the tutorial has somewhere to go", () => {
 
 /* ------------------------------------------------------- rebuild behaviour */
 
-test("guide documents carry no script and no images", () => {
+test("guide documents allow only the optional locale module and safe figure markup", () => {
   for (const [path, html] of documents) {
-    assert.ok(!/<script\b/i.test(html), `${path} ships script`);
+    assert.ok(!/<script\b/i.test(html.replace('<script type="module" src="/guide_navigation.mjs"></script>', "")), `${path} ships unexpected script`);
     assert.ok(!/\son[a-z]+=/i.test(html), `${path} carries an inline event handler`);
-    assert.ok(!/<img\b/i.test(html), `${path} ships an image`);
+    assert.doesNotMatch(html, /<iframe|target="_blank"/i);
+    for (const [, attrs] of html.matchAll(/<img\b([^>]+)>/g)) {
+      assert.match(attrs, /src="\/media\/guide\/[a-z0-9-]+\/[a-z0-9-]+\.png"/);
+      assert.match(attrs, /width="[1-9]\d*" height="[1-9]\d*"/);
+      assert.match(attrs, /alt="[^"]+"/);
+    }
   }
+});
+
+const FIGURE = {
+  locale: "en", alt: "Board picker below Narrow it down", caption: "1. Choose Borough. 2. Choose Board number.",
+  mobile: { src: "/media/guide/follow-a-community-board/picker-mobile.png", width: 360, height: 400 },
+  desktop: { src: "/media/guide/follow-a-community-board/picker-desktop.png", width: 650, height: 300 },
+};
+
+test("each compact procedure places validated mobile and desktop captures beside its steps", () => {
+  for (const article of compactProcedures) {
+    const figures = [...article.bodyHtml.matchAll(/<figure\b[\s\S]*?<\/figure>/g)];
+    assert.ok(figures.length, article.title);
+    for (const [figure] of figures) {
+      assert.match(figure, /<source media="\(max-width: 600px\)"/);
+      assert.match(figure, /English interface\./);
+      assert.match(figure, /Enlarge phone image/);
+      assert.match(figure, /Enlarge desktop image/);
+    }
+    const withoutFigures = article.bodyHtml.replace(/<figure\b[\s\S]*?<\/figure>/g, "");
+    assert.match(withoutFigures, /Step 1/);
+    assert.match(withoutFigures, /<strong>/);
+  }
+});
+
+test("figures require named safe assets, dimensions, accessible text and explicit language", () => {
+  const html = renderGuideFigure("test", "picker", FIGURE);
+  assert.match(html, /<picture><source media="\(max-width: 600px\)"/);
+  assert.match(html, /<figcaption><strong>English interface\.<\/strong>/);
+  assert.match(html, /href="\/media\/guide\/follow-a-community-board\/picker-mobile.png">Enlarge phone image/);
+  assert.doesNotMatch(html, /onclick|tabindex="-1"|target=/);
+  for (const patch of [{ alt: "" }, { caption: "" }, { locale: "es" },
+    { desktop: { ...FIGURE.desktop, width: 0 } },
+    { mobile: { ...FIGURE.mobile, src: "https://example.org/picture.png" } },
+    { mobile: { ...FIGURE.mobile, src: "/media/guide/../picture.png" } }]) {
+    assert.throws(() => renderGuideFigure("test", "picker", { ...FIGURE, ...patch }), GuideSourceError);
+  }
+  assert.throws(() => renderGuideFigure("test", 'bad"id', FIGURE), GuideSourceError);
+  const escaped = renderGuideFigure("test", "picker", { ...FIGURE, alt: '<script>alert("x")</script>', caption: '<img src=x>' });
+  assert.match(escaped, /&lt;script&gt;/);
+  assert.doesNotMatch(escaped, /<script|<img src=x/);
 });
 
 test("an unchanged rebuild reproduces the same bytes", () => {
@@ -647,7 +692,7 @@ test("a link in prose renders with its label, and an outside link is marked as l
     "fixture.md",
     MINIMAL.replace("Some prose.", "See [the official record](https://a856-cityrecord.nyc.gov/) and [Browse](/browse/)."),
   );
-  assert.match(article.bodyHtml, /<a href="https:\/\/a856-cityrecord\.nyc\.gov\/" target="_blank" rel="noopener noreferrer">the official record<\/a>/);
+  assert.match(article.bodyHtml, /<a href="https:\/\/a856-cityrecord\.nyc\.gov\/">the official record<\/a>/);
   assert.match(article.bodyHtml, /<a href="\/browse\/">Browse<\/a>/);
 });
 

@@ -7,8 +7,8 @@ url: /guide/start/trace-an-award-and-keep-the-trail/
 reader_question: How do I follow an agency to a vendor to an award, and keep that path?
 purpose: Follow an agency to a vendor and an award, then check whether the copied link keeps both steps.
 description: Follow a city agency to an organization it pays and on to one award, then keep the whole two-step path as a link that rebuilds itself.
-last_reviewed: 2026-09-05
-return_to_task: Open the finished two-step trail | /notices/20231222103?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5IiwiaWQiOiJob21lbGVzcy1zZXJ2aWNlcyIsIm5hbWUiOiJIb21lbGVzcyBTZXJ2aWNlcyIsImhyZWYiOiIvYWdlbmNpZXMvaG9tZWxlc3Mtc2VydmljZXMvIn0sInJlbGF0aW9uIjoiYXdhcmRlZCB0byIsImRlc3RpbmF0aW9uIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IkhPVVNJTkcgT1BUSU9OUyBHRVJJQVRSSUMgQVNTT0NJQVRJT04gUkVTT1VSQ0VTIiwibmFtZSI6IkhvdXNpbmcgT3B0aW9ucyAmIEdlcmlhdHJpYyBBc3NvY2lhdGlvbiBSZXNvdXJjZXMiLCJocmVmIjoiL3ZlbmRvcnMvSE9VU0lORyUyME9QVElPTlMlMjBHRVJJQVRSSUMlMjBBU1NPQ0lBVElPTiUyMFJFU09VUkNFUy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IkhPVVNJTkcgT1BUSU9OUyBHRVJJQVRSSUMgQVNTT0NJQVRJT04gUkVTT1VSQ0VTIiwibmFtZSI6IkhvdXNpbmcgT3B0aW9ucyAmIEdlcmlhdHJpYyBBc3NvY2lhdGlvbiBSZXNvdXJjZXMiLCJocmVmIjoiL3ZlbmRvcnMvSE9VU0lORyUyME9QVElPTlMlMjBHRVJJQVRSSUMlMjBBU1NPQ0lBVElPTiUyMFJFU09VUkNFUy8ifSwicmVsYXRpb24iOiJyZWNlaXZlZCBhd2FyZCIsImRlc3RpbmF0aW9uIjp7ImtpbmQiOiJub3RpY2UiLCJpZCI6IjIwMjMxMjIyMTAzIiwibmFtZSI6IlNoZWx0ZXIgc2VydmljZXMgYXdhcmQiLCJocmVmIjoiL25vdGljZXMvMjAyMzEyMjIxMDMifSwic2NvcGUiOm51bGx9XX0
+last_reviewed: 2026-09-08
+return_to_task: Open the finished two-step trail | /notices/20260729015?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQyIiwibmFtZSI6IuKXhkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL0xBTlRFUk4lMjBDT01NVU5JVFklMjBTRVJWSUNFUy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIiwibmFtZSI6IkxhbnRlcm4gQ29tbXVuaXR5IFNlcnZpY2VzIEluYy4iLCJocmVmIjoiL3ZlbmRvcnMvTEFOVEVSTiUyMENPTU1VTklUWSUyMFNFUlZJQ0VTLyJ9LCJyZWxhdGlvbiI6IkF3YXJkIiwiZGVzdGluYXRpb24iOnsia2luZCI6Im5vdGljZSIsImlkIjoiMjAyNjA3MjkwMTUiLCJuYW1lIjoiSW50ZWdyYXRlZCBDb21tZXJjaWFsIEhvdGVscyBQcm9ncmFtIiwiaHJlZiI6IiNub3RpY2UvMjAyNjA3MjkwMTUifSwic2NvcGUiOm51bGx9XX0
 related:
   - Trace a notice to the duty behind it | /guide/start/trace-a-notice-to-the-duty-behind-it/
   - Check the evidence behind a connection | /guide/how-to/check-the-evidence-behind-a-connection/
@@ -24,8 +24,9 @@ sources:
 
 Open [Homeless Services](/agencies/homeless-services/) with JavaScript switched on.
 No account is needed. Under **Connected records**, find a vendor entry, identified by its
-organization name and connection label. For this example, use **Housing Options & Geriatric
-Association Resources** if present.
+organization name and connection label. For this example, use **Lantern Community Services** if present.
+
+::: figure vendor-connection
 
 ## Step 2 — Follow the vendor connection
 
@@ -34,11 +35,13 @@ Check that the trail at the top names Homeless Services and the vendor, with a c
 such as **published by agency** between them. Use **Back one step** beside the trail to return
 if you selected a different record, or **Restart at origin** to start again.
 
+::: figure vendor-trail
+
 ## Step 3 — Follow an award connection
 
 On the vendor page, find **On the record — notices naming this vendor** and open **Show all dates**.
-Select the notice title for the **family sanctuary facility on West 50th Street**, request number
-**20231222103**, in that list. If the dates are already listed without a disclosure, select the title there.
+Select the notice title for the **Integrated Commercial Hotels Program**, request number
+**20260729015**, in that list. If the dates are already listed without a disclosure, select the title there.
 Check that the notice opens and the trail contains both the agency-to-vendor and vendor-to-award
 steps. Use that notice title to continue from the vendor.
 
@@ -47,16 +50,20 @@ That navigation has not preserved the path; do not treat opening the notice alon
 The finished example linked below is a reference for the expected two-step display, not proof
 that your clicks created it.
 
+::: figure award-connection
+
 ## Step 4 — Reopen your own trail
 
 When both steps are visible, copy the full browser address and paste it into a new tab.
 Check that both steps and the final award return. The address carries the trail; simply
 bookmarking the notice without it will not preserve the path.
 
-Read each connection label separately. In the finished reference, **awarded to** connects
-Homeless Services to the vendor, and **received award** connects the vendor to the notice.
+Read each connection label separately. In the finished reference, **published by agency** connects
+Homeless Services to the vendor, and **Award** connects the vendor to the notice.
 The labels describe published links, not performance or wrongdoing. An award is historical:
 it is not an announcement that subcontracts are available or an invitation to bid.
+
+::: figure award-trail
 
 ## Step 5 — Repeat with another agency
 

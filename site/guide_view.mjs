@@ -2,7 +2,8 @@
  * Documents for the public guide at /guide/.
  *
  * The guide home and every guide article are plain static documents: prose,
- * headings, source links and ordinary navigation, with no script of their own.
+ * headings, source links and ordinary navigation. An optional module carries the
+ * selected language into product links.
  * A reader with JavaScript switched off gets the whole article, and an article
  * says at the step itself when the product surface it sends them to needs
  * script to work.
@@ -36,9 +37,7 @@ const TYPE_LABELS = Object.freeze({
 const EMPTY_GROUP_NOTE = "Articles for this section are being written. Each one is listed here once an editor has checked it against the live site.";
 
 function linkHtml({ label, href }) {
-  const external = /^https?:/i.test(href);
-  const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : "";
-  return `<a href="${esc(href)}"${attrs}>${esc(label)}</a>`;
+  return `<a href="${esc(href)}">${esc(label)}</a>`;
 }
 
 function head({ title, description, canonical }) {
@@ -46,7 +45,7 @@ function head({ title, description, canonical }) {
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(title)}</title><meta name="description" content="${esc(description)}">
 <link rel="canonical" href="${esc(canonical)}">${renderCivicDocumentAssets("/")}
-<link rel="stylesheet" href="/guide.css"></head>
+<link rel="stylesheet" href="/guide.css"><script type="module" src="/guide_navigation.mjs"></script></head>
 <body><a class="skip" href="#main">Skip to content</a>
 ${renderCivicDocumentMast({ current: "guide", surfaceClass: "guide-mast" })}`;
 }

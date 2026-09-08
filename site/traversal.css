@@ -6,7 +6,7 @@
 .traversal-path-back:hover,.traversal-path-back:focus-visible,.traversal-path-restart:hover,.traversal-path-restart:focus-visible{background:color-mix(in srgb,var(--color-action) 8%,transparent);border-radius:999px;text-decoration:none}
 .traversal-path-back:focus-visible,.traversal-path-restart:focus-visible{outline:2px solid var(--color-focus,var(--color-action));outline-offset:2px}
 .traversal-path ol{display:flex;min-width:0;flex:1;flex-wrap:wrap;gap:var(--space-1) var(--space-2);margin:0;padding:0;list-style:none}
-.traversal-path li{display:inline-flex;min-width:0;align-items:baseline;gap:var(--space-1);overflow-wrap:anywhere}
+.traversal-path li{display:inline-flex;min-width:0;flex-wrap:wrap;align-items:baseline;gap:var(--space-1);overflow-wrap:anywhere}
 .traversal-path-relation{color:var(--color-text-soft)}
 .traversal-path-current{min-width:0;flex:1;overflow-wrap:anywhere;font-weight:650}
 .traversal-path-status{margin:var(--space-1) 0 0;color:var(--color-text-soft);font-size:.85rem}

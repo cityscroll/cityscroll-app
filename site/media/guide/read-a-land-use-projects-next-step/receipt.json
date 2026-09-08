@@ -1,0 +1,135 @@
+{
+  "schema": "cityscroll.guide-captures.v1",
+  "figures": {
+    "project-stage": {
+      "locale": "en",
+      "caption": "1. Read Current stage, Current actor and Role together, then Expected next stage and Published next opportunity.",
+      "alt": "Where this stands for Timbale Terrace, including the current authority and next opportunity state.",
+      "mobile": {
+        "src": "/media/guide/read-a-land-use-projects-next-step/project-stage-mobile.png",
+        "width": 360,
+        "height": 820,
+        "captured_at": "2026-09-08T15:55:05.685430+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/browse/zoning/#land/2022M0258",
+        "sha256": "04527746e211b4da21dd586d6c6fe7c7b3e35a9c0e4c3f66501d5b48fe8319f8",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "#land-authority-summary",
+            "label": "WHERE THIS STANDS\n\nAt Mayoral / Appeals Board \u00b7 Mayoral / Appeals Board's role here: executive review \u00b7 Why: This action and procedure profile require it\n\nCan object where the Char",
+            "y": 410
+          }
+        ],
+        "crop": {
+          "x": 31,
+          "y": 2753,
+          "width": 328,
+          "height": 820
+        },
+        "source_html_sha256": "75420c4187a2d22db9c83711109dc7aa38ddde7e16114a077b00ae6243bafe81"
+      },
+      "desktop": {
+        "src": "/media/guide/read-a-land-use-projects-next-step/project-stage-desktop.png",
+        "width": 686,
+        "height": 599,
+        "captured_at": "2026-09-08T15:55:07.253054+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/browse/zoning/#land/2022M0258",
+        "sha256": "31a1f779515623ca144a825a1ff89a02be396d9a7fb04e655727d65e9217fa65",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "#land-authority-summary",
+            "label": "WHERE THIS STANDS\n\nAt Mayoral / Appeals Board \u00b7 Mayoral / Appeals Board's role here: executive review \u00b7 Why: This action and procedure profile require it\n\nCan object where the Char",
+            "y": 300
+          }
+        ],
+        "crop": {
+          "x": 595,
+          "y": 1714,
+          "width": 654,
+          "height": 599
+        },
+        "source_html_sha256": "59343f8277992f78de160d760504691865656a875f8692bf857d2ca36344ca5a"
+      }
+    },
+    "project-documents": {
+      "locale": "en",
+      "caption": "1. Decision documents lists published decisions. Use Open full ZAP project in this area for the full official record.",
+      "alt": "Decision documents for Timbale Terrace with links to the published files.",
+      "mobile": {
+        "src": "/media/guide/read-a-land-use-projects-next-step/project-documents-mobile.png",
+        "width": 360,
+        "height": 237,
+        "captured_at": "2026-09-08T15:55:05.951759+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "route": "/browse/zoning/#land/2022M0258",
+        "sha256": "cd877efc3e9fdce4820faa756817085b713640a140216862891e0b8f414b73b3",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "[data-guide-crop=\"project-documents\"] a",
+            "label": "Borough President Recommendation.pdf\n(opens in new tab)",
+            "y": 48
+          }
+        ],
+        "crop": {
+          "x": 31,
+          "y": 8212,
+          "width": 328,
+          "height": 237
+        },
+        "source_html_sha256": "389debb0ab5c3430e30cd30c07830de7b5cc6755d56ec1df21917c73f0d0d2cf"
+      },
+      "desktop": {
+        "src": "/media/guide/read-a-land-use-projects-next-step/project-documents-desktop.png",
+        "width": 686,
+        "height": 154,
+        "captured_at": "2026-09-08T15:55:08.294432+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "route": "/browse/zoning/#land/2022M0258",
+        "sha256": "e0ffa779d95794a150aa5582d83b4f09ef9f9a3ee41e58076db1941de502b3b4",
+        "redactions": [],
+        "data_vintage": "Retained public site data",
+        "callouts": [
+          {
+            "number": 1,
+            "selector": "[data-guide-crop=\"project-documents\"] a",
+            "label": "Borough President Recommendation.pdf\n(opens in new tab)",
+            "y": 48
+          }
+        ],
+        "crop": {
+          "x": 595,
+          "y": 5491,
+          "width": 654,
+          "height": 154
+        },
+        "source_html_sha256": "8f8d1c80fcbce75e3526b68c552d0ea9cbf8c01d6a38a367690500b409e465c5"
+      }
+    }
+  }
+}
