@@ -69,30 +69,6 @@
       "sha256": "7afa14b3e622401d6e436eb51ab62eea9298c3ac512816c71726420bb54db7ae"
     },
     {
-      "route": "/guide/how-to/find-and-narrow-records/",
-      "viewport": {
-        "width": 390,
-        "height": 844
-      },
-      "review_width": 390,
-      "zoom": 1,
-      "zoom_method": "CSS viewport divided by zoom",
-      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
-      "captured_at": "2026-09-08T15:47:09.443883+00:00",
-      "data_vintage": "Tracked guide and public capture receipts",
-      "assets": [
-        {
-          "src": "/media/guide/find-and-narrow-records/meeting-filters-mobile.png",
-          "width": 408,
-          "height": 732,
-          "alt": "Meeting list filters expanded above the results."
-        }
-      ],
-      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
-      "assertion_holds": true,
-      "sha256": "3ca177de31a4b99214909a89c41386ad648fc86372fb4c4c98c3029a68cedd3b"
-    },
-    {
       "route": "/guide/how-to/follow-a-community-board/",
       "viewport": {
         "width": 390,
@@ -201,36 +177,6 @@
       "sha256": "2e6d2c7b47560ac691aadc9a35a7a772f9686f6a01576e9ce0b825c387f0c267"
     },
     {
-      "route": "/guide/how-to/put-dates-in-your-calendar/",
-      "viewport": {
-        "width": 390,
-        "height": 844
-      },
-      "review_width": 390,
-      "zoom": 1,
-      "zoom_method": "CSS viewport divided by zoom",
-      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
-      "captured_at": "2026-09-08T15:47:23.503210+00:00",
-      "data_vintage": "Tracked guide and public capture receipts",
-      "assets": [
-        {
-          "src": "/media/guide/put-dates-in-your-calendar/calendar-toolbar-mobile.png",
-          "width": 394,
-          "height": 168,
-          "alt": "Meetings list toolbar, including the Subscribe to calendar control."
-        },
-        {
-          "src": "/media/guide/put-dates-in-your-calendar/calendar-options-mobile.png",
-          "width": 414,
-          "height": 836,
-          "alt": "Calendar subscription panel naming Meetings and showing the open and copy options."
-        }
-      ],
-      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
-      "assertion_holds": true,
-      "sha256": "ec9e66405b1b834af57c1bc3942ca334e61772a6c243c27507aeda6c3dfdeb28"
-    },
-    {
       "route": "/guide/how-to/read-a-land-use-projects-next-step/",
       "viewport": {
         "width": 390,
@@ -259,42 +205,6 @@
       "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
       "assertion_holds": true,
       "sha256": "1fbf6b14a3fb9d777952352120a0f6d95620db6d9afda724c949c0961459c69c"
-    },
-    {
-      "route": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
-      "viewport": {
-        "width": 390,
-        "height": 844
-      },
-      "review_width": 390,
-      "zoom": 1,
-      "zoom_method": "CSS viewport divided by zoom",
-      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
-      "captured_at": "2026-09-08T15:47:30.172750+00:00",
-      "data_vintage": "Tracked guide and public capture receipts",
-      "assets": [
-        {
-          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/connected-duty-mobile.png",
-          "width": 344,
-          "height": 272,
-          "alt": "Connected mandate in the Sanitation rule notice with its duty link, relation and Charter citation."
-        },
-        {
-          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/duty-source-mobile.png",
-          "width": 406,
-          "height": 490,
-          "alt": "Sanitation mandate heading, required action and Source law link."
-        },
-        {
-          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/publication-evidence-mobile.png",
-          "width": 406,
-          "height": 178,
-          "alt": "Publication evidence on the duty page includes the Sanitation notice request number."
-        }
-      ],
-      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
-      "assertion_holds": true,
-      "sha256": "968d6a876422e1f8130a9caea52ea3aaec00d643a1c44f84c761288bb3f56c43"
     },
     {
       "route": "/guide/how-to/check-the-evidence-behind-a-connection/",
@@ -361,30 +271,6 @@
       "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
       "assertion_holds": true,
       "sha256": "317160738c1d2b93169fa6902e71b6b5cdf0043734c623dcbed82fe38c945397"
-    },
-    {
-      "route": "/guide/how-to/find-and-narrow-records/",
-      "viewport": {
-        "width": 195,
-        "height": 844
-      },
-      "review_width": 390,
-      "zoom": 2,
-      "zoom_method": "CSS viewport divided by zoom",
-      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
-      "captured_at": "2026-09-08T15:47:47.420249+00:00",
-      "data_vintage": "Tracked guide and public capture receipts",
-      "assets": [
-        {
-          "src": "/media/guide/find-and-narrow-records/meeting-filters-mobile.png",
-          "width": 408,
-          "height": 732,
-          "alt": "Meeting list filters expanded above the results."
-        }
-      ],
-      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
-      "assertion_holds": true,
-      "sha256": "a2b367ee7945a09404c23165a1d1e67cf8169efd445c82c7b1702172b3893433"
     },
     {
       "route": "/guide/how-to/follow-a-community-board/",
@@ -495,36 +381,6 @@
       "sha256": "42c0490e675f00188fdf3785c6d93b71868c8357cbf6b10e87adb8203f9951f8"
     },
     {
-      "route": "/guide/how-to/put-dates-in-your-calendar/",
-      "viewport": {
-        "width": 195,
-        "height": 844
-      },
-      "review_width": 390,
-      "zoom": 2,
-      "zoom_method": "CSS viewport divided by zoom",
-      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
-      "captured_at": "2026-09-08T15:48:01.249431+00:00",
-      "data_vintage": "Tracked guide and public capture receipts",
-      "assets": [
-        {
-          "src": "/media/guide/put-dates-in-your-calendar/calendar-toolbar-mobile.png",
-          "width": 394,
-          "height": 168,
-          "alt": "Meetings list toolbar, including the Subscribe to calendar control."
-        },
-        {
-          "src": "/media/guide/put-dates-in-your-calendar/calendar-options-mobile.png",
-          "width": 414,
-          "height": 836,
-          "alt": "Calendar subscription panel naming Meetings and showing the open and copy options."
-        }
-      ],
-      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
-      "assertion_holds": true,
-      "sha256": "783c19838f3d299c57ecf49c75719276010217b0cab1dc18373c9f621fed2829"
-    },
-    {
       "route": "/guide/how-to/read-a-land-use-projects-next-step/",
       "viewport": {
         "width": 195,
@@ -553,42 +409,6 @@
       "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
       "assertion_holds": true,
       "sha256": "85a2edab1999ee7aaca84b33cf9045101fcb0307937bf154cb57e1633b4b0f5d"
-    },
-    {
-      "route": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
-      "viewport": {
-        "width": 195,
-        "height": 844
-      },
-      "review_width": 390,
-      "zoom": 2,
-      "zoom_method": "CSS viewport divided by zoom",
-      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
-      "captured_at": "2026-09-08T15:48:07.881168+00:00",
-      "data_vintage": "Tracked guide and public capture receipts",
-      "assets": [
-        {
-          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/connected-duty-mobile.png",
-          "width": 344,
-          "height": 272,
-          "alt": "Connected mandate in the Sanitation rule notice with its duty link, relation and Charter citation."
-        },
-        {
-          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/duty-source-mobile.png",
-          "width": 406,
-          "height": 490,
-          "alt": "Sanitation mandate heading, required action and Source law link."
-        },
-        {
-          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/publication-evidence-mobile.png",
-          "width": 406,
-          "height": 178,
-          "alt": "Publication evidence on the duty page includes the Sanitation notice request number."
-        }
-      ],
-      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
-      "assertion_holds": true,
-      "sha256": "459b35a6126bc559326d00ae2029f0112acf5f5ba41223b8119b1a4f5396b409"
     },
     {
       "route": "/guide/how-to/check-the-evidence-behind-a-connection/",
@@ -655,30 +475,6 @@
       "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
       "assertion_holds": true,
       "sha256": "a2b974c2cbdbbf89b1749ffbe9b7dead1d3a2290a53e3bebc3c7aee01c599e66"
-    },
-    {
-      "route": "/guide/how-to/find-and-narrow-records/",
-      "viewport": {
-        "width": 1440,
-        "height": 900
-      },
-      "review_width": 1440,
-      "zoom": 1,
-      "zoom_method": "CSS viewport divided by zoom",
-      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
-      "captured_at": "2026-09-08T15:48:25.031221+00:00",
-      "data_vintage": "Tracked guide and public capture receipts",
-      "assets": [
-        {
-          "src": "/media/guide/find-and-narrow-records/meeting-filters-desktop.png",
-          "width": 1124,
-          "height": 713,
-          "alt": "Meeting list filters expanded above the results."
-        }
-      ],
-      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
-      "assertion_holds": true,
-      "sha256": "538e909a3e5c04a44d37682041985e80dd06df6912adf9b6aa9a763089380515"
     },
     {
       "route": "/guide/how-to/follow-a-community-board/",
@@ -789,36 +585,6 @@
       "sha256": "3dfecfc032ef39fc3be4431fb63e645bdea45e6f0ea51862f952e73a15fc8bc5"
     },
     {
-      "route": "/guide/how-to/put-dates-in-your-calendar/",
-      "viewport": {
-        "width": 1440,
-        "height": 900
-      },
-      "review_width": 1440,
-      "zoom": 1,
-      "zoom_method": "CSS viewport divided by zoom",
-      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
-      "captured_at": "2026-09-08T15:48:39.034211+00:00",
-      "data_vintage": "Tracked guide and public capture receipts",
-      "assets": [
-        {
-          "src": "/media/guide/put-dates-in-your-calendar/calendar-toolbar-desktop.png",
-          "width": 1124,
-          "height": 75,
-          "alt": "Meetings list toolbar, including the Subscribe to calendar control."
-        },
-        {
-          "src": "/media/guide/put-dates-in-your-calendar/calendar-options-desktop.png",
-          "width": 628,
-          "height": 644,
-          "alt": "Calendar subscription panel naming Meetings and showing the open and copy options."
-        }
-      ],
-      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
-      "assertion_holds": true,
-      "sha256": "c7d7d665599abb4a54702b9449f8460d81b0521b4b40b41916f1c5aae6734099"
-    },
-    {
       "route": "/guide/how-to/read-a-land-use-projects-next-step/",
       "viewport": {
         "width": 1440,
@@ -847,42 +613,6 @@
       "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
       "assertion_holds": true,
       "sha256": "8221d8c520de78b641a00503fe5ae34cc9a48433f9dda5ac8f2734db8fe93f56"
-    },
-    {
-      "route": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
-      "viewport": {
-        "width": 1440,
-        "height": 900
-      },
-      "review_width": 1440,
-      "zoom": 1,
-      "zoom_method": "CSS viewport divided by zoom",
-      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
-      "captured_at": "2026-09-08T15:48:45.701171+00:00",
-      "data_vintage": "Tracked guide and public capture receipts",
-      "assets": [
-        {
-          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/connected-duty-desktop.png",
-          "width": 878,
-          "height": 141,
-          "alt": "Connected mandate in the Sanitation rule notice with its duty link, relation and Charter citation."
-        },
-        {
-          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/duty-source-desktop.png",
-          "width": 729,
-          "height": 472,
-          "alt": "Sanitation mandate heading, required action and Source law link."
-        },
-        {
-          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/publication-evidence-desktop.png",
-          "width": 729,
-          "height": 191,
-          "alt": "Publication evidence on the duty page includes the Sanitation notice request number."
-        }
-      ],
-      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
-      "assertion_holds": true,
-      "sha256": "e4dc11d370546f276fa68d9113dccefe5d5874365ae9dbb51e1ddcfd03890ae8"
     },
     {
       "route": "/guide/how-to/check-the-evidence-behind-a-connection/",
@@ -949,30 +679,6 @@
       "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
       "assertion_holds": true,
       "sha256": "70f1b867a3be451aa7724b1f25fc844e86ff67ae0bee0196aa5b23043b649d47"
-    },
-    {
-      "route": "/guide/how-to/find-and-narrow-records/",
-      "viewport": {
-        "width": 720,
-        "height": 900
-      },
-      "review_width": 1440,
-      "zoom": 2,
-      "zoom_method": "CSS viewport divided by zoom",
-      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
-      "captured_at": "2026-09-08T15:49:02.940211+00:00",
-      "data_vintage": "Tracked guide and public capture receipts",
-      "assets": [
-        {
-          "src": "/media/guide/find-and-narrow-records/meeting-filters-desktop.png",
-          "width": 1124,
-          "height": 713,
-          "alt": "Meeting list filters expanded above the results."
-        }
-      ],
-      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
-      "assertion_holds": true,
-      "sha256": "07d780d39629ff75047f5bfc200d3cb451b2780d39ee880ce6c541a32690560a"
     },
     {
       "route": "/guide/how-to/follow-a-community-board/",
@@ -1083,36 +789,6 @@
       "sha256": "13924bc1d898a7203711bfcf4f4592d4253d7722c6a57e234324a5c9c434eaaf"
     },
     {
-      "route": "/guide/how-to/put-dates-in-your-calendar/",
-      "viewport": {
-        "width": 720,
-        "height": 900
-      },
-      "review_width": 1440,
-      "zoom": 2,
-      "zoom_method": "CSS viewport divided by zoom",
-      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
-      "captured_at": "2026-09-08T15:49:17.401118+00:00",
-      "data_vintage": "Tracked guide and public capture receipts",
-      "assets": [
-        {
-          "src": "/media/guide/put-dates-in-your-calendar/calendar-toolbar-desktop.png",
-          "width": 1124,
-          "height": 75,
-          "alt": "Meetings list toolbar, including the Subscribe to calendar control."
-        },
-        {
-          "src": "/media/guide/put-dates-in-your-calendar/calendar-options-desktop.png",
-          "width": 628,
-          "height": 644,
-          "alt": "Calendar subscription panel naming Meetings and showing the open and copy options."
-        }
-      ],
-      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
-      "assertion_holds": true,
-      "sha256": "1c6d90cb89bf55babcadcaef6d076c3f757e9bcf3dae9af7c5f3daa7ecc1ed6a"
-    },
-    {
       "route": "/guide/how-to/read-a-land-use-projects-next-step/",
       "viewport": {
         "width": 720,
@@ -1141,42 +817,6 @@
       "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
       "assertion_holds": true,
       "sha256": "4e1a49604ef2bc874218a74f439d273cbb7c3f985887989b3b18a552df7291ad"
-    },
-    {
-      "route": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
-      "viewport": {
-        "width": 720,
-        "height": 900
-      },
-      "review_width": 1440,
-      "zoom": 2,
-      "zoom_method": "CSS viewport divided by zoom",
-      "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
-      "captured_at": "2026-09-08T15:49:24.468380+00:00",
-      "data_vintage": "Tracked guide and public capture receipts",
-      "assets": [
-        {
-          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/connected-duty-desktop.png",
-          "width": 878,
-          "height": 141,
-          "alt": "Connected mandate in the Sanitation rule notice with its duty link, relation and Charter citation."
-        },
-        {
-          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/duty-source-desktop.png",
-          "width": 729,
-          "height": 472,
-          "alt": "Sanitation mandate heading, required action and Source law link."
-        },
-        {
-          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/publication-evidence-desktop.png",
-          "width": 729,
-          "height": 191,
-          "alt": "Publication evidence on the duty page includes the Sanitation notice request number."
-        }
-      ],
-      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
-      "assertion_holds": true,
-      "sha256": "ccf96aa570c0b9fe51706c6a09dd4b090ce133576e77a9ac06a49ee6b8a27ba4"
     },
     {
       "route": "/guide/how-to/collect-records-and-export-them/",
@@ -1489,6 +1129,366 @@
       "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
       "assertion_holds": true,
       "sha256": "8d869af008bb376528f6ddb9f38546b2e0e7f26680eab7cb5d3d80497d1063b6"
+    },
+    {
+      "route": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+      "captured_at": "2026-09-08T15:55:46.628278+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/connected-duty-mobile.png",
+          "width": 344,
+          "height": 273,
+          "alt": "Connected mandate in the Sanitation rule notice with its duty link, relation and Charter citation."
+        },
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/duty-source-mobile.png",
+          "width": 406,
+          "height": 490,
+          "alt": "Sanitation mandate heading, required action and Source law link."
+        },
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/publication-evidence-mobile.png",
+          "width": 406,
+          "height": 178,
+          "alt": "Publication evidence on the duty page includes the Sanitation notice request number."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "7be61569bd8372d23c452274622049b716dd06429fc878bee86f27e849dad2fe"
+    },
+    {
+      "route": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
+      "viewport": {
+        "width": 195,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+      "captured_at": "2026-09-08T15:55:50.663178+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/connected-duty-mobile.png",
+          "width": 344,
+          "height": 273,
+          "alt": "Connected mandate in the Sanitation rule notice with its duty link, relation and Charter citation."
+        },
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/duty-source-mobile.png",
+          "width": 406,
+          "height": 490,
+          "alt": "Sanitation mandate heading, required action and Source law link."
+        },
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/publication-evidence-mobile.png",
+          "width": 406,
+          "height": 178,
+          "alt": "Publication evidence on the duty page includes the Sanitation notice request number."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "b089655b5c04bf8a3c0e253bc181437495d35f6cb79301f464e408276289047f"
+    },
+    {
+      "route": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+      "captured_at": "2026-09-08T15:55:54.712657+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/connected-duty-desktop.png",
+          "width": 878,
+          "height": 141,
+          "alt": "Connected mandate in the Sanitation rule notice with its duty link, relation and Charter citation."
+        },
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/duty-source-desktop.png",
+          "width": 729,
+          "height": 472,
+          "alt": "Sanitation mandate heading, required action and Source law link."
+        },
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/publication-evidence-desktop.png",
+          "width": 729,
+          "height": 191,
+          "alt": "Publication evidence on the duty page includes the Sanitation notice request number."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "e4dc11d370546f276fa68d9113dccefe5d5874365ae9dbb51e1ddcfd03890ae8"
+    },
+    {
+      "route": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
+      "viewport": {
+        "width": 720,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+      "captured_at": "2026-09-08T15:55:59.598620+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/connected-duty-desktop.png",
+          "width": 878,
+          "height": 141,
+          "alt": "Connected mandate in the Sanitation rule notice with its duty link, relation and Charter citation."
+        },
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/duty-source-desktop.png",
+          "width": 729,
+          "height": 472,
+          "alt": "Sanitation mandate heading, required action and Source law link."
+        },
+        {
+          "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/publication-evidence-desktop.png",
+          "width": 729,
+          "height": 191,
+          "alt": "Publication evidence on the duty page includes the Sanitation notice request number."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "ccf96aa570c0b9fe51706c6a09dd4b090ce133576e77a9ac06a49ee6b8a27ba4"
+    },
+    {
+      "route": "/guide/how-to/find-and-narrow-records/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+      "captured_at": "2026-09-08T16:01:09.967287+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/find-and-narrow-records/meeting-filters-mobile.png",
+          "width": 394,
+          "height": 732,
+          "alt": "Meeting list filters expanded above the results."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "930b70471496df37e7759f08d282e027fe77aaf8126119f05e993cb2e8eeaa3e"
+    },
+    {
+      "route": "/guide/how-to/put-dates-in-your-calendar/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+      "captured_at": "2026-09-08T16:01:12.987691+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/put-dates-in-your-calendar/calendar-toolbar-mobile.png",
+          "width": 394,
+          "height": 168,
+          "alt": "Meetings list toolbar, including the Subscribe to calendar control."
+        },
+        {
+          "src": "/media/guide/put-dates-in-your-calendar/calendar-options-mobile.png",
+          "width": 414,
+          "height": 836,
+          "alt": "Calendar subscription panel naming Meetings and showing the open and copy options."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "ec9e66405b1b834af57c1bc3942ca334e61772a6c243c27507aeda6c3dfdeb28"
+    },
+    {
+      "route": "/guide/how-to/find-and-narrow-records/",
+      "viewport": {
+        "width": 195,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+      "captured_at": "2026-09-08T16:01:15.526672+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/find-and-narrow-records/meeting-filters-mobile.png",
+          "width": 394,
+          "height": 732,
+          "alt": "Meeting list filters expanded above the results."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "c02f4e32abc5859dd991cbc06bff934578b1e933d48f1dfede11a5379d29c949"
+    },
+    {
+      "route": "/guide/how-to/put-dates-in-your-calendar/",
+      "viewport": {
+        "width": 195,
+        "height": 844
+      },
+      "review_width": 390,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+      "captured_at": "2026-09-08T16:01:18.609521+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/put-dates-in-your-calendar/calendar-toolbar-mobile.png",
+          "width": 394,
+          "height": 168,
+          "alt": "Meetings list toolbar, including the Subscribe to calendar control."
+        },
+        {
+          "src": "/media/guide/put-dates-in-your-calendar/calendar-options-mobile.png",
+          "width": 414,
+          "height": 836,
+          "alt": "Calendar subscription panel naming Meetings and showing the open and copy options."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "783c19838f3d299c57ecf49c75719276010217b0cab1dc18373c9f621fed2829"
+    },
+    {
+      "route": "/guide/how-to/find-and-narrow-records/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+      "captured_at": "2026-09-08T16:01:21.173970+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/find-and-narrow-records/meeting-filters-desktop.png",
+          "width": 1124,
+          "height": 713,
+          "alt": "Meeting list filters expanded above the results."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "538e909a3e5c04a44d37682041985e80dd06df6912adf9b6aa9a763089380515"
+    },
+    {
+      "route": "/guide/how-to/put-dates-in-your-calendar/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 1,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+      "captured_at": "2026-09-08T16:01:24.237791+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/put-dates-in-your-calendar/calendar-toolbar-desktop.png",
+          "width": 1124,
+          "height": 75,
+          "alt": "Meetings list toolbar, including the Subscribe to calendar control."
+        },
+        {
+          "src": "/media/guide/put-dates-in-your-calendar/calendar-options-desktop.png",
+          "width": 628,
+          "height": 644,
+          "alt": "Calendar subscription panel naming Meetings and showing the open and copy options."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "c7d7d665599abb4a54702b9449f8460d81b0521b4b40b41916f1c5aae6734099"
+    },
+    {
+      "route": "/guide/how-to/find-and-narrow-records/",
+      "viewport": {
+        "width": 720,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+      "captured_at": "2026-09-08T16:01:26.775327+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/find-and-narrow-records/meeting-filters-desktop.png",
+          "width": 1124,
+          "height": 713,
+          "alt": "Meeting list filters expanded above the results."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "07d780d39629ff75047f5bfc200d3cb451b2780d39ee880ce6c541a32690560a"
+    },
+    {
+      "route": "/guide/how-to/put-dates-in-your-calendar/",
+      "viewport": {
+        "width": 720,
+        "height": 900
+      },
+      "review_width": 1440,
+      "zoom": 2,
+      "zoom_method": "CSS viewport divided by zoom",
+      "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+      "captured_at": "2026-09-08T16:01:29.840590+00:00",
+      "data_vintage": "Tracked guide and public capture receipts",
+      "assets": [
+        {
+          "src": "/media/guide/put-dates-in-your-calendar/calendar-toolbar-desktop.png",
+          "width": 1124,
+          "height": 75,
+          "alt": "Meetings list toolbar, including the Subscribe to calendar control."
+        },
+        {
+          "src": "/media/guide/put-dates-in-your-calendar/calendar-options-desktop.png",
+          "width": 628,
+          "height": 644,
+          "alt": "Calendar subscription panel naming Meetings and showing the open and copy options."
+        }
+      ],
+      "assertion": "Images load at the selected width; all enlargement links open with Tab and Enter in the same tab; Back restores position; complete instructions and captions survive blocked images; no horizontal overflow.",
+      "assertion_holds": true,
+      "sha256": "1c6d90cb89bf55babcadcaef6d076c3f757e9bcf3dae9af7c5f3daa7ecc1ed6a"
     }
   ]
 }

@@ -9,8 +9,8 @@
         "src": "/media/guide/read-a-land-use-projects-next-step/project-stage-mobile.png",
         "width": 360,
         "height": 820,
-        "captured_at": "2026-09-08T15:42:53.457304+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:55:05.685430+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
@@ -33,14 +33,14 @@
           "width": 328,
           "height": 820
         },
-        "source_html_sha256": "b5504493ac9d0d0f07cadc3d8fd46faea1f979fb606b532474cdbc75b19521aa"
+        "source_html_sha256": "75420c4187a2d22db9c83711109dc7aa38ddde7e16114a077b00ae6243bafe81"
       },
       "desktop": {
         "src": "/media/guide/read-a-land-use-projects-next-step/project-stage-desktop.png",
         "width": 686,
         "height": 599,
-        "captured_at": "2026-09-08T15:42:55.256950+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:55:07.253054+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -63,7 +63,7 @@
           "width": 654,
           "height": 599
         },
-        "source_html_sha256": "c39bdbc667735ea667098d872a508d12d31253dd7b62efc9921dec70c22e480a"
+        "source_html_sha256": "59343f8277992f78de160d760504691865656a875f8692bf857d2ca36344ca5a"
       }
     },
     "project-documents": {
@@ -74,8 +74,8 @@
         "src": "/media/guide/read-a-land-use-projects-next-step/project-documents-mobile.png",
         "width": 360,
         "height": 237,
-        "captured_at": "2026-09-08T15:42:53.694876+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:55:05.951759+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
@@ -98,14 +98,14 @@
           "width": 328,
           "height": 237
         },
-        "source_html_sha256": "614449014a798b2ad81b5ae83b295dbc33e7b931f36d18a3924f9a37ce557e21"
+        "source_html_sha256": "389debb0ab5c3430e30cd30c07830de7b5cc6755d56ec1df21917c73f0d0d2cf"
       },
       "desktop": {
         "src": "/media/guide/read-a-land-use-projects-next-step/project-documents-desktop.png",
         "width": 686,
         "height": 154,
-        "captured_at": "2026-09-08T15:42:56.322791+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:55:08.294432+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -128,7 +128,7 @@
           "width": 654,
           "height": 154
         },
-        "source_html_sha256": "f7d40d4652bbcf93d75a37cdb514a13c78e58ede7d0a7940e6f4b85f24db8a58"
+        "source_html_sha256": "8f8d1c80fcbce75e3526b68c552d0ea9cbf8c01d6a38a367690500b409e465c5"
       }
     }
   }

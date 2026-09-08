@@ -9,8 +9,8 @@
         "src": "/media/guide/look-at-records-as-of-a-day/date-field-mobile.png",
         "width": 406,
         "height": 353,
-        "captured_at": "2026-09-08T15:45:17.389683+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:54:31.133202+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
@@ -45,8 +45,8 @@
         "src": "/media/guide/look-at-records-as-of-a-day/date-field-desktop.png",
         "width": 749,
         "height": 238,
-        "captured_at": "2026-09-08T15:45:20.062940+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:54:33.597073+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -86,8 +86,8 @@
         "src": "/media/guide/look-at-records-as-of-a-day/date-result-mobile.png",
         "width": 406,
         "height": 383,
-        "captured_at": "2026-09-08T15:45:18.268507+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:54:31.940526+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
@@ -116,14 +116,14 @@
           "width": 374,
           "height": 383
         },
-        "source_html_sha256": "3c2965b5e873da164d48a73bb2bdff5d71bbcf67e447700c36020df6975690f3"
+        "source_html_sha256": "5559f4dc827453ccec3d90d20e4862b00013a30ce87749feef6fa563894e87aa"
       },
       "desktop": {
         "src": "/media/guide/look-at-records-as-of-a-day/date-result-desktop.png",
         "width": 749,
         "height": 268,
-        "captured_at": "2026-09-08T15:45:20.933495+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:54:34.432993+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -152,7 +152,7 @@
           "width": 717,
           "height": 268
         },
-        "source_html_sha256": "3c2965b5e873da164d48a73bb2bdff5d71bbcf67e447700c36020df6975690f3"
+        "source_html_sha256": "5559f4dc827453ccec3d90d20e4862b00013a30ce87749feef6fa563894e87aa"
       }
     }
   }

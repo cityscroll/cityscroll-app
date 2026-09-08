@@ -7,16 +7,16 @@
       "alt": "Meeting list filters expanded above the results.",
       "mobile": {
         "src": "/media/guide/find-and-narrow-records/meeting-filters-mobile.png",
-        "width": 408,
+        "width": 394,
         "height": 732,
-        "captured_at": "2026-09-08T15:39:16.471588+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T16:00:32.291709+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
         },
         "route": "/browse/meetings/",
-        "sha256": "72c188b1f319e43ea476b766a8a9a89ce73c4915e10849dec8c4c3d7e8a8ef2d",
+        "sha256": "b2fc7cc5dab05eb0f0fde70cbfea9b2f34b7c20698f9c2461e1048cc36ece2bf",
         "redactions": [],
         "data_vintage": "Retained public site data",
         "callouts": [
@@ -34,19 +34,19 @@
           }
         ],
         "crop": {
-          "x": 0,
+          "x": 14,
           "y": 1503,
-          "width": 376,
+          "width": 362,
           "height": 732
         },
-        "source_html_sha256": "91237f3ed276fa96eb0950501a08e4b9cf157b26d33d3f70749db7c5016e1bd6"
+        "source_html_sha256": "79199ec5c315853be82e5da2b7f1058295e702972aab96435ef7dcecce53376f"
       },
       "desktop": {
         "src": "/media/guide/find-and-narrow-records/meeting-filters-desktop.png",
         "width": 1124,
         "height": 713,
-        "captured_at": "2026-09-08T15:39:18.512768+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T16:00:34.288438+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -75,7 +75,7 @@
           "width": 1092,
           "height": 713
         },
-        "source_html_sha256": "91237f3ed276fa96eb0950501a08e4b9cf157b26d33d3f70749db7c5016e1bd6"
+        "source_html_sha256": "79199ec5c315853be82e5da2b7f1058295e702972aab96435ef7dcecce53376f"
       }
     }
   }

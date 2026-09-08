@@ -9,8 +9,8 @@
         "src": "/media/guide/trace-an-award-and-keep-the-trail/vendor-connection-mobile.png",
         "width": 356,
         "height": 173,
-        "captured_at": "2026-09-08T15:50:13.961162+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:55:09.253026+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
@@ -48,8 +48,8 @@
         "src": "/media/guide/trace-an-award-and-keep-the-trail/vendor-connection-desktop.png",
         "width": 679,
         "height": 99,
-        "captured_at": "2026-09-08T15:50:17.010451+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:55:11.978328+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -92,8 +92,8 @@
         "src": "/media/guide/trace-an-award-and-keep-the-trail/vendor-trail-mobile.png",
         "width": 394,
         "height": 199,
-        "captured_at": "2026-09-08T15:50:14.530279+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:55:09.798027+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
@@ -116,7 +116,7 @@
           "width": 362,
           "height": 199
         },
-        "source_html_sha256": "0bda2d5473f76b07184819a68de0f37aa06ca490cea1bd6897391b89daf868d3",
+        "source_html_sha256": "d711b63cc6c9cd85622f0e42274e05a69863abbec0abba1957c286fc0c86a2be",
         "journey_checks": {
           "click_created_two_hops": true,
           "reload": true,
@@ -131,8 +131,8 @@
         "src": "/media/guide/trace-an-award-and-keep-the-trail/vendor-trail-desktop.png",
         "width": 928,
         "height": 92,
-        "captured_at": "2026-09-08T15:50:17.591980+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:55:12.555830+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -155,7 +155,7 @@
           "width": 896,
           "height": 92
         },
-        "source_html_sha256": "0bda2d5473f76b07184819a68de0f37aa06ca490cea1bd6897391b89daf868d3",
+        "source_html_sha256": "d711b63cc6c9cd85622f0e42274e05a69863abbec0abba1957c286fc0c86a2be",
         "journey_checks": {
           "click_created_two_hops": true,
           "reload": true,
@@ -175,8 +175,8 @@
         "src": "/media/guide/trace-an-award-and-keep-the-trail/award-connection-mobile.png",
         "width": 344,
         "height": 127,
-        "captured_at": "2026-09-08T15:50:14.814987+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:55:10.069951+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
@@ -199,7 +199,7 @@
           "width": 312,
           "height": 127
         },
-        "source_html_sha256": "416cb5db75b08f8ac72d72da8fa36d05b681c5a85b6af3d2f1edd473126d39e2",
+        "source_html_sha256": "36e430abeb282f0f9463137686fc89aae36980cfe5bc8d1b22f3ffb06c3f03ae",
         "journey_checks": {
           "click_created_two_hops": true,
           "reload": true,
@@ -214,8 +214,8 @@
         "src": "/media/guide/trace-an-award-and-keep-the-trail/award-connection-desktop.png",
         "width": 878,
         "height": 55,
-        "captured_at": "2026-09-08T15:50:17.898566+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:55:12.820267+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -238,7 +238,7 @@
           "width": 846,
           "height": 55
         },
-        "source_html_sha256": "416cb5db75b08f8ac72d72da8fa36d05b681c5a85b6af3d2f1edd473126d39e2",
+        "source_html_sha256": "36e430abeb282f0f9463137686fc89aae36980cfe5bc8d1b22f3ffb06c3f03ae",
         "journey_checks": {
           "click_created_two_hops": true,
           "reload": true,
@@ -258,8 +258,8 @@
         "src": "/media/guide/trace-an-award-and-keep-the-trail/award-trail-mobile.png",
         "width": 394,
         "height": 477,
-        "captured_at": "2026-09-08T15:50:15.476745+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:55:10.634734+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
@@ -288,7 +288,7 @@
           "width": 362,
           "height": 477
         },
-        "source_html_sha256": "50fbd10e0457ae5609ba411d2ba3299e4010c10ba6bc4f597efb56db241593ad",
+        "source_html_sha256": "7e6096da3785df17ca354da1fcd3ec934353e3466060a03acb961d631bbbfb23",
         "journey_checks": {
           "click_created_two_hops": true,
           "reload": true,
@@ -303,8 +303,8 @@
         "src": "/media/guide/trace-an-award-and-keep-the-trail/award-trail-desktop.png",
         "width": 1124,
         "height": 244,
-        "captured_at": "2026-09-08T15:50:18.503741+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:55:13.398892+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -333,7 +333,7 @@
           "width": 1092,
           "height": 244
         },
-        "source_html_sha256": "50fbd10e0457ae5609ba411d2ba3299e4010c10ba6bc4f597efb56db241593ad",
+        "source_html_sha256": "7e6096da3785df17ca354da1fcd3ec934353e3466060a03acb961d631bbbfb23",
         "journey_checks": {
           "click_created_two_hops": true,
           "reload": true,

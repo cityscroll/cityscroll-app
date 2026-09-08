@@ -9,8 +9,8 @@
         "src": "/media/guide/put-dates-in-your-calendar/calendar-toolbar-mobile.png",
         "width": 394,
         "height": 168,
-        "captured_at": "2026-09-08T15:39:15.653895+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T16:00:31.457549+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
@@ -33,14 +33,14 @@
           "width": 362,
           "height": 168
         },
-        "source_html_sha256": "46f4bf4079d8c2701090d7f792dc52dce84c6b9cbeec5aead9c23fb8846cda6e"
+        "source_html_sha256": "69f29bb7dd67025921ca8b68706e3a270a024d6881eee69bd1a5e5ce458fb00a"
       },
       "desktop": {
         "src": "/media/guide/put-dates-in-your-calendar/calendar-toolbar-desktop.png",
         "width": 1124,
         "height": 75,
-        "captured_at": "2026-09-08T15:39:17.571356+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T16:00:33.357068+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -63,7 +63,7 @@
           "width": 1092,
           "height": 75
         },
-        "source_html_sha256": "46f4bf4079d8c2701090d7f792dc52dce84c6b9cbeec5aead9c23fb8846cda6e"
+        "source_html_sha256": "69f29bb7dd67025921ca8b68706e3a270a024d6881eee69bd1a5e5ce458fb00a"
       }
     },
     "calendar-options": {
@@ -74,8 +74,8 @@
         "src": "/media/guide/put-dates-in-your-calendar/calendar-options-mobile.png",
         "width": 414,
         "height": 836,
-        "captured_at": "2026-09-08T15:39:16.077890+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T16:00:31.873539+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
@@ -104,14 +104,14 @@
           "width": 382,
           "height": 836
         },
-        "source_html_sha256": "4ba251257d6afa1bd8ce02d7e2ea3695e099e5b13f067a78abe02ba394679bac"
+        "source_html_sha256": "70cd27ae24a1a16d3baa0543d49139cbe595dc39442b0965c0d5b6ed1e7c245f"
       },
       "desktop": {
         "src": "/media/guide/put-dates-in-your-calendar/calendar-options-desktop.png",
         "width": 628,
         "height": 644,
-        "captured_at": "2026-09-08T15:39:17.993357+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T16:00:33.794132+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -140,7 +140,7 @@
           "width": 596,
           "height": 644
         },
-        "source_html_sha256": "4ba251257d6afa1bd8ce02d7e2ea3695e099e5b13f067a78abe02ba394679bac"
+        "source_html_sha256": "70cd27ae24a1a16d3baa0543d49139cbe595dc39442b0965c0d5b6ed1e7c245f"
       }
     }
   }

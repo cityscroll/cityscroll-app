@@ -9,8 +9,8 @@
         "src": "/media/guide/follow-a-search/choose-scope-mobile.png",
         "width": 406,
         "height": 397,
-        "captured_at": "2026-09-08T15:44:08.373458+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:54:17.514818+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
@@ -39,14 +39,14 @@
           "width": 374,
           "height": 397
         },
-        "source_html_sha256": "38b0f2114807d652632b919cfa4c8af2c5899c8464631d3dc68a3169a1d5f58d"
+        "source_html_sha256": "2883af41f11930d09a0fad1d7006881411fc91a28054e38b8175481c06e14768"
       },
       "desktop": {
         "src": "/media/guide/follow-a-search/choose-scope-desktop.png",
         "width": 1072,
         "height": 294,
-        "captured_at": "2026-09-08T15:44:11.179615+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:54:20.130050+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -75,7 +75,7 @@
           "width": 1040,
           "height": 294
         },
-        "source_html_sha256": "38b0f2114807d652632b919cfa4c8af2c5899c8464631d3dc68a3169a1d5f58d"
+        "source_html_sha256": "2883af41f11930d09a0fad1d7006881411fc91a28054e38b8175481c06e14768"
       }
     },
     "create-watch": {
@@ -86,8 +86,8 @@
         "src": "/media/guide/follow-a-search/create-watch-mobile.png",
         "width": 356,
         "height": 247,
-        "captured_at": "2026-09-08T15:44:09.860338+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:54:18.910004+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
@@ -116,14 +116,14 @@
           "width": 324,
           "height": 247
         },
-        "source_html_sha256": "68d6785d67316e60b8fa2c24f2a5b1ecaffc9ac385fabdb882d32a9f2d79b029"
+        "source_html_sha256": "bd86bfb51d6a5d14d168895a5c9dc0c775ef9e7a1259a6d3ffae0c542c6a2d5d"
       },
       "desktop": {
         "src": "/media/guide/follow-a-search/create-watch-desktop.png",
         "width": 329,
         "height": 247,
-        "captured_at": "2026-09-08T15:44:12.661245+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:54:21.563939+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -152,7 +152,7 @@
           "width": 297,
           "height": 247
         },
-        "source_html_sha256": "68d6785d67316e60b8fa2c24f2a5b1ecaffc9ac385fabdb882d32a9f2d79b029"
+        "source_html_sha256": "bd86bfb51d6a5d14d168895a5c9dc0c775ef9e7a1259a6d3ffae0c542c6a2d5d"
       }
     }
   }

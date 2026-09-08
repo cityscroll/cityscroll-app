@@ -9,8 +9,8 @@
         "src": "/media/guide/follow-a-community-board/board-topic-mobile.png",
         "width": 406,
         "height": 492,
-        "captured_at": "2026-09-08T15:44:08.729531+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:54:17.853490+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
@@ -39,14 +39,14 @@
           "width": 374,
           "height": 492
         },
-        "source_html_sha256": "9d06e741101d2b529f865c1962b5c73abe09bb78ab8e8e641382391890ec29fd"
+        "source_html_sha256": "f13a2463c1fe531d2c4e32d8cee509ede27905e2d2f7eca0fc9439e0fa02c3c5"
       },
       "desktop": {
         "src": "/media/guide/follow-a-community-board/board-topic-desktop.png",
         "width": 1072,
         "height": 387,
-        "captured_at": "2026-09-08T15:44:11.527942+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:54:20.544563+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -75,7 +75,7 @@
           "width": 1040,
           "height": 387
         },
-        "source_html_sha256": "9d06e741101d2b529f865c1962b5c73abe09bb78ab8e8e641382391890ec29fd"
+        "source_html_sha256": "f13a2463c1fe531d2c4e32d8cee509ede27905e2d2f7eca0fc9439e0fa02c3c5"
       }
     },
     "board-picker": {
@@ -86,8 +86,8 @@
         "src": "/media/guide/follow-a-community-board/board-picker-mobile.png",
         "width": 406,
         "height": 262,
-        "captured_at": "2026-09-08T15:44:08.985678+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:54:18.118376+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
@@ -110,14 +110,14 @@
           "width": 374,
           "height": 262
         },
-        "source_html_sha256": "9dabafda910605346e184f109bf032bd6c7d2996cbbbb8bc5ad0b99e6bfbbfae"
+        "source_html_sha256": "96c22b45dead4fa72058d6cada32f3a6c516c4e4711cd786ec7cab3156d0d47d"
       },
       "desktop": {
         "src": "/media/guide/follow-a-community-board/board-picker-desktop.png",
         "width": 382,
         "height": 267,
-        "captured_at": "2026-09-08T15:44:11.757279+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:54:20.797224+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -140,7 +140,7 @@
           "width": 350,
           "height": 267
         },
-        "source_html_sha256": "9dabafda910605346e184f109bf032bd6c7d2996cbbbb8bc5ad0b99e6bfbbfae"
+        "source_html_sha256": "96c22b45dead4fa72058d6cada32f3a6c516c4e4711cd786ec7cab3156d0d47d"
       }
     },
     "board-preview": {
@@ -151,8 +151,8 @@
         "src": "/media/guide/follow-a-community-board/board-preview-mobile.png",
         "width": 406,
         "height": 389,
-        "captured_at": "2026-09-08T15:44:09.337836+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:54:18.435956+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
@@ -175,14 +175,14 @@
           "width": 374,
           "height": 389
         },
-        "source_html_sha256": "68d6785d67316e60b8fa2c24f2a5b1ecaffc9ac385fabdb882d32a9f2d79b029"
+        "source_html_sha256": "bd86bfb51d6a5d14d168895a5c9dc0c775ef9e7a1259a6d3ffae0c542c6a2d5d"
       },
       "desktop": {
         "src": "/media/guide/follow-a-community-board/board-preview-desktop.png",
         "width": 1072,
         "height": 313,
-        "captured_at": "2026-09-08T15:44:12.179311+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:54:21.120030+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -205,7 +205,7 @@
           "width": 1040,
           "height": 313
         },
-        "source_html_sha256": "68d6785d67316e60b8fa2c24f2a5b1ecaffc9ac385fabdb882d32a9f2d79b029"
+        "source_html_sha256": "bd86bfb51d6a5d14d168895a5c9dc0c775ef9e7a1259a6d3ffae0c542c6a2d5d"
       }
     },
     "watch-confirmation": {
@@ -216,8 +216,8 @@
         "src": "/media/guide/follow-a-community-board/watch-confirmation-mobile.png",
         "width": 356,
         "height": 294,
-        "captured_at": "2026-09-08T15:44:10.213907+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:54:19.189777+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
@@ -242,14 +242,14 @@
           "width": 324,
           "height": 294
         },
-        "source_html_sha256": "6b7bbfdd66e3b7a7ec1706138b8fb4e801471854f3971e069f14a543edc61eb7"
+        "source_html_sha256": "df6f38be068ea047e615617fe8456e71afb38a51dceced1990322ba2d3180ee1"
       },
       "desktop": {
         "src": "/media/guide/follow-a-community-board/watch-confirmation-desktop.png",
         "width": 329,
         "height": 294,
-        "captured_at": "2026-09-08T15:44:12.962020+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:54:21.886143+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -274,7 +274,7 @@
           "width": 297,
           "height": 294
         },
-        "source_html_sha256": "6b7bbfdd66e3b7a7ec1706138b8fb4e801471854f3971e069f14a543edc61eb7"
+        "source_html_sha256": "df6f38be068ea047e615617fe8456e71afb38a51dceced1990322ba2d3180ee1"
       }
     },
     "board-criteria": {
@@ -285,8 +285,8 @@
         "src": "/media/guide/follow-a-community-board/board-criteria-mobile.png",
         "width": 406,
         "height": 217,
-        "captured_at": "2026-09-08T15:44:09.585676+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:54:18.676249+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
@@ -309,14 +309,14 @@
           "width": 374,
           "height": 217
         },
-        "source_html_sha256": "68d6785d67316e60b8fa2c24f2a5b1ecaffc9ac385fabdb882d32a9f2d79b029"
+        "source_html_sha256": "bd86bfb51d6a5d14d168895a5c9dc0c775ef9e7a1259a6d3ffae0c542c6a2d5d"
       },
       "desktop": {
         "src": "/media/guide/follow-a-community-board/board-criteria-desktop.png",
         "width": 379,
         "height": 427,
-        "captured_at": "2026-09-08T15:44:12.411612+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:54:21.345608+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -339,7 +339,7 @@
           "width": 347,
           "height": 427
         },
-        "source_html_sha256": "68d6785d67316e60b8fa2c24f2a5b1ecaffc9ac385fabdb882d32a9f2d79b029"
+        "source_html_sha256": "bd86bfb51d6a5d14d168895a5c9dc0c775ef9e7a1259a6d3ffae0c542c6a2d5d"
       }
     }
   }

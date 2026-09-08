@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "record": "cityscroll-engineering/illustrated-guide",
-  "capture_mode": "local_static_site_playwright_no_committed_image",
+  "capture_mode": "local_static_site_playwright_manifest_proof",
   "base": "local static preview of tracked guide documents",
-  "repository_revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+  "repository_revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
   "repository_state": "uncommitted changes present at capture time",
   "note": "Illustrated procedures, static fallback, keyboard navigation and responsive layout.",
-  "data_vintage": "Not applicable to the guide documents: they are prose built from tracked sources and contain no civic records. Their review dates are editorial facts recorded in the article sources, not observations of live data. The search document is served from the local build and its results are not asserted.",
+  "data_vintage": "Guide prose is built from tracked sources; review dates are recorded editorial facts. Illustrated public records retain their capture date, source route, revision and data provenance in the matching site/media/guide article receipt. The search document is served from the local build and its results are not asserted by this release check.",
   "viewports": [
     {
       "name": "mobile",
@@ -296,7 +296,7 @@
         "/notices/20260605008"
       ],
       "visible_text_characters": 3082,
-      "content_sha256": "575119b1184aab06792507e247ccac2750181cc1517d6d4ffada6e16b80d23ab",
+      "content_sha256": "345b4a5deccbf772f8fe9865c4b07ac88e11d72fed9f1d73993c19a4a9d1673f",
       "capture_sha256": "429a9ca21ca47b0efd157bd08e9f80a0a2972cf15843878f30c0184f430054a0",
       "local_capture_path": ".artifacts/guide-release/guide-tutorial-notice-mandate-390.png",
       "file": null
@@ -327,7 +327,7 @@
         "/notices/20260729015"
       ],
       "visible_text_characters": 3958,
-      "content_sha256": "466ee8f6787815d7fa1cbabda400f926ad07848b79476bbc33ca6d047ebb504c",
+      "content_sha256": "aa3b4b14611e4b32e2c5c8f95baa4aa1d2c9c734f34430f04904081978ac499b",
       "capture_sha256": "d54bc1f7d078c8779b9f500675da0c958064025a0da92e42983976864d18c883",
       "local_capture_path": ".artifacts/guide-release/guide-tutorial-award-trail-390.png",
       "file": null
@@ -418,7 +418,7 @@
         "/vendors/HOUSING%20OPTIONS%20GERIATRIC%20ASSOCIATION%20RESOURCES/"
       ],
       "visible_text_characters": 3200,
-      "content_sha256": "63482f580c61407e5636253c0baf51f0f1f21dc0efcc91f66c3d6eb43856d5eb",
+      "content_sha256": "6501c704461a88d02aec144ae4574115d0d923cc018e56f82bfbac758a1f82bc",
       "capture_sha256": "dda9b1dd0cc76e065695eab9d57b5e28667df39aab11c636a2db53585174e1a2",
       "local_capture_path": ".artifacts/guide-release/guide-how-to-collect-records-390.png",
       "file": null
@@ -644,7 +644,7 @@
         "/exams/7016/"
       ],
       "visible_text_characters": 2688,
-      "content_sha256": "2acda332aae7a5b5b8a997259d44a093b46649b63bf66982e5390823ad93682e",
+      "content_sha256": "cca02c0a340ce5b0348963fa7246bca48ef6f52f6cea420a5e23331a5c543135",
       "capture_sha256": "47dd994c92e9b5e4366ffb75237f9a64ddfc0ad2e6d0588d23f3f41c94a1805f",
       "local_capture_path": ".artifacts/guide-release/guide-article-h1-390.png",
       "file": null
@@ -673,7 +673,7 @@
       "record_content_deferred_to_live_check": [],
       "visible_text_characters": 3105,
       "content_sha256": "839c80044d7406caea3a7b4cf2ccaefac6e888122eb4be87cb1358d4a971dc81",
-      "capture_sha256": "2f2b8f92edbdcc4627ea341bf8467b08655c0a66a70f5c9649243a5ebbff5aed",
+      "capture_sha256": "4c8dec5fb249ef2e17796b56a2ad5e8104b6647ec7b608440020998bb33f0072",
       "local_capture_path": ".artifacts/guide-release/guide-article-h2-390.png",
       "file": null
     },
@@ -812,9 +812,9 @@
       "internal_links_checked": 0,
       "broken_internal_links": [],
       "record_content_deferred_to_live_check": [],
-      "visible_text_characters": 1407,
-      "content_sha256": "bdb5388a1f3112c1764ef8eebd4bacaa3dc5da36a9e96d10769c801956f32f30",
-      "capture_sha256": "a9c7bd351f02246b414a8e593179c53d26fee5362b3a21c51cd796a672de9ab3",
+      "visible_text_characters": 1088,
+      "content_sha256": "5ad801f0f355a4519e55bb724e3c89c8a8c789527d48a748c0b21171037ca98e",
+      "capture_sha256": "cc25635d3c6bd3714547659e6672354480c97cce5bbd423ee93abb232b36dfc0",
       "local_capture_path": ".artifacts/guide-release/product-search-390.png",
       "file": null
     },
@@ -927,7 +927,7 @@
         "/notices/20260605008"
       ],
       "visible_text_characters": 3088,
-      "content_sha256": "575119b1184aab06792507e247ccac2750181cc1517d6d4ffada6e16b80d23ab",
+      "content_sha256": "345b4a5deccbf772f8fe9865c4b07ac88e11d72fed9f1d73993c19a4a9d1673f",
       "capture_sha256": "90a89e7bae5fde2f4936fe83ebd82dfdf5e0c8ea9559218c58f78fb5dd267680",
       "local_capture_path": ".artifacts/guide-release/guide-tutorial-notice-mandate-1440.png",
       "file": null
@@ -958,7 +958,7 @@
         "/notices/20260729015"
       ],
       "visible_text_characters": 3966,
-      "content_sha256": "466ee8f6787815d7fa1cbabda400f926ad07848b79476bbc33ca6d047ebb504c",
+      "content_sha256": "aa3b4b14611e4b32e2c5c8f95baa4aa1d2c9c734f34430f04904081978ac499b",
       "capture_sha256": "2eeec6bae4437e2b4d69ad135f0ed463d45212bfb4a65cc4d5e6e2ed0f4458e0",
       "local_capture_path": ".artifacts/guide-release/guide-tutorial-award-trail-1440.png",
       "file": null
@@ -1049,7 +1049,7 @@
         "/vendors/HOUSING%20OPTIONS%20GERIATRIC%20ASSOCIATION%20RESOURCES/"
       ],
       "visible_text_characters": 3206,
-      "content_sha256": "63482f580c61407e5636253c0baf51f0f1f21dc0efcc91f66c3d6eb43856d5eb",
+      "content_sha256": "6501c704461a88d02aec144ae4574115d0d923cc018e56f82bfbac758a1f82bc",
       "capture_sha256": "a5dc7c07422bb8f3cd8aad00c5e73c68884f9d18161c353afb8d806cde1ac6bd",
       "local_capture_path": ".artifacts/guide-release/guide-how-to-collect-records-1440.png",
       "file": null
@@ -1275,7 +1275,7 @@
         "/exams/7016/"
       ],
       "visible_text_characters": 2690,
-      "content_sha256": "2acda332aae7a5b5b8a997259d44a093b46649b63bf66982e5390823ad93682e",
+      "content_sha256": "cca02c0a340ce5b0348963fa7246bca48ef6f52f6cea420a5e23331a5c543135",
       "capture_sha256": "e64e3ed39d49d0fd5f6c366fb5b5ce84c9cceda4ec58c852716e2da9b2aa46ea",
       "local_capture_path": ".artifacts/guide-release/guide-article-h1-1440.png",
       "file": null
@@ -1445,7 +1445,7 @@
       "record_content_deferred_to_live_check": [],
       "visible_text_characters": 1088,
       "content_sha256": "5ad801f0f355a4519e55bb724e3c89c8a8c789527d48a748c0b21171037ca98e",
-      "capture_sha256": "d36ad8c2524459ad7abc0c6841319df95c5022731d3efe4b4b683c6e788c81b1",
+      "capture_sha256": "285acc82f82343f46e183ef93a60608998d6203318fbbc7c17a8f59800c98683",
       "local_capture_path": ".artifacts/guide-release/product-search-1440.png",
       "file": null
     }

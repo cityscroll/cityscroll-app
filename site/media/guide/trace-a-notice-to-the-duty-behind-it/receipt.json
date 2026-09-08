@@ -8,15 +8,15 @@
       "mobile": {
         "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/connected-duty-mobile.png",
         "width": 344,
-        "height": 272,
-        "captured_at": "2026-09-08T15:42:47.965977+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "height": 273,
+        "captured_at": "2026-09-08T15:54:58.673353+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
         },
         "route": "/notices/20260605008",
-        "sha256": "6b4888f94c8baf1776fabde961f07766ae82164afd30aed8ae1692bc2e9ccea4",
+        "sha256": "8a1570baa0a220a0013de0ddf795b8d4ca6dcdbcf471e42e3a377e2737dac813",
         "redactions": [],
         "data_vintage": "Retained public site data",
         "callouts": [
@@ -24,23 +24,23 @@
             "number": 1,
             "selector": "[data-connected-mandate] a[href^=\"/mandates/\"]",
             "label": "\u25c6\nMandate \u00b7 Regulate the conduct of businesses authorized to collect commercial waste in commercial waste zones and establish and enforce specified standards and requirements.",
-            "y": 102
+            "y": 103
           }
         ],
         "crop": {
           "x": 39,
-          "y": 1609,
+          "y": 1626,
           "width": 312,
-          "height": 272
+          "height": 273
         },
-        "source_html_sha256": "d88b8f7ee09579911339f9111c59c06343d360f13afdee475c78fa8e02fd87e6"
+        "source_html_sha256": "a4a33a74130b8ac324bd3002ca16aa299c1baa847853412d9fc03f08f3522e83"
       },
       "desktop": {
         "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/connected-duty-desktop.png",
         "width": 878,
         "height": 141,
-        "captured_at": "2026-09-08T15:42:51.223027+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:55:01.938292+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -63,7 +63,7 @@
           "width": 846,
           "height": 141
         },
-        "source_html_sha256": "e249fd73073f1928fac122b058e4bf6c7978ccdda377a2ee329cfd7f6bc65316"
+        "source_html_sha256": "a4a33a74130b8ac324bd3002ca16aa299c1baa847853412d9fc03f08f3522e83"
       }
     },
     "duty-source": {
@@ -74,8 +74,8 @@
         "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/duty-source-mobile.png",
         "width": 406,
         "height": 490,
-        "captured_at": "2026-09-08T15:42:48.262173+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:54:58.974289+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
@@ -104,8 +104,8 @@
         "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/duty-source-desktop.png",
         "width": 729,
         "height": 472,
-        "captured_at": "2026-09-08T15:42:51.537008+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:55:02.251778+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900
@@ -139,8 +139,8 @@
         "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/publication-evidence-mobile.png",
         "width": 406,
         "height": 178,
-        "captured_at": "2026-09-08T15:42:48.500742+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:54:59.234762+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 390,
           "height": 844
@@ -169,8 +169,8 @@
         "src": "/media/guide/trace-a-notice-to-the-duty-behind-it/publication-evidence-desktop.png",
         "width": 729,
         "height": 191,
-        "captured_at": "2026-09-08T15:42:51.759499+00:00",
-        "revision": "6821b24060500f43b20dccd1ccef7cbf833f4730",
+        "captured_at": "2026-09-08T15:55:02.477662+00:00",
+        "revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
         "viewport": {
           "width": 1440,
           "height": 900

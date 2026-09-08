@@ -9,7 +9,17 @@ are never committed. Following uses the production renderer with disposable stat
 No email, account mutation or shared investigation reaches a public service.
 Numbered annotation rails are added OUTSIDE the unmodified rendered UI crop.
 
-python3 tools/capture_guide_illustrations.py --only following,calendar,connection,asof
+For a full pass, retain the public housing reads before launching Chromium:
+  mkdir -p .artifacts/guide-illustrations
+  curl --fail --silent --show-error 'https://api.cityscroll.org/search/candidates?q=housing' -o .artifacts/guide-illustrations/candidates.json
+  curl --fail --silent --show-error 'https://api.cityscroll.org/search?q=housing' -o .artifacts/guide-illustrations/keyword.json
+  python3 tools/capture_award_trail.py --acquire
+  python3 tools/capture_guide_illustrations.py
+  node tools/build_guide_documents.mjs
+
+The retained reads remain ignored. Run captures before document verification:
+the article builder checks dimensions and digests against the completed receipts.
+Use --only following,calendar,connection,asof to capture just those controls.
 """
 from __future__ import annotations
 import argparse, base64, hashlib, json, math, subprocess, sys
@@ -184,6 +194,8 @@ def calendar(page,base,variant):
          'Calendar subscription panel naming Meetings and showing the open and copy options.',variant)
     page.locator('[data-calendar-subscription-close]').click()
     page.locator('#meetings-more-filters > summary').click()
+    bounds=page.locator('#meetings-more-filters .utility-overflow-content').bounding_box()
+    assert bounds['x']>=0 and bounds['x']+bounds['width']<=page.viewport_size['width'], 'Meeting filters must stay inside the viewport'
     crop(page,'find-and-narrow-records','meeting-filters',['#meetings-toolbar','#meetings-more-filters .utility-overflow-content'],
          ['#meetingskw','#meetings-toolbar details'],
          '1. Search filters the meeting list. 2. More filters reveals Date window, Affected area and Agency.',
