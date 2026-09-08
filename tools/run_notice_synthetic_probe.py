@@ -17,14 +17,25 @@ probe exists to measure. Nothing is inferred from the user agent.
 This probe measures the deployed surface under one fixed device and network
 profile. It is not resident experience and can never be reported as such.
 
-  python3 tools/run_notice_synthetic_probe.py --plan            # resolve the visit plan, no browser
-  python3 tools/run_notice_synthetic_probe.py --out result.json # run one slot
+The browser it drives is not the host's. Both the Playwright package and the
+Chromium build live in a project-scoped runtime under ``ops/notice-probe``,
+created by ``tools/setup_notice_probe_runtime.sh`` from a pinned requirements
+file. The scheduler names that interpreter absolutely rather than searching a
+PATH, because launchd starts an agent with the system default PATH and the
+system interpreter carries no Playwright: the probe used to exit on its import
+line before it could measure anything, and a missing runtime presented only as a
+failed slot. It now reports itself by name instead.
+
+  ops/notice-probe/.venv/bin/python3 tools/run_notice_synthetic_probe.py --plan
+  ops/notice-probe/.venv/bin/python3 tools/run_notice_synthetic_probe.py --check-runtime
+  ops/notice-probe/.venv/bin/python3 tools/run_notice_synthetic_probe.py --out result.json
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 import time
 from datetime import datetime, timezone
@@ -38,6 +49,71 @@ DEFAULT_BASE = "https://cityscroll.org"
 TRAFFIC_CLASS = "synthetic"
 PROBE_SCHEMA = "cityscroll.notice_synthetic_probe_result.v1"
 PLAN_SCHEMA = "cityscroll.notice_synthetic_probe_plan.v1"
+RUNTIME_SCHEMA = "cityscroll.notice_synthetic_probe_runtime_check.v1"
+
+# The project-scoped runtime. Both paths are inside the checkout so the probe
+# depends on nothing a host happens to have installed globally, and so removing
+# two directories removes the whole install.
+RUNTIME_DIR = ROOT / "ops" / "notice-probe"
+RUNTIME_PYTHON = RUNTIME_DIR / ".venv" / "bin" / "python3"
+DEFAULT_BROWSERS_PATH = RUNTIME_DIR / "browsers"
+SETUP_COMMAND = "tools/setup_notice_probe_runtime.sh"
+# One named error for every way the runtime can be absent. A slot log that says
+# this is unambiguous about its failure class; a ModuleNotFoundError is not.
+RUNTIME_MISSING_ERROR = f"probe runtime not set up: run {SETUP_COMMAND}"
+
+
+def browsers_path() -> Path:
+    """Where the probe looks for its browser build.
+
+    An explicit ``PLAYWRIGHT_BROWSERS_PATH`` wins, so a host that already
+    manages the build elsewhere is not overridden; otherwise the checkout-local
+    directory the setup script fills is used rather than the shared
+    ``~/.cache/ms-playwright``, which another tool can install into or clear.
+    """
+    configured = os.environ.get("PLAYWRIGHT_BROWSERS_PATH")
+    return Path(configured) if configured else DEFAULT_BROWSERS_PATH
+
+
+def load_playwright() -> Any:
+    """Resolve the runtime, or fail by its name.
+
+    Two absences are the same failure for an operator — the package is not
+    installed, or it is installed with no browser to drive — and both are
+    repaired by the same command, so both report it.
+    """
+    path = browsers_path()
+    os.environ["PLAYWRIGHT_BROWSERS_PATH"] = str(path)
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError as error:
+        raise SystemExit(f"{RUNTIME_MISSING_ERROR} (no Playwright for {sys.executable}: {error})")
+    if not any(path.glob("chromium-*")):
+        raise SystemExit(f"{RUNTIME_MISSING_ERROR} (no Chromium build under {path})")
+    return sync_playwright
+
+
+def check_runtime() -> dict[str, Any]:
+    """Start and stop the browser without visiting anything.
+
+    A dry invocation: it proves the runtime the next slot will use can actually
+    launch, and it emits no observation, so it can be run by hand after setup
+    without adding a point to the retained synthetic series.
+    """
+    sync_playwright = load_playwright()
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        version = browser.version
+        browser.close()
+    return {
+        "schema": RUNTIME_SCHEMA,
+        "observed_at": now_iso(),
+        "python": sys.executable,
+        "browsers_path": str(browsers_path()),
+        "browser_version": version,
+        "observations_emitted": 0,
+        "status": "ready",
+    }
 
 
 def now_iso() -> str:
@@ -123,7 +199,7 @@ def count_observations(body: str | None) -> int:
 
 
 def run_slot(plan: dict[str, Any], run_key: str) -> dict[str, Any]:
-    from playwright.sync_api import sync_playwright
+    sync_playwright = load_playwright()
 
     policy = plan.get("visit_policy") or {}
     settle_ms = int(policy.get("settle_ms", 12000))
@@ -238,21 +314,31 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--out", type=Path, default=None)
     parser.add_argument("--run-key", default=None)
     parser.add_argument("--plan", action="store_true", help="resolve and print the visit plan without launching a browser")
+    parser.add_argument(
+        "--check-runtime",
+        action="store_true",
+        help="start and stop the browser without visiting a page or emitting an observation",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(list(sys.argv[1:] if argv is None else argv))
-    document = load_pages(args.pages)
-    plan = build_plan(document, args.base)
-    result = plan if args.plan else run_slot(plan, args.run_key or now_iso())
+    # The runtime check reads no page list: it answers whether the environment
+    # exists at all, which is the question asked when the page list is fine.
+    if args.check_runtime:
+        result = check_runtime()
+    else:
+        document = load_pages(args.pages)
+        plan = build_plan(document, args.base)
+        result = plan if args.plan else run_slot(plan, args.run_key or now_iso())
     serialized = json.dumps(result, indent=2, sort_keys=False) + "\n"
     if args.out:
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(serialized, encoding="utf-8")
     else:
         sys.stdout.write(serialized)
-    if args.plan:
+    if args.plan or args.check_runtime:
         return 0
     return 0 if result["status"] != "failed" else 1
 

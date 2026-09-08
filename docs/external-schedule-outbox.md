@@ -34,6 +34,37 @@ Whatever a cycle settled without running also travels on the heartbeat as `misse
 
 A job with no ledger adopts the newest slot strictly before now and runs nothing. A fresh state directory therefore neither fires every job at once nor claims slots the trigger was not installed for. `--job <id>` still runs immediately and deliberately leaves the ledger alone: an operator rehearsal observes the world now, and neither claims nor consumes a scheduled slot.
 
+## The Notice synthetic probe runtime
+
+The Notice synthetic probe is the one scheduled job that drives a browser, so it is the one job whose runtime the trigger cannot assume. launchd starts the cycle with the system default `PATH` and no login shell, and the interpreter that resolves there is the operating system's own, which carries no Playwright. The probe therefore exited on its import line before it could measure anything, and the failure presented as an ordinary failed slot: the same shape a genuinely unreachable page produces.
+
+The runtime is now the checkout's own, built once per host:
+
+```bash
+tools/setup_notice_probe_runtime.sh
+```
+
+That script creates a virtual environment at `ops/notice-probe/.venv` from `ops/notice-probe/requirements.txt`, installs it with `--no-deps` so the resolver picks nothing, and installs the browser build under `ops/notice-probe/browsers` rather than into the shared `~/.cache/ms-playwright`. Every distribution in that requirements file is pinned exactly, and the Playwright pin is deliberately the same one the repository's browser gate uses, so the scheduled measurement and the gate exercise the same Chromium build. It is idempotent: re-running it repairs a partial environment and is how the pin is moved. Nothing is installed globally or into a user site directory, so removing the two directories removes the whole install. Both, along with the receipt naming what was actually installed, are ignored by git — the pinned requirements file is the tracked part, and the receipt is host state.
+
+The cycle names that interpreter absolutely, as `ops/notice-probe/.venv/bin/python3` relative to the checkout, rather than searching a `PATH`. `CROL_NOTICE_SYNTHETIC_PROBE_PYTHON` still overrides it verbatim for a rehearsal against another environment.
+
+A missing runtime is a setup fault, not a measurement, and it now says so. Before spawning anything the cycle checks that the interpreter exists, and where it does not, the slot log's first line reads `probe runtime not set up: run tools/setup_notice_probe_runtime.sh` followed by the path it looked at. The probe reports the same named error for itself: an environment with no Playwright, or one with Playwright and no browser build, both exit with that line and the specific reason in parentheses. One named error covers every way the runtime can be absent, because one command repairs all of them. `tools/install_external_schedule_launchd.sh` reports the same thing at install time, alongside the credential warnings, so an operator is told before the first slot rather than by it.
+
+After setup, two invocations check the runtime without contributing to the retained series:
+
+```bash
+ops/notice-probe/.venv/bin/python3 tools/run_notice_synthetic_probe.py --plan
+ops/notice-probe/.venv/bin/python3 tools/run_notice_synthetic_probe.py --check-runtime
+```
+
+`--plan` resolves the visit plan with no browser and no network. `--check-runtime` starts and stops the browser, reports the build it launched, and visits no page, so it proves the environment the next slot will use while emitting no observation. Neither claims or consumes a scheduled slot; a full slot is left to the schedule.
+
+Verification:
+
+```bash
+node --test test/notice_synthetic_probe.test.mjs
+```
+
 ## The GitHub App delivery identity
 
 The site owner has chosen a GitHub App, not a machine user, as the identity the issue loop writes under. A machine user is an account: it has a password, a session, a recovery address, a seat, and a person who is ultimately responsible for it, and every one of those is a thing to secure and to hand over. An App installed on this repository alone is none of them. Its authority is an installation rather than an account, its permissions are declared once and repeated in the response to every mint, and the credential that actually authorizes a request is an installation token that expires in about an hour — so a leaked log line or a stale copy stops being useful without anyone having to revoke anything. The long-lived secret stays a private key on the scheduler host, is never transmitted, and only signs the short assertion the runner exchanges for a token.
