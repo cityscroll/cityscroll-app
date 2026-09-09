@@ -24,7 +24,7 @@
 
 import { writeFileSync, readFileSync, existsSync, mkdirSync, readdirSync } from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   extractMeetingLandRefs,
   observationsFromPeopleMaterialization,
@@ -358,6 +358,52 @@ function cleanRule(row) {
     out.affected_area = place;
   }
   return out;
+}
+
+/**
+ * Metadata-only SODA reads do not replace evidence extracted from a notice's
+ * attachment. Retain that bounded stamp only for the same unchanged notice;
+ * any new publisher prose gets a fresh extraction, including adverse evidence.
+ * The original snapshot vintage stays explicit across repeated refreshes.
+ */
+export function buildRulesObservationRows(rawRows, previousDoc = null) {
+  const previousById = new Map();
+  for (const row of previousDoc?.rows || []) {
+    const id = String(row?.request_id || "");
+    previousById.set(id, previousById.has(id) ? null : row);
+  }
+  const identityFields = [
+    "request_id", "agency_name", "short_title", "start_date",
+    "type_of_notice_description", "section_name", "source_system",
+  ];
+  return rawRows.map((raw) => {
+    const row = cleanRule(raw);
+    if (!row) return null;
+    const previous = previousById.get(row.request_id);
+    const receipt = previous?.rule_evidence_densify;
+    const stamp = previous?.rule_evidence;
+    const vintage = receipt?.retained_from_snapshot || previousDoc?.retrieved_at;
+    // Contact fields are stripped from snapshots but are not replacement rule prose.
+    const hasPublisherProse = SNAPSHOT_BODY_FIELDS.some((key) =>
+      key !== "email" && key !== "phone" && String(raw[key] || "").trim());
+    if (hasPublisherProse
+      || receipt?.method !== "city_record_getfile_pdf_v1"
+      || receipt?.source !== "attachment_text"
+      || stamp?.schema !== RULE_EVIDENCE_STAMP_SCHEMA
+      || !Array.isArray(stamp.body_topic_keys) || !stamp.body_topic_keys.length
+      || !Array.isArray(stamp.citation_keys) || !stamp.citation_keys.length
+      || typeof vintage !== "string" || !Number.isFinite(Date.parse(vintage))
+      || !identityFields.every((key) => row[key] === previous[key])
+      || !["source_links", "document_links"].every((key) =>
+        JSON.stringify(row[key] ?? []) === JSON.stringify(previous[key] ?? []))) {
+      return row;
+    }
+    return {
+      ...row,
+      rule_evidence: structuredClone(stamp),
+      rule_evidence_densify: { ...receipt, retained_from_snapshot: vintage },
+    };
+  }).filter(Boolean);
 }
 
 // Publisher free-text the committed domain snapshots must not carry. The shared
@@ -797,7 +843,10 @@ async function main() {
       args.meetingsLimit,
     );
 
-  const rules = rulesRaw.map(cleanRule).filter(Boolean);
+  const previousRules = existsSync(OUT_RULES)
+    ? JSON.parse(readFileSync(OUT_RULES, "utf8"))
+    : null;
+  const rules = buildRulesObservationRows(rulesRaw, previousRules);
   const meetings = hearingsRaw.map(cleanHearing).filter(Boolean);
   let previousMeetings = null;
   if (existsSync(OUT_MEETINGS)) {
@@ -871,7 +920,9 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
+}
