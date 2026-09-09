@@ -921,6 +921,8 @@ function renderLandMapLoading(panel){
 }
 
 function renderLandMapFailure(panel, hadPanelFocus = false, error = null){
+  // An overlapping failure may already have restored focus since this mount started.
+  hadPanelFocus = hadPanelFocus || landMapPanelHasFocus(panel);
   panel.dataset.landMapState = "failed";
   // The typed kind (LM-12) travels on the panel so a test, an evidence capture, or a future
   // resident-facing refinement can read what actually happened without re-deriving it from an
