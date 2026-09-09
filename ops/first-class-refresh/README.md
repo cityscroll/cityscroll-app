@@ -125,48 +125,58 @@ recording the check costs one small commit rather than a daily one.
 
 ## Committed read models are refreshed with their inputs
 
-Several read models are derived from the first-class datasets and committed to
-the repository: the keyword search index and its manifest, the agency
-constellation documents, the generated source-contract documentation and data
-source graph, the capability topology and the integration client projected from
-it, and the depot join registry. Every one of them is re-derived in check mode
-by a required gate in the `static-standards` unit family, so a refresh that
-publishes new inputs without rebuilding them opens a pull request that fails its
-own gates. That is exactly what happened before this rebuild existed.
+The refresh publishes datasets and every committed derivative together. The
+registry in `committed-read-models.json` owns the ordered commands, their runtime
+and prerequisites, the paths eligible for publication, and the final test families.
 
-`committed-read-models.json` is the registry that prevents it. It lists every
-check-mode gate in that family exactly once, on one of two sides:
+The publication guard runs first. A board disappearing from the meeting index or
+a meeting-population loss above 20% retains the previous verified index with its
+original vintage. HTTP failures and an unexplained successful-but-empty extraction
+are separate findings; neither is described as a publisher deleting its events.
+New Council roll calls without exact event and agenda-item provenance likewise
+retain the verified outcome snapshot. Rules that lost previously observed PDF
+attachment proof receive a live attachment acquisition before materialization;
+if that fails, the verified Rules snapshot is retained. No fixture text is used
+as production attachment evidence.
 
-- **rebuild_sequence** — what the refresh runs, in the order the inputs imply.
-  The derived-JSON build boundary comes first and covers every generated family
-  in `warehouse/derived_json_build_manifest.json`, including the keyword search
-  index and the agency constellation documents; the source-contract projections
-  follow, and the depot registry last. The builders run one at a time: these are
-  the repository's heavy builders, and the boundary measures itself against a
-  declared cold-build time budget that running them side by side would
-  invalidate.
-- **not_rebuilt** — the gates the refresh deliberately does not run, each with
-  its reason. The warehouse-backed lookups need the retained catalog a hosted
-  runner does not have, and the two check-only gates are validators with no
-  build mode and no committed output.
+The generated freshness report is published with the Data health page that reads
+it; it must not be ignored or the page cannot reproduce in a fresh checkout.
 
-Run it by hand from a checkout with:
+The attempt, retained population, source clocks and causes are recorded in
+`.artifacts/first-class-publication-findings.json` and the workflow summary.
+This guard protects publication without changing the underlying acquisitions or
+asserting that retained data is newly fetched. The guard reads its baseline from
+`HEAD`, so acquisition and rebuilding must run before the refresh commit.
 
-```bash
-node ops/first-class-refresh/rebuild-committed-read-models.mjs            # rebuild
-node ops/first-class-refresh/rebuild-committed-read-models.mjs --list     # show both sides
+The rebuild then settles procurement joins, Rules, legislative matters, board
+positions, source-health observations, and their downstream documents and receipts.
+`after` dependencies are checked before any command runs. The derived JSON boundary
+still owns its generated families and their cold-build checks. Browser capture
+builders run against the built site; their manifests contain fresh measured
+read-back evidence rather than manually updated dates. Worker dependencies must
+be installed from the lockfile, and Python Playwright, Chromium and PDF text
+extraction must be available before running the sequence.
+
+The institution census refresh recounts measured artifact fingerprints and DOE
+populations. Its publisher source review remains frozen: the run summary explicitly
+states that it did not repeat that review. Other checker-only and warehouse-held
+operations also appear as named boundaries in the summary.
+
+Finally, the complete site and Worker CI test families run before a PR can be
+opened. This includes in-process freshness comparisons that never invoke a builder
+with `--check`. The registry test verifies the same site glob and Worker discovery
+command as CI, so a newly added freshness test is executed automatically and can
+stop an incomplete refresh. Static-standards builder parity remains checked too.
+
+```sh
+node ops/first-class-refresh/rebuild-committed-read-models.mjs
+node ops/first-class-refresh/rebuild-committed-read-models.mjs --list
 node ops/first-class-refresh/rebuild-committed-read-models.mjs --check-registry
 ```
 
-Both halves of the refresh call the same script — the hosted workflow before it
-opens its pull request, and this directory's warehouse-held script before it
-commits — so there is one list, not two.
-
-`test/first_class_refresh_committed_read_models.test.mjs` reads the gates back
-out of `.github/workflows/ci.yml` and compares them with the registry by builder
-path, in both directions. Adding a committed-freshness gate without deciding how
-the refresh handles it fails that test, and so does leaving a builder in the
-registry after its gate is removed.
+`--rebuild-only` and `--verify-only` are diagnostic modes. The scheduled workflow
+uses the full command. Both refresh entry points run the same registry before
+committing; neither may publish a snapshot that failed its own freshness tests.
 
 ## Running a builder is not publishing it
 

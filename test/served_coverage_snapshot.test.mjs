@@ -105,7 +105,7 @@ test("registered contracts reproduce independently from the shard the Contracts 
   assert.equal(unit.route, "/browse/contracts/");
   // The vintage is the day the Checkbook population behind these rows was
   // pulled, so it moves with each acquisition rather than staying fixed.
-  assert.equal(unit.evidence_vintage, "2026-09-07T00:00:00.000Z");
+  assert.equal(unit.evidence_vintage, `${projection.source_population.observed_at.slice(0, 10)}T00:00:00.000Z`);
 });
 
 test("procurement source counts are recounted from served rows, not from declared inputs", () => {
@@ -411,3 +411,9 @@ async function loadCatalog() {
   require(join(ROOT, "site/i18n.js"));
   return { STRINGS: globalThis.window.STRINGS, SHIPPING_LANGS: globalThis.window.SHIPPING_LANGS };
 }
+
+
+test("the frozen September 7 acquisition day retains its original UTC vintage", () => {
+  const fixture = readJson("test/fixtures/first-class-refresh/historical.json");
+  assert.equal(resolveVintage(fixture, ["acquisition_day"]).at, "2026-09-07T00:00:00.000Z");
+});

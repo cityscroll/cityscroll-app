@@ -1,0 +1,246 @@
+{
+  "source_revision": "05d86cedbd23cb43bb448e1eee4d97fd098b0c60",
+  "acquisition_day": "2026-09-07",
+  "comparative_yield": {
+    "award_inputs": 1,
+    "positive_amount_pairs": 9077,
+    "award_outputs": 1,
+    "amount_outputs": 2,
+    "denominator": 9078,
+    "rate": 0.00033
+  },
+  "meeting": {
+    "object_type": "meeting",
+    "schema": "cityscroll.meeting_object.v1",
+    "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+    "source_keys": [
+      {
+        "source_system": "community_board",
+        "key_type": "publisher_event_id",
+        "value": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/"
+      }
+    ],
+    "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+    "title": "Transportation & Health Committees",
+    "event_date": "2026-10-15T18:30:00-04:00",
+    "event_end": "2026-10-15T20:00:00-04:00",
+    "meeting_family": "community_board_meeting_v0",
+    "venue": {
+      "name": "Board District Office",
+      "address": "1932 Arthur Avenue 403A, Bronx, NY, 10457",
+      "mode": "in-person"
+    },
+    "participation": {
+      "links": [
+        {
+          "label": "Meeting information",
+          "url": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/"
+        }
+      ],
+      "remote_join_url": null,
+      "emails": [],
+      "phones": [],
+      "source_url": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/"
+    },
+    "committee": null,
+    "agency": null,
+    "board_name": "Bronx Community Board 6",
+    "description": null,
+    "search_text": "Transportation & Health Committees 1932 Arthur Avenue 403A, Bronx, NY, 10457 Board District Office",
+    "affected_area": {
+      "scope": "local",
+      "boroughs": [
+        "Bronx"
+      ],
+      "community_boards": [
+        "bronx-cb-06"
+      ],
+      "community_districts": [
+        "X06"
+      ],
+      "neighborhoods": [],
+      "addresses": []
+    },
+    "meeting_documents": [],
+    "source_url": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+    "source_system": "community_board",
+    "meeting_origin": "community_board_source_observed",
+    "source_receipt": {
+      "schema": "cityscroll.community_board_source_receipt.v1",
+      "source_url": "https://cbbronx.cityofnewyork.us/cb6/calendar/",
+      "observed_at": "2026-09-07T13:14:16.382Z",
+      "status": "ok",
+      "fetch_status": "200",
+      "content_type": "text/html; charset=UTF-8",
+      "content_length": 129515,
+      "parser": "html_pdf_v1",
+      "reason": null
+    },
+    "join_status": "unknown",
+    "institution_refs": {
+      "agency_ref": null,
+      "board_ref": "community-board:bronx-cb-06"
+    },
+    "compatibility": {
+      "legacy_notice_href": null,
+      "legacy_fragment_href": null,
+      "publisher_href": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/"
+    },
+    "request_id": null,
+    "source_record_id": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+    "board_id": "bronx-cb-06",
+    "record_kind": "event",
+    "record_id": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+    "record_url": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+    "date": "2026-10-15",
+    "start_at": "2026-10-15T18:30:00-04:00",
+    "end_at": "2026-10-15T20:00:00-04:00",
+    "category": "upcoming_meetings",
+    "format": "html",
+    "publisher_identifiers": [
+      "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/"
+    ],
+    "source_role": "upcoming_meetings",
+    "observed_receipt": {
+      "schema": "cityscroll.community_board_source_receipt.v1",
+      "source_url": "https://cbbronx.cityofnewyork.us/cb6/calendar/",
+      "observed_at": "2026-09-07T13:14:16.382Z",
+      "status": "ok",
+      "fetch_status": "200",
+      "content_type": "text/html; charset=UTF-8",
+      "content_length": 129515,
+      "parser": "html_pdf_v1",
+      "reason": null
+    },
+    "short_title": "Transportation & Health Committees",
+    "start_date": "2026-09-07T13:14:16.382Z",
+    "type_of_notice_description": "upcoming_meetings",
+    "section_name": "Community Board Meetings",
+    "meeting_join": {
+      "schema": "cityscroll.community_board_source_join.v1",
+      "status": "unknown",
+      "official": false,
+      "reason": "no_city_record_notice",
+      "board_id": "bronx-cb-06",
+      "meeting_date": "2026-10-15",
+      "source_url": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+      "source_record_id": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+      "join": {
+        "matched": false,
+        "method": "exact_board_date_publisher_identifier",
+        "reason": "no_city_record_notice"
+      },
+      "provenance": {
+        "schema": "cityscroll.community_board_meeting_provenance.v1",
+        "source_url": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+        "source_record_id": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+        "source_index_url": "https://cbbronx.cityofnewyork.us/cb6/calendar/",
+        "observed_receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://cbbronx.cityofnewyork.us/cb6/calendar/",
+          "observed_at": "2026-09-07T13:14:16.382Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html; charset=UTF-8",
+          "content_length": 129515,
+          "parser": "html_pdf_v1",
+          "reason": null
+        },
+        "adapter": "html_pdf_v1"
+      }
+    },
+    "source_provenance": {
+      "schema": "cityscroll.community_board_meeting_provenance.v1",
+      "source_url": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+      "source_record_id": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+      "source_index_url": "https://cbbronx.cityofnewyork.us/cb6/calendar/",
+      "observed_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://cbbronx.cityofnewyork.us/cb6/calendar/",
+        "observed_at": "2026-09-07T13:14:16.382Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html; charset=UTF-8",
+        "content_length": 129515,
+        "parser": "html_pdf_v1",
+        "reason": null
+      },
+      "adapter": "html_pdf_v1"
+    },
+    "entity_refs_all": [
+      "community-board:bronx-cb-06",
+      "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/"
+    ],
+    "institution_edges": [
+      {
+        "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+        "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+        "edge_type": "hosts_meeting",
+        "relation": "hosts_meeting",
+        "status": "promoted",
+        "promoted": true,
+        "reason": null,
+        "from": "community-board:bronx-cb-06",
+        "to": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+        "target_kind": "meeting",
+        "target_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+        "target_name": "Transportation & Health Committees",
+        "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Ftransportation-health-committees-2%2F",
+        "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Ftransportation-health-committees-2%2F",
+        "board_href": "/community-boards/bronx-cb-06/",
+        "institution_refs": {
+          "board_ref": "community-board:bronx-cb-06"
+        },
+        "source_url": "https://cbbronx.cityofnewyork.us/cb6/calendar/",
+        "source_record_id": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+        "source_receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://cbbronx.cityofnewyork.us/cb6/calendar/",
+          "observed_at": "2026-09-07T13:14:16.382Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html; charset=UTF-8",
+          "content_length": 129515,
+          "parser": "html_pdf_v1",
+          "reason": null
+        },
+        "provenance": {
+          "source_url": "https://cbbronx.cityofnewyork.us/cb6/calendar/",
+          "source_record_id": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cbbronx.cityofnewyork.us/cb6/calendar/",
+            "observed_at": "2026-09-07T13:14:16.382Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 129515,
+            "parser": "html_pdf_v1",
+            "reason": null
+          },
+          "format": "html"
+        },
+        "join": {
+          "matched": true,
+          "method": "exact_board_date_publisher_identifier",
+          "board_id": "bronx-cb-06",
+          "event_date": "2026-10-15",
+          "publisher_identifier": "HTTPS://CBBRONX.CITYOFNEWYORK.US/CB6/EVENT/TRANSPORTATION-HEALTH-COMMITTEES-2/",
+          "evidence": [
+            "exact_board_identity",
+            "exact_date",
+            "publisher_identifier"
+          ]
+        },
+        "evidence": [
+          "exact_board_identity",
+          "exact_publisher_identifier",
+          "exact_meeting_date",
+          "retained_source_url",
+          "observed_receipt",
+          "verified_source_join"
+        ]
+      }
+    ]
+  }
+}

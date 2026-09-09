@@ -5,6 +5,7 @@ import test from "node:test";
 import { TAXONOMY_VERSION, normalizeUsageEvent } from "../worker/src/lib/analytics.mjs";
 import {
   buildComparativeSignalEvaluation,
+  yieldDimension,
   loadComparativeSignalEvaluationInputs,
   renderComparativeSignalEvaluationReport,
 } from "../tools/evaluate_comparative_signals.mjs";
@@ -32,22 +33,28 @@ test("the evaluator measures every required dimension with explicit denominators
   // The eligible-input denominator grew with the committed Checkbook
   // population; the shown numerator did not, because the amount-change pilot
   // shows only what the frozen inspection receipt admits.
+  const inputs = loadComparativeSignalEvaluationInputs();
+  const positivePairs = inputs.procurement.observations.filter((row) =>
+    row.source_system === "checkbook_contracts" && Number(row.snapshot?.original) > 0 && Number(row.snapshot?.current) > 0);
+  const denominator = inputs.awardReceipts.facts.length + positivePairs.length;
+  assert.ok(denominator > 0);
   assert.deepEqual(result.dimensions.yield.aggregate, {
     numerator: 3,
-    denominator: 9078,
-    rate: 0.00033,
+    denominator,
+    rate: Number((3 / denominator).toFixed(6)),
   });
+  const detected = positivePairs.filter((row) => row.snapshot.current !== row.snapshot.original).length;
   const amountFamily = result.dimensions.yield.families.within_contract_registered_amount_change;
   assert.equal(amountFamily.numerator, 2);
-  assert.equal(amountFamily.detected_changes, 118);
-  assert.equal(amountFamily.admitted_unshown, 116);
+  assert.equal(amountFamily.detected_changes, detected);
+  assert.equal(amountFamily.admitted_unshown, detected - 2);
   assert.deepEqual(result.scope.admission_boundaries, [{
     metric_family: "within_contract_registered_amount_change",
     basis: "frozen_inspection_receipt",
     rule: "a detected change is shown only where the frozen receipt carries an inspection verdict for it",
-    detected: 118,
+    detected,
     shown: 2,
-    admitted_unshown: 116,
+    admitted_unshown: detected - 2,
     unshown_reason: "awaiting_extended_inspection_sample",
   }]);
   // Every shown case is one the frozen receipt inspected: the pilot never
@@ -162,4 +169,17 @@ test("evaluation is deterministic and contains no model or live-source path", ()
   assert.equal(JSON.stringify(first), JSON.stringify(second));
   const source = readFileSync(new URL("../tools/evaluate_comparative_signals.mjs", import.meta.url), "utf8");
   assert.doesNotMatch(source, /fetch\s*\(|openai|anthropic|language model/i);
+});
+
+
+test("the frozen September 7 population still yields the historical comparative denominator", () => {
+  const fixture = JSON.parse(readFileSync(new URL("./fixtures/first-class-refresh/historical.json", import.meta.url))).comparative_yield;
+  const dimension = yieldDimension(
+    { facts: Array(fixture.award_inputs).fill({}), coverage_receipt: { eligible_count: fixture.award_inputs } },
+    Array(fixture.award_outputs).fill({}),
+    [...Array(fixture.positive_amount_pairs).fill({ original: 1, current: 2 }), { original: 0, current: 2 }],
+    Array(fixture.amount_outputs).fill({}),
+    { detected: 118, admitted_unshown: 116 },
+  );
+  assert.deepEqual(dimension.aggregate, { numerator: 3, denominator: fixture.denominator, rate: fixture.rate });
 });

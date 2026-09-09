@@ -147,7 +147,7 @@ test("exact contract-id matches stay public; PIN-family id mismatches do not", (
   }), true);
 });
 
-test("committed review artifact classifies 130 PIN-family mismatches as 118 auto + 12 human", () => {
+test("committed review artifact exactly classifies the current PIN-family mismatch population", () => {
   const crosswalk = JSON.parse(readFileSync(join(ROOT, "site/data/passport_checkbook_crosswalk.json"), "utf8"));
   const spine = JSON.parse(readFileSync(join(ROOT, "site/data/procurement_spine_sources.json"), "utf8"));
   const committed = JSON.parse(readFileSync(join(ROOT, "site/data/pin_family_mismatch_review.json"), "utf8"));
@@ -158,12 +158,9 @@ test("committed review artifact classifies 130 PIN-family mismatches as 118 auto
     passportContracts: spine.rows.passport_contracts,
     checkbookContracts: spine.rows.checkbook_contracts,
   });
-  assert.equal(committed.metrics.pin_family_id_mismatches, 130);
-  assert.equal(committed.metrics.auto_related_instrument, 118);
-  assert.equal(committed.metrics.needs_review, 12);
-  assert.equal(committed.metrics.by_rule.fms_document_type_mismatch, 71);
-  assert.equal(committed.metrics.by_rule.successor_term, 39);
-  assert.equal(committed.metrics.by_rule.later_term_renewal, 8);
+  const sourcePairs = crosswalk.rows.filter(isPinFamilyIdMismatch);
+  assert.equal(committed.metrics.pin_family_id_mismatches, sourcePairs.length);
+  assert.ok(sourcePairs.length > 0, "the committed population must exercise PIN-family mismatches");
   assert.deepEqual(rebuilt.metrics, committed.metrics);
   // The queue is what the automatic rules did not settle, stated as that rule
   // rather than as the vendor names one generation happened to leave in it. A
@@ -179,4 +176,24 @@ test("committed review artifact classifies 130 PIN-family mismatches as 118 auto
   assert.ok(queue.every((pair) => !pair.rule));
   assert.ok(queue.every((pair) => Boolean(pair.evidence.checkbook.vendor)));
   assert.ok(queue.every((pair) => typeof pair.evidence.vendor_same === "boolean"));
+});
+
+
+test("the frozen historical PIN evidence still classifies 130 pairs as 118 related instruments and 12 review cases", () => {
+  const fixture = JSON.parse(readFileSync(join(ROOT, "test/fixtures/first-class-refresh/pin-classifications.json")));
+  const rules = {};
+  let related = 0;
+  let review = 0;
+  for (const row of fixture.cases) {
+    const result = classifyPinFamilyEvidence(row.evidence);
+    assert.equal(result.identity_class, row.identity_class);
+    assert.equal(result.rule, row.rule);
+    if (result.identity_class === "related_instrument") related += 1;
+    if (result.identity_class === "needs_review") review += 1;
+    if (result.rule) rules[result.rule] = (rules[result.rule] || 0) + 1;
+  }
+  assert.equal(fixture.cases.length, 130);
+  assert.equal(related, 118);
+  assert.equal(review, 12);
+  assert.deepEqual(rules, { fms_document_type_mismatch: 71, successor_term: 39, later_term_renewal: 8 });
 });

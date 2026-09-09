@@ -1,0 +1,2345 @@
+{
+  "source_revision": "05d86cedbd23cb43bb448e1eee4d97fd098b0c60",
+  "cases": [
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -29
+      },
+      "identity_class": "needs_review",
+      "rule": null
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": false,
+        "term_gap_days": 66
+      },
+      "identity_class": "needs_review",
+      "rule": null
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 732
+      },
+      "identity_class": "related_instrument",
+      "rule": "later_term_renewal"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 488
+      },
+      "identity_class": "related_instrument",
+      "rule": "later_term_renewal"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": false,
+        "term_gap_days": 0
+      },
+      "identity_class": "needs_review",
+      "rule": null
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 2
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 563
+      },
+      "identity_class": "related_instrument",
+      "rule": "later_term_renewal"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": false,
+        "term_gap_days": 578
+      },
+      "identity_class": "needs_review",
+      "rule": null
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": false,
+        "term_gap_days": 578
+      },
+      "identity_class": "needs_review",
+      "rule": null
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": false,
+        "term_gap_days": 578
+      },
+      "identity_class": "needs_review",
+      "rule": null
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 31
+      },
+      "identity_class": "related_instrument",
+      "rule": "later_term_renewal"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 16
+      },
+      "identity_class": "related_instrument",
+      "rule": "later_term_renewal"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 43
+      },
+      "identity_class": "related_instrument",
+      "rule": "later_term_renewal"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": false,
+        "term_gap_days": 294
+      },
+      "identity_class": "needs_review",
+      "rule": null
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 731
+      },
+      "identity_class": "related_instrument",
+      "rule": "later_term_renewal"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -354
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -1825
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -216
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -194
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -160
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -1825
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -1825
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -1794
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -1825
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -1825
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -950
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -1732
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -845
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -845
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 827
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -1825
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -1825
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -1794
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -1825
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -1825
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 354
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "CT1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 356
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 206
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -768
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -594
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -531
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -569
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -702
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": false,
+        "term_gap_days": -557
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -550
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -566
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -667
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -1182
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -274
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -625
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -685
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -1166
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -1182
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -607
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -212
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -541
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -537
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -510
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -342
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -538
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -349
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -616
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -637
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -600
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -606
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -631
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -609
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -23
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": false,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": false,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": false,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": false,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": false,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": false,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": false,
+        "term_gap_days": 187
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 481
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -1825
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -942
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -135
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -135
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -127
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -127
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -127
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -127
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -127
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "CTA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -975
+      },
+      "identity_class": "related_instrument",
+      "rule": "fms_document_type_mismatch"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "MA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "MA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "MA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 366
+      },
+      "identity_class": "related_instrument",
+      "rule": "later_term_renewal"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -843
+      },
+      "identity_class": "needs_review",
+      "rule": null
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": -811
+      },
+      "identity_class": "needs_review",
+      "rule": null
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": false,
+        "term_gap_days": 1
+      },
+      "identity_class": "needs_review",
+      "rule": null
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": false,
+        "term_gap_days": 1
+      },
+      "identity_class": "needs_review",
+      "rule": null
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": false,
+        "term_gap_days": -50
+      },
+      "identity_class": "needs_review",
+      "rule": null
+    },
+    {
+      "evidence": {
+        "checkbook": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "passport": {
+          "fms": {
+            "type": "MMA1"
+          }
+        },
+        "vendor_same": true,
+        "term_gap_days": 1
+      },
+      "identity_class": "related_instrument",
+      "rule": "successor_term"
+    }
+  ]
+}

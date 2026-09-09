@@ -46,6 +46,12 @@ jobs:
         with:
           node-version: 22
 
+      - name: Install pinned Worker dependencies
+        run: tools/install_worker_dependencies.sh
+      - uses: ./.github/actions/setup-playwright
+      - name: Install PDF text extraction for rule evidence
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils
+
       - name: Run the declared acquisition and builder for every due dataset
         env:
           LEGISTAR_API_TOKEN: ${{ secrets.LEGISTAR_API_TOKEN }}
@@ -58,8 +64,16 @@ jobs:
           if [ "${{ inputs.run_all }}" = "true" ]; then mode="--run-all"; fi
           node tools/first_class_refresh.mjs "$mode"
 
-      - name: Write the freshness report
-        run: node tools/first_class_refresh.mjs --write-report
+      - name: Rebuild the committed read models the refreshed datasets feed
+        # --run-due stops after each dataset's owning builder. The keyword search
+        # index, the agency constellation documents, and the generated
+        # source-contract projections are committed read models derived from those
+        # datasets, and continuous integration re-derives each one in check mode.
+        # Refreshing the inputs without rebuilding the read models opens a pull
+        # request that fails its own freshness gates. The registry beside this
+        # script records which gates it covers and which it deliberately leaves to
+        # the warehouse-held half of the refresh.
+        run: node ops/first-class-refresh/rebuild-committed-read-models.mjs
 
       - name: Summarise what refreshed
         run: |
@@ -79,17 +93,6 @@ jobs:
             for (const c of failed) console.log(`- \`${c.command.join(" ")}\` — ${c.status}${c.reason ? ` (${c.reason})` : ""}`);
           }
           NODE
-
-      - name: Rebuild the committed read models the refreshed datasets feed
-        # --run-due stops after each dataset's owning builder. The keyword search
-        # index, the agency constellation documents, and the generated
-        # source-contract projections are committed read models derived from those
-        # datasets, and continuous integration re-derives each one in check mode.
-        # Refreshing the inputs without rebuilding the read models opens a pull
-        # request that fails its own freshness gates. The registry beside this
-        # script records which gates it covers and which it deliberately leaves to
-        # the warehouse-held half of the refresh.
-        run: node ops/first-class-refresh/rebuild-committed-read-models.mjs
 
       # GitHub deliberately does not start workflows for pushes or pull
       # requests made with a job's own GITHUB_TOKEN, so a pull request opened

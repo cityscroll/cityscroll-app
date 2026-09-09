@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
@@ -66,7 +66,9 @@ function pageFrom(contracts, observations) {
 
 test("data health page materializes the committed public artifact without request-time compute", () => {
   const committed = JSON.parse(readFileSync(new URL("../site/data/source_health_public.json", import.meta.url)));
-  const html = renderDataHealthPage(committed);
+  const firstClassPath = new URL("../site/data/first_class_freshness_report.json", import.meta.url);
+  const firstClassReport = existsSync(firstClassPath) ? JSON.parse(readFileSync(firstClassPath)) : null;
+  const html = renderDataHealthPage(committed, { firstClassReport });
   const built = readFileSync(new URL("../site/data-health/index.html", import.meta.url), "utf8");
 
   assert.equal(committed.schema, "cityscroll.public_source_health.v1");

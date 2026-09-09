@@ -180,7 +180,7 @@ function precisionDimension(shownCases, frozenCases) {
   };
 }
 
-function yieldDimension(awardReceipts, awardCases, snapshots, amountCases, amountBoundary) {
+export function yieldDimension(awardReceipts, awardCases, snapshots, amountCases, amountBoundary) {
   const positivePairs = snapshots.filter((snapshot) => (
     Number(snapshot.original) > 0 && Number(snapshot.current) > 0
   ));

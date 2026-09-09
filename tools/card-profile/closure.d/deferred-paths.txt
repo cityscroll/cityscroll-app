@@ -109,6 +109,7 @@ site/data/exam_sources/verification_receipts/civil_service_list_closed_exams_202
 site/data/exam_sources/verification_receipts/dcas_open_competitive_2026-07-29.json
 site/data/exam_sources/verification_receipts/noe_differentiators_latest.json
 site/data/exam_sources/verification_receipts/noe_fee_salary_densify_latest.json
+site/data/first_class_freshness_report.json
 site/data/franchise_concession_sources/verification_receipts/franchise_mocs_plans_2026-08-04.json
 site/data/gap_taxonomy.json
 site/data/governing_body_proceedings.json
@@ -149,7 +150,6 @@ site/data/nycha_award_sources/verification_receipts/nycha_awards_2026-08-01.json
 site/data/official_cfb_influence_lookup.json
 site/data/official_committee_memberships_lookup.json
 site/data/official_lobby_influence_lookup.json
-site/data/passport_checkbook_crosswalk.json
 site/data/passport_sources/verification_receipts/passport_public_2026-07-30.json
 site/data/passport_sources/verification_receipts/passport_rfx_documents_2026-07-30.json
 site/data/payroll_title_warehouse_lookup.json

@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.committed_read_model_rebuild.v1",
-  "purpose": "Bind the scheduled first-class dataset refresh to the committed read models that continuous integration re-derives in check mode. Every check-mode gate in the static-standards unit family appears here exactly once, either in rebuild_sequence (the refresh regenerates it) or in not_rebuilt (with the reason it cannot or need not be regenerated on a hosted runner). test/first_class_refresh_committed_read_models.test.mjs compares this file with the workflow definition by builder path and fails when the two lists drift apart. published_paths is the matching list of pathspecs both halves of the refresh stage when they commit, so a read model this file says the refresh rebuilds cannot be dropped on its way into the pull request.",
+  "purpose": "Bind scheduled first-class refreshes to explicit CI checks and freshness assertions in site and Worker tests. Commands run in dependency order; published_paths binds generated outputs to the publication step. Unavailable acquisitions retain their verified populations and produce visible findings. Review-only and warehouse-held gaps are reported separately.",
   "gate_workflow": ".github/workflows/ci.yml",
   "gate_family": "static-standards",
   "published_paths": [
@@ -19,9 +19,160 @@
     {
       "path": "docs",
       "reason": "Several rebuild steps write a committed evidence document rather than a served artifact: the served-coverage census, the geography located-in audit, the data-source graph and the gap taxonomy. A refresh that regenerates one of these and does not stage it publishes the input without the evidence, and the gate that re-derives the document in check mode then fails on the refresh's own pull request."
+    },
+    {
+      "path": "test/fixtures/agency_source_identity_compatibility/snapshot.v1.json",
+      "reason": "The regenerated route identity snapshot is checked by the site unit family."
+    },
+    {
+      "path": "artifacts/capability-spine/remote-mcp.json",
+      "reason": "The pinned client interoperability receipt contains the refreshed provider semantic hashes."
+    },
+    {
+      "path": "warehouse/fixtures/authority-native-procurement/institution_source_census.v1.json",
+      "reason": "Only measured census fields move with refreshed populations; source review remains frozen."
+    },
+    {
+      "path": "warehouse/fixtures/procurement-intent-radar/corpus_backtest.v1.json",
+      "reason": "The intent-radar backtest gate re-derives this measured corpus artifact after procurement changes."
+    },
+    {
+      "path": "warehouse/fixtures/procurement-intent-radar/corpus_coverage.v1.json",
+      "reason": "The backtest coverage receipt must travel with the corpus measurement that produced it."
     }
   ],
   "rebuild_sequence": [
+    {
+      "id": "publication-guard",
+      "command": [
+        "ops/first-class-refresh/guard-publication.mjs"
+      ],
+      "covers": [
+        "ops/first-class-refresh/guard-publication.mjs"
+      ],
+      "after": []
+    },
+    {
+      "id": "procurement-crosswalk",
+      "command": [
+        "tools/build_procurement_crosswalk.mjs"
+      ],
+      "covers": [
+        "tools/build_procurement_crosswalk.mjs"
+      ],
+      "after": [
+        "publication-guard"
+      ]
+    },
+    {
+      "id": "pin-family-review",
+      "command": [
+        "tools/build_pin_family_review.mjs"
+      ],
+      "covers": [
+        "tools/build_pin_family_review.mjs"
+      ],
+      "after": [
+        "procurement-crosswalk"
+      ]
+    },
+    {
+      "id": "entity-intelligence",
+      "command": [
+        "tools/build_entity_intelligence.mjs"
+      ],
+      "covers": [
+        "tools/build_entity_intelligence.mjs"
+      ],
+      "after": [
+        "procurement-crosswalk",
+        "pin-family-review"
+      ]
+    },
+    {
+      "id": "rules-semantic",
+      "command": [
+        "tools/build_rules_semantic_lane.mjs"
+      ],
+      "covers": [
+        "tools/build_rules_semantic_lane.mjs"
+      ],
+      "after": [
+        "publication-guard"
+      ]
+    },
+    {
+      "id": "legislative-matters",
+      "command": [
+        "tools/build_legislative_matter_documents.mjs"
+      ],
+      "covers": [
+        "tools/build_legislative_matter_documents.mjs"
+      ],
+      "after": [
+        "publication-guard"
+      ]
+    },
+    {
+      "id": "board-land-positions",
+      "command": [
+        "tools/build_community_board_land_positions.mjs"
+      ],
+      "covers": [
+        "tools/build_community_board_land_positions.mjs"
+      ],
+      "after": [
+        "publication-guard"
+      ]
+    },
+    {
+      "id": "board-graph-census",
+      "command": [
+        "tools/build_community_board_graph_census.mjs"
+      ],
+      "covers": [
+        "tools/build_community_board_graph_census.mjs"
+      ],
+      "after": [
+        "publication-guard"
+      ]
+    },
+    {
+      "id": "council-land-bridge",
+      "command": [
+        "tools/build_council_land_bridge.mjs"
+      ],
+      "covers": [
+        "tools/build_council_land_bridge.mjs"
+      ],
+      "after": [
+        "legislative-matters"
+      ]
+    },
+    {
+      "id": "council-land-links",
+      "command": [
+        "tools/build_council_land_matter_links.mjs"
+      ],
+      "covers": [
+        "tools/build_council_land_matter_links.mjs"
+      ],
+      "after": [
+        "council-land-bridge"
+      ]
+    },
+    {
+      "id": "property-cohort",
+      "command": [
+        "tools/build_property_disposition_cohort.mjs"
+      ],
+      "covers": [
+        "tools/build_property_disposition_cohort.mjs"
+      ],
+      "after": [
+        "publication-guard"
+      ]
+    },
     {
       "id": "derived-json-build-boundary",
       "command": [
@@ -29,9 +180,37 @@
       ],
       "covers": [
         "tools/build_agency_constellation_documents.mjs",
-        "tools/build_keyword_search_index.mjs"
+        "tools/build_keyword_search_index.mjs",
+        "tools/build_shared_procurement_read_model.mjs",
+        "tools/build_money_resident_snapshot.mjs",
+        "tools/build_notice_context_lookup.mjs",
+        "tools/build_property_resident_snapshot.mjs",
+        "tools/build_following_procurement_suggestions.mjs",
+        "tools/build_following_page.mjs",
+        "tools/build_exam_documents.mjs",
+        "tools/build_process_conformance.mjs",
+        "tools/build_agency_lifecycle_conformance.mjs",
+        "tools/build_agency_documents.mjs",
+        "tools/build_community_board_constellation_documents.mjs",
+        "tools/build_community_board_district_projects.mjs",
+        "tools/build_primary_documents.mjs",
+        "tools/build_district_activity.mjs",
+        "tools/build_near_you_pages.mjs",
+        "tools/build_community_board_payroll_staff_count.mjs"
       ],
-      "note": "The boundary rebuilds every declared generated family in warehouse/derived_json_build_manifest.json, in the order that manifest fixes, and re-derives each one in check mode immediately after building it. It is the repository's ordered rebuild for derived JSON, so the refresh runs it rather than invoking the covered builders directly. It runs the families one at a time under a single declared cold-build time budget; nothing here fans the builders out in parallel."
+      "note": "The boundary rebuilds every declared generated family in warehouse/derived_json_build_manifest.json, in the order that manifest fixes, and re-derives each one in check mode immediately after building it. It is the repository's ordered rebuild for derived JSON, so the refresh runs it rather than invoking the covered builders directly. It runs the families one at a time under a single declared cold-build time budget; nothing here fans the builders out in parallel.",
+      "after": [
+        "publication-guard",
+        "procurement-crosswalk",
+        "entity-intelligence",
+        "rules-semantic",
+        "legislative-matters",
+        "board-land-positions",
+        "board-graph-census",
+        "council-land-bridge",
+        "council-land-links",
+        "property-cohort"
+      ]
     },
     {
       "id": "agency-entity-records",
@@ -41,7 +220,74 @@
       "covers": [
         "tools/build_agency_entity_publication.mjs"
       ],
-      "note": "Re-derives the published agency entity records the organization dossier and relationship-graph surfaces read. Its inputs are the agency identity crosswalk, the agency constellation rollup and the award-corroborated contract census, so it runs after the derived JSON boundary has settled the constellation half of that set. Needs no retained analytical catalog: a hosted runner can rebuild it from the committed tree."
+      "note": "Re-derives the published agency entity records the organization dossier and relationship-graph surfaces read. Its inputs are the agency identity crosswalk, the agency constellation rollup and the award-corroborated contract census, so it runs after the derived JSON boundary has settled the constellation half of that set. Needs no retained analytical catalog: a hosted runner can rebuild it from the committed tree.",
+      "after": [
+        "derived-json-build-boundary"
+      ]
+    },
+    {
+      "id": "full-board-meetings",
+      "command": [
+        "tools/build_community_board_full_board_meetings.mjs"
+      ],
+      "covers": [
+        "tools/build_community_board_full_board_meetings.mjs"
+      ],
+      "after": [
+        "derived-json-build-boundary"
+      ]
+    },
+    {
+      "id": "source-health-observations",
+      "command": [
+        "tools/build_source_health_observations.mjs"
+      ],
+      "covers": [
+        "tools/build_source_health_observations.mjs"
+      ],
+      "after": [
+        "derived-json-build-boundary"
+      ]
+    },
+    {
+      "id": "source-vintage-observations",
+      "command": [
+        "tools/build_source_vintage_observations.mjs"
+      ],
+      "covers": [
+        "tools/build_source_vintage_observations.mjs"
+      ],
+      "after": [
+        "source-health-observations"
+      ]
+    },
+    {
+      "id": "source-health-public",
+      "command": [
+        "tools/build_source_health_public_projection.mjs"
+      ],
+      "covers": [
+        "tools/build_source_health_public_projection.mjs"
+      ],
+      "after": [
+        "source-health-observations",
+        "source-vintage-observations"
+      ]
+    },
+    {
+      "id": "refresh-report",
+      "command": [
+        "tools/first_class_refresh.mjs",
+        "--write-report"
+      ],
+      "covers": [
+        "tools/first_class_refresh.mjs"
+      ],
+      "after": [
+        "source-health-public",
+        "derived-json-build-boundary",
+        "publication-guard"
+      ]
     },
     {
       "id": "source-contract-docs",
@@ -51,7 +297,11 @@
       "covers": [
         "tools/generate_source_docs.mjs"
       ],
-      "note": "Reads the source contracts the refresh restamps, so it runs after the derived JSON boundary has settled the data those contracts describe."
+      "note": "Reads the source contracts the refresh restamps, so it runs after the derived JSON boundary has settled the data those contracts describe.",
+      "after": [
+        "source-health-public",
+        "refresh-report"
+      ]
     },
     {
       "id": "data-source-graph",
@@ -61,7 +311,10 @@
       "covers": [
         "tools/data_source_graph.mjs"
       ],
-      "note": "Projects the source-contract documentation the previous step regenerates."
+      "note": "Projects the source-contract documentation the previous step regenerates.",
+      "after": [
+        "source-contract-docs"
+      ]
     },
     {
       "id": "served-coverage-snapshot",
@@ -71,7 +324,108 @@
       "covers": [
         "tools/build_served_coverage_snapshot.mjs"
       ],
-      "note": "Counts the served populations the refresh has just rebuilt, so it runs after the derived-JSON boundary and the source-contract projections have settled. It reads only committed artifacts and contacts no publisher."
+      "note": "Counts the served populations the refresh has just rebuilt, so it runs after the derived-JSON boundary and the source-contract projections have settled. It reads only committed artifacts and contacts no publisher.",
+      "after": [
+        "data-source-graph"
+      ]
+    },
+    {
+      "id": "data-health-page",
+      "command": [
+        "tools/build_data_health_page.mjs"
+      ],
+      "covers": [
+        "tools/build_data_health_page.mjs"
+      ],
+      "after": [
+        "source-health-public",
+        "refresh-report"
+      ]
+    },
+    {
+      "id": "agency-identity-snapshot",
+      "command": [
+        "tools/build_agency_source_identity_snapshot.mjs",
+        "--write"
+      ],
+      "covers": [
+        "tools/build_agency_source_identity_snapshot.mjs"
+      ],
+      "after": [
+        "agency-entity-records"
+      ]
+    },
+    {
+      "id": "cross-spine-census",
+      "command": [
+        "tools/build_cross_spine_shadow_census.mjs"
+      ],
+      "covers": [
+        "tools/build_cross_spine_shadow_census.mjs"
+      ],
+      "after": [
+        "derived-json-build-boundary"
+      ]
+    },
+    {
+      "id": "land-mapability",
+      "command": [
+        "tools/build_land_mapability_census.mjs"
+      ],
+      "covers": [
+        "tools/build_land_mapability_census.mjs"
+      ],
+      "after": [
+        "derived-json-build-boundary"
+      ]
+    },
+    {
+      "id": "land-filter-parity",
+      "command": [
+        "tools/land_filter_parity_receipt.mjs"
+      ],
+      "covers": [
+        "tools/land_filter_parity_receipt.mjs"
+      ],
+      "after": [
+        "derived-json-build-boundary"
+      ]
+    },
+    {
+      "id": "comparative-evaluation",
+      "command": [
+        "tools/evaluate_comparative_signals.mjs"
+      ],
+      "covers": [
+        "tools/evaluate_comparative_signals.mjs"
+      ],
+      "after": [
+        "derived-json-build-boundary"
+      ]
+    },
+    {
+      "id": "procurement-backtest",
+      "command": [
+        "tools/backtest_procurement_intent_radar.mjs"
+      ],
+      "covers": [
+        "tools/backtest_procurement_intent_radar.mjs"
+      ],
+      "after": [
+        "derived-json-build-boundary"
+      ]
+    },
+    {
+      "id": "institution-census-measurements",
+      "command": [
+        "ops/first-class-refresh/rebuild-institution-census.mjs"
+      ],
+      "covers": [
+        "ops/first-class-refresh/rebuild-institution-census.mjs"
+      ],
+      "after": [
+        "derived-json-build-boundary"
+      ]
     },
     {
       "id": "capability-topology",
@@ -80,6 +434,9 @@
       ],
       "covers": [
         "tools/build_capability_topology.mjs"
+      ],
+      "after": [
+        "agency-entity-records"
       ]
     },
     {
@@ -90,7 +447,23 @@
       "covers": [
         "tools/generate_integration_client.mjs"
       ],
-      "note": "Projected from the capability registry, so it follows the topology build."
+      "note": "Projected from the capability registry, so it follows the topology build.",
+      "after": [
+        "capability-topology"
+      ]
+    },
+    {
+      "id": "remote-mcp-receipt",
+      "command": [
+        "worker/scripts/build_remote_mcp_evidence.mjs"
+      ],
+      "covers": [
+        "worker/scripts/build_remote_mcp_evidence.mjs"
+      ],
+      "after": [
+        "integration-client",
+        "agency-entity-records"
+      ]
     },
     {
       "id": "depot-registry",
@@ -100,7 +473,87 @@
       "covers": [
         "tools/depot_rederive.mjs"
       ],
-      "note": "Re-derives the join graph from the refreshed source-contract measurements and gap taxonomy."
+      "note": "Re-derives the join graph from the refreshed source-contract measurements and gap taxonomy.",
+      "after": [
+        "data-source-graph"
+      ]
+    },
+    {
+      "id": "capture-site",
+      "command": [
+        "tools/build_public_site.mjs"
+      ],
+      "covers": [
+        "tools/build_public_site.mjs"
+      ],
+      "after": [
+        "data-health-page"
+      ]
+    },
+    {
+      "id": "official-colleagues-capture",
+      "command": [
+        "tools/capture_official_colleagues.py"
+      ],
+      "covers": [
+        "tools/capture_official_colleagues.py"
+      ],
+      "after": [
+        "capture-site"
+      ],
+      "runtime": "python3"
+    },
+    {
+      "id": "committee-capture-fixtures",
+      "command": [
+        "tools/render_committee_shared_members_fixtures.mjs"
+      ],
+      "covers": [
+        "tools/render_committee_shared_members_fixtures.mjs"
+      ],
+      "after": [
+        "capture-site"
+      ]
+    },
+    {
+      "id": "committee-members-capture",
+      "command": [
+        "tools/capture_committee_shared_members_evidence.py"
+      ],
+      "covers": [
+        "tools/capture_committee_shared_members_evidence.py"
+      ],
+      "after": [
+        "capture-site",
+        "committee-capture-fixtures"
+      ],
+      "runtime": "python3"
+    },
+    {
+      "id": "board-position-capture-fixtures",
+      "command": [
+        "tools/render_board_land_position_fixtures.mjs"
+      ],
+      "covers": [
+        "tools/render_board_land_position_fixtures.mjs"
+      ],
+      "after": [
+        "capture-site",
+        "board-land-positions"
+      ]
+    },
+    {
+      "id": "board-position-capture",
+      "command": [
+        "tools/capture_board_land_positions_evidence.py"
+      ],
+      "runtime": "python3",
+      "covers": [
+        "tools/capture_board_land_positions_evidence.py"
+      ],
+      "after": [
+        "board-position-capture-fixtures"
+      ]
     }
   ],
   "not_rebuilt": [
@@ -148,6 +601,75 @@
       "builder": "tools/determinism_lint.mjs",
       "disposition": "validator",
       "reason": "Static lint over the modules the site ships. It has no build mode and writes nothing."
+    },
+    {
+      "builder": "tools/check_institution_source_census.mjs",
+      "disposition": "review-only",
+      "reason": "The measured artifact fingerprints and DOE counts are rebuilt separately. This checker validates the frozen source review; the refresh does not repeat that human review or advance its observation date."
+    }
+  ],
+  "additional_gate_builders": [
+    "ops/first-class-refresh/guard-publication.mjs",
+    "ops/first-class-refresh/rebuild-institution-census.mjs",
+    "tools/backtest_procurement_intent_radar.mjs",
+    "tools/build_agency_documents.mjs",
+    "tools/build_agency_lifecycle_conformance.mjs",
+    "tools/build_agency_source_identity_snapshot.mjs",
+    "tools/build_community_board_constellation_documents.mjs",
+    "tools/build_community_board_district_projects.mjs",
+    "tools/build_community_board_full_board_meetings.mjs",
+    "tools/build_community_board_graph_census.mjs",
+    "tools/build_community_board_land_positions.mjs",
+    "tools/build_community_board_payroll_staff_count.mjs",
+    "tools/build_council_land_bridge.mjs",
+    "tools/build_council_land_matter_links.mjs",
+    "tools/build_cross_spine_shadow_census.mjs",
+    "tools/build_data_health_page.mjs",
+    "tools/build_district_activity.mjs",
+    "tools/build_entity_intelligence.mjs",
+    "tools/build_exam_documents.mjs",
+    "tools/build_following_page.mjs",
+    "tools/build_following_procurement_suggestions.mjs",
+    "tools/build_land_mapability_census.mjs",
+    "tools/build_legislative_matter_documents.mjs",
+    "tools/build_money_resident_snapshot.mjs",
+    "tools/build_near_you_pages.mjs",
+    "tools/build_notice_context_lookup.mjs",
+    "tools/build_primary_documents.mjs",
+    "tools/build_process_conformance.mjs",
+    "tools/build_procurement_crosswalk.mjs",
+    "tools/build_property_disposition_cohort.mjs",
+    "tools/build_property_resident_snapshot.mjs",
+    "tools/build_public_site.mjs",
+    "tools/build_rules_semantic_lane.mjs",
+    "tools/build_shared_procurement_read_model.mjs",
+    "tools/build_source_health_observations.mjs",
+    "tools/build_source_health_public_projection.mjs",
+    "tools/capture_committee_shared_members_evidence.py",
+    "tools/capture_official_colleagues.py",
+    "tools/evaluate_comparative_signals.mjs",
+    "tools/first_class_refresh.mjs",
+    "tools/land_filter_parity_receipt.mjs",
+    "worker/scripts/build_remote_mcp_evidence.mjs",
+    "tools/check_institution_source_census.mjs",
+    "tools/render_committee_shared_members_fixtures.mjs",
+    "tools/render_board_land_position_fixtures.mjs",
+    "tools/capture_board_land_positions_evidence.py",
+    "tools/build_pin_family_review.mjs",
+    "tools/build_source_vintage_observations.mjs"
+  ],
+  "verification": [
+    {
+      "family": "site-node",
+      "directory": "test",
+      "pattern": ".test.mjs",
+      "reason": "Run the complete CI test family after rebuilding, including freshness assertions implemented as in-process comparisons rather than --check commands."
+    },
+    {
+      "family": "worker",
+      "directory": "worker/test",
+      "pattern": ".test.mjs",
+      "reason": "Run the complete Worker test family after regenerating the pinned-client receipt; any new freshness gate must pass before publication."
     }
   ]
 }

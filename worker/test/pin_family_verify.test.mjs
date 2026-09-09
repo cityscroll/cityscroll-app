@@ -53,7 +53,7 @@ test("verdict input accepts one-click aliases and rejects unknown decisions", ()
   }).error, "invalid-decision");
 });
 
-test("GET /admin/pin-family-verify lists only the 6 genuinely ambiguous pairs", async () => {
+test("GET /admin/pin-family-verify lists the current ambiguous pairs", async () => {
   const { env } = fixtureEnv();
   assert.equal(
     (await handleAdminPinFamilyVerify(jsonRequest("https://w/admin/pin-family-verify"), {})).status,
@@ -70,8 +70,13 @@ test("GET /admin/pin-family-verify lists only the 6 genuinely ambiguous pairs", 
   assert.equal(res.status, 200);
   const body = await res.json();
   assert.equal(body.version, PIN_FAMILY_VERIFY_VERSION);
-  assert.equal(body.metrics.pin_family_id_mismatches, 130);
-  assert.equal(body.metrics.needs_review, 12);
+  const crosswalk = JSON.parse(readFileSync(new URL("../../site/data/passport_checkbook_crosswalk.json", import.meta.url)));
+  const review = JSON.parse(readFileSync(new URL("../src/data/pin_family_mismatch_review.json", import.meta.url)));
+  assert.equal(body.metrics.pin_family_id_mismatches, crosswalk.rows.filter((row) =>
+    row.status === "matched" && row.join_method !== "contract_id_exact"
+    && row.checkbook_contract_id && row.passport_contract_id
+    && row.checkbook_contract_id.trim() !== row.passport_contract_id.trim()).length);
+  assert.equal(body.metrics.needs_review, review.pairs.filter((pair) => pair.identity_class === "needs_review").length);
   // The listing is the queue itself, not a named set of vendors: which pairs a
   // generation leaves for a human moves with the population.
   assert.equal(body.count, body.metrics.needs_review);
