@@ -54,7 +54,7 @@ test("the provider returns ranked groups with explicit measure, denominator, cov
   assert.equal(result.denominator.contract_count, 3);
   assert.match(result.denominator.definition, /not payments/);
   assert.equal(result.groups[0].label, "Agency A");
-  assert.deepEqual(result.groups[0].contract_ids, ["CT-A", "CT-B"]);
+  assert.deepEqual(result.groups[0].contract_sample.map((item) => item.id), ["CT-A", "CT-B"]);
   assert.match(result.groups[0].drill_through.href, /ap_agency=Agency\+A/);
   assert.equal(result.coverage.matched_contract_count, 1);
   assert.equal(result.coverage.unmatched_contract_count, 1);
@@ -71,7 +71,7 @@ test("count analysis preserves vendor grouping and the exact contributing IDs", 
   });
   assert.equal(result.measure.unit, "contracts");
   assert.equal(result.denominator.value, 2);
-  assert.deepEqual(result.groups.map((group) => [group.label, group.value, group.contract_ids]), [
+  assert.deepEqual(result.groups.map((group) => [group.label, group.value, group.contract_sample.map((item) => item.id)]), [
     ["Vendor A", 1, ["CT-A"]],
     ["Vendor B", 1, ["CT-B"]],
   ]);

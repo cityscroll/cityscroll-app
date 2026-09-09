@@ -1,3 +1,5 @@
+import { validateContractsAnalysisInput, CONTRACTS_ANALYSIS_GROUPS } from "./contracts_analysis.mjs";
+
 // Transport-neutral public capabilities for the observation-fed procurement object.
 // Identity, browse fields, and source evidence remain owned by the existing
 // shared procurement read model and its exact-identity materializers.
@@ -12,7 +14,7 @@ export const CONTRACT_GET_LIMITS = Object.freeze({
 });
 
 export const CONTRACTS_BROWSE_CAPABILITY_ID = "contracts.browse";
-export const CONTRACTS_BROWSE_CAPABILITY_VERSION = "1.0.0";
+export const CONTRACTS_BROWSE_CAPABILITY_VERSION = "1.1.0";
 export const CONTRACTS_BROWSE_CAPABILITY_REFERENCE = "contracts.browse@1";
 export const CONTRACTS_BROWSE_PROVIDER_ID = "worker-static.procurement-contracts.browse";
 export const CONTRACTS_BROWSE_LIMITS = Object.freeze({
@@ -49,6 +51,7 @@ export const CONTRACT_REPRESENTATIONS = Object.freeze([
 const GET_INPUT_FIELDS = new Set(["procurementId"]);
 const BROWSE_INPUT_FIELDS = new Set([
   "query", "agency", "vendor", "stage", "sourceSystem", "minAmount", "maxAmount", "limit", "cursor",
+  "population", "fiscalYear", "amountBand", "retroactive", "cityRecordMatch", "groupBy", "groupLabel",
 ]);
 const PRIVATE_FIELD_NAMES = new Set([
   "raw_snapshot", "normalized_snapshot", "content_hash", "evidence_json", "resolution_run_id", "review_status",
@@ -146,6 +149,7 @@ export const CONTRACTS_BROWSE_CAPABILITY = deepFreeze({
     schema: "cityscroll.capability.contracts_browse.input.v1",
     identity: "one result per exact canonical procurement_id",
     filters: {
+      population: "registered selects exact analytical rows and returns id/procurement_id/href references, including rows without detail records; groupBy/groupLabel restrict an exact group including unknown labels",
       query: "case-insensitive token match over the existing Contracts browse projection",
       agency: "case-insensitive substring",
       vendor: "case-insensitive substring",
@@ -236,6 +240,16 @@ export function validateContractsBrowseInput(input) {
   for (const field of Object.keys(input)) {
     if (!BROWSE_INPUT_FIELDS.has(field)) throw new TypeError(`contracts.browse does not accept field: ${field}`);
   }
+  if (input.population !== undefined && input.population !== "registered") throw new TypeError("population must be registered");
+  const analyticalFields = ["fiscalYear", "amountBand", "retroactive", "cityRecordMatch", "groupBy", "groupLabel"];
+  if (input.population !== "registered" && analyticalFields.some((field) => input[field] !== undefined)) throw new TypeError("analytical fields require registered population");
+  if (input.population === "registered") {
+    if (["query", "stage", "sourceSystem"].some((field) => input[field] !== undefined)) throw new TypeError("registered population does not accept detail-only filters");
+    const analysis = Object.fromEntries(["agency", "vendor", "fiscalYear", "amountBand", "retroactive", "cityRecordMatch", "minAmount", "maxAmount"].filter((key) => input[key] !== undefined).map((key) => [key, input[key]]));
+    validateContractsAnalysisInput(analysis);
+    if ((input.groupBy === undefined) !== (input.groupLabel === undefined) || (input.groupBy !== undefined && !CONTRACTS_ANALYSIS_GROUPS.includes(input.groupBy))) throw new TypeError("groupBy and groupLabel must name an exact analytical group");
+    boundedString(input.groupLabel, "groupLabel", CONTRACTS_BROWSE_LIMITS.filterMaximumLength);
+  }
   for (const field of ["query", "agency", "vendor", "stage", "sourceSystem", "cursor"]) {
     boundedString(input[field], field, field === "cursor" ? CONTRACTS_BROWSE_LIMITS.cursorMaximumLength : CONTRACTS_BROWSE_LIMITS.filterMaximumLength);
   }
@@ -308,12 +322,19 @@ export function validateContractGetOutput(result, input) {
   return result;
 }
 
-function assertBrowseResult(result) {
+function assertBrowseResult(result, input) {
   if (!Array.isArray(result.results) || result.results.length > CONTRACTS_BROWSE_LIMITS.maximum) {
     throw new TypeError("contracts.browse results exceed the declared bound");
   }
   const ids = new Set();
   for (const contract of result.results) {
+    if (input.population === "registered") {
+      if (typeof contract.id !== "string" || !(contract.procurement_id === null || contract.procurement_id?.startsWith("procurement:"))
+          || !(contract.href === null || typeof contract.href === "string") || (contract.procurement_id === null) !== (contract.href === null)) throw new TypeError("registered contract reference is incomplete");
+      if (ids.has(contract.id)) throw new TypeError("contracts.browse returned duplicate registration ids");
+      ids.add(contract.id);
+      continue;
+    }
     assertContract(contract);
     if (ids.has(contract.procurement_id)) throw new TypeError("contracts.browse returned duplicate canonical ids");
     ids.add(contract.procurement_id);
@@ -342,7 +363,7 @@ export function validateContractsBrowseOutput(result, input) {
   if (result.availability === "unavailable") {
     if (result.results !== null || result.error !== "unavailable") throw new TypeError("unavailable contracts.browse output is inconsistent");
   } else {
-    assertBrowseResult(result);
+    assertBrowseResult(result, input);
     if (result.availability === "complete" && result.results.length === 0) throw new TypeError("empty browse result must use empty availability");
     if (result.availability === "empty" && result.results.length !== 0) throw new TypeError("non-empty browse result must use complete availability");
     if (result.error !== null) throw new TypeError("available contracts.browse output cannot carry an error");

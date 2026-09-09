@@ -1293,9 +1293,9 @@ rate-limited and cached, and none touches a paid service. Base URL: <code>https:
     {
       "reference": "contracts.browse@1",
       "id": "contracts.browse",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "title": "Contracts Browse",
-      "description": "List public Contracts records with bounded filters and pages. Results keep exact contract IDs separate, including records that share a PIN.",
+      "description": "List public Contracts records with bounded filters and pages. Results keep exact contract IDs separate, including records that share a PIN. Use population=registered with the analysis continuation arguments for exact analytical groups: this returns registration id, procurement_id and href, including registrations with no detail record.",
       "owner": "procurement",
       "operation": "read",
       "authority": {
@@ -1312,6 +1312,7 @@ rate-limited and cached, and none touches a paid service. Base URL: <code>https:
         "schema": "cityscroll.capability.contracts_browse.input.v1",
         "identity": "one result per exact canonical procurement_id",
         "filters": {
+          "population": "registered selects exact analytical rows and returns id/procurement_id/href references, including rows without detail records; groupBy/groupLabel restrict an exact group including unknown labels",
           "query": "case-insensitive token match over the existing Contracts browse projection",
           "agency": "case-insensitive substring",
           "vendor": "case-insensitive substring",
@@ -1467,9 +1468,9 @@ rate-limited and cached, and none touches a paid service. Base URL: <code>https:
     {
       "reference": "contracts.analysis@1",
       "id": "contracts.analysis",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "title": "Contracts Analysis",
-      "description": "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, and coverage. Each group lists the exact contributing registration IDs in contract_ids and, at the same index in contract_procurement_ids, the canonical procurement ID get_contract accepts, or null when that contract is not individually retrievable. Does not report payments or spending. Omit agency to discover filters.discovery.agency.accepted_labels; retry an unrecognized label using a suggested exact label. fiscal_year is derived from registration date, July 1 through June 30.",
+      "description": "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, and coverage. Each group gives contract_count, contract_sample (default 10, maximum 50; id, procurement_id, canonical href), and an exact browse_contracts continuation. Null procurement_id/href means no individual detail record is published. Groups are paginated in filters.pagination to keep research responses below 64 KiB; repeat the same filters with next_cursor. Does not report payments or spending. Omit agency to discover filters.discovery.agency.accepted_labels; retry an unrecognized label using a suggested exact label. fiscal_year is derived from registration date, July 1 through June 30.",
       "owner": "procurement",
       "operation": "read",
       "authority": {
@@ -1510,7 +1511,10 @@ rate-limited and cached, and none touches a paid service. Base URL: <code>https:
           "filterMaximumLength": 240,
           "minimumGroups": 1,
           "maximumGroups": 100,
-          "defaultGroups": 10
+          "defaultGroups": 10,
+          "defaultSample": 10,
+          "maximumSample": 50,
+          "maximumResponseBytes": 57344
         }
       },
       "output_schema": "cityscroll.capability.contracts_analysis.output.v1",
@@ -1562,10 +1566,17 @@ rate-limited and cached, and none touches a paid service. Base URL: <code>https:
           "filterMaximumLength": 240,
           "minimumGroups": 1,
           "maximumGroups": 100,
-          "defaultGroups": 10
+          "defaultGroups": 10,
+          "defaultSample": 10,
+          "maximumSample": 50,
+          "maximumResponseBytes": 57344
         },
         "output": {
-          "maximumGroups": 100
+          "maximumGroups": 100,
+          "maximumSample": 50,
+          "maximumBytes": 57344,
+          "pagination": "filters.pagination; pages may be shorter than limit to fit the byte budget",
+          "legacyIdentifiers": "HTTP identifiers=full only; outside the research response budget"
         }
       },
       "examples": [
@@ -1591,7 +1602,7 @@ rate-limited and cached, and none touches a paid service. Base URL: <code>https:
           "output": {
             "availability": "complete",
             "measure": "unique registered contracts",
-            "drillThrough": "contract_ids and ordinary Contracts scope"
+            "drillThrough": "contract_sample and exact registered-population contracts.browse@1 continuation"
           }
         }
       ],
@@ -1808,7 +1819,7 @@ rate-limited and cached, and none touches a paid service. Base URL: <code>https:
     {
       "reference": "organizations.browse@1",
       "id": "organizations.browse",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "title": "Organizations Browse",
       "description": "Browse the bounded typed People and organizations snapshot with exact row-kind and token filters. Results retain published, empty, or unknown relation states and read-model freshness.",
       "owner": "people-organizations",
@@ -2718,7 +2729,7 @@ Per-IP and daily model-call ceilings apply. Machine-readable catalog: <code>JSON
   <li><code>get_entity_relationships</code> <span aria-hidden="true">·</span> read — Explore the public links for one exact CityScroll entity. Agency leaders link to the same person's published leadership record when held. The result states if a separate dossier exists, gives the source date and confidence, and explains the source's limits.</li>
   <li><code>retrieve_cited_passages</code> <span aria-hidden="true">·</span> read — Find source passages with stable citations and exact source links. Results include the corpus date, source types, counts, and date bounds, even with no hits. The search returns source text and its scope. It does not write an answer or infer civic links.</li>
   <li><code>get_contract</code> <span aria-hidden="true">·</span> read — Get one public contract by its exact ID. Uses the same Contracts record as CityScroll. Includes source links, coverage, freshness, amount validity, and lifecycle facts when available.</li>
-  <li><code>browse_contracts</code> <span aria-hidden="true">·</span> read — List public Contracts records with bounded filters and pages. Results keep exact contract IDs separate, including records that share a PIN.</li>
+  <li><code>browse_contracts</code> <span aria-hidden="true">·</span> read — List contracts in bounded pages. Each row keeps its exact identity, even when records share a PIN. Follow an analysis group to page through every registration, including those with no individual detail record.</li>
   <li><code>analyze_contracts</code> <span aria-hidden="true">·</span> read — Rank agencies, vendors, fiscal years, or amount bands by registered contract value or count. Each group links to its contracts when held. Start with no agency filter to get the accepted labels. An unknown label gets suggestions. The fiscal year uses the registration date, from July 1 through June 30. These totals do not measure payments or spending.</li>
   <li><code>get_person_or_organization</code> <span aria-hidden="true">·</span> read — Get one exact typed person or organization row from the published People and organizations read model. Display names never create identity. Relation states and source fields are preserved.</li>
   <li><code>browse_organizations</code> <span aria-hidden="true">·</span> read — Browse the bounded typed People and organizations snapshot with exact row-kind and token filters. Results retain published, empty, or unknown relation states and read-model freshness.</li>

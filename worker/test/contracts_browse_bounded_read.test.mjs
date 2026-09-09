@@ -160,7 +160,9 @@ test("the exact production request answers with results and reads bounded bytes"
     // A correct, non-empty answer for a known term.
     assert.equal(result.availability, "complete");
     assert.equal(result.total_matches, KNOWN_TERM_MATCHES);
-    assert.equal(result.results.length, 25);
+    assert.ok(result.results.length > 0 && result.results.length <= 25);
+    assert.equal(result.pagination.returned, result.results.length);
+    assert.ok(result.pagination.next_cursor);
     assert.ok(result.results.every((contract) => JSON.stringify(contract.fields).toLowerCase().includes(KNOWN_TERM)));
     assert.deepEqual(
       result.results.map((contract) => contract.procurement_id),
@@ -177,9 +179,10 @@ test("the exact production request answers with results and reads bounded bytes"
     const budget = procurementBrowseCapabilityReadBudgetBytes(capabilityArtifacts.manifest, 25, INDEX_BYTES);
     assert.ok(measured.bytes <= budget, `read ${measured.bytes} bytes, budget ${budget}`);
 
-    // One detail shard per returned row at worst, and never more.
+    // At most one detail shard per requested row; the response byte ceiling
+    // may shorten the emitted page after those bounded details are composed.
     const detailReads = measured.reads.filter((read) => read.path.includes("/procurement_browse_capability/detail-"));
-    assert.ok(detailReads.length <= result.results.length, `read ${detailReads.length} detail shards for 25 rows`);
+    assert.ok(detailReads.length <= 25, `read ${detailReads.length} detail shards for a limit of 25`);
 
     assert.ok(elapsedMs < WALL_CLOCK_CEILING_MS, `took ${Math.round(elapsedMs)}ms`);
   } finally {
@@ -192,7 +195,9 @@ test("a larger page stays inside the same shape of budget", async () => {
   try {
     const response = await handleMcp(mcpRequest({ query: KNOWN_TERM, limit: 60 }), { SUBS: new MockKV() });
     const result = (await response.json()).result.structuredContent;
-    assert.equal(result.results.length, 60);
+    assert.ok(result.results.length > 0 && result.results.length <= 60);
+    assert.equal(result.pagination.returned, result.results.length);
+    assert.ok(result.pagination.next_cursor);
     assert.equal(result.total_matches, KNOWN_TERM_MATCHES);
     const budget = procurementBrowseCapabilityReadBudgetBytes(capabilityArtifacts.manifest, 60, INDEX_BYTES);
     assert.ok(measured.bytes <= budget, `read ${measured.bytes} bytes, budget ${budget}`);

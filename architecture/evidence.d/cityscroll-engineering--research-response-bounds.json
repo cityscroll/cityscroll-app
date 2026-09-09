@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/research-response-bounds",
+  "status": "implemented",
+  "fingerprint": "research-response-bounds.v1",
+  "updated_at": "2026-09-09T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "response-limits",
+      "path": "capabilities/research_response_limits.mjs"
+    },
+    {
+      "id": "analysis-contract",
+      "path": "capabilities/contracts_analysis.mjs"
+    },
+    {
+      "id": "contracts-analysis-projection",
+      "path": "site/contracts_analysis_projection.mjs"
+    },
+    {
+      "id": "contracts",
+      "path": "worker/src/contracts.mjs"
+    },
+    {
+      "id": "research-tests",
+      "path": "worker/test/research_response_budget.test.mjs"
+    },
+    {
+      "id": "response-contract",
+      "path": "docs/research-response-bounds.md"
+    }
+  ]
+}

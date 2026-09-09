@@ -217,7 +217,7 @@
     {
       "reference": "contracts.browse@1",
       "id": "contracts.browse",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "family": "procurement",
       "method": "contractsBrowse",
       "tool": "browse_contracts",
@@ -246,7 +246,7 @@
     {
       "reference": "contracts.analysis@1",
       "id": "contracts.analysis",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "family": "procurement",
       "method": "contractsAnalysis",
       "tool": "analyze_contracts",
@@ -257,10 +257,17 @@
           "filterMaximumLength": 240,
           "minimumGroups": 1,
           "maximumGroups": 100,
-          "defaultGroups": 10
+          "defaultGroups": 10,
+          "defaultSample": 10,
+          "maximumSample": 50,
+          "maximumResponseBytes": 57344
         },
         "output": {
-          "maximumGroups": 100
+          "maximumGroups": 100,
+          "maximumSample": 50,
+          "maximumBytes": 57344,
+          "pagination": "filters.pagination; pages may be shorter than limit to fit the byte budget",
+          "legacyIdentifiers": "HTTP identifiers=full only; outside the research response budget"
         }
       },
       "availability": [
@@ -300,7 +307,7 @@
     {
       "reference": "organizations.browse@1",
       "id": "organizations.browse",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "family": "people-organizations",
       "method": "organizationsBrowse",
       "tool": "browse_organizations",

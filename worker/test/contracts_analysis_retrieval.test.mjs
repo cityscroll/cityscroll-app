@@ -81,9 +81,7 @@ async function followEveryIdentifier(result, contractEnv) {
   assert.ok(detail.not_retrievable_reason, "the answer must say why an id is missing");
   const followed = [];
   for (const group of result.groups) {
-    assert.equal(group.contract_procurement_ids.length, group.contract_ids.length);
-    for (const [index, primeContractId] of group.contract_ids.entries()) {
-      const procurementId = group.contract_procurement_ids[index];
+    for (const { id: primeContractId, procurement_id: procurementId } of group.contract_sample) {
       if (procurementId === null) {
         followed.push({ primeContractId, retrievable: false });
         continue;
@@ -122,7 +120,7 @@ test("every identifier the analysis answer publishes resolves or is reported unr
 test("a registration identifier is never presented as a canonical procurement id", async () => {
   const result = await executeContractsAnalysis(workerContractsAnalysis(env), input);
   for (const group of result.groups) {
-    for (const primeContractId of group.contract_ids) {
+    for (const { id: primeContractId } of group.contract_sample) {
       assert.doesNotMatch(primeContractId, /^procurement:/);
     }
   }
@@ -133,7 +131,7 @@ test("a registration identifier is never presented as a canonical procurement id
   });
   assert.equal(guessed.availability, "not_yet_public");
   assert.equal(guessed.contract, null);
-  assert.match(result.contract_detail.identifier_note, /contract_procurement_ids/);
+  assert.match(result.contract_detail.identifier_note, /contract_sample/);
 });
 
 test("the published identity index resolves the same contracts as the read model rows", async () => {
@@ -146,8 +144,8 @@ test("the published identity index resolves the same contracts as the read model
   assert.equal(rowsResult.contract_detail.resolution, "identity_keys");
   assert.equal(indexResult.contract_detail.resolution, "published_identity_index");
   assert.deepEqual(
-    indexResult.groups.map((group) => group.contract_procurement_ids),
-    rowsResult.groups.map((group) => group.contract_procurement_ids),
+    indexResult.groups.map((group) => group.contract_sample.map((item) => item.procurement_id)),
+    rowsResult.groups.map((group) => group.contract_sample.map((item) => item.procurement_id)),
   );
 });
 
@@ -159,7 +157,7 @@ test("an aggregate that cannot see the detail read model claims no retrievable c
   assert.equal(result.contract_detail.resolution, "not_resolved");
   assert.equal(result.contract_detail.retrievable_contract_count, 0);
   assert.equal(result.contract_detail.not_retrievable_contract_count, 3);
-  for (const group of result.groups) assert.equal(group.contract_procurement_ids, null);
+  for (const group of result.groups) assert.ok(group.contract_sample.every((item) => item.procurement_id === null && item.href === null));
 });
 
 test("the HTTP analysis answer carries the same resolved identifiers", async () => {
@@ -169,7 +167,7 @@ test("the HTTP analysis answer carries the same resolved identifiers", async () 
   );
   assert.equal(response.status, 200);
   const body = await response.json();
-  assert.deepEqual(body.groups[0].contract_procurement_ids, [
+  assert.deepEqual(body.groups[0].contract_sample.map((item) => item.procurement_id), [
     "procurement:contract:CTDETAILONE",
     "procurement:contract:CTDETAILTWO",
     null,

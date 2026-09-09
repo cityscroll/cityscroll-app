@@ -2,6 +2,47 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
+    "population": {
+      "type": "string",
+      "enum": [
+        "registered"
+      ],
+      "description": "Exact registered-contract population; agency and vendor use case-sensitive analytical labels in this mode."
+    },
+    "fiscal_year": {
+      "type": "integer",
+      "minimum": 1900,
+      "maximum": 2200
+    },
+    "amount_band": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "retroactive": {
+      "type": "boolean"
+    },
+    "city_record_match": {
+      "type": "string",
+      "enum": [
+        "exact",
+        "none",
+        "cannot_evaluate_missing_pin"
+      ]
+    },
+    "group_by": {
+      "type": "string",
+      "enum": [
+        "agency",
+        "vendor",
+        "registration_fiscal_year",
+        "amount_band"
+      ]
+    },
+    "group_label": {
+      "type": "string",
+      "maxLength": 240,
+      "description": "Exact analytical group label, including Unknown / not published; requires group_by."
+    },
     "query": {
       "type": "string",
       "maxLength": 240,
@@ -45,6 +86,23 @@
       "type": "string",
       "maxLength": 320,
       "description": "Opaque cursor returned by the previous page."
+    },
+    "identifier_path": {
+      "type": "string",
+      "maxLength": 1024,
+      "description": "JSON Pointer to the identifier array named by a continuation."
+    },
+    "identifier_offset": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Offset for identifier arrays only; use the returned continuation with unchanged result filters."
+    },
+    "identifier_limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 10,
+      "description": "Maximum identifiers per array; counts and replay continuations accompany sampled arrays."
     }
   }
 }

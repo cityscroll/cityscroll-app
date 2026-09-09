@@ -26,7 +26,8 @@ import {
   groupAnalyticalContracts,
 } from "../../site/analytical_projection.mjs";
 import { ANALYTICAL_PROJECTION_SCHEMA, REGISTERED_CONTRACT_PROJECTION } from "../../site/analytical_projection_contract.mjs";
-import { analyzeContractsProjection } from "../../site/contracts_analysis_projection.mjs";
+import { researchResponseBytes, RESEARCH_STRUCTURED_MAX_BYTES, fitResearchBrowsePage } from "../../capabilities/research_response_limits.mjs";
+import { analyzeContractsProjection, registeredGroupRows, registeredContractReference } from "../../site/contracts_analysis_projection.mjs";
 import { procurementDetailIndex } from "../../site/procurement_detail_index.mjs";
 import {
   CONTRACT_GET_CAPABILITY_REFERENCE,
@@ -262,6 +263,32 @@ export function workerContractsBrowse(env) {
     providerId: CONTRACTS_BROWSE_PROVIDER_ID,
     async execute(input) {
       try {
+        if (input.population === "registered") {
+          const detailIndex = await readProcurementDetailIndex(env);
+          const projection = await readAnalyticalProjection(env);
+          const matches = [...new Map(registeredGroupRows(projection.rows, input).map((row) => [row.prime_contract_id, row])).values()]
+            .sort((a, b) => a.prime_contract_id.localeCompare(b.prime_contract_id));
+          const cursorId = decodeCursor(input.cursor);
+          const after = cursorId ? matches.findIndex((row) => `registered:${row.prime_contract_id}` === cursorId) : -1;
+          if (input.cursor && (!cursorId || after < 0)) throw new TypeError("invalid registered cursor");
+          const limit = input.limit || CONTRACTS_BROWSE_LIMITS.default;
+          const results = matches.slice(after + 1, after + 1 + limit).map((row) => registeredContractReference(row.prime_contract_id, detailIndex));
+          const result = {
+            capability_reference: CONTRACTS_BROWSE_CAPABILITY_REFERENCE,
+            availability: results.length ? "complete" : "empty", results, total_matches: matches.length,
+            pagination: { limit, returned: results.length, truncated: false, next_cursor: null },
+            coverage: { population: "registered", identity: "exact prime_contract_id", detail_resolution: detailIndex?.resolution || "not_resolved", not_retrievable_reason: "A null procurement_id and href mean no individual detail record is published." },
+            freshness: { as_of: projection.generated_at || projection.snapshot_date || "unknown" }, error: null,
+          };
+          const paginate = () => {
+            result.pagination.returned = results.length;
+            result.pagination.truncated = after + 1 + results.length < matches.length;
+            result.pagination.next_cursor = result.pagination.truncated ? encodeCursor(`registered:${results.at(-1).id}`) : null;
+          };
+          paginate();
+          while (researchResponseBytes(result) > RESEARCH_STRUCTURED_MAX_BYTES && results.length > 1) { results.pop(); paginate(); }
+          return result;
+        }
         // The filter tier is the whole population in its smallest filterable
         // form, so a match count is exact without materializing anything. Only
         // the page that is actually returned is read in full and composed.
@@ -286,7 +313,7 @@ export function workerContractsBrowse(env) {
         // being published as a complete answer.
         if (!details) throw new Error("Contracts browse detail is incomplete");
         const results = details.map((detail) => composeProcurementBrowseCapabilityContract(manifest, detail));
-        return {
+        return fitResearchBrowsePage({
           capability_reference: CONTRACTS_BROWSE_CAPABILITY_REFERENCE,
           availability: results.length ? "complete" : "empty",
           results,
@@ -303,7 +330,7 @@ export function workerContractsBrowse(env) {
           },
           freshness: { ...manifest.freshness },
           error: null,
-        };
+        }, (row) => encodeCursor(row.procurement_id));
       } catch (error) {
         console.error("contracts browse read model unavailable:", String(error?.message || error));
         return { capability_reference: CONTRACTS_BROWSE_CAPABILITY_REFERENCE, availability: "unavailable", results: null, total_matches: null, pagination: null, coverage: null, freshness: null, error: "unavailable" };
@@ -457,6 +484,13 @@ export function mcpContractGetInput(args = {}) {
 
 export function mcpContractsBrowseInput(args = {}) {
   return {
+    ...(args.population == null ? {} : { population: String(args.population) }),
+    ...(args.fiscal_year == null ? {} : { fiscalYear: Number(args.fiscal_year) }),
+    ...(args.amount_band == null ? {} : { amountBand: String(args.amount_band) }),
+    ...(args.retroactive == null ? {} : { retroactive: args.retroactive === true || args.retroactive === "true" }),
+    ...(args.city_record_match == null ? {} : { cityRecordMatch: String(args.city_record_match) }),
+    ...(args.group_by == null ? {} : { groupBy: String(args.group_by) }),
+    ...(args.group_label == null ? {} : { groupLabel: String(args.group_label) }),
     ...(args.query == null ? {} : { query: String(args.query).trim() }),
     ...(args.agency == null ? {} : { agency: String(args.agency).trim() }),
     ...(args.vendor == null ? {} : { vendor: String(args.vendor).trim() }),
@@ -471,6 +505,8 @@ export function mcpContractsBrowseInput(args = {}) {
 
 export function mcpContractsAnalysisInput(args = {}) {
   return {
+    ...(args.sample_limit == null ? {} : { sampleLimit: Number(args.sample_limit) }),
+    ...(args.cursor == null ? {} : { cursor: String(args.cursor) }),
     ...(args.group_by == null ? {} : { groupBy: String(args.group_by).trim() }),
     ...(args.measure == null ? {} : { measure: String(args.measure).trim() }),
     ...(args.agency == null ? {} : { agency: String(args.agency).trim() }),
@@ -489,6 +525,7 @@ function providerForGet(env) { return workerProcurementContracts(env).get; }
 function providerForBrowse(env) { return workerProcurementContracts(env).browse; }
 
 function contractSummary(contract) {
+  if (contract.id) return `${contract.id} · ${contract.procurement_id || "No individual detail record published"}`;
   const fields = contract.fields || {};
   return [contract.procurement_id, fields.short_title, fields.agency_name, fields.vendor_name]
     .filter(Boolean).join(" · ");
@@ -507,14 +544,6 @@ export function formatContractsBrowseText(result) {
   return lines.join("\n");
 }
 
-/** Name only the identifiers a reader can actually fetch, and count the rest. */
-function contractIdentifierSummary(group) {
-  const resolved = (group.contract_procurement_ids || []).filter((id) => id !== null);
-  const missing = group.contract_retrieval.not_retrievable_contract_count;
-  const shown = resolved.length ? resolved.join(", ") : "no individually retrievable contract";
-  return missing ? `${shown}; ${missing} not individually retrievable` : shown;
-}
-
 export function formatContractsAnalysisText(result) {
   if (result.filters?.discovery?.agency?.status === "unrecognized") return result.filters.discovery.agency.message;
   if (result.availability === "empty") return "No registered contracts match the bounded analytical filters.";
@@ -522,9 +551,10 @@ export function formatContractsAnalysisText(result) {
   const measure = `${result.measure.reader_label} (${result.measure.unit})`;
   const lines = [
     `${result.group_by}: ${measure}; denominator ${result.denominator.value.toLocaleString("en-US")} ${result.denominator.unit} across ${result.denominator.contract_count.toLocaleString("en-US")} contracts.`,
-    ...result.groups.map((group, index) => `${index + 1}. ${group.label} — ${group.value.toLocaleString("en-US")} ${group.unit}; ${group.contract_count} contracts (${contractIdentifierSummary(group)})`),
+    ...result.groups.map((group, index) => `${index + 1}. ${group.label} — ${group.value.toLocaleString("en-US")} ${group.unit}; ${group.contract_count} contracts; ${group.contract_sample.length} sampled. Use the structured browse continuation for every registration.`),
     result.coverage.statement,
     result.contract_detail.identifier_note,
+    ...(result.filters.pagination?.next_cursor ? [`More groups: repeat these filters with cursor ${result.filters.pagination.next_cursor}.`] : []),
   ];
   return lines.join("\n");
 }
@@ -553,18 +583,9 @@ export async function handleContractsBrowse(request, env) {
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders() });
   if (request.method !== "GET") return json({ ok: false, reason: "method" }, 405);
   const url = new URL(request.url);
-  const input = {
-    ...(url.searchParams.has("q") ? { query: String(url.searchParams.get("q")) } : {}),
-    ...(url.searchParams.has("query") ? { query: String(url.searchParams.get("query")) } : {}),
-    ...(url.searchParams.has("agency") ? { agency: String(url.searchParams.get("agency")) } : {}),
-    ...(url.searchParams.has("vendor") ? { vendor: String(url.searchParams.get("vendor")) } : {}),
-    ...(url.searchParams.has("stage") ? { stage: String(url.searchParams.get("stage")) } : {}),
-    ...(url.searchParams.has("source_system") ? { sourceSystem: String(url.searchParams.get("source_system")) } : {}),
-    ...(url.searchParams.has("min_amount") ? { minAmount: Number(url.searchParams.get("min_amount")) } : {}),
-    ...(url.searchParams.has("max_amount") ? { maxAmount: Number(url.searchParams.get("max_amount")) } : {}),
-    ...(url.searchParams.has("limit") ? { limit: Number(url.searchParams.get("limit")) } : {}),
-    ...(url.searchParams.has("cursor") ? { cursor: String(url.searchParams.get("cursor")) } : {}),
-  };
+  const args = Object.fromEntries(url.searchParams);
+  if (args.q !== undefined && args.query === undefined) args.query = args.q;
+  const input = mcpContractsBrowseInput(args);
   try {
     const result = await executeContractsBrowse(providerForBrowse(env), input);
     if (result.availability === "unavailable") return json(result, 503);
@@ -581,6 +602,9 @@ export async function handleContractsAnalysis(request, env) {
   if (request.method !== "GET") return json({ ok: false, reason: "method" }, 405);
   const url = new URL(request.url);
   const input = {
+    ...(url.searchParams.has("sample_limit") ? { sampleLimit: Number(url.searchParams.get("sample_limit")) } : {}),
+    ...(url.searchParams.has("cursor") ? { cursor: String(url.searchParams.get("cursor")) } : {}),
+    ...(url.searchParams.has("identifiers") ? { identifiers: String(url.searchParams.get("identifiers")) } : {}),
     ...(url.searchParams.has("group_by") ? { groupBy: String(url.searchParams.get("group_by")) } : {}),
     ...(url.searchParams.has("groupBy") ? { groupBy: String(url.searchParams.get("groupBy")) } : {}),
     ...(url.searchParams.has("measure") ? { measure: String(url.searchParams.get("measure")) } : {}),

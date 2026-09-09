@@ -10,6 +10,7 @@
  * corroboration sidecar; that lookup is evidence only and never a constructor.
  */
 
+import { procurementCanonicalHref } from "./procurement_route.mjs";
 import { attachCheckbookPassportCorroboration } from "./checkbook_passport_corroboration.mjs";
 import { procurementContractIdentityKey } from "./procurement_identity_key.mjs";
 
@@ -656,10 +657,7 @@ export function buildProcurementObjects({
   };
 }
 
-export function procurementCanonicalHref(recordOrId) {
-  const id = typeof recordOrId === "object" ? recordOrId?.procurement_id : recordOrId;
-  return id ? `/procurements/${encodeURIComponent(String(id))}` : null;
-}
+export { procurementCanonicalHref } from "./procurement_route.mjs";
 
 export function resolveProcurementRoute(value, objects = [], _options = {}) {
   let url;

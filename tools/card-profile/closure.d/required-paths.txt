@@ -113,6 +113,7 @@ capabilities/notice_search.mjs
 capabilities/people_organizations.mjs
 capabilities/people_organizations_provider.mjs
 capabilities/registry.mjs
+capabilities/research_response_limits.mjs
 capabilities/search_activity.mjs
 capabilities/search_history.mjs
 data/desk-contract-fixtures/desk-consumer-contract.v1.json
@@ -223,6 +224,7 @@ integrations/cloudflare-os-code-mode/src/experiment.mjs
 integrations/cloudflare-os-code-mode/src/sandbox.mjs
 integrations/cloudflare-os-entity-research/deployment.json
 integrations/cloudflare-os-entity-research/src/gadget.mjs
+integrations/generated-client/index.mjs
 integrations/generated-client/recipes/unsupported-question.json
 ontology/action_path_coverage.mjs
 ontology/actionability_sample.mjs
@@ -2379,6 +2381,7 @@ worker/test/fixtures/performance_coverage_historical.v1.json
 worker/test/fixtures/performance_query_weighted.json
 worker/test/fixtures/predictions/build_cases.mjs
 worker/test/fixtures/predictions/expected_calibration.json
+worker/test/fixtures/research_read_output_schemas.v1.json
 worker/test/fixtures/subject-registry/pin_bearing_awards.json
 worker/test/following.test.mjs
 worker/test/forecast_scoring.test.mjs
