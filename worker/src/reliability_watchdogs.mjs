@@ -935,7 +935,7 @@ export async function applyMonitorFindings(env, { findings = [], recovered = [],
 /**
  * The cycle reporting what its bounded repair task did. A repaired item retires
  * silently; a retryable failure returns to the queue silently; only a terminal
- * failure or an explicit request for a decision mails the owner.
+ * failure, a persistent upstream outage, or an explicit decision request mails the owner.
  */
 export async function reportRepairResults(env, reports = [], { now = new Date() } = {}) {
   const applied = [];
@@ -947,6 +947,9 @@ export async function reportRepairResults(env, reports = [], { now = new Date() 
       accepted: outcome.ok,
       reason: outcome.reason,
       state: outcome.item?.state || null,
+      outcome: outcome.item?.result?.outcome || null,
+      first_deferred_at: outcome.item?.first_deferred_at || null,
+      consecutive_deferrals: outcome.item?.consecutive_deferrals || 0,
     });
     if (outcome.judgment) judgments.push(outcome.judgment);
   }

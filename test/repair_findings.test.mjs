@@ -218,3 +218,13 @@ test("the closed vocabulary is the whole vocabulary", () => {
     assert.match(failureClass, /^[a-z][a-z-]+$/, `${failureClass} is not a signature-safe class name`);
   }
 });
+
+
+test("the runner's explicit upstream source domain routes to upstream repair", () => {
+  const result = { observed_at: OBSERVED, status: "degraded", http_status: 200,
+    fault_domain: "upstream_source", summary: { status: "DEGRADED_UPSTREAM", redlines: [] } };
+  assert.ok(upstreamFailureEvidence(result));
+  assert.equal(digestShadowFailureClass(result), "digest-shadow-upstream");
+  const observed = monitorRepairFindings({ id: "digest-shadow-monitor", runner: "digest-shadow" }, { result });
+  assert.equal(observed.findings[0].signature, "monitor:digest-shadow-monitor:digest-shadow-upstream");
+});

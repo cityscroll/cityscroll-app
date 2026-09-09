@@ -240,7 +240,7 @@ The loop runs entirely on the heartbeat this cycle already publishes.
 2. **The queue deduplicates by signature.** A signature is `monitor:<monitor id>:<failure class>[:<subject>]`. A condition on its fifth day advances a repeat counter on the item that already exists; it never opens a fifth item, and it never re-files a second issue.
 3. **The cycle leases up to three items** on the same heartbeat, spending one attempt each, and runs the dispatcher once per item with a ten-minute bound.
 4. **The dispatcher selects a committed playbook from the signature alone**, runs it, and verifies by re-running the monitor's own check for that one subject. Nothing a queue record carries is ever executed: the item reaches the dispatcher on stdin, and the registry — not the item — decides what runs.
-5. **What no playbook can close is reported as judgment**, which is the one outcome that mails the owner. Queueing, pickup, retry and a successful repair are all silent.
+5. **A repair requiring an owner decision is reported as judgment**, which is the one outcome that mails the owner. Upstream outages are `deferred` until a fresh check confirms they persisted for 24 hours. Queueing, pickup, retry, deferral and recovery are silent.
 6. **A record this rail cannot read is retired rather than parked.** A judgment is a question for a person, and it is asked again each day the condition lasts. A signature that is not in the form above is not a question: no playbook could match it, no retry would change that, and no day passing would make it readable. Those retire as `unkeyable` the first time the dispatcher sees them, silently, and the same signature is not queued a second time. The finding itself still reaches its reader through the alert and the issue it always did — what stops is a queue row that could only ever report the same thing.
 
 The slot ledger already accounts for every scheduled slot that passed, so the repair rail does not go looking for missed ones. Of the three ways a slot goes unsettled, only one is repairable: a slot that was attempted and threw recorded nothing and the ledger has already advanced past it, so no later cycle will retry it. A slot recorded as superseded or outside the catch-up window was skipped on purpose — these are monitors, a later observation subsumes an earlier one, and the newest outstanding slot ran in the same cycle — so queueing those would re-report the same present state and re-open the same issue, which is what the ledger exists to prevent. A missed-slot item therefore also carries no recovery scope: the ledger stops reporting the slot immediately, so a scope would close the item before anything could re-run it. It is closed by its own dispatch instead, which reports the slot repaired as soon as it has a recorded result.
@@ -254,6 +254,7 @@ The slot ledger already accounts for every scheduled slot that passed, so the re
 | `0` | `repaired` | A scripted remedy ran and the monitor's own check now passes. The item retires silently. |
 | `2` | `judgment` | Nothing deterministic can close it. The item parks at the judgment boundary and mails the owner once, with the summary saying what change or grant would close it. It reopens for one further attempt tomorrow if the condition is still there. |
 | `3` | `unkeyable` | The signature is not in the form above, so no playbook could ever match it. The item retires silently, and that signature is not queued again. |
+| `4` | `deferred` | The upstream is still unavailable. The item waits for a newer scheduled observation, with no owner mail inside the 24-hour persistence window. |
 | anything else | `failed` | A remedy ran and did not work. The queue retries, up to three attempts, then parks it as judgment. |
 
 The last line the command writes to stdout is the sentence the cycle reports back, bounded to 400 characters and redacted on the way through.
@@ -272,9 +273,10 @@ A stale source contract is decided from the live verifier's own two-clock findin
 
 | Playbook | Precondition | Remedy | Verification | Judgment instead when |
 | --- | --- | --- | --- | --- |
+| `source-contract-outage` | the finding names a registered source contract whose publisher was unreachable | recheck the publisher once with the source-contract monitor | the live source-contract check passes again | the contract is no longer registered or the check reports a different condition |
 | `source-contract-stale` | the contract is registered, and the live check names our acquisition as the stale side rather than the publisher | where the retained evidence is host state, re-run the contract's acquisition path once | re-run the live source-contract check for that one contract | the publisher is the stale side, no retained vintage is declared, the retained evidence is a repository file, or the contract declares no acquisition tool |
 | `missed-slot` | the monitor is still a registered scheduled job and the slot has no recorded result | re-run the slot once under its original slot key | the slot has a recorded result afterwards | the finding names a monitor this cycle no longer carries |
-| `digest-shadow-upstream` | the digest rehearsal is still a registered scheduled job | wait a bounded backoff, then re-run the rehearsal once | the re-run rehearsal reports READY | the upstream is still failing after the retry, reported as degraded-upstream rather than as a failed repair |
+| `digest-shadow-upstream` | the digest rehearsal is still a registered scheduled job | wait a bounded backoff, then re-run the rehearsal once | the re-run rehearsal reports READY | the rehearsal is no longer registered; continued upstream failures are deferred |
 | `freshness-stale` | a scheduled publication path that publishes acquisition receipts is registered for the watchdog's reason, and its own receipt has not advanced | re-run that publication path's scheduled command once | re-run the freshness watchdog for that one source contract | the publication path ran recently and the evidence still did not advance, or no scheduled path is registered for the reason — for which the summary names why there is none rather than reporting a run that never happened |
 
 #### What the freshness watchdog reports, and what it does not
@@ -286,7 +288,30 @@ A stale source contract is decided from the live verifier's own two-clock findin
 
 The clock `acquisition-missing` measures is `acquired_at`, except where the contract declares `clock_basis: "checked_acquired"`, for which a successful check is itself the freshness evidence and the newer of `checked_at` and `acquired_at` is used. Only a receipt carrying `clock_kind: "acquisition"` advances the acquisition clock, so a reason that can only be cleared by an acquisition is mapped at a job that publishes one, or at nothing at all with the summary saying why.
 
-`degraded-upstream` is deliberately neither repaired nor failed. A rehearsal that fails on a gateway error from a publisher is retried once after a bounded backoff, and if the publisher is still down, more retries would learn nothing new and calling it a failed repair would name the wrong fault. It parks as judgment saying what it is, so the decision in front of the operator is whether to wait or to raise it with the publisher.
+#### Waiting for upstream recovery
+
+`deferred` means a check found the publisher unavailable and no owner decision is needed yet.
+The `digest-shadow-upstream` playbook waits its bounded backoff and retries once; it defers when
+the upstream is still failing after the bounded retry. This includes the runner's explicit
+`fault_domain: "upstream_source"` result as well as gateway errors recorded inside digest redlines.
+The `source-contract-outage` playbook rechecks one source contract and defers when
+the publisher check still reports an outage. These are the only playbooks reclassified;
+`source-contract-stale`, `stats-snapshot-missing`, and `freshness-stale` keep their owner-decision rules.
+
+The Worker stores `state: "waiting_upstream"`, `consecutive_deferrals`, and `first_deferred_at`.
+A waiting item remains open and re-enters pickup only on a newer scheduled observation of the
+same finding. Heartbeats and duplicate reports do not trigger retries or advance the counter.
+Deferrals do not consume the three failed-repair attempts. Dispatch receipts retain
+`latest_outcome: "deferred"`; the private queue and heartbeat result projection show the waiting
+state and persistence fields.
+
+`REPAIR_UPSTREAM_PERSISTENCE_MS` in `worker/src/lib/repair_queue.mjs` is **24 hours**.
+Only a further deferred check at or after that elapsed window converts the queue result to
+`judgment` and sends the existing grouped owner email. Crossing UTC midnight, reaching two
+checks, or merely aging a stored finding does not escalate it. Once escalated, the existing
+once-per-day judgment rule applies. A healthy check or the monitor's recovery scope closes the
+item silently and clears the deferral history, so a later outage starts a new window.
+The scheduler issue remains the quiet record and closes through the existing close-recovered path.
 
 ### The classes deliberately left to judgment
 
@@ -294,7 +319,6 @@ A failure class with no deterministic local remedy is not given a playbook that 
 
 | Failure class | Why no playbook |
 | --- | --- |
-| `source-contract-outage` | the publisher is unreachable, and nothing on this host restores a third-party endpoint |
 | `source-contract-schema-drift` | the publisher changed the shape of the data, so the fix is a change to this repository's reader or its declared required fields |
 | `publication-cycle-stalled` | the desk publication cycle is a separate producer, and restarting it from inside a monitor's repair would hide which of the two is stalled |
 | `digest-shadow-credential` | minting or rotating a credential is never inside a repair's scope |

@@ -377,9 +377,8 @@ test("a rehearsal that fails on an upstream error is retried once after a backof
   assert.deepEqual(context.calls.ranJobs.map((row) => row.id), ["digest-shadow-monitor"]);
 });
 
-test("an upstream still down after the retry is degraded-upstream, not a failed repair", async () => {
-  // Neither repaired nor failed: more retries would learn nothing, and calling
-  // it a failed repair would report the wrong fault to the person who reads it.
+test("an upstream still down after the retry is deferred", async () => {
+  // The next scheduled observation rechecks the publisher without owner mail.
   const context = stubContext({
     signature: "monitor:digest-shadow-monitor:digest-shadow-upstream",
     monitor: "digest-shadow-monitor",
@@ -394,8 +393,8 @@ test("an upstream still down after the retry is degraded-upstream, not a failed 
     },
   });
   const result = await playbook("digest-shadow-upstream").run(context);
-  assert.equal(result.outcome, "judgment");
-  assert.match(result.summary, /degraded-upstream/);
+  assert.equal(result.outcome, "deferred");
+  assert.match(result.summary, /waiting-upstream/);
   assert.match(result.summary, /524/);
   assert.equal(context.calls.slept.length, 1, "exactly one bounded backoff, not a retry loop");
 });
@@ -513,7 +512,7 @@ test("the documented playbook table is the registry, not a second description of
   assert.match(docs, /CITYSCROLL_REPAIR_DISPATCH_COMMAND/);
   for (const row of REPAIR_PLAYBOOKS) {
     assert.ok(docs.includes(`\`${row.id}\``), `${row.id} is undocumented`);
-    for (const field of ["precondition", "remedy", "verification", "judgment_when"]) {
+    for (const field of ["precondition", "remedy", "verification", "judgment_when", ...(row.deferred_when ? ["deferred_when"] : [])]) {
       assert.ok(docs.includes(row[field]), `${row.id} documents a different ${field} from the one it runs`);
     }
   }
@@ -522,7 +521,31 @@ test("the documented playbook table is the registry, not a second description of
   }
   // The exit codes are the contract between two files and one operator, so the
   // documentation states them rather than implying them.
-  for (const line of ["| `0` | `repaired` |", "| `2` | `judgment` |", "| anything else | `failed` |"]) {
+  for (const line of ["| `0` | `repaired` |", "| `2` | `judgment` |", "| `4` | `deferred` |", "| anything else | `failed` |"]) {
     assert.ok(docs.includes(line), `the exit-code contract does not document ${line}`);
+  }
+});
+
+
+test("an explicit upstream source fault is deferred without a render-error redline", async () => {
+  const context = stubContext({
+    monitor: "digest-shadow-monitor",
+    jobs: { "digest-shadow-monitor": { id: "digest-shadow-monitor" } },
+    runJobResult: { result: { status: "degraded", http_status: 200, fault_domain: "upstream_source", summary: { status: "DEGRADED_UPSTREAM" } } },
+  });
+  assert.equal((await playbook("digest-shadow-upstream").run(context)).outcome, "deferred");
+});
+
+test("a source outage rechecks the publisher and defers only an outage", async () => {
+  for (const [answer, expected] of [
+    [{ ok: false, detail: "metadata fetch failed: HTTP 524" }, "deferred"],
+    [{ ok: true, detail: "publisher answers normally" }, "repaired"],
+    [{ ok: false, detail: "missing fields: id" }, "judgment"],
+    [staleAnswer(), "judgment"],
+  ]) {
+    const context = stubContext({ verifyLive: [answer] });
+    assert.equal((await playbook("source-contract-outage").run(context)).outcome, expected);
+    assert.equal(context.calls.verified, 1);
+    assert.deepEqual(context.calls.ranJobs, []);
   }
 });
