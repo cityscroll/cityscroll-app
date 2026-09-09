@@ -303,8 +303,8 @@
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
         "run_id": "warehouse/receipts/proof/official_cfb_influence_latest.json"
       },
-      "expected_cadence": "Periodic CFB disclosure filings",
-      "expected_lag_tolerance_days": 30,
+      "expected_cadence": "CFB disclosure deadlines: January/July outside election years, more frequent near elections; Open Data republication is as needed",
+      "expected_lag_tolerance_days": 365,
       "current_lag": {
         "value": null,
         "unit": null,
@@ -1460,8 +1460,8 @@
         "receipt_schema": null,
         "run_id": null
       },
-      "expected_cadence": "Council membership roster; term rows accumulate over time",
-      "expected_lag_tolerance_days": 90,
+      "expected_cadence": "Council membership changes at term starts and vacancies, not every quarter; Open Data republication is as needed",
+      "expected_lag_tolerance_days": 365,
       "current_lag": {
         "value": null,
         "unit": null,

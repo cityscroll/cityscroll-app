@@ -415,7 +415,7 @@
       "name": "Campaign Finance Board Contributions",
       "publisher": "NYC Campaign Finance Board",
       "official_url": "https://data.cityofnewyork.us/d/rjkp-yttg",
-      "expected_cadence": "Periodic CFB disclosure filings",
+      "expected_cadence": "CFB disclosure deadlines: January/July outside election years, more frequent near elections; Open Data republication is as needed",
       "mode": "periodic",
       "health": {
         "status": "Delayed",
@@ -452,7 +452,7 @@
         },
         "publisher_vintage": null,
         "retrieved_at": "2026-09-07T21:21:17.547Z",
-        "expected_lag_tolerance_days": 30,
+        "expected_lag_tolerance_days": 365,
         "current_lag": {
           "value": null,
           "unit": null
@@ -2148,7 +2148,7 @@
       "name": "NYC Council Members (1999 to Present)",
       "publisher": "NYC Council",
       "official_url": "https://data.cityofnewyork.us/d/uvw5-9znb",
-      "expected_cadence": "Council membership roster; term rows accumulate over time",
+      "expected_cadence": "Council membership changes at term starts and vacancies, not every quarter; Open Data republication is as needed",
       "mode": "periodic",
       "health": {
         "status": "UNKNOWN",
@@ -2185,7 +2185,7 @@
         },
         "publisher_vintage": null,
         "retrieved_at": null,
-        "expected_lag_tolerance_days": 90,
+        "expected_lag_tolerance_days": 365,
         "current_lag": {
           "value": null,
           "unit": null

@@ -2870,16 +2870,16 @@
         "district",
         "office_id"
       ],
-      "max_stale_days": 90,
+      "max_stale_days": 365,
       "freshness_policy": {
-        "limit_days": 90,
-        "method": "Publisher cadence measured against the product claim the roster carries, with the limit held rather than rebased",
-        "observed_on": "2026-09-07",
-        "observed_metadata_lag_days": 150,
-        "evidence": "Socrata metadata for uvw5-9znb declares Update Frequency As needed with no automation; rowsUpdatedAt read 2026-04-10T18:00:29Z on 2026-09-07, 149 days back. Our acquisition is current: tools/build_person_hub.mjs last landed on 2026-09-06 and site/data/person_hub_lookup.json carries retrieved_at 2026-09-06, so the gap is entirely publisher-side.",
-        "derivation": "A roster states who currently holds office, so an observed publisher gap is not evidence that a wider limit is safe. The 90-day limit is held deliberately and the finding is left to report the publisher gap it measures."
+        "limit_days": 365,
+        "method": "As-needed Council term and vacancy updates; annual publication review",
+        "observed_on": "2026-09-09",
+        "observed_metadata_lag_days": 151,
+        "evidence": "https://data.cityofnewyork.us/api/views/uvw5-9znb.json declares Update Frequency As needed and Automation No; rowsUpdatedAt was 2026-04-10T18:00:29Z when checked on 2026-09-09. https://data.cityofnewyork.us/api/publishing/v1/revision/uvw5-9znb exposes only the current revision, completed 2026-04-10. The term_start/term_end rows at https://data.cityofnewyork.us/resource/uvw5-9znb.json include 50 terms from 2026-01-01 through 2029-12-31 and one ending 2026-02-03. The 2026-02-06 proclamation at https://www.nyc.gov/mayors-office/news/2026/02/proclamation-of-election--amended- records the District 3 vacancy effective 2026-02-04 and an election on 2026-04-28. This is evidence of event-based membership changes, not a quarterly publishing promise or a retirement notice.",
+        "derivation": "365 days is an annual publication-review bound within multi-year Council terms for this as-needed term roster. It replaces the unsupported 90-day republishing expectation. The bound is a CityScroll policy choice, not a measured annual cadence or a publisher guarantee; a quiet row clock cannot establish whether every vacancy or swearing-in has been incorporated. The source remains live and schema, reachability, and expiry checks remain active."
       },
-      "publisher_cadence": "Council membership roster; term rows accumulate over time",
+      "publisher_cadence": "Council membership changes at term starts and vacancies, not every quarter; Open Data republication is as needed",
       "product_freshness": "Host-side rebuild writes site/data/person_hub_lookup.json. council_member_id equals Legistar PersonId for official profiles.",
       "used_for": "Official person identity hub (person hub): district, term, and exact PersonId binding for official profiles, person-level votes, lobby targets, and campaign finance recipients.",
       "code_references": [
@@ -2926,7 +2926,7 @@
       "delivery_tier": "edge-materialized",
       "freshness_contract": {
         "mode": "periodic",
-        "max_stale_days": 90,
+        "max_stale_days": 365,
         "clock_basis": "publisher_updated",
         "retained_vintage": {
           "artifact_path": "site/data/person_hub_lookup.json",
@@ -3034,16 +3034,16 @@
         "amnt",
         "election"
       ],
-      "max_stale_days": 30,
+      "max_stale_days": 365,
       "freshness_policy": {
-        "limit_days": 30,
-        "method": "Publisher cadence measured against the product claim the edges carry, with the limit held rather than rebased",
-        "observed_on": "2026-09-07",
-        "observed_metadata_lag_days": 262,
-        "evidence": "Socrata metadata for rjkp-yttg declares Update Frequency As needed with no automation; rowsUpdatedAt read 2025-12-19T15:24:13Z on 2026-09-07, 261 days back. Our retained sample is newer than that publication: site/data/official_cfb_influence_lookup.json carries retrieved_at 2026-08-11T19:22:17.361Z, so the gap is publisher-side.",
-        "derivation": "Disclosure filings accumulate continuously, so a long publisher gap is the finding rather than grounds for a wider limit. The 30-day limit is held deliberately and the finding is left to report the publisher gap it measures."
+        "limit_days": 365,
+        "method": "Semiannual disclosure filings and as-needed Open Data republication; annual publication review",
+        "observed_on": "2026-09-09",
+        "observed_metadata_lag_days": 263,
+        "evidence": "https://data.cityofnewyork.us/api/views/rjkp-yttg.json declares Update Frequency As needed and Automation No; rowsUpdatedAt was 2025-12-19T15:24:13Z when checked on 2026-09-09. https://data.cityofnewyork.us/api/publishing/v1/revision/rjkp-yttg exposes only the current revision, completed 2025-12-19. The CFB calendar at https://www.nyccfb.info/candidate-services/disclosure-deadlines/2029/ lists 2026-07-15, 2027-01-15 and 2027-07-15 filing deadlines, with more frequent election-year filings and continued January/July post-election filings. The election rows at https://data.cityofnewyork.us/resource/rjkp-yttg.json extend through 2025. Filing deadlines govern campaigns and do not promise simultaneous republication of this Open Data sample; no retirement notice was found in the inspected publisher metadata.",
+        "derivation": "365 days covers one January/July filing year (two semiannual reporting periods) for the manually republished Open Data contribution sample. It replaces the unsupported 30-day republishing expectation. The bound is a CityScroll policy choice, not a measured annual cadence or a publisher guarantee; the observed publication gap exceeds one filing interval and does not prove recent filings are included. The source remains live and schema, reachability, and expiry checks remain active."
       },
-      "publisher_cadence": "Periodic CFB disclosure filings",
+      "publisher_cadence": "CFB disclosure deadlines: January/July outside election years, more frequent near elections; Open Data republication is as needed",
       "product_freshness": "Host-side sample of modern City Council (officecd=5) rows into official_cfb_influence_lookup.json when gates clear.",
       "used_for": "Donor \u2192 official recipient influence edges on official profiles via person hub name keys (exact unique person-name join on modern City Council officecd=5 sample; partial coverage).",
       "code_references": [
@@ -3087,7 +3087,7 @@
       "delivery_tier": "edge-materialized",
       "freshness_contract": {
         "mode": "periodic",
-        "max_stale_days": 30,
+        "max_stale_days": 365,
         "clock_basis": "publisher_updated",
         "retained_vintage": {
           "artifact_path": "site/data/official_cfb_influence_lookup.json",
