@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/scheduler-checkout-refresh",
+  "status": "proposed",
+  "fingerprint": "scheduler-checkout-refresh.v1",
+  "updated_at": "2026-09-09T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "scheduler-checkout-refresh",
+      "path": "tools/lib/scheduler_checkout_refresh.mjs"
+    },
+    {
+      "id": "scheduler-checkout-refresh-tests",
+      "path": "test/scheduler_checkout_refresh.test.mjs"
+    },
+    {
+      "id": "scheduler-checkout-refresh-operations",
+      "path": "docs/external-schedule-outbox.md"
+    }
+  ]
+}
