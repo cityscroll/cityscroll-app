@@ -648,6 +648,9 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
     : "";
   const legacy = safeHref(record.compatibility?.legacy_notice_href);
   const checked = record.source_receipt?.observed_at;
+  const sourceUnavailable = record.source_refresh?.status === "unavailable"
+    ? `<p class="meeting-freshness" data-meeting-source-unavailable="1">The board’s website could not be checked. Showing the last published meeting details.</p>`
+    : "";
   const documentLinks = meetingDocumentLinks(record);
   const sourceDetails = [
     source ? `<a href="${esc(source)}" rel="noopener noreferrer">Official source</a>` : "",
@@ -769,6 +772,7 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
     lookups: record.coverage_lookups || {},
     kind: "meeting",
   }))}
+  ${sourceUnavailable}
   ${sourceDetails ? `<details class="node-section meeting-source-details"><summary>Source details</summary><p>${sourceDetails}</p></details>` : ""}
 </main>
 </body>

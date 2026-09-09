@@ -15,6 +15,8 @@ import { pathToFileURL } from "node:url";
 /** Stable markers that real CityScroll HTML carries; error shells must not. */
 export const CONTENT_MARKER = /CityScroll/;
 
+// Historical targets are fallbacks only when the deployed read model cannot be read.
+// A readable model with a missing family or invalid first record must fail.
 const CITY_RECORD_MEETING_ID = "meeting:city_record:20260713006";
 const COMMUNITY_BOARD_MEETING_ID = "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/";
 
@@ -27,30 +29,97 @@ function escapeHtmlAttribute(value) {
     .replaceAll("&", "&amp;")
     .replaceAll('"', "&quot;")
     .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;");
+    .replaceAll(">", "&gt;")
+    .replaceAll("'", "&#39;");
 }
 
 /** Require a route-specific title, meeting marker, and exact HTML-encoded ID. */
-export function meetingDocumentMarker(meetingId) {
+export function meetingDocumentMarker(meetingId, title = null) {
   const encodedId = escapeRegExp(escapeHtmlAttribute(meetingId));
+  const expectedTitle = title == null
+    ? "(?!CityScroll · track RFPs, rezonings, meetings<\\/title>)[^<]+"
+    : escapeRegExp(escapeHtmlAttribute(title));
   return new RegExp(
-    `(?=[\\s\\S]*<title>(?!CityScroll · track RFPs, rezonings, meetings<\\/title>)[^<]+ · CityScroll<\\/title>)`
+    `(?=[\\s\\S]*<title>${expectedTitle} · CityScroll<\\/title>)`
       + `(?=[\\s\\S]*data-civic-object-kind="meeting")`
       + `(?=[\\s\\S]*data-meeting-id="${encodedId}")`,
   );
 }
 
 export const CANONICAL_MEETING_TARGETS = Object.freeze([
-  { id: "meeting-city-record", meetingId: CITY_RECORD_MEETING_ID },
-  { id: "meeting-community-board", meetingId: COMMUNITY_BOARD_MEETING_ID },
+  { id: "meeting-city-record", meetingFamily: "city_record", meetingId: CITY_RECORD_MEETING_ID, meetingTitle: "DCWP NOH Rules Relating to Waitlist for GV Licenses" },
+  { id: "meeting-community-board", meetingFamily: "community_board", meetingId: COMMUNITY_BOARD_MEETING_ID, meetingTitle: "Transportation & Health Committees" },
 ]);
 
 function meetingTargetsForBase(base) {
-  return CANONICAL_MEETING_TARGETS.map(({ id, meetingId }) => ({
-    id,
-    url: `${base}/meetings/${encodeURIComponent(meetingId)}/`,
-    marker: meetingDocumentMarker(meetingId),
+  return CANONICAL_MEETING_TARGETS.map((target) => ({
+    ...target,
+    meetingBase: base,
+    url: `${base}/meetings/${encodeURIComponent(target.meetingId)}/`,
+    marker: meetingDocumentMarker(target.meetingId, target.meetingTitle),
   }));
+}
+
+export const MEETING_READ_MODEL_PATH = "/data/shared_meeting_read_model.json";
+
+/** Select the first published row of each family, without probing for a working page. */
+export function publishedMeetingTargets(model, base) {
+  if (model?.schema !== "cityscroll.shared_meeting_read_model.v1" || !Array.isArray(model.rows)) {
+    throw new Error("invalid shared meeting read model");
+  }
+  return meetingTargetsForBase(base).map((target) => {
+    const row = model.rows.find((item) => item?.source_system === target.meetingFamily);
+    if (!row) throw new Error(`no published ${target.meetingFamily} meeting in ${base}${MEETING_READ_MODEL_PATH}`);
+    const meetingId = row.meeting_id;
+    const meetingTitle = typeof row.title === "string" ? row.title.trim() : "";
+    if (typeof meetingId !== "string" || !meetingId.startsWith(`meeting:${target.meetingFamily}:`)
+        || !meetingId.slice(`meeting:${target.meetingFamily}:`.length).trim() || !meetingTitle) {
+      throw new Error(`invalid first published ${target.meetingFamily} meeting: id=${JSON.stringify(meetingId ?? null)}, title=${JSON.stringify(row.title ?? null)}`);
+    }
+    return {
+      ...target,
+      meetingId,
+      meetingTitle,
+      url: `${base}/meetings/${encodeURIComponent(meetingId)}/`,
+      marker: meetingDocumentMarker(meetingId, meetingTitle),
+    };
+  });
+}
+
+/** Only an unreadable model permits the documented historical fallbacks. */
+export async function resolvePublishedMeetingTargets(base, {
+  fetchImpl = globalThis.fetch,
+  requestTimeoutMs = DEFAULT_REQUEST_TIMEOUT_MS,
+  cacheBust = true,
+  now = Date.now(),
+} = {}) {
+  const modelUrl = `${base}${MEETING_READ_MODEL_PATH}`;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), requestTimeoutMs);
+  let model;
+  try {
+    const response = await fetchImpl(cacheBust ? cacheBustUrl(modelUrl, now) : modelUrl, {
+      method: "GET",
+      redirect: "follow",
+      signal: controller.signal,
+      headers: { "Cache-Control": "no-cache", Pragma: "no-cache", "User-Agent": "cityscroll-live-url-smoke/1.0" },
+    });
+    if (response.status !== 200) throw new Error(`HTTP ${response.status}`);
+    model = JSON.parse(await response.text());
+    if (model?.schema !== "cityscroll.shared_meeting_read_model.v1" || !Array.isArray(model.rows)) {
+      throw new Error("invalid shared meeting read model");
+    }
+  } catch (error) {
+    return meetingTargetsForBase(base).map((target) => ({
+      ...target,
+      resolutionWarning: `meeting resolution unavailable at ${modelUrl}: ${error.message}; using historical fallback ${target.meetingId}`,
+    }));
+  } finally {
+    clearTimeout(timer);
+  }
+  // Keep publication errors outside the fallback catch: a missing family or
+  // malformed first record is a broken published contract, not content churn.
+  return publishedMeetingTargets(model, base);
 }
 
 /** API Worker health body marker (not HTML). */
@@ -574,7 +643,34 @@ export async function runSmoke({
     attempts += 1;
     const stamp = now();
     const results = [];
-    for (const target of targets) {
+    const meetingSets = new Map();
+    for (const requestedTarget of targets) {
+      let target = requestedTarget;
+      if (target.meetingFamily) {
+        const base = target.meetingBase;
+        if (!meetingSets.has(base)) {
+          try {
+            meetingSets.set(base, { targets: await resolvePublishedMeetingTargets(base, {
+              fetchImpl, requestTimeoutMs, cacheBust, now: stamp,
+            }) });
+          } catch (error) {
+            meetingSets.set(base, { error });
+          }
+        }
+        const resolution = meetingSets.get(base);
+        if (resolution.error) {
+          results.push({
+            id: target.id,
+            url: `${base}${MEETING_READ_MODEL_PATH}`,
+            finalStatus: 0,
+            statusChain: [],
+            body: "",
+            classification: { ok: false, reason: resolution.error.message },
+          });
+          continue;
+        }
+        target = resolution.targets.find((item) => item.meetingFamily === target.meetingFamily);
+      }
       const probe = await probeUrl(target.url, {
         fetchImpl,
         maxRedirects,
@@ -584,7 +680,8 @@ export async function runSmoke({
         marker: target.marker ?? CONTENT_MARKER,
         requireAbsentHeaders: target.requireAbsentHeaders ?? null,
       });
-      results.push({ ...probe, id: target.id });
+      results.push({ ...probe, id: target.id, meetingId: target.meetingId,
+        meetingTitle: target.meetingTitle, resolutionWarning: target.resolutionWarning });
     }
     lastResults = results;
     lastFailures = results
@@ -593,7 +690,9 @@ export async function runSmoke({
         url: r.url,
         statusChain: r.statusChain,
         body: r.body,
-        reason: r.classification.reason,
+        reason: r.meetingId
+          ? `meeting ${r.meetingId}, expected title ${JSON.stringify(r.meetingTitle)}: ${r.classification.reason}`
+          : r.classification.reason,
       }));
 
     if (lastFailures.length === 0) {
@@ -676,7 +775,9 @@ Options:
   --with-journey / --skip-journey Post-flip HUMAN-PATH JOURNEY (default: on for post-flip)
   --named-checks-only             Run only post-flip named operational checks (no URL matrix)
 
-Default set probes: ${DEFAULT_TARGETS.map((t) => t.url).join(", ")}
+Default set probes: ${DEFAULT_TARGETS.map((t) => t.meetingFamily ? `first published ${t.meetingFamily} meeting` : t.url).join(", ")}
+Meeting targets resolve from the deployed shared meeting read model and require its exact title and ID.
+Unreadable models use documented historical fallbacks with a warning; missing families fail.
 Named sets (opt-in; not used by deploy jobs unless selected):
   pages-dev  ${PAGES_DEV_TARGETS.map((t) => t.url).join(", ")}
   post-flip  URL matrix + named incident checks (EMAIL HEALTH, STATS SANITY,
@@ -712,9 +813,12 @@ CITYSCROLL_ADMIN_KEY authenticates the EMAIL HEALTH and STATS SANITY desk checks
       requestTimeoutMs: opts.requestTimeoutMs,
     });
 
+    for (const r of result.results) {
+      if (r.resolutionWarning) console.warn(`WARN ${r.resolutionWarning}`);
+    }
     if (result.ok) {
       for (const r of result.results) {
-        console.log(`OK ${r.id || r.url} → ${r.finalStatus} (${r.finalUrl}) chain=${formatStatusChain(r.statusChain)}`);
+        console.log(`OK ${r.id || r.url}${r.meetingId ? ` meeting=${r.meetingId}` : ""} → ${r.finalStatus} (${r.finalUrl}) chain=${formatStatusChain(r.statusChain)}`);
       }
       console.log(`live-url smoke green after ${result.attempts} attempt(s)`);
     } else {

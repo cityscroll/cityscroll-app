@@ -1,14 +1,15 @@
 """Buyer contracting history journey: selection, count, cases, and return.
 
-Two populations are exercised against the same shipped page.
+Three populations are exercised against the same shipped page.
 
   measured   The retained real Checkbook records in test/fixtures, rendered
              through the production normalizer and projection. This is the
              population the acceptance ledger records, so the journey asserts
              the buyer counts a reader would actually read.
-  published  The population this site currently ships. Its registration timing
-             is not materialized, which is exactly the state that must never
-             render as "0 registered after start".
+  unmeasured The retained population with timing fields removed, proving that
+             missing dates never render as "0 registered after start".
+  published  The population this site currently ships, checked against its
+             published rows rather than an assumption about missing dates.
 """
 
 import hashlib
@@ -357,9 +358,15 @@ def run_axe(page):
     step("axe", f"{len(result)} non-blocking findings")
 
 
-def run_published_population(page):
-    """The shipped population publishes no start dates for this selection."""
+def run_unmeasured_population(page, body):
+    """Keep missing-date coverage even when published data gains dates."""
     page.unroute(PROJECTION_ROUTE)
+    unmeasured = json.loads(body)
+    for row in unmeasured["rows"]:
+        for field in ("start_date", "registration_date", "registration_lag_days", "registration_timing"):
+            row[field] = None
+    page.route(PROJECTION_ROUTE, lambda route: route.fulfill(
+        status=200, content_type="application/json", body=json.dumps(unmeasured)))
     parks = cohort("parks_all")
     page.goto(buyer_url(parks["buyer"]), wait_until="domcontentloaded", timeout=60000)
     wait_for_history(page)
@@ -373,7 +380,35 @@ def run_published_population(page):
     meaning = page.locator("#buyer-history-meaning").inner_text()
     assert "different from a count of zero" in meaning.lower(), meaning
     assert page.locator("#buyer-history-actions a").count() == 1, metrics
-    step("published population", "count kept, timing withheld")
+    step("unmeasured population", "count kept, timing withheld")
+
+
+def run_published_population(page):
+    """Compare the rendered metrics with the currently served population."""
+    page.unroute(PROJECTION_ROUTE)
+    response = page.request.get(f"{BASE}/data/analytics_registered_contracts.json")
+    assert response.ok, response.status
+    projection = response.json()
+    rows = list(projection.get("rows", []))
+    for shard in projection.get("shards", []):
+        response = page.request.get(f"{BASE}/data/{shard['path']}")
+        assert response.ok, response.status
+        rows.extend(response.json()["rows"])
+    parks = cohort("parks_all")
+    selected = {row["prime_contract_id"]: row for row in rows
+                if row["agency"] == parks["buyer"] and row["registration_fiscal_year"] == 2026}
+    assert selected, "published buyer population is missing"
+    lags = [row["registration_lag_days"] for row in selected.values()
+            if row.get("registration_lag_days") is not None]
+    expected = [f"{len(selected):,}",
+                f"{sum(lag > 0 for lag in lags):,}" if lags else "Not measured yet",
+                f"{sum(lag <= 0 for lag in lags):,}" if lags else "Not measured yet"]
+    page.goto(buyer_url(parks["buyer"]), wait_until="domcontentloaded", timeout=60000)
+    wait_for_history(page)
+    actual = page.locator("#buyer-history-metrics .buyer-history-metric strong").all_text_contents()
+    assert actual == expected, {"actual": actual, "expected": expected}
+    assert page.locator("#buyer-history-actions a").count() == (2 if lags else 1)
+    step("published population", " / ".join(actual))
 
 
 def run_failure_and_retry(page):
@@ -571,6 +606,7 @@ def main():
         run_pursuit_from_opportunity(page)
         page.set_viewport_size({"width": 1440, "height": 900})
         run_failure_and_retry(page)
+        run_unmeasured_population(page, body)
         run_published_population(page)
 
         no_js = browser.new_context(java_script_enabled=False)

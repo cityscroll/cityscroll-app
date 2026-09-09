@@ -13,6 +13,10 @@ cd "$PROJECT_ROOT"
 node tools/verify_functional_corpus.mjs --check \
   ${CROL_FUNCTIONAL_CORPUS_RECEIPT:+--receipt-out "${CROL_FUNCTIONAL_CORPUS_RECEIPT}"}
 
+# Contracts reads the generated procurement query artifacts in the browser.
+# Build them from the committed inputs before copying the functional site.
+node tools/build_shared_procurement_read_model.mjs
+
 # Functional tests exercise the static-first document routes. Materialize them
 # once at the suite boundary before any local server can expose a stale shell.
 node tools/build_primary_documents.mjs
