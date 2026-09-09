@@ -3,7 +3,7 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-09-09T06:55:44.147Z",
+  "generated_at": "2026-09-09T11:58:19.933Z",
   "observation_count": 3467,
   "entity_count": 200,
   "multi_domain_count": 37,
@@ -31873,39 +31873,6 @@
               "method": "agency_canonical_v1"
             },
             {
-              "subject_ref": "notice:20260810007",
-              "domain": "rules",
-              "object_kind": "rule",
-              "label": "DCWP NOH Rules Relating to Amendment of Debt Collectors Rule Effective Date",
-              "when": "2026-08-18T00:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260810007",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:consumer-and-worker-protection",
-              "root_kind": "agency",
-              "href": "#notice/20260810007",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260810007",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "rules_agency_name",
-                "observed_at": "2026-08-18T00:00:00.000",
-                "input_value": "Consumer and Worker Protection"
-              },
-              "link_type": "issued_rule",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
               "subject_ref": "notice:20260811002",
               "domain": "rules",
               "object_kind": "rule",
@@ -31927,6 +31894,39 @@
               "provenance": {
                 "source_system": "city_record",
                 "source_record_id": "city_record:20260811002",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "rules_agency_name",
+                "observed_at": "2026-08-18T00:00:00.000",
+                "input_value": "Consumer and Worker Protection"
+              },
+              "link_type": "issued_rule",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260810007",
+              "domain": "rules",
+              "object_kind": "rule",
+              "label": "DCWP NOH Rules Relating to Amendment of Debt Collectors Rule Effective Date",
+              "when": "2026-08-18T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260810007",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:consumer-and-worker-protection",
+              "root_kind": "agency",
+              "href": "#notice/20260810007",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260810007",
                 "source_fields": [
                   "agency_name"
                 ],
@@ -43147,39 +43147,6 @@
               "method": "agency_canonical_v1"
             },
             {
-              "subject_ref": "notice:20260522008",
-              "domain": "rules",
-              "object_kind": "rule",
-              "label": "Amendment of Rules Relating to Lead Dust",
-              "when": "2026-05-29T00:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260522008",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:health-and-mental-hygiene",
-              "root_kind": "agency",
-              "href": "#notice/20260522008",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260522008",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "rules_agency_name",
-                "observed_at": "2026-05-29T00:00:00.000",
-                "input_value": "Health and Mental Hygiene"
-              },
-              "link_type": "issued_rule",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
               "subject_ref": "notice:20260522007",
               "domain": "rules",
               "object_kind": "rule",
@@ -43201,6 +43168,39 @@
               "provenance": {
                 "source_system": "city_record",
                 "source_record_id": "city_record:20260522007",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "rules_agency_name",
+                "observed_at": "2026-05-29T00:00:00.000",
+                "input_value": "Health and Mental Hygiene"
+              },
+              "link_type": "issued_rule",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260522008",
+              "domain": "rules",
+              "object_kind": "rule",
+              "label": "Amendment of Rules Relating to Lead Dust",
+              "when": "2026-05-29T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260522008",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:health-and-mental-hygiene",
+              "root_kind": "agency",
+              "href": "#notice/20260522008",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260522008",
                 "source_fields": [
                   "agency_name"
                 ],

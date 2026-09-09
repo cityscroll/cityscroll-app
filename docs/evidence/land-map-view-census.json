@@ -35,7 +35,7 @@
     "property_observations": {
       "path": "site/data/property_domain_observations.json",
       "property_count": 133,
-      "sha256": "178c455d47c659073f77cb1b8d570f44dc81218aacf7da5f21763dff9ffbfff5",
+      "sha256": "6ff6e243be81261a1071fcf490484e46eccb49e7a8ad236408b0bb56be58af4f",
       "consulted_for_mapping": false
     }
   },

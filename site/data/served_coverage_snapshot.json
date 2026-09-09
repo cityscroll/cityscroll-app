@@ -53,7 +53,7 @@
   ],
   "evidence_vintage": {
     "oldest": "2026-05-26T00:00:00.000Z",
-    "newest": "2026-09-09T06:55:24.909Z"
+    "newest": "2026-09-09T11:58:02.083Z"
   },
   "domains": [
     {
@@ -353,7 +353,7 @@
           "source_name": "City Record Online",
           "state": "measured",
           "value": 100,
-          "evidence_vintage": "2026-09-09T06:55:24.909Z",
+          "evidence_vintage": "2026-09-09T11:58:02.083Z",
           "vintage_field": "retrieved_at",
           "vintage_basis": "single"
         }
