@@ -54,6 +54,11 @@ digest or scheduler receipts are not substitutes.
 Wrangler rewrites cron configuration on every deploy, so these three schedules
 are part of the release surface rather than a separate operational setting.
 
+Every window also starts the receipt-only public search-use refresh through
+`ctx.waitUntil()` before dispatching its other jobs. Publication does not wait
+for delivery or publisher acquisition, and cannot be skipped by an early return.
+Repeated windows leave an already stored daily aggregate unchanged.
+
 | UTC schedule | Responsibility |
 |---|---|
 | `0 8 * * *` | Refreshes the sell-facing ZAP project lookup, Land upcoming hearings, and staffing exams into `ALERT_STATE`, so those lists do not wait behind the digest chain. |

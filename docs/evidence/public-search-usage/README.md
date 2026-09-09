@@ -19,6 +19,7 @@ Rebuild and verify:
 
 ```sh
 node --test worker/test/search_usage.test.mjs
+node --test worker/test/search_usage_schedule.test.mjs worker/test/search_usage_daily.test.mjs
 node --test worker/test/stats.test.mjs worker/test/stats_routes_unchanged.test.mjs
 node --test test/served_coverage_snapshot.test.mjs test/post_flip_checks.test.mjs
 node tools/build_cloudflare_pages.mjs --source-dir . --site-dir _site
@@ -109,3 +110,50 @@ rendered section. No image binary is committed.
 The figures above prove the code, not the traffic. Reconciling the deployed public snapshot against
 the authenticated private aggregate is a live measurement step, described in the pull request that
 introduced this directory, and it is recorded as pending until the site owner performs it.
+
+### Scheduled publication and bootstrap
+
+Each configured UTC window (08:00, 10:00 and 13:00) starts the same receipt-only
+refresh through `ctx.waitUntil()` before dispatching the other scheduled jobs.
+This is independent of delivery and publisher acquisition, including their errors,
+early returns and delays. Public requests still read only the stored projection.
+
+The regression in `worker/test/search_usage_schedule.test.mjs` executes the actual
+Worker entrypoint with imported jobs replaced by controlled doubles. Before this
+change, 08:00 and 10:00 never called the publisher; 13:00 called it only after the
+delivery and advisory chain. A delivery exception left no snapshot attempt.
+The counterfactual changes only that scheduling relationship: all three windows
+publish, including when delivery throws or a publisher refresh remains pending.
+Publication failure remains isolated from delivery in the opposite direction too.
+
+The synthetic 57-execution fixture includes six receipts requiring body hydration.
+With an established period it publishes 57 searches and 47 returning records;
+with no measurement start it claims only the span beginning on its first refresh
+day. Neither the receipt population nor the publication boundary changes.
+D1 access is forbidden by the fixture because this path depends only on KV.
+
+Production observations on 2026-09-09 reproduced an unavailable Stats section and
+`search_usage.refresh.attempted_at = null`. The authenticated aggregate contained
+accepted production executions with a complete scan and no unclassified receipts;
+the stored daily series was empty. The deployed settings named the expected KV
+binding and production environment, and all three schedules were installed. Stored
+rehearsal receipts at 10:00 on September 7 and 8 demonstrate that a scheduled path
+which skipped publication was running. These observations rule out an empty receipt
+population and missing production classification. They do not identify which job
+interrupted or delayed the historical 13:00 chain, or prove historical KV writes
+succeeded; the local counterfactual establishes the scheduling defect separately.
+
+After deployment, the next configured window should establish a verified public
+summary. Allow the existing 15-minute public cache lifetime before reading it back.
+The first dated aggregate follows in the first window after that measured UTC day
+closes. For a deployment before 08:00 UTC on September 9, that means verification
+on September 9 at 08:00 and the first stored day, September 9, on September 10 at
+08:00. A deployment later in the day moves the first verification to 10:00 or 13:00;
+one after 13:00 moves both dates forward. Earlier receipts do not authorize a
+retroactive measurement start, so no backfill or production state edit is required.
+
+Read back `GET /stats` for the two counts and their verified instant, then compare
+the authenticated daily series and reconciliation before accepting production
+publication. The independent publication monitor must name that first stored day;
+it can continue reporting gaps that precede the newly established measurement.
+Local fixture success alone is not evidence that a production day has been stored.
