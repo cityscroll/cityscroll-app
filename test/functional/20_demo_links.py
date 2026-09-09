@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import functools
+from contextlib import contextmanager
 import csv
 import json
 import os
@@ -782,11 +783,38 @@ class DemoLinkContract(unittest.TestCase):
         self.assertEqual(self.page_errors, [], f"{entry['id']}: page errors: {self.page_errors}")
 
 
+@contextmanager
+def production_search_reads(page, entry: dict):
+    """Let the housing production contract read its two real Search endpoints.
+
+    The shared offline fixtures abort both API hosts. Keep that policy for
+    every other request and restore it when this entry finishes.
+    """
+    if entry["id"] != "semantic-search-housing" or not is_production_base(BASE):
+        yield
+        return
+    pattern = re.compile(
+        r"^https://(?:api\.cityscroll\.org|cityscroll-worker\.crol-worker\.workers\.dev)"
+        r"/search(?:/candidates)?(?:\?|$)"
+    )
+    def allow_read(route):
+        if route.request.method == "GET":
+            route.continue_()
+        else:
+            route.fallback()
+    page.route(pattern, allow_read)
+    try:
+        yield
+    finally:
+        page.unroute(pattern, allow_read)
+
+
 def add_manifest_test(entry: dict) -> None:
     def generated_test(self) -> None:
         if not entry_applies(entry):
             self.skipTest(f"{entry['id']} is localOnly and BASE={BASE!r} is production")
-        self.run_entry(entry)
+        with production_search_reads(self.page, entry):
+            self.run_entry(entry)
 
     name = "test_" + re.sub(r"[^a-z0-9]+", "_", entry["id"])
     generated_test.__name__ = name
