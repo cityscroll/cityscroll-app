@@ -12,6 +12,9 @@ import {
   CANONICAL_MEETING_TARGETS,
   DEFAULT_TARGETS,
   meetingDocumentMarker,
+  MEETING_READ_MODEL_PATH,
+  publishedMeetingTargets,
+  resolvePublishedMeetingTargets,
   PAGES_DEV_TARGETS,
   POST_FLIP_TARGETS,
   TARGET_SETS,
@@ -339,5 +342,179 @@ test("Cloudflare Pages and deploy-worker run the live-URL smoke after deploy", (
       /--set\s+post-flip/,
       `${name} must not run post-flip set until cutover is authorized`,
     );
+  }
+});
+
+// Published meeting resolution and strict page assertions.
+const BASE = "https://published.example";
+const rows = [
+  { source_system: "council", meeting_id: "meeting:council:1", title: "Council" },
+  { source_system: "community_board", meeting_id: "meeting:community_board:https://board.example/event/health/?a=1&b='2'", title: "Health & City's <Transport> [2026]" },
+  { source_system: "city_record", meeting_id: "meeting:city_record:current", title: "Public hearing" },
+  { source_system: "community_board", meeting_id: "meeting:community_board:later", title: "Later board meeting" },
+  { source_system: "city_record", meeting_id: "meeting:city_record:later", title: "Later hearing" },
+];
+const model = (items = rows) => ({ schema: "cityscroll.shared_meeting_read_model.v1", rows: items });
+const response = (status, body) => ({ status, text: async () => body, headers: { get: () => null } });
+const esc = (value) => value.replaceAll("&", "&amp;").replaceAll('"', "&quot;")
+  .replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("'", "&#39;");
+const document = (row) => `<title>${esc(row.title)} · CityScroll</title><main data-civic-object-kind="meeting" data-meeting-id="${esc(row.meeting_id)}"></main>`;
+const cleanUrl = (url) => { const parsed = new URL(url); parsed.searchParams.delete("_smoke"); return parsed.href; };
+function siteFetch({ readModel = model(), pageResponse } = {}) {
+  const requests = [];
+  const fetchImpl = async (url) => {
+    const key = cleanUrl(url);
+    requests.push(key);
+    if (key === `${BASE}${MEETING_READ_MODEL_PATH}`) return response(200, JSON.stringify(readModel));
+    const row = rows.find((item) => key === `${BASE}/meetings/${encodeURIComponent(item.meeting_id)}/`);
+    if (row) return pageResponse?.(row) ?? response(200, document(row));
+    if (key === `${BASE}/` || key === `${BASE}/about.html`) return response(200, "<title>CityScroll</title>");
+    return response(404, "Page not found");
+  };
+  return { requests, fetchImpl };
+}
+
+test("resolver chooses the first published record of each family and encodes the complete ID", () => {
+  const targets = publishedMeetingTargets(model(), BASE);
+  assert.deepEqual(targets.map((item) => item.meetingId), [rows[2].meeting_id, rows[1].meeting_id]);
+  for (const target of targets) {
+    const row = rows.find((item) => item.meeting_id === target.meetingId);
+    assert.equal(target.url, `${BASE}/meetings/${encodeURIComponent(row.meeting_id)}/`);
+    assert.equal(target.marker.test(document(row)), true);
+    assert.equal(target.marker.test(document({ ...row, title: "Different meeting" })), false);
+    assert.equal(target.marker.test(document({ ...row, meeting_id: `${row.meeting_id}-other` })), false);
+    assert.equal(target.marker.test(document(row).replace('data-civic-object-kind="meeting"', 'data-civic-object-kind="notice"')), false);
+  }
+});
+
+test("resolver keeps a URL-shaped ID's terminal slash inside the encoded route segment", () => {
+  const row = { ...rows[1], meeting_id: "meeting:community_board:https://board.example/event/transport/" };
+  const target = publishedMeetingTargets(model([rows[2], row]), BASE)[1];
+  assert.ok(target.url.endsWith("transport%2F/"));
+  assert.equal(decodeURIComponent(new URL(target.url).pathname.split("/")[2]), row.meeting_id);
+});
+
+test("a readable model missing either family fails instead of using historical IDs", async () => {
+  for (const family of ["community_board", "city_record"]) {
+    const readModel = model(rows.filter((row) => row.source_system !== family));
+    await assert.rejects(resolvePublishedMeetingTargets(BASE, {
+      fetchImpl: async () => response(200, JSON.stringify(readModel)),
+    }), new RegExp(`no published ${family} meeting`));
+  }
+});
+
+test("a malformed first record fails with its ID instead of choosing the next record", () => {
+  for (const bad of [{ ...rows[1], title: "" }, { ...rows[1], meeting_id: "meeting:city_record:wrong-family" }]) {
+    assert.throws(() => publishedMeetingTargets(model([bad, ...rows]), BASE), (error) => {
+      assert.match(error.message, /invalid first published community_board meeting/);
+      assert.ok(error.message.includes(bad.meeting_id));
+      return true;
+    });
+  }
+});
+
+test("unreadable models use documented fallbacks with the failed source and resolved IDs", async () => {
+  for (const fetchImpl of [
+    async () => response(503, "unavailable"),
+    async () => response(200, "not JSON"),
+    async () => response(200, JSON.stringify({ rows: [] })),
+    async () => { throw new Error("network unavailable"); },
+  ]) {
+    const targets = await resolvePublishedMeetingTargets(BASE, { fetchImpl });
+    assert.deepEqual(targets.map((item) => item.meetingId), CANONICAL_MEETING_TARGETS.map((item) => item.meetingId));
+    for (const target of targets) {
+      assert.ok(target.resolutionWarning.includes(`${BASE}${MEETING_READ_MODEL_PATH}`));
+      assert.ok(target.resolutionWarning.includes(target.meetingId));
+      assert.match(target.resolutionWarning, /historical fallback/);
+    }
+  }
+});
+
+test("model reads respect the existing request timeout", async () => {
+  const targets = await resolvePublishedMeetingTargets(BASE, {
+    requestTimeoutMs: 5,
+    fetchImpl: (_url, { signal }) => new Promise((_resolve, reject) => {
+      signal.addEventListener("abort", () => reject(new Error("request timed out")), { once: true });
+    }),
+  });
+  assert.match(targets[0].resolutionWarning, /request timed out/);
+});
+
+test("smoke resolves both families once per host and asserts the published pages", async () => {
+  const fixture = siteFetch();
+  const result = await runSmoke({ targets: targetsFromCli({ baseUrl: BASE }), fetchImpl: fixture.fetchImpl, timeoutMs: 0 });
+  assert.equal(result.ok, true, result.failures.join("\n"));
+  assert.equal(result.results.length, 4);
+  assert.equal(fixture.requests.filter((url) => url === `${BASE}${MEETING_READ_MODEL_PATH}`).length, 1);
+  assert.deepEqual(result.results.filter((item) => item.meetingId).map((item) => item.meetingId), [rows[2].meeting_id, rows[1].meeting_id]);
+  assert.ok(result.results.every((item) => !item.resolutionWarning));
+});
+
+test("a broken first published page fails and names its ID without trying later or historical meetings", async () => {
+  for (const pageResponse of [
+    (row) => row === rows[1] ? response(404, "Page not found") : undefined,
+    (row) => row === rows[1] ? response(200, document({ ...row, title: "Wrong title" })) : undefined,
+  ]) {
+    const fixture = siteFetch({ pageResponse });
+    const result = await runSmoke({ targets: targetsFromCli({ baseUrl: BASE }), fetchImpl: fixture.fetchImpl, timeoutMs: 0 });
+    assert.equal(result.ok, false);
+    assert.equal(result.failures.length, 1);
+    assert.ok(result.failures[0].includes(rows[1].meeting_id));
+    assert.ok(result.failures[0].includes(rows[1].title));
+    assert.ok(!fixture.requests.some((url) => url.includes(encodeURIComponent(rows[3].meeting_id))));
+    assert.ok(!fixture.requests.some((url) => CANONICAL_MEETING_TARGETS.some((item) => url.includes(encodeURIComponent(item.meetingId)))));
+  }
+});
+
+test("a missing family remains a smoke failure even if historical pages could render", async () => {
+  const fixture = siteFetch({ readModel: model([rows[2]]) });
+  const result = await runSmoke({ targets: targetsFromCli({ baseUrl: BASE }), fetchImpl: fixture.fetchImpl, timeoutMs: 0 });
+  assert.equal(result.ok, false);
+  assert.match(result.failures.join("\n"), /no published community_board meeting/);
+  assert.ok(!fixture.requests.some((url) => url.includes("/meetings/")));
+});
+
+test("each retry resolves the current publication again", async () => {
+  let clock = 0;
+  let modelReads = 0;
+  const fixture = siteFetch({ pageResponse: (row) => row === rows[1] ? response(404, "Page not found") : undefined });
+  const fetchImpl = async (url) => {
+    if (cleanUrl(url) === `${BASE}${MEETING_READ_MODEL_PATH}`) {
+      modelReads += 1;
+      return response(200, JSON.stringify(model(modelReads === 1 ? rows : rows.filter((row) => row !== rows[1]))));
+    }
+    return fixture.fetchImpl(url);
+  };
+  const result = await runSmoke({ targets: targetsFromCli({ baseUrl: BASE }), fetchImpl,
+    timeoutMs: 10, intervalMs: 1, now: () => clock, sleep: async (ms) => { clock += ms; } });
+  assert.equal(result.ok, true, result.failures.join("\n"));
+  assert.equal(result.attempts, 2);
+  assert.equal(modelReads, 2);
+  assert.equal(result.results.at(-1).meetingId, rows[3].meeting_id);
+});
+
+test("an explicit URL never triggers meeting resolution", async () => {
+  const requests = [];
+  const result = await runSmoke({ targets: targetsFromCli({ urls: [`${BASE}/custom`] }), timeoutMs: 0,
+    fetchImpl: async (url) => { requests.push(cleanUrl(url)); return response(200, "CityScroll"); } });
+  assert.equal(result.ok, true);
+  assert.deepEqual(requests, [`${BASE}/custom`]);
+});
+
+test("fallback pages still need the exact historical ID, title, and meeting marker", async () => {
+  for (const valid of [true, false]) {
+    const result = await runSmoke({ targets: targetsFromCli({ baseUrl: BASE }), timeoutMs: 0,
+      fetchImpl: async (url) => {
+        const key = cleanUrl(url);
+        if (key.endsWith(MEETING_READ_MODEL_PATH)) return response(503, "unavailable");
+        const target = CANONICAL_MEETING_TARGETS.find((item) => key.includes(encodeURIComponent(item.meetingId)));
+        if (target) return response(200, valid ? document({ meeting_id: target.meetingId, title: target.meetingTitle }) : "<title>CityScroll</title>");
+        return response(200, "CityScroll");
+      } });
+    assert.equal(result.ok, valid);
+    assert.equal(result.results.filter((item) => item.resolutionWarning).length, 2);
+    if (!valid) {
+      for (const target of CANONICAL_MEETING_TARGETS) assert.ok(result.failures.join("\n").includes(target.meetingId));
+    }
   }
 });
