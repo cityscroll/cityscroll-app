@@ -1,0 +1,2260 @@
+{
+  "source_revision": "e6bdad2af4002080c6f4691c0f325b015d07412e",
+  "source_paths": [
+    "site/data/agency_obligations_lookup.json",
+    "site/data/meetings_domain_observations.json",
+    "site/data/cross_spine_edge_gate.json"
+  ],
+  "sources": {
+    "obligations": {
+      "by_agency": {
+        "office-of-the-mayor": {
+          "obligations": [
+            {
+              "obligation_id": "67686-005",
+              "matter_id": "67686",
+              "agency_id": "office-of-the-mayor",
+              "agency_name": "Office of the Mayor",
+              "agency_raw": "Mayor",
+              "agency_match": {
+                "matched": true,
+                "method": "statute_actor_alias_v1",
+                "confidence": "strong"
+              },
+              "duty_text": "Form the interdisciplinary, interagency training committee and begin its meetings.",
+              "deliverable_type": "other",
+              "deadline": {
+                "kind": "fixed_date",
+                "computed_date": null,
+                "text": "no later than December 1, 2021",
+                "is_compliance_verdict": false
+              },
+              "recurrence": "one-time",
+              "citation": "§ 14-192(b)(2)",
+              "file_number": "Int 2439-2021",
+              "law_number_display": null,
+              "source": {
+                "matter_id": "67686",
+                "legistar_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=67686",
+                "law_text_url": "https://nyc.legistar1.com/nyc/attachments/4dd21a01-071d-4785-98bc-7a20562cf4ba.docx",
+                "citation": "§ 14-192(b)(2)",
+                "file_number": "Int 2439-2021",
+                "law_number_display": null
+              },
+              "certification": {
+                "status": "auto_certified",
+                "basis": "auto_certified_quote_verify_v1",
+                "quote_verified": true,
+                "note": "Auto-certified: contiguous statute quote verified against fetched law text."
+              },
+              "observation": {
+                "status": "not_adjudicated",
+                "label": "Observed vs expected is not adjudicated in this iteration",
+                "expected_event": "other"
+              },
+              "alert_id": "obligation:67686-005:one-time"
+            }
+          ]
+        },
+        "city-council": {
+          "obligations": [
+            {
+              "obligation_id": "53810-016",
+              "matter_id": "53810",
+              "agency_id": "city-council",
+              "agency_name": "City Council",
+              "agency_raw": "City Council",
+              "agency_match": {
+                "matched": true,
+                "method": "agency_canonical_v1",
+                "confidence": "strong"
+              },
+              "duty_text": "Hold hearings and submit recommendations in regard to the preliminary budget.",
+              "deliverable_type": "report",
+              "deadline": {
+                "kind": "fixed_date",
+                "computed_date": "2015-04-20",
+                "text": "not later than April 20, 2015",
+                "is_compliance_verdict": false
+              },
+              "recurrence": "one-time",
+              "citation": "§ 1(14)",
+              "file_number": "Int 0588-2014",
+              "law_number_display": null,
+              "source": {
+                "matter_id": "53810",
+                "legistar_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=53810",
+                "law_text_url": "https://nyc.legistar1.com/nyc/attachments/32f75c16-01cf-4a8a-8584-2b440076fd5d.pdf",
+                "citation": "§ 1(14)",
+                "file_number": "Int 0588-2014",
+                "law_number_display": null
+              },
+              "certification": {
+                "status": "auto_certified",
+                "basis": "auto_certified_quote_verify_v1",
+                "quote_verified": true,
+                "note": "Auto-certified: contiguous statute quote verified against fetched law text."
+              },
+              "observation": {
+                "status": "not_adjudicated",
+                "label": "Observed vs expected is not adjudicated in this iteration",
+                "expected_event": "report"
+              },
+              "alert_id": "obligation:53810-016:2015-04-20"
+            },
+            {
+              "obligation_id": "53810-002",
+              "matter_id": "53810",
+              "agency_id": "city-council",
+              "agency_name": "City Council",
+              "agency_raw": "City Council",
+              "agency_match": {
+                "matched": true,
+                "method": "agency_canonical_v1",
+                "confidence": "strong"
+              },
+              "duty_text": "Conduct public hearings on the preliminary management report.",
+              "deliverable_type": "other",
+              "deadline": {
+                "kind": "fixed_date",
+                "computed_date": "2015-05-04",
+                "text": "prior to May 4, 2015",
+                "is_compliance_verdict": false
+              },
+              "recurrence": "one-time",
+              "citation": "§ 1(1)",
+              "file_number": "Int 0588-2014",
+              "law_number_display": null,
+              "source": {
+                "matter_id": "53810",
+                "legistar_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=53810",
+                "law_text_url": "https://nyc.legistar1.com/nyc/attachments/32f75c16-01cf-4a8a-8584-2b440076fd5d.pdf",
+                "citation": "§ 1(1)",
+                "file_number": "Int 0588-2014",
+                "law_number_display": null
+              },
+              "certification": {
+                "status": "auto_certified",
+                "basis": "auto_certified_quote_verify_v1",
+                "quote_verified": true,
+                "note": "Auto-certified: contiguous statute quote verified against fetched law text."
+              },
+              "observation": {
+                "status": "not_adjudicated",
+                "label": "Observed vs expected is not adjudicated in this iteration",
+                "expected_event": "other"
+              },
+              "alert_id": "obligation:53810-002:2015-05-04"
+            },
+            {
+              "obligation_id": "56951-007",
+              "matter_id": "56951",
+              "agency_id": "city-council",
+              "agency_name": "City Council",
+              "agency_raw": "City Council",
+              "agency_match": {
+                "matched": true,
+                "method": "agency_canonical_v1",
+                "confidence": "strong"
+              },
+              "duty_text": "Hold hearings and submit recommendations regarding the preliminary budget.",
+              "deliverable_type": "other",
+              "deadline": {
+                "kind": "fixed_date",
+                "computed_date": null,
+                "text": "not later than April 3, 2017",
+                "is_compliance_verdict": false
+              },
+              "recurrence": "one-time",
+              "citation": "Section 1(7)",
+              "file_number": "Int 1415-2017",
+              "law_number_display": null,
+              "source": {
+                "matter_id": "56951",
+                "legistar_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=56951",
+                "law_text_url": "https://nyc.legistar1.com/nyc/attachments/c4161809-517e-47ab-99da-bd1551a3464f.doc",
+                "citation": "Section 1(7)",
+                "file_number": "Int 1415-2017",
+                "law_number_display": null
+              },
+              "certification": {
+                "status": "auto_certified",
+                "basis": "auto_certified_quote_verify_v1",
+                "quote_verified": true,
+                "note": "Auto-certified: contiguous statute quote verified against fetched law text."
+              },
+              "observation": {
+                "status": "not_adjudicated",
+                "label": "Observed vs expected is not adjudicated in this iteration",
+                "expected_event": "other"
+              },
+              "alert_id": "obligation:56951-007:one-time"
+            },
+            {
+              "obligation_id": "74312-002",
+              "matter_id": "74312",
+              "agency_id": "city-council",
+              "agency_name": "City Council",
+              "agency_raw": "City Council",
+              "agency_match": {
+                "matched": true,
+                "method": "agency_canonical_v1",
+                "confidence": "strong"
+              },
+              "duty_text": "Hold a hearing and act upon each covered mayoral nomination.",
+              "deliverable_type": "other",
+              "deadline": {
+                "kind": "none",
+                "computed_date": null,
+                "text": "Within 30 days after the first stated meeting of the council after receipt of a nomination",
+                "is_compliance_verdict": false
+              },
+              "recurrence": "ongoing",
+              "citation": "§ 31",
+              "file_number": "Int 0908-2024",
+              "law_number_display": null,
+              "source": {
+                "matter_id": "74312",
+                "legistar_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=74312",
+                "law_text_url": "https://nyc.legistar1.com/nyc/attachments/2eb8384d-4fc9-4040-a04c-a370e49fec2e.docx",
+                "citation": "§ 31",
+                "file_number": "Int 0908-2024",
+                "law_number_display": null
+              },
+              "certification": {
+                "status": "auto_certified",
+                "basis": "auto_certified_quote_verify_v1",
+                "quote_verified": true,
+                "note": "Auto-certified: contiguous statute quote verified against fetched law text."
+              },
+              "observation": {
+                "status": "not_adjudicated",
+                "label": "Observed vs expected is not adjudicated in this iteration",
+                "expected_event": "other"
+              },
+              "alert_id": "obligation:74312-002:ongoing"
+            }
+          ]
+        },
+        "transportation": {
+          "obligations": [
+            {
+              "obligation_id": "68103-008",
+              "matter_id": "68103",
+              "agency_id": "transportation",
+              "agency_name": "Transportation",
+              "agency_raw": "Department of Transportation",
+              "agency_match": {
+                "matched": true,
+                "method": "agency_canonical_v1",
+                "confidence": "strong"
+              },
+              "duty_text": "Hold a required public hearing on a sidewalk-cafe petition and decide whether to approve, disapprove, or approve it with modifications; file approval decisions with the Council.",
+              "deliverable_type": "other",
+              "deadline": {
+                "kind": "none",
+                "computed_date": null,
+                "text": "Within 30 days after expiration of the community board recommendation or waiver period.",
+                "is_compliance_verdict": false
+              },
+              "recurrence": "ongoing",
+              "citation": "Administrative Code § 19-160.2(c)",
+              "file_number": "Int 0031-2022",
+              "law_number_display": null,
+              "source": {
+                "matter_id": "68103",
+                "legistar_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=68103",
+                "law_text_url": "https://nyc.legistar1.com/nyc/attachments/fa198092-e17d-4c32-9efe-ca17b06b97d8.docx",
+                "citation": "Administrative Code § 19-160.2(c)",
+                "file_number": "Int 0031-2022",
+                "law_number_display": null
+              },
+              "certification": {
+                "status": "auto_certified",
+                "basis": "auto_certified_quote_verify_v1",
+                "quote_verified": true,
+                "note": "Auto-certified: contiguous statute quote verified against fetched law text."
+              },
+              "observation": {
+                "status": "not_adjudicated",
+                "label": "Observed vs expected is not adjudicated in this iteration",
+                "expected_event": "other"
+              },
+              "alert_id": "obligation:68103-008:ongoing",
+              "enactment_date": "2023-08-16",
+              "effective_date": null,
+              "temporal_anchor_method": "law_envelope_strict_iso_v1"
+            }
+          ]
+        },
+        "taxi-and-limousine-commission": {
+          "obligations": [
+            {
+              "obligation_id": "52169-002",
+              "matter_id": "52169",
+              "agency_id": "taxi-and-limousine-commission",
+              "agency_name": "Taxi and Limousine Commission",
+              "agency_raw": "Taxi and Limousine Commission",
+              "agency_match": {
+                "matched": true,
+                "method": "agency_canonical_v1",
+                "confidence": "strong"
+              },
+              "duty_text": "Conduct a fitness hearing to determine whether the driver remains fit to operate a commission-licensed vehicle.",
+              "deliverable_type": "other",
+              "deadline": {
+                "kind": "none",
+                "computed_date": null,
+                "text": null,
+                "is_compliance_verdict": false
+              },
+              "recurrence": "ongoing",
+              "citation": "Administrative Code §19-540(a)",
+              "file_number": "Int 0174-2014",
+              "law_number_display": null,
+              "source": {
+                "matter_id": "52169",
+                "legistar_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=52169",
+                "law_text_url": "https://nyc.legistar1.com/nyc/attachments/85c0341e-c71a-454d-a61c-b459853cc531.doc",
+                "citation": "Administrative Code §19-540(a)",
+                "file_number": "Int 0174-2014",
+                "law_number_display": null
+              },
+              "certification": {
+                "status": "auto_certified",
+                "basis": "auto_certified_quote_verify_v1",
+                "quote_verified": true,
+                "note": "Auto-certified: contiguous statute quote verified against fetched law text."
+              },
+              "observation": {
+                "status": "not_adjudicated",
+                "label": "Observed vs expected is not adjudicated in this iteration",
+                "expected_event": "other"
+              },
+              "alert_id": "obligation:52169-002:ongoing"
+            }
+          ]
+        },
+        "correction": {
+          "obligations": [
+            {
+              "obligation_id": "69580-024",
+              "matter_id": "69580",
+              "agency_id": "correction",
+              "agency_name": "Correction",
+              "agency_raw": "NYC Department of Correction",
+              "agency_match": {
+                "matched": true,
+                "method": "agency_canonical_v1",
+                "confidence": "strong"
+              },
+              "duty_text": "Hold a hearing before continuing restraints beyond the initial occasion, provide advance written notice and evidence, review continued use daily, discontinue it when the risk ends, and limit authorization to seven days.",
+              "deliverable_type": "other",
+              "deadline": {
+                "kind": "none",
+                "computed_date": null,
+                "text": "Before continued use beyond the initial occasion; daily review; authorization limited to seven days",
+                "is_compliance_verdict": false
+              },
+              "recurrence": "ongoing",
+              "citation": "§ 9-163(e)(3)",
+              "file_number": "Int 0549-2022",
+              "law_number_display": null,
+              "source": {
+                "matter_id": "69580",
+                "legistar_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=69580",
+                "law_text_url": "https://nyc.legistar1.com/nyc/attachments/673fff43-5113-4a85-872c-64b5f3d451ba.docx",
+                "citation": "§ 9-163(e)(3)",
+                "file_number": "Int 0549-2022",
+                "law_number_display": null
+              },
+              "certification": {
+                "status": "auto_certified",
+                "basis": "auto_certified_quote_verify_v1",
+                "quote_verified": true,
+                "note": "Auto-certified: contiguous statute quote verified against fetched law text."
+              },
+              "observation": {
+                "status": "not_adjudicated",
+                "label": "Observed vs expected is not adjudicated in this iteration",
+                "expected_event": "other"
+              },
+              "alert_id": "obligation:69580-024:ongoing"
+            }
+          ]
+        },
+        "health-and-mental-hygiene": {
+          "obligations": [
+            {
+              "obligation_id": "53410-008",
+              "matter_id": "53410",
+              "agency_id": "health-and-mental-hygiene",
+              "agency_name": "Health and Mental Hygiene",
+              "agency_raw": "NYC Department of Health and Mental Hygiene",
+              "agency_match": {
+                "matched": true,
+                "method": "agency_canonical_v1",
+                "confidence": "strong"
+              },
+              "duty_text": "Hold at least one advisory board meeting open to the public before issuance of the report, and notify the public of the meeting’s time, place, and subject.",
+              "deliverable_type": "other",
+              "deadline": {
+                "kind": "none",
+                "computed_date": null,
+                "text": "prior to issuance of the report pursuant to subdivision j",
+                "is_compliance_verdict": false
+              },
+              "recurrence": "one-time",
+              "citation": "Administrative Code § 17-167.2(i)",
+              "file_number": "Int 0492-2014",
+              "law_number_display": null,
+              "source": {
+                "matter_id": "53410",
+                "legistar_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=53410",
+                "law_text_url": "https://nyc.legistar1.com/nyc/attachments/87384dec-0383-4879-94c1-8117d196c7a3.doc",
+                "citation": "Administrative Code § 17-167.2(i)",
+                "file_number": "Int 0492-2014",
+                "law_number_display": null
+              },
+              "certification": {
+                "status": "auto_certified",
+                "basis": "auto_certified_quote_verify_v1",
+                "quote_verified": true,
+                "note": "Auto-certified: contiguous statute quote verified against fetched law text."
+              },
+              "observation": {
+                "status": "not_adjudicated",
+                "label": "Observed vs expected is not adjudicated in this iteration",
+                "expected_event": "other"
+              },
+              "alert_id": "obligation:53410-008:one-time"
+            },
+            {
+              "obligation_id": "61116-001",
+              "matter_id": "61116",
+              "agency_id": "health-and-mental-hygiene",
+              "agency_name": "Health and Mental Hygiene",
+              "agency_raw": "Department of Health and Mental Hygiene",
+              "agency_match": {
+                "matched": true,
+                "method": "agency_canonical_v1",
+                "confidence": "strong"
+              },
+              "duty_text": "Commence a proceeding to recover any civil penalty authorized by this section by serving a summons returnable to the office of administrative trials and hearings when a person is found to have violated this section or any rule promulgated by the department.",
+              "deliverable_type": "other",
+              "deadline": {
+                "kind": "none",
+                "computed_date": null,
+                "text": null,
+                "is_compliance_verdict": false
+              },
+              "recurrence": "one-time",
+              "citation": "§ 17-199.11(d)",
+              "file_number": "Int 1064-2018",
+              "law_number_display": null,
+              "source": {
+                "matter_id": "61116",
+                "legistar_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=61116",
+                "law_text_url": "https://nyc.legistar1.com/nyc/attachments/93aaa089-fb36-42a1-87fc-74b9283dd8f1.docx",
+                "citation": "§ 17-199.11(d)",
+                "file_number": "Int 1064-2018",
+                "law_number_display": null
+              },
+              "certification": {
+                "status": "auto_certified",
+                "basis": "auto_certified_quote_verify_v1",
+                "quote_verified": true,
+                "note": "Auto-certified: contiguous statute quote verified against fetched law text."
+              },
+              "observation": {
+                "status": "not_adjudicated",
+                "label": "Observed vs expected is not adjudicated in this iteration",
+                "expected_event": "other"
+              },
+              "alert_id": "obligation:61116-001:one-time"
+            }
+          ]
+        },
+        "commission-on-human-rights": {
+          "obligations": [
+            {
+              "obligation_id": "64103-001",
+              "matter_id": "64103",
+              "agency_id": "commission-on-human-rights",
+              "agency_name": "Commission on Human Rights",
+              "agency_raw": "Commission on Human Rights",
+              "agency_match": {
+                "matched": true,
+                "method": "agency_canonical_v1",
+                "confidence": "strong"
+              },
+              "duty_text": "For a period of three years, organize and conduct no fewer than five investigations of age discrimination in the workplace per year using pairs of testers meeting the specified testing conditions.",
+              "deliverable_type": "program",
+              "deadline": {
+                "kind": "fixed_date",
+                "computed_date": "2020-01-15",
+                "text": "on or before January 15, 2020",
+                "is_compliance_verdict": false
+              },
+              "recurrence": "annual",
+              "citation": "Section 1(a)",
+              "file_number": "Int 1695-2019",
+              "law_number_display": null,
+              "source": {
+                "matter_id": "64103",
+                "legistar_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=64103",
+                "law_text_url": "https://nyc.legistar1.com/nyc/attachments/ff4ff70b-97e6-4548-8fb1-40df4d8174d2.docx",
+                "citation": "Section 1(a)",
+                "file_number": "Int 1695-2019",
+                "law_number_display": null
+              },
+              "certification": {
+                "status": "auto_certified",
+                "basis": "auto_certified_quote_verify_v1",
+                "quote_verified": true,
+                "note": "Auto-certified: contiguous statute quote verified against fetched law text."
+              },
+              "observation": {
+                "status": "not_adjudicated",
+                "label": "Observed vs expected is not adjudicated in this iteration",
+                "expected_event": "program"
+              },
+              "alert_id": "obligation:64103-001:2020-01-15"
+            }
+          ]
+        },
+        "information-technology-and-telecommunications": {
+          "obligations": [
+            {
+              "obligation_id": "72178-002",
+              "matter_id": "72178",
+              "agency_id": "information-technology-and-telecommunications",
+              "agency_name": "Information Technology and Telecommunications",
+              "agency_raw": "Department of Information Technology and Telecommunications",
+              "agency_match": {
+                "matched": true,
+                "method": "agency_canonical_v1",
+                "confidence": "strong"
+              },
+              "duty_text": "Solicit public input on proposed recommendations for updates to the broadband internet access plan through public hearings and solicitation of comments from stakeholders and members of the public.",
+              "deliverable_type": "other",
+              "deadline": {
+                "kind": "none",
+                "computed_date": null,
+                "text": null,
+                "is_compliance_verdict": false
+              },
+              "recurrence": "ongoing",
+              "citation": "Administrative Code § 23-1302",
+              "file_number": "Int 1122-2024",
+              "law_number_display": null,
+              "source": {
+                "matter_id": "72178",
+                "legistar_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=72178",
+                "law_text_url": "https://nyc.legistar1.com/nyc/attachments/975cdf9d-c65d-49eb-83ee-38c42d025831.docx",
+                "citation": "Administrative Code § 23-1302",
+                "file_number": "Int 1122-2024",
+                "law_number_display": null
+              },
+              "certification": {
+                "status": "auto_certified",
+                "basis": "auto_certified_quote_verify_v1",
+                "quote_verified": true,
+                "note": "Auto-certified: contiguous statute quote verified against fetched law text."
+              },
+              "observation": {
+                "status": "not_adjudicated",
+                "label": "Observed vs expected is not adjudicated in this iteration",
+                "expected_event": "other"
+              },
+              "alert_id": "obligation:72178-002:ongoing"
+            }
+          ]
+        },
+        "landmarks-preservation-commission": {
+          "obligations": [
+            {
+              "obligation_id": "54431-002",
+              "matter_id": "54431",
+              "agency_id": "landmarks-preservation-commission",
+              "agency_name": "Landmarks Preservation Commission",
+              "agency_raw": "Landmarks Preservation Commission",
+              "agency_match": {
+                "matched": true,
+                "method": "agency_canonical_v1",
+                "confidence": "strong"
+              },
+              "duty_text": "The commission shall hold a public hearing to consider any landmark, interior landmark, or scenic landmark under consideration for landmark designation within 180 days immediately following the date that the item is calendared by the commission.",
+              "deliverable_type": "other",
+              "deadline": {
+                "kind": "none",
+                "computed_date": null,
+                "text": "within 180 days immediately following the date that the item is calendared by the commission",
+                "is_compliance_verdict": false
+              },
+              "recurrence": "one-time",
+              "citation": "Administrative Code § 25-303(l)(2)",
+              "file_number": "Int 0775-2015",
+              "law_number_display": null,
+              "source": {
+                "matter_id": "54431",
+                "legistar_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=54431",
+                "law_text_url": "https://nyc.legistar1.com/nyc/attachments/4bdd0eec-f046-45dd-9857-bf5106d482a5.doc",
+                "citation": "Administrative Code § 25-303(l)(2)",
+                "file_number": "Int 0775-2015",
+                "law_number_display": null
+              },
+              "certification": {
+                "status": "auto_certified",
+                "basis": "auto_certified_quote_verify_v1",
+                "quote_verified": true,
+                "note": "Auto-certified: contiguous statute quote verified against fetched law text."
+              },
+              "observation": {
+                "status": "not_adjudicated",
+                "label": "Observed vs expected is not adjudicated in this iteration",
+                "expected_event": "other"
+              },
+              "alert_id": "obligation:54431-002:one-time"
+            },
+            {
+              "obligation_id": "54431-004",
+              "matter_id": "54431",
+              "agency_id": "landmarks-preservation-commission",
+              "agency_name": "Landmarks Preservation Commission",
+              "agency_raw": "Landmarks Preservation Commission",
+              "agency_match": {
+                "matched": true,
+                "method": "agency_canonical_v1",
+                "confidence": "strong"
+              },
+              "duty_text": "The commission shall hold a public hearing to consider any historic district under consideration for designation within one year immediately following the date that the item is calendared by the commission.",
+              "deliverable_type": "other",
+              "deadline": {
+                "kind": "none",
+                "computed_date": null,
+                "text": "within one year immediately following the date that the item is calendared by the commission",
+                "is_compliance_verdict": false
+              },
+              "recurrence": "one-time",
+              "citation": "Administrative Code § 25-303(l)(3)",
+              "file_number": "Int 0775-2015",
+              "law_number_display": null,
+              "source": {
+                "matter_id": "54431",
+                "legistar_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=54431",
+                "law_text_url": "https://nyc.legistar1.com/nyc/attachments/4bdd0eec-f046-45dd-9857-bf5106d482a5.doc",
+                "citation": "Administrative Code § 25-303(l)(3)",
+                "file_number": "Int 0775-2015",
+                "law_number_display": null
+              },
+              "certification": {
+                "status": "auto_certified",
+                "basis": "auto_certified_quote_verify_v1",
+                "quote_verified": true,
+                "note": "Auto-certified: contiguous statute quote verified against fetched law text."
+              },
+              "observation": {
+                "status": "not_adjudicated",
+                "label": "Observed vs expected is not adjudicated in this iteration",
+                "expected_event": "other"
+              },
+              "alert_id": "obligation:54431-004:one-time"
+            }
+          ]
+        },
+        "comptroller": {
+          "obligations": [
+            {
+              "obligation_id": "67052-010",
+              "matter_id": "67052",
+              "agency_id": "comptroller",
+              "agency_name": "Comptroller",
+              "agency_raw": "Comptroller",
+              "agency_match": {
+                "matched": true,
+                "method": "agency_canonical_v1",
+                "confidence": "strong"
+              },
+              "duty_text": "Conduct investigations upon reasonable belief of noncompliance or a verified written complaint, and report the investigation and hearing results to the contracting agency.",
+              "deliverable_type": "other",
+              "deadline": {
+                "kind": "none",
+                "computed_date": null,
+                "text": null,
+                "is_compliance_verdict": false
+              },
+              "recurrence": "ongoing",
+              "citation": "Administrative Code § 6-145(f)(1)",
+              "file_number": "Int 2252-2021",
+              "law_number_display": null,
+              "source": {
+                "matter_id": "67052",
+                "legistar_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=67052",
+                "law_text_url": "https://nyc.legistar1.com/nyc/attachments/3b777d9f-af50-4821-b4ef-d737da2fa522.docx",
+                "citation": "Administrative Code § 6-145(f)(1)",
+                "file_number": "Int 2252-2021",
+                "law_number_display": null
+              },
+              "certification": {
+                "status": "auto_certified",
+                "basis": "auto_certified_quote_verify_v1",
+                "quote_verified": true,
+                "note": "Auto-certified: contiguous statute quote verified against fetched law text."
+              },
+              "observation": {
+                "status": "not_adjudicated",
+                "label": "Observed vs expected is not adjudicated in this iteration",
+                "expected_event": "other"
+              },
+              "alert_id": "obligation:67052-010:ongoing"
+            }
+          ]
+        }
+      }
+    },
+    "meetings": {
+      "rows": [
+        {
+          "request_id": "20260827001",
+          "meeting_id": "meeting:city_record:20260827001",
+          "agency_name": "Transportation",
+          "short_title": "Shore Road Bridge over Hutchinson River Project",
+          "start_date": "2026-09-04T00:00:00.000",
+          "event_date": "2026-10-01T18:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "street_address_1": "Address Not Listed In The Dropdown",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260827001",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [
+              "bronx",
+              "county",
+              "federal",
+              "highway",
+              "administration",
+              "fhwa",
+              "state",
+              "transportation",
+              "nysdot",
+              "joint",
+              "lead",
+              "agencies",
+              "project",
+              "sponsor",
+              "made",
+              "available",
+              "draft",
+              "design",
+              "report",
+              "nepa",
+              "environmental",
+              "impact",
+              "statement",
+              "deis",
+              "shore",
+              "road",
+              "bridge",
+              "over",
+              "hutchinson",
+              "river",
+              "purpose",
+              "address"
+            ],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Bronx"
+            ],
+            "derivation": {
+              "methods": [
+                "matter_body_borough"
+              ],
+              "confidence": 0.9,
+              "role": "matter",
+              "evidence": [
+                "Borough of Bronx"
+              ]
+            },
+            "confidence_tier": "strong",
+            "source": "matter"
+          }
+        },
+        {
+          "request_id": "20260827019",
+          "meeting_id": "meeting:city_record:20260827019",
+          "agency_name": "Transportation",
+          "short_title": "Shore Road Bridge over Hutchinson River Project",
+          "start_date": "2026-09-04T00:00:00.000",
+          "event_date": "2026-10-07T18:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "street_address_1": "Address Not Listed In The Dropdown",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260827019",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [
+              "bronx",
+              "county",
+              "federal",
+              "highway",
+              "administration",
+              "fhwa",
+              "state",
+              "transportation",
+              "nysdot",
+              "joint",
+              "lead",
+              "agencies",
+              "project",
+              "sponsor",
+              "made",
+              "available",
+              "draft",
+              "design",
+              "report",
+              "nepa",
+              "environmental",
+              "impact",
+              "statement",
+              "deis",
+              "shore",
+              "road",
+              "bridge",
+              "over",
+              "hutchinson",
+              "river",
+              "purpose",
+              "address"
+            ],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Bronx"
+            ],
+            "derivation": {
+              "methods": [
+                "matter_body_borough"
+              ],
+              "confidence": 0.9,
+              "role": "matter",
+              "evidence": [
+                "Borough of Bronx"
+              ]
+            },
+            "confidence_tier": "strong",
+            "source": "matter"
+          }
+        },
+        {
+          "request_id": "20260826006",
+          "meeting_id": "meeting:city_record:20260826006",
+          "agency_name": "Transportation",
+          "short_title": "Dining Out NYC Public Hearings",
+          "start_date": "2026-09-04T00:00:00.000",
+          "event_date": "2026-09-24T11:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260826006",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [
+              "draft",
+              "copy",
+              "revocable",
+              "consent",
+              "agreement",
+              "obtained",
+              "cost",
+              "submitting",
+              "request",
+              "diningoutnyc",
+              "info",
+              "requestcopy",
+              "zoom",
+              "commencing",
+              "authorizing",
+              "bafles",
+              "triona",
+              "maintain",
+              "operate",
+              "year",
+              "round",
+              "roadway",
+              "cafe",
+              "term",
+              "four",
+              "years",
+              "adjacent",
+              "avenue",
+              "borough",
+              "manhattan",
+              "namdo",
+              "driggs"
+            ],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan",
+              "Brooklyn"
+            ],
+            "addresses": [
+              "190 3 Avenue",
+              "639 Driggs Avenue",
+              "196 8 Avenue"
+            ],
+            "derivation": {
+              "methods": [
+                "matter_body_borough"
+              ],
+              "confidence": 0.9,
+              "role": "matter",
+              "evidence": [
+                "Borough of Manhattan",
+                "Borough of Brooklyn"
+              ]
+            },
+            "confidence_tier": "strong",
+            "source": "matter"
+          }
+        },
+        {
+          "request_id": "20260827003",
+          "meeting_id": "meeting:city_record:20260827003",
+          "agency_name": "Transportation",
+          "short_title": "Dining Out NYC Public Hearings",
+          "start_date": "2026-09-02T00:00:00.000",
+          "event_date": "2026-09-17T11:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260827003",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [
+              "draft",
+              "copy",
+              "revocable",
+              "consent",
+              "agreement",
+              "obtained",
+              "cost",
+              "submitting",
+              "request",
+              "diningoutnyc",
+              "info",
+              "requestcopy",
+              "zoom",
+              "commencing",
+              "17th",
+              "authorizing",
+              "fifth",
+              "pura",
+              "vida",
+              "miami",
+              "modify",
+              "existing",
+              "sidewalk",
+              "cafe",
+              "adjacent",
+              "borough",
+              "manhattan"
+            ],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "addresses": [
+              "100 Fifth Ave",
+              "100 5 ave"
+            ],
+            "derivation": {
+              "methods": [
+                "matter_body_borough"
+              ],
+              "confidence": 0.9,
+              "role": "matter",
+              "evidence": [
+                "borough of Manhattan"
+              ]
+            },
+            "confidence_tier": "strong",
+            "source": "matter"
+          }
+        },
+        {
+          "request_id": "20260825026",
+          "meeting_id": "meeting:city_record:20260825026",
+          "agency_name": "City Council",
+          "short_title": "9-9-26 Subcommittee on Zoning and Franchises meeting",
+          "start_date": "2026-09-02T00:00:00.000",
+          "event_date": "2026-09-09T11:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "street_address_1": "250 Broadway",
+          "street_address_2": "8th Floor, Committee Room 3",
+          "city": "New York",
+          "state": "NY",
+          "zip_code": "10007",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260825026",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "addresses": [
+              "250 Broadway, 8th Floor, Committee Room 3, New York, NY, 10007"
+            ],
+            "derivation": {
+              "methods": [
+                "venue_column"
+              ],
+              "confidence": 0.65,
+              "role": "venue",
+              "evidence": [
+                "250 Broadway, 8th Floor, Committee Room 3, New York, NY, 10007"
+              ]
+            },
+            "confidence_tier": "derived",
+            "source": "venue"
+          }
+        },
+        {
+          "request_id": "20260824048",
+          "meeting_id": "meeting:city_record:20260824048",
+          "agency_name": "City Council",
+          "short_title": "9-8-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+          "start_date": "2026-09-01T00:00:00.000",
+          "event_date": "2026-09-08T11:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "street_address_1": "250 Broadway",
+          "street_address_2": "8th Floor, Committee Room 3",
+          "city": "New York",
+          "state": "NY",
+          "zip_code": "10007",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260824048",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "addresses": [
+              "250 Broadway, 8th Floor, Committee Room 3, New York, NY, 10007"
+            ],
+            "derivation": {
+              "methods": [
+                "venue_column"
+              ],
+              "confidence": 0.65,
+              "role": "venue",
+              "evidence": [
+                "250 Broadway, 8th Floor, Committee Room 3, New York, NY, 10007"
+              ]
+            },
+            "confidence_tier": "derived",
+            "source": "venue"
+          }
+        },
+        {
+          "request_id": "20260825003",
+          "meeting_id": "meeting:city_record:20260825003",
+          "agency_name": "Landmarks Preservation Commission",
+          "short_title": "September 15, 2026, Public Hearing Agenda CR",
+          "start_date": "2026-08-31T00:00:00.000",
+          "event_date": "2026-09-15T09:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "street_address_1": "253 Broadway",
+          "street_address_2": "2nd Floor",
+          "city": "New York",
+          "state": "NY",
+          "zip_code": "10007",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260825003",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "addresses": [
+              "253 Broadway, 2nd Floor, New York, NY, 10007"
+            ],
+            "derivation": {
+              "methods": [
+                "venue_column"
+              ],
+              "confidence": 0.65,
+              "role": "venue",
+              "evidence": [
+                "253 Broadway, 2nd Floor, New York, NY, 10007"
+              ]
+            },
+            "confidence_tier": "derived",
+            "source": "venue"
+          }
+        },
+        {
+          "request_id": "20260818004",
+          "meeting_id": "meeting:city_record:20260818004",
+          "agency_name": "Transportation",
+          "short_title": "Dining Out NYC Public Hearing",
+          "start_date": "2026-08-24T00:00:00.000",
+          "event_date": "2026-09-17T11:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260818004",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [
+              "zoom",
+              "commencing",
+              "petition",
+              "revocable",
+              "consent",
+              "fifth",
+              "pura",
+              "vida",
+              "miami",
+              "modify",
+              "existing",
+              "sidewalk",
+              "cafe",
+              "adjacent",
+              "avenue",
+              "borough",
+              "manhattan"
+            ],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "addresses": [
+              "100 Fifth Ave",
+              "100 5th Avenue"
+            ],
+            "derivation": {
+              "methods": [
+                "matter_body_borough"
+              ],
+              "confidence": 0.9,
+              "role": "matter",
+              "evidence": [
+                "borough of Manhattan"
+              ]
+            },
+            "confidence_tier": "strong",
+            "source": "matter"
+          }
+        },
+        {
+          "request_id": "20260819023",
+          "meeting_id": "meeting:city_record:20260819023",
+          "agency_name": "Office of the Mayor",
+          "short_title": "Mayoral Public Hearing",
+          "start_date": "2026-08-21T00:00:00.000",
+          "event_date": null,
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260819023",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "unlocated",
+            "unlocated_reason": "body_place_omitted",
+            "virtual_only": false
+          }
+        },
+        {
+          "request_id": "20260811003",
+          "meeting_id": "meeting:city_record:20260811003",
+          "agency_name": "Landmarks Preservation Commission",
+          "short_title": "September 1, 2026, Public Hearing Agenda CR",
+          "start_date": "2026-08-18T00:00:00.000",
+          "event_date": "2026-09-01T09:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "street_address_1": "253 Broadway",
+          "street_address_2": "2nd Floor",
+          "city": "New York",
+          "state": "NY",
+          "zip_code": "10007",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260811003",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "addresses": [
+              "253 Broadway, 2nd Floor, New York, NY, 10007"
+            ],
+            "derivation": {
+              "methods": [
+                "venue_column"
+              ],
+              "confidence": 0.65,
+              "role": "venue",
+              "evidence": [
+                "253 Broadway, 2nd Floor, New York, NY, 10007"
+              ]
+            },
+            "confidence_tier": "derived",
+            "source": "venue"
+          }
+        },
+        {
+          "request_id": "20260806002",
+          "meeting_id": "meeting:city_record:20260806002",
+          "agency_name": "Health and Mental Hygiene",
+          "short_title": "Rules Regarding Restricted Substances in Personal Care Products",
+          "start_date": "2026-08-14T00:00:00.000",
+          "event_date": "2026-09-16T10:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Agency Rules",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260806002",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "unlocated",
+            "unlocated_reason": "body_place_omitted",
+            "virtual_only": false
+          }
+        },
+        {
+          "request_id": "20260805006",
+          "meeting_id": "meeting:city_record:20260805006",
+          "agency_name": "Transportation",
+          "short_title": "Dining Out NYC Hearing",
+          "start_date": "2026-08-14T00:00:00.000",
+          "event_date": "2026-09-03T11:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260805006",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [
+              "maintain",
+              "operate",
+              "roadway",
+              "cafe",
+              "term",
+              "four",
+              "years",
+              "adjacent",
+              "revocable",
+              "consent",
+              "augurs",
+              "well",
+              "marks",
+              "borough",
+              "manhattan",
+              "lpb8",
+              "pecora",
+              "bianca",
+              "greenpoint",
+              "melting",
+              "cups",
+              "coffee",
+              "company",
+              "street",
+              "queens",
+              "join",
+              "enter",
+              "link",
+              "your",
+              "browser",
+              "address",
+              "zoom"
+            ],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan",
+              "Brooklyn",
+              "Queens"
+            ],
+            "addresses": [
+              "147 W. 4 St",
+              "115 St Marks Pl",
+              "61 W. 62 St",
+              "27 Greenpoint Ave"
+            ],
+            "derivation": {
+              "methods": [
+                "matter_body_borough"
+              ],
+              "confidence": 0.9,
+              "role": "matter",
+              "evidence": [
+                "Borough of Manhattan",
+                "borough of Queens"
+              ]
+            },
+            "confidence_tier": "strong",
+            "source": "matter"
+          }
+        },
+        {
+          "request_id": "20260803009",
+          "meeting_id": "meeting:city_record:20260803009",
+          "agency_name": "Health and Mental Hygiene",
+          "short_title": "New Rules Relating to Rat Inspections",
+          "start_date": "2026-08-12T00:00:00.000",
+          "event_date": "2026-09-14T10:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Agency Rules",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260803009",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "unlocated",
+            "unlocated_reason": "body_place_omitted",
+            "virtual_only": false
+          }
+        },
+        {
+          "request_id": "20260728028",
+          "meeting_id": "meeting:city_record:20260728028",
+          "agency_name": "Transportation",
+          "short_title": "Dining Out NYC Public Hearings",
+          "start_date": "2026-08-07T00:00:00.000",
+          "event_date": "2026-08-27T11:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260728028",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [
+              "draft",
+              "copy",
+              "revocable",
+              "consent",
+              "agreement",
+              "obtained",
+              "cost",
+              "submitting",
+              "request",
+              "diningoutnyc",
+              "info",
+              "requestcopy",
+              "zoom",
+              "commencing",
+              "27th",
+              "authorizing",
+              "confidant",
+              "hospitality",
+              "maintain",
+              "operate",
+              "roadway",
+              "cafe",
+              "term",
+              "four",
+              "years",
+              "adjacent",
+              "atlantic",
+              "avenue",
+              "borough",
+              "brooklyn",
+              "melting",
+              "manhattan"
+            ],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan",
+              "Bronx",
+              "Brooklyn"
+            ],
+            "addresses": [
+              "129 Atlantic Avenue",
+              "196 8 Avenue",
+              "2477 Arthur Avenue"
+            ],
+            "derivation": {
+              "methods": [
+                "matter_body_borough"
+              ],
+              "confidence": 0.9,
+              "role": "matter",
+              "evidence": [
+                "Borough of Brooklyn",
+                "Borough of Manhattan",
+                "Borough of The Bronx"
+              ]
+            },
+            "confidence_tier": "strong",
+            "source": "matter"
+          }
+        },
+        {
+          "request_id": "20260729004",
+          "meeting_id": "meeting:city_record:20260729004",
+          "agency_name": "City Council",
+          "short_title": "8-12-26 Subcommittee on Zoning and Franchises meeting",
+          "start_date": "2026-08-06T00:00:00.000",
+          "event_date": "2026-08-12T11:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "street_address_1": "250 Broadway, 8th Floor",
+          "street_address_2": "Committee Room 1",
+          "city": "New York",
+          "state": "NY",
+          "zip_code": "10007",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729004",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "addresses": [
+              "250 Broadway, 8th Floor, Committee Room 1, New York, NY, 10007"
+            ],
+            "derivation": {
+              "methods": [
+                "venue_column"
+              ],
+              "confidence": 0.65,
+              "role": "venue",
+              "evidence": [
+                "250 Broadway, 8th Floor, Committee Room 1, New York, NY, 10007"
+              ]
+            },
+            "confidence_tier": "derived",
+            "source": "venue"
+          }
+        },
+        {
+          "request_id": "20260730025",
+          "meeting_id": "meeting:city_record:20260730025",
+          "agency_name": "Transportation",
+          "short_title": "August 26, 2026 PUBLIC HEARING",
+          "start_date": "2026-08-06T00:00:00.000",
+          "event_date": "2026-08-26T11:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "street_address_1": "55 Water Street",
+          "street_address_2": "9th Floor",
+          "city": "New York",
+          "state": "NY",
+          "zip_code": "10041",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260730025",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "addresses": [
+              "55 Water Street, 9th Floor, New York, NY, 10041"
+            ],
+            "derivation": {
+              "methods": [
+                "venue_column"
+              ],
+              "confidence": 0.65,
+              "role": "venue",
+              "evidence": [
+                "55 Water Street, 9th Floor, New York, NY, 10041"
+              ]
+            },
+            "confidence_tier": "derived",
+            "source": "venue"
+          }
+        },
+        {
+          "request_id": "20260727031",
+          "meeting_id": "meeting:city_record:20260727031",
+          "agency_name": "Landmarks Preservation Commission",
+          "short_title": "AUGUST 18, 2026 PUBLIC HEARING AGENDA",
+          "start_date": "2026-08-04T00:00:00.000",
+          "event_date": "2026-08-18T09:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "street_address_1": "253 Broadway",
+          "street_address_2": "2nd Floor",
+          "city": "New York",
+          "state": "NY",
+          "zip_code": "10007",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727031",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "addresses": [
+              "253 Broadway, 2nd Floor, New York, NY, 10007"
+            ],
+            "derivation": {
+              "methods": [
+                "venue_column"
+              ],
+              "confidence": 0.65,
+              "role": "venue",
+              "evidence": [
+                "253 Broadway, 2nd Floor, New York, NY, 10007"
+              ]
+            },
+            "confidence_tier": "derived",
+            "source": "venue"
+          }
+        },
+        {
+          "request_id": "20260723005",
+          "meeting_id": "meeting:city_record:20260723005",
+          "agency_name": "Transportation",
+          "short_title": "Dining Out NYC Public Hearings",
+          "start_date": "2026-07-29T00:00:00.000",
+          "event_date": "2026-08-13T11:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723005",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [
+              "draft",
+              "copy",
+              "revocable",
+              "consent",
+              "agreement",
+              "obtained",
+              "cost",
+              "submitting",
+              "request",
+              "diningoutnyc",
+              "info",
+              "requestcopy",
+              "zoom",
+              "commencing",
+              "13th",
+              "authorizing",
+              "cien",
+              "fuegos",
+              "maintain",
+              "operate",
+              "roadway",
+              "cafe",
+              "term",
+              "four",
+              "years",
+              "adjacent",
+              "avenue",
+              "borough",
+              "manhattan",
+              "chama",
+              "mama",
+              "franklin"
+            ],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan",
+              "Brooklyn"
+            ],
+            "addresses": [
+              "113 Franklin Street",
+              "131 Grand St"
+            ],
+            "derivation": {
+              "methods": [
+                "matter_body_borough"
+              ],
+              "confidence": 0.9,
+              "role": "matter",
+              "evidence": [
+                "Borough of Manhattan",
+                "Borough of Brooklyn"
+              ]
+            },
+            "confidence_tier": "strong",
+            "source": "matter"
+          }
+        },
+        {
+          "request_id": "20260714029",
+          "meeting_id": "meeting:city_record:20260714029",
+          "agency_name": "Transportation",
+          "short_title": "Notice of Public Hearing and Opportunity to Comment-  FHV and Taxi Parking at Commercial Meters and Commercial Vehicle Markings",
+          "start_date": "2026-07-22T00:00:00.000",
+          "event_date": "2026-09-01T10:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Agency Rules",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714029",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "unlocated",
+            "unlocated_reason": "body_place_omitted",
+            "virtual_only": false
+          }
+        },
+        {
+          "request_id": "20260716009",
+          "meeting_id": "meeting:city_record:20260716009",
+          "agency_name": "Transportation",
+          "short_title": "Dining Out NYC Public Hearing",
+          "start_date": "2026-07-22T00:00:00.000",
+          "event_date": "2026-08-06T11:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716009",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [
+              "draft",
+              "copy",
+              "revocable",
+              "consent",
+              "agreement",
+              "obtained",
+              "cost",
+              "submitting",
+              "request",
+              "diningoutnyc",
+              "info",
+              "requestcopy",
+              "zoom",
+              "commencing",
+              "authorizing",
+              "modification",
+              "existing",
+              "variety",
+              "cafe",
+              "maintain",
+              "operate",
+              "roadway",
+              "term",
+              "four",
+              "years",
+              "adjacent",
+              "driggs",
+              "borough",
+              "brooklyn",
+              "columbus",
+              "manhattan",
+              "kitchen"
+            ],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan",
+              "Brooklyn",
+              "Queens"
+            ],
+            "addresses": [
+              "142 Driggs Ave",
+              "335 Columbus Ave",
+              "23 2nd Ave",
+              "128 Central Ave"
+            ],
+            "derivation": {
+              "methods": [
+                "matter_body_borough"
+              ],
+              "confidence": 0.9,
+              "role": "matter",
+              "evidence": [
+                "Borough of Brooklyn",
+                "Borough of Manhattan",
+                "Borough of Queens"
+              ]
+            },
+            "confidence_tier": "strong",
+            "source": "matter"
+          }
+        },
+        {
+          "request_id": "20260714001",
+          "meeting_id": "meeting:city_record:20260714001",
+          "agency_name": "Landmarks Preservation Commission",
+          "short_title": "August 4, 2026, Public Hearing Agenda CR",
+          "start_date": "2026-07-22T00:00:00.000",
+          "event_date": "2026-08-04T09:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "street_address_1": "253 Broadway",
+          "street_address_2": "2nd Floor",
+          "city": "New York",
+          "state": "NY",
+          "zip_code": "10007",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714001",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "addresses": [
+              "253 Broadway, 2nd Floor, New York, NY, 10007"
+            ],
+            "derivation": {
+              "methods": [
+                "venue_column"
+              ],
+              "confidence": 0.65,
+              "role": "venue",
+              "evidence": [
+                "253 Broadway, 2nd Floor, New York, NY, 10007"
+              ]
+            },
+            "confidence_tier": "derived",
+            "source": "venue"
+          }
+        },
+        {
+          "request_id": "20260707022",
+          "meeting_id": "meeting:city_record:20260707022",
+          "agency_name": "City Council",
+          "short_title": "7-22-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+          "start_date": "2026-07-16T00:00:00.000",
+          "event_date": "2026-07-22T11:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "street_address_1": "250 Broadway, 8th Floor",
+          "street_address_2": "Committee Room 1",
+          "city": "New York",
+          "state": "NY",
+          "zip_code": "10007",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707022",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "addresses": [
+              "250 Broadway, 8th Floor, Committee Room 1, New York, NY, 10007"
+            ],
+            "derivation": {
+              "methods": [
+                "venue_column"
+              ],
+              "confidence": 0.65,
+              "role": "venue",
+              "evidence": [
+                "250 Broadway, 8th Floor, Committee Room 1, New York, NY, 10007"
+              ]
+            },
+            "confidence_tier": "derived",
+            "source": "venue"
+          }
+        },
+        {
+          "request_id": "20260707021",
+          "meeting_id": "meeting:city_record:20260707021",
+          "agency_name": "City Council",
+          "short_title": "7-21-26 Subcommittee on Zoning and Franchises meeting",
+          "start_date": "2026-07-15T00:00:00.000",
+          "event_date": "2026-07-21T11:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "street_address_1": "250 Broadway",
+          "street_address_2": "8th Floor, Committee Room 3",
+          "city": "New York",
+          "state": "NY",
+          "zip_code": "10007",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707021",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "addresses": [
+              "250 Broadway, 8th Floor, Committee Room 3, New York, NY, 10007"
+            ],
+            "derivation": {
+              "methods": [
+                "venue_column"
+              ],
+              "confidence": 0.65,
+              "role": "venue",
+              "evidence": [
+                "250 Broadway, 8th Floor, Committee Room 3, New York, NY, 10007"
+              ]
+            },
+            "confidence_tier": "derived",
+            "source": "venue"
+          }
+        },
+        {
+          "request_id": "20260707004",
+          "meeting_id": "meeting:city_record:20260707004",
+          "agency_name": "Landmarks Preservation Commission",
+          "short_title": "July 28, 2026, Public Hearing Agenda",
+          "start_date": "2026-07-14T00:00:00.000",
+          "event_date": "2026-07-28T09:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "street_address_1": "253 Broadway",
+          "street_address_2": "2nd Floor",
+          "city": "New York",
+          "state": "NY",
+          "zip_code": "10007",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707004",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "addresses": [
+              "253 Broadway, 2nd Floor, New York, NY, 10007"
+            ],
+            "derivation": {
+              "methods": [
+                "venue_column"
+              ],
+              "confidence": 0.65,
+              "role": "venue",
+              "evidence": [
+                "253 Broadway, 2nd Floor, New York, NY, 10007"
+              ]
+            },
+            "confidence_tier": "derived",
+            "source": "venue"
+          }
+        },
+        {
+          "request_id": "20260706044",
+          "meeting_id": "meeting:city_record:20260706044",
+          "agency_name": "Taxi and Limousine Commission",
+          "short_title": "Driver Relief Penalty Reduction and Medallion Relief Program Rule Proposal.",
+          "start_date": "2026-07-13T00:00:00.000",
+          "event_date": "2026-08-13T10:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Agency Rules",
+          "street_address_1": "33 Beaver Street",
+          "street_address_2": "19th Floor",
+          "city": "New York",
+          "state": "NY",
+          "zip_code": "10004",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706044",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "addresses": [
+              "33 Beaver Street, 19th Floor, New York, NY, 10004"
+            ],
+            "derivation": {
+              "methods": [
+                "venue_column"
+              ],
+              "confidence": 0.65,
+              "role": "venue",
+              "evidence": [
+                "33 Beaver Street, 19th Floor, New York, NY, 10004"
+              ]
+            },
+            "confidence_tier": "derived",
+            "source": "venue"
+          }
+        },
+        {
+          "request_id": "20260706036",
+          "meeting_id": "meeting:city_record:20260706036",
+          "agency_name": "City Council",
+          "short_title": "Correction: 7-14-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+          "start_date": "2026-07-08T00:00:00.000",
+          "event_date": "2026-07-14T10:30:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "street_address_1": "250 Broadway, 8th Floor",
+          "street_address_2": "Committee Room 1",
+          "city": "New York",
+          "state": "NY",
+          "zip_code": "10007",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706036",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "addresses": [
+              "250 Broadway, 8th Floor, Committee Room 1, New York, NY, 10007"
+            ],
+            "derivation": {
+              "methods": [
+                "venue_column"
+              ],
+              "confidence": 0.65,
+              "role": "venue",
+              "evidence": [
+                "250 Broadway, 8th Floor, Committee Room 1, New York, NY, 10007"
+              ]
+            },
+            "confidence_tier": "derived",
+            "source": "venue"
+          },
+          "event_id": "22526",
+          "source_note": "legistar_event_join_demo"
+        },
+        {
+          "request_id": "20260630005",
+          "meeting_id": "meeting:city_record:20260630005",
+          "agency_name": "Landmarks Preservation Commission",
+          "short_title": "July 21, 2026, Public Hearing Agenda",
+          "start_date": "2026-07-07T00:00:00.000",
+          "event_date": "2026-07-21T09:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "street_address_1": "253 Broadway",
+          "street_address_2": "2nd Floor",
+          "city": "New York",
+          "state": "NY",
+          "zip_code": "10007",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260630005",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "addresses": [
+              "253 Broadway, 2nd Floor, New York, NY, 10007"
+            ],
+            "derivation": {
+              "methods": [
+                "venue_column"
+              ],
+              "confidence": 0.65,
+              "role": "venue",
+              "evidence": [
+                "253 Broadway, 2nd Floor, New York, NY, 10007"
+              ]
+            },
+            "confidence_tier": "derived",
+            "source": "venue"
+          }
+        },
+        {
+          "request_id": "20260625040",
+          "meeting_id": "meeting:city_record:20260625040",
+          "agency_name": "City Council",
+          "short_title": "7-9-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+          "start_date": "2026-07-02T00:00:00.000",
+          "event_date": "2026-07-09T11:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "street_address_1": "250 Broadway, 8th Floor",
+          "street_address_2": "Committee Room 1",
+          "city": "New York",
+          "state": "NY",
+          "zip_code": "10007",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260625040",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "addresses": [
+              "250 Broadway, 8th Floor, Committee Room 1, New York, NY, 10007"
+            ],
+            "derivation": {
+              "methods": [
+                "venue_column"
+              ],
+              "confidence": 0.65,
+              "role": "venue",
+              "evidence": [
+                "250 Broadway, 8th Floor, Committee Room 1, New York, NY, 10007"
+              ]
+            },
+            "confidence_tier": "derived",
+            "source": "venue"
+          }
+        },
+        {
+          "request_id": "20260623006",
+          "meeting_id": "meeting:city_record:20260623006",
+          "agency_name": "Landmarks Preservation Commission",
+          "short_title": "July 14, 2026, Public Hearing Agenda CR",
+          "start_date": "2026-06-29T00:00:00.000",
+          "event_date": "2026-07-14T09:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "street_address_1": "253 Broadway",
+          "street_address_2": "2nd Floor",
+          "city": "New York",
+          "state": "NY",
+          "zip_code": "10007",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623006",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "addresses": [
+              "253 Broadway, 2nd Floor, New York, NY, 10007"
+            ],
+            "derivation": {
+              "methods": [
+                "venue_column"
+              ],
+              "confidence": 0.65,
+              "role": "venue",
+              "evidence": [
+                "253 Broadway, 2nd Floor, New York, NY, 10007"
+              ]
+            },
+            "confidence_tier": "derived",
+            "source": "venue"
+          }
+        },
+        {
+          "request_id": "20260617039",
+          "meeting_id": "meeting:city_record:20260617039",
+          "agency_name": "City Council",
+          "short_title": "7-1-26 Subcommittee on Zoning and Franchises meeting",
+          "start_date": "2026-06-25T00:00:00.000",
+          "event_date": "2026-07-01T11:00:00.000",
+          "type_of_notice_description": "Public Hearings",
+          "section_name": "Public Hearings and Meetings",
+          "street_address_1": "250 Broadway, 8th Floor",
+          "street_address_2": "Committee Room 1",
+          "city": "New York",
+          "state": "NY",
+          "zip_code": "10007",
+          "source_system": "city_record",
+          "meeting_origin": "city_record_notice",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617039",
+          "matter_subject": {
+            "schema": "cityscroll.meeting_matter_stamp.v1",
+            "subject_tokens": [],
+            "matter_ids": []
+          },
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Manhattan"
+            ],
+            "addresses": [
+              "250 Broadway, 8th Floor, Committee Room 1, New York, NY, 10007"
+            ],
+            "derivation": {
+              "methods": [
+                "venue_column"
+              ],
+              "confidence": 0.65,
+              "role": "venue",
+              "evidence": [
+                "250 Broadway, 8th Floor, Committee Room 1, New York, NY, 10007"
+              ]
+            },
+            "confidence_tier": "derived",
+            "source": "venue"
+          }
+        }
+      ]
+    },
+    "gate": {
+      "schema": "cityscroll.cross_spine_edge_eval.v3",
+      "matcher_version": "cross_spine_edge_policy_v2",
+      "gate": {
+        "mandate_meeting": {
+          "precision": 1,
+          "precision_interval_95": {
+            "confidence": 0.95,
+            "method": "wilson_score",
+            "lower": 0.7575059933447592,
+            "upper": 1
+          },
+          "min_precision": 0.9,
+          "support": 12,
+          "min_support": 12,
+          "support_status": "sufficient",
+          "label_counts": {
+            "same": 12,
+            "different": 3
+          },
+          "source_cohorts": [
+            "lpc_hearings_august_2026",
+            "lpc_hearings_july_2026",
+            "lpc_hearings_june_2026"
+          ],
+          "passed": true,
+          "status": "pass"
+        }
+      }
+    },
+    "rules": {
+      "rows": []
+    },
+    "land": {
+      "rows": []
+    },
+    "intelligence": {
+      "by_ref": {}
+    },
+    "procurementAwards": {
+      "rows": []
+    },
+    "processConformance": {
+      "by_agency": {}
+    }
+  }
+}
