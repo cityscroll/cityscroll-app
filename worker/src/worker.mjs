@@ -73,7 +73,6 @@ import { handleAgency } from "./agency.mjs";
 import { handlePeopleOrganizations } from "./people_organizations.mjs";
 import { runSuggestionValidation, handleSuggestions, handleAdminSuggestRefresh } from "./suggest.mjs";
 import { handleMcp } from "./mcp.mjs";
-import { handleInboundEmail } from "./inbound.mjs";
 import { handleVendorProfile, refreshVendorProfiles } from "./vendor_profile.mjs";
 import { handleMirror } from "./mirror.mjs";
 import { handleHearings, handleMeetingICS, refreshHearings } from "./hearings.mjs";
@@ -529,12 +528,12 @@ export default {
     }
   },
 
-  // Inbound subscribe-by-email (Cloudflare Email Routing route → this Worker).
+  // Inbound subscribe-by-email retired 2026-09-08; retain residual-traffic receipts.
   async email(message, env, ctx) {
     ctx.waitUntil((async () => {
       try { await recordInboundEmailReceipt(env, message); }
       catch (error) { console.error("inbound receipt failed:", String(error?.message || error)); }
-      await handleInboundEmail(message, env);
+      console.log(JSON.stringify({ event: "inbound-email-retired", count: 1 }));
     })());
   },
 

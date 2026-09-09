@@ -3677,8 +3677,6 @@
     api_p_sharedinv_html: "<code>POST /inv</code>는 고정 목록 스냅샷을 저장하고(구조화된 필드만, 32KB 이하, 유효기간 90일, IP당 하루 10회) id를 반환합니다. <code>GET /inv/&lt;id&gt;</code>로 다시 불러올 수 있습니다. 사이트는 이를 <code>/#investigation/shared/&lt;id&gt;</code>에서 표시합니다.",
     api_h_stats: "공개 통계",
     api_p_stats_html: "<code>GET /stats</code> — 제공 제품의 범위를 집계 수치로 제공합니다(섹션별 기록 세트, 각각의 기록 종류·집계 기준·자체 근거 일자 포함). 약 15분간 캐시됩니다. 사람이 읽을 수 있는 버전: <a href=\"stats.html\">통계</a>. 관련 정보: 다이제스트 이메일은 <code>GET /r/&lt;kind&gt;/&lt;request_id&gt;</code>를 통해 공고를 연결하며, 이는 id를 알려진 공고와 대조 확인한 뒤 해당 고유 링크로 리디렉션하고 하루 단위 숫자를 기록합니다.",
-    api_h_subscribe: "이메일로 구독",
-    api_p_subscribe_html: "<a href=\"mailto:subscribe@crol-list.org\"><code>subscribe@crol-list.org</code></a>로 원하시는 내용을 쉬운 영어로 이메일 보내 주세요 — 예: \"50만 달러 이상의 건설 계약 낙찰\" 또는 \"브루클린의 구역 재지정 공고\". 요청이 처리되는 즉시 관심 등록이 시작됩니다. 환영 이메일에 무엇을 추적하는지와 관리 및 원클릭 구독 취소 링크가 안내됩니다. 일일 한도가 적용됩니다.",
     api_h_mcp: "MCP — AI 어시스턴트용",
     api_p_mcp_html: "<code>POST /mcp</code>(Streamable HTTP, JSON-RPC) — MCP 클라이언트를 <code>https://api.cityscroll.org/mcp</code>로 연결하세요. 도구: <code>search_notices</code>와 <code>get_notice</code>(매일 갱신되는 공고 사본에 솔직한 데이터 규칙 적용), <code>preview_watch</code>(쉬운 영어 → 구독 없이 상시 관심 등록이 전달할 내용 미리보기), <code>create_watch</code>(쉬운 영어 → 관심 등록이 즉시 시작되고 범위를 안내하는 환영 이메일이 발송됨). 관심 등록 관리는 여전히 이메일로 전송되는 관리 및 구독 취소 링크를 통해서만 가능합니다 — 주소를 안다고 해서 구독 내용을 확인하거나 제어할 수는 없습니다. IP별 및 일일 모델 호출 한도가 적용됩니다.",
     api_h_upstream: "원본 데이터",

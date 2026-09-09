@@ -5,24 +5,23 @@ A failure on one does not prove a failure on the other.
 
 | Leg | Path | How it is checked |
 |---|---|---|
-| Outbound operations mailbox | Worker Resend send to `team@cityscroll.org` | Exception-only. Failed, missing, or stale canaries and rejected sends alert this mailbox once per finding fingerprint per day. Routine canaries never use it. |
-| Inbound Worker consumer | `subscribe@crol-list.org` → Worker `email()` handler | Canary subject token must appear in an `ops:mail:` inbound receipt |
+| Outbound operations mailbox | Worker Resend send to `team@cityscroll.org` | Rejected sends remain failures; outbound delivery behavior is unchanged. |
+| Inbound Worker consumer | Legacy Email Routing → Worker `email()` handler | Retired 2026-09-08; residual deliveries record receipts and a countable `inbound-email-retired` log event, without parsing, enrollment, or replies. |
 | Inbound Gmail forward | `alerts@crol-list.org` and the domain catch-all | Dashboard-gated; this repo cannot observe the destination inbox |
 
-A routine canary is addressed only to the worker-consumed subscribe address
-(`SUBSCRIBE_ADDRESS`, defaulting to that inbound Worker consumer). Configuration that
-resolves to `team@cityscroll.org`, `alerts@cityscroll.org`, or the Gmail-forward
-address is refused before send. The From address is not a recipient. The probe
-`to`/`cc` envelope is only that worker-owned address, and the inbound match key is
-`ops:mail:canary:inbound:<token>`.
+Subscribe-by-email and its inbound canary were retired on 2026-09-08.
+Existing watches, the Following page, digests, and other outbound mail are unchanged.
+`GET /admin/reliability/mail` reports the inbound leg as `retired`; old canary
+receipts, missing matches, and elapsed probe deadlines cannot fail health or page.
+The former canary POST action is no longer supported (HTTP 405), and scheduled
+checks only read health. Rejected operations sends still produce HTTP 503 and
+remain visible through the scheduled reliability check without retrying a dead mail leg.
 
-The subject stays exact-prefix `[cityscroll-mail-canary]` plus a 32-hex token.
-
-`GET /admin/reliability/mail` and the digest/scheduler watchdogs fail closed (HTTP 503)
-when a canary is unmatched, stale, or an operations send is rejected. Healthy canary
-rounds send no human operations mail. A rejected exception alert stays a durable
-finding; the scheduled Reliability watchdogs workflow is the independent GitHub-red
-alarm and does not retry through the broken mail leg.
+The legacy subscribe routing rule is external to this repository; no routing-rule
+infrastructure definition or deployment API step manages it here. In the
+[Cloudflare dashboard](https://developers.cloudflare.com/email-service/configuration/email-routing-addresses/#disable-a-routing-rule),
+select the legacy domain, open Compute → Email Service → Email Routing → Routing
+Rules, and toggle the `subscribe` rule to Disabled. Until then the handler is receipt-only.
 
 ## Pre/post-cutover gate
 
@@ -39,8 +38,8 @@ Live (operator key, not a pull-request gate):
 CITYSCROLL_ADMIN_KEY=… node tools/check_mail_legs.mjs --live
 ```
 
-Live mode posts a canary, polls the mail snapshot, and prints per-leg `pass` /
-`fail` / `unprobed`. The Gmail forward line stays `unprobed` because this
+Live mode reads the mail snapshot without sending and prints per-leg `pass` /
+`fail` / `unprobed` (including the retired inbound leg). The Gmail forward line stays `unprobed` because this
 repository cannot observe the destination inbox or replay a message.
 
 ## Interpreting Email Routing failure counts
@@ -84,7 +83,7 @@ Other rails, if they had failed:
 
 | Class | Metadata | Body | Queue / resend |
 |---|---|---|---|
-| Worker consumer inbound | KV receipt after deploy (to/time/token only) | Gone | None. A completed enroll is the watch in SUBS, not the original mail |
+| Worker consumer inbound | KV receipt (destination/time/retired disposition) | Gone | None. Existing watches remain in SUBS; inbound messages cannot create watches |
 | Subscriber digest | D1 outbox + KV watermarks | Resend retrieve when `provider_message_id` and API key exist; otherwise reconstruct from `payload_json` | Owed D1 rows drain on the next digest. That is a rebuild, not an RFC822 replay |
 | Operations mailbox send | KV receipt after deploy | Resend retrieve if a provider id was stored | `POST /admin/ops-alert` can send a new alarm; it cannot resurrect a never-generated one |
 
@@ -94,9 +93,8 @@ secrets are supplied. Fixture `--recovery` does not call providers.
 
 ## Receipts
 
-- Inbound Worker deliveries write `ops:mail:inbound:latest` even when the message
-  is ignored as a loop or the enroll path is unconfigured.
+- Inbound Worker deliveries write `ops:mail:inbound:latest` with destination,
+  observation time, and `disposition: retired`. Message bodies and senders are not stored.
 - Operations-mailbox sends write `ops:mail:outbound:latest` with Resend acceptance.
-- Canaries write `ops:mail:canary:latest` (including the effective `to`/`cc`
-  envelope) and, on Worker receipt, `ops:mail:canary:inbound:<token>`.
+- Historical canary receipts are ignored; no new probe or token-match receipts are written.
 - Exception findings append a bounded history at `ops:mail:findings:history`.

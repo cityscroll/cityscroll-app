@@ -1,11 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
-  DEFAULT_SUBSCRIBE_ADDRESS,
   digestWatchdogSnapshot,
   evaluateWatermarkStaleness,
-  isHumanOpsMailbox,
-  mailCanaryTokenFromSubject,
   mailWatchdogHasMailFindings,
   mailWatchdogSnapshot,
   recordDigestDeliveryReceipt,
@@ -17,9 +14,7 @@ import {
   recordDeskPublicationHeartbeat,
   canonicalOpsFailureSignature,
   emitOpsAlertOnce,
-  resolveMailCanaryTarget,
   schedulerWatchdogSnapshot,
-  sendInboundWorkerCanary,
 } from "../src/reliability_watchdogs.mjs";
 import { digestDayLogKey } from "../src/lib/digest_ops.mjs";
 import { OPS_ALERT_TO, sendOpsAlert } from "../src/alerts.mjs";
@@ -412,85 +407,6 @@ test("runtime alarms use the existing Resend path and the ops mailbox", async ()
   }
 });
 
-function headers(subject) {
-  return { get(name) { return String(name).toLowerCase() === "subject" ? subject : null; } };
-}
-
-test("mail canary token is parsed only from the exact subject prefix", () => {
-  assert.equal(
-    mailCanaryTokenFromSubject("[cityscroll-mail-canary] 0123456789abcdef0123456789abcdef"),
-    "0123456789abcdef0123456789abcdef",
-  );
-  assert.equal(
-    mailCanaryTokenFromSubject("[cityscroll-mail-canary] 0123456789ABCDEF0123456789ABCDEF"),
-    "0123456789abcdef0123456789abcdef",
-  );
-  assert.equal(mailCanaryTokenFromSubject("[CITYSCROLL-MAIL-CANARY] 0123456789abcdef0123456789abcdef"), null);
-  assert.equal(mailCanaryTokenFromSubject("construction awards over $500k"), null);
-});
-
-test("mail canary target refuses human operations mailboxes", () => {
-  const refused = resolveMailCanaryTarget({ SUBSCRIBE_ADDRESS: "james@cityscroll.org" });
-  assert.equal(refused.ok, false);
-  assert.equal(refused.reason, "human-ops-mailbox-refused");
-  assert.equal(isHumanOpsMailbox("alerts@cityscroll.org"), true);
-  assert.equal(isHumanOpsMailbox(`alerts@${DEFAULT_SUBSCRIBE_ADDRESS.split("@")[1]}`), true);
-  const allowed = resolveMailCanaryTarget({ SUBSCRIBE_ADDRESS: DEFAULT_SUBSCRIBE_ADDRESS });
-  assert.equal(allowed.ok, true);
-  assert.deepEqual(allowed.envelope, { to: [DEFAULT_SUBSCRIBE_ADDRESS], cc: [] });
-});
-
-test("inbound receipts record ignored loop mail and canary tokens", async () => {
-  const ALERT_STATE = kv();
-  const now = new Date("2026-08-29T14:10:20Z");
-  const token = "0123456789abcdef0123456789abcdef";
-  await recordInboundEmailReceipt({ ALERT_STATE }, {
-    from: "alerts@cityscroll.org",
-    to: DEFAULT_SUBSCRIBE_ADDRESS,
-    headers: headers(`[cityscroll-mail-canary] ${token}`),
-  }, now);
-  const snapshot = await mailWatchdogSnapshot({ ALERT_STATE }, { now });
-  assert.equal(snapshot.inbound.to, DEFAULT_SUBSCRIBE_ADDRESS);
-  assert.equal(snapshot.inbound.canary_token, token);
-  assert.equal(snapshot.ok, true);
-});
-
-test("mail watchdog fails when the inbound canary is not received", async () => {
-  const ALERT_STATE = kv();
-  const sent = new Date("2026-08-29T14:10:00Z");
-  const now = new Date("2026-08-29T14:25:00Z");
-  await sendInboundWorkerCanary({
-    ALERT_STATE,
-    RESEND_API_KEY: "test-key",
-    SUBSCRIBE_ADDRESS: DEFAULT_SUBSCRIBE_ADDRESS,
-    ALERTS_FROM: "CityScroll <alerts@cityscroll.org>",
-  }, {
-    now: sent,
-    token: "0123456789abcdef0123456789abcdef",
-    fetchImpl: async () => ({ ok: true, json: async () => ({ id: "canary" }) }),
-  });
-  const snapshot = await mailWatchdogSnapshot({ ALERT_STATE }, { now });
-  assert.equal(snapshot.ok, false);
-  assert.match(snapshot.findings.join("; "), /inbound-worker canary was not received/);
-  assert.equal(snapshot.gmail_forward.status, "unprobed");
-});
-
-test("mail watchdog stays pending inside the receive window", async () => {
-  const ALERT_STATE = kv();
-  const sent = new Date("2026-08-29T14:10:00Z");
-  await sendInboundWorkerCanary({
-    ALERT_STATE,
-    RESEND_API_KEY: "test-key",
-  }, {
-    now: sent,
-    token: "0123456789abcdef0123456789abcdef",
-    fetchImpl: async () => ({ ok: true, json: async () => ({ id: "canary" }) }),
-  });
-  const snapshot = await mailWatchdogSnapshot({ ALERT_STATE }, { now: new Date("2026-08-29T14:12:00Z") });
-  assert.equal(snapshot.ok, true);
-  assert.deepEqual(snapshot.findings, []);
-});
-
 test("digest watchdog folds mail findings and skips emailing a dead mail rail", async () => {
   const ALERT_STATE = kv();
   const now = new Date("2026-08-25T14:10:00Z");
@@ -521,227 +437,46 @@ test("digest watchdog folds mail findings and skips emailing a dead mail rail", 
   }
 });
 
-test("mail watchdog POST canary records the worker-consumer probe without enrolling", async () => {
-  const ALERT_STATE = kv();
-  const now = new Date("2026-08-29T14:10:00Z");
-  const previous = globalThis.fetch;
-  const sent = [];
-  globalThis.fetch = async (url, options) => {
-    sent.push({ url, body: JSON.parse(options.body) });
-    return { ok: true, json: async () => ({ id: "message" }) };
-  };
-  try {
-    const response = await handleAdminMailWatchdog(
-      new Request("https://w/admin/reliability/mail?key=s3cr3t", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ action: "canary" }),
-      }),
-      {
-        ADMIN_KEY: "s3cr3t",
-        ALERT_STATE,
-        RESEND_API_KEY: "rk",
-        ALERTS_FROM: "CityScroll <alerts@cityscroll.org>",
-        SUBSCRIBE_ADDRESS: DEFAULT_SUBSCRIBE_ADDRESS,
-      },
-      { now, fetchImpl: globalThis.fetch },
-    );
-    assert.equal(response.status, 200);
-    const body = await response.json();
-    assert.equal(body.inbound_worker.target, DEFAULT_SUBSCRIBE_ADDRESS);
-    assert.match(body.inbound_worker.token, /^[0-9a-f]{32}$/);
-    assert.equal(body.inbound_worker.token_prefix, body.inbound_worker.token.slice(0, 8));
-    assert.deepEqual(body.inbound_worker.envelope, { to: [DEFAULT_SUBSCRIBE_ADDRESS], cc: [] });
-    assert.equal(body.outbound_ops.sent, false);
-    assert.equal(body.outbound_ops.reason, "healthy-canary-silent");
-    assert.equal(sent.length, 1);
-    assert.equal(sent[0].body.to, DEFAULT_SUBSCRIBE_ADDRESS);
-    assert.deepEqual(sent[0].body.cc, []);
-    assert.match(sent[0].body.subject, /^\[cityscroll-mail-canary\] [0-9a-f]{32}$/);
-    assert.ok(sent.every((row) => row.body.to !== OPS_ALERT_TO));
-    assert.ok(sent.every((row) => !/enroll|watch/i.test(row.body.subject || "")));
-  } finally {
-    globalThis.fetch = previous;
+test("retired inbound canaries never fail mail health or send alerts", async () => {
+  for (const canary of [null, { token: "old", sent_at: "2026-01-01", resend_accepted: true }, { resend_accepted: false }]) {
+    const ALERT_STATE = kv({ "ops:mail:canary:latest": JSON.stringify(canary) });
+    const previous = globalThis.fetch;
+    globalThis.fetch = async () => { assert.fail("retired canary must not send"); };
+    try {
+      const response = await handleAdminMailWatchdog(
+        new Request("https://w/admin/reliability/mail?key=secret"),
+        { ADMIN_KEY: "secret", ALERT_STATE, RESEND_API_KEY: "test-key" },
+      );
+      assert.equal(response.status, 200);
+      const snapshot = await response.json();
+      assert.equal(snapshot.inbound_status, "retired");
+      assert.deepEqual(snapshot.findings, []);
+      assert.equal(snapshot.canary, undefined);
+    } finally { globalThis.fetch = previous; }
   }
 });
 
-test("mail canary round trip records the inbound token receipt", async () => {
-  const ALERT_STATE = kv();
-  const now = new Date("2026-08-29T14:10:00Z");
-  const token = "0123456789abcdef0123456789abcdef";
-  await sendInboundWorkerCanary({
-    ALERT_STATE,
-    RESEND_API_KEY: "test-key",
-    SUBSCRIBE_ADDRESS: DEFAULT_SUBSCRIBE_ADDRESS,
-  }, {
-    now,
-    token,
-    fetchImpl: async () => ({ ok: true, json: async () => ({ id: "canary" }) }),
-  });
-  await recordInboundEmailReceipt({ ALERT_STATE }, {
-    from: "alerts@cityscroll.org",
-    to: DEFAULT_SUBSCRIBE_ADDRESS,
-    headers: headers(`[cityscroll-mail-canary] ${token}`),
-  }, new Date("2026-08-29T14:10:20Z"));
-  const snapshot = await mailWatchdogSnapshot({ ALERT_STATE }, { now: new Date("2026-08-29T14:10:30Z") });
-  assert.equal(snapshot.ok, true);
-  assert.equal(snapshot.canary_state, "healthy");
-  assert.equal(snapshot.canary_inbound.canary_token, token);
-  assert.equal(ALERT_STATE.store.has(`ops:mail:canary:inbound:${token}`), true);
+test("mail watchdog no longer accepts canary POST and retains authentication", async () => {
+  const env = { ADMIN_KEY: "secret", ALERT_STATE: kv() };
+  const response = await handleAdminMailWatchdog(new Request("https://w/admin/reliability/mail?key=secret", {
+    method: "POST", body: JSON.stringify({ action: "canary" }),
+  }), env);
+  assert.equal(response.status, 405);
+  const unauthenticated = await handleAdminMailWatchdog(new Request("https://w/admin/reliability/mail"), env);
+  assert.equal(unauthenticated.status, 401);
 });
 
-test("healthy mail watchdog GET does not email the operations mailbox", async () => {
+test("residual inbound receipt keeps destination and time without subject or body", async () => {
   const ALERT_STATE = kv();
-  const now = new Date("2026-08-29T14:10:30Z");
-  const token = "0123456789abcdef0123456789abcdef";
-  await sendInboundWorkerCanary({
-    ALERT_STATE,
-    RESEND_API_KEY: "rk",
-  }, {
-    now: new Date("2026-08-29T14:10:00Z"),
-    token,
-    fetchImpl: async () => ({ ok: true, json: async () => ({ id: "canary" }) }),
-  });
+  const now = new Date("2026-09-08T12:00:00Z");
   await recordInboundEmailReceipt({ ALERT_STATE }, {
-    to: DEFAULT_SUBSCRIBE_ADDRESS,
-    headers: headers(`[cityscroll-mail-canary] ${token}`),
+    to: "subscribe@example.org",
+    get headers() { assert.fail("retired receipt must not parse headers"); },
+    get raw() { assert.fail("retired receipt must not parse body"); },
   }, now);
-  let sent = 0;
-  const previous = globalThis.fetch;
-  globalThis.fetch = async () => {
-    sent += 1;
-    return { ok: true, json: async () => ({ id: "should-not-send" }) };
-  };
-  try {
-    const response = await handleAdminMailWatchdog(
-      new Request("https://w/admin/reliability/mail?key=s3cr3t"),
-      { ADMIN_KEY: "s3cr3t", ALERT_STATE, RESEND_API_KEY: "rk" },
-      { now },
-    );
-    assert.equal(response.status, 200);
-    assert.equal(sent, 0);
-  } finally {
-    globalThis.fetch = previous;
-  }
-});
-
-test("stale canary GET exception-alerts the operations mailbox once", async () => {
-  const ALERT_STATE = kv();
-  const sentAt = new Date("2026-08-27T14:10:00Z");
-  const now = new Date("2026-08-29T14:10:00Z");
-  const token = "0123456789abcdef0123456789abcdef";
-  await sendInboundWorkerCanary({
-    ALERT_STATE,
-    RESEND_API_KEY: "rk",
-  }, {
-    now: sentAt,
-    token,
-    fetchImpl: async () => ({ ok: true, json: async () => ({ id: "canary" }) }),
+  assert.deepEqual((await mailWatchdogSnapshot({ ALERT_STATE }, { now })).inbound, {
+    schema: "cityscroll.mail-inbound-receipt.v1", observed_at: now.toISOString(),
+    to: "subscribe@example.org", disposition: "retired",
   });
-  await recordInboundEmailReceipt({ ALERT_STATE }, {
-    to: DEFAULT_SUBSCRIBE_ADDRESS,
-    headers: headers(`[cityscroll-mail-canary] ${token}`),
-  }, sentAt);
-  const sent = [];
-  const previous = globalThis.fetch;
-  globalThis.fetch = async (url, options) => {
-    sent.push(JSON.parse(options.body));
-    return { ok: true, json: async () => ({ id: "exception" }) };
-  };
-  try {
-    const first = await handleAdminMailWatchdog(
-      new Request("https://w/admin/reliability/mail?key=s3cr3t"),
-      { ADMIN_KEY: "s3cr3t", ALERT_STATE, RESEND_API_KEY: "rk", ALERTS_FROM: "CityScroll <alerts@cityscroll.org>" },
-      { now },
-    );
-    const second = await handleAdminMailWatchdog(
-      new Request("https://w/admin/reliability/mail?key=s3cr3t"),
-      { ADMIN_KEY: "s3cr3t", ALERT_STATE, RESEND_API_KEY: "rk", ALERTS_FROM: "CityScroll <alerts@cityscroll.org>" },
-      { now },
-    );
-    assert.equal(first.status, 503);
-    assert.equal(second.status, 503);
-    assert.equal(sent.length, 1);
-    assert.equal(sent[0].to, OPS_ALERT_TO);
-    const body = await second.json();
-    assert.match(body.findings.join("; "), /stale/);
-    assert.equal(body.findings_history[0].delivery_status, "sent");
-    assert.equal(body.findings_history[0].type, "canary-stale");
-  } finally {
-    globalThis.fetch = previous;
-  }
-});
-
-test("rejected exception alert stays red without retrying the dead mail rail", async () => {
-  const ALERT_STATE = kv();
-  const now = new Date("2026-08-29T14:25:00Z");
-  await sendInboundWorkerCanary({
-    ALERT_STATE,
-    RESEND_API_KEY: "rk",
-  }, {
-    now: new Date("2026-08-29T14:10:00Z"),
-    token: "0123456789abcdef0123456789abcdef",
-    fetchImpl: async () => ({ ok: true, json: async () => ({ id: "canary" }) }),
-  });
-  let sent = 0;
-  const previous = globalThis.fetch;
-  globalThis.fetch = async () => {
-    sent += 1;
-    return { ok: false, status: 500, text: async () => "resend-rejected", json: async () => ({}) };
-  };
-  try {
-    const first = await handleAdminMailWatchdog(
-      new Request("https://w/admin/reliability/mail?key=s3cr3t"),
-      { ADMIN_KEY: "s3cr3t", ALERT_STATE, RESEND_API_KEY: "rk", ALERTS_FROM: "CityScroll <alerts@cityscroll.org>" },
-      { now },
-    );
-    const second = await handleAdminMailWatchdog(
-      new Request("https://w/admin/reliability/mail?key=s3cr3t"),
-      { ADMIN_KEY: "s3cr3t", ALERT_STATE, RESEND_API_KEY: "rk", ALERTS_FROM: "CityScroll <alerts@cityscroll.org>" },
-      { now },
-    );
-    assert.equal(first.status, 503);
-    assert.equal(second.status, 503);
-    assert.equal(sent, 1);
-    const body = await second.json();
-    assert.match(body.findings.join("; "), /not received|not accepted/);
-    assert.ok(body.findings_history.some((row) => row.delivery_status === "rejected" || row.delivery_status === "http-fallback"));
-  } finally {
-    globalThis.fetch = previous;
-  }
-});
-
-test("mail canary POST refuses a human operations target before send", async () => {
-  const ALERT_STATE = kv();
-  const sent = [];
-  const previous = globalThis.fetch;
-  globalThis.fetch = async (url, options) => {
-    sent.push(JSON.parse(options.body));
-    return { ok: true, json: async () => ({ id: "should-not-send" }) };
-  };
-  try {
-    const response = await handleAdminMailWatchdog(
-      new Request("https://w/admin/reliability/mail?key=s3cr3t", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ action: "canary" }),
-      }),
-      {
-        ADMIN_KEY: "s3cr3t",
-        ALERT_STATE,
-        RESEND_API_KEY: "rk",
-        SUBSCRIBE_ADDRESS: "james@cityscroll.org",
-        ALERTS_FROM: "CityScroll <alerts@cityscroll.org>",
-      },
-      { now: new Date("2026-08-29T14:10:00Z"), fetchImpl: globalThis.fetch },
-    );
-    assert.equal(response.status, 503);
-    const body = await response.json();
-    assert.equal(body.inbound_worker.reason, "human-ops-mailbox-refused");
-    assert.equal(sent.length, 1);
-    assert.equal(sent[0].to, OPS_ALERT_TO);
-    assert.equal(body.inbound_worker.envelope.to[0], "james@cityscroll.org");
-  } finally {
-    globalThis.fetch = previous;
-  }
+  assert.equal(ALERT_STATE.store.size, 1);
 });

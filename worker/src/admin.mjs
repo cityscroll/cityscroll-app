@@ -43,7 +43,6 @@ import {
   dispatchRepairQueue,
   reportRepairResults,
   OPS_ALERT_HISTORY_KEY,
-  sendInboundWorkerCanary,
 } from "./reliability_watchdogs.mjs";
 import { readRepairQueue } from "./lib/repair_queue.mjs";
 import {
@@ -362,12 +361,6 @@ export async function handleAdminOpsHealth(req, env, { now = new Date() } = {}) 
   return privateJson({
     schema: "cityscroll.ops-health-sanitized.v1",
     generated_at: now.toISOString(),
-    canary: {
-      status: mail.canary_state || "unavailable",
-      observed_at: mail.canary_inbound?.received_at || mail.canary?.sent_at || null,
-      age_ms: mail.canary_age_ms,
-      findings: mail.findings.slice(0, 20),
-    },
     watchdog: {
       scheduler: { ok: scheduler.ok, findings: scheduler.findings.slice(0, 20), heartbeat: scheduler.heartbeat },
       mail: { ok: mail.ok, findings: mail.findings.slice(0, 20), history: mail.findings_history.slice(0, 30) },
@@ -381,26 +374,9 @@ export async function handleAdminOpsHealth(req, env, { now = new Date() } = {}) 
   }, 200);
 }
 
-export async function handleAdminMailWatchdog(req, env, { now = new Date(), fetchImpl = globalThis.fetch } = {}) {
+export async function handleAdminMailWatchdog(req, env, { now = new Date() } = {}) {
   const auth = checkAdminKey(req, env);
   if (!auth.ok) return auth.res;
-  if (req.method === "POST") {
-    let body;
-    try { body = await req.json(); } catch { return json({ error: "invalid-json" }, 400); }
-    if (body?.action !== "canary") return json({ error: "action-canary-required" }, 400);
-    const inboundWorker = await sendInboundWorkerCanary(env, { now, fetchImpl });
-    let snapshot = await mailWatchdogSnapshot(env, { now });
-    let exceptionAlert = [];
-    if (!snapshot.ok) exceptionAlert = await emitMailExceptionAlerts(env, snapshot, { now });
-    snapshot = await mailWatchdogSnapshot(env, { now });
-    return json({
-      ok: snapshot.ok,
-      inbound_worker: inboundWorker,
-      outbound_ops: { sent: false, reason: "healthy-canary-silent" },
-      exception_alert: exceptionAlert,
-      snapshot,
-    }, snapshot.ok ? 200 : 503);
-  }
   if (req.method !== "GET") return json({ error: "method" }, 405);
   let snapshot = await mailWatchdogSnapshot(env, { now });
   if (!snapshot.ok) await emitMailExceptionAlerts(env, snapshot, { now });
