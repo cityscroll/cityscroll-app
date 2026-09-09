@@ -1283,11 +1283,14 @@ export function renderFollowingDocument(view, options = {}) {
   const assetPrefix = options.assetPrefix || "/";
   const prefix = assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`;
   const siteBase = String(options.siteBase || "").replace(/\/$/, "");
+  // Only the static builder requests a substitution token. Runtime callers can
+  // supply their deployed revision; local rendering uses the revalidated URL.
+  const i18nVersion = options.i18nAssetVersion ? `?v=${encodeURIComponent(options.i18nAssetVersion)}` : "";
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Following · CityScroll</title><meta name="description" content="Preview, create, and manage CityScroll watches and City Council District updates.">
 <link rel="canonical" href="https://cityscroll.org/following/">${renderCivicDocumentAssets(assetPrefix)}
-<script src="${esc(prefix)}i18n.js?v=__I18N_ASSET_VERSION__"></script></head>
+<script src="${esc(prefix)}i18n.js${i18nVersion}"></script></head>
 <body><a class="skip" href="#main">Skip to content</a>
 ${renderCivicDocumentMast({ current: "following", siteBase, surfaceClass: "following-mast" })}
 ${renderFollowingBody(view)}

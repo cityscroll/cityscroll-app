@@ -132,6 +132,11 @@ async function handlePersonal(request, env) {
 
 export async function handleFollowing(request, env = {}, ctx = {}, options = {}) {
   const url = new URL(request.url);
+  const documentOptions = {
+    assetPrefix: `${SITE_ORIGIN}/`,
+    siteBase: SITE_ORIGIN,
+    i18nAssetVersion: env.GIT_COMMIT_SHA,
+  };
   if (url.pathname === "/following/personal") return handlePersonal(request, env);
   if (url.pathname !== "/following" && url.pathname !== "/following/") return new Response("Not found", { status: 404, headers: { "Content-Type": "text/plain" } });
   if (request.method !== "GET" && request.method !== "HEAD") return new Response("Method not allowed", { status: 405, headers: { "Content-Type": "text/plain", Allow: "GET, HEAD" } });
@@ -154,7 +159,7 @@ export async function handleFollowing(request, env = {}, ctx = {}, options = {})
       previewItems: [],
       previewError: null,
     }, suggestedTemplates);
-    const html = renderFollowingDocument(view, { assetPrefix: `${SITE_ORIGIN}/`, siteBase: SITE_ORIGIN });
+    const html = renderFollowingDocument(view, documentOptions);
     return new Response(request.method === "HEAD" ? null : html, { status: 200, headers: publicHeaders() });
   }
   const prepared = prepareWatchFilter(parsed.lens, parsed.filter);
@@ -167,7 +172,7 @@ export async function handleFollowing(request, env = {}, ctx = {}, options = {})
       previewError: prepared.reason,
       scopeStatus: "unrecognized_scope",
     }, suggestedTemplates);
-    const html = renderFollowingDocument(view, { assetPrefix: `${SITE_ORIGIN}/`, siteBase: SITE_ORIGIN });
+    const html = renderFollowingDocument(view, documentOptions);
     return new Response(request.method === "HEAD" ? null : html, { status: 200, headers: publicHeaders() });
   }
   const watch = { lens: prepared.lens, filter: prepared.filter };
@@ -181,6 +186,6 @@ export async function handleFollowing(request, env = {}, ctx = {}, options = {})
     previewItems: preview.items,
     previewError: preview.error,
   }, suggestedTemplates);
-  const html = renderFollowingDocument(view, { assetPrefix: `${SITE_ORIGIN}/`, siteBase: SITE_ORIGIN });
+  const html = renderFollowingDocument(view, documentOptions);
   return new Response(request.method === "HEAD" ? null : html, { status: 200, headers: publicHeaders() });
 }
