@@ -8,6 +8,8 @@ reader_question: What did an agency's record set look like on a given day?
 purpose: Filter an agency to a chosen date and share or clear that view.
 description: Filter an agency page down to the records dated on or before a day you choose, share the result, and learn what that filter cannot tell you.
 last_reviewed: 2026-09-08
+depends_on:
+  - site/civic_time_ledger_runtime.mjs
 return_to_task: Open the Parks page filtered to a day | /agencies/parks-and-recreation/?as_of=2024-06-01
 related:
   - Check the evidence behind a connection | /guide/how-to/check-the-evidence-behind-a-connection/

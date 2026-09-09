@@ -1,0 +1,2021 @@
+{
+  "schema_version": 1,
+  "record": "ccf422a8ff4de",
+  "capture_mode": "local_static_site_playwright_manifest_proof",
+  "base": "local static preview of tracked guide documents",
+  "repository_revision": "05d86cedbd23cb43bb448e1eee4d97fd098b0c60",
+  "repository_state": "uncommitted changes present at capture time",
+  "note": "Guide document checks supporting the literal journey observations.",
+  "data_vintage": "Guide prose is built from tracked sources; review dates are recorded editorial facts. Illustrated public records retain their capture date, source route, revision and data provenance in the matching site/media/guide article receipt. The search document is served from the local build and its results are not asserted by this release check.",
+  "viewports": [
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "checks": [
+    "expected reader-facing text and links",
+    "axe-core critical and serious violations on guide documents",
+    "horizontal overflow at the review width",
+    "horizontal overflow at 200 percent zoom (WCAG 1.4.10 reflow)",
+    "target size below 24px",
+    "keyboard focus reach and a visible focus indicator",
+    "HTTP status of every internal link on a guide page",
+    "front page to guide to tutorial to product, and browser Back",
+    "the same reading path with JavaScript switched off",
+    "an unfamiliar term in the tutorial reaching a reference page without script",
+    "every published article read with JavaScript switched off"
+  ],
+  "articles": [
+    {
+      "id": "E1",
+      "type": "explanation",
+      "url": "/guide/understand/what-a-public-record-tells-you/",
+      "last_reviewed": "2026-09-06",
+      "returns_to": "/browse/",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "E2",
+      "type": "explanation",
+      "url": "/guide/understand/how-records-are-connected/",
+      "last_reviewed": "2026-09-06",
+      "returns_to": "/browse/",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "E3",
+      "type": "explanation",
+      "url": "/guide/understand/dates-and-missing-information/",
+      "last_reviewed": "2026-09-06",
+      "returns_to": "/browse/",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "E4",
+      "type": "explanation",
+      "url": "/guide/understand/flags-and-historical-patterns/",
+      "last_reviewed": "2026-09-06",
+      "returns_to": "/browse/contracts/",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "H1",
+      "type": "how-to",
+      "url": "/guide/how-to/find-and-narrow-records/",
+      "last_reviewed": "2026-09-08",
+      "returns_to": "/search/",
+      "assertion_source": "derived"
+    },
+    {
+      "id": "H2",
+      "type": "how-to",
+      "url": "/guide/how-to/follow-a-search/",
+      "last_reviewed": "2026-09-08",
+      "returns_to": "/following/",
+      "assertion_source": "derived"
+    },
+    {
+      "id": "H3",
+      "type": "how-to",
+      "url": "/guide/how-to/follow-a-community-board/",
+      "last_reviewed": "2026-09-08",
+      "returns_to": "/following/",
+      "assertion_source": "derived"
+    },
+    {
+      "id": "H4",
+      "type": "how-to",
+      "url": "/guide/how-to/put-dates-in-your-calendar/",
+      "last_reviewed": "2026-09-08",
+      "returns_to": "/now/",
+      "assertion_source": "derived"
+    },
+    {
+      "id": "H5",
+      "type": "how-to",
+      "url": "/guide/how-to/read-a-land-use-projects-next-step/",
+      "last_reviewed": "2026-09-08",
+      "returns_to": "/browse/zoning/",
+      "assertion_source": "derived"
+    },
+    {
+      "id": "H6",
+      "type": "how-to",
+      "url": "/guide/how-to/check-the-evidence-behind-a-connection/",
+      "last_reviewed": "2026-09-08",
+      "returns_to": "/agencies/parks-and-recreation/?claim=rules%3Anotice%3A20260521021",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "H7",
+      "type": "how-to",
+      "url": "/guide/how-to/look-at-records-as-of-a-day/",
+      "last_reviewed": "2026-09-08",
+      "returns_to": "/agencies/parks-and-recreation/?as_of=2024-06-01",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "H8",
+      "type": "how-to",
+      "url": "/guide/how-to/collect-records-and-export-them/",
+      "last_reviewed": "2026-09-08",
+      "returns_to": "/#investigation",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "H9",
+      "type": "how-to",
+      "url": "/guide/how-to/read-a-budget-request-and-the-answer/",
+      "last_reviewed": "2026-09-07",
+      "returns_to": "/community-boards/brooklyn-cb-14/#board-budget-requests-transportation",
+      "assertion_source": "derived"
+    },
+    {
+      "id": "R1",
+      "type": "reference",
+      "url": "/guide/reference/glossary/",
+      "last_reviewed": "2026-09-06",
+      "returns_to": "/browse/",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "R2",
+      "type": "reference",
+      "url": "/guide/reference/controls-and-outputs/",
+      "last_reviewed": "2026-09-06",
+      "returns_to": "/browse/",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "R3",
+      "type": "reference",
+      "url": "/guide/reference/sources-and-coverage/",
+      "last_reviewed": "2026-09-06",
+      "returns_to": "/browse/",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "T1",
+      "type": "tutorial",
+      "url": "/guide/start/explore-housing-across-city-records/",
+      "last_reviewed": "2026-09-06",
+      "returns_to": "/search/?q=housing",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "T2",
+      "type": "tutorial",
+      "url": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
+      "last_reviewed": "2026-09-08",
+      "returns_to": "/notices/20260605008",
+      "assertion_source": "authored"
+    },
+    {
+      "id": "T3",
+      "type": "tutorial",
+      "url": "/guide/start/trace-an-award-and-keep-the-trail/",
+      "last_reviewed": "2026-09-08",
+      "returns_to": "/notices/20260729015?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQyIiwibmFtZSI6IuKXhkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL0xBTlRFUk4lMjBDT01NVU5JVFklMjBTRVJWSUNFUy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIiwibmFtZSI6IkxhbnRlcm4gQ29tbXVuaXR5IFNlcnZpY2VzIEluYy4iLCJocmVmIjoiL3ZlbmRvcnMvTEFOVEVSTiUyMENPTU1VTklUWSUyMFNFUlZJQ0VTLyJ9LCJyZWxhdGlvbiI6IkF3YXJkIiwiZGVzdGluYXRpb24iOnsia2luZCI6Im5vdGljZSIsImlkIjoiMjAyNjA3MjkwMTUiLCJuYW1lIjoiSW50ZWdyYXRlZCBDb21tZXJjaWFsIEhvdGVscyBQcm9ncmFtIiwiaHJlZiI6IiNub3RpY2UvMjAyNjA3MjkwMTUifSwic2NvcGUiOm51bGx9XX0",
+      "assertion_source": "authored"
+    }
+  ],
+  "captures": [
+    {
+      "id": "home",
+      "route": "/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The front page carries a visible Guide entry in its primary navigation that links to the guide home.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 0,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 0,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 1057,
+      "content_sha256": "cfc0b8fc8ccea07396fbf33a53235d603bbc5311c14e27cdae9c83f0111a1e6d",
+      "capture_sha256": "838416b32fc5885b163eaf654e32cdafaaea63c03421f987b57743d5c4842425",
+      "file": null
+    },
+    {
+      "id": "guide-home",
+      "route": "/guide/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The guide home orients a signed-out reader with the four reader-facing sections and links every article that is published.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 20,
+        "reached": 20,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 37,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 4599,
+      "content_sha256": "481eba2c38af75946d1e10f68ed884fc0fe1fbca5469e2908a76fb3a28972207",
+      "capture_sha256": "f6726757652b5d2b1f7f9e8132ec038a5ff336e3f5661e8092b4ae6e04fc1ea5",
+      "file": null
+    },
+    {
+      "id": "guide-tutorial",
+      "route": "/guide/start/explore-housing-across-city-records/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The first tutorial loads directly with its type, review date, steps, action results, sources and a link back to the task.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 12,
+        "reached": 12,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 27,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 3095,
+      "content_sha256": "597385493e4840613560738a794068940f444edd0d99ead2a0795e232db76c7f",
+      "capture_sha256": "7575ab07667c95e85c882d554a4c8f688f918143f688b7414cf84ed682a61687",
+      "file": null
+    },
+    {
+      "id": "guide-tutorial-notice-mandate",
+      "route": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The tutorial follows one notice to the duty behind it and its source law, and keeps a publication, a connection and a compliance finding apart.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 14,
+        "reached": 14,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 30,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/mandates/64116-001/",
+        "/notices/20260605008"
+      ],
+      "visible_text_characters": 3120,
+      "content_sha256": "63c59f3a3c87e1818ef456b9939e7ed45c4bc8e6d7fb1221669c7e6049ea00c7",
+      "capture_sha256": "f994b0bdb06b599bc997637d4e20ea0349f812842a74e74fbf2d7fffcb67f2ca",
+      "file": null
+    },
+    {
+      "id": "guide-tutorial-award-trail",
+      "route": "/guide/start/trace-an-award-and-keep-the-trail/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The tutorial builds a two-step trail, shows that it travels in the address, and says an awardee is not an opportunity.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 15,
+        "reached": 15,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 33,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/agencies/homeless-services/",
+        "/notices/20260729015"
+      ],
+      "visible_text_characters": 3963,
+      "content_sha256": "ad247ee625747f567170c6a8e35364521ea33568025f16ef1d1214f5a119ca41",
+      "capture_sha256": "7ce4d2677f12ccc7a57fd4bc61db4d7b5c6fa4c21fda51727fa9ad468f386d63",
+      "file": null
+    },
+    {
+      "id": "guide-how-to-connection-evidence",
+      "route": "/guide/how-to/check-the-evidence-behind-a-connection/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The how-to opens one connection receipt, says what it supports, and covers a connection that carries no source document of its own.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 10,
+        "reached": 10,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 28,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/agencies/parks-and-recreation/"
+      ],
+      "visible_text_characters": 2629,
+      "content_sha256": "b79d100562d2f3a12453a56b5334d14bce543f339d86658f8a4920c3fb9c06c2",
+      "capture_sha256": "260bd703657ed9a748b10202b490c8adf9c360d08377d6d278fee9b8324df96c",
+      "file": null
+    },
+    {
+      "id": "guide-how-to-as-of-day",
+      "route": "/guide/how-to/look-at-records-as-of-a-day/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The how-to filters an agency to a day and is explicit that an undated record is not kept and that this is not a reconstruction of what the site knew.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 11,
+        "reached": 11,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 28,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/agencies/parks-and-recreation/"
+      ],
+      "visible_text_characters": 2560,
+      "content_sha256": "63b9b138a887490f5bc5dc09b0676f2ed167b63d07ba8131e9d3603b7e8ebf4f",
+      "capture_sha256": "372c692352fcb51da77a351046059b5432e606fff6e783f59f59c909814dcc23",
+      "file": null
+    },
+    {
+      "id": "guide-how-to-collect-records",
+      "route": "/guide/how-to/collect-records-and-export-them/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The how-to keeps device storage, a recognized session, a downloaded file and a shared snapshot apart, and says what a share exposes and for how long.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 12,
+        "reached": 12,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 31,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/notices/20231222103",
+        "/vendors/HOUSING%20OPTIONS%20GERIATRIC%20ASSOCIATION%20RESOURCES/"
+      ],
+      "visible_text_characters": 3236,
+      "content_sha256": "d68dda07b9f5402c22bb79eaefc01c32b3ca447ff80be06f9c56369fa058b69c",
+      "capture_sha256": "fceacd8f1ef55cd939a254b33bc53db9a7470b35da921e233b411c82abab0f38",
+      "file": null
+    },
+    {
+      "id": "guide-understand-public-record",
+      "route": "/guide/understand/what-a-public-record-tells-you/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The explanation loads on its own, keeps the stages of a contract, a rule and a land-use review apart, and distinguishes the four ways to take part.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 12,
+        "reached": 12,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 22,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 6929,
+      "content_sha256": "a8ee30a4048252be139555f30bfba4712aed664ac7bcf398e4fa5a7fbd068a8f",
+      "capture_sha256": "45bf8aeabaf3642fd6c29fe6a10c0de16859104fa5b7e5a5670e34abb4fb76c3",
+      "file": null
+    },
+    {
+      "id": "guide-understand-connections",
+      "route": "/guide/understand/how-records-are-connected/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The explanation names the three bases a connection can rest on and says why a real relationship can still be missing.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 6,
+        "reached": 6,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 21,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 3729,
+      "content_sha256": "b87c627a1d4609dc4c3dcf8d75844ef6b4b95c47d62ff3172f856a1a17f87d60",
+      "capture_sha256": "d8c99543155b18963b2efdb42f3f960478cef2de7d8f63ea33fdf8eefef5bb65",
+      "file": null
+    },
+    {
+      "id": "guide-understand-dates",
+      "route": "/guide/understand/dates-and-missing-information/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The explanation separates the kinds of date and the kinds of blank, and says an unknown is not a zero and a closed window is not an invitation.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 7,
+        "reached": 7,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 21,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 4117,
+      "content_sha256": "6ee00b883acb38cff4ababca916cf825ec75faa9431a50068d0149b30f5db6de",
+      "capture_sha256": "48db04d05f081e53ef60e8a7a9c9d2d038e51f5630cfa9b7a0b89b791267c4c3",
+      "file": null
+    },
+    {
+      "id": "guide-understand-flags",
+      "route": "/guide/understand/flags-and-historical-patterns/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The explanation gives each computed note a plain meaning and links the page that owns its exact rule instead of restating a threshold.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 10,
+        "reached": 10,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 21,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 5376,
+      "content_sha256": "45df62f0191201bd1521d773d7cf47fadd8f7e7b79e42455058b961dd5f7f70f",
+      "capture_sha256": "f524d186044a1d2d40c351a2ea0bb4ab5863ee5b3a21a585015e66e141876706",
+      "file": null
+    },
+    {
+      "id": "guide-reference-glossary",
+      "route": "/guide/reference/glossary/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The glossary loads on its own and lays its terms out in tables, including the identifiers a reader meets on a record.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 11,
+        "reached": 11,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 24,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 5806,
+      "content_sha256": "c6400df7a4f49449e7d097d2b8216606fa432d47cac15b6c0bf803ae8db7c1c9",
+      "capture_sha256": "16cf3a7b2d22e0207ef80936e8271f1ff79e135b0241a986022d6b7acb8f46b5",
+      "file": null
+    },
+    {
+      "id": "guide-reference-controls",
+      "route": "/guide/reference/controls-and-outputs/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The controls reference says what each control leaves the reader with, keeps a preview apart from a subscription, and sends machine parameters to the API page.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 6,
+        "reached": 6,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 22,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 6726,
+      "content_sha256": "7de518afc95d2082ee2d0d7bf329b43f60023693de4fe8e0aa841fb9e208bf2a",
+      "capture_sha256": "b847475dff085c8ada70f03937c054466a8c09fb09b65fd89dfcf706bd81b2f8",
+      "file": null
+    },
+    {
+      "id": "guide-reference-sources",
+      "route": "/guide/reference/sources-and-coverage/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The sources reference shows the inventory generated from the source registry and links the pages that own coverage and endpoints.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 9,
+        "reached": 9,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 22,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 4599,
+      "content_sha256": "4ac65c875d91f0fa0adbb743b5fcde45b0852ee6515cc6f507ce4be4a48c92ed",
+      "capture_sha256": "d9bbb2870ec8003c13f8751dddf1a771ae65586e4ae7713954b48d1449ed9f19",
+      "file": null
+    },
+    {
+      "id": "guide-article-h1",
+      "route": "/guide/how-to/find-and-narrow-records/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "Find and narrow records loads directly with its section and type, its review date, its own content, a link back to the guide home, and the link that returns the reader to the product.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 13,
+        "reached": 13,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 29,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/exams/7016/"
+      ],
+      "visible_text_characters": 2756,
+      "content_sha256": "79963abddd783d50a29b943752c3609cb3a6d59702de2b645f53a672247cd769",
+      "capture_sha256": "5987edf9bf5b4d4c771d7f8cae142d5a9811b2e9fc57bd7de49d8f19a60bfde1",
+      "file": null
+    },
+    {
+      "id": "guide-article-h2",
+      "route": "/guide/how-to/follow-a-search/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "Follow a search and manage your updates loads directly with its section and type, its review date, its own content, a link back to the guide home, and the link that returns the reader to the product.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 9,
+        "reached": 9,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 26,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 3162,
+      "content_sha256": "25d332936fabdd4f6475b9799d48822905706639657ee3350ea667499fa1fa5f",
+      "capture_sha256": "860cfd12d6fc5473e0ff23adb4b6106d183e967411bd73bda457dd038f5b5377",
+      "file": null
+    },
+    {
+      "id": "guide-article-h3",
+      "route": "/guide/how-to/follow-a-community-board/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "Follow a Community Board loads directly with its section and type, its review date, its own content, a link back to the guide home, and the link that returns the reader to the product.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 13,
+        "reached": 13,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 33,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 3258,
+      "content_sha256": "0b727a5451e4d2fb28ea40afbf9a2eff800686cdb59db4a74df45d230b03c56b",
+      "capture_sha256": "89c2c4d6b4af060e743e7a853a90690f2475d6eac10dc69d6a816eb9b4913e6b",
+      "file": null
+    },
+    {
+      "id": "guide-article-h4",
+      "route": "/guide/how-to/put-dates-in-your-calendar/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "Put dates in your calendar loads directly with its section and type, its review date, its own content, a link back to the guide home, and the link that returns the reader to the product.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 12,
+        "reached": 12,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 28,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 3388,
+      "content_sha256": "796dcc12ed3118a489a9fce9d498496e3a429ad26aa7572fa68b3e2c77d08582",
+      "capture_sha256": "ee7331d2c63b52b451a29ed9c59d37fee04c516fbd49edc91e6da7d5e5e3fe8a",
+      "file": null
+    },
+    {
+      "id": "guide-article-h5",
+      "route": "/guide/how-to/read-a-land-use-projects-next-step/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "Read a land-use project's next step and documents loads directly with its section and type, its review date, its own content, a link back to the guide home, and the link that returns the reader to the product.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 11,
+        "reached": 11,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 28,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 3204,
+      "content_sha256": "153f37b78ad058d1e126554b34d3108d0ea26083d8c66e6bd2a981643e2b4737",
+      "capture_sha256": "a3e1a7479216dd32eabd9eeb7c3571f244266ea04dde5b82e3d3465fef90f662",
+      "file": null
+    },
+    {
+      "id": "guide-article-h9",
+      "route": "/guide/how-to/read-a-budget-request-and-the-answer/",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "Read a budget request and the answer to it loads directly with its section and type, its review date, its own content, a link back to the guide home, and the link that returns the reader to the product.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 12,
+        "reached": 12,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 28,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/agencies/transportation/"
+      ],
+      "visible_text_characters": 9372,
+      "content_sha256": "9959fb87c14ace889e3bfc0abaca64861ed4e380401cd09654bd967bc19c344e",
+      "capture_sha256": "a832e9074681621756ec8e9a29c6101473b9f9eecb03e37e8fa1a614cb98b6a6",
+      "file": null
+    },
+    {
+      "id": "product-search",
+      "route": "/search/?q=housing",
+      "viewport": "mobile",
+      "viewport_width": 390,
+      "assertion": "The product route the tutorial returns the reader to serves its document. Result content is assembled from live records and is not asserted here.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 0,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 0,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 1088,
+      "content_sha256": "dc4944e2df26902420cec490fdfe99ac94ea45f8bb3800b10e7244d22f89c54f",
+      "capture_sha256": "cc25635d3c6bd3714547659e6672354480c97cce5bbd423ee93abb232b36dfc0",
+      "file": null
+    },
+    {
+      "id": "home",
+      "route": "/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The front page carries a visible Guide entry in its primary navigation that links to the guide home.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 0,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 0,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 1057,
+      "content_sha256": "cfc0b8fc8ccea07396fbf33a53235d603bbc5311c14e27cdae9c83f0111a1e6d",
+      "capture_sha256": "8cc3dbe7e55d5b9684941235e8be5af924a68a72cead3c9622c074cd5729fc05",
+      "file": null
+    },
+    {
+      "id": "guide-home",
+      "route": "/guide/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The guide home orients a signed-out reader with the four reader-facing sections and links every article that is published.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 20,
+        "reached": 20,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 37,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 4599,
+      "content_sha256": "481eba2c38af75946d1e10f68ed884fc0fe1fbca5469e2908a76fb3a28972207",
+      "capture_sha256": "efc53b54500ae18e27a1f64e4973850b4900052aa2994d47eea69206595e0eba",
+      "file": null
+    },
+    {
+      "id": "guide-tutorial",
+      "route": "/guide/start/explore-housing-across-city-records/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The first tutorial loads directly with its type, review date, steps, action results, sources and a link back to the task.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 12,
+        "reached": 12,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 27,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 3101,
+      "content_sha256": "597385493e4840613560738a794068940f444edd0d99ead2a0795e232db76c7f",
+      "capture_sha256": "0a160bce59e43af522ba7731f25472bfa5c4f9c761ff7653c7faca94c92fde75",
+      "file": null
+    },
+    {
+      "id": "guide-tutorial-notice-mandate",
+      "route": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The tutorial follows one notice to the duty behind it and its source law, and keeps a publication, a connection and a compliance finding apart.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 14,
+        "reached": 14,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 30,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/mandates/64116-001/",
+        "/notices/20260605008"
+      ],
+      "visible_text_characters": 3126,
+      "content_sha256": "63c59f3a3c87e1818ef456b9939e7ed45c4bc8e6d7fb1221669c7e6049ea00c7",
+      "capture_sha256": "a16208a54b44e32f365e61f2297dee1176afcade0e0e29fb8a419d08cceb8a0d",
+      "file": null
+    },
+    {
+      "id": "guide-tutorial-award-trail",
+      "route": "/guide/start/trace-an-award-and-keep-the-trail/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The tutorial builds a two-step trail, shows that it travels in the address, and says an awardee is not an opportunity.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 15,
+        "reached": 15,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 33,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/agencies/homeless-services/",
+        "/notices/20260729015"
+      ],
+      "visible_text_characters": 3971,
+      "content_sha256": "ad247ee625747f567170c6a8e35364521ea33568025f16ef1d1214f5a119ca41",
+      "capture_sha256": "40417da6829a01faf311147a539c209e6690e3a4180de4a9aa9e1925e9275481",
+      "file": null
+    },
+    {
+      "id": "guide-how-to-connection-evidence",
+      "route": "/guide/how-to/check-the-evidence-behind-a-connection/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The how-to opens one connection receipt, says what it supports, and covers a connection that carries no source document of its own.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 10,
+        "reached": 10,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 28,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/agencies/parks-and-recreation/"
+      ],
+      "visible_text_characters": 2633,
+      "content_sha256": "b79d100562d2f3a12453a56b5334d14bce543f339d86658f8a4920c3fb9c06c2",
+      "capture_sha256": "985dd70b23ab4e8d146bc480ed7dac7b5093adf30a6207236dba0cc64efb1ca5",
+      "file": null
+    },
+    {
+      "id": "guide-how-to-as-of-day",
+      "route": "/guide/how-to/look-at-records-as-of-a-day/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The how-to filters an agency to a day and is explicit that an undated record is not kept and that this is not a reconstruction of what the site knew.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 11,
+        "reached": 11,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 28,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/agencies/parks-and-recreation/"
+      ],
+      "visible_text_characters": 2564,
+      "content_sha256": "63b9b138a887490f5bc5dc09b0676f2ed167b63d07ba8131e9d3603b7e8ebf4f",
+      "capture_sha256": "3e072372f2182bfc438db4184854036a8cbdb70f40e2e49950bc4eafab4adcb5",
+      "file": null
+    },
+    {
+      "id": "guide-how-to-collect-records",
+      "route": "/guide/how-to/collect-records-and-export-them/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The how-to keeps device storage, a recognized session, a downloaded file and a shared snapshot apart, and says what a share exposes and for how long.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 12,
+        "reached": 12,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 31,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/notices/20231222103",
+        "/vendors/HOUSING%20OPTIONS%20GERIATRIC%20ASSOCIATION%20RESOURCES/"
+      ],
+      "visible_text_characters": 3242,
+      "content_sha256": "d68dda07b9f5402c22bb79eaefc01c32b3ca447ff80be06f9c56369fa058b69c",
+      "capture_sha256": "4d93fe8d6bef5c899dd141e840653cb27fa9c2228215b37248680c407f56821c",
+      "file": null
+    },
+    {
+      "id": "guide-understand-public-record",
+      "route": "/guide/understand/what-a-public-record-tells-you/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The explanation loads on its own, keeps the stages of a contract, a rule and a land-use review apart, and distinguishes the four ways to take part.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 12,
+        "reached": 12,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 22,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 6929,
+      "content_sha256": "a8ee30a4048252be139555f30bfba4712aed664ac7bcf398e4fa5a7fbd068a8f",
+      "capture_sha256": "623c8208fba960aedca532e82abf1f660be21c39e40f32d8aa32c4a16a496ccd",
+      "file": null
+    },
+    {
+      "id": "guide-understand-connections",
+      "route": "/guide/understand/how-records-are-connected/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The explanation names the three bases a connection can rest on and says why a real relationship can still be missing.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 6,
+        "reached": 6,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 21,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 3729,
+      "content_sha256": "b87c627a1d4609dc4c3dcf8d75844ef6b4b95c47d62ff3172f856a1a17f87d60",
+      "capture_sha256": "88b4d74708370fc7c49061fd94ca3a6cb775e8dbf978301ab4c9d95d5ea74108",
+      "file": null
+    },
+    {
+      "id": "guide-understand-dates",
+      "route": "/guide/understand/dates-and-missing-information/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The explanation separates the kinds of date and the kinds of blank, and says an unknown is not a zero and a closed window is not an invitation.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 7,
+        "reached": 7,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 21,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 4117,
+      "content_sha256": "6ee00b883acb38cff4ababca916cf825ec75faa9431a50068d0149b30f5db6de",
+      "capture_sha256": "d81439f4f6f5dcc85543e974ab711d20a56c04defbf122831ffd0d70a85bca4e",
+      "file": null
+    },
+    {
+      "id": "guide-understand-flags",
+      "route": "/guide/understand/flags-and-historical-patterns/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The explanation gives each computed note a plain meaning and links the page that owns its exact rule instead of restating a threshold.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 10,
+        "reached": 10,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 21,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 5376,
+      "content_sha256": "45df62f0191201bd1521d773d7cf47fadd8f7e7b79e42455058b961dd5f7f70f",
+      "capture_sha256": "3fd9099775ed31f6f2546ddce6060d69139b405a402986e4810a7b5fec6bb216",
+      "file": null
+    },
+    {
+      "id": "guide-reference-glossary",
+      "route": "/guide/reference/glossary/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The glossary loads on its own and lays its terms out in tables, including the identifiers a reader meets on a record.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 11,
+        "reached": 11,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 24,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 5806,
+      "content_sha256": "c6400df7a4f49449e7d097d2b8216606fa432d47cac15b6c0bf803ae8db7c1c9",
+      "capture_sha256": "ffd32c2a5f4531b34e62f0fc065300685a0f76a036d9fd7a3137086fe8d5237e",
+      "file": null
+    },
+    {
+      "id": "guide-reference-controls",
+      "route": "/guide/reference/controls-and-outputs/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The controls reference says what each control leaves the reader with, keeps a preview apart from a subscription, and sends machine parameters to the API page.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 6,
+        "reached": 6,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 22,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 6726,
+      "content_sha256": "7de518afc95d2082ee2d0d7bf329b43f60023693de4fe8e0aa841fb9e208bf2a",
+      "capture_sha256": "dfbfd00f8610a67b53d3ab3fedcf9e2ae71daf79cc30069c60b5e0d64d53022e",
+      "file": null
+    },
+    {
+      "id": "guide-reference-sources",
+      "route": "/guide/reference/sources-and-coverage/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The sources reference shows the inventory generated from the source registry and links the pages that own coverage and endpoints.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 9,
+        "reached": 9,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 22,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 4599,
+      "content_sha256": "4ac65c875d91f0fa0adbb743b5fcde45b0852ee6515cc6f507ce4be4a48c92ed",
+      "capture_sha256": "34efcdacb5737fc0e659a23ec018c5636330e9f55b0e5800b983cfb04117dcce",
+      "file": null
+    },
+    {
+      "id": "guide-article-h1",
+      "route": "/guide/how-to/find-and-narrow-records/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "Find and narrow records loads directly with its section and type, its review date, its own content, a link back to the guide home, and the link that returns the reader to the product.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 13,
+        "reached": 13,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 29,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/exams/7016/"
+      ],
+      "visible_text_characters": 2758,
+      "content_sha256": "79963abddd783d50a29b943752c3609cb3a6d59702de2b645f53a672247cd769",
+      "capture_sha256": "e91ca4ecea6496c2426d9331811736aaa0579ead626b71dbf6285016dd93a7a9",
+      "file": null
+    },
+    {
+      "id": "guide-article-h2",
+      "route": "/guide/how-to/follow-a-search/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "Follow a search and manage your updates loads directly with its section and type, its review date, its own content, a link back to the guide home, and the link that returns the reader to the product.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 9,
+        "reached": 9,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 26,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 3166,
+      "content_sha256": "25d332936fabdd4f6475b9799d48822905706639657ee3350ea667499fa1fa5f",
+      "capture_sha256": "52085651ca9014c1fb53b8771c3234c0c060798df6abd5ad2430841e1ac2c74c",
+      "file": null
+    },
+    {
+      "id": "guide-article-h3",
+      "route": "/guide/how-to/follow-a-community-board/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "Follow a Community Board loads directly with its section and type, its review date, its own content, a link back to the guide home, and the link that returns the reader to the product.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 13,
+        "reached": 13,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 33,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 3268,
+      "content_sha256": "0b727a5451e4d2fb28ea40afbf9a2eff800686cdb59db4a74df45d230b03c56b",
+      "capture_sha256": "f9aae66991ce402f72fb0c6a233862d29ef0530b8b25b51fb4e946fb8c38e577",
+      "file": null
+    },
+    {
+      "id": "guide-article-h4",
+      "route": "/guide/how-to/put-dates-in-your-calendar/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "Put dates in your calendar loads directly with its section and type, its review date, its own content, a link back to the guide home, and the link that returns the reader to the product.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 12,
+        "reached": 12,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 28,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 3392,
+      "content_sha256": "796dcc12ed3118a489a9fce9d498496e3a429ad26aa7572fa68b3e2c77d08582",
+      "capture_sha256": "15d9a6d5616e0758af2f16749996b5302b81d39826b45c3538b7e6fb61da2b7c",
+      "file": null
+    },
+    {
+      "id": "guide-article-h5",
+      "route": "/guide/how-to/read-a-land-use-projects-next-step/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "Read a land-use project's next step and documents loads directly with its section and type, its review date, its own content, a link back to the guide home, and the link that returns the reader to the product.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 11,
+        "reached": 11,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 28,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 3208,
+      "content_sha256": "153f37b78ad058d1e126554b34d3108d0ea26083d8c66e6bd2a981643e2b4737",
+      "capture_sha256": "102d5d6fb38c381c2fd61eb320f22cdcad8aa16717e5443cd968a9a04a4e966d",
+      "file": null
+    },
+    {
+      "id": "guide-article-h9",
+      "route": "/guide/how-to/read-a-budget-request-and-the-answer/",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "Read a budget request and the answer to it loads directly with its section and type, its review date, its own content, a link back to the guide home, and the link that returns the reader to the product.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 12,
+        "reached": 12,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 28,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [
+        "/agencies/transportation/"
+      ],
+      "visible_text_characters": 9372,
+      "content_sha256": "9959fb87c14ace889e3bfc0abaca64861ed4e380401cd09654bd967bc19c344e",
+      "capture_sha256": "d70c3308eafc9c663e66c123d5678f14523436a5a9dfa16305b4ee3dd92a56a6",
+      "file": null
+    },
+    {
+      "id": "product-search",
+      "route": "/search/?q=housing",
+      "viewport": "desktop",
+      "viewport_width": 1440,
+      "assertion": "The product route the tutorial returns the reader to serves its document. Result content is assembled from live records and is not asserted here.",
+      "assertion_holds": true,
+      "missing_expected_text": [],
+      "missing_expected_links": [],
+      "horizontal_overflow_px": 0,
+      "horizontal_overflow_at_200_percent_px": 0,
+      "targets_below_24px": [],
+      "keyboard": {
+        "links": 0,
+        "unreachable": [],
+        "withoutIndicator": []
+      },
+      "axe_critical_or_serious": [],
+      "internal_links_checked": 0,
+      "broken_internal_links": [],
+      "record_content_deferred_to_live_check": [],
+      "visible_text_characters": 1407,
+      "content_sha256": "dc4944e2df26902420cec490fdfe99ac94ea45f8bb3800b10e7244d22f89c54f",
+      "capture_sha256": "7ef512dc193d36fcc8331e62aed202d6f78a94f099c64c5358d6106a705ed2f5",
+      "file": null
+    }
+  ],
+  "journeys": [
+    {
+      "id": "scripted-journey",
+      "viewport": "mobile",
+      "assertion": "A reader reaches the tutorial from the front page through Guide, leaves for the product, and the browser Back button returns them to where they were.",
+      "assertion_holds": true,
+      "steps": [
+        {
+          "step": "home to guide",
+          "path": "/guide/"
+        },
+        {
+          "step": "guide to tutorial",
+          "path": "/guide/start/explore-housing-across-city-records/"
+        },
+        {
+          "step": "tutorial to product",
+          "path": "/search/"
+        },
+        {
+          "step": "back to tutorial",
+          "path": "/guide/start/explore-housing-across-city-records/"
+        },
+        {
+          "step": "back to guide",
+          "path": "/guide/"
+        }
+      ],
+      "expected_paths": [
+        "/guide/",
+        "/guide/start/explore-housing-across-city-records/",
+        "/search/",
+        "/guide/start/explore-housing-across-city-records/",
+        "/guide/"
+      ]
+    },
+    {
+      "id": "journey-without-javascript",
+      "viewport": "mobile",
+      "assertion": "With JavaScript switched off, the guide home and the tutorial keep their text, headings, source links and navigation, and Back still works.",
+      "assertion_holds": true,
+      "guide_home_headings": [
+        "Using CityScroll",
+        "Where to start",
+        "Start here",
+        "How to\u2026",
+        "Understand",
+        "Reference",
+        "About this guide"
+      ],
+      "article_path": "/guide/start/explore-housing-across-city-records/",
+      "article": {
+        "headings": [
+          "Explore housing across city records",
+          "Step 1 \u2014 Search for housing",
+          "Step 2 \u2014 Open an agency result",
+          "Step 3 \u2014 Compare a rule result",
+          "Step 4 \u2014 Check the official copy",
+          "Step 5 \u2014 Keep and repeat the search",
+          "When a source cannot load",
+          "Related pages",
+          "Sources used in this article"
+        ],
+        "hasBody": true,
+        "hasOfficialSource": true,
+        "hasOutcome": true,
+        "sourceLinks": [
+          "https://a856-cityrecord.nyc.gov/"
+        ],
+        "backToGuide": true,
+        "returnToTask": true
+      },
+      "back_path": "/guide/"
+    },
+    {
+      "id": "reference-reached-without-javascript",
+      "viewport": "mobile",
+      "assertion": "With JavaScript switched off, an unfamiliar term in the tutorial leads to a reference page that stands on its own, with named tables and its own review date, and Back returns to the step.",
+      "assertion_holds": true,
+      "reached_path": "/guide/reference/glossary/",
+      "glossary": {
+        "tables": 6,
+        "headerCells": 18,
+        "namedRegions": true,
+        "reviewed": true,
+        "backToGuide": true
+      },
+      "back_path": "/guide/start/explore-housing-across-city-records/"
+    },
+    {
+      "id": "every-article-without-javascript",
+      "viewport": "mobile",
+      "assertion": "With JavaScript switched off, every published article keeps its headings, prose, the link back to the guide home, the link that returns the reader to the product, and its recorded review date.",
+      "assertion_holds": true,
+      "articles": [
+        {
+          "headings": 10,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "E1",
+          "url": "/guide/understand/what-a-public-record-tells-you/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "E2",
+          "url": "/guide/understand/how-records-are-connected/",
+          "holds": true
+        },
+        {
+          "headings": 9,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "E3",
+          "url": "/guide/understand/dates-and-missing-information/",
+          "holds": true
+        },
+        {
+          "headings": 12,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "E4",
+          "url": "/guide/understand/flags-and-historical-patterns/",
+          "holds": true
+        },
+        {
+          "headings": 9,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-08",
+          "id": "H1",
+          "url": "/guide/how-to/find-and-narrow-records/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-08",
+          "id": "H2",
+          "url": "/guide/how-to/follow-a-search/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-08",
+          "id": "H3",
+          "url": "/guide/how-to/follow-a-community-board/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-08",
+          "id": "H4",
+          "url": "/guide/how-to/put-dates-in-your-calendar/",
+          "holds": true
+        },
+        {
+          "headings": 7,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-08",
+          "id": "H5",
+          "url": "/guide/how-to/read-a-land-use-projects-next-step/",
+          "holds": true
+        },
+        {
+          "headings": 7,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-08",
+          "id": "H6",
+          "url": "/guide/how-to/check-the-evidence-behind-a-connection/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-08",
+          "id": "H7",
+          "url": "/guide/how-to/look-at-records-as-of-a-day/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-08",
+          "id": "H8",
+          "url": "/guide/how-to/collect-records-and-export-them/",
+          "holds": true
+        },
+        {
+          "headings": 15,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-07",
+          "id": "H9",
+          "url": "/guide/how-to/read-a-budget-request-and-the-answer/",
+          "holds": true
+        },
+        {
+          "headings": 9,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "R1",
+          "url": "/guide/reference/glossary/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "R2",
+          "url": "/guide/reference/controls-and-outputs/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "R3",
+          "url": "/guide/reference/sources-and-coverage/",
+          "holds": true
+        },
+        {
+          "headings": 9,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "T1",
+          "url": "/guide/start/explore-housing-across-city-records/",
+          "holds": true
+        },
+        {
+          "headings": 9,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-08",
+          "id": "T2",
+          "url": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-08",
+          "id": "T3",
+          "url": "/guide/start/trace-an-award-and-keep-the-trail/",
+          "holds": true
+        }
+      ]
+    },
+    {
+      "id": "scripted-journey",
+      "viewport": "desktop",
+      "assertion": "A reader reaches the tutorial from the front page through Guide, leaves for the product, and the browser Back button returns them to where they were.",
+      "assertion_holds": true,
+      "steps": [
+        {
+          "step": "home to guide",
+          "path": "/guide/"
+        },
+        {
+          "step": "guide to tutorial",
+          "path": "/guide/start/explore-housing-across-city-records/"
+        },
+        {
+          "step": "tutorial to product",
+          "path": "/search/"
+        },
+        {
+          "step": "back to tutorial",
+          "path": "/guide/start/explore-housing-across-city-records/"
+        },
+        {
+          "step": "back to guide",
+          "path": "/guide/"
+        }
+      ],
+      "expected_paths": [
+        "/guide/",
+        "/guide/start/explore-housing-across-city-records/",
+        "/search/",
+        "/guide/start/explore-housing-across-city-records/",
+        "/guide/"
+      ]
+    },
+    {
+      "id": "journey-without-javascript",
+      "viewport": "desktop",
+      "assertion": "With JavaScript switched off, the guide home and the tutorial keep their text, headings, source links and navigation, and Back still works.",
+      "assertion_holds": true,
+      "guide_home_headings": [
+        "Using CityScroll",
+        "Where to start",
+        "Start here",
+        "How to\u2026",
+        "Understand",
+        "Reference",
+        "About this guide"
+      ],
+      "article_path": "/guide/start/explore-housing-across-city-records/",
+      "article": {
+        "headings": [
+          "Explore housing across city records",
+          "Step 1 \u2014 Search for housing",
+          "Step 2 \u2014 Open an agency result",
+          "Step 3 \u2014 Compare a rule result",
+          "Step 4 \u2014 Check the official copy",
+          "Step 5 \u2014 Keep and repeat the search",
+          "When a source cannot load",
+          "Related pages",
+          "Sources used in this article"
+        ],
+        "hasBody": true,
+        "hasOfficialSource": true,
+        "hasOutcome": true,
+        "sourceLinks": [
+          "https://a856-cityrecord.nyc.gov/"
+        ],
+        "backToGuide": true,
+        "returnToTask": true
+      },
+      "back_path": "/guide/"
+    },
+    {
+      "id": "reference-reached-without-javascript",
+      "viewport": "desktop",
+      "assertion": "With JavaScript switched off, an unfamiliar term in the tutorial leads to a reference page that stands on its own, with named tables and its own review date, and Back returns to the step.",
+      "assertion_holds": true,
+      "reached_path": "/guide/reference/glossary/",
+      "glossary": {
+        "tables": 6,
+        "headerCells": 18,
+        "namedRegions": true,
+        "reviewed": true,
+        "backToGuide": true
+      },
+      "back_path": "/guide/start/explore-housing-across-city-records/"
+    },
+    {
+      "id": "every-article-without-javascript",
+      "viewport": "desktop",
+      "assertion": "With JavaScript switched off, every published article keeps its headings, prose, the link back to the guide home, the link that returns the reader to the product, and its recorded review date.",
+      "assertion_holds": true,
+      "articles": [
+        {
+          "headings": 10,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "E1",
+          "url": "/guide/understand/what-a-public-record-tells-you/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "E2",
+          "url": "/guide/understand/how-records-are-connected/",
+          "holds": true
+        },
+        {
+          "headings": 9,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "E3",
+          "url": "/guide/understand/dates-and-missing-information/",
+          "holds": true
+        },
+        {
+          "headings": 12,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "E4",
+          "url": "/guide/understand/flags-and-historical-patterns/",
+          "holds": true
+        },
+        {
+          "headings": 9,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-08",
+          "id": "H1",
+          "url": "/guide/how-to/find-and-narrow-records/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-08",
+          "id": "H2",
+          "url": "/guide/how-to/follow-a-search/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-08",
+          "id": "H3",
+          "url": "/guide/how-to/follow-a-community-board/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-08",
+          "id": "H4",
+          "url": "/guide/how-to/put-dates-in-your-calendar/",
+          "holds": true
+        },
+        {
+          "headings": 7,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-08",
+          "id": "H5",
+          "url": "/guide/how-to/read-a-land-use-projects-next-step/",
+          "holds": true
+        },
+        {
+          "headings": 7,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-08",
+          "id": "H6",
+          "url": "/guide/how-to/check-the-evidence-behind-a-connection/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-08",
+          "id": "H7",
+          "url": "/guide/how-to/look-at-records-as-of-a-day/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-08",
+          "id": "H8",
+          "url": "/guide/how-to/collect-records-and-export-them/",
+          "holds": true
+        },
+        {
+          "headings": 15,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-07",
+          "id": "H9",
+          "url": "/guide/how-to/read-a-budget-request-and-the-answer/",
+          "holds": true
+        },
+        {
+          "headings": 9,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "R1",
+          "url": "/guide/reference/glossary/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "R2",
+          "url": "/guide/reference/controls-and-outputs/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "R3",
+          "url": "/guide/reference/sources-and-coverage/",
+          "holds": true
+        },
+        {
+          "headings": 9,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-06",
+          "id": "T1",
+          "url": "/guide/start/explore-housing-across-city-records/",
+          "holds": true
+        },
+        {
+          "headings": 9,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-08",
+          "id": "T2",
+          "url": "/guide/start/trace-a-notice-to-the-duty-behind-it/",
+          "holds": true
+        },
+        {
+          "headings": 8,
+          "hasBody": true,
+          "hasOutcome": true,
+          "backToGuide": true,
+          "returnToTask": true,
+          "reviewed": "Last reviewed 2026-09-08",
+          "id": "T3",
+          "url": "/guide/start/trace-an-award-and-keep-the-trail/",
+          "holds": true
+        }
+      ]
+    }
+  ]
+}

@@ -21,6 +21,7 @@ import {
 } from "./graph_edge_provenance.mjs";
 import { syncAgencyConstellationClaimReport } from "./report_issue.mjs";
 import { officialSourceLink } from "./affordance_grammar.mjs";
+import { SELECTABLE_LANGS } from "./route_migration.mjs";
 import { runtimeRumSemanticMilestones } from "./rum_static_record_instrumentation.mjs";
 import {
   agencyIdentityReady,
@@ -65,14 +66,16 @@ function currentClaimId() {
   }
 }
 
-/** Share path preserving claim + as_of (and no other params). */
-function sharePath(basePath, { asOf = null, claim = null } = {}) {
+/** Share path preserving claim, as_of and the supported selected language. */
+export function sharePath(basePath, { asOf = null, claim = null } = {}) {
   const base = String(basePath || "/");
   const params = new URLSearchParams();
   const day = normalizeAsOfDay(asOf);
   const claimId = claim ? String(claim).trim() : "";
   if (day) params.set(AS_OF_QUERY_KEY, day);
   if (claimId) params.set("claim", claimId);
+  const language = new URLSearchParams(globalThis.location?.search || "").get("lang");
+  if (SELECTABLE_LANGS.includes(language)) params.set("lang", language);
   const query = params.toString();
   if (!query) return base.split("?")[0];
   const pathOnly = base.split("?")[0];

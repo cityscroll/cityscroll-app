@@ -18,6 +18,9 @@
   W.STRINGS["zh-Hans"] = W.STRINGS["zh-Hans"] || {};
   Object.assign(W.STRINGS["zh-Hans"], {
     // BEGIN GUIDE TRANSLATIONS
+    guide_text_a79aae29f4b3dde6: "在会议页面的操作中选择`Add to calendar`。此控件只在记录有具体时刻时出现。在日历应用中打开下载的文件，核对活动标题、日期和时间。",
+    guide_text_427f9ea76a2de8cd: "打开[{control_b}]({link_a})，选择一个会议标题以打开该会议页面。",
+    guide_text_0bd019485364f283: "如果筛选面板遮住了工具栏，请关闭**{control_a}**，然后选择**{control_b}**。",
     guide_text_260313e4ac64571f: "{name_a}汇集纽约市各机构已经公开发布的记录——合同、土地使用申请、规则、会议、公务员考试，以及相关机构和组织——并为每条记录保留其官方来源的链接。",
     guide_text_641498d11bf44328: "如果您第一次来，请从第一篇教程开始。它使用一个真实的搜索示例，约需十分钟，无需账户或电子邮件地址。接下来的两篇教程分别从一份已发布的公告追溯其法律依据，以及从一个机构经由收款组织追溯到一项中标（授予合同）记录。",
     guide_text_65173c70d8e1e737: "如果您已经有具体任务，请直接进入“操作方法”。如果某条记录让您对含义产生疑问，或遇到生词，“理解”和“参考”可以直接解答，无需先学完教程。",
@@ -42,7 +45,7 @@
     guide_text_d05504aea51fa236: "展开的{control_a}，包含匹配依据、来源和复制链接控件。",
     guide_text_be58a1edd1426736: "1. 阅读所选记录的{control_b}。2. {control_a}可重新打开此面板。",
     guide_text_d20609214f01766f: "第3步——从链接重新打开证据",
-    guide_text_a3ccbb7c032c92e8: "在面板底部选择**{control_a}**。将地址粘贴到新标签页中，确认同一记录的**{control_b}**已展开。将此地址与它支持的说法一同保存。",
+    guide_text_312343a6336957ec: "在面板底部选择**{control_a}**。复制浏览器中的完整地址并粘贴到新标签页中，确认同一记录的**{control_b}**已展开。将此地址与它支持的说法一同保存。",
     guide_text_07b6d5bba6d2a50f: "没有来源或面板时",
     guide_text_8a552edcc3e77c2e: "某些合同关联没有单独的公告来源。打开面板中有链接的记录标题，使用该记录自己的来源链接。缺少来源证据并不证明不存在关系。如果复制的地址未打开任何面板，请返回**{control_a}**，用**{control_b}**选择页面上目前存在的关联。未启用{name_c}时，可直接阅读记录；面板不可用。",
     guide_text_9881cfd03e31b031: "第1步——固定两条记录",
@@ -201,7 +204,7 @@
     guide_text_5530d25128c1ac7c: "第3步——比较规则结果",
     guide_text_55e95127303b94fe: "使用浏览器的**后退**按钮返回[住房搜索]({link_a})。在**{control_b}**中阅读某条结果的匹配说明。段落匹配会引用含有您所搜主题的已发布句子。Rules包括提案和最终Rules：在把记录当作仍可提交意见的机会之前，先检查它所处的阶段。最终Rules不是提案。",
     guide_text_df72aa973eb6890e: "第4步——核对官方副本",
-    guide_text_22300906a19d5e3f: "对于含引用段落的结果，打开段落旁的**{control_a}**。在市政府发布的副本上核对标题、机构和阶段。如果没有段落结果，请打开结果标题，改用其**Official record**链接。您现在得到可依据的来源，而不只是搜索匹配。",
+    guide_text_0e96f40a327fd396: "对于含引用段落的结果，打开段落旁的**{control_a}**。在市政府发布的副本上核对标题、机构和阶段。如果没有段落结果，请打开结果标题，改用其**{control_b}**链接。您现在得到可依据的来源，而不只是搜索匹配。",
     guide_text_eb866cdf15b53292: "住房搜索中的规则段落及其Official source链接。",
     guide_text_2712bc39b88d6845: "1. 引用段落旁的Official source打开发布者的副本。核对标题、机构和阶段。",
     guide_text_bf4f9211b28b970e: "第5步——保存并重复搜索",
@@ -552,7 +555,7 @@
     guide_text_155dffce1f52e88a: "无法连接的来源不同于没有内容的来源，网站会区分。页面若无法加载记录，会明确说明；可通过重试或打开官方来源继续。作此区分是为了防止把临时故障误读为没有记录。",
     guide_text_1246343e3818e6a0: "反过来也一样。确实为空的记录集会说明为空，而不是显示错误让您猜测。",
     guide_text_b3b11affa410f453: "第1步——打开公告",
-    guide_text_c7c8004ef03ca42b: "打开[Sanitation最终规则公告]({link_a})。无需账户，公告和职责页面无需{name_b}即可阅读。核对标题：**{name_c} Final Rule re Implementation Dates for the {name_d} North and Upper {name_e} Commercial Waste Zones**。打开公告操作旁的**Official record**，对照市政府副本，然后返回。",
+    guide_text_07ca7987f158f484: "打开[Sanitation最终规则公告]({link_a})。无需账户，公告和职责页面无需{name_c}即可阅读。核对标题：**{name_d} Final Rule re Implementation Dates for the {name_e} North and Upper {name_f} Commercial Waste Zones**。打开公告操作旁的**{control_b}**，对照市政府副本，然后返回。",
     guide_text_6bf12cfc0cc49972: "第2步——追溯职责",
     guide_text_a8f2256a501403ce: "在公告上找到**Connected mandate**。阅读关系**Rules filing for this duty**及引用**New York City Charter § 753(e)(2)**。选择关于监管商业废物企业的职责文字，会打开[Sanitation职责]({link_a})，其中列有机构、要求采取的行动和引用依据。",
     guide_text_1737e30a162a7433: "Sanitation规则公告中的Connected mandate，附职责链接、关系和Charter引用。",

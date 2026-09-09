@@ -18,6 +18,9 @@
   W.STRINGS["ko"] = W.STRINGS["ko"] || {};
   Object.assign(W.STRINGS["ko"], {
     // BEGIN GUIDE TRANSLATIONS
+    guide_text_a79aae29f4b3dde6: "회의 페이지의 작업에서 `Add to calendar`를 선택하세요. 이 기능은 기록에 시각이 있을 때만 나타납니다. 내려받은 파일을 달력 앱으로 열고 행사 제목, 날짜, 시간을 확인하세요.",
+    guide_text_427f9ea76a2de8cd: "[{control_b}]({link_a})을 열고 회의 제목을 선택하여 해당 회의 페이지를 여세요.",
+    guide_text_0bd019485364f283: "필터 패널이 도구 모음을 가리면 **{control_a}**를 닫고 **{control_b}**을 선택하세요.",
     guide_text_260313e4ac64571f: "{name_a}은 뉴욕시 기관이 이미 공개한 계약, 토지 이용 신청, 규칙, 회의, 공무원 시험과 관련 기관·단체의 기록을 모으고, 각 기록에 해당 공식 출처 링크를 유지합니다.",
     guide_text_641498d11bf44328: "처음 방문했다면 첫 번째 튜토리얼부터 시작하세요. 실제 검색 한 번으로 약 10분 동안 진행하며 계정이나 이메일 주소가 필요하지 않습니다. 다음 두 튜토리얼은 공개 공고에서 그 근거 법률을 추적하고, 기관에서 대금을 받는 단체를 거쳐 낙찰 기록 하나로 이어집니다.",
     guide_text_65173c70d8e1e737: "이미 할 일이 있다면 바로 사용 방법으로 가세요. 기록의 의미가 궁금하거나 처음 보는 단어가 있다면 이해와 참고에서 답을 찾을 수 있으며, 먼저 수업을 마칠 필요는 없습니다.",
@@ -42,7 +45,7 @@
     guide_text_d05504aea51fa236: "일치 근거, 출처, 링크 복사 기능을 표시하는 펼쳐진 {control_a}.",
     guide_text_be58a1edd1426736: "1. 선택한 기록의 {control_b}를 읽으세요. 2. {control_a}으로 이 패널을 다시 열 수 있습니다.",
     guide_text_d20609214f01766f: "3단계 — 링크로 증거 다시 열기",
-    guide_text_a3ccbb7c032c92e8: "패널 아래의 **{control_a}**을 선택하세요. 주소를 새 탭에 붙여 넣고 동일 기록의 **{control_b}**가 펼쳐지는지 확인하세요. 이 주소를 뒷받침하는 주장과 함께 보관하세요.",
+    guide_text_312343a6336957ec: "패널 아래의 **{control_a}**을 선택하세요. 브라우저의 전체 주소를 복사하여 새 탭에 붙여 넣고 동일 기록의 **{control_b}**가 펼쳐지는지 확인하세요. 이 주소를 뒷받침하는 주장과 함께 보관하세요.",
     guide_text_07b6d5bba6d2a50f: "출처나 패널이 없을 때",
     guide_text_8a552edcc3e77c2e: "일부 계약 연결에는 별도 공고 출처가 없습니다. 패널에서 링크된 기록 제목을 열고 그 기록 자체의 출처 링크를 사용하세요. 출처 증거가 없다고 관계가 없다는 뜻은 아닙니다. 복사한 주소가 패널을 열지 않으면 **{control_a}**로 돌아가 **{control_b}**로 현재 페이지의 연결을 선택하세요. {name_c}가 없으면 기록을 직접 읽을 수 있지만 패널은 사용할 수 없습니다.",
     guide_text_9881cfd03e31b031: "1단계 — 기록 두 개 고정하기",
@@ -201,7 +204,7 @@
     guide_text_5530d25128c1ac7c: "3단계 — 규칙 결과 비교하기",
     guide_text_55e95127303b94fe: "브라우저 **뒤로** 버튼으로 [주택 검색]({link_a})으로 돌아가세요. **{control_b}**에서 결과의 일치 설명을 읽으세요. 구절 일치는 주제가 포함된 공개 문장을 인용합니다. 규칙에는 제안과 최종 규칙이 모두 있으므로 의견을 낼 기회로 보기 전에 단계를 확인하세요. 최종 규칙은 제안이 아닙니다.",
     guide_text_df72aa973eb6890e: "4단계 — 공식 사본 확인하기",
-    guide_text_22300906a19d5e3f: "인용 구절이 있는 결과는 그 옆의 **{control_a}**를 여세요. 시가 공개한 사본에서 제목, 기관, 단계를 확인하세요. 구절 결과가 없으면 결과 제목을 열고 **Official record** 링크를 사용하세요. 이제 단순한 검색 일치가 아니라 근거로 삼을 출처를 확보했습니다.",
+    guide_text_0e96f40a327fd396: "인용 구절이 있는 결과는 그 옆의 **{control_a}**를 여세요. 시가 공개한 사본에서 제목, 기관, 단계를 확인하세요. 구절 결과가 없으면 결과 제목을 열고 **{control_b}** 링크를 사용하세요. 이제 단순한 검색 일치가 아니라 근거로 삼을 출처를 확보했습니다.",
     guide_text_eb866cdf15b53292: "주택 검색의 규칙 구절과 Official source 링크.",
     guide_text_2712bc39b88d6845: "1. 인용 구절 옆 Official source로 발행자의 사본을 엽니다. 제목, 기관, 단계를 확인하세요.",
     guide_text_bf4f9211b28b970e: "5단계 — 검색 보관하고 반복하기",
@@ -552,7 +555,7 @@
     guide_text_155dffce1f52e88a: "연결할 수 없는 출처와 말할 내용이 없는 출처는 다르며 사이트는 구분합니다. 기록을 불러오지 못한 페이지는 이를 밝히며 재시도나 공식 출처 열기로 계속할 수 있습니다. 일시 실패를 기록 부재로 오해하지 않도록 하는 구분입니다.",
     guide_text_1246343e3818e6a0: "반대도 같습니다. 실제로 빈 기록 집합은 오류를 보여 추측하게 하지 않고 비었다고 말합니다.",
     guide_text_b3b11affa410f453: "1단계 — 공고 열기",
-    guide_text_c7c8004ef03ca42b: "[Sanitation 최종 규칙 공고]({link_a})를 여세요. 계정은 필요 없고 공고와 의무 페이지는 {name_b} 없이 읽습니다. 제목을 확인하세요. **{name_c} Final Rule re Implementation Dates for the {name_d} North and Upper {name_e} Commercial Waste Zones**입니다. 공고 작업 옆 **Official record**로 시의 사본을 비교한 뒤 돌아오세요.",
+    guide_text_07ca7987f158f484: "[Sanitation 최종 규칙 공고]({link_a})를 여세요. 계정은 필요 없고 공고와 의무 페이지는 {name_c} 없이 읽습니다. 제목을 확인하세요. **{name_d} Final Rule re Implementation Dates for the {name_e} North and Upper {name_f} Commercial Waste Zones**입니다. 공고 작업 옆 **{control_b}**로 시의 사본을 비교한 뒤 돌아오세요.",
     guide_text_6bf12cfc0cc49972: "2단계 — 의무 따라가기",
     guide_text_a8f2256a501403ce: "공고의 **Connected mandate**를 찾으세요. 관계인 **Rules filing for this duty**와 인용인 **New York City Charter § 753(e)(2)**를 읽으세요. 상업 폐기물 사업 규제에 관한 의무 문구를 선택하면 기관, 요구 행동, 인용이 있는 [Sanitation 의무]({link_a})가 열립니다.",
     guide_text_1737e30a162a7433: "의무 링크, 관계, Charter 인용이 있는 Sanitation 규칙 공고의 Connected mandate.",

@@ -101,7 +101,6 @@ def screenshot(page: Page, output_dir: Path, name: str) -> dict:
     return {
         "capture_sha256": sha256_file(image),
         "content_sha256": sha256_text(html),
-        "local_capture_path": str(image.relative_to(ROOT)),
         "file": None,
         "path": urlsplit(page.url).path,
         "overflow": overflow(page),
@@ -112,13 +111,13 @@ def journey(page: Page, base: str) -> dict:
     steps = []
     page.goto(base, wait_until="domcontentloaded")
     settle(page)
-    page.click(f'nav[aria-label="Primary"] a[href="{GUIDE_HOME}"]')
+    page.locator('nav[aria-label="Primary"] a[href="/guide/"], nav[aria-label="Primary"] a[href="/guide/?lang=en"]').first.click()
     settle(page)
     steps.append({"step": "home to guide", "path": urlsplit(page.url).path})
-    page.locator(f'a[href="{TUTORIAL}"]').first.click()
+    page.locator(f'a[href="{TUTORIAL}"], a[href="{TUTORIAL}?lang=en"]').first.click()
     settle(page)
     steps.append({"step": "guide to example", "path": urlsplit(page.url).path})
-    page.locator(f'main a[href="{EXPLANATION}"]').first.click()
+    page.locator(f'main a[href="{EXPLANATION}"], main a[href="{EXPLANATION}?lang=en"]').first.click()
     settle(page)
     steps.append({"step": "example to explanation", "path": urlsplit(page.url).path})
     page.locator("main .guide-return a").first.click()
@@ -139,9 +138,9 @@ def about_anchors(page: Page, base: str) -> dict:
         """(ids) => Object.fromEntries(ids.map((id) => [id, !!document.getElementById(id)]))""",
         list(ABOUT_ANCHORS),
     )
-    guide = page.evaluate("() => !!document.querySelector('a[href=\"/guide/\"]')")
+    guide = page.evaluate("() => !!document.querySelector('a[href^=\"/guide/\"]')")
     flags = page.evaluate(
-        "() => !!document.querySelector('a[href=\"/guide/understand/flags-and-historical-patterns/#what-each-note-counts\"]')"
+        "() => !!document.querySelector('a[href*=\"/guide/understand/flags-and-historical-patterns/\"][href$=\"#what-each-note-counts\"]')"
     )
     holds = all(found.values()) and guide and flags
     return {"assertion_holds": holds, "anchors": found, "guide_link": guide, "flags_link": flags}
@@ -151,12 +150,12 @@ def following_help(page: Page, base: str) -> dict:
     page.goto(urljoin(base, FOLLOWING.lstrip("/")), wait_until="domcontentloaded")
     settle(page)
     hrefs = page.evaluate(
-        """() => [...document.querySelectorAll('a[href="/guide/how-to/follow-a-search/"]')]
-            .map((n) => n.getAttribute('href'))"""
+        """() => [...document.querySelectorAll('a[href^="/guide/how-to/follow-a-search/"]')]
+            .map((n) => n.getAttribute('href').replace('?lang=en', ''))"""
     )
     mast = page.evaluate(
         """() => [...document.querySelectorAll('nav[aria-label="Primary"] a')]
-            .map((n) => n.getAttribute('href'))"""
+            .map((n) => n.getAttribute('href').replace('?lang=en', ''))"""
     )
     holds = hrefs == [FOLLOWING_HELP] and GUIDE_HOME in mast
     return {
@@ -184,7 +183,7 @@ def capture(base: str, output_dir: Path) -> dict:
                     "viewport": name,
                     "viewport_width": width,
                     "assertion": "Home primary navigation includes Guide.",
-                    "assertion_holds": page.locator(f'nav[aria-label="Primary"] a[href="{GUIDE_HOME}"]').count() == 1,
+                    "assertion_holds": page.locator('nav[aria-label="Primary"] a[href="/guide/"], nav[aria-label="Primary"] a[href="/guide/?lang=en"]').count() == 1,
                     **screenshot(page, output_dir, f"home-{width}"),
                 })
                 page.goto(urljoin(base, GUIDE_HOME.lstrip("/")), wait_until="domcontentloaded")
@@ -208,7 +207,7 @@ def capture(base: str, output_dir: Path) -> dict:
                     "viewport_width": width,
                     "assertion": "About still names independence and links Guide.",
                     "assertion_holds": "independent" in page.locator("main").inner_text().lower()
-                    and page.locator('a[href="/guide/"]').count() >= 1,
+                    and page.locator('a[href="/guide/"], a[href="/guide/?lang=en"]').count() >= 1,
                     **screenshot(page, output_dir, f"about-{width}"),
                 })
                 journeys.append({
@@ -236,7 +235,7 @@ def capture(base: str, output_dir: Path) -> dict:
                 )
                 ns_page = no_script.new_page()
                 ns_page.goto(base, wait_until="domcontentloaded")
-                ns_page.click(f'nav[aria-label="Primary"] a[href="{GUIDE_HOME}"]')
+                ns_page.locator('nav[aria-label="Primary"] a[href="/guide/"], nav[aria-label="Primary"] a[href="/guide/?lang=en"]').first.click()
                 ns_page.wait_for_load_state("domcontentloaded")
                 ns_page.click(f'a[href="{TUTORIAL}"]')
                 ns_page.wait_for_load_state("domcontentloaded")
@@ -264,7 +263,11 @@ def main() -> int:
     parser.add_argument("--manifest", type=Path, default=MANIFEST)
     parser.add_argument("--output-dir", type=Path, default=OUTPUT_DIR)
     parser.add_argument("--keep-going", action="store_true")
+    parser.add_argument("--record", default="guide-product-access")
     args = parser.parse_args()
+    args.site_dir = args.site_dir.resolve()
+    args.output_dir = args.output_dir.resolve()
+    args.manifest = args.manifest.resolve()
 
     server, thread, base = serve(args.site_dir)
     try:
@@ -277,7 +280,7 @@ def main() -> int:
     failed = [item for item in observed["captures"] + observed["journeys"] if not item["assertion_holds"]]
     manifest = {
         "schema_version": 1,
-        "record": "cityscroll-engineering/guide-product-access",
+        "record": args.record,
         "capture_mode": "local_static_site_playwright_no_committed_image",
         "base": "local static site build (site/)",
         "repository_revision": repository_revision(),

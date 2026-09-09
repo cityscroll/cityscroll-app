@@ -137,7 +137,7 @@ document.addEventListener("click", e=>{
     // build the replacement and move focus onto it explicitly instead.
     const a = document.createElement("a");
     a.className = "act";
-    a.href = "#investigation";
+    a.href = currentLanguageURL("/#investigation");
     a.textContent = t("pinned_open_inv",{n:s.invs[s.current].items.length});
     b.replaceWith(a);
     a.focus();
@@ -262,7 +262,7 @@ async function showInvestigation(){
         const r=await workerFetch("/inv",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:cur.name, items:cur.items})});
         const j=await r.json();
         if(j.ok){
-          const url=location.origin+location.pathname+"#investigation/shared/"+j.id;
+          const url=currentLanguageURL(location.origin+location.pathname+"#investigation/shared/"+j.id);
           msg.innerHTML=`${t("inv_readonly_link",{n:j.ttlDays})} <a href="${url}">${url}</a> <button class="act" type="button" style="padding:5px 9px" onclick="copyText('${url}', this)">${t("inv_copy_btn")}</button>`;
         } else msg.textContent = j.reason==="rate-limited" ? t("inv_too_many_shares") : t("inv_share_failed");
       }catch(e){ msg.textContent=t("cant_reach_server"); }
@@ -279,7 +279,7 @@ async function showInvestigation(){
         const r=await workerFetch("/inv",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(request)});
         const j=await r.json();
         if(j.ok&&j.kind==="research_package"){
-          const url=location.origin+location.pathname+"#investigation/shared/"+j.id;
+          const url=currentLanguageURL(location.origin+location.pathname+"#investigation/shared/"+j.id);
           msg.innerHTML=`${t("inv_package_link",{n:j.ttlDays})} <a href="${invEsc(url)}">${invEsc(url)}</a>`;
         } else msg.textContent=j.reason==="rate-limited"?t("inv_too_many_shares"):t("inv_package_failed");
       }catch(e){ msg.textContent=t("cant_reach_server"); }

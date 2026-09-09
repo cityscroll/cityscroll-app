@@ -8,6 +8,8 @@ reader_question: How do I keep a set of records together and take them with me?
 purpose: Pin records, save notes, and choose between a local export and a shared copy.
 description: Pin real records into one investigation, annotate them, take them away as a file, and learn exactly where each copy lives and who can read it.
 last_reviewed: 2026-09-08
+depends_on:
+  - site/app/workspace.mjs
 return_to_task: Open your investigation | /#investigation
 related:
   - Trace an award and keep the trail | /guide/start/trace-an-award-and-keep-the-trail/

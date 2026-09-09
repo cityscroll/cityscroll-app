@@ -61,7 +61,7 @@ treating it as an open chance to comment. A final rule is not a proposal.
 
 For a result with a quoted passage, open **Official source** beside that passage.
 Check the title, agency and stage on the city's published copy. If no passage result appears,
-open a result's title and use its **Official record** link instead.
+open a result's title and use its **View in City Record** link instead.
 You now have a source you can rely on, rather than just a search match.
 
 ::: figure rule-source

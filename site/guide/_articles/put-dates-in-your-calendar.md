@@ -9,6 +9,10 @@ purpose: Add a single event or subscribe to a dated list, then check the result 
 description: Add one city event to your calendar, or subscribe to a whole list of them, and know exactly which of the two you did and what it can promise.
 last_reviewed: 2026-09-08
 return_to_task: Open Now | /now/
+depends_on:
+  - site/i18n.js
+  - site/meeting_document.mjs
+  - site/calendar_subscription.mjs
 related:
   - Follow a search and manage your updates | /guide/how-to/follow-a-search/
   - Read a land-use project's next step and documents | /guide/how-to/read-a-land-use-projects-next-step/
@@ -27,7 +31,9 @@ open its title to check the published record before saving it.
 
 ## Step 2 — Save one event
 
-On a meeting's page, choose **Add to calendar** among its actions. This control appears only
+Open [Meetings](/browse/meetings/) and select a meeting title to open its meeting page.
+
+On a meeting's page, choose `Add to calendar` among its actions. This control appears only
 when the record has a clock time. Open the downloaded file in your calendar app and check the
 event's title, date and time.
 
@@ -40,6 +46,8 @@ Open [Meetings](/browse/meetings/). Enter a topic in **Search**. Open **More fil
 **Date window** or **Affected area**. Then choose **Subscribe to calendar** in the toolbar above the records. The control appears only when
 the list contains dated items. If absent, widen the filters until dated records appear.
 The panel names the list you are about to subscribe to.
+
+If the filter panel covers the toolbar, close **More filters** and choose **Subscribe to calendar**.
 
 ::: figure calendar-toolbar
 

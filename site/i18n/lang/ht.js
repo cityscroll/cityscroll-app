@@ -17,6 +17,9 @@
   W.STRINGS["ht"] = W.STRINGS["ht"] || {};
   Object.assign(W.STRINGS["ht"], {
     // BEGIN GUIDE TRANSLATIONS
+    guide_text_a79aae29f4b3dde6: "Sou paj yon reyinyon, chwazi `Add to calendar` pami aksyon li yo. Kontwòl sa a parèt sèlman lè dosye a gen yon lè presi. Louvri fichye ou telechaje a nan aplikasyon kalandriye ou epi verifye tit, dat ak lè evènman an.",
+    guide_text_427f9ea76a2de8cd: "Louvri [{control_b}]({link_a}) epi chwazi tit yon reyinyon pou ouvri paj li.",
+    guide_text_0bd019485364f283: "Si panèl filtè a kouvri ba zouti a, fèmen **{control_a}** epi chwazi **{control_b}**.",
     guide_text_260313e4ac64571f: "{name_a} rasanble dosye piblik ajans Vil New York deja pibliye — kontra, demann sou itilizasyon tè, règ, reyinyon, egzamen sèvis sivil, ansanm ak ajans ak òganizasyon ki asosye avèk yo — epi li kenbe chak dosye konekte ak sous ofisyèl kote li soti a.",
     guide_text_641498d11bf44328: "Si se premye fwa ou isit la, kòmanse ak premye leson an. Li sèvi ak yon rechèch reyèl epi li pran anviwon dis minit; ou pa bezwen kont ni adrès imèl pou suiv li. De leson ki vin apre yo remonte soti nan yon avi pibliye rive nan lwa ki dèyè li, epi soti nan yon ajans pase nan yon òganizasyon li peye rive nan yon akòdman.",
     guide_text_65173c70d8e1e737: "Si ou deja gen yon travay pou fè, ale dirèkteman nan Kijan pou fè. Si yon dosye fè ou poze kesyon sou sa li vle di, oswa ou rankontre yon mo ou pa konnen, Konprann ak Referans reponn kesyon sa yo san ou pa oblije suiv yon leson anvan.",
@@ -41,7 +44,7 @@
     guide_text_d05504aea51fa236: "{control_a} deplwaye, avèk baz korespondans lan, sous la ak kontwòl pou kopye lyen an.",
     guide_text_be58a1edd1426736: "1. Li {control_b} pou dosye ou chwazi a. 2. {control_a} relouvri panèl sa a.",
     guide_text_d20609214f01766f: "Etap 3 — Relouvri prèv la depi lyen li",
-    guide_text_a3ccbb7c032c92e8: "Anba panèl la, chwazi **{control_a}**. Kole adrès la nan yon nouvo onglet. Verifye **{control_b}** pou menm dosye a deplwaye. Kenbe adrès sa a avèk deklarasyon li apiye a.",
+    guide_text_312343a6336957ec: "Anba panèl la, chwazi **{control_a}**. Kopye tout adrès ki nan ba adrès navigatè a epi kole li nan yon nouvo onglet. Verifye **{control_b}** pou menm dosye a deplwaye. Kenbe adrès sa a avèk deklarasyon li apiye a.",
     guide_text_07b6d5bba6d2a50f: "Lè pa gen sous oswa panèl",
     guide_text_8a552edcc3e77c2e: "Gen koneksyon kontra ki pa gen yon sous avi apa. Louvri tit dosye ki gen lyen an nan panèl la epi sèvi ak pwòp lyen sous dosye sa a. Lè prèv sous la manke, sa pa pwouve pa gen relasyon. Si yon adrès ou kopye pa louvri panèl, retounen nan **{control_a}** epi sèvi ak **{control_b}** pou chwazi yon koneksyon ki sou paj la kounye a. San {name_c}, li dosye yo dirèkteman; panèl la pa disponib.",
     guide_text_9881cfd03e31b031: "Etap 1 — Epingle de dosye",
@@ -200,7 +203,7 @@
     guide_text_5530d25128c1ac7c: "Etap 3 — Konpare yon rezilta règ",
     guide_text_55e95127303b94fe: "Sèvi ak bouton **Retounen** navigatè a pou tounen nan [rechèch lojman an]({link_a}). Nan **{control_b}**, li esplikasyon korespondans yon rezilta. Yon korespondans pasaj site fraz pibliye ki gen sijè ou ladan l. Règ yo gen pwopozisyon ak règ final: verifye etap dosye a anvan ou konsidere li kòm yon chans ouvè pou kòmantè. Yon règ final pa yon pwopozisyon.",
     guide_text_df72aa973eb6890e: "Etap 4 — Verifye kopi ofisyèl la",
-    guide_text_22300906a19d5e3f: "Pou yon rezilta ki gen yon pasaj site, louvri **{control_a}** bò pasaj la. Verifye tit, ajans ak etap sou kopi vil la pibliye a. Si pa gen rezilta pasaj, louvri tit yon rezilta epi sèvi ak lyen **Official record** li pito. Kounye a ou gen yon sous ou ka apiye sou li, olye sèlman yon korespondans rechèch.",
+    guide_text_0e96f40a327fd396: "Pou yon rezilta ki gen yon pasaj site, louvri **{control_a}** bò pasaj la. Verifye tit, ajans ak etap sou kopi vil la pibliye a. Si pa gen rezilta pasaj, louvri tit yon rezilta epi sèvi ak lyen **{control_b}** li pito. Kounye a ou gen yon sous ou ka apiye sou li, olye sèlman yon korespondans rechèch.",
     guide_text_eb866cdf15b53292: "Yon pasaj règ nan rechèch lojman an avèk lyen Official source li.",
     guide_text_2712bc39b88d6845: "1. Official source bò yon pasaj site louvri kopi piblikatè a. Verifye tit, ajans ak etap li.",
     guide_text_bf4f9211b28b970e: "Etap 5 — Kenbe epi repete rechèch la",
@@ -551,7 +554,7 @@
     guide_text_155dffce1f52e88a: "Yon sous ou pa ka jwenn diferan de yon sous ki pa gen anyen pou di, epi sit la separe yo. Yon paj ki pa ka chaje dosye li yo di sa; eseye ankò oswa louvri sous ofisyèl la se chemen pou avanse. Diferans sa a egziste pou anpeche ou li yon pann tanporè kòm absans dosye.",
     guide_text_1246343e3818e6a0: "Menm bagay la vre nan lòt sans lan. Yon ansanm dosye ki vid toutbon di li vid, olye li montre erè epi kite ou devine.",
     guide_text_b3b11affa410f453: "Etap 1 — Louvri avi a",
-    guide_text_c7c8004ef03ca42b: "Louvri [avi règ final Sanitation lan]({link_a}). Ou pa bezwen kont, epi paj avi ak devwa yo ka li san {name_b}. Verifye tit la: **{name_c} Final Rule re Implementation Dates for the {name_d} North and Upper {name_e} Commercial Waste Zones**. Louvri **Official record** bò aksyon avi a pou konpare kopi vil la, epi retounen.",
+    guide_text_07ca7987f158f484: "Louvri [avi règ final Sanitation lan]({link_a}). Ou pa bezwen kont, epi paj avi ak devwa yo ka li san {name_c}. Verifye tit la: **{name_d} Final Rule re Implementation Dates for the {name_e} North and Upper {name_f} Commercial Waste Zones**. Louvri **{control_b}** bò aksyon avi a pou konpare kopi vil la, epi retounen.",
     guide_text_6bf12cfc0cc49972: "Etap 2 — Suiv devwa a",
     guide_text_a8f2256a501403ce: "Sou avi a, jwenn **Connected mandate**. Li **Rules filing for this duty**, relasyon an, ak **New York City Charter § 753(e)(2)**, sitasyon an. Chwazi tèks devwa sou reglemante antrepriz dechè komèsyal yo. Li louvri [devwa Sanitation lan]({link_a}), avèk ajans li, aksyon obligatwa ak sitasyon.",
     guide_text_1737e30a162a7433: "Connected mandate nan avi règ Sanitation lan, avèk lyen devwa, relasyon ak sitasyon Charter.",

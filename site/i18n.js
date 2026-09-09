@@ -166,6 +166,9 @@ const I18N_PROVENANCE = {
 const STRINGS = {
   en: {
     // BEGIN GUIDE TRANSLATIONS
+    guide_text_a79aae29f4b3dde6: "On a meeting's page, choose `Add to calendar` among its actions. This control appears only when the record has a clock time. Open the downloaded file in your calendar app and check the event's title, date and time.",
+    guide_text_427f9ea76a2de8cd: "Open [{control_b}]({link_a}) and select a meeting title to open its meeting page.",
+    guide_text_0bd019485364f283: "If the filter panel covers the toolbar, close **{control_a}** and choose **{control_b}**.",
     guide_text_260313e4ac64571f: "{name_a} gathers public records that New York City agencies already publish — contracts, land-use applications, rules, meetings, civil-service exams, and the agencies and organizations attached to them — and keeps each one linked to the official source it came from.",
     guide_text_641498d11bf44328: "If you are here for the first time, start with the first tutorial. It uses one real search and takes about ten minutes, and you do not need an account or an email address to follow it. The two that follow it trace a single published notice back to the law behind it, and an agency through an organization it pays to one award.",
     guide_text_65173c70d8e1e737: "If you already have a task, go straight to How to. If a record has left you with a question about what it means, or a word you have not met before, Understand and Reference answer those without asking you to work through a lesson first.",
@@ -190,7 +193,7 @@ const STRINGS = {
     guide_text_d05504aea51fa236: "Expanded {control_a} with match basis, source and copy-link control.",
     guide_text_be58a1edd1426736: "1. Read the selected record’s {control_b}. 2. {control_a} reopens this panel.",
     guide_text_d20609214f01766f: "Step 3 — Reopen the evidence from its link",
-    guide_text_a3ccbb7c032c92e8: "At the bottom of the panel, choose **{control_a}**. Paste the address into a new tab. Check that the same record's **{control_b}** is expanded. Keep this address with the claim it supports.",
+    guide_text_312343a6336957ec: "At the bottom of the panel, choose **{control_a}**. Copy the full browser address and paste it into a new tab. Check that the same record's **{control_b}** is expanded. Keep this address with the claim it supports.",
     guide_text_07b6d5bba6d2a50f: "When there is no source or panel",
     guide_text_8a552edcc3e77c2e: "Some contract connections have no separate notice source. Open the linked record title in the panel and use that record's own source link. Missing source evidence is not proof of no relationship. If a copied address opens no panel, return to **{control_a}** and use **{control_b}** to select a connection currently on the page. Without {name_c}, read the records directly. The panel is unavailable.",
     guide_text_9881cfd03e31b031: "Step 1 — Pin two records",
@@ -349,7 +352,7 @@ const STRINGS = {
     guide_text_5530d25128c1ac7c: "Step 3 — Compare a rule result",
     guide_text_55e95127303b94fe: "Use your browser's **Back** button to return to [the housing search]({link_a}). In **{control_b}**, read a result's match explanation. A passage match quotes the published sentence containing your topic. Rules include proposals and final rules: check the record's stage before treating it as an open chance to comment. A final rule is not a proposal.",
     guide_text_df72aa973eb6890e: "Step 4 — Check the official copy",
-    guide_text_22300906a19d5e3f: "For a result with a quoted passage, open **{control_a}** beside that passage. Check the title, agency and stage on the city's published copy. If no passage result appears, open a result's title and use its **Official record** link instead. You now have a source you can rely on, rather than just a search match.",
+    guide_text_0e96f40a327fd396: "For a result with a quoted passage, open **{control_a}** beside that passage. Check the title, agency and stage on the city's published copy. If no passage result appears, open a result's title and use its **{control_b}** link instead. You now have a source you can rely on, rather than just a search match.",
     guide_text_eb866cdf15b53292: "A rule passage in the housing search with its Official source link.",
     guide_text_2712bc39b88d6845: "1. Official source beside a quoted passage opens the publisher’s copy. Check its title, agency and stage.",
     guide_text_bf4f9211b28b970e: "Step 5 — Keep and repeat the search",
@@ -700,7 +703,7 @@ const STRINGS = {
     guide_text_155dffce1f52e88a: "A source that could not be reached is a different thing from a source with nothing to say, and the site keeps them apart. A page that could not load its records says so, and retrying or opening the official source is the way through. Reading a temporary failure as an absence of records is the mistake this distinction exists to prevent.",
     guide_text_1246343e3818e6a0: "The same goes the other way. A record set that is genuinely empty says it is empty, rather than showing an error and leaving you to guess.",
     guide_text_b3b11affa410f453: "Step 1 — Open the notice",
-    guide_text_c7c8004ef03ca42b: "Open [the Sanitation final rule notice]({link_a}). No account is needed, and the notice and duty pages read without {name_b}. Check the title: **{name_c} Final Rule re Implementation Dates for the {name_d} North and Upper {name_e} Commercial Waste Zones**. Open **Official record** beside the notice's actions to compare the city's copy, then return.",
+    guide_text_07ca7987f158f484: "Open [the Sanitation final rule notice]({link_a}). No account is needed, and the notice and duty pages read without {name_c}. Check the title: **{name_d} Final Rule re Implementation Dates for the {name_e} North and Upper {name_f} Commercial Waste Zones**. Open **{control_b}** beside the notice's actions to compare the city's copy, then return.",
     guide_text_6bf12cfc0cc49972: "Step 2 — Follow the duty",
     guide_text_a8f2256a501403ce: "On the notice, find **Connected mandate**. Read **Rules filing for this duty**, the relation, and **New York City Charter § 753(e)(2)**, the citation. Select the duty text about regulating commercial waste businesses. It opens [the Sanitation duty]({link_a}), with its agency, required action and citation.",
     guide_text_1737e30a162a7433: "Connected mandate in the Sanitation rule notice with its duty link, relation and Charter citation.",
@@ -4626,10 +4629,21 @@ function applyStrings() {
   document.querySelectorAll("[data-i18n-alt]").forEach(function(el) {
     el.setAttribute("alt", t(el.dataset.i18nAlt));
   });
-  document.querySelectorAll('a[data-i18n^="guide_help_"], body[data-guide-links] a[href^="/guide/"]').forEach(function(el) {
+  // The same language handoff covers contextual help and ordinary Guide entries.
+  // Authored links remain usable when JavaScript is unavailable.
+  document.querySelectorAll('a[href^="/guide/"]').forEach(function(el) {
     const url = new URL(el.getAttribute("href"), location.href);
     url.searchParams.set("lang", lang);
     el.setAttribute("href", url.pathname + url.search + url.hash);
+  });
+  document.querySelectorAll('a[href*="#investigation"]').forEach(function(el) {
+    // Keep the default in-page footer contract, including after a language switch.
+    if (lang === "en" && el.getAttribute("data-i18n") === "footer_investigation") {
+      el.setAttribute("href", "#investigation");
+      return;
+    }
+    // Canonical documents use a root <base>; a bare fragment otherwise loses lang.
+    el.setAttribute("href", languageURL(el.getAttribute("href"), lang, document.baseURI || location.href));
   });
   // w9-05 (L6): document.title never translated -- each page marks its <html> with the title
   // key to use; applyStrings() runs on load and on every language switch, so this is the one

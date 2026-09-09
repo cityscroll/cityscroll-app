@@ -1,6 +1,29 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { mountAgencyCivicTimeLedger } from "../site/civic_time_ledger_runtime.mjs";
+import { mountAgencyCivicTimeLedger, sharePath } from "../site/civic_time_ledger_runtime.mjs";
+
+test('as-of Apply and Clear preserve only a supported selected language alongside date and claim', () => {
+  const previous = globalThis.location;
+  try {
+    for (const lang of ['es', 'zh-Hans', 'ar', 'en']) {
+      globalThis.location = { search: `?lang=${lang}&email=example&token=example` };
+      const applied = new URL(sharePath('/agencies/parks-and-recreation/', { asOf: '2024-06-01', claim: 'rules:notice:example' }), 'https://cityscroll.org');
+      assert.equal(applied.searchParams.get('lang'), lang);
+      assert.equal(applied.searchParams.get('as_of'), '2024-06-01');
+      assert.equal(applied.searchParams.get('claim'), 'rules:notice:example');
+      assert.deepEqual([...applied.searchParams.keys()].sort(), ['as_of', 'claim', 'lang']);
+      assert.equal(sharePath('/agencies/parks-and-recreation/'), `/agencies/parks-and-recreation/?lang=${lang}`);
+    }
+    for (const search of ['', '?lang=unsupported', '?token=example']) {
+      globalThis.location = { search };
+      assert.equal(sharePath('/agencies/parks-and-recreation/', { asOf: '2024-06-01' }), '/agencies/parks-and-recreation/?as_of=2024-06-01');
+      assert.equal(sharePath('/agencies/parks-and-recreation/'), '/agencies/parks-and-recreation/');
+    }
+  } finally {
+    if (previous === undefined) delete globalThis.location;
+    else globalThis.location = previous;
+  }
+});
 
 function restoreGlobal(name, hadValue, value) {
   if (hadValue) globalThis[name] = value;
