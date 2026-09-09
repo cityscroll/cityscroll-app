@@ -276,9 +276,17 @@ export function buildCapabilityTopology() {
   };
 }
 
+// Human reference copy stays separate from the exact machine contract in the JSON catalog.
+const MCP_READER_DESCRIPTIONS = Object.freeze({
+  get_entity_relationships: "Explore the public links for one exact CityScroll entity. Agency leaders link to the same person's published leadership record when held. The result states if a separate dossier exists, gives the source date and confidence, and explains the source's limits.",
+  retrieve_cited_passages: "Find source passages with stable citations and exact source links. Results include the corpus date, source types, counts, and date bounds, even with no hits. The search returns source text and its scope. It does not write an answer or infer civic links.",
+  analyze_contracts: "Rank agencies, vendors, fiscal years, or amount bands by registered contract value or count. Each group links to its contracts when held. Start with no agency filter to get the accepted labels. An unknown label gets suggestions. The fiscal year uses the registration date, from July 1 through June 30. These totals do not measure payments or spending.",
+  get_meeting: "Read one exact source meeting, with its ID, board, source date, and documents intact. The record states whether the meeting is held, whether minutes were published, and whether a City Record notice is linked. A missing notice link does not mean the source meeting is absent.",
+});
+
 export function renderMcpCatalogHtml(catalog = buildMcpToolCatalog()) {
   const items = catalog.tools.map((tool) => (
-    `  <li><code>${escapeHtml(tool.name)}</code> <span aria-hidden="true">·</span> ${escapeHtml(tool.operation_class)} — ${escapeHtml(tool.description.replace(/; ([a-z])/g, (_, letter) => `. ${letter.toUpperCase()}`))}</li>`
+    `  <li><code>${escapeHtml(tool.name)}</code> <span aria-hidden="true">·</span> ${escapeHtml(tool.operation_class)} — ${escapeHtml((MCP_READER_DESCRIPTIONS[tool.name] || tool.description).replace(/; ([a-z])/g, (_, letter) => `. ${letter.toUpperCase()}`))}</li>`
   )).join("\n");
   return `${MCP_CATALOG_MARKER_START}
 <div class="src" aria-label="MCP tool catalog">

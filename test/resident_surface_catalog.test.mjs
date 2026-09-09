@@ -145,3 +145,19 @@ test("publisher URL identifiers are distinct from exposed schema labels", () => 
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test("API reference default copy excludes unreviewed schema fields", () => {
+  const result = spawnSync("python3", ["-c", `
+import json, pathlib, sys
+sys.path.insert(0, 'test/standards')
+from resident_surface_catalog import FixtureText, findings_for_text, load_allowlist, DEFAULT_ALLOWLIST
+html = pathlib.Path('site/api.html').read_text()
+parser = FixtureText()
+parser.feed(html)
+surface = dict(surface='built:api.html', source='api.html', surface_kind='default_document', surface_family='reference', content_mode='default_reader')
+findings = findings_for_text('\\n'.join(parser.default_parts), surface, load_allowlist(DEFAULT_ALLOWLIST))
+print(json.dumps([finding['term'] for finding in findings if not finding['exception_id']]))
+`], { encoding: "utf8" });
+  assert.equal(result.status, 0, result.stderr);
+  assert.deepEqual(JSON.parse(result.stdout), [], "default reference copy must remain plain-language");
+});
