@@ -151,6 +151,34 @@ jq '{outbox_delivery, outbox_delivery_identity, outbox_delivery_token_expires_at
 
 The file-backed token path is not removed. It stays the rehearsal identity: a workstation running one cycle by hand does not need an App key on it, and a deployment already on a token keeps working until its three App files are installed.
 
+## Checkout refresh before scheduled runs
+
+Every `--due` invocation discovers origin's current default branch and fetches it
+before running monitors or repairs. Discovery and fetch share a five-second
+deadline; a stalled Git transport is terminated and the cycle continues. Only a
+clean checkout already on that default branch can advance, using fast-forward
+only. Dirty files (including untracked files), detached HEAD, another branch,
+local commits that cannot fast-forward, failed fetches, and unresolved Git state
+are refused. The runner never resets, stashes, switches branches, or forces an
+update. It checks the checkout again after fetching to detect intervening edits.
+
+The refresh lives in the `--due` entry point so the existing launchd job needs no
+wrapper change. After an update, the runner starts a fresh Node process before
+running any job; this reloads imported monitors and source declarations as well
+as the runner itself. Manual `--job` invocations do not refresh the checkout.
+
+The cycle receipt and scheduler heartbeat include `checkout_refresh`: status,
+`revision_before`, `revision_after`, refusal `reason`, and
+`consecutive_refusals`. Local refresh state is retained under
+`checkout-refresh/latest.json` in the scheduler state directory. After 24
+consecutive refusals, the existing issue outbox opens one **Scheduler
+configuration: checkout refresh refused** issue. Continued refusals reuse that
+intent; a successful refresh resets the count and closes the issue. The cycle
+continues on its current revision throughout. Refresh refusal does not create a
+repair-queue finding or an owner-mail alert. Keep scheduler state and logs outside
+tracked files (the default state directory is ignored) so they do not make the
+checkout dirty.
+
 ## Activating issue delivery
 
 Code and fixtures ship ahead of the account. Until the delivery credential is installed and verified, the runner stays deliberately offline: it keeps observing, keeps writing results and intents, and states on every cycle that it has no identity to deliver them with. That is the intended resting state, not a fault to chase.

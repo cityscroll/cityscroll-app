@@ -209,6 +209,16 @@ export async function recordSchedulerHeartbeat(env, heartbeat = {}, now = new Da
     workflow: trimmed(heartbeat.workflow),
     run_id: trimmed(heartbeat.run_id),
     source_revision: trimmed(heartbeat.source_revision).toLowerCase(),
+    // Refresh refusal is configuration evidence, delivered through the issue
+    // outbox. It does not change the heartbeat result or mail findings.
+    checkout_refresh: heartbeat.checkout_refresh && typeof heartbeat.checkout_refresh === "object" ? {
+      status: ["updated", "current", "refused"].includes(heartbeat.checkout_refresh.status) ? heartbeat.checkout_refresh.status : null,
+      revision_before: /^[0-9a-f]{40}$/.test(heartbeat.checkout_refresh.revision_before) ? heartbeat.checkout_refresh.revision_before : null,
+      revision_after: /^[0-9a-f]{40}$/.test(heartbeat.checkout_refresh.revision_after) ? heartbeat.checkout_refresh.revision_after : null,
+      reason: /^[a-z-]{1,64}$/.test(heartbeat.checkout_refresh.reason) ? heartbeat.checkout_refresh.reason : null,
+      consecutive_refusals: Number.isSafeInteger(heartbeat.checkout_refresh.consecutive_refusals)
+        ? Math.max(0, heartbeat.checkout_refresh.consecutive_refusals) : 0,
+    } : null,
     result: trimmed(heartbeat.result),
     observed_at: now.toISOString(),
     pending_outbox: Number(heartbeat.pending_outbox) || 0,

@@ -1,5 +1,14 @@
 #!/usr/bin/env node
 
+/**
+ * Each --due cycle first refreshes a clean checkout on origin's default branch
+ * with a bounded fetch and fast-forward only. An update restarts this process
+ * before loading jobs so monitors and repairs use the new imports. A refusal
+ * keeps the current revision, records checkout_refresh on the cycle/heartbeat,
+ * and opens a scheduler-configuration issue after 24 consecutive refusals.
+ * Manual --job runs do not refresh. See docs/external-schedule-outbox.md.
+ */
+
 import { readFile, readdir, mkdir, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { hostname } from "node:os";
@@ -24,6 +33,12 @@ import {
   resolveGitHubAppCredential,
 } from "./github_app_identity.mjs";
 import { loadSourceContracts } from "./source_contracts.mjs";
+import {
+  CHECKOUT_REFRESH_HANDOFF,
+  recordCheckoutRefresh,
+  refreshSchedulerCheckout,
+  restartRefreshedCycle,
+} from "./lib/scheduler_checkout_refresh.mjs";
 import {
   buildSourceHealthObservations,
   loadSourceHealthInputs,
@@ -1297,6 +1312,7 @@ export async function publishHeartbeat(stateDir, now, dueJobs, options = {}) {
     workflow: SCHEDULER_WORKFLOW,
     run_id: runId,
     source_revision: revision,
+    checkout_refresh: options.checkoutRefresh || null,
     result: cycleResult,
     observed_at: now.toISOString(),
     run_key: runKey(now),
@@ -1407,8 +1423,21 @@ export async function publishHeartbeat(stateDir, now, dueJobs, options = {}) {
 }
 
 async function main() {
-  const jobs = await loadJobs();
   const stateDir = arg("--state-dir") || process.env.CROL_EXTERNAL_SCHEDULE_STATE_DIR || join(ROOT, ".external-schedule-state");
+  let checkoutRefresh = null;
+  if (process.env[CHECKOUT_REFRESH_HANDOFF]) {
+    checkoutRefresh = JSON.parse(process.env[CHECKOUT_REFRESH_HANDOFF]);
+    delete process.env[CHECKOUT_REFRESH_HANDOFF];
+  } else if (process.argv.includes("--due") && !arg("--job")) {
+    const refresh = await refreshSchedulerCheckout(ROOT);
+    // determinism-lint: allow clock Scheduled execution records its observation time; tests inject now into the recorder.
+    checkoutRefresh = await recordCheckoutRefresh(stateDir, refresh, new Date());
+    if (checkoutRefresh.status === "updated") {
+      process.exitCode = await restartRefreshedCycle(ROOT, process.argv.slice(1), checkoutRefresh);
+      return;
+    }
+  }
+  const jobs = await loadJobs();
   // Delivery without an identity used to be silent. It is now stated exactly
   // once per cycle, in the log and on the heartbeat, so pending intents are
   // visibly undeliverable rather than merely unattempted. The line names the
@@ -1471,6 +1500,8 @@ async function main() {
   // actually delivered under rather than the one it was configured with.
   const deliverySummary = delivery.source ? delivery.source.summary() : delivery.summary;
   const heartbeat = await publishHeartbeat(stateDir, new Date(), summaries.map((summary) => summary.id), {
+    checkoutRefresh,
+    sourceRevision: checkoutRefresh ? checkoutRefresh.revision_after : sourceRevision(),
     cycleResult: degraded ? "degraded" : "succeeded",
     missedSlots,
     outboxDelivery,
@@ -1492,6 +1523,7 @@ async function main() {
     // No token, no assertion, no key and no path: the receipt is publishable as
     // it stands, and it still tells two identities apart.
     delivery: { status: outboxDelivery, reason: deliveryReason, ...deliverySummary },
+    checkout_refresh: checkoutRefresh,
     replayBefore,
     heartbeat: heartbeatReceipt,
     due: summaries,

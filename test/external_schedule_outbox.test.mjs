@@ -23,6 +23,7 @@ import {
   sourceFindings,
 } from "../tools/external_schedule_runner.mjs";
 import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
+import { recordSchedulerHeartbeat, schedulerWatchdogSnapshot } from "../worker/src/reliability_watchdogs.mjs";
 
 function fakeGithub() {
   const issues = [];
@@ -116,6 +117,49 @@ async function writeCredentialFile(path, contents, mode = 0o600) {
 
 const RUN_ID = "2026-08-31T12-00:runner-7:4821";
 const REVISION = "dd4b708b6fe39bf8b2ea635ef3d4f493c4751ace";
+
+test("checkout refresh evidence survives the heartbeat round trip without a mail finding", async () => {
+  await withTempDir("checkout-heartbeat", async (stateDir) => {
+    const now = new Date("2026-09-09T13:30:00Z");
+    const checkoutRefresh = {
+      status: "refused", revision_before: REVISION, revision_after: REVISION,
+      reason: "dirty-tree", consecutive_refusals: 24,
+    };
+    const savedKey = process.env.CITYSCROLL_ADMIN_KEY;
+    const savedFile = process.env.CITYSCROLL_ADMIN_KEY_FILE;
+    process.env.CITYSCROLL_ADMIN_KEY = "fixture";
+    delete process.env.CITYSCROLL_ADMIN_KEY_FILE;
+    const values = new Map();
+    const env = { ALERT_STATE: {
+      get: async (key) => values.get(key) || null,
+      put: async (key, value) => values.set(key, value),
+    } };
+    let accepted;
+    try {
+      const receipt = await publishHeartbeat(stateDir, now, [], {
+        runId: RUN_ID, sourceRevision: REVISION, checkoutRefresh,
+        fetchImpl: async (_url, options) => {
+          if (options?.method === "POST") {
+            accepted = await recordSchedulerHeartbeat(env, JSON.parse(options.body), now);
+            return { ok: accepted.accepted, status: 200, json: async () => ({ ok: accepted.accepted }) };
+          }
+          return { status: 200, json: async () => ({ heartbeat: accepted.heartbeat }) };
+        },
+      });
+      assert.equal(receipt.verified, true);
+      assert.deepEqual(receipt.checkout_refresh, checkoutRefresh);
+      assert.deepEqual(accepted.heartbeat.checkout_refresh, checkoutRefresh);
+      const stored = JSON.parse(await readFile(join(stateDir, "heartbeat", "latest.json"), "utf8"));
+      assert.deepEqual(stored.checkout_refresh, checkoutRefresh);
+      const snapshot = await schedulerWatchdogSnapshot(env, { now });
+      assert.equal(snapshot.scheduler_ok, true);
+      assert.deepEqual(snapshot.scheduler_findings, []);
+    } finally {
+      if (savedKey === undefined) delete process.env.CITYSCROLL_ADMIN_KEY; else process.env.CITYSCROLL_ADMIN_KEY = savedKey;
+      if (savedFile === undefined) delete process.env.CITYSCROLL_ADMIN_KEY_FILE; else process.env.CITYSCROLL_ADMIN_KEY_FILE = savedFile;
+    }
+  });
+});
 
 test("scheduler run identity names the cycle, host, and process", () => {
   assert.equal(
