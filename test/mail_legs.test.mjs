@@ -28,28 +28,39 @@ test("mail-leg catalog keeps the Gmail forward dashboard-gated", () => {
   assert.equal(gmail.reason, "dashboard-gated");
 });
 
-test("fixture snapshot classifies outbound and worker-consumer as passing", async () => {
+test("fixture snapshot preserves outbound health and retires the worker consumer", async () => {
   const result = await runMailLegCheck({ mode: "fixture", fixturePath: FIXTURE, now: NOW });
   assert.equal(result.ok, true);
   assert.deepEqual(result.findings, []);
   const byId = Object.fromEntries(result.legs.map((leg) => [leg.id, leg]));
   assert.equal(byId.outbound_ops_mailbox.status, "resend_accepted");
   assert.equal(byId.outbound_ops_mailbox.ok, true);
-  assert.equal(byId.inbound_worker_consumer.status, "matched");
-  assert.equal(byId.inbound_worker_consumer.ok, true);
+  assert.equal(byId.inbound_worker_consumer.status, "retired");
+  assert.equal(byId.inbound_worker_consumer.ok, null);
   assert.equal(byId.inbound_gmail_forward.status, "unprobed");
   assert.equal(byId.inbound_gmail_forward.ok, null);
 });
 
-test("unmatched canary after the pending window fails the worker-consumer leg", () => {
+test("unmatched historical canaries do not fail the retired leg", () => {
   const snapshot = JSON.parse(readFileSync(FIXTURE, "utf8"));
   snapshot.canary_inbound = null;
-  const result = classifyMailLegs(snapshot, { now: new Date("2026-08-29T14:25:00.000Z") });
-  assert.equal(result.ok, false);
-  assert.match(result.findings.join("; "), /inbound-worker canary was not received/);
-  const worker = result.legs.find((leg) => leg.id === "inbound_worker_consumer");
-  assert.equal(worker.status, "unmatched");
-  assert.equal(worker.ok, false);
+  const result = classifyMailLegs(snapshot);
+  assert.equal(result.ok, true);
+  assert.deepEqual(result.findings, []);
+  assert.equal(result.pending, false);
+  assert.equal(result.legs.find((leg) => leg.id === "inbound_worker_consumer").status, "retired");
+});
+
+test("live mail health only reads receipts and honors HTTP failure", async () => {
+  for (const status of [200, 503]) {
+    const calls = [];
+    const result = await runMailLegCheck({ mode: "live", adminKey: "test-key", fetchImpl: async (url, options) => {
+      calls.push({ url, method: options.method });
+      return { status, json: async () => ({ outbound_ops: { accepted: true } }) };
+    } });
+    assert.deepEqual(calls, [{ url: "https://api.cityscroll.org/admin/reliability/mail", method: "GET" }]);
+    assert.equal(result.ok, status === 200);
+  }
 });
 
 test("rejected operations send fails the outbound mailbox leg", () => {

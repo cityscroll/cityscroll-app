@@ -35,20 +35,10 @@ export const SCHEDULER_HEARTBEAT_RESULTS = Object.freeze(["succeeded", "degraded
 const GENERIC_EVIDENCE = new Set(["", "null", "none", "unknown", "n/a", "na", "-", "scheduler", "workflow"]);
 export const MAIL_INBOUND_LATEST_KEY = "ops:mail:inbound:latest";
 export const MAIL_OUTBOUND_LATEST_KEY = "ops:mail:outbound:latest";
-export const MAIL_CANARY_LATEST_KEY = "ops:mail:canary:latest";
-export const MAIL_CANARY_SUBJECT_PREFIX = "[cityscroll-mail-canary]";
-export const MAIL_CANARY_PENDING_MS = 10 * 60 * 1000;
-export const MAIL_CANARY_STALE_MS = 36 * 60 * 60 * 1000;
-export const DEFAULT_SUBSCRIBE_ADDRESS = "subscribe@crol-list.org";
 export const MAIL_FINDINGS_HISTORY_KEY = "ops:mail:findings:history";
 export const MAIL_FINDINGS_HISTORY_LIMIT = 30;
 export const OPS_ALERT_HISTORY_KEY = "ops:alert:history:v1";
 export const OPS_ALERT_HISTORY_LIMIT = 50;
-export const MAIL_CANARY_TOKEN_PREFIX_LENGTH = 8;
-export const HUMAN_OPS_MAILBOXES = Object.freeze([
-  "james@cityscroll.org",
-  "alerts@cityscroll.org",
-]);
 
 const day = (value) => new Date(value).toISOString().slice(0, 10);
 const key = (prefix, value) => `${prefix}${day(value)}`;
@@ -404,55 +394,6 @@ async function watermarkStalenessFromStore(env, today, priorDay, delivery) {
   });
 }
 
-export function mailCanaryInboundKey(token) {
-  return `ops:mail:canary:inbound:${String(token || "").toLowerCase()}`;
-}
-
-export function mailCanaryTokenPrefix(token) {
-  const hex = String(token || "").toLowerCase();
-  if (!/^[0-9a-f]{32}$/.test(hex)) return null;
-  return hex.slice(0, MAIL_CANARY_TOKEN_PREFIX_LENGTH);
-}
-
-export function mailCanaryTokenFromSubject(subject) {
-  const text = String(subject || "");
-  const index = text.indexOf(MAIL_CANARY_SUBJECT_PREFIX);
-  if (index < 0) return null;
-  const rest = text.slice(index + MAIL_CANARY_SUBJECT_PREFIX.length);
-  const match = rest.match(/^\s*([0-9a-fA-F]{32})\b/);
-  return match ? match[1].toLowerCase() : null;
-}
-
-export function normalizeMailbox(value) {
-  return String(value || "").trim().toLowerCase();
-}
-
-export function isHumanOpsMailbox(value) {
-  const address = normalizeMailbox(value);
-  if (!address) return false;
-  if (HUMAN_OPS_MAILBOXES.includes(address)) return true;
-  const domain = DEFAULT_SUBSCRIBE_ADDRESS.split("@")[1];
-  return Boolean(domain) && address === `alerts@${domain}`;
-}
-
-export function mailCanaryEnvelope(to, cc = []) {
-  const recipients = Array.isArray(to) ? to : [to];
-  const copies = Array.isArray(cc) ? cc : [cc];
-  return {
-    to: recipients.map(normalizeMailbox).filter(Boolean),
-    cc: copies.map(normalizeMailbox).filter(Boolean),
-  };
-}
-
-export function resolveMailCanaryTarget(env = {}) {
-  const target = normalizeMailbox(env?.SUBSCRIBE_ADDRESS) || DEFAULT_SUBSCRIBE_ADDRESS;
-  const envelope = mailCanaryEnvelope(target, []);
-  if (isHumanOpsMailbox(target) || envelope.cc.some(isHumanOpsMailbox) || envelope.to.some(isHumanOpsMailbox)) {
-    return { ok: false, target, envelope, reason: "human-ops-mailbox-refused" };
-  }
-  return { ok: true, target, envelope, reason: null };
-}
-
 export function mailFindingKind(text) {
   const value = String(text || "");
   if (/human operations mailbox/i.test(value)) return "human-target";
@@ -467,62 +408,8 @@ export function mailFindingShouldAlert(kind) {
   return kind !== "ops-send-rejected";
 }
 
-function envelopeTargetsHuman(envelope) {
-  const to = Array.isArray(envelope?.to) ? envelope.to : [];
-  const cc = Array.isArray(envelope?.cc) ? envelope.cc : [];
-  return [...to, ...cc].some(isHumanOpsMailbox);
-}
-
-export function classifyMailCanaryState(state = {}, { now = new Date(), pendingMs = MAIL_CANARY_PENDING_MS, staleMs = MAIL_CANARY_STALE_MS } = {}) {
-  const canary = state.canary || null;
-  const inboundMatch = state.canary_inbound || null;
-  if (!canary) return "unknown";
-  const sentAt = Date.parse(canary.sent_at || "");
-  const ageMs = Number.isFinite(sentAt) ? now.getTime() - sentAt : Number.POSITIVE_INFINITY;
-  if (canary.resend_accepted === false || envelopeTargetsHuman(canary.envelope)) return "failed";
-  if (!inboundMatch?.canary_token || inboundMatch.canary_token !== canary.token) {
-    return ageMs > pendingMs ? "failed" : "pending";
-  }
-  if (Number.isFinite(sentAt) && ageMs > staleMs) return "stale";
-  return "healthy";
-}
-
-function headerValue(headers, name) {
-  if (!headers) return "";
-  if (typeof headers.get === "function") {
-    return headers.get(name) || headers.get(String(name).toLowerCase()) || headers.get(String(name).toUpperCase()) || "";
-  }
-  return headers[name] || headers[String(name).toLowerCase()] || "";
-}
-
-function newMailCanaryToken() {
-  const bytes = new Uint8Array(16);
-  crypto.getRandomValues(bytes);
-  return [...bytes].map((b) => b.toString(16).padStart(2, "0")).join("");
-}
-
-export function mailLegFindings(state = {}, { now = new Date(), pendingMs = MAIL_CANARY_PENDING_MS, staleMs = MAIL_CANARY_STALE_MS } = {}) {
-  const findings = [];
-  const outbound = state.outbound_ops || null;
-  const canary = state.canary || null;
-  const inboundMatch = state.canary_inbound || null;
-  if (outbound && outbound.accepted === false) {
-    findings.push("ops mailbox send was not accepted");
-  }
-  if (canary) {
-    const sentAt = Date.parse(canary.sent_at || "");
-    const ageMs = Number.isFinite(sentAt) ? now.getTime() - sentAt : Number.POSITIVE_INFINITY;
-    if (envelopeTargetsHuman(canary.envelope) || canary.reason === "human-ops-mailbox-refused") {
-      findings.push("inbound-worker canary targeted a human operations mailbox");
-    } else if (canary.resend_accepted === false) {
-      findings.push("inbound-worker canary send was not accepted");
-    } else if (!inboundMatch?.canary_token || inboundMatch.canary_token !== canary.token) {
-      if (ageMs > pendingMs) findings.push("inbound-worker canary was not received");
-    } else if (Number.isFinite(sentAt) && ageMs > staleMs) {
-      findings.push("inbound-worker canary is stale");
-    }
-  }
-  return findings;
+export function mailLegFindings(state = {}) {
+  return state.outbound_ops?.accepted === false ? ["ops mailbox send was not accepted"] : [];
 }
 
 export function mailWatchdogHasMailFindings(findings = []) {
@@ -530,16 +417,13 @@ export function mailWatchdogHasMailFindings(findings = []) {
 }
 
 export async function recordInboundEmailReceipt(env, message, now = new Date()) {
-  const subject = headerValue(message?.headers, "subject");
-  const token = mailCanaryTokenFromSubject(subject);
   const receipt = {
     schema: "cityscroll.mail-inbound-receipt.v1",
     observed_at: now.toISOString(),
     to: String(message?.to || "").toLowerCase(),
-    canary_token: token,
+    disposition: "retired",
   };
   await putJson(env?.ALERT_STATE, MAIL_INBOUND_LATEST_KEY, receipt);
-  if (token) await putJson(env?.ALERT_STATE, mailCanaryInboundKey(token), receipt);
   return receipt;
 }
 
@@ -555,78 +439,19 @@ export async function recordOutboundOpsSendReceipt(env, result = {}, now = new D
   return receipt;
 }
 
-export async function sendInboundWorkerCanary(env, { now = new Date(), token, fetchImpl = globalThis.fetch } = {}) {
-  const canaryToken = token || newMailCanaryToken();
-  const resolved = resolveMailCanaryTarget(env);
-  const target = resolved.target;
-  const envelope = resolved.envelope;
-  const from = env?.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>";
-  let resendAccepted = false;
-  let reason = resolved.ok ? null : resolved.reason;
-  let providerId = null;
-  if (!resolved.ok) {
-    reason = resolved.reason;
-  } else if (!env?.RESEND_API_KEY) {
-    reason = "resend-not-configured";
-  } else {
-    const payload = {
-      from,
-      to: target,
-      cc: [],
-      subject: `${MAIL_CANARY_SUBJECT_PREFIX} ${canaryToken}`,
-      text: "CityScroll mail-leg health probe. This message is not a watch request.",
-    };
-    const response = await fetchImpl("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { "content-type": "application/json", authorization: `Bearer ${env.RESEND_API_KEY}` },
-      body: JSON.stringify(payload),
-    });
-    resendAccepted = response.ok === true;
-    reason = resendAccepted ? null : `resend-${response.status}`;
-    if (resendAccepted && typeof response.json === "function") {
-      try { providerId = (await response.json())?.id || null; } catch { providerId = null; }
-    }
-  }
-  const receipt = {
-    schema: "cityscroll.mail-canary.v1",
-    token: canaryToken,
-    token_prefix: mailCanaryTokenPrefix(canaryToken),
-    sent_at: now.toISOString(),
-    target,
-    envelope,
-    resend_accepted: resendAccepted,
-    reason,
-    provider_id: providerId,
-  };
-  await putJson(env?.ALERT_STATE, MAIL_CANARY_LATEST_KEY, receipt);
-  return receipt;
-}
-
-export async function mailWatchdogSnapshot(env, { now = new Date(), pendingMs = MAIL_CANARY_PENDING_MS, staleMs = MAIL_CANARY_STALE_MS } = {}) {
-  const canary = await readJson(env?.ALERT_STATE, MAIL_CANARY_LATEST_KEY);
+export async function mailWatchdogSnapshot(env, { now = new Date() } = {}) {
   const inbound = await readJson(env?.ALERT_STATE, MAIL_INBOUND_LATEST_KEY);
   const outboundOps = await readJson(env?.ALERT_STATE, MAIL_OUTBOUND_LATEST_KEY);
   const history = await readJson(env?.ALERT_STATE, MAIL_FINDINGS_HISTORY_KEY);
-  const canaryInbound = canary?.token ? await readJson(env?.ALERT_STATE, mailCanaryInboundKey(canary.token)) : null;
-  const findings = mailLegFindings(
-    { outbound_ops: outboundOps, canary, canary_inbound: canaryInbound },
-    { now, pendingMs, staleMs },
-  );
-  const sentAt = Date.parse(canary?.sent_at || "");
+  const findings = mailLegFindings({ outbound_ops: outboundOps });
   return {
     ok: findings.length === 0,
     findings,
     as_of: now.toISOString(),
-    thresholds: { pending_ms: pendingMs, stale_ms: staleMs },
-    canary_state: classifyMailCanaryState(
-      { canary, canary_inbound: canaryInbound },
-      { now, pendingMs, staleMs },
-    ),
-    canary_age_ms: Number.isFinite(sentAt) ? Math.max(0, now.getTime() - sentAt) : null,
+    inbound_status: "retired",
+    retired_at: "2026-09-08",
     inbound,
     outbound_ops: outboundOps,
-    canary,
-    canary_inbound: canaryInbound,
     findings_history: Array.isArray(history?.items) ? history.items : [],
     gmail_forward: { status: "unprobed", reason: "dashboard-gated" },
   };
@@ -1160,7 +985,7 @@ export async function emitMailExceptionAlerts(env, snapshot, { now = new Date() 
       text,
       delivery_status: deliveryStatus,
       reason,
-      source_receipt: MAIL_CANARY_LATEST_KEY,
+      source_receipt: MAIL_OUTBOUND_LATEST_KEY,
     });
   }
   if (records.length) await appendMailFindingsHistory(env, records, now);

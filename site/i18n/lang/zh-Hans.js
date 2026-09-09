@@ -3674,8 +3674,6 @@
     api_p_sharedinv_html: "<code>POST /inv</code> 保存一份置顶列表的快照（仅结构化字段，≤32KB，保留90天，每个IP每天10次）并返回一个 id；<code>GET /inv/&lt;id&gt;</code> 用于读回。网站在 <code>/#investigation/shared/&lt;id&gt;</code> 展示这些内容。",
     api_h_stats: "公开统计数据",
     api_p_stats_html: "<code>GET /stats</code> — 以汇总计数呈现的已提供产品覆盖范围（按板块列出的记录集，每个记录集都带有记录类型、计数规则和各自的证据日期）。缓存约 15 分钟。人类可读版本：<a href=\"stats.html\">统计数据</a>。相关：摘要邮件通过 <code>GET /r/&lt;kind&gt;/&lt;request_id&gt;</code> 链接通知，该重定向会核对 id 是否属于已知通知，跳转到对应的永久链接，并按日记录一个数字。",
-    api_h_subscribe: "通过电子邮件订阅",
-    api_p_subscribe_html: "发送电子邮件至 <a href=\"mailto:subscribe@crol-list.org\"><code>subscribe@crol-list.org</code></a>，用平实的英语描述您想要的内容——例如「50 万美元以上的建筑合同中标（授予合同）」或「Brooklyn 的重新分区通知」。请求处理后，监听会立即开始。欢迎邮件会说明监听内容，并包含管理和一键退订链接。适用每日上限。",
     api_h_mcp: "MCP —— 面向 AI 助手",
     api_p_mcp_html: "<code>POST /mcp</code>（Streamable HTTP，JSON-RPC）——将 MCP 客户端指向 <code>https://api.cityscroll.org/mcp</code>。工具：<code>search_notices</code> 和 <code>get_notice</code>（每日刷新的通知镜像，已应用诚实数据规则）、<code>preview_watch</code>（平实英语 → 常设监听将会推送的内容，无需订阅），以及 <code>create_watch</code>（平实英语 → 监听立即开始，欢迎邮件会说明其范围）。监听管理仍然位于邮件中的管理和退订链接之后——仅知道一个地址永远无法揭示或控制其订阅内容。适用按 IP 和每日模型调用上限。",
     api_h_upstream: "上游数据",

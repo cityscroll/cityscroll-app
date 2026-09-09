@@ -1,24 +1,18 @@
 #!/usr/bin/env node
-// Per-leg mail health gate. Exercises only rails that can run without Cloudflare
-// dashboard access: Resend → operations mailbox, and Email Routing → Worker
-// consumer. The Gmail forward leg stays dashboard-gated and is reported as
-// unprobed. Default mode is fixture/offline. Live mode posts a canary through
-// the Worker and must not run in pull-request CI.
+// Per-leg mail health reader. Inbound subscriptions retired on 2026-09-08.
+// Live mode reads receipts without sending a probe; Gmail remains unprobed.
 
 import { readFile } from "node:fs/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import path from "node:path";
 
 import {
-  MAIL_CANARY_PENDING_MS,
   mailLegFindings,
 } from "../worker/src/reliability_watchdogs.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 export const DEFAULT_FIXTURE = path.join(HERE, "../test/fixtures/mail-legs/snapshot.v1.json");
 export const DEFAULT_API_BASE = "https://api.cityscroll.org";
-export const DEFAULT_LIVE_TIMEOUT_MS = 90_000;
-export const DEFAULT_POLL_MS = 5_000;
 
 export const MAIL_LEGS = Object.freeze([
   Object.freeze({
@@ -29,7 +23,8 @@ export const MAIL_LEGS = Object.freeze([
   Object.freeze({
     id: "inbound_worker_consumer",
     name: "Email Routing to Worker consumer",
-    exercisable: true,
+    exercisable: false,
+    reason: "retired",
   }),
   Object.freeze({
     id: "inbound_gmail_forward",
@@ -96,7 +91,7 @@ export const MAIL_RECOVERY_CLASSES = Object.freeze([
     bounce_record: "ignored",
     resend_path: "none",
     useful_lost_messages: "unobserved_in_this_incident",
-    notes: "Raw inbound is parsed in memory and not stored. Bounce/DSN senders are ignored. After this change, ALERT_STATE keeps to/time/canary token only. A successful enroll is recoverable as the watch in SUBS, not as the original message.",
+    notes: "Inbound subscriptions retired on 2026-09-08. Bodies are neither parsed nor stored; ALERT_STATE retains only destination, time, and retired disposition. Existing watches remain in SUBS.",
   }),
   Object.freeze({
     id: "outbound_digest",
@@ -242,18 +237,11 @@ function hasFlag(flag, argv = process.argv.slice(2)) {
   return argv.includes(flag);
 }
 
-export function classifyMailLegs(snapshot, { now = new Date(), pendingMs = MAIL_CANARY_PENDING_MS } = {}) {
-  const findings = mailLegFindings({
-    outbound_ops: snapshot?.outbound_ops || null,
-    canary: snapshot?.canary || null,
-    canary_inbound: snapshot?.canary_inbound || null,
-  }, { now, pendingMs });
-  const pendingCanary = Boolean(snapshot?.canary?.resend_accepted)
-    && snapshot?.canary_inbound?.canary_token !== snapshot?.canary?.token
-    && (now.getTime() - Date.parse(snapshot?.canary?.sent_at || "") <= pendingMs);
+export function classifyMailLegs(snapshot) {
+  const findings = mailLegFindings({ outbound_ops: snapshot?.outbound_ops || null });
   return {
     ok: findings.length === 0,
-    pending: pendingCanary,
+    pending: false,
     findings,
     legs: [
       {
@@ -268,18 +256,9 @@ export function classifyMailLegs(snapshot, { now = new Date(), pendingMs = MAIL_
       },
       {
         id: "inbound_worker_consumer",
-        status: snapshot?.canary_inbound?.canary_token && snapshot.canary_inbound.canary_token === snapshot?.canary?.token
-          ? "matched"
-          : pendingCanary
-            ? "pending"
-            : snapshot?.canary
-              ? "unmatched"
-              : "not_run",
-        ok: snapshot?.canary_inbound?.canary_token && snapshot.canary_inbound.canary_token === snapshot?.canary?.token
-          ? true
-          : pendingCanary || !snapshot?.canary
-            ? null
-            : false,
+        status: "retired",
+        ok: null,
+        note: "Subscribe-by-email retired on 2026-09-08; residual deliveries are receipt-only.",
       },
       {
         id: "inbound_gmail_forward",
@@ -289,20 +268,6 @@ export function classifyMailLegs(snapshot, { now = new Date(), pendingMs = MAIL_
       },
     ],
   };
-}
-
-async function postCanary({ baseUrl, adminKey, fetchImpl }) {
-  const response = await fetchImpl(`${baseUrl}/admin/reliability/mail`, {
-    method: "POST",
-    headers: {
-      authorization: `Bearer ${adminKey}`,
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({ action: "canary" }),
-  });
-  const body = await response.json();
-  if (!response.ok) throw new Error(`canary POST HTTP ${response.status}: ${JSON.stringify(body)}`);
-  return body;
 }
 
 async function getSnapshot({ baseUrl, adminKey, fetchImpl }) {
@@ -322,9 +287,6 @@ export async function runMailLegCheck({
   baseUrl = DEFAULT_API_BASE,
   adminKey = process.env.CITYSCROLL_ADMIN_KEY || process.env.ADMIN_KEY,
   fetchImpl = globalThis.fetch,
-  sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
-  timeoutMs = DEFAULT_LIVE_TIMEOUT_MS,
-  pollMs = DEFAULT_POLL_MS,
   credentials = credentialPresence(),
 } = {}) {
   if (mode === "recovery") {
@@ -332,20 +294,9 @@ export async function runMailLegCheck({
   }
   if (mode === "live") {
     if (!adminKey) throw new Error("CITYSCROLL_ADMIN_KEY is required for live mail-leg checks");
-    await postCanary({ baseUrl, adminKey, fetchImpl });
-    const started = Date.now();
-    let last = null;
-    do {
-      last = await getSnapshot({ baseUrl, adminKey, fetchImpl });
-      const classified = classifyMailLegs(last.snapshot, { now: new Date() });
-      if (classified.ok || !classified.pending) {
-        return { mode, ...classified, http_status: last.http_status, snapshot: last.snapshot };
-      }
-      if (Date.now() - started >= timeoutMs) break;
-      await sleep(pollMs);
-    } while (Date.now() - started < timeoutMs);
-    const classified = classifyMailLegs(last.snapshot, { now: new Date() });
-    return { mode, ...classified, http_status: last.http_status, snapshot: last.snapshot };
+    const result = await getSnapshot({ baseUrl, adminKey, fetchImpl });
+    const classified = classifyMailLegs(result.snapshot);
+    return { mode, ...classified, ok: result.http_status === 200 && classified.ok, http_status: result.http_status, snapshot: result.snapshot };
   }
 
   const loaded = snapshot || JSON.parse(await readFile(fixturePath, "utf8"));

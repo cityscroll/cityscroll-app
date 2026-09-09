@@ -520,9 +520,9 @@ export const ADMIN_ROUTES = Object.freeze([
   },
   {
     path: "/admin/reliability/mail",
-    methods: ["GET", "POST"],
+    methods: ["GET"],
     auth: "ADMIN_KEY",
-    description: "Mail-leg health snapshot and canary. POST {action:canary} probes Resend → the worker-consumed subscribe address only; healthy rounds do not email team@. GET returns 503 when a canary is unmatched, stale, or a send failed, and exception-alerts team@ once per finding fingerprint per day. A rejected exception stays red through HTTP/GitHub-red rather than retrying the dead mail rail. Additive findings_history, canary_state, envelope, and token_prefix fields are source-labeled. The Gmail forward leg stays dashboard-gated.",
+    description: "Mail-leg receipt health. Inbound subscriptions and their canary retired on 2026-09-08; residual mail is receipt-only and old canary state cannot fail health. GET returns 503 for rejected operations sends without retrying the dead mail rail. Outbound delivery is unchanged. The Gmail forward leg remains unprobed.",
   },
   {
     path: "/admin/digest-send-test",

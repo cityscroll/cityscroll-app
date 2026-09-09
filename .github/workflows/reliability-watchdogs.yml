@@ -31,10 +31,6 @@ jobs:
               curl --fail-with-body --retry 2 "https://api.cityscroll.org/admin/reliability/scheduler?$observer" "${auth[@]}"
               ;;
             *)
-              curl --fail-with-body --retry 2 -X POST "https://api.cityscroll.org/admin/reliability/mail" \
-                "${auth[@]}" -H "content-type: application/json" \
-                --data '{"action":"canary"}'
-              sleep 45
               curl --fail-with-body --retry 2 "https://api.cityscroll.org/admin/reliability/mail" "${auth[@]}"
               curl --fail-with-body --retry 2 "https://api.cityscroll.org/admin/reliability/digest" "${auth[@]}"
               ;;

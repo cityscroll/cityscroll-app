@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/inbound-email-retirement",
+  "status": "implemented",
+  "fingerprint": "inbound-email-retirement.v1",
+  "updated_at": "2026-09-08T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "inbound-retirement-test",
+      "path": "worker/test/inbound_retired.test.mjs"
+    }
+  ]
+}
