@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/rule-attachment-evidence-refresh",
+  "status": "implemented",
+  "fingerprint": "rule-attachment-evidence-refresh.v1",
+  "updated_at": "2026-09-09T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "rules-observation-refresh",
+      "path": "tools/build_rules_meetings_domain_observations.mjs"
+    },
+    {
+      "id": "attachment-evidence-refresh-regression",
+      "path": "test/rule_attachment_refresh.test.mjs"
+    }
+  ]
+}
