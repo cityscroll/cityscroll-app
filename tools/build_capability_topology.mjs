@@ -400,15 +400,16 @@ export function writeOrCheckCapabilityTopology({ check = false } = {}) {
     checkGeneratedFile(MCP_CATALOG_PATH, outputs.catalog);
     checkGeneratedFile(API_CATALOG_PATH, outputs.apiCapabilityCatalog);
     checkGeneratedFile(API_HTML_PATH, outputs.renderedApiHtml);
-    return outputs;
   }
-  mkdirSync(dirname(TOPOLOGY_PATH), { recursive: true });
-  mkdirSync(dirname(MCP_CATALOG_PATH), { recursive: true });
-  mkdirSync(dirname(API_CATALOG_PATH), { recursive: true });
-  writeFileSync(TOPOLOGY_PATH, outputs.topology, "utf8");
-  writeFileSync(MCP_CATALOG_PATH, outputs.catalog, "utf8");
-  writeFileSync(API_CATALOG_PATH, outputs.apiCapabilityCatalog, "utf8");
-  writeFileSync(API_HTML_PATH, outputs.renderedApiHtml, "utf8");
+  if (!check) {
+    mkdirSync(dirname(TOPOLOGY_PATH), { recursive: true });
+    mkdirSync(dirname(MCP_CATALOG_PATH), { recursive: true });
+    mkdirSync(dirname(API_CATALOG_PATH), { recursive: true });
+    writeFileSync(TOPOLOGY_PATH, outputs.topology, "utf8");
+    writeFileSync(MCP_CATALOG_PATH, outputs.catalog, "utf8");
+    writeFileSync(API_CATALOG_PATH, outputs.apiCapabilityCatalog, "utf8");
+    writeFileSync(API_HTML_PATH, outputs.renderedApiHtml, "utf8");
+  }
   return outputs;
 }
 
