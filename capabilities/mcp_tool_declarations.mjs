@@ -1,3 +1,4 @@
+import { RESEARCH_IDENTIFIER_SAMPLE_DEFAULT, RESEARCH_IDENTIFIER_SAMPLE_MAXIMUM } from "./research_response_limits.mjs";
 // Runtime-safe MCP declarations shared by the Worker adapter and build-time catalog.
 // Keep this module free of request handling and optional Worker-only dependencies so
 // topology tests can inspect the public tool contract in the site Unit family.
@@ -543,10 +544,17 @@ const MCP_REGISTERED_AND_PILOT_TOOLS = [
   },
   {
     name: "browse_contracts",
-    description: "List public Contracts records with bounded filters and pages. Results keep exact contract IDs separate, including records that share a PIN.",
+    description: "List public Contracts records with bounded filters and pages. Results keep exact contract IDs separate, including records that share a PIN. Use population=registered with the analysis continuation arguments for exact analytical groups: this returns registration id, procurement_id and href, including registrations with no detail record.",
     inputSchema: {
       type: "object", additionalProperties: false,
       properties: {
+        population: { type: "string", enum: ["registered"], description: "Exact registered-contract population; agency and vendor use case-sensitive analytical labels in this mode." },
+        fiscal_year: { type: "integer", minimum: 1900, maximum: 2200 },
+        amount_band: { type: "string", maxLength: CONTRACTS_BROWSE_LIMITS.filterMaximumLength },
+        retroactive: { type: "boolean" },
+        city_record_match: { type: "string", enum: ["exact", "none", "cannot_evaluate_missing_pin"] },
+        group_by: { type: "string", enum: CONTRACTS_ANALYSIS_GROUPS },
+        group_label: { type: "string", maxLength: CONTRACTS_BROWSE_LIMITS.filterMaximumLength, description: "Exact analytical group label, including Unknown / not published; requires group_by." },
         query: { type: "string", maxLength: CONTRACTS_BROWSE_LIMITS.filterMaximumLength, description: "Case-insensitive terms matched against the existing Contracts browse fields." },
         agency: { type: "string", maxLength: CONTRACTS_BROWSE_LIMITS.filterMaximumLength, description: "Case-insensitive agency substring." },
         vendor: { type: "string", maxLength: CONTRACTS_BROWSE_LIMITS.filterMaximumLength, description: "Case-insensitive vendor substring." },
@@ -563,10 +571,12 @@ const MCP_REGISTERED_AND_PILOT_TOOLS = [
   },
   {
     name: "analyze_contracts",
-    description: "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, and coverage. Each group lists the exact contributing registration IDs in contract_ids and, at the same index in contract_procurement_ids, the canonical procurement ID get_contract accepts, or null when that contract is not individually retrievable. Does not report payments or spending. Omit agency to discover filters.discovery.agency.accepted_labels; retry an unrecognized label using a suggested exact label. fiscal_year is derived from registration date, July 1 through June 30.",
+    description: "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, and coverage. Each group gives contract_count, contract_sample (default 10, maximum 50; id, procurement_id, canonical href), and an exact browse_contracts continuation. Null procurement_id/href means no individual detail record is published. Groups are paginated in filters.pagination to keep research responses below 64 KiB; repeat the same filters with next_cursor. Does not report payments or spending. Omit agency to discover filters.discovery.agency.accepted_labels; retry an unrecognized label using a suggested exact label. fiscal_year is derived from registration date, July 1 through June 30.",
     inputSchema: {
       type: "object", additionalProperties: false,
       properties: {
+        sample_limit: { type: "integer", minimum: 1, maximum: CONTRACTS_ANALYSIS_LIMITS.maximumSample, default: CONTRACTS_ANALYSIS_LIMITS.defaultSample },
+        cursor: { type: "string", maxLength: 32, pattern: "^groups:[0-9]+$", description: "filters.pagination.next_cursor; repeat all other arguments unchanged." },
         group_by: { type: "string", enum: CONTRACTS_ANALYSIS_GROUPS, default: "agency", description: "Grouping dimension." },
         measure: { type: "string", enum: CONTRACTS_ANALYSIS_MEASURES, default: "current", description: "current or original registered contract value, or unique contract count." },
         agency: { type: "string", maxLength: CONTRACTS_ANALYSIS_LIMITS.filterMaximumLength, description: "Exact case-sensitive label from filters.discovery.agency.accepted_labels; omit agency to discover the set." },
@@ -901,7 +911,13 @@ const MCP_CAPABILITY_GAPS_BINDING = Object.freeze({
   annotations: MCP_PUBLIC_READ_ANNOTATIONS,
 });
 
-export const MCP_TOOLS = [...MCP_REGISTERED_AND_PILOT_TOOLS, MCP_CAPABILITY_GAPS_TOOL];
+export const MCP_TOOLS = [...MCP_REGISTERED_AND_PILOT_TOOLS, MCP_CAPABILITY_GAPS_TOOL].map((tool) =>
+  tool.annotations === MCP_PUBLIC_READ_ANNOTATIONS ? { ...tool, inputSchema: { ...tool.inputSchema,
+    properties: { ...tool.inputSchema.properties,
+      identifier_path: { type: "string", maxLength: 1024, description: "JSON Pointer to the identifier array named by a continuation." },
+      identifier_offset: { type: "integer", minimum: 0, description: "Offset for identifier arrays only; use the returned continuation with unchanged result filters." },
+      identifier_limit: { type: "integer", minimum: 1, maximum: RESEARCH_IDENTIFIER_SAMPLE_MAXIMUM, default: RESEARCH_IDENTIFIER_SAMPLE_DEFAULT, description: "Maximum identifiers per array; counts and replay continuations accompany sampled arrays." },
+    } } } : tool);
 
 export const MCP_TOOL_BINDINGS = Object.freeze([
   ...MCP_REGISTERED_AND_PILOT_TOOL_BINDINGS,

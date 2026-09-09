@@ -9,7 +9,7 @@ export const PEOPLE_GET_PROVIDER_ID = "worker-static.people-organizations.get";
 export const PEOPLE_GET_LIMITS = Object.freeze({ entityIdMaximumLength: 320, maximum: 1 });
 
 export const ORGANIZATIONS_BROWSE_CAPABILITY_ID = "organizations.browse";
-export const ORGANIZATIONS_BROWSE_CAPABILITY_VERSION = "1.0.0";
+export const ORGANIZATIONS_BROWSE_CAPABILITY_VERSION = "1.1.0";
 export const ORGANIZATIONS_BROWSE_CAPABILITY_REFERENCE = "organizations.browse@1";
 export const ORGANIZATIONS_BROWSE_PROVIDER_ID = "worker-static.people-organizations.browse";
 export const ORGANIZATIONS_BROWSE_LIMITS = Object.freeze({

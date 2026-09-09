@@ -1,3 +1,4 @@
+import { fitResearchBrowsePage } from "../../capabilities/research_response_limits.mjs";
 // HTTP adapters and explicit providers for the bounded People and
 // organizations capability. Request-time reads use the committed static
 // artifact; publisher APIs and raw source stores are not dependencies.
@@ -82,7 +83,7 @@ export function workerPeopleOrganizations(env) {
           if (!PEOPLE_ORGANIZATIONS_READ_MODEL_SCHEMAS.includes(model?.schema)) throw new Error("people organizations read model is unavailable");
           const browsed = organizationsBrowseFromModel(model, input);
           return Array.isArray(browsed?.results)
-            ? { ...browsed, results: browsed.results.map(withLeadership) }
+            ? fitResearchBrowsePage({ ...browsed, results: browsed.results.map(withLeadership) }, (row) => btoa(row.id).replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", ""))
             : browsed;
         } catch (error) {
           console.error("people organizations browse unavailable:", String(error?.message || error));

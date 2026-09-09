@@ -109,6 +109,7 @@
 /docs/remaining-browse-scoped-adapters.md
 /docs/repository-governance/
 /docs/repository-scrim-review.md
+/docs/research-response-bounds.md
 /docs/research/
 /docs/screenshots/community-board-money/
 /docs/seqra-ceqr-access-document-pipeline-v1.md
@@ -666,6 +667,7 @@
 /site/procurement_related_context.css
 /site/procurement_related_context.mjs
 /site/procurement_research_lanes.json
+/site/procurement_route.mjs
 /site/procurement_search_producer.mjs
 /site/product-updates.json
 /site/product_updates_delivery.mjs

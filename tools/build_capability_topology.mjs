@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { RESEARCH_RESPONSE_MAX_BYTES, RESEARCH_IDENTIFIER_SAMPLE_DEFAULT, RESEARCH_IDENTIFIER_SAMPLE_MAXIMUM } from "../capabilities/research_response_limits.mjs";
 
 import {
   existsSync,
@@ -167,6 +168,14 @@ export function buildMcpToolCatalog() {
       return {
         name: tool.name,
         operation_class: binding.operationClass,
+        ...((binding.authorityClass === "public_read" || binding.name === "list_capability_gaps") ? { research_response: {
+          maximum_bytes: RESEARCH_RESPONSE_MAX_BYTES,
+          byte_basis: "UTF-8 JSON tool result, including content and structuredContent",
+          identifier_default: RESEARCH_IDENTIFIER_SAMPLE_DEFAULT,
+          identifier_maximum: RESEARCH_IDENTIFIER_SAMPLE_MAXIMUM,
+          continuation: "Analysis: group.browse and filters.pagination. Other identifier arrays: counts and replay arguments in content, with identifier_offset/identifier_limit.",
+          overflow: "An explicit tool error asks for a smaller page or narrower filters; civic facts are never silently removed.",
+        } } : {}),
         authority_class: binding.authorityClass || null,
         description: tool.description,
         schema_reference: binding.schemaReference,
@@ -278,6 +287,7 @@ export function buildCapabilityTopology() {
 
 // Human reference copy stays separate from the exact machine contract in the JSON catalog.
 const MCP_READER_DESCRIPTIONS = Object.freeze({
+  browse_contracts: "List contracts in bounded pages. Each row keeps its exact identity, even when records share a PIN. Follow an analysis group to page through every registration, including those with no individual detail record.",
   get_entity_relationships: "Explore the public links for one exact CityScroll entity. Agency leaders link to the same person's published leadership record when held. The result states if a separate dossier exists, gives the source date and confidence, and explains the source's limits.",
   retrieve_cited_passages: "Find source passages with stable citations and exact source links. Results include the corpus date, source types, counts, and date bounds, even with no hits. The search returns source text and its scope. It does not write an answer or infer civic links.",
   analyze_contracts: "Rank agencies, vendors, fiscal years, or amount bands by registered contract value or count. Each group links to its contracts when held. Start with no agency filter to get the accepted labels. An unknown label gets suggestions. The fiscal year uses the registration date, from July 1 through June 30. These totals do not measure payments or spending.",

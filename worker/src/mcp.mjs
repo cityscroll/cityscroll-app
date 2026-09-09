@@ -1,3 +1,4 @@
+import { boundResearchToolResult } from "../../capabilities/research_response_limits.mjs";
 // POST /mcp — stateless remote MCP server (Streamable HTTP, single JSON-RPC response
 // per POST; spec-valid for tools-only servers). Adapted from Dev Doshi's crol-alert.
 //
@@ -585,7 +586,9 @@ export async function handleMcp(req, env, { federatedProvider = null } = {}) {
           return Response.json(rpc(id, toolError(`Unknown tool: ${name}`)));
         }
         const startedAt = Date.now();
-        const result = await callTool(env, req, name, args, { federatedProvider });
+        const rawResult = await callTool(env, req, name, args, { federatedProvider });
+        const result = MCP_TOOL_BINDINGS.some((binding) => binding.name === name && (binding.authorityClass === "public_read" || binding.name === "list_capability_gaps"))
+          ? boundResearchToolResult(rawResult, { tool: name, arguments: args }) : rawResult;
         const facts = toolCallTelemetryFacts(result);
         emitMachineClientTelemetry(env, machineClientTelemetry({
           profileId: profile?.id ?? null,

@@ -242,7 +242,7 @@
     },
     {
       "adapter_id": "mcp.analyze_contracts@1",
-      "adapter_semantic_sha256": "b2e21a27d32b31a7716543da08655f8e1bb585d2d210e190440220758b6cdf96",
+      "adapter_semantic_sha256": "b162e60065bdb3daaac3483928f71e1eaf074c4a3a03e37cd6b3da87875f6044",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -252,13 +252,16 @@
       "authority_class": "public_read",
       "bounds": {
         "defaultGroups": 10,
+        "defaultSample": 10,
         "filterMaximumLength": 240,
         "maximumGroups": 100,
+        "maximumResponseBytes": 57344,
+        "maximumSample": 50,
         "minimumGroups": 1
       },
       "calls": 1,
       "capability_reference": "contracts.analysis@1",
-      "direct_semantic_sha256": "b2e21a27d32b31a7716543da08655f8e1bb585d2d210e190440220758b6cdf96",
+      "direct_semantic_sha256": "b162e60065bdb3daaac3483928f71e1eaf074c4a3a03e37cd6b3da87875f6044",
       "name": "analyze_contracts",
       "operation_class": "read",
       "parity": "pass",

@@ -23,6 +23,14 @@
     {
       "name": "search_federated",
       "operation_class": "read",
+      "research_response": {
+        "maximum_bytes": 65536,
+        "byte_basis": "UTF-8 JSON tool result, including content and structuredContent",
+        "identifier_default": 10,
+        "identifier_maximum": 50,
+        "continuation": "Analysis: group.browse and filters.pagination. Other identifier arrays: counts and replay arguments in content, with identifier_offset/identifier_limit.",
+        "overflow": "An explicit tool error asks for a smaller page or narrower filters; civic facts are never silently removed."
+      },
       "authority_class": "public_read",
       "description": "Search the registered public CityScroll lenses in one bounded result set. Optional scope selects only allowlisted registered lenses. Preserves per-lens coverage, source observations, exact object routes, and federated ranking; it does not expose a raw store or arbitrary query language.",
       "schema_reference": "search.federated@1",
@@ -113,6 +121,23 @@
                 }
               }
             ]
+          },
+          "identifier_path": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "JSON Pointer to the identifier array named by a continuation."
+          },
+          "identifier_offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset for identifier arrays only; use the returned continuation with unchanged result filters."
+          },
+          "identifier_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 10,
+            "description": "Maximum identifiers per array; counts and replay continuations accompany sampled arrays."
           }
         },
         "required": [
@@ -259,6 +284,14 @@
     {
       "name": "search_notices",
       "operation_class": "read",
+      "research_response": {
+        "maximum_bytes": 65536,
+        "byte_basis": "UTF-8 JSON tool result, including content and structuredContent",
+        "identifier_default": 10,
+        "identifier_maximum": 50,
+        "continuation": "Analysis: group.browse and filters.pagination. Other identifier arrays: counts and replay arguments in content, with identifier_offset/identifier_limit.",
+        "overflow": "An explicit tool error asks for a smaller page or narrower filters; civic facts are never silently removed."
+      },
       "authority_class": "public_read",
       "description": "Search NYC City Record notices (the daily-refreshed mirror). Keyword terms are OR-matched; add structured filters to narrow. Amounts are validity-filtered (data-entry errors excluded); rolling placeholder deadlines are labeled, never shown as dates.",
       "schema_reference": "notice.search@1",
@@ -298,6 +331,23 @@
           "limit": {
             "type": "number",
             "description": "Max results (default 15, cap 100)."
+          },
+          "identifier_path": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "JSON Pointer to the identifier array named by a continuation."
+          },
+          "identifier_offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset for identifier arrays only; use the returned continuation with unchanged result filters."
+          },
+          "identifier_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 10,
+            "description": "Maximum identifiers per array; counts and replay continuations accompany sampled arrays."
           }
         }
       },
@@ -418,6 +468,14 @@
     {
       "name": "get_notice",
       "operation_class": "read",
+      "research_response": {
+        "maximum_bytes": 65536,
+        "byte_basis": "UTF-8 JSON tool result, including content and structuredContent",
+        "identifier_default": 10,
+        "identifier_maximum": 50,
+        "continuation": "Analysis: group.browse and filters.pagination. Other identifier arrays: counts and replay arguments in content, with identifier_offset/identifier_limit.",
+        "overflow": "An explicit tool error asks for a smaller page or narrower filters; civic facts are never silently removed."
+      },
       "authority_class": "public_read",
       "description": "Get one public City Record notice by its exact RequestID. The result preserves materialized-source freshness and distinguishes a missing public notice from a read that cannot be served.",
       "schema_reference": "notice.get@1",
@@ -430,6 +488,23 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 80
+          },
+          "identifier_path": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "JSON Pointer to the identifier array named by a continuation."
+          },
+          "identifier_offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset for identifier arrays only; use the returned continuation with unchanged result filters."
+          },
+          "identifier_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 10,
+            "description": "Maximum identifiers per array; counts and replay continuations accompany sampled arrays."
           }
         },
         "required": [
@@ -534,6 +609,14 @@
     {
       "name": "get_entity_dossier",
       "operation_class": "read",
+      "research_response": {
+        "maximum_bytes": 65536,
+        "byte_basis": "UTF-8 JSON tool result, including content and structuredContent",
+        "identifier_default": 10,
+        "identifier_maximum": 50,
+        "continuation": "Analysis: group.browse and filters.pagination. Other identifier arrays: counts and replay arguments in content, with identifier_offset/identifier_limit.",
+        "overflow": "An explicit tool error asks for a smaller page or narrower filters; civic facts are never silently removed."
+      },
       "authority_class": "public_read",
       "description": "Get the bounded public dossier for one exact canonical CityScroll entity. Preserves attributed disagreements, availability, provenance, and public redaction.",
       "schema_reference": "entity.dossier.get@1",
@@ -547,6 +630,23 @@
             "minLength": 1,
             "maxLength": 300,
             "description": "Exact canonical CityScroll entity identifier."
+          },
+          "identifier_path": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "JSON Pointer to the identifier array named by a continuation."
+          },
+          "identifier_offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset for identifier arrays only; use the returned continuation with unchanged result filters."
+          },
+          "identifier_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 10,
+            "description": "Maximum identifiers per array; counts and replay continuations accompany sampled arrays."
           }
         },
         "required": [
@@ -629,6 +729,14 @@
     {
       "name": "get_entity_relationships",
       "operation_class": "read",
+      "research_response": {
+        "maximum_bytes": 65536,
+        "byte_basis": "UTF-8 JSON tool result, including content and structuredContent",
+        "identifier_default": 10,
+        "identifier_maximum": 50,
+        "continuation": "Analysis: group.browse and filters.pagination. Other identifier arrays: counts and replay arguments in content, with identifier_offset/identifier_limit.",
+        "overflow": "An explicit tool error asks for a smaller page or narrower filters; civic facts are never silently removed."
+      },
       "authority_class": "public_read",
       "description": "Traverse bounded, evidence-bearing public relationships from one exact canonical CityScroll entity. Only the closed node and edge vocabularies are returned. Published agency graphs give person-leader nodes available_detail: separate dossier availability, an exact leadership read path when available, observation date, confidence, and source limitation.",
       "schema_reference": "entity.relationships.get@1",
@@ -703,6 +811,23 @@
                 "has_committee"
               ]
             }
+          },
+          "identifier_path": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "JSON Pointer to the identifier array named by a continuation."
+          },
+          "identifier_offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset for identifier arrays only; use the returned continuation with unchanged result filters."
+          },
+          "identifier_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 10,
+            "description": "Maximum identifiers per array; counts and replay continuations accompany sampled arrays."
           }
         },
         "required": [
@@ -792,6 +917,14 @@
     {
       "name": "retrieve_cited_passages",
       "operation_class": "read",
+      "research_response": {
+        "maximum_bytes": 65536,
+        "byte_basis": "UTF-8 JSON tool result, including content and structuredContent",
+        "identifier_default": 10,
+        "identifier_maximum": 50,
+        "continuation": "Analysis: group.browse and filters.pagination. Other identifier arrays: counts and replay arguments in content, with identifier_offset/identifier_limit.",
+        "overflow": "An explicit tool error asks for a smaller page or narrower filters; civic facts are never silently removed."
+      },
       "authority_class": "public_read",
       "description": "Retrieve source passages with stable citations and exact source joins. Returns source text only. hard_scope.corpus includes observed_on, source_families with coverage and source publication-date bounds, record_count, and passage_count even when no citations match. It does not generate an answer or infer civic relationships.",
       "schema_reference": "cited.passages.retrieve@1",
@@ -832,6 +965,23 @@
             "minimum": 1,
             "maximum": 20,
             "default": 10
+          },
+          "identifier_path": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "JSON Pointer to the identifier array named by a continuation."
+          },
+          "identifier_offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset for identifier arrays only; use the returned continuation with unchanged result filters."
+          },
+          "identifier_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 10,
+            "description": "Maximum identifiers per array; counts and replay continuations accompany sampled arrays."
           }
         },
         "required": [
@@ -1302,6 +1452,14 @@
     {
       "name": "get_contract",
       "operation_class": "read",
+      "research_response": {
+        "maximum_bytes": 65536,
+        "byte_basis": "UTF-8 JSON tool result, including content and structuredContent",
+        "identifier_default": 10,
+        "identifier_maximum": 50,
+        "continuation": "Analysis: group.browse and filters.pagination. Other identifier arrays: counts and replay arguments in content, with identifier_offset/identifier_limit.",
+        "overflow": "An explicit tool error asks for a smaller page or narrower filters; civic facts are never silently removed."
+      },
       "authority_class": "public_read",
       "description": "Get one public contract by its exact ID. Uses the same Contracts record as CityScroll. Includes source links, coverage, freshness, amount validity, and lifecycle facts when available.",
       "schema_reference": "contract.get@1",
@@ -1315,6 +1473,23 @@
             "minLength": 1,
             "maxLength": 320,
             "description": "Exact canonical procurement_id, including its procurement: prefix."
+          },
+          "identifier_path": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "JSON Pointer to the identifier array named by a continuation."
+          },
+          "identifier_offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset for identifier arrays only; use the returned continuation with unchanged result filters."
+          },
+          "identifier_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 10,
+            "description": "Maximum identifiers per array; counts and replay continuations accompany sampled arrays."
           }
         },
         "required": [
@@ -1398,14 +1573,63 @@
     {
       "name": "browse_contracts",
       "operation_class": "read",
+      "research_response": {
+        "maximum_bytes": 65536,
+        "byte_basis": "UTF-8 JSON tool result, including content and structuredContent",
+        "identifier_default": 10,
+        "identifier_maximum": 50,
+        "continuation": "Analysis: group.browse and filters.pagination. Other identifier arrays: counts and replay arguments in content, with identifier_offset/identifier_limit.",
+        "overflow": "An explicit tool error asks for a smaller page or narrower filters; civic facts are never silently removed."
+      },
       "authority_class": "public_read",
-      "description": "List public Contracts records with bounded filters and pages. Results keep exact contract IDs separate, including records that share a PIN.",
+      "description": "List public Contracts records with bounded filters and pages. Results keep exact contract IDs separate, including records that share a PIN. Use population=registered with the analysis continuation arguments for exact analytical groups: this returns registration id, procurement_id and href, including registrations with no detail record.",
       "schema_reference": "contracts.browse@1",
       "capability_reference": "contracts.browse@1",
       "input_schema": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "population": {
+            "type": "string",
+            "enum": [
+              "registered"
+            ],
+            "description": "Exact registered-contract population; agency and vendor use case-sensitive analytical labels in this mode."
+          },
+          "fiscal_year": {
+            "type": "integer",
+            "minimum": 1900,
+            "maximum": 2200
+          },
+          "amount_band": {
+            "type": "string",
+            "maxLength": 240
+          },
+          "retroactive": {
+            "type": "boolean"
+          },
+          "city_record_match": {
+            "type": "string",
+            "enum": [
+              "exact",
+              "none",
+              "cannot_evaluate_missing_pin"
+            ]
+          },
+          "group_by": {
+            "type": "string",
+            "enum": [
+              "agency",
+              "vendor",
+              "registration_fiscal_year",
+              "amount_band"
+            ]
+          },
+          "group_label": {
+            "type": "string",
+            "maxLength": 240,
+            "description": "Exact analytical group label, including Unknown / not published; requires group_by."
+          },
           "query": {
             "type": "string",
             "maxLength": 240,
@@ -1449,6 +1673,23 @@
             "type": "string",
             "maxLength": 320,
             "description": "Opaque cursor returned by the previous page."
+          },
+          "identifier_path": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "JSON Pointer to the identifier array named by a continuation."
+          },
+          "identifier_offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset for identifier arrays only; use the returned continuation with unchanged result filters."
+          },
+          "identifier_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 10,
+            "description": "Maximum identifiers per array; counts and replay continuations accompany sampled arrays."
           }
         }
       },
@@ -1568,14 +1809,34 @@
     {
       "name": "analyze_contracts",
       "operation_class": "read",
+      "research_response": {
+        "maximum_bytes": 65536,
+        "byte_basis": "UTF-8 JSON tool result, including content and structuredContent",
+        "identifier_default": 10,
+        "identifier_maximum": 50,
+        "continuation": "Analysis: group.browse and filters.pagination. Other identifier arrays: counts and replay arguments in content, with identifier_offset/identifier_limit.",
+        "overflow": "An explicit tool error asks for a smaller page or narrower filters; civic facts are never silently removed."
+      },
       "authority_class": "public_read",
-      "description": "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, and coverage. Each group lists the exact contributing registration IDs in contract_ids and, at the same index in contract_procurement_ids, the canonical procurement ID get_contract accepts, or null when that contract is not individually retrievable. Does not report payments or spending. Omit agency to discover filters.discovery.agency.accepted_labels; retry an unrecognized label using a suggested exact label. fiscal_year is derived from registration date, July 1 through June 30.",
+      "description": "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, and coverage. Each group gives contract_count, contract_sample (default 10, maximum 50; id, procurement_id, canonical href), and an exact browse_contracts continuation. Null procurement_id/href means no individual detail record is published. Groups are paginated in filters.pagination to keep research responses below 64 KiB; repeat the same filters with next_cursor. Does not report payments or spending. Omit agency to discover filters.discovery.agency.accepted_labels; retry an unrecognized label using a suggested exact label. fiscal_year is derived from registration date, July 1 through June 30.",
       "schema_reference": "contracts.analysis@1",
       "capability_reference": "contracts.analysis@1",
       "input_schema": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "sample_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 10
+          },
+          "cursor": {
+            "type": "string",
+            "maxLength": 32,
+            "pattern": "^groups:[0-9]+$",
+            "description": "filters.pagination.next_cursor; repeat all other arguments unchanged."
+          },
           "group_by": {
             "type": "string",
             "enum": [
@@ -1636,6 +1897,23 @@
             "minimum": 1,
             "maximum": 100,
             "default": 10
+          },
+          "identifier_path": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "JSON Pointer to the identifier array named by a continuation."
+          },
+          "identifier_offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset for identifier arrays only; use the returned continuation with unchanged result filters."
+          },
+          "identifier_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 10,
+            "description": "Maximum identifiers per array; counts and replay continuations accompany sampled arrays."
           }
         }
       },
@@ -1844,10 +2122,17 @@
           "filterMaximumLength": 240,
           "minimumGroups": 1,
           "maximumGroups": 100,
-          "defaultGroups": 10
+          "defaultGroups": 10,
+          "defaultSample": 10,
+          "maximumSample": 50,
+          "maximumResponseBytes": 57344
         },
         "output": {
-          "maximumGroups": 100
+          "maximumGroups": 100,
+          "maximumSample": 50,
+          "maximumBytes": 57344,
+          "pagination": "filters.pagination; pages may be shorter than limit to fit the byte budget",
+          "legacyIdentifiers": "HTTP identifiers=full only; outside the research response budget"
         }
       },
       "examples": [
@@ -1873,7 +2158,7 @@
           "output": {
             "availability": "complete",
             "measure": "unique registered contracts",
-            "drillThrough": "contract_ids and ordinary Contracts scope"
+            "drillThrough": "contract_sample and exact registered-population contracts.browse@1 continuation"
           }
         }
       ],
@@ -1888,6 +2173,14 @@
     {
       "name": "get_person_or_organization",
       "operation_class": "read",
+      "research_response": {
+        "maximum_bytes": 65536,
+        "byte_basis": "UTF-8 JSON tool result, including content and structuredContent",
+        "identifier_default": 10,
+        "identifier_maximum": 50,
+        "continuation": "Analysis: group.browse and filters.pagination. Other identifier arrays: counts and replay arguments in content, with identifier_offset/identifier_limit.",
+        "overflow": "An explicit tool error asks for a smaller page or narrower filters; civic facts are never silently removed."
+      },
       "authority_class": "public_read",
       "description": "Get one exact typed person or organization row from the published People and organizations read model. Display names never create identity; relation states and source fields are preserved.",
       "schema_reference": "people.get@1",
@@ -1901,6 +2194,23 @@
             "minLength": 1,
             "maxLength": 320,
             "description": "Exact row id such as official:... or agency:id:..."
+          },
+          "identifier_path": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "JSON Pointer to the identifier array named by a continuation."
+          },
+          "identifier_offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset for identifier arrays only; use the returned continuation with unchanged result filters."
+          },
+          "identifier_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 10,
+            "description": "Maximum identifiers per array; counts and replay continuations accompany sampled arrays."
           }
         },
         "required": [
@@ -1983,6 +2293,14 @@
     {
       "name": "browse_organizations",
       "operation_class": "read",
+      "research_response": {
+        "maximum_bytes": 65536,
+        "byte_basis": "UTF-8 JSON tool result, including content and structuredContent",
+        "identifier_default": 10,
+        "identifier_maximum": 50,
+        "continuation": "Analysis: group.browse and filters.pagination. Other identifier arrays: counts and replay arguments in content, with identifier_offset/identifier_limit.",
+        "overflow": "An explicit tool error asks for a smaller page or narrower filters; civic facts are never silently removed."
+      },
       "authority_class": "public_read",
       "description": "Browse the bounded typed People and organizations snapshot with exact row-kind and token filters. Results retain published, empty, or unknown relation states and read-model freshness.",
       "schema_reference": "organizations.browse@1",
@@ -2018,6 +2336,23 @@
           "cursor": {
             "type": "string",
             "maxLength": 320
+          },
+          "identifier_path": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "JSON Pointer to the identifier array named by a continuation."
+          },
+          "identifier_offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset for identifier arrays only; use the returned continuation with unchanged result filters."
+          },
+          "identifier_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 10,
+            "description": "Maximum identifiers per array; counts and replay continuations accompany sampled arrays."
           }
         }
       },
@@ -2137,6 +2472,14 @@
     {
       "name": "get_meeting",
       "operation_class": "read",
+      "research_response": {
+        "maximum_bytes": 65536,
+        "byte_basis": "UTF-8 JSON tool result, including content and structuredContent",
+        "identifier_default": 10,
+        "identifier_maximum": 50,
+        "continuation": "Analysis: group.browse and filters.pagination. Other identifier arrays: counts and replay arguments in content, with identifier_offset/identifier_limit.",
+        "overflow": "An explicit tool error asks for a smaller page or narrower filters; civic facts are never silently removed."
+      },
       "authority_class": "public_read",
       "description": "Get one exact source-qualified meeting from the shared CityScroll meeting read model. Preserves source receipt, coverage, freshness, and attached meeting documents. source_presence, source_observation, minutes, and city_record_join are independent states; no notice join does not mean no source meeting.",
       "schema_reference": "meeting.get@1",
@@ -2150,6 +2493,23 @@
             "minLength": 1,
             "maxLength": 320,
             "description": "Exact canonical meeting id, including its meeting: prefix."
+          },
+          "identifier_path": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "JSON Pointer to the identifier array named by a continuation."
+          },
+          "identifier_offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset for identifier arrays only; use the returned continuation with unchanged result filters."
+          },
+          "identifier_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 10,
+            "description": "Maximum identifiers per array; counts and replay continuations accompany sampled arrays."
           }
         },
         "required": [
@@ -2341,6 +2701,14 @@
     {
       "name": "get_land_project",
       "operation_class": "read",
+      "research_response": {
+        "maximum_bytes": 65536,
+        "byte_basis": "UTF-8 JSON tool result, including content and structuredContent",
+        "identifier_default": 10,
+        "identifier_maximum": 50,
+        "continuation": "Analysis: group.browse and filters.pagination. Other identifier arrays: counts and replay arguments in content, with identifier_offset/identifier_limit.",
+        "overflow": "An explicit tool error asks for a smaller page or narrower filters; civic facts are never silently removed."
+      },
       "authority_class": "public_read",
       "description": "Get one exact Land (ZAP) project by its ZAP project id. Includes its deep link, status, geography, applicant, review procedure, exact actions and ids, environmental facts, milestones, outcomes, sources, and any conflicts, when known.",
       "schema_reference": "land.project.get@1",
@@ -2354,6 +2722,23 @@
             "minLength": 1,
             "maxLength": 32,
             "description": "Exact publisher ZAP project id, e.g. 2024Q0356."
+          },
+          "identifier_path": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "JSON Pointer to the identifier array named by a continuation."
+          },
+          "identifier_offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset for identifier arrays only; use the returned continuation with unchanged result filters."
+          },
+          "identifier_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 10,
+            "description": "Maximum identifiers per array; counts and replay continuations accompany sampled arrays."
           }
         },
         "required": [
@@ -2437,6 +2822,14 @@
     {
       "name": "browse_land_projects",
       "operation_class": "read",
+      "research_response": {
+        "maximum_bytes": 65536,
+        "byte_basis": "UTF-8 JSON tool result, including content and structuredContent",
+        "identifier_default": 10,
+        "identifier_maximum": 50,
+        "continuation": "Analysis: group.browse and filters.pagination. Other identifier arrays: counts and replay arguments in content, with identifier_offset/identifier_limit.",
+        "overflow": "An explicit tool error asks for a smaller page or narrower filters; civic facts are never silently removed."
+      },
       "authority_class": "public_read",
       "description": "List public Land (ZAP) projects using the same filters as the Land page: review procedure, action type, stage, effect, and geography. Reads the full warehouse, not just active projects, so completed and past projects stay reachable too.",
       "schema_reference": "land.projects.browse@1",
@@ -2552,6 +2945,23 @@
             "type": "string",
             "maxLength": 320,
             "description": "Opaque cursor returned by the previous page."
+          },
+          "identifier_path": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "JSON Pointer to the identifier array named by a continuation."
+          },
+          "identifier_offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset for identifier arrays only; use the returned continuation with unchanged result filters."
+          },
+          "identifier_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 10,
+            "description": "Maximum identifiers per array; counts and replay continuations accompany sampled arrays."
           }
         }
       },
@@ -2671,6 +3081,14 @@
     {
       "name": "get_land_decision_path",
       "operation_class": "read",
+      "research_response": {
+        "maximum_bytes": 65536,
+        "byte_basis": "UTF-8 JSON tool result, including content and structuredContent",
+        "identifier_default": 10,
+        "identifier_maximum": 50,
+        "continuation": "Analysis: group.browse and filters.pagination. Other identifier arrays: counts and replay arguments in content, with identifier_offset/identifier_limit.",
+        "overflow": "An explicit tool error asks for a smaller page or narrower filters; civic facts are never silently removed."
+      },
       "authority_class": "public_read",
       "description": "Get the typed Land decision path for one exact project. Observed milestones and events remain separate from the reviewed normative procedure stages, actors, effects, and parallel review groups; absent and unknown stages stay explicit.",
       "schema_reference": "land.decision_path.get@1",
@@ -2684,6 +3102,23 @@
             "minLength": 1,
             "maxLength": 32,
             "description": "Exact publisher ZAP project id, e.g. 2024Q0356."
+          },
+          "identifier_path": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "JSON Pointer to the identifier array named by a continuation."
+          },
+          "identifier_offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset for identifier arrays only; use the returned continuation with unchanged result filters."
+          },
+          "identifier_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 10,
+            "description": "Maximum identifiers per array; counts and replay continuations accompany sampled arrays."
           }
         },
         "required": [
@@ -2872,6 +3307,14 @@
     {
       "name": "list_capability_gaps",
       "operation_class": "read",
+      "research_response": {
+        "maximum_bytes": 65536,
+        "byte_basis": "UTF-8 JSON tool result, including content and structuredContent",
+        "identifier_default": 10,
+        "identifier_maximum": 50,
+        "continuation": "Analysis: group.browse and filters.pagination. Other identifier arrays: counts and replay arguments in content, with identifier_offset/identifier_limit.",
+        "overflow": "An explicit tool error asks for a smaller page or narrower filters; civic facts are never silently removed."
+      },
       "authority_class": null,
       "description": "List the capability gaps CityScroll declares about itself, so a caller can name what this endpoint does not answer instead of assuming a tool for it exists. Declared gaps: civic.outcome.prediction (What outcome will a public decision definitely produce? — nearest tools: get_land_project, get_land_decision_path). Takes no input, reads no records, and returns only this published declaration.",
       "schema_reference": "mcp.list_capability_gaps.contract@1",
@@ -2879,7 +3322,25 @@
       "input_schema": {
         "type": "object",
         "additionalProperties": false,
-        "properties": {}
+        "properties": {
+          "identifier_path": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "JSON Pointer to the identifier array named by a continuation."
+          },
+          "identifier_offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset for identifier arrays only; use the returned continuation with unchanged result filters."
+          },
+          "identifier_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 10,
+            "description": "Maximum identifiers per array; counts and replay continuations accompany sampled arrays."
+          }
+        }
       },
       "output_schema": {
         "type": "object",

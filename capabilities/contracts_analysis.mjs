@@ -2,8 +2,10 @@
 // The registered-contract population, not payment activity, is the only fact
 // exposed by this capability.
 
+import { RESEARCH_STRUCTURED_MAX_BYTES, RESEARCH_IDENTIFIER_SAMPLE_DEFAULT, RESEARCH_IDENTIFIER_SAMPLE_MAXIMUM } from "./research_response_limits.mjs";
+
 export const CONTRACTS_ANALYSIS_CAPABILITY_ID = "contracts.analysis";
-export const CONTRACTS_ANALYSIS_CAPABILITY_VERSION = "1.1.0";
+export const CONTRACTS_ANALYSIS_CAPABILITY_VERSION = "1.2.0";
 export const CONTRACTS_ANALYSIS_CAPABILITY_REFERENCE = "contracts.analysis@1";
 export const CONTRACTS_ANALYSIS_PROVIDER_ID = "worker-static.procurement-contracts.analysis";
 export const CONTRACTS_ANALYSIS_LIMITS = Object.freeze({
@@ -11,6 +13,9 @@ export const CONTRACTS_ANALYSIS_LIMITS = Object.freeze({
   minimumGroups: 1,
   maximumGroups: 100,
   defaultGroups: 10,
+  defaultSample: RESEARCH_IDENTIFIER_SAMPLE_DEFAULT,
+  maximumSample: RESEARCH_IDENTIFIER_SAMPLE_MAXIMUM,
+  maximumResponseBytes: RESEARCH_STRUCTURED_MAX_BYTES,
 });
 export const CONTRACTS_ANALYSIS_GROUPS = Object.freeze([
   "agency",
@@ -60,7 +65,7 @@ export const CONTRACTS_ANALYSIS_REPRESENTATIONS = Object.freeze([
 
 const CONTRACTS_ANALYSIS_INPUT_FIELDS = new Set([
   "groupBy", "measure", "agency", "vendor", "fiscalYear", "amountBand",
-  "minAmount", "maxAmount", "retroactive", "cityRecordMatch", "limit",
+  "minAmount", "maxAmount", "retroactive", "cityRecordMatch", "limit", "sampleLimit", "cursor", "identifiers",
 ]);
 
 function deepFreeze(value) {
@@ -79,7 +84,7 @@ export const CONTRACTS_ANALYSIS_CAPABILITY = deepFreeze({
   cost: { class: "bounded-static-read-model", machineFanOut: "low" },
   bounds: {
     input: CONTRACTS_ANALYSIS_LIMITS,
-    output: { maximumGroups: CONTRACTS_ANALYSIS_LIMITS.maximumGroups },
+    output: { maximumGroups: CONTRACTS_ANALYSIS_LIMITS.maximumGroups, maximumSample: CONTRACTS_ANALYSIS_LIMITS.maximumSample, maximumBytes: RESEARCH_STRUCTURED_MAX_BYTES, pagination: "filters.pagination; pages may be shorter than limit to fit the byte budget", legacyIdentifiers: "HTTP identifiers=full only; outside the research response budget" },
   },
   input: {
     schema: "cityscroll.capability.contracts_analysis.input.v1",
@@ -134,7 +139,7 @@ export const CONTRACTS_ANALYSIS_CAPABILITY = deepFreeze({
     },
     {
       input: { groupBy: "vendor", measure: "count", agency: "Department of Education" },
-      output: { availability: "complete", measure: "unique registered contracts", drillThrough: "contract_ids and ordinary Contracts scope" },
+      output: { availability: "complete", measure: "unique registered contracts", drillThrough: "contract_sample and exact registered-population contracts.browse@1 continuation" },
     },
   ],
   adapters: [
@@ -195,6 +200,9 @@ export function validateContractsAnalysisInput(input) {
   if (input.limit !== undefined && (!Number.isInteger(input.limit) || input.limit < CONTRACTS_ANALYSIS_LIMITS.minimumGroups || input.limit > CONTRACTS_ANALYSIS_LIMITS.maximumGroups)) {
     throw new TypeError(`limit must be an integer from ${CONTRACTS_ANALYSIS_LIMITS.minimumGroups} through ${CONTRACTS_ANALYSIS_LIMITS.maximumGroups}`);
   }
+  if (input.sampleLimit !== undefined && (!Number.isInteger(input.sampleLimit) || input.sampleLimit < 1 || input.sampleLimit > CONTRACTS_ANALYSIS_LIMITS.maximumSample)) throw new TypeError("sampleLimit must be an integer from 1 through 50");
+  if (input.cursor !== undefined && (typeof input.cursor !== "string" || !/^groups:[0-9]+$/.test(input.cursor) || input.cursor.length > 32)) throw new TypeError("invalid group cursor");
+  if (input.identifiers !== undefined && input.identifiers !== "full") throw new TypeError("identifiers must be full when specified");
   return input;
 }
 
@@ -209,12 +217,19 @@ function assertNoPrivateFields(value, path = "output") {
 function assertGroup(group, measure) {
   if (!group || typeof group !== "object" || typeof group.label !== "string"
       || !Number.isInteger(group.contract_count) || group.contract_count < 0
-      || !Array.isArray(group.contract_ids) || group.contract_ids.length !== group.contract_count
-      || new Set(group.contract_ids).size !== group.contract_ids.length
       || typeof group.value !== "number" || !Number.isFinite(group.value)
       || group.unit !== measure.unit || !group.drill_through || typeof group.drill_through.href !== "string") {
     throw new TypeError("Contracts analysis group is incomplete");
   }
+  if (!Array.isArray(group.contract_sample) || group.contract_sample.length > CONTRACTS_ANALYSIS_LIMITS.maximumSample
+      || group.contract_sample.length > group.contract_count || !group.browse || group.browse.capability !== "contracts.browse@1"
+      || group.browse.arguments?.population !== "registered" || typeof group.browse.href !== "string") throw new TypeError("Contracts analysis sample or browse continuation is incomplete");
+  for (const item of group.contract_sample) {
+    if (typeof item.id !== "string" || !(item.procurement_id === null || item.procurement_id?.startsWith("procurement:"))
+        || !(item.href === null || typeof item.href === "string") || (item.procurement_id === null) !== (item.href === null)) throw new TypeError("Contracts analysis sample identity is invalid");
+  }
+  if (new Set(group.contract_sample.map((item) => item.id)).size !== group.contract_sample.length) throw new TypeError("Contracts analysis sample has duplicate registration ids");
+  if (group.contract_ids !== undefined && (!Array.isArray(group.contract_ids) || group.contract_ids.length !== group.contract_count || new Set(group.contract_ids).size !== group.contract_ids.length)) throw new TypeError("Contracts analysis full identifier count is invalid");
   assertGroupContractDetail(group);
 }
 
@@ -233,6 +248,10 @@ function assertGroupContractDetail(group) {
       || !Number.isInteger(retrieval.not_retrievable_contract_count)) {
     throw new TypeError("Contracts analysis group is missing its contract retrieval state");
   }
+  if (retrieval.retrievable_contract_count < 0 || retrieval.not_retrievable_contract_count < 0
+      || retrieval.retrievable_contract_count + retrieval.not_retrievable_contract_count !== group.contract_count) throw new TypeError("Contracts analysis retrieval counts disagree with the population");
+  if (retrieval.resolution === "not_resolved" && retrieval.retrievable_contract_count !== 0) throw new TypeError("unresolved Contracts analysis group cannot claim retrievable contracts");
+  if (resolved === undefined) return;
   if (resolved === null) {
     if (retrieval.resolution !== "not_resolved"
         || retrieval.retrievable_contract_count !== 0
@@ -264,7 +283,7 @@ function assertContractDetail(result) {
   const detail = result.contract_detail;
   if (!detail || typeof detail !== "object" || Array.isArray(detail)
       || detail.capability !== "contract.get@1"
-      || detail.identifier_field !== "contract_procurement_ids"
+      || !["contract_sample[].procurement_id", "contract_procurement_ids"].includes(detail.identifier_field)
       || typeof detail.identifier_note !== "string" || !detail.identifier_note
       || !PROCUREMENT_DETAIL_RESOLUTIONS.includes(detail.resolution)
       || typeof detail.not_retrievable_reason !== "string" || !detail.not_retrievable_reason

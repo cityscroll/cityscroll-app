@@ -1,3 +1,4 @@
+import { fitResearchBrowsePage } from "./research_response_limits.mjs";
 // Transport-neutral provider projection for the bounded People and
 // organizations browse capability. Delivery adapters supply the read model;
 // this module owns identity admission, matching, pagination, and coverage.
@@ -84,7 +85,7 @@ export function organizationsBrowseFromModel(model, input) {
   const limit = input.limit || ORGANIZATIONS_BROWSE_LIMITS.default;
   const resultRows = matches.slice(start, start + limit);
   const truncated = start + resultRows.length < matches.length;
-  return {
+  return fitResearchBrowsePage({
     capability_reference: ORGANIZATIONS_BROWSE_CAPABILITY_REFERENCE,
     availability: resultRows.length ? "complete" : "empty",
     results: resultRows.map(publicModelRow),
@@ -98,5 +99,5 @@ export function organizationsBrowseFromModel(model, input) {
     coverage: coverage(model, { matched: resultRows.length > 0 }),
     freshness: freshness(model),
     error: null,
-  };
+  }, (row) => encodeCursor(row.id));
 }

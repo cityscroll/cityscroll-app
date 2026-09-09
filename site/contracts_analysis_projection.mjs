@@ -21,10 +21,12 @@ import {
   REGISTERED_CONTRACT_PROJECTION,
   readerDimensionValue,
 } from "./analytical_projection_contract.mjs";
+import { researchResponseBytes, RESEARCH_STRUCTURED_MAX_BYTES } from "../capabilities/research_response_limits.mjs";
+import { procurementCanonicalHref } from "./procurement_route.mjs";
 import { resolveProcurementDetailIds } from "./procurement_detail_index.mjs";
 
 const CONTRACT_IDENTIFIER_NOTE =
-  "contract_ids are publisher registration identifiers for the registered-contract aggregate; contract.get@1 accepts only the canonical procurement id at the same index of contract_procurement_ids, and a null there means that contract is not individually retrievable.";
+  "contract_sample[].id is the publisher registration identifier; contract.get@1 accepts contract_sample[].procurement_id. A null procurement_id and href mean no individual detail record is published. Use browse for every registration.";
 
 /**
  * Resolve a group's contributing registration identifiers into the canonical
@@ -56,7 +58,7 @@ function groupContractDetail(contractIds, detailIndex) {
   };
 }
 
-function analyticalFilters(input) {
+export function analyticalFilters(input) {
   return {
     ...(input.agency == null ? {} : { agency: input.agency }),
     ...(input.vendor == null ? {} : { prime_vendor: input.vendor }),
@@ -156,6 +158,26 @@ export function analyticalFilterDiscovery(rows, input = {}) {
   };
 }
 
+export function registeredContractReference(id, detailIndex) {
+  const procurementId = detailIndex?.procurementIdFor(id) || null;
+  return { id, procurement_id: procurementId, href: procurementId ? `https://cityscroll.org${procurementCanonicalHref(procurementId)}` : null };
+}
+
+export function registeredGroupRows(rows, input) {
+  const filtered = filterAnalyticalContracts(rows, analyticalFilters(input));
+  if (input.groupBy == null) return filtered;
+  const dimension = { agency: "agency", vendor: "prime_vendor", registration_fiscal_year: "registration_fiscal_year", amount_band: "contract_amount_band" }[input.groupBy];
+  return filtered.filter((row) => readerDimensionValue(row[dimension]) === input.groupLabel);
+}
+
+function groupBrowse(input, groupBy, label) {
+  const args = publicFilters(input);
+  delete args.measure;
+  return { capability: "contracts.browse@1", tool: "browse_contracts",
+    arguments: { ...args, population: "registered", group_by: groupBy, group_label: label, limit: 50 },
+    href: `https://api.cityscroll.org/contracts?${new URLSearchParams({ ...args, population: "registered", group_by: groupBy, group_label: label, limit: 50 })}` };
+}
+
 export function analyzeContractsProjection(projection, input = {}, detailIndex = null) {
   const rows = Array.isArray(projection?.rows) ? projection.rows : null;
   if (!rows || !["cityscroll.analytics_registered_contracts.v1", ANALYTICAL_PROJECTION_SCHEMA].includes(projection?.schema)) throw new Error("registered contract analytical projection is unavailable");
@@ -165,16 +187,22 @@ export function analyzeContractsProjection(projection, input = {}, detailIndex =
   const filtered = filterAnalyticalContracts(rows, analyticalFilters(input));
   const grouped = groupAnalyticalContracts(filtered, { groupBy, measure, topN: input.limit || CONTRACTS_ANALYSIS_LIMITS.defaultGroups });
   const view = measureView(measure);
-  const groups = grouped.shown_groups.map((group) => {
+  const offset = input.cursor ? Number(input.cursor.slice(7)) : 0;
+  if (input.cursor && offset >= grouped.groups.length) throw new TypeError("invalid group cursor");
+  const groups = grouped.groups.slice(offset, offset + (input.limit || CONTRACTS_ANALYSIS_LIMITS.defaultGroups)).map((group) => {
     const value = Number(group[grouped.value_key]) || 0;
+    const ids = [...new Set(group.contract_ids)];
+    const detail = groupContractDetail(ids, detailIndex);
     return {
       label: group.label,
       value,
       measure_value: value,
       unit: view.unit,
       contract_count: group.contract_count,
-      contract_ids: [...group.contract_ids],
-      ...groupContractDetail([...group.contract_ids], detailIndex),
+      contract_sample: ids.slice(0, input.sampleLimit || CONTRACTS_ANALYSIS_LIMITS.defaultSample).map((id) => registeredContractReference(id, detailIndex)),
+      contract_retrieval: detail.contract_retrieval,
+      ...(input.identifiers === "full" ? { contract_ids: ids, contract_procurement_ids: detail.contract_procurement_ids } : {}),
+      browse: groupBrowse(input, groupBy, group.label),
       drill_through: { href: groupHref(input, groupBy, group.label), filters: groupFilters(input, groupBy, group.label) },
     };
   });
@@ -193,7 +221,8 @@ export function analyzeContractsProjection(projection, input = {}, detailIndex =
   return executeContractsAnalysis({
     capabilityReference: CONTRACTS_ANALYSIS_CAPABILITY_REFERENCE,
     providerId: "worker-static.procurement-contracts.analysis",
-    execute: async () => ({
+    execute: async () => {
+      const result = {
       capability_reference: CONTRACTS_ANALYSIS_CAPABILITY_REFERENCE,
       availability: groups.length ? CONTRACTS_ANALYSIS_AVAILABILITY[0] : CONTRACTS_ANALYSIS_AVAILABILITY[1],
       group_by: groupBy,
@@ -228,7 +257,7 @@ export function analyzeContractsProjection(projection, input = {}, detailIndex =
       },
       contract_detail: {
         capability: "contract.get@1",
-        identifier_field: "contract_procurement_ids",
+        identifier_field: input.identifiers === "full" ? "contract_procurement_ids" : "contract_sample[].procurement_id",
         identifier_note: CONTRACT_IDENTIFIER_NOTE,
         resolution: detailIndex?.resolution || PROCUREMENT_DETAIL_RESOLUTIONS[2],
         not_retrievable_reason: PROCUREMENT_DETAIL_NOT_RETRIEVABLE_REASON,
@@ -247,10 +276,32 @@ export function analyzeContractsProjection(projection, input = {}, detailIndex =
         source: "committed site/data/analytics_registered_contracts.json",
       },
       error: null,
-    }),
+      };
+      function updatePagination() {
+        const next = offset + result.groups.length;
+        result.filters.pagination = { limit: input.limit || CONTRACTS_ANALYSIS_LIMITS.defaultGroups,
+          returned: result.groups.length, total_groups: grouped.groups.length,
+          next_cursor: next < grouped.groups.length ? `groups:${next}` : null,
+          truncated: next < grouped.groups.length };
+        result.contract_detail.retrievable_contract_count = result.groups.reduce((sum, group) => sum + group.contract_retrieval.retrievable_contract_count, 0);
+        result.contract_detail.not_retrievable_contract_count = result.groups.reduce((sum, group) => sum + group.contract_retrieval.not_retrievable_contract_count, 0);
+      }
+      updatePagination();
+      if (input.identifiers !== "full") {
+        while (researchResponseBytes(result) > RESEARCH_STRUCTURED_MAX_BYTES && result.groups.length > 1) {
+          result.groups.pop();
+          updatePagination();
+        }
+        if (researchResponseBytes(result) > RESEARCH_STRUCTURED_MAX_BYTES) throw new TypeError("Contracts analysis response exceeds byte budget");
+      }
+      return result;
+    },
   }, {
     groupBy,
     measure,
+    ...(input.sampleLimit == null ? {} : { sampleLimit: input.sampleLimit }),
+    ...(input.cursor == null ? {} : { cursor: input.cursor }),
+    ...(input.identifiers == null ? {} : { identifiers: input.identifiers }),
     ...(input.agency == null ? {} : { agency: input.agency }),
     ...(input.vendor == null ? {} : { vendor: input.vendor }),
     ...(input.fiscalYear == null ? {} : { fiscalYear: input.fiscalYear }),

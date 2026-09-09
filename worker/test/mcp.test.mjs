@@ -75,7 +75,12 @@ test("initialize + tools/list expose retrieval and action tools", async () => {
   const cited = list.result.tools.find(({ name }) => name === "retrieve_cited_passages");
   assert.equal(cited.outputSchema.properties.schema.const, "cityscroll.semantic_retrieval.cited_passage_response.v1");
   const search = list.result.tools.find(({ name }) => name === "search_notices");
-  assert.deepEqual(search.inputSchema, {
+  const { identifier_path, identifier_offset, identifier_limit, ...searchProperties } = search.inputSchema.properties;
+  assert.equal(identifier_path.type, "string");
+  assert.equal(identifier_offset.minimum, 0);
+  assert.equal(identifier_limit.default, 10);
+  assert.equal(identifier_limit.maximum, 50);
+  assert.deepEqual({ ...search.inputSchema, properties: searchProperties }, {
     type: "object", additionalProperties: false,
     properties: {
       query: { type: "string", description: "Keyword terms, space-separated (e.g. 'affordable housing')." },
