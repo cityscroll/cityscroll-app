@@ -29,7 +29,7 @@
 //   node ops/first-class-refresh/rebuild-committed-read-models.mjs --check-registry
 //   node ops/first-class-refresh/rebuild-committed-read-models.mjs --published-paths
 
-import { readFileSync, statSync } from "node:fs";
+import { appendFileSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
@@ -100,7 +100,7 @@ export function workflowGateBuilders(root = ROOT, { workflow, family } = {}) {
 // A drift report both the self-check and the test render.
 export function registryDrift(root = ROOT) {
   const registry = readRegistry(root);
-  const gates = new Set(workflowGateBuilders(root));
+  const gates = new Set([...workflowGateBuilders(root), ...(registry.additional_gate_builders || [])]);
   const accounted = registryBuilders(registry);
   const accountedSet = new Set(accounted);
   const duplicated = accounted.filter((builder, index) => accounted.indexOf(builder) !== index);
@@ -163,22 +163,33 @@ export function unpublishedRebuildOutputs(before, after, paths) {
 }
 
 function assertExecutables(registry, root) {
+  const completed = new Set();
   for (const step of registry.rebuild_sequence) {
     const [tool] = step.command;
     if (!statSync(join(root, tool)).isFile()) throw new Error(`rebuild step ${step.id} names a missing tool: ${tool}`);
+    if (!["node", "python3"].includes(step.runtime || "node")) throw new Error(`unsupported runtime for ${step.id}`);
+    for (const dependency of step.after || []) {
+      if (!completed.has(dependency)) throw new Error(`${step.id} must run after ${dependency}`);
+    }
+    if (completed.has(step.id)) throw new Error(`duplicate rebuild step: ${step.id}`);
+    completed.add(step.id);
   }
 }
 
-function runSequence(registry, root) {
+function runSequence(registry, root, env) {
   assertExecutables(registry, root);
   const before = dirtyPaths(root);
+  const gaps = `\n### Read-model rebuild boundaries\n\n${registry.not_rebuilt.map((entry) => `- ${entry.builder} (${entry.disposition}): ${entry.reason}`).join("\n")}\n`;
+  console.log(gaps);
+  if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, gaps);
   for (const step of registry.rebuild_sequence) {
     const [tool, ...args] = step.command;
     console.log(`rebuilding ${step.id}: ${tool} ${args.join(" ")}`.trimEnd());
     // Serial by design. These builders are the repository's heavy ones and the
     // derived JSON boundary measures itself against a declared cold-build time
     // budget; running them side by side would make that measurement meaningless.
-    const result = spawnSync(process.execPath, [join(root, tool), ...args], { cwd: root, stdio: "inherit" });
+    const executable = step.runtime === "python3" ? "python3" : process.execPath;
+    const result = spawnSync(executable, [join(root, tool), ...args], { cwd: root, stdio: "inherit", env });
     if (result.error) throw result.error;
     if (result.status !== 0) {
       console.error(`rebuild step ${step.id} failed (${tool})`);
@@ -197,6 +208,23 @@ function runSequence(registry, root) {
     process.exit(1);
   }
   console.log(`rebuilt ${registry.rebuild_sequence.length} committed read-model steps`);
+}
+
+export function verificationCommands(registry, root = ROOT) {
+  return registry.verification.map((entry) => entry.family === "worker"
+    ? { family: entry.family, cwd: join(root, "worker"), args: ["--test"] }
+    : { family: entry.family, cwd: root, args: ["--test", ...readdirSync(join(root, entry.directory)).filter((file) => file.endsWith(entry.pattern)).sort().map((file) => `${entry.directory}/${file}`)] });
+}
+
+function verifyFreshnessTests(registry, root, env) {
+  const failed = [];
+  for (const { family, cwd, args } of verificationCommands(registry, root)) {
+    console.log(`Verifying ${family} freshness gates before publication`);
+    const result = spawnSync(process.execPath, args, { cwd, stdio: "inherit", env: { ...env, CS10_SKIP_LIVE_CANARY: "true" } });
+    if (result.error) throw result.error;
+    if (result.status !== 0) failed.push(family);
+  }
+  if (failed.length) throw new Error(`${failed.join(", ")} gates failed; refreshed data must not be published`);
 }
 
 function main(argv) {
@@ -220,7 +248,11 @@ function main(argv) {
     console.log(`committed read-model registry matches the ${registry.gate_family} gates`);
     return;
   }
-  runSequence(registry, ROOT);
+  // One production day for builders, browser captures and the test readers,
+  // including runs that cross midnight. Check-only registry reads never use it.
+  const env = { ...process.env, CROL_BUILD_DAY: process.env.CROL_BUILD_DAY || new Date().toISOString().slice(0, 10) };
+  if (!argv.includes("--verify-only")) runSequence(registry, ROOT, env);
+  if (!argv.includes("--rebuild-only")) verifyFreshnessTests(registry, ROOT, env);
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {

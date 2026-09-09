@@ -110,10 +110,11 @@ test("Browse route matrix rejects retired and unknown facets instead of treating
 
 test("canonical meeting routes resolve exact read-model rows and reject unknown ids", async () => {
   const cityRecordId = "meeting:city_record:20260713006";
-  const communityBoardId = "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/";
   const readModelOutput = sharedMeetingOutputs().find(([path]) => path.endsWith("shared_meeting_read_model.json"));
   assert.ok(readModelOutput, "the build must emit the shared meeting read model");
   const readModel = JSON.parse(readModelOutput[1]);
+  const communityBoardId = readModel.rows.find((row) => row.meeting_id.startsWith("meeting:community_board:"))?.meeting_id;
+  assert.ok(communityBoardId, "the shared model must retain community-board coverage");
   assert.ok(readModel.rows.some((row) => row.meeting_id === cityRecordId), "City Record smoke meeting must be in the built read model");
   assert.ok(readModel.rows.some((row) => row.meeting_id === communityBoardId), "community-board smoke meeting must be in the built read model");
 
@@ -169,7 +170,8 @@ test("canonical meeting routes resolve exact read-model rows and reject unknown 
   assert.match(calendar.headers.get("content-disposition") || "", /attachment; filename="meeting-/);
   const calendarBody = await calendar.text();
   assert.match(calendarBody, /BEGIN:VCALENDAR/);
-  assert.match(calendarBody, /DTSTART(?:;VALUE=DATE|;TZID=America\/New_York)?:20261015/);
+  const expectedDay = readModel.rows.find((row) => row.meeting_id === communityBoardId).event_date.slice(0, 10).replaceAll("-", "");
+  assert.match(calendarBody, new RegExp(`DTSTART(?:;VALUE=DATE|;TZID=America/New_York)?:${expectedDay}`));
 
   const cityRecordCalendar = await edgeWorker.fetch(new Request(
     `https://cityscroll.org/meeting.ics?id=${encodeURIComponent(cityRecordId)}`,
@@ -1031,4 +1033,17 @@ test("client island preserves independently owned Browse documents", () => {
   assert.match(core, /OWNED_BROWSE_DOCUMENT_PATHS/);
   assert.match(core, /if\(isOwnedBrowseDocumentLink\(b\.href\)\) return/);
   assert.match(core, /if\(!document\.getElementById\(`tab-\$\{b\.dataset\.tab\}`\)\) return;/);
+});
+
+
+test("the historical Bronx CB6 meeting still resolves through its exact canonical route in a frozen fixture", async () => {
+  const fixture = JSON.parse(read("./fixtures/first-class-refresh/historical.json"));
+  const model = { schema: "cityscroll.shared_meeting_read_model.v1", rows: [fixture.meeting] };
+  const env = { ASSETS: { fetch: async () => new Response(JSON.stringify(model), { headers: { "Content-Type": "application/json" } }) } };
+  const id = fixture.meeting.meeting_id;
+  const response = await edgeWorker.fetch(new Request(`https://cityscroll.org/meetings/${encodeURIComponent(id)}/`), env);
+  assert.equal(response.status, 200);
+  assert.ok(isMeetingDocumentHtml(await response.text(), id));
+  const missing = await edgeWorker.fetch(new Request("https://cityscroll.org/meetings/unknown-historical-meeting/"), env);
+  assert.equal(missing.status, 404);
 });

@@ -61,8 +61,7 @@ node tools/first_class_refresh.mjs --run-due
 # request carries a read model whose coherence receipt no longer matches the
 # served keyword index. The registry beside this script is the single list both
 # halves of the refresh share, and it is checked against the freshness gates.
-node "$SCRIPT_DIR/rebuild-committed-read-models.mjs"
-node tools/first_class_refresh.mjs --write-report
+tools/with_local_a11y_python.sh node "$SCRIPT_DIR/rebuild-committed-read-models.mjs"
 
 # The registry beside this script names the paths the refresh publishes as well
 # as the read models it rebuilds, so both halves stage the same list.

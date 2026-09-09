@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/complete-refresh-read-models",
+  "status": "implemented",
+  "fingerprint": "complete-refresh-read-models.v1",
+  "updated_at": "2026-09-09T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "ordered-read-model-registry",
+      "path": "ops/first-class-refresh/committed-read-models.json"
+    },
+    {
+      "id": "source-preserving-publication",
+      "path": "ops/first-class-refresh/guard-publication.mjs"
+    },
+    {
+      "id": "complete-freshness-verification",
+      "path": "ops/first-class-refresh/rebuild-committed-read-models.mjs"
+    },
+    {
+      "id": "registry-and-publication-regressions",
+      "path": "test/first_class_refresh_committed_read_models.test.mjs"
+    },
+    {
+      "id": "refresh-workflow",
+      "path": ".github/workflows/first-class-refresh.yml"
+    }
+  ]
+}

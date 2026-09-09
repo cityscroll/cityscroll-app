@@ -1,5 +1,6 @@
+import { spawnSync } from "node:child_process";
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
@@ -14,7 +15,9 @@ import {
   describeDrift,
   unpublishedRebuildOutputs,
   workflowGateBuilders,
+  verificationCommands,
 } from "../ops/first-class-refresh/rebuild-committed-read-models.mjs";
+import { meetingPublicationFindings, missingAttachmentProof, unboundRollCalls } from "../ops/first-class-refresh/guard-publication.mjs";
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const WORKFLOW = path.join(REPO_ROOT, ".github/workflows/first-class-refresh.yml");
@@ -143,4 +146,70 @@ test("both commit scripts stage the registry's list rather than their own", () =
     assert.match(text, /rebuild-committed-read-models\.mjs[^\n]*--published-paths/, `${script} must read the declared paths`);
     assert.doesNotMatch(text, /^\s*(commit_)?paths=\((?!\)).*$/m, `${script} must not restate the path list`);
   }
+});
+
+test("every site and Worker CI freshness test runs before refresh publication, including newly added gates", () => {
+  const registry = readRegistry(REPO_ROOT);
+  const workflow = readFileSync(path.join(REPO_ROOT, registry.gate_workflow), "utf8");
+  assert.match(workflow, /run: node --test test\/\*\.test\.mjs/);
+  assert.match(workflow, /run: node --test\s+working-directory: worker/);
+  const commands = verificationCommands(registry);
+  assert.deepEqual(commands.map((command) => command.family).sort(), ["site-node", "worker"]);
+  const site = commands.find((command) => command.family === "site-node");
+  // The expansion reads the directory at execution time, not a frozen list of
+  // today's failing tests. Future in-process freshness assertions run too.
+  for (const file of readdirSync(path.join(REPO_ROOT, "test")).filter((file) => file.endsWith(".test.mjs"))) {
+    assert.ok(site.args.includes(`test/${file}`), `${file} has no registry verification entry`);
+  }
+  const worker = commands.find((command) => command.family === "worker");
+  assert.equal(worker.cwd, path.join(REPO_ROOT, "worker"));
+  assert.deepEqual(worker.args, ["--test"]);
+  const runner = readFileSync(path.join(REPO_ROOT, "ops/first-class-refresh/rebuild-committed-read-models.mjs"), "utf8");
+  assert.match(runner, /verifyFreshnessTests\(registry, ROOT, env\)/);
+  assert.doesNotMatch(readFileSync(WORKFLOW, "utf8"), /--rebuild-only/);
+});
+
+test("the rebuild's dependency order includes all required predecessors", () => {
+  const complete = new Set();
+  for (const step of readRegistry(REPO_ROOT).rebuild_sequence) {
+    for (const dependency of step.after || []) assert.ok(complete.has(dependency), `${step.id} precedes ${dependency}`);
+    complete.add(step.id);
+  }
+});
+
+test("publication retains a previously covered board after HTTP failure or unexplained empty extraction", () => {
+  const previous = { by_board: { "manhattan-cb-10": [{}] }, rows: [{}] };
+  const attempt = { by_board: {}, rows: [], receipts: [{ board_id: "manhattan-cb-10", role: "upcoming_meetings", state: "unavailable", state_reason: "http_error", observed_receipt: { fetch_status: "403" } }] };
+  assert.equal(meetingPublicationFindings(previous, attempt)[0].http_status, "403");
+  attempt.receipts[0].state = "checked-empty";
+  assert.match(meetingPublicationFindings(previous, attempt)[0].cause, /not established/);
+  assert.deepEqual(meetingPublicationFindings(previous, previous), []);
+});
+
+test("attachment evidence cannot disappear behind a successful Rules refresh", () => {
+  const previous = { rows: [{ request_id: "rule-1", rule_evidence_densify: { method: "city_record_getfile_pdf_v1" }, rule_evidence: { citation_keys: ["fixture:1"] } }] };
+  assert.deepEqual(missingAttachmentProof(previous, { rows: [{ request_id: "rule-1" }] }), ["rule-1"]);
+  assert.deepEqual(missingAttachmentProof(previous, previous), []);
+  // A record that actually left the source population is not manufactured.
+  assert.deepEqual(missingAttachmentProof(previous, { rows: [] }), []);
+});
+
+
+test("new named roll calls must belong to their exact event and agenda item", () => {
+  const action = { agenda_item_id: "item-1", votes: { person_count: 9, event_id: null, event_item_id: null } };
+  const snapshot = { by_notice: { notice: { event: { event_id: "event-1" }, matters: [{ matter_id: "matter-1", item_actions: [action] }] } } };
+  assert.equal(unboundRollCalls(snapshot).length, 1);
+  action.votes.event_id = "event-1";
+  action.votes.event_item_id = "item-1";
+  assert.deepEqual(unboundRollCalls(snapshot), []);
+  action.votes.event_item_id = "different-item";
+  assert.equal(unboundRollCalls(snapshot).length, 1);
+});
+
+
+test("the Data health freshness report is publishable with its dependent page", () => {
+  const report = "site/data/first_class_freshness_report.json";
+  assert.ok(coveredByPublishedPaths(report, publishedPaths(readRegistry(REPO_ROOT))));
+  const ignored = spawnSync("git", ["check-ignore", "--no-index", "-q", report], { cwd: REPO_ROOT });
+  assert.equal(ignored.status, 1, "the report must travel with the committed page that reads it");
 });
