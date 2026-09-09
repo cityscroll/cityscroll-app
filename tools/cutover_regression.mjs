@@ -19,6 +19,7 @@ import {
   runSmoke,
 } from "./live_url_smoke.mjs";
 import { ROUTE_INVENTORY, joinOrigin } from "./pages_route_parity.mjs";
+import { PUBLIC_STATS_SCHEMA } from "../worker/src/stats.mjs";
 
 export const PUBLIC_ORIGIN = "https://cityscroll.org";
 export const WWW_ORIGIN = "https://www.cityscroll.org";
@@ -29,6 +30,9 @@ export const LEGACY_ORIGIN = "https://crol-list.org";
 
 export const DEFAULT_CUTOVER_TIMEOUT_MS = 180_000;
 
+// /following/ is Worker-served: worker/src/following.mjs publicHeaders() owns
+// its deliberate short shared-cache/stale-while-revalidate profile. Keep that
+// route outside this strict Pages revalidation set; its URL/origin probe remains.
 const PAGES_HEADER_TARGET_IDS = new Set([
   "pages-apex-home",
   "pages-www-home",
@@ -65,7 +69,7 @@ export function buildCutoverTargets() {
     {
       id: "api-worker-stats",
       url: API_STATS_URL,
-      marker: /"schema"\s*:\s*"public-stats\.v2"/,
+      marker: new RegExp(`"schema"\\s*:\\s*"${PUBLIC_STATS_SCHEMA.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`),
     },
     {
       id: "legacy-origin",
@@ -121,10 +125,13 @@ export function architectureFailures(results) {
   } else if (stats.classification?.ok) {
     try {
       const body = JSON.parse(stats.body || "");
-      const shapeOk = body?.schema === "public-stats.v2"
-        && body?.city_record
-        && body?.sources
-        && body?.language_coverage
+      const isObject = (value) => value !== null && typeof value === "object" && !Array.isArray(value);
+      const shapeOk = body?.schema === PUBLIC_STATS_SCHEMA
+        && typeof body?.generated_at === "string" && body.generated_at.length > 0
+        && typeof body?.scope === "string" && body.scope.length > 0
+        && isObject(body?.coverage)
+        && isObject(body?.language_coverage)
+        && isObject(body?.search_usage)
         && !Object.hasOwn(body, "usage")
         && !Object.hasOwn(body, "subscriptions")
         && !Object.hasOwn(body, "digests");

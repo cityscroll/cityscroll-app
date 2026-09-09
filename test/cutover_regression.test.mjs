@@ -5,9 +5,21 @@ import test from "node:test";
 import {
   CUTOVER_TARGETS,
   architectureFailures,
+  pagesHeaderFailure,
   runCutoverRegression,
 } from "../tools/cutover_regression.mjs";
 import { ROUTE_INVENTORY } from "../tools/pages_route_parity.mjs";
+import { PUBLIC_STATS_SCHEMA, buildPublicStatsBody } from "../worker/src/stats.mjs";
+import { extractFn } from "./contract/site_extract.mjs";
+
+const publicStats = () => buildPublicStatsBody(null, new Date("2026-09-09T00:00:00Z"));
+const statsResult = (body) => ({
+  id: "api-worker-stats",
+  classification: { ok: true },
+  body: JSON.stringify(body),
+});
+const statsFailures = (body) => architectureFailures([statsResult(body)])
+  .filter((failure) => failure.startsWith("api-worker-stats:"));
 
 const pagesHeaders = {
   server: "cloudflare",
@@ -26,12 +38,8 @@ function response(status, body, headers = {}) {
 function healthyFetch(url) {
   const parsed = new URL(url);
   if (parsed.hostname === "api.cityscroll.org" && parsed.pathname === "/stats") {
-    return Promise.resolve(response(200, JSON.stringify({
-      schema: "public-stats.v2",
-      city_record: { available: true, notice_count: 1099194, latest_notice_date: "2026-08-05" },
-      sources: { primary_system_count: 2, systems: ["A", "B"] },
-      language_coverage: { site_languages: 11 },
-    }), { server: "cloudflare", "content-type": "application/json" }));
+    return Promise.resolve(response(200, JSON.stringify(publicStats()),
+      { server: "cloudflare", "content-type": "application/json" }));
   }
   if (parsed.hostname === "api.cityscroll.org") {
     return Promise.resolve(response(200, "cityscroll-worker ok", { server: "cloudflare" }));
@@ -109,19 +117,82 @@ test("architecture checks require Cloudflare Pages headers", () => {
     result("pages-apex-home", pagesHeaders),
     result("pages-www-home", pagesHeaders),
     result("pages-dev-home", pagesHeaders),
-    { ...result("api-worker-stats", {}), body: '{"schema":"public-stats.v2","city_record":{},"sources":{},"language_coverage":{}}' },
+    statsResult(publicStats()),
   ]);
   assert.deepEqual(failures, []);
 });
 
-test("scheduled production monitor rejects a changed Stats API schema", () => {
-  const failures = architectureFailures([{
-    id: "api-worker-stats",
-    classification: { ok: true },
-    body: '{"schema":"public-stats.v2","city_record":{}}',
-    finalHeaders: new Headers({ "content-type": "application/json" }),
-  }]);
-  assert.match(failures.join("\n"), /required public schema fields/);
+test("stats marker and architecture checks consume the current owner projection", () => {
+  const marker = CUTOVER_TARGETS.find((target) => target.id === "api-worker-stats").marker;
+  for (const body of [publicStats(), buildPublicStatsBody()]) {
+    assert.equal(body.schema, PUBLIC_STATS_SCHEMA);
+    assert.deepEqual(Object.keys(body).sort(), [
+      "coverage", "generated_at", "language_coverage", "schema", "scope", "search_usage",
+    ]);
+    assert.match(JSON.stringify(body, null, 2), marker);
+    assert.deepEqual(statsFailures(body), []);
+  }
+  const wrongSchema = { ...publicStats(), schema: `${PUBLIC_STATS_SCHEMA}.unexpected` };
+  assert.doesNotMatch(JSON.stringify(wrongSchema), marker);
+  assert.equal(statsFailures(wrongSchema).length, 1);
+});
+
+test("stats checks require every public field and reject private operational fields even when null", () => {
+  for (const field of Object.keys(publicStats())) {
+    const body = publicStats();
+    delete body[field];
+    assert.equal(statsFailures(body).length, 1, `missing ${field}`);
+  }
+  for (const field of ["coverage", "language_coverage", "search_usage"]) {
+    for (const value of [null, [], "invalid"]) {
+      assert.equal(statsFailures({ ...publicStats(), [field]: value }).length, 1, field);
+    }
+  }
+  for (const field of ["usage", "subscriptions", "digests"]) {
+    assert.equal(statsFailures({ ...publicStats(), [field]: null }).length, 1, field);
+  }
+  for (const field of ["generated_at", "scope"]) {
+    assert.equal(statsFailures({ ...publicStats(), [field]: "" }).length, 1, field);
+  }
+  const failures = architectureFailures([{ ...statsResult({}), body: "not JSON" }]);
+  assert.ok(failures.includes("api-worker-stats: response is not valid JSON"));
+});
+
+test("Following uses its Worker cache profile while the Pages home targets retain revalidation", async () => {
+  // Exercise the owner's pure header function without importing Worker npm
+  // dependencies into the independently provisioned site unit family.
+  const source = readFileSync(new URL("../worker/src/following.mjs", import.meta.url), "utf8");
+  const ownedHeaders = new Function("SITE_ORIGIN", `${extractFn("publicHeaders", source)}; return publicHeaders();`)("https://cityscroll.org");
+  const followingHeaders = new Headers(ownedHeaders);
+  assert.equal(followingHeaders.get("cache-control"), "public, max-age=120, s-maxage=300, stale-while-revalidate=3600");
+  assert.equal(followingHeaders.get("x-content-type-options"), "nosniff");
+  const headers = { ...Object.fromEntries(followingHeaders), server: "cloudflare" };
+  assert.match(pagesHeaderFailure({ id: "pages-apex-following", finalHeaders: headers }), /cache-control profile/);
+  const fetchImpl = (url) => new URL(url).pathname === "/following/"
+    ? Promise.resolve(response(200, "<title>CityScroll</title>", headers))
+    : healthyFetch(url);
+  assert.equal((await runCutoverRegression({ fetchImpl, timeoutMs: 0 })).ok, true);
+  for (const hostname of ["cityscroll.org", "www.cityscroll.org", "cityscroll.pages.dev"]) {
+    const result = await runCutoverRegression({
+      timeoutMs: 0,
+      fetchImpl: (url) => new URL(url).hostname === hostname && new URL(url).pathname === "/"
+        ? Promise.resolve(response(200, "<title>CityScroll</title>", headers))
+        : healthyFetch(url),
+    });
+    assert.equal(result.ok, false, hostname);
+    assert.match(result.failures.join("\n"), /cache-control profile/);
+  }
+});
+
+test("Following still rejects a GitHub origin header", async () => {
+  const result = await runCutoverRegression({
+    timeoutMs: 0,
+    fetchImpl: (url) => new URL(url).pathname === "/following/"
+      ? Promise.resolve(response(200, "<title>CityScroll</title>", { ...pagesHeaders, "x-github-request-id": "regression" }))
+      : healthyFetch(url),
+  });
+  assert.equal(result.ok, false);
+  assert.match(result.failures.join("\n"), /x-github-request-id/);
 });
 
 test("scheduled monitor is dispatchable but never a pull-request or merge-queue check", () => {
