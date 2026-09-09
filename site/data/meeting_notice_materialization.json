@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.city_record_meeting_notice_materialization.v1",
-  "generated_at": "2026-09-07T13:15:46.599Z",
-  "as_of": "2026-09-07",
+  "generated_at": "2026-09-09T00:19:15.021Z",
+  "as_of": "2026-09-09",
   "source": {
     "system": "city_record",
     "dataset_id": "dg92-zbpx",
@@ -17,29 +17,8 @@
     "agency_rules_type": "Public Hearings",
     "requires_event_date": true
   },
-  "row_count": 39,
+  "row_count": 38,
   "rows": [
-    {
-      "request_id": "20260824048",
-      "start_date": "2026-09-01T00:00:00.000",
-      "event_date": "2026-09-08T11:00:00.000",
-      "agency_name": "City Council",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "short_title": "9-8-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
-      "street_address_1": "250 Broadway",
-      "street_address_2": "8th Floor, Committee Room 3",
-      "city": "New York",
-      "state": "NY",
-      "zip_code": "10007",
-      "additional_description_1": "Title: 9-8-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting Public Hearings and Meetings Section City Council (CC) Agency Name 250 Broadway New York, NY 10007 Event Location 9/8/2026 11:00 AM Event Date and Time Accessibility questions: Kaitlin Greer, kgreer@council.nyc.gov, by Wednesday, September 2, 2026 3:00 PM Accessibility Current Status 9/1/2026 - 9/8/2026 Publication Date Public Hearings Notice Type Attachments 1 9-8-26 Landmarks City Record",
-      "source_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20260824048&requestStatus=Current&documentId=44468"
-      ],
-      "document_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20260824048&requestStatus=Current&documentId=44468"
-      ]
-    },
     {
       "request_id": "20260709020",
       "start_date": "2026-07-24T00:00:00.000",

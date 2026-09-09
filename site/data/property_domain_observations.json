@@ -3,7 +3,7 @@
   "version": "property_domain_observations_v1",
   "source": "https://api.cityscroll.org/property-locations",
   "source_generated_at": "2026-09-07T13:15:12.622Z",
-  "generated_at": "2026-09-07T13:15:55.697Z",
+  "generated_at": "2026-09-09T00:19:22.490Z",
   "property_count": 133,
   "bbl_count": 319,
   "property_rows": [

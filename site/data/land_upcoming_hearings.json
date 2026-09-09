@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-09-06T16:04:14.693Z",
+  "generated_at": "2026-09-09T00:19:12.223Z",
   "sources": [
     "zap-api-dispositions",
     "zap-api-milestones"
@@ -9,23 +9,23 @@
   "materialization": {
     "method": "zap_published_hearing_sweep_v2",
     "mode": "live",
-    "today": "2026-09-06",
+    "today": "2026-09-09",
     "projects_listed": 235,
     "projects_fetched": 234,
     "projects_failed": 1,
-    "hearings_extracted": 402,
+    "hearings_extracted": 401,
     "disposition_hearings_extracted": 77,
-    "milestone_hearings_extracted": 325,
+    "milestone_hearings_extracted": 324,
     "disposition_upcoming_count": 4,
-    "milestone_upcoming_count": 165,
-    "incremental_milestone_count": 165,
+    "milestone_upcoming_count": 160,
+    "incremental_milestone_count": 160,
     "accepted_milestone_classes": {
-      "cpc_pre_hearing_review_session": 87,
-      "cpc_public_hearing": 78
+      "cpc_pre_hearing_review_session": 83,
+      "cpc_public_hearing": 77
     },
-    "published_meeting_dates_evaluated": 893,
-    "hearing_shaped_candidates_reviewed": 849,
-    "upcoming_count": 169,
+    "published_meeting_dates_evaluated": 890,
+    "hearing_shaped_candidates_reviewed": 846,
+    "upcoming_count": 164,
     "statuses": [
       "In Public Review",
       "Noticed",
@@ -35,166 +35,6 @@
     "polite_delay_ms": 350
   },
   "hearings": [
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2022Q0214",
-      "project_name": "43-02 Ditmars Boulevard Rezoning",
-      "public_status": "Filed",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2022Q0214",
-      "borough": "Queens",
-      "community_district": "Q01",
-      "cc_district": "22",
-      "milestone_id": "5669340d-cb11-ed11-82e3-001dd8068d73",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-09-08",
-      "hearing_at": "2026-09-08T04:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-09-08T04:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2025M0265",
-      "project_name": "655 Madison Avenue Authorizations",
-      "public_status": "Filed",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2025M0265",
-      "borough": "Manhattan",
-      "community_district": "M08",
-      "cc_district": "4",
-      "milestone_id": "72401673-0df6-ef11-be20-001dd808b02e",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-09-08",
-      "hearing_at": "2026-09-08T04:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-09-08T04:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2025M0473",
-      "project_name": "1059-1061 Second Avenue - TA Certification",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2025M0473",
-      "borough": "Manhattan",
-      "community_district": "M06",
-      "cc_district": "4",
-      "milestone_id": "bd70affa-0795-f111-ab0f-001dd80e798c",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-09-08",
-      "hearing_at": "2026-09-08T04:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-09-08T04:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2026R0189",
-      "project_name": "35 Douglas Court Renewal",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2026R0189",
-      "borough": "Staten Island",
-      "community_district": null,
-      "cc_district": null,
-      "milestone_id": "4d72ddc9-06f3-f011-8407-001dd803dca7",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-09-08",
-      "hearing_at": "2026-09-08T04:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-09-08T04:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
     {
       "schema_version": 1,
       "source": "zap-api-milestones",
@@ -1034,6 +874,86 @@
       "community_district": "Q02",
       "cc_district": "26",
       "milestone_id": "61c00c39-0c77-ed11-81ab-001dd806a702",
+      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "event_class": "cpc_pre_hearing_review_session",
+      "representing": "City Planning Commission",
+      "phase_id": "cpc",
+      "hearing_date": "2026-10-26",
+      "hearing_at": "2026-10-26T04:00:00.000Z",
+      "hearing_location_raw": null,
+      "venue_address": null,
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [],
+      "maps_url": null,
+      "parse_status": "published_date_only",
+      "provenance": {
+        "field": "dcp-reviewmeetingdate",
+        "source": "zap-api-milestones",
+        "value": "2026-10-26T04:00:00.000Z",
+        "title": {
+          "field": "milestonename",
+          "value": "Review Session - Pre-Hearing Review / Post Referral"
+        },
+        "classification": {
+          "method": "exact_published_title_v1",
+          "event_class": "cpc_pre_hearing_review_session"
+        },
+        "derived": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-milestones",
+      "project_id": "2024M0267",
+      "project_name": "625 Madison Avenue",
+      "public_status": "In Public Review",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2024M0267",
+      "borough": "Manhattan",
+      "community_district": "M05",
+      "cc_district": "4",
+      "milestone_id": "ff1131af-13f8-ee11-904c-001dd8306c80",
+      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "event_class": "cpc_pre_hearing_review_session",
+      "representing": "City Planning Commission",
+      "phase_id": "cpc",
+      "hearing_date": "2026-10-26",
+      "hearing_at": "2026-10-26T04:00:00.000Z",
+      "hearing_location_raw": null,
+      "venue_address": null,
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [],
+      "maps_url": null,
+      "parse_status": "published_date_only",
+      "provenance": {
+        "field": "dcp-reviewmeetingdate",
+        "source": "zap-api-milestones",
+        "value": "2026-10-26T04:00:00.000Z",
+        "title": {
+          "field": "milestonename",
+          "value": "Review Session - Pre-Hearing Review / Post Referral"
+        },
+        "classification": {
+          "method": "exact_published_title_v1",
+          "event_class": "cpc_pre_hearing_review_session"
+        },
+        "derived": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-milestones",
+      "project_id": "2026M0164",
+      "project_name": "3 East 89th Street Special Permit Renewal",
+      "public_status": "In Public Review",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2026M0164",
+      "borough": "Manhattan",
+      "community_district": "M08",
+      "cc_district": "4",
+      "milestone_id": "131bc311-607f-f011-b4cc-001dd806295a",
       "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
       "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
       "event_class": "cpc_pre_hearing_review_session",
@@ -2826,46 +2746,6 @@
     {
       "schema_version": 1,
       "source": "zap-api-milestones",
-      "project_id": "2024R0289",
-      "project_name": "Arbutus Ave Lot 54_SRD DOS",
-      "public_status": "Filed",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2024R0289",
-      "borough": "Staten Island",
-      "community_district": "R03",
-      "cc_district": null,
-      "milestone_id": "cc8e49a1-395b-ef11-bfe2-001dd809d9d4",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-11-30",
-      "hearing_at": "2026-11-30T05:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-11-30T05:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
       "project_id": "2024R0425",
       "project_name": "South Shore Industrial Center",
       "public_status": "Filed",
@@ -3194,46 +3074,6 @@
       "community_district": "K09",
       "cc_district": "35",
       "milestone_id": "e4dc27d1-ccb8-f011-bbd3-001dd80340cd",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-11-30",
-      "hearing_at": "2026-11-30T05:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-11-30T05:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2026M0164",
-      "project_name": "3 East 89th Street Special Permit Renewal",
-      "public_status": "Filed",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2026M0164",
-      "borough": "Manhattan",
-      "community_district": "M08",
-      "cc_district": "4",
-      "milestone_id": "131bc311-607f-f011-b4cc-001dd806295a",
       "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
       "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
       "event_class": "cpc_pre_hearing_review_session",
@@ -4706,46 +4546,6 @@
     {
       "schema_version": 1,
       "source": "zap-api-milestones",
-      "project_id": "2024M0267",
-      "project_name": "625 Madison Avenue",
-      "public_status": "Filed",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2024M0267",
-      "borough": "Manhattan",
-      "community_district": "M05",
-      "cc_district": "4",
-      "milestone_id": "0d1231af-13f8-ee11-904c-001dd8306c80",
-      "milestone_title": "City Planning Commission Review",
-      "milestone_source_title": "CPC Public Meeting - Public Hearing",
-      "event_class": "cpc_public_hearing",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-12-12",
-      "hearing_at": "2026-12-12T05:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-12-12T05:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "CPC Public Meeting - Public Hearing"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_public_hearing"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
       "project_id": "2024Q0297",
       "project_name": "135th Street Demapping",
       "public_status": "Filed",
@@ -6146,46 +5946,6 @@
     {
       "schema_version": 1,
       "source": "zap-api-milestones",
-      "project_id": "2024M0267",
-      "project_name": "625 Madison Avenue",
-      "public_status": "Filed",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2024M0267",
-      "borough": "Manhattan",
-      "community_district": "M05",
-      "cc_district": "4",
-      "milestone_id": "ff1131af-13f8-ee11-904c-001dd8306c80",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-12-14",
-      "hearing_at": "2026-12-14T05:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-12-14T05:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
       "project_id": "2024M0278",
       "project_name": "National Black Theater Signage",
       "public_status": "Filed",
@@ -6274,6 +6034,46 @@
       "community_district": "Q11",
       "cc_district": "19",
       "milestone_id": "f2e67a3f-d38c-ef11-ac21-001dd80552a0",
+      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "event_class": "cpc_pre_hearing_review_session",
+      "representing": "City Planning Commission",
+      "phase_id": "cpc",
+      "hearing_date": "2026-12-14",
+      "hearing_at": "2026-12-14T05:00:00.000Z",
+      "hearing_location_raw": null,
+      "venue_address": null,
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [],
+      "maps_url": null,
+      "parse_status": "published_date_only",
+      "provenance": {
+        "field": "dcp-reviewmeetingdate",
+        "source": "zap-api-milestones",
+        "value": "2026-12-14T05:00:00.000Z",
+        "title": {
+          "field": "milestonename",
+          "value": "Review Session - Pre-Hearing Review / Post Referral"
+        },
+        "classification": {
+          "method": "exact_published_title_v1",
+          "event_class": "cpc_pre_hearing_review_session"
+        },
+        "derived": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-milestones",
+      "project_id": "2024R0289",
+      "project_name": "Arbutus Ave Lot 54_SRD DOS",
+      "public_status": "Filed",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2024R0289",
+      "borough": "Staten Island",
+      "community_district": "R03",
+      "cc_district": null,
+      "milestone_id": "cc8e49a1-395b-ef11-bfe2-001dd809d9d4",
       "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
       "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
       "event_class": "cpc_pre_hearing_review_session",

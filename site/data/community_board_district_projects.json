@@ -2,12 +2,12 @@
   "schema": "cityscroll.community_board_district_projects.v1",
   "method": "canonical_board_district_exact_token_join_v1",
   "negative_rule": "Shared geography places a project in a district. It never establishes a board hearing, recommendation, committee assignment or ownership, and it never merges two projects that read alike.",
-  "generated_at": "2026-09-06T16:05:05.204Z",
+  "generated_at": "2026-09-09T00:19:57.008Z",
   "source": {
     "publisher": "NYC Department of City Planning, Zoning Application Portal",
     "dataset_id": "hgx4-8ukb",
     "source_url": "https://data.cityofnewyork.us/d/hgx4-8ukb",
-    "observed_on": "2026-09-06T16:05:05.204Z",
+    "observed_on": "2026-09-09T00:19:57.008Z",
     "boundary_vintage": "2026-05-26"
   },
   "counts": {

@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.land_authority_summary.v1",
   "join_version": "ldp05_authority_summary_v1",
-  "generated_at": "2026-09-06T15:58:50.482Z",
+  "generated_at": "2026-09-09T00:13:27.440Z",
   "source_basis_defaults": {
     "profile": {
       "source_type": "reviewed_static_registry",
@@ -24,7 +24,7 @@
     },
     "publisher": {
       "source_type": "published_hearing",
-      "checked_vintage": "2026-09-06"
+      "checked_vintage": "2026-09-09"
     }
   },
   "legal_basis_by_stage": {
@@ -79,7 +79,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -95,12 +95,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-09-06T15:58:50.482Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "outcomes_generated_at": "2026-09-09T00:13:27.440Z",
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -141,7 +141,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -157,12 +157,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-09-06T15:58:50.482Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "outcomes_generated_at": "2026-09-09T00:13:27.440Z",
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -213,7 +213,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -238,12 +238,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-09-06T15:58:50.482Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "outcomes_generated_at": "2026-09-09T00:13:27.440Z",
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -280,7 +280,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -296,12 +296,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-09-06T15:58:50.482Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "outcomes_generated_at": "2026-09-09T00:13:27.440Z",
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -342,7 +342,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -358,12 +358,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-09-06T15:58:50.482Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "outcomes_generated_at": "2026-09-09T00:13:27.440Z",
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -404,7 +404,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -420,12 +420,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-09-06T15:58:50.482Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "outcomes_generated_at": "2026-09-09T00:13:27.440Z",
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -472,7 +472,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -520,12 +520,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-03T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:09:05.719Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -576,7 +576,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": "7cfc36ab-cecd-ef11-b8e9-001dd809b68c",
         "source": "zap-api-milestones",
         "label": "Review Session - Pre-Hearing Review / Post Referral",
@@ -613,12 +613,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-02T00:00:00.000",
           "outcomes_generated_at": "2026-08-30T13:12:25.649Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -669,7 +669,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": "e4dc27d1-ccb8-f011-bbd3-001dd80340cd",
         "source": "zap-api-milestones",
         "label": "Review Session - Pre-Hearing Review / Post Referral",
@@ -698,12 +698,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-02T00:00:00.000",
           "outcomes_generated_at": "2026-08-30T13:12:17.280Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -754,7 +754,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": "46ec6068-6ba7-ef11-8a6a-001dd80552a0",
         "source": "zap-api-milestones",
         "label": "Review Session - Pre-Hearing Review / Post Referral",
@@ -783,12 +783,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-02T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:13:52.285Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -839,7 +839,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": "b598310e-9360-ef11-bfe2-001dd80552a0",
         "source": "zap-api-milestones",
         "label": "City Planning Commission Review",
@@ -868,12 +868,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-01T00:00:00.000",
           "outcomes_generated_at": "2026-08-30T13:12:25.594Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -916,7 +916,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -955,12 +955,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-01T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:09:14.215Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -1011,7 +1011,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": "72c89b39-4642-f011-877a-001dd806295a",
         "source": "zap-api-milestones",
         "label": "City Planning Commission Review",
@@ -1040,12 +1040,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-01T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:13:52.588Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -1088,7 +1088,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -1127,12 +1127,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-01T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:09:34.543Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -1175,7 +1175,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -1214,12 +1214,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-01T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:09:34.759Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -1260,7 +1260,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": "396cbbb9-bb87-e911-a988-001dd8308047",
         "source": "zap-api-milestones",
         "label": "City Planning Commission Review",
@@ -1276,12 +1276,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-01T00:00:00.000",
           "outcomes_generated_at": "2026-08-30T13:12:25.665Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -1328,7 +1328,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -1376,12 +1376,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-07-01T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:09:05.611Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -1428,7 +1428,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -1476,12 +1476,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:09:59.575Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -1528,7 +1528,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -1576,12 +1576,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:10:12.006Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -1628,7 +1628,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -1676,12 +1676,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:09:59.524Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -1724,7 +1724,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -1763,12 +1763,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:09:47.335Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -1815,7 +1815,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -1863,12 +1863,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:09:47.188Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -1915,7 +1915,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -1963,12 +1963,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:10:13.083Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -2011,7 +2011,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -2050,12 +2050,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:09:35.251Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -2098,7 +2098,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": "54afc836-1624-ef11-840b-001dd8306c80",
         "source": "zap-api-milestones",
         "label": "Review Session - Pre-Hearing Review / Post Referral",
@@ -2114,12 +2114,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:14:02.712Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -2162,7 +2162,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -2201,12 +2201,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:09:26.148Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -2253,7 +2253,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -2301,12 +2301,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:09:59.256Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -2357,7 +2357,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -2382,12 +2382,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:14:02.848Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -2434,7 +2434,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -2482,12 +2482,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:09:59.486Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -2534,7 +2534,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -2582,12 +2582,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-30T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:09:47.168Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -2638,7 +2638,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -2686,12 +2686,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-27T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:10:13.260Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -2742,7 +2742,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": "ab7813fc-7166-f011-bec2-001dd806295a",
         "source": "zap-api-milestones",
         "label": "Review Session - Pre-Hearing Review / Post Referral",
@@ -2771,12 +2771,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-26T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:14:07.124Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -2819,7 +2819,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -2847,12 +2847,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-26T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:10:11.953Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -2903,7 +2903,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": "01bdc83a-46a9-f011-bbd3-001dd806295a",
         "source": "zap-api-milestones",
         "label": "Review Session - Pre-Hearing Review / Post Referral",
@@ -2932,12 +2932,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-26T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:14:19.142Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -2984,7 +2984,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -3032,12 +3032,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-26T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:10:29.051Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -3088,7 +3088,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": "e4f5352c-6510-ee11-8f6c-001dd8097c36",
         "source": "zap-api-milestones",
         "label": "City Planning Commission Review",
@@ -3117,12 +3117,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-26T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:14:02.671Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -3173,7 +3173,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -3210,12 +3210,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-25T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:10:25.730Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -3266,7 +3266,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": "55caeaa2-3ba5-f011-bbd3-001dd80340cd",
         "source": "zap-api-milestones",
         "label": "City Planning Commission Review",
@@ -3295,12 +3295,12 @@
         "recommendations": []
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-25T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:14:24.059Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -3343,7 +3343,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -3382,12 +3382,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-25T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:10:28.191Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     },
@@ -3430,7 +3430,7 @@
       "published_next_opportunity": {
         "status": "none",
         "checked": true,
-        "checked_vintage": "2026-09-06",
+        "checked_vintage": "2026-09-09",
         "source_id": null,
         "source": "land_upcoming_hearings",
         "label": null,
@@ -3469,12 +3469,12 @@
         ]
       },
       "freshness": {
-        "generated_at": "2026-09-06T15:58:50.482Z",
-        "as_of": "2026-09-06T15:58:50.482Z",
+        "generated_at": "2026-09-09T00:13:27.440Z",
+        "as_of": "2026-09-09T00:13:27.440Z",
         "source_vintages": {
           "project_milestone_date": "2026-06-25T00:00:00.000",
           "outcomes_generated_at": "2026-09-04T13:10:49.976Z",
-          "hearings_generated_at": "2026-09-06T16:04:14.693Z"
+          "hearings_generated_at": "2026-09-09T00:19:12.223Z"
         }
       }
     }

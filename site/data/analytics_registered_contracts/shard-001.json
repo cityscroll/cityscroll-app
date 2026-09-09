@@ -4,6 +4,834 @@
   "shard_id": "001",
   "rows": [
     {
+      "prime_contract_id": "CT105720258806302",
+      "agency": "Fire Department",
+      "prime_vendor": "LIRO PROGRAM AND CONSTRUCTION MANAGEMENT PE PC",
+      "pin": "05724N0008001A001",
+      "registration_date": "2025-06-11",
+      "start_date": "2024-09-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
+      "industry": "Not Classified",
+      "contract_purpose": "Construction Management Services NAE",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 283,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 11968338.55,
+      "original_registered_amount": 11968338.55,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-09-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT106920258807019",
+      "agency": "Department of Social Services",
+      "prime_vendor": "ManpowerGroup Public Sector, Inc.",
+      "pin": "06925G0023001",
+      "registration_date": "2025-06-11",
+      "start_date": "2024-09-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "INTERGOVERNMENTAL PROCUREMENT",
+      "industry": "Professional Services",
+      "contract_purpose": "IT Consulting Services for Access HRA Releases Project",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 283,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 756000,
+      "original_registered_amount": 756000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-09-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT106920268800010",
+      "agency": "Department of Social Services",
+      "prime_vendor": "SETTLEMENT HOUSING FUND, INC,",
+      "pin": "06920N8209KXLR001",
+      "registration_date": "2025-06-11",
+      "start_date": "2026-03-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Human Services",
+      "contract_purpose": "Renewal+ Allowance - Case Coordination (106 units)",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -263,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 1417592.08,
+      "original_registered_amount": 1417592.08,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2026-03-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT107120258806286",
+      "agency": "Department of Homeless Services",
+      "prime_vendor": "HANYC FOUNDATION INC",
+      "pin": "07124N0007001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-01-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "NEGOTIATED ACQUISITION AND DOE NEGOTIATED SERVICES",
+      "industry": "Human Services",
+      "contract_purpose": "Hotel Management Svcs for DHS Emergency Programs 10,651 unit",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": 161,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 929104933.75,
+      "original_registered_amount": 929104933.75,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-01-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT107120260000091",
+      "agency": "Department of Homeless Services",
+      "prime_vendor": "CPR COURSES INTERNATIONAL LLC",
+      "pin": "25SGEPT00501",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SM PURCH GOODS SERVICES 100K",
+      "industry": "Standardized Services",
+      "contract_purpose": "BLANKET PO FOR CPR, FIRST AID & AED TRAINING",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 99999.99,
+      "original_registered_amount": 99999.99,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT107120268800006",
+      "agency": "Department of Homeless Services",
+      "prime_vendor": "PROVIDENCE HOUSE INC.",
+      "pin": "07121P8067KXLR001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Human Services",
+      "contract_purpose": "Contract renewal to ensure continuity of services to 59 unit",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 35916608,
+      "original_registered_amount": 35916608,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT107120268800035",
+      "agency": "Department of Homeless Services",
+      "prime_vendor": "GODDARD RIVERSIDE COMMUNITY CENTER",
+      "pin": "07121P8078KXLR001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Human Services",
+      "contract_purpose": "Renewal - SA @ Baxter Avenue Safe Haven GRCC (75 Beds)",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 26663763,
+      "original_registered_amount": 26663763,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT107120268800046",
+      "agency": "Department of Homeless Services",
+      "prime_vendor": "ACACIA NETWORK HOUSING INC",
+      "pin": "07122P0010019",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "RFP FROM A PQVL",
+      "industry": "Human Services",
+      "contract_purpose": "Acacia Services at FWC 112th Street Q 2025- 54 Units",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 23598395,
+      "original_registered_amount": 23598395,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT110220260000782",
+      "agency": "City Council",
+      "prime_vendor": "CONCEPT PRINTING INC",
+      "pin": "10220260003708",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - WRITTEN",
+      "industry": "Goods",
+      "contract_purpose": "9 1/2\" X 12 (LANDSCAPE), 80 # ROYAL SUNDANCE LINEN: BURGUNDY",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 24000,
+      "original_registered_amount": 24000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT112520268800404",
+      "agency": "Department for the Aging",
+      "prime_vendor": "MERRILL PARK CIVIC ASSOCIATION OF SPRINGFIELD GARDENS INC",
+      "pin": "12522P0001005R002",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Human Services",
+      "contract_purpose": "PROVIDE OLDER ADULT CENTER SERVICES",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 927941,
+      "original_registered_amount": 927941,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT126020268800466",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "MERCY CENTER INC",
+      "pin": "26021P0003002R001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Human Services",
+      "contract_purpose": "NDA Renewal FY26",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 401930,
+      "original_registered_amount": 401930,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT126020268800480",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "HOUSING AND FAMILY SERVICES OF GREATER NEW YORK INC",
+      "pin": "26021P0004016R001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Human Services",
+      "contract_purpose": "NDA Renewal FY26",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 502091,
+      "original_registered_amount": 502091,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT126020268800526",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "ALI FORNEY CENTER",
+      "pin": "26025N0157001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
+      "industry": "Human Services",
+      "contract_purpose": "RHY Vulnerable Youth Residential Services Cris Shelter & Til",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 1547891,
+      "original_registered_amount": 1547891,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT126020268800528",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "CHILDREN OF PROMISE NYC",
+      "pin": "26025N0252001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
+      "industry": "Human Services",
+      "contract_purpose": "COMPASS Program NAE",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 1456639,
+      "original_registered_amount": 1456639,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020268800530",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "ALI FORNEY CENTER",
+      "pin": "26025N0158001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
+      "industry": "Human Services",
+      "contract_purpose": "RHY Vulnerable Youth Residential Services Cris Shelter & Til",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 770014,
+      "original_registered_amount": 770014,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT126020268800541",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "ASPIRA OF NEW YORK INC",
+      "pin": "26025N0203001A001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
+      "industry": "Human Services",
+      "contract_purpose": "COMPASS Programs NAE",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 4416005,
+      "original_registered_amount": 4416005,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020268800578",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "THE HUDSON GUILD",
+      "pin": "26025N0456001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
+      "industry": "Human Services",
+      "contract_purpose": "COMPASS Program NAE",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 745009,
+      "original_registered_amount": 745009,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020268800589",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "DIVAS FOR SOCIAL JUSTICE INC.",
+      "pin": "26025N0284001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
+      "industry": "Human Services",
+      "contract_purpose": "COMPASS Programs NAE",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 591689,
+      "original_registered_amount": 591689,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT126020268800594",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "BROOKLYN CHILDRENS MUSEUM CORP",
+      "pin": "26025N0227001A001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
+      "industry": "Human Services",
+      "contract_purpose": "COMPASS Programs NAE",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 720071,
+      "original_registered_amount": 720071,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020268800609",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "FORESTDALE INC",
+      "pin": "26025N0560001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
+      "industry": "Human Services",
+      "contract_purpose": "Fatherhood - Negotiated Acquisition Extension",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 281894,
+      "original_registered_amount": 281894,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020268800704",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "YESHIVATH KEHILATH YAKOV, INC.",
+      "pin": "26025N0434001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
+      "industry": "Human Services",
+      "contract_purpose": "COMPASS Program NAE",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 804710,
+      "original_registered_amount": 804710,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT126020268800712",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "ALI FORNEY CENTER",
+      "pin": "26025N0159001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
+      "industry": "Human Services",
+      "contract_purpose": "Runaway Homeless Youth 100 Beds 2 Year NAE",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 1742800,
+      "original_registered_amount": 1742800,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT126020268800730",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "ALI FORNEY CENTER",
+      "pin": "26025N0163001A001",
+      "registration_date": "2025-06-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
+      "industry": "Human Services",
+      "contract_purpose": "RHY Homeless Young Adults (HYA) Program NAE",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -20,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 2059321,
+      "original_registered_amount": 2059321,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
       "prime_contract_id": "CT178120268800628",
       "agency": "Department of Probation",
       "prime_vendor": "AMERICA WORKS OF NEW YORK INC",
@@ -177809,7 +178637,7 @@
       "prime_contract_id": "CT185020258804964",
       "agency": "Department of Design and Construction",
       "prime_vendor": "K.O. TECHNOLOGIES, INC.",
-      "pin": "85024B0057001C001",
+      "pin": "85024B0057001C002",
       "registration_date": "2025-02-04",
       "start_date": "2025-01-03",
       "registration_fiscal_year": 2025,
@@ -200477,12 +201305,13 @@
       "date_ownership": {
         "owner": "prime_vendor_slice",
         "start_date_observations": [
-          "2025-02-02"
+          "2025-02-02",
+          "2025-02-27"
         ],
         "registration_date_observations": [
           "2025-01-15"
         ],
-        "conflicting_start_date_observations": false,
+        "conflicting_start_date_observations": true,
         "conflicting_registration_date_observations": false
       },
       "city_record_match": "none"
@@ -344172,7 +345001,7 @@
       "prime_contract_id": "CT126020258802347",
       "agency": "Department of Youth and Community Development",
       "prime_vendor": "City in the Community Foundation",
-      "pin": "26024N8481KXLA005",
+      "pin": "26024N8481KXLA006",
       "registration_date": "2024-09-11",
       "start_date": "2024-07-01",
       "registration_fiscal_year": 2025,

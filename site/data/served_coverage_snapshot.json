@@ -53,7 +53,7 @@
   ],
   "evidence_vintage": {
     "oldest": "2026-05-26T00:00:00.000Z",
-    "newest": "2026-09-07T13:17:09.974Z"
+    "newest": "2026-09-09T00:20:34.589Z"
   },
   "domains": [
     {
@@ -69,15 +69,15 @@
           "source_id": null,
           "source_name": null,
           "state": "measured",
-          "value": 19885,
-          "evidence_vintage": "2026-09-07T13:02:33.872Z",
+          "value": 19872,
+          "evidence_vintage": "2026-09-09T00:00:01.655Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single",
           "sources": [
             {
               "source_id": "checkbook-contracts",
               "source_name": "Checkbook NYC registered contracts",
-              "served_records": 9080,
+              "served_records": 9060,
               "state": "measured"
             },
             {
@@ -139,8 +139,8 @@
           "source_id": "checkbook-contracts",
           "source_name": "Checkbook NYC registered contracts",
           "state": "measured",
-          "value": 26822,
-          "evidence_vintage": "2026-09-07T00:00:00.000Z",
+          "value": 26846,
+          "evidence_vintage": "2026-09-09T00:00:00.000Z",
           "vintage_field": "snapshot_date",
           "vintage_basis": "single"
         },
@@ -187,8 +187,8 @@
           "source_id": "city-record",
           "source_name": "City Record Online",
           "state": "measured",
-          "value": 530,
-          "evidence_vintage": "2026-09-07T13:15:46.599Z",
+          "value": 327,
+          "evidence_vintage": "2026-09-09T00:19:15.021Z",
           "vintage_field": "sources.city_record.generated_at",
           "vintage_basis": "single"
         },
@@ -201,8 +201,8 @@
           "source_id": "non-council-board-minutes",
           "source_name": "Community board and borough president minutes",
           "state": "measured",
-          "value": 411,
-          "evidence_vintage": "2026-09-07T13:14:16.382Z",
+          "value": 208,
+          "evidence_vintage": "2026-09-09T00:12:05.488Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single"
         },
@@ -237,7 +237,7 @@
           "source_name": "NYC Council Members (1999 to Present)",
           "state": "measured",
           "value": 215,
-          "evidence_vintage": "2026-09-06T16:04:22.087Z",
+          "evidence_vintage": "2026-09-09T00:19:20.555Z",
           "vintage_field": "retrieved_at",
           "vintage_basis": "single"
         },
@@ -251,7 +251,7 @@
           "source_name": "NYC Council Members (1999 to Present)",
           "state": "measured",
           "value": 1369,
-          "evidence_vintage": "2026-09-06T16:04:22.087Z",
+          "evidence_vintage": "2026-09-09T00:19:20.555Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single"
         },
@@ -265,7 +265,7 @@
           "source_name": "NYC Council Legistar API",
           "state": "measured",
           "value": 1143,
-          "evidence_vintage": "2026-09-06T15:47:21.000Z",
+          "evidence_vintage": "2026-09-08T23:56:20.000Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single"
         },
@@ -299,7 +299,7 @@
           "source_name": "Zoning Application Portal — projects",
           "state": "measured",
           "value": 238,
-          "evidence_vintage": "2026-09-06T16:05:05.204Z",
+          "evidence_vintage": "2026-09-09T00:19:57.008Z",
           "vintage_field": "materialized_at",
           "vintage_basis": "single"
         },
@@ -312,8 +312,8 @@
           "source_id": "zap-api-outcomes",
           "source_name": "Zoning Application Portal — project outcomes (Planning Labs API)",
           "state": "measured",
-          "value": 169,
-          "evidence_vintage": "2026-09-06T16:04:14.693Z",
+          "value": 164,
+          "evidence_vintage": "2026-09-09T00:19:12.223Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single"
         }
@@ -353,7 +353,7 @@
           "source_name": "City Record Online",
           "state": "measured",
           "value": 100,
-          "evidence_vintage": "2026-09-07T13:17:09.974Z",
+          "evidence_vintage": "2026-09-09T00:20:34.589Z",
           "vintage_field": "retrieved_at",
           "vintage_basis": "single"
         }
@@ -373,7 +373,7 @@
           "source_name": "City Record Online",
           "state": "measured",
           "value": 80,
-          "evidence_vintage": "2026-09-06T16:04:24.651Z",
+          "evidence_vintage": "2026-09-09T00:19:23.487Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single"
         }
@@ -393,7 +393,7 @@
           "source_name": "Annual Examination Schedule",
           "state": "measured",
           "value": 226,
-          "evidence_vintage": "2026-09-07T00:00:00.000Z",
+          "evidence_vintage": "2026-09-09T00:00:00.000Z",
           "vintage_field": "sources_retrieved_as_of",
           "vintage_basis": "single"
         }
