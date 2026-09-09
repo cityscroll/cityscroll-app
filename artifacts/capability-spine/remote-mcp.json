@@ -8,7 +8,7 @@
   "evidence_class": "local_protocol_interop",
   "evidence_notes": "Exercises the current MCP SDK client against handleMcp() with the client transport's fetch overridden to dispatch in-process. It proves protocol and semantic parity, not that a deployed https://api.cityscroll.org/mcp endpoint is reachable.",
   "execution_environment": "node-intercepted-transport-fixture",
-  "fixture_sha256": "ebc1f2734d34c37f29d3b281d95851a6c77581d9c7b3b2ec16da2a91d4da314f",
+  "fixture_sha256": "0d2454834d3b1bfcb9269b557d6012bc5accf37c7087b1c3d8363720353373fd",
   "layers": {
     "adapter_policy": "worker/src/mcp.mjs plus capabilities/mcp_tool_declarations.mjs",
     "cloudflare_os_runtime": "downstream and not built by cs-06",
@@ -162,7 +162,7 @@
     },
     {
       "adapter_id": "mcp.retrieve_cited_passages@1",
-      "adapter_semantic_sha256": "a7b681017372321e137d1fd30baf6b06c95e2876a93133a06c2852fc7154cd68",
+      "adapter_semantic_sha256": "f603325194a0daf58c3618082e2e1a140fdf4f82f849162a83a149f6d74ecdde",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -178,7 +178,7 @@
       },
       "calls": 1,
       "capability_reference": "cited.passages.retrieve@1",
-      "direct_semantic_sha256": "a7b681017372321e137d1fd30baf6b06c95e2876a93133a06c2852fc7154cd68",
+      "direct_semantic_sha256": "f603325194a0daf58c3618082e2e1a140fdf4f82f849162a83a149f6d74ecdde",
       "name": "retrieve_cited_passages",
       "operation_class": "read",
       "parity": "pass",
@@ -242,7 +242,7 @@
     },
     {
       "adapter_id": "mcp.analyze_contracts@1",
-      "adapter_semantic_sha256": "b08294e3df17b0a808ea6c4d6578be3fc13f249fafe076a28eca446f173bdde1",
+      "adapter_semantic_sha256": "b2e21a27d32b31a7716543da08655f8e1bb585d2d210e190440220758b6cdf96",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -258,7 +258,7 @@
       },
       "calls": 1,
       "capability_reference": "contracts.analysis@1",
-      "direct_semantic_sha256": "b08294e3df17b0a808ea6c4d6578be3fc13f249fafe076a28eca446f173bdde1",
+      "direct_semantic_sha256": "b2e21a27d32b31a7716543da08655f8e1bb585d2d210e190440220758b6cdf96",
       "name": "analyze_contracts",
       "operation_class": "read",
       "parity": "pass",
@@ -323,7 +323,7 @@
     },
     {
       "adapter_id": "mcp.get_meeting@1",
-      "adapter_semantic_sha256": "e8f8a9ea077f996568ea7a5d545aa48d17072fcf27d3183ef8d71a874dae9db7",
+      "adapter_semantic_sha256": "4ad3ea9e93c8749c3b9f4a9582d031b6bf9d9b74c5610fb8afc99c979fd8ae08",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -337,7 +337,7 @@
       },
       "calls": 1,
       "capability_reference": "meeting.get@1",
-      "direct_semantic_sha256": "e8f8a9ea077f996568ea7a5d545aa48d17072fcf27d3183ef8d71a874dae9db7",
+      "direct_semantic_sha256": "4ad3ea9e93c8749c3b9f4a9582d031b6bf9d9b74c5610fb8afc99c979fd8ae08",
       "name": "get_meeting",
       "operation_class": "read",
       "parity": "pass",

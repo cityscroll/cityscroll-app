@@ -97,7 +97,7 @@
     {
       "reference": "entity.relationships.get@1",
       "id": "entity.relationships.get",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "family": "entity-resolution",
       "method": "entityRelationshipsGet",
       "tool": "get_entity_relationships",
@@ -127,7 +127,7 @@
     {
       "reference": "cited.passages.retrieve@1",
       "id": "cited.passages.retrieve",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "family": "semantic-retrieval",
       "method": "citedPassagesRetrieve",
       "tool": "retrieve_cited_passages",
@@ -246,7 +246,7 @@
     {
       "reference": "contracts.analysis@1",
       "id": "contracts.analysis",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "family": "procurement",
       "method": "contractsAnalysis",
       "tool": "analyze_contracts",
@@ -330,7 +330,7 @@
     {
       "reference": "meeting.get@1",
       "id": "meeting.get",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "family": "meetings",
       "method": "meetingGet",
       "tool": "get_meeting",

@@ -3,7 +3,7 @@
 // exposed by this capability.
 
 export const CONTRACTS_ANALYSIS_CAPABILITY_ID = "contracts.analysis";
-export const CONTRACTS_ANALYSIS_CAPABILITY_VERSION = "1.0.0";
+export const CONTRACTS_ANALYSIS_CAPABILITY_VERSION = "1.1.0";
 export const CONTRACTS_ANALYSIS_CAPABILITY_REFERENCE = "contracts.analysis@1";
 export const CONTRACTS_ANALYSIS_PROVIDER_ID = "worker-static.procurement-contracts.analysis";
 export const CONTRACTS_ANALYSIS_LIMITS = Object.freeze({
@@ -87,9 +87,9 @@ export const CONTRACTS_ANALYSIS_CAPABILITY = deepFreeze({
     groupings: CONTRACTS_ANALYSIS_GROUPS,
     measures: CONTRACTS_ANALYSIS_MEASURES,
     filters: {
-      agency: "case-insensitive exact agency label after projection normalization",
-      vendor: "case-insensitive exact prime-vendor label after projection normalization",
-      fiscalYear: "exact NYC registration fiscal year",
+      agency: "case-sensitive exact projected agency label; call without agency and read filters.discovery.agency.accepted_labels before filtering",
+      vendor: "case-sensitive exact projected prime-vendor label",
+      fiscalYear: "NYC registration fiscal year derived from registration date: July 1 of the preceding year through June 30; not award, payment, or source partition year",
       amountBand: "exact versioned current registered-value band",
       minAmount: "inclusive current registered-value floor",
       maxAmount: "inclusive current registered-value ceiling",
@@ -105,6 +105,7 @@ export const CONTRACTS_ANALYSIS_CAPABILITY = deepFreeze({
       "denominator", "population", "coverage", "contract_detail", "filters",
       "freshness", "error",
     ],
+    filterDiscovery: "filters.discovery publishes accepted agency labels, suggestions for unrecognized labels, and registration fiscal-year semantics independently of the selected result population",
     availability: CONTRACTS_ANALYSIS_AVAILABILITY,
     representations: CONTRACTS_ANALYSIS_REPRESENTATIONS,
     privateFieldsForbidden: ["raw_snapshot", "normalized_snapshot", "content_hash", "evidence_json", "resolution_run_id", "review_status"],

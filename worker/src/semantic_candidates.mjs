@@ -241,6 +241,23 @@ export function retrieveTypedCandidates({ query, filters = {}, limit = DEFAULT_R
       observed_on: sourcePassageMap.observed_on,
     },
     hard_scope: {
+      corpus: {
+        observed_on: corpusManifest.observed_on,
+        source_families: corpusManifest.source_families.map((family) => ({
+          source_family: family.source_family,
+          observed_on: family.freshness_receipt?.observed_on || null,
+          coverage: {
+            state: family.coverage.state,
+            boundary: `Coverage is limited to the ${family.record_count} source records retained for this family. Publication-date bounds do not imply continuous coverage.`,
+          },
+          record_count: family.record_count,
+          source_published_at_min: family.freshness_receipt?.source_published_at_min || null,
+          source_published_at_max: family.freshness_receipt?.source_published_at_max || null,
+        })),
+        coverage: { ...corpusManifest.coverage },
+        record_count: corpusManifest.record_count,
+        passage_count: sourcePassageMap.passages.length,
+      },
       state: Object.keys(scope).length ? "applied" : "unscoped",
       filters: scope,
     },

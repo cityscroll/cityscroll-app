@@ -3,7 +3,7 @@
 // use this bounded projection; none of them query a publisher at request time.
 
 export const MEETING_GET_CAPABILITY_ID = "meeting.get";
-export const MEETING_GET_CAPABILITY_VERSION = "1.0.0";
+export const MEETING_GET_CAPABILITY_VERSION = "1.1.0";
 export const MEETING_GET_CAPABILITY_REFERENCE = "meeting.get@1";
 export const MEETING_GET_PROVIDER_ID = "worker-static.shared-meeting.get";
 export const MEETING_GET_LIMITS = Object.freeze({
@@ -50,6 +50,7 @@ export const MEETING_GET_CAPABILITY = deepFreeze({
   },
   output: {
     schema: "cityscroll.capability.meeting_get.output.v1",
+    recordStates: "meeting.source_presence (present), source_observation (observed_at/observed_on), minutes (publisher status or unknown), city_record_join (source_record/matched/none/unknown); absent joins never erase publisher meeting identity or board_ref",
     fields: ["capability_reference", "availability", "meeting", "source", "coverage", "freshness", "error"],
     availability: MEETING_GET_AVAILABILITY,
     representations: MEETING_GET_REPRESENTATIONS,
@@ -184,7 +185,22 @@ export function meetingGetFromModel(model, input) {
   return {
     capability_reference: MEETING_GET_CAPABILITY_REFERENCE,
     availability: "available",
-    meeting,
+    meeting: {
+      ...meeting,
+      source_presence: { status: "present", publisher_identifier: meeting.publisher_identifier || meeting.source_record_id || null },
+      source_observation: {
+        observed_at: meeting.source_receipt?.observed_at || null,
+        observed_on: meeting.source_receipt?.observed_at?.slice(0, 10) || null,
+      },
+      minutes: { status: meeting.minutes_freshness?.status || "unknown", checked_at: meeting.minutes_freshness?.checked_at || null },
+      city_record_join: {
+        status: meeting.source_system === "city_record" ? "source_record"
+          : meeting.meeting_join?.join?.matched === true ? "matched"
+          : meeting.meeting_join?.reason === "no_city_record_notice" ? "none" : "unknown",
+        reason: meeting.meeting_join?.reason || null,
+        scope: "Join to the retained City Record notices; an absent join does not mean the source meeting is absent.",
+      },
+    },
     source: meeting.source_record || { source_system: source, identifier: meeting.source_record_id || null },
     coverage: { state: "observed", sources: model.sources || {}, source_system: source },
     freshness: { ...(model.freshness || {}), as_of: model.generated_at || "unknown" },

@@ -35,7 +35,7 @@
   "fixture": {
     "id": "cs-07-acme-entity-research-v1",
     "path": "test/fixtures/cloudflare_os_entity_research.json",
-    "sha256": "5b122d125acb539439ae6dae7536d93d8ddd558afb25c77e98c8e1f6f09650a8"
+    "sha256": "8ecdc9bc266651be55d77600a62c79e3ffbafea042e5fa6c634a0a087d50ec0e"
   },
   "kill_switch": {
     "active_after": false,
@@ -166,7 +166,7 @@
     "result_semantic_sha256": {
       "get_entity_dossier": "1509ef85049d6c0207f14cea32bed835afb61fe62f762d8163fad3511df2ae65",
       "get_entity_relationships": "9e7afdde1e9eb0da3ac87cb39c4bb80b6d9ee0932c5c37284a171b9617966bb4",
-      "retrieve_cited_passages": "a7b681017372321e137d1fd30baf6b06c95e2876a93133a06c2852fc7154cd68",
+      "retrieve_cited_passages": "f603325194a0daf58c3618082e2e1a140fdf4f82f849162a83a149f6d74ecdde",
       "search_notices": "fdfce907e1f111d1842275b129afe24ec8c2633c6ea20d9e7aed6fe139dc7b3a"
     },
     "row_bounds": {
@@ -188,6 +188,6 @@
         "returned_nodes": 5
       }
     },
-    "workbook_semantic_sha256": "3fb3c5e70dc50ab34a225645a49d70093b5d26ad7291ffd0a797662613acfb3a"
+    "workbook_semantic_sha256": "68aa8132643c053a0fd11b60829cfb729898668f7818192b0dd8c7912eab172f"
   }
 }

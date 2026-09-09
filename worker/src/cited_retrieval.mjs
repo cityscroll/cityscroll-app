@@ -72,7 +72,20 @@ export const CITED_RETRIEVAL_OUTPUT_SCHEMA = Object.freeze({
         },
       },
     },
-    hard_scope: { type: "object" },
+    hard_scope: { type: "object", properties: { corpus: { type: "object", required: ["observed_on", "source_families", "coverage", "record_count", "passage_count"], properties: {
+            observed_on: { type: ["string", "null"] },
+            source_families: { type: "array", items: { type: "object", required: ["source_family", "observed_on", "coverage", "record_count", "source_published_at_min", "source_published_at_max"], properties: {
+              source_family: { type: "string", enum: SEMANTIC_SOURCE_FAMILIES },
+              observed_on: { type: ["string", "null"] },
+              coverage: { type: "object" },
+              record_count: { type: "integer", minimum: 0 },
+              source_published_at_min: { type: ["string", "null"] },
+              source_published_at_max: { type: ["string", "null"] },
+            } } },
+            coverage: { type: "object" },
+            record_count: { type: "integer", minimum: 0 },
+            passage_count: { type: "integer", minimum: 0 },
+    } } } },
     coverage: {
       type: "object",
       additionalProperties: false,
@@ -334,7 +347,7 @@ function parseHttpInput(url) {
 
 export function formatCitedPassagesText(result) {
   const count = result.citations.length;
-  return `Returned ${count} source passage${count === 1 ? "" : "s"}. Use the structured citations for source text and links.`;
+  return `Returned ${count} source passage${count === 1 ? "" : "s"}. Corpus observed on ${result.retrieval.corpus.observed_on || "unknown"}; coverage ${result.coverage.state}. ${result.coverage.boundary || ""} Families: ${(result.hard_scope.corpus?.source_families || []).map((family) => `${family.source_family}: ${family.coverage.boundary}`).join("; ")}. Use the structured citations for source text and links.`;
 }
 
 /** HTTP adapter for cited.passages.retrieve@1; all civic meaning comes from the capability. */

@@ -516,6 +516,7 @@ function contractIdentifierSummary(group) {
 }
 
 export function formatContractsAnalysisText(result) {
+  if (result.filters?.discovery?.agency?.status === "unrecognized") return result.filters.discovery.agency.message;
   if (result.availability === "empty") return "No registered contracts match the bounded analytical filters.";
   if (result.availability === "unavailable") return "Contracts analysis is unavailable right now.";
   const measure = `${result.measure.reader_label} (${result.measure.unit})`;

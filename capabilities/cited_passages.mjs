@@ -3,7 +3,7 @@
 // adapters may only map input and accompany that response with transport copy.
 
 export const CITED_PASSAGES_CAPABILITY_ID = "cited.passages.retrieve";
-export const CITED_PASSAGES_CAPABILITY_VERSION = "1.0.0";
+export const CITED_PASSAGES_CAPABILITY_VERSION = "1.1.0";
 export const CITED_PASSAGES_CAPABILITY_REFERENCE = "cited.passages.retrieve@1";
 export const CITED_PASSAGES_PROVIDER_ID = "worker-semantic.cited-passages";
 export const CITED_PASSAGES_RESPONSE_SCHEMA = "cityscroll.semantic_retrieval.cited_passage_response.v1";
@@ -90,6 +90,7 @@ export const CITED_PASSAGES_CAPABILITY = deepFreeze({
     sourceIdentity: "citations[].source.id + citations[].source.url",
     passageIdentity: "citations[].passage.id",
     exactJoinEvidence: "citations[].exact_join_evidence",
+    corpusScope: "hard_scope.corpus.source_families: per-family observed_on, coverage bounds, retained record counts, and source publication date bounds; hard_scope.corpus includes total record_count and passage_count even for empty results",
     corpusReceipt: "retrieval.corpus.manifest_sha256 + retrieval.corpus.content_sha256",
     passageMapReceipt: "retrieval.index.version + retrieval.index.corpus_sha256",
   },
@@ -277,6 +278,30 @@ export function validateCitedPassagesOutput(result, input) {
       || (result.coverage?.boundary !== null && typeof result.coverage?.boundary !== "string")
       || !Array.isArray(result.citations)) {
     throw new TypeError("cited.passages response contract drifted");
+  }
+  const corpus = result.hard_scope.corpus;
+  if (corpus !== undefined) {
+    if (corpus.observed_on !== result.retrieval.corpus.observed_on
+        || !Array.isArray(corpus.source_families) || !corpus.source_families.length
+        || !Number.isInteger(corpus.record_count) || corpus.record_count < 0
+        || !Number.isInteger(corpus.passage_count) || corpus.passage_count < 0
+        || !COVERAGE_STATES.has(corpus.coverage?.state)
+        || corpus.coverage.state !== result.coverage.state
+        || corpus.source_families.reduce((sum, family) => sum + family.record_count, 0) !== corpus.record_count) {
+      throw new TypeError("cited.passages corpus scope is incomplete");
+    }
+    const families = new Set();
+    for (const family of corpus.source_families) {
+      if (!CITED_PASSAGES_SOURCE_FAMILIES.includes(family.source_family) || families.has(family.source_family)
+          || !Number.isInteger(family.record_count) || family.record_count < 0
+          || !COVERAGE_STATES.has(family.coverage?.state) || typeof family.coverage?.boundary !== "string"
+          || (family.observed_on !== null && !/^\d{4}-\d{2}-\d{2}$/.test(family.observed_on || ""))
+          || !["source_published_at_min", "source_published_at_max"].every((field) =>
+            family[field] === null || typeof family[field] === "string")) {
+        throw new TypeError("cited.passages corpus family scope is invalid");
+      }
+      families.add(family.source_family);
+    }
   }
   const appliedLimit = input.limit ?? CITED_PASSAGES_LIMITS.defaultResults;
   if (result.citations.length > appliedLimit || result.citations.length > CITED_PASSAGES_LIMITS.maximumResults) {

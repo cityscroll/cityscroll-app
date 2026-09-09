@@ -94,3 +94,28 @@ test("HTTP and MCP adapters delegate without reconstructing the analysis", async
   assert.match(mcpSource, /executeContractsAnalysis/);
   assert.doesNotMatch(mcpSource, /groupAnalyticalContracts|filterAnalyticalContracts/);
 });
+
+test("analytical labels are discoverable independently of filters and never silently resolved", async () => {
+  const discovery = await executeContractsAnalysis(workerContractsAnalysis(env), { fiscalYear: 1900 });
+  assert.deepEqual(discovery.filters.discovery.agency.accepted_labels, ["Agency A", "Agency B"]);
+  assert.equal(discovery.filters.discovery.agency.status, "not_requested");
+  const unrecognized = await executeContractsAnalysis(workerContractsAnalysis(env), { agency: "agency a", fiscalYear: 2027 });
+  assert.equal(unrecognized.availability, "empty");
+  assert.equal(unrecognized.filters.discovery.agency.status, "unrecognized");
+  assert.deepEqual(unrecognized.filters.discovery.agency.suggestions, ["Agency A"]);
+  assert.match(unrecognized.filters.discovery.agency.message, /Unrecognized agency label; did you mean Agency A/);
+  assert.match(unrecognized.denominator.definition, /does not establish zero awards/);
+  const accepted = unrecognized.filters.discovery.agency.suggestions[0];
+  const found = await executeContractsAnalysis(workerContractsAnalysis(env), { agency: accepted, fiscalYear: 2027 });
+  assert.equal(found.denominator.contract_count, 2);
+  assert.equal(found.filters.discovery.fiscal_year.period_start, "2026-07-01");
+  assert.equal(found.filters.discovery.fiscal_year.period_end, "2027-06-30");
+  const empty = await executeContractsAnalysis(workerContractsAnalysis(env), { agency: accepted, fiscalYear: 1900 });
+  assert.equal(empty.availability, "empty");
+  assert.equal(empty.filters.discovery.agency.status, "recognized");
+  assert.equal(empty.filters.discovery.agency.message, null);
+  const absent = await executeContractsAnalysis(workerContractsAnalysis(env), { agency: "Unpublished Department" });
+  assert.deepEqual(absent.filters.discovery.agency.suggestions, []);
+  const text = await handleContractsAnalysis(new Request("https://api.cityscroll.org/contracts/analysis?agency=agency+a&format=text"), env);
+  assert.match(await text.text(), /Unrecognized agency label/);
+});

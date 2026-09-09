@@ -19,6 +19,7 @@ import {
 import {
   ANALYTICAL_PROJECTION_SCHEMA,
   REGISTERED_CONTRACT_PROJECTION,
+  readerDimensionValue,
 } from "./analytical_projection_contract.mjs";
 import { resolveProcurementDetailIds } from "./procurement_detail_index.mjs";
 
@@ -127,11 +128,40 @@ function groupHref(input, groupBy, label) {
 }
 
 /** Build and validate the exact registered-contract capability envelope. */
+export function analyticalFilterDiscovery(rows, input = {}) {
+  const acceptedLabels = [...new Set(rows.map((row) => readerDimensionValue(row.agency)))].sort();
+  const requested = input.agency ?? null;
+  const recognized = requested === null || acceptedLabels.includes(requested);
+  const terms = String(requested || "").toLowerCase().split(/\s+/).filter(Boolean);
+  const caseMatches = acceptedLabels.filter((label) => label.toLowerCase() === String(requested).toLowerCase());
+  const suggestions = recognized ? [] : caseMatches.length ? caseMatches : acceptedLabels.filter((label) =>
+    terms.length && terms.every((term) => label.toLowerCase().split(/\W+/).includes(term))).slice(0, 5);
+  return {
+    agency: {
+      match: "exact_label",
+      accepted_labels: acceptedLabels,
+      requested_label: requested,
+      status: requested === null ? "not_requested" : recognized ? "recognized" : "unrecognized",
+      suggestions,
+      message: recognized ? null : `Unrecognized agency label; ${suggestions.length ? `did you mean ${suggestions.join(" or ")}?` : "choose a label from accepted_labels."} This result does not establish zero awards.`,
+    },
+    fiscal_year: {
+      field: "registration_fiscal_year",
+      definition: REGISTERED_CONTRACT_PROJECTION.dimensions.registration_fiscal_year.derivation,
+      accepted_values: [...new Set(rows.map((row) => row.registration_fiscal_year).filter(Number.isInteger))].sort((a, b) => a - b),
+      requested_value: input.fiscalYear ?? null,
+      period_start: input.fiscalYear == null ? null : `${input.fiscalYear - 1}-07-01`,
+      period_end: input.fiscalYear == null ? null : `${input.fiscalYear}-06-30`,
+    },
+  };
+}
+
 export function analyzeContractsProjection(projection, input = {}, detailIndex = null) {
   const rows = Array.isArray(projection?.rows) ? projection.rows : null;
   if (!rows || !["cityscroll.analytics_registered_contracts.v1", ANALYTICAL_PROJECTION_SCHEMA].includes(projection?.schema)) throw new Error("registered contract analytical projection is unavailable");
   const groupBy = input.groupBy || "agency";
   const measure = input.measure || "current";
+  const filterDiscovery = analyticalFilterDiscovery(rows, input);
   const filtered = filterAnalyticalContracts(rows, analyticalFilters(input));
   const grouped = groupAnalyticalContracts(filtered, { groupBy, measure, topN: input.limit || CONTRACTS_ANALYSIS_LIMITS.defaultGroups });
   const view = measureView(measure);
@@ -174,7 +204,7 @@ export function analyzeContractsProjection(projection, input = {}, detailIndex =
         unit: view.unit,
         contract_count: denominatorContractCount,
         value_count: denominatorValueCount,
-        definition: `Selected filtered registered-contract population; ${view.reader_label} is not payments or agency spending.`,
+        definition: `${filterDiscovery.agency.message ? `${filterDiscovery.agency.message} ` : ""}Selected filtered registered-contract population; ${view.reader_label} is not payments or agency spending.`,
       },
       population: {
         fact: "registered_contract",
@@ -209,7 +239,7 @@ export function analyzeContractsProjection(projection, input = {}, detailIndex =
         read_model_generated_at: detailIndex?.generated_at || null,
         read_model_procurement_id_count: detailIndex?.procurement_id_count ?? null,
       },
-      filters: publicFilters(input),
+      filters: { ...publicFilters(input), discovery: filterDiscovery },
       freshness: {
         as_of: projection.generated_at || projection.snapshot_date || "unknown",
         generated_at: projection.generated_at || null,

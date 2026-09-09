@@ -14,7 +14,7 @@ import {
 } from "../entity_resolution/publication/relationship_graph.mjs";
 
 export const ENTITY_RELATIONSHIPS_CAPABILITY_ID = "entity.relationships.get";
-export const ENTITY_RELATIONSHIPS_CAPABILITY_VERSION = "1.0.0";
+export const ENTITY_RELATIONSHIPS_CAPABILITY_VERSION = "1.1.0";
 export const ENTITY_RELATIONSHIPS_CAPABILITY_REFERENCE = "entity.relationships.get@1";
 export const ENTITY_RELATIONSHIPS_PROVIDER_ID = "worker-d1.entity-relationships";
 export const ENTITY_RELATIONSHIPS_PUBLIC_SCHEMA_VERSION = PUBLIC_RELATIONSHIP_GRAPH_VERSION;
@@ -91,6 +91,7 @@ export const ENTITY_RELATIONSHIPS_CAPABILITY = deepFreeze({
     identity: "exact canonical entity id",
     traversal: "incident edges from one root; no graph query language",
     nodeTypes: ENTITY_RELATIONSHIPS_NODE_TYPES,
+    leaderDetail: "published agency graph person-leader.available_detail preserves opaque identity, declares no separate dossier, and links the canonical agency dossier leadership field only when the published person identity agrees; observed_on, confidence, and source_limitation bound the assertion",
     edgeTypes: ENTITY_RELATIONSHIPS_EDGE_TYPES,
     limits: ENTITY_RELATIONSHIPS_LIMITS,
   },

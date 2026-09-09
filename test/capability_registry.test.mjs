@@ -4,6 +4,7 @@ import {
   mkdtempSync,
   readFileSync,
   rmSync,
+  statSync,
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
@@ -132,10 +133,10 @@ test("the registry is frozen, versioned, owned, and contains the federated searc
   assert.equal(ENTITY_DOSSIER_CAPABILITY.version, "1.0.0");
   assert.equal(ENTITY_DOSSIER_CAPABILITY.owner, "entity-resolution");
   assert.equal(ENTITY_RELATIONSHIPS_CAPABILITY.reference, "entity.relationships.get@1");
-  assert.equal(ENTITY_RELATIONSHIPS_CAPABILITY.version, "1.0.0");
+  assert.equal(ENTITY_RELATIONSHIPS_CAPABILITY.version, "1.1.0");
   assert.equal(ENTITY_RELATIONSHIPS_CAPABILITY.owner, "entity-resolution");
   assert.equal(CITED_PASSAGES_CAPABILITY.reference, "cited.passages.retrieve@1");
-  assert.equal(CITED_PASSAGES_CAPABILITY.version, "1.0.0");
+  assert.equal(CITED_PASSAGES_CAPABILITY.version, "1.1.0");
   assert.equal(CITED_PASSAGES_CAPABILITY.owner, "semantic-retrieval");
   assert.equal(FEDERATED_SEARCH_CAPABILITY.reference, FEDERATED_SEARCH_CAPABILITY_REFERENCE);
   assert.equal(FEDERATED_SEARCH_CAPABILITY.version, "1.1.0");
@@ -423,13 +424,22 @@ test("an undocumented capability operation fails the generated documentation che
   assert.throws(() => validateApiDocumentation(undocumented, catalog), /undocumented or stale/);
 });
 
-test("the deterministic CLI check passes and --stdout is stable", () => {
+test("the deterministic CLI check leaves generated files untouched and --stdout is stable", () => {
+  const generatedPaths = [
+    "architecture/generated/capability-topology.json",
+    "site/data/mcp_tool_catalog.json",
+    "site/data/api_capability_catalog.json",
+    "site/api.html",
+  ];
+  const timestamps = () => generatedPaths.map((path) => statSync(new URL(path, ROOT), { bigint: true }).mtimeNs);
+  const before = timestamps();
   const command = fileURLToPath(new URL("../tools/build_capability_topology.mjs", import.meta.url));
   const checked = spawnSync(process.execPath, [command, "--check"], {
     cwd: ROOT,
     encoding: "utf8",
   });
   assert.equal(checked.status, 0, checked.stderr || checked.stdout);
+  assert.deepEqual(timestamps(), before, "check mode must not rewrite even identical generated files");
   const one = spawnSync(process.execPath, [command, "--stdout"], { cwd: ROOT, encoding: "utf8" });
   const two = spawnSync(process.execPath, [command, "--stdout"], { cwd: ROOT, encoding: "utf8" });
   assert.equal(one.status, 0, one.stderr);

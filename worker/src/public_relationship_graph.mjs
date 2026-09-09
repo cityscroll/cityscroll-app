@@ -24,6 +24,7 @@ import {
 import {
   AGENCY_ENTITY_PUBLICATION,
   agencyPublicationCoverage,
+  agencyLeadershipAnswer,
   readPublishedAgency,
 } from "./lib/published_agency_entity.mjs";
 
@@ -220,7 +221,30 @@ export async function readPublicRelationshipGraph(db, canonicalEntityId, opts = 
     // A published graph that will not serialize is a fault to disclose, not an
     // unpublished answer and not an empty graph.
     if (!graph) throw new Error("record-relationships-unreadable");
-    return graph;
+    const leadership = agencyLeadershipAnswer(entityId, opts.publication || AGENCY_ENTITY_PUBLICATION);
+    return {
+      ...graph,
+      nodes: graph.nodes.map((node) => {
+        if (node.type !== "person-leader") return node;
+        const samePerson = leadership?.status === "published" && leadership.person_entity_id === node.id;
+        return {
+          ...node,
+          available_detail: {
+            dossier: { status: "not_yet_public", href: null },
+            leadership: {
+              status: samePerson ? "available" : "unknown",
+              entity_id: samePerson ? entityId : null,
+              capability_reference: samePerson ? "entity.dossier.get@1" : null,
+              href: samePerson ? `https://api.cityscroll.org/entity-dossier?id=${encodeURIComponent(entityId)}&format=json` : null,
+              field: samePerson ? "leadership" : null,
+            },
+            observed_on: node.provenance?.observed_at?.slice(0, 10) || null,
+            confidence: node.confidence,
+            source_limitation: "The publisher roster names this agency leader as of its observation date. This is not independent verification of current tenure or a separate person dossier.",
+          },
+        };
+      }),
+    };
   }
   if (!db) return null;
   const result = await db.prepare(

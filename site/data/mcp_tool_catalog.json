@@ -630,7 +630,7 @@
       "name": "get_entity_relationships",
       "operation_class": "read",
       "authority_class": "public_read",
-      "description": "Traverse bounded, evidence-bearing public relationships from one exact canonical CityScroll entity. Only the closed node and edge vocabularies are returned.",
+      "description": "Traverse bounded, evidence-bearing public relationships from one exact canonical CityScroll entity. Only the closed node and edge vocabularies are returned. Published agency graphs give person-leader nodes available_detail: separate dossier availability, an exact leadership read path when available, observation date, confidence, and source limitation.",
       "schema_reference": "entity.relationships.get@1",
       "capability_reference": "entity.relationships.get@1",
       "input_schema": {
@@ -793,7 +793,7 @@
       "name": "retrieve_cited_passages",
       "operation_class": "read",
       "authority_class": "public_read",
-      "description": "Retrieve source passages with stable citations and exact source joins. Returns source text only; it does not generate an answer or infer civic relationships.",
+      "description": "Retrieve source passages with stable citations and exact source joins. Returns source text only. hard_scope.corpus includes observed_on, source_families with coverage and source publication-date bounds, record_count, and passage_count even when no citations match. It does not generate an answer or infer civic relationships.",
       "schema_reference": "cited.passages.retrieve@1",
       "capability_reference": "cited.passages.retrieve@1",
       "input_schema": {
@@ -946,7 +946,87 @@
             }
           },
           "hard_scope": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+              "corpus": {
+                "type": "object",
+                "required": [
+                  "observed_on",
+                  "source_families",
+                  "coverage",
+                  "record_count",
+                  "passage_count"
+                ],
+                "properties": {
+                  "observed_on": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "source_families": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "source_family",
+                        "observed_on",
+                        "coverage",
+                        "record_count",
+                        "source_published_at_min",
+                        "source_published_at_max"
+                      ],
+                      "properties": {
+                        "source_family": {
+                          "type": "string",
+                          "enum": [
+                            "attachment_text",
+                            "city_record_notice",
+                            "community_board_minutes"
+                          ]
+                        },
+                        "observed_on": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "coverage": {
+                          "type": "object"
+                        },
+                        "record_count": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "source_published_at_min": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "source_published_at_max": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "coverage": {
+                    "type": "object"
+                  },
+                  "record_count": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "passage_count": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                }
+              }
+            }
           },
           "coverage": {
             "type": "object",
@@ -1489,7 +1569,7 @@
       "name": "analyze_contracts",
       "operation_class": "read",
       "authority_class": "public_read",
-      "description": "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, and coverage. Each group lists the exact contributing registration IDs in contract_ids and, at the same index in contract_procurement_ids, the canonical procurement ID get_contract accepts, or null when that contract is not individually retrievable. Does not report payments or spending.",
+      "description": "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, and coverage. Each group lists the exact contributing registration IDs in contract_ids and, at the same index in contract_procurement_ids, the canonical procurement ID get_contract accepts, or null when that contract is not individually retrievable. Does not report payments or spending. Omit agency to discover filters.discovery.agency.accepted_labels; retry an unrecognized label using a suggested exact label. fiscal_year is derived from registration date, July 1 through June 30.",
       "schema_reference": "contracts.analysis@1",
       "capability_reference": "contracts.analysis@1",
       "input_schema": {
@@ -1519,14 +1599,16 @@
           },
           "agency": {
             "type": "string",
-            "maxLength": 240
+            "maxLength": 240,
+            "description": "Exact case-sensitive label from filters.discovery.agency.accepted_labels; omit agency to discover the set."
           },
           "vendor": {
             "type": "string",
             "maxLength": 240
           },
           "fiscal_year": {
-            "type": "integer"
+            "type": "integer",
+            "description": "NYC registration fiscal year, July 1 of the preceding year through June 30, derived from registration date."
           },
           "amount_band": {
             "type": "string",
@@ -1637,7 +1719,111 @@
             "type": [
               "object",
               "null"
-            ]
+            ],
+            "properties": {
+              "discovery": {
+                "type": "object",
+                "required": [
+                  "agency",
+                  "fiscal_year"
+                ],
+                "properties": {
+                  "agency": {
+                    "type": "object",
+                    "required": [
+                      "match",
+                      "accepted_labels",
+                      "requested_label",
+                      "status",
+                      "suggestions",
+                      "message"
+                    ],
+                    "properties": {
+                      "match": {
+                        "const": "exact_label"
+                      },
+                      "status": {
+                        "enum": [
+                          "not_requested",
+                          "recognized",
+                          "unrecognized"
+                        ]
+                      },
+                      "accepted_labels": {
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "requested_label": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "suggestions": {
+                        "type": "array",
+                        "maxItems": 5,
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "message": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    }
+                  },
+                  "fiscal_year": {
+                    "type": "object",
+                    "required": [
+                      "field",
+                      "definition",
+                      "accepted_values",
+                      "requested_value",
+                      "period_start",
+                      "period_end"
+                    ],
+                    "properties": {
+                      "field": {
+                        "const": "registration_fiscal_year"
+                      },
+                      "definition": {
+                        "type": "string"
+                      },
+                      "accepted_values": {
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": {
+                          "type": "integer"
+                        }
+                      },
+                      "requested_value": {
+                        "type": [
+                          "integer",
+                          "null"
+                        ]
+                      },
+                      "period_start": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "period_end": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "freshness": {
             "type": [
@@ -1952,7 +2138,7 @@
       "name": "get_meeting",
       "operation_class": "read",
       "authority_class": "public_read",
-      "description": "Get one exact source-qualified meeting from the shared CityScroll meeting read model. Preserves source receipt, coverage, freshness, and attached meeting documents.",
+      "description": "Get one exact source-qualified meeting from the shared CityScroll meeting read model. Preserves source receipt, coverage, freshness, and attached meeting documents. source_presence, source_observation, minutes, and city_record_join are independent states; no notice join does not mean no source meeting.",
       "schema_reference": "meeting.get@1",
       "capability_reference": "meeting.get@1",
       "input_schema": {
@@ -1999,7 +2185,94 @@
             "type": [
               "object",
               "null"
-            ]
+            ],
+            "properties": {
+              "source_presence": {
+                "type": "object",
+                "required": [
+                  "status",
+                  "publisher_identifier"
+                ],
+                "properties": {
+                  "status": {
+                    "const": "present"
+                  },
+                  "publisher_identifier": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "source_observation": {
+                "type": "object",
+                "required": [
+                  "observed_at",
+                  "observed_on"
+                ],
+                "properties": {
+                  "observed_at": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "observed_on": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "minutes": {
+                "type": "object",
+                "required": [
+                  "status",
+                  "checked_at"
+                ],
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "description": "Publisher minutes freshness status, or unknown when not supplied."
+                  },
+                  "checked_at": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "city_record_join": {
+                "type": "object",
+                "required": [
+                  "status",
+                  "reason",
+                  "scope"
+                ],
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "source_record",
+                      "matched",
+                      "none",
+                      "unknown"
+                    ]
+                  },
+                  "reason": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "scope": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           },
           "source": {
             "type": [

@@ -113,7 +113,7 @@ import {
   profileAllowsTool,
   resolveMachineClientProfile,
 } from "../../capabilities/machine_client_profile.mjs";
-import { workerCitedPassages } from "./cited_retrieval.mjs";
+import { workerCitedPassages, formatCitedPassagesText } from "./cited_retrieval.mjs";
 import { workerD1EntityDossier } from "./entity_dossier.mjs";
 import { workerD1EntityRelationships } from "./public_relationship_graph.mjs";
 import { workerNoticeGet } from "./notice.mjs";
@@ -437,11 +437,10 @@ async function callTool(env, req, name, args, { federatedProvider = null } = {})
         workerCitedPassages(),
         mcpCitedPassagesInput(args),
       );
-      const count = result.citations.length;
       return {
         content: [{
           type: "text",
-          text: `Returned ${count} source passage${count === 1 ? "" : "s"}. Use the structured citations for source text and links.`,
+          text: formatCitedPassagesText(result),
         }],
         structuredContent: result,
       };

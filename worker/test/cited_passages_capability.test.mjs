@@ -86,7 +86,10 @@ test("direct provider preserves stable citations for every frozen source family"
     assert.equal(result.retrieval.corpus.manifest_sha256, fixture.corpus_manifest_sha256);
     assert.equal(result.retrieval.corpus.content_sha256, fixture.corpus_content_sha256);
     assert.equal(result.retrieval.index.version, fixture.passage_map_sha256);
-    assert.equal(sha256(JSON.stringify(result)), fixture.response_sha256);
+    const legacy = structuredClone(result);
+    delete legacy.hard_scope.corpus;
+    assert.equal(sha256(JSON.stringify(legacy)), fixture.response_sha256);
+    assert.equal(result.hard_scope.corpus.source_families.length, CITED_PASSAGES_SOURCE_FAMILIES.length);
     assert.deepEqual(result.citations.map((citation) => ({
       citation_id: citation.citation_id,
       source_id: citation.source.id,
@@ -195,10 +198,7 @@ test("MCP structured content is byte-compatible with the direct provider", async
     NL_METER: new MockKV(),
   })).json();
   assert.equal(JSON.stringify(mcp.result.structuredContent), JSON.stringify(direct));
-  assert.equal(
-    mcp.result.content[0].text,
-    "Returned 1 source passage. Use the structured citations for source text and links.",
-  );
+  assert.match(mcp.result.content[0].text, /Returned 1 source passage.*Corpus observed on 2026-08-04; coverage partial/);
   assertEvidenceOnly(mcp.result.structuredContent);
 });
 
@@ -222,5 +222,22 @@ test("HTTP JSON and text adapters preserve the direct cited-passages semantics",
     "https://api.cityscroll.org/cited-passages?q=energy%20conservation&source_family=city_record_notice&limit=5&format=text",
   ), {});
   assert.equal(textResponse.status, 200);
-  assert.equal(await textResponse.text(), "Returned 1 source passage. Use the structured citations for source text and links.");
+  assert.match(await textResponse.text(), /Returned 1 source passage.*Corpus observed on 2026-08-04; coverage partial/);
+});
+
+
+test("corpus scope rejects missing family coverage and inconsistent retained counts", async () => {
+  const input = { query: "resiliency hub", limit: 15 };
+  const result = await executeCitedPassages(workerCitedPassages(), input);
+  for (const corrupt of [
+    (value) => { delete value.hard_scope.corpus.source_families[0].coverage; },
+    (value) => { value.hard_scope.corpus.record_count += 1; },
+    (value) => { value.hard_scope.corpus.source_families[0].observed_on = "unknown date"; },
+    (value) => { value.hard_scope.corpus.observed_on = "2024-08-04"; },
+    (value) => { value.hard_scope.corpus.source_families[0].source_family = "unpublished_family"; },
+  ]) {
+    const bad = structuredClone(result);
+    corrupt(bad);
+    await assert.rejects(executeCitedPassages({ ...workerCitedPassages(), execute: () => bad }, input), /corpus/);
+  }
 });
