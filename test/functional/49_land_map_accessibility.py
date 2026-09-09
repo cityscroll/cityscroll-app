@@ -286,6 +286,26 @@ def check_map_failure_never_drops_focus_to_body(browser) -> None:
     assert after["in_panel"], f"focus after a failed retry landed outside the panel: {after}"
     assert after["retry"], f"focus after a failed retry did not land on the retry control: {after}"
 
+    # Two mounts can share the same failing request. The second starts while loading has
+    # removed the focused control, then repaints after the first restores focus to Retry.
+    attempts = page.evaluate(
+        """async () => {
+          const {mountLandBrowseMap} = await import('/app/map_runtime.mjs');
+          const host = document.getElementById('land-results-grid');
+          const rows = globalThis.lRows || [];
+          const results = await Promise.allSettled([
+            mountLandBrowseMap(host, {rows}),
+            mountLandBrowseMap(host, {rows}),
+          ]);
+          return results.map(result => result.status);
+        }"""
+    )
+    assert attempts == ["rejected", "rejected"], attempts
+    concurrent = active_probe(page)
+    assert concurrent["retry"] and not concurrent["is_body"], (
+        f"overlapping failed mounts lost focus restored by the first repaint: {concurrent}"
+    )
+
     # Dismiss still returns to a complete List with the panel gone.
     page.locator("[data-land-map-dismiss]").click()
     page.wait_for_function(
@@ -299,7 +319,7 @@ def check_map_failure_never_drops_focus_to_body(browser) -> None:
     assert dismissed["view"] == "list", dismissed
     assert dismissed["panel"] is False, "dismiss left the failed panel mounted"
     assert dismissed["rows"] == EXPECTED_TOTAL, dismissed
-    print("map-failure-focus:", json.dumps({"before": before, "after": after, "dismissed": dismissed}))
+    print("map-failure-focus:", json.dumps({"before": before, "after": after, "concurrent": concurrent, "dismissed": dismissed}))
     page.close()
 
 
