@@ -368,6 +368,19 @@
       ]
     },
     {
+      "id": "constellation-accuracy",
+      "command": [
+        "tools/build_constellation_er_accuracy_receipt.mjs"
+      ],
+      "covers": [
+        "tools/build_constellation_er_accuracy_receipt.mjs"
+      ],
+      "after": [
+        "cross-spine-census"
+      ],
+      "note": "The accuracy receipt includes the current census population; regenerate it after the census and publish it with the refreshed inputs."
+    },
+    {
       "id": "land-mapability",
       "command": [
         "tools/build_land_mapability_census.mjs"
@@ -656,7 +669,8 @@
     "tools/render_board_land_position_fixtures.mjs",
     "tools/capture_board_land_positions_evidence.py",
     "tools/build_pin_family_review.mjs",
-    "tools/build_source_vintage_observations.mjs"
+    "tools/build_source_vintage_observations.mjs",
+    "tools/build_constellation_er_accuracy_receipt.mjs"
   ],
   "verification": [
     {

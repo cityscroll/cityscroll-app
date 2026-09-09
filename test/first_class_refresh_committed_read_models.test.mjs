@@ -116,6 +116,7 @@ test("every rebuild step writes inside a path the refresh commits", () => {
   // sequence is known to write outside site/ and worker/.
   const paths = publishedPaths(readRegistry(REPO_ROOT));
   for (const written of [
+    "docs/evidence/ebcg-er-accuracy/receipt.json",
     "docs/evidence/served-coverage/census.json",
     "docs/evidence/geography-subjects/located-in-audit.json",
     "docs/gap-taxonomy.md",
@@ -212,4 +213,23 @@ test("the Data health freshness report is publishable with its dependent page", 
   assert.ok(coveredByPublishedPaths(report, publishedPaths(readRegistry(REPO_ROOT))));
   const ignored = spawnSync("git", ["check-ignore", "--no-index", "-q", report], { cwd: REPO_ROOT });
   assert.equal(ignored.status, 1, "the report must travel with the committed page that reads it");
+});
+
+
+test("refresh checkout supplies the same complete history as CI to the test families", () => {
+  for (const file of [WORKFLOW, path.join(REPO_ROOT, ".github/workflows/ci.yml")]) {
+    const steps = readFileSync(file, "utf8").split(/^ {6}- /m);
+    const checkout = steps.find((step) => step.startsWith("uses: actions/checkout@"));
+    assert.ok(checkout);
+    assert.match(checkout, /^          fetch-depth: 0$/m);
+  }
+});
+
+test("accuracy evidence follows the rebuilt census and is covered for publication", () => {
+  const registry = readRegistry(REPO_ROOT);
+  const census = registry.rebuild_sequence.findIndex((step) => step.id === "cross-spine-census");
+  const accuracy = registry.rebuild_sequence.findIndex((step) => step.command[0] === "tools/build_constellation_er_accuracy_receipt.mjs");
+  assert.ok(census >= 0 && accuracy > census);
+  assert.ok(registry.rebuild_sequence[accuracy].after.includes("cross-spine-census"));
+  assert.ok(coveredByPublishedPaths("docs/evidence/ebcg-er-accuracy/receipt.json", publishedPaths(registry)));
 });
