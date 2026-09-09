@@ -8,7 +8,9 @@ import { buildFollowingViewModel, renderFollowingDocument } from "../site/follow
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const output = join(ROOT, "site/following/index.html");
 const suggestedTemplates = JSON.parse(readFileSync(join(ROOT, "site/data/following_procurement_suggestions.json"), "utf8"));
-const html = renderFollowingDocument(buildFollowingViewModel({}, suggestedTemplates));
+const html = renderFollowingDocument(buildFollowingViewModel({}, suggestedTemplates), {
+  i18nAssetVersion: "__I18N_ASSET_VERSION__",
+});
 const current = existsSync(output) ? readFileSync(output, "utf8") : null;
 const check = process.argv.includes("--check");
 
