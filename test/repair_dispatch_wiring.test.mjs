@@ -62,7 +62,8 @@ test("the dispatcher's exit codes are exactly the outcomes the cycle maps them t
   assert.equal(repairOutcomeFromExit(exitCodeFor("judgment"), null), "judgment");
   assert.equal(repairOutcomeFromExit(exitCodeFor("failed"), null), "failed");
   assert.equal(repairOutcomeFromExit(exitCodeFor("unkeyable"), null), "unkeyable");
-  assert.deepEqual(EXIT_CODES, { repaired: 0, failed: 1, judgment: 2, unkeyable: 3 });
+  assert.equal(repairOutcomeFromExit(exitCodeFor("deferred"), null), "deferred");
+  assert.deepEqual(EXIT_CODES, { repaired: 0, failed: 1, judgment: 2, unkeyable: 3, deferred: 4 });
   // Anything the registry did not produce is treated as a failure, never as a
   // silent success.
   assert.equal(exitCodeFor("something-else"), EXIT_CODES.failed);
@@ -368,5 +369,24 @@ test("an unreadable signature exits unkeyable, while a readable one with no play
       assert.match(unreadable.stdout, /monitor:class/);
       assert.equal(repairOutcomeFromExit(unreadable.status, null), "unkeyable");
     }
+  });
+});
+
+
+test("an upstream deferral is recorded as the latest dispatch outcome", async () => {
+  await withTempDir("repair-deferred-receipt", async (stateDir) => {
+    const signature = "monitor:digest-shadow-monitor:digest-shadow-upstream";
+    const result = await dispatchRepairItem(item({ signature }), {
+      stateDir, now: NOW,
+      context: {
+        monitor: "digest-shadow-monitor", sleep: async () => {},
+        schedule: { job: async () => ({}), runJob: async () => ({ result: { status: "degraded" } }) },
+        upstreamEvidence: () => "SODA 524",
+      },
+    });
+    assert.equal(result.outcome, "deferred");
+    const receipt = JSON.parse(await readFile(join(stateDir, "repair", "receipts", "monitor_digest-shadow-monitor_digest-shadow-upstream.json"), "utf8"));
+    assert.equal(receipt.latest_outcome, "deferred");
+    assert.equal(receipt.attempts[0].outcome, "deferred");
   });
 });

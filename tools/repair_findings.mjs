@@ -184,6 +184,8 @@ export function sourceContractFailureClass(detail) {
  * reports nothing, which is what keeps a content redline out of the retry path.
  */
 export function upstreamFailureEvidence(result) {
+  // The runner identifies source incidents separately from digest redlines.
+  if (result?.fault_domain === "upstream_source") return "the rehearsal reports an unavailable upstream source";
   const status = Number(result?.http_status);
   if (Number.isFinite(status) && status >= 500 && status <= 599) return `upstream status ${status}`;
   const redlines = Array.isArray(result?.summary?.redlines) ? result.summary.redlines : [];

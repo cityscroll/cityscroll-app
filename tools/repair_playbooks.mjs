@@ -35,7 +35,7 @@
  * publisher, a scheduler host, or a checkout.
  */
 
-import { parseRepairSignature } from "./repair_findings.mjs";
+import { parseRepairSignature, sourceContractFailureClass } from "./repair_findings.mjs";
 
 export const REPAIR_PLAYBOOK_REGISTRY_SCHEMA = "cityscroll.repair-playbook-registry.v1";
 
@@ -49,7 +49,7 @@ export const REPAIR_DISPATCH_BUDGET_MS = 9 * 60 * 1000;
 /** How long the upstream playbook waits before its single retry. */
 export const UPSTREAM_BACKOFF_MS = 60 * 1000;
 
-export const REPAIR_OUTCOMES = Object.freeze(["repaired", "judgment", "failed"]);
+export const REPAIR_OUTCOMES = Object.freeze(["repaired", "judgment", "failed", "deferred"]);
 
 /**
  * The classes deliberately left to a person, and why. A class listed here has
@@ -57,7 +57,6 @@ export const REPAIR_OUTCOMES = Object.freeze(["repaired", "judgment", "failed"])
  * change, or a credential nobody may mint from inside a repair.
  */
 export const REPAIR_JUDGMENT_CLASSES = Object.freeze({
-  "source-contract-outage": "the publisher is unreachable; nothing on this host restores a third-party endpoint, and retrying inside a repair only hides the outage",
   "source-contract-schema-drift": "the publisher changed the shape of the data, so the fix is a change to this repository's reader or its declared required fields",
   "publication-cycle-stalled": "the desk publication cycle is a separate producer; restarting it from inside a monitor's repair would hide which of the two is actually stalled",
   "digest-shadow-credential": "the rehearsal's admin credential is missing or rejected, and minting or rotating a credential is never inside a repair's scope",
@@ -211,8 +210,7 @@ async function digestShadowUpstream(context) {
     return outcome("judgment", `no scheduled job is registered as ${context.monitor}, so the rehearsal cannot be re-run from here`);
   }
   // One bounded backoff and one retry. A transient upstream is exactly what a
-  // retry is for; a persistent one is not something more retries would find out
-  // anything new about.
+  // retry is for; further checks wait for the next scheduled observation.
   await context.sleep(UPSTREAM_BACKOFF_MS);
   const rerun = await context.schedule.runJob(job, { now: context.now });
   const result = rerun?.result || {};
@@ -221,11 +219,7 @@ async function digestShadowUpstream(context) {
   }
   const upstream = context.upstreamEvidence(result);
   if (upstream) {
-    // Deliberately neither repaired nor failed: retrying would say nothing new,
-    // and calling it a failed repair would report the wrong fault. The finding
-    // says what it is — the upstream is down — and a person decides whether to
-    // wait or to raise it with the publisher.
-    return outcome("judgment", `degraded-upstream: the digest rehearsal was re-run after a ${Math.round(UPSTREAM_BACKOFF_MS / SECOND)}s backoff and the upstream is still failing (${upstream}). This is an upstream outage, not a defect in the rehearsal; decide whether to wait for the publisher or raise it with them.`, { ok: false, detail: upstream });
+    return outcome("deferred", `waiting-upstream: the digest rehearsal was re-run after a ${Math.round(UPSTREAM_BACKOFF_MS / SECOND)}s backoff and the upstream is still failing (${upstream}). The next scheduled observation will recheck it; owner escalation waits for a persistent outage.`, { ok: false, detail: upstream });
   }
   return outcome("failed", `re-ran the digest rehearsal after a bounded backoff and it reported ${result.summary?.status || result.degraded_reason || "a degraded rehearsal"}`, { ok: false, detail: clamp(result.degraded_reason || "the rehearsal is still degraded", 120) });
 }
@@ -233,6 +227,20 @@ async function digestShadowUpstream(context) {
 /* ------------------------------------------------------------------------- */
 /* (d) A freshness watchdog that reports a source's evidence stale.           */
 /* ------------------------------------------------------------------------- */
+
+/** Recheck an unreachable publisher using the source monitor's own classifier. */
+async function sourceContractOutage(context) {
+  const subject = context.subject;
+  const registry = await context.contracts.load();
+  const contract = (registry?.contracts || []).find((row) => row?.id === subject);
+  if (!contract) return outcome("judgment", "the outage names no registered source contract, so no publisher check can be selected");
+  const verification = await context.contracts.verifyLive(contract);
+  if (verification.ok) return outcome("repaired", `${subject}: the publisher answers normally again — ${verification.detail}`, verification);
+  if (sourceContractFailureClass(verification.detail) === "source-contract-outage") {
+    return outcome("deferred", `waiting-upstream: ${subject}: ${verification.detail}. The next scheduled observation will recheck the publisher.`, verification);
+  }
+  return outcome("judgment", `${subject}: the publisher check now reports a different condition — ${verification.detail}`, verification);
+}
 
 async function freshnessStale(context) {
   const subject = context.subject;
@@ -282,6 +290,18 @@ async function freshnessStale(context) {
  */
 export const REPAIR_PLAYBOOKS = Object.freeze([
   Object.freeze({
+    id: "source-contract-outage",
+    monitor: "source-contracts-live",
+    failure_class: "source-contract-outage",
+    budget_ms: 3 * 60 * SECOND,
+    precondition: "the finding names a registered source contract whose publisher was unreachable",
+    remedy: "recheck the publisher once with the source-contract monitor",
+    verification: "the live source-contract check passes again",
+    judgment_when: "the contract is no longer registered or the check reports a different condition",
+    deferred_when: "the publisher check still reports an outage",
+    run: sourceContractOutage,
+  }),
+  Object.freeze({
     id: "source-contract-stale",
     monitor: "source-contracts-live",
     failure_class: "source-contract-stale",
@@ -311,7 +331,8 @@ export const REPAIR_PLAYBOOKS = Object.freeze([
     precondition: "the digest rehearsal is still a registered scheduled job",
     remedy: "wait a bounded backoff, then re-run the rehearsal once",
     verification: "the re-run rehearsal reports READY",
-    judgment_when: "the upstream is still failing after the retry, reported as degraded-upstream rather than as a failed repair",
+    judgment_when: "the rehearsal is no longer registered; continued upstream failures are deferred",
+    deferred_when: "the upstream is still failing after the bounded retry",
     run: digestShadowUpstream,
   }),
   Object.freeze({
@@ -362,6 +383,7 @@ export function repairPlaybookRegistry() {
       remedy: row.remedy,
       verification: row.verification,
       judgment_when: row.judgment_when,
+      ...(row.deferred_when ? { deferred_when: row.deferred_when } : {}),
     })),
     judgment_classes: Object.entries(REPAIR_JUDGMENT_CLASSES).map(([failure_class, reason]) => ({ failure_class, reason })),
   };

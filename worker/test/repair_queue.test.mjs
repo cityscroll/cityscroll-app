@@ -1044,3 +1044,119 @@ test("A6 a subject the watchdog reads current again closes without a person, and
     assert.equal(mail.sent.length, 1);
   } finally { mail.restore(); }
 });
+
+
+const UPSTREAM_SIGNATURE = "monitor:digest-shadow-monitor:digest-shadow-upstream";
+
+async function observeUpstream(env, stamp) {
+  const heartbeat = await liveCycle(env.ALERT_STATE, stamp);
+  return applyMonitorFindings(env, { now: at(stamp), heartbeat, findings: [{
+    signature: UPSTREAM_SIGNATURE, guard: "digest-shadow-monitor", stage: "digest-shadow-upstream",
+    findings: ["SODA 524"], last_seen: stamp,
+  }] });
+}
+
+async function deferUpstream(env, stamp) {
+  await observeUpstream(env, stamp);
+  const pickup = await dispatchRepairQueue(env, { now: at(stamp), runId: CYCLE.run_id });
+  assert.equal(pickup.items.length, 1);
+  const report = { signature: UPSTREAM_SIGNATURE, lease_id: pickup.items[0].lease.lease_id,
+    outcome: "deferred", summary: "waiting-upstream: SODA 524" };
+  return { report, result: await reportRepairResults(env, [report], { now: at(stamp) }) };
+}
+
+test("upstream deferrals stay silent inside 24 hours and mail once on a persistent recheck", async () => {
+  const { REPAIR_UPSTREAM_PERSISTENCE_MS } = await import("../src/lib/repair_queue.mjs");
+  assert.equal(REPAIR_UPSTREAM_PERSISTENCE_MS, 24 * 60 * 60 * 1000);
+  const env = { ALERT_STATE: kv(), RESEND_API_KEY: "rk" };
+  const mail = captureSends();
+  try {
+    const first = "2026-09-01T12:02:00.000Z";
+    for (const [index, stamp] of [first, "2026-09-01T13:02:00.000Z", "2026-09-02T12:01:59.999Z"].entries()) {
+      const { result, report } = await deferUpstream(env, stamp);
+      assert.equal(result.applied[0].state, "waiting_upstream");
+      assert.deepEqual(result.judgment_alerts, []);
+      const item = (await readRepairItem(env, UPSTREAM_SIGNATURE)).item;
+      assert.equal(item.first_deferred_at, first);
+      assert.equal(item.consecutive_deferrals, index + 1);
+      assert.equal(item.attempts, 0, "upstream waiting must not exhaust repair attempts");
+      assert.equal(item.result.outcome, "deferred");
+      assert.equal(mail.sent.length, 0);
+      // Duplicate delivery cannot advance persistence or send mail.
+      assert.equal((await reportRepairResults(env, [report], { now: at(stamp) })).applied[0].accepted, false);
+      // A heartbeat or replay of the same observation is not a new scheduled check.
+      await observeUpstream(env, "2026-09-01T12:00:00Z");
+      await observeUpstream(env, stamp);
+      assert.deepEqual((await dispatchRepairQueue(env, { now: at(stamp), runId: CYCLE.run_id })).items, []);
+      const queue = await readRepairQueue(env);
+      assert.equal(queue.open, 1);
+      assert.equal(queue.waiting_upstream, 1);
+      assert.equal(queue.needs_judgment, 0);
+    }
+    const { result, report } = await deferUpstream(env, "2026-09-02T12:02:00.000Z");
+    assert.equal(result.applied[0].state, "needs_judgment");
+    assert.equal(result.judgment_alerts.length, 1);
+    assert.equal(mail.sent.length, 1);
+    assert.match(mail.sent[0].html, /upstream.*24 hours/i);
+    const persisted = (await readRepairItem(env, UPSTREAM_SIGNATURE)).item;
+    assert.equal(persisted.result.outcome, "judgment");
+    assert.equal(persisted.consecutive_deferrals, 4);
+    await reportRepairResults(env, [report], { now: at("2026-09-02T13:00:00Z") });
+    await observeUpstream(env, "2026-09-02T13:00:00Z");
+    assert.deepEqual((await dispatchRepairQueue(env, { now: at("2026-09-02T13:00:00Z"), runId: CYCLE.run_id })).items, []);
+    assert.equal(mail.sent.length, 1);
+  } finally { mail.restore(); }
+});
+
+test("a deferred upstream recovery clears silently and a later outage starts a new window", async () => {
+  const env = { ALERT_STATE: kv(), RESEND_API_KEY: "rk" };
+  const mail = captureSends();
+  try {
+    await deferUpstream(env, "2026-09-01T12:02:00Z");
+    const closed = await applyMonitorFindings(env, { now: at("2026-09-01T15:02:00Z"),
+      recovered: [{ prefix: UPSTREAM_SIGNATURE, still_failing: [] }] });
+    assert.deepEqual(closed.recovered, [UPSTREAM_SIGNATURE]);
+    const item = (await readRepairItem(env, UPSTREAM_SIGNATURE)).item;
+    assert.equal(item.result.outcome, "recovered");
+    assert.equal(item.first_deferred_at, null);
+    assert.equal(item.consecutive_deferrals, 0);
+    assert.equal((await readRepairQueue(env)).open, 0);
+    await deferUpstream(env, "2026-09-03T12:02:00Z");
+    const again = (await readRepairItem(env, UPSTREAM_SIGNATURE)).item;
+    assert.equal(again.first_deferred_at, "2026-09-03T12:02:00.000Z");
+    assert.equal(again.consecutive_deferrals, 1);
+    assert.equal(mail.sent.length, 0);
+  } finally { mail.restore(); }
+});
+
+
+test("a successful retry clears deferrals and a local failure ends the consecutive upstream window", async () => {
+  const mail = captureSends();
+  try {
+    for (const outcome of ["failed", "repaired"]) {
+      const env = { ALERT_STATE: kv(), RESEND_API_KEY: "rk" };
+      await deferUpstream(env, "2026-09-01T12:02:00Z");
+      await observeUpstream(env, "2026-09-01T13:02:00Z");
+      const pickup = await dispatchRepairQueue(env, { now: at("2026-09-01T13:02:00Z"), runId: CYCLE.run_id });
+      await reportRepairResults(env, [{ signature: UPSTREAM_SIGNATURE, lease_id: pickup.items[0].lease.lease_id, outcome }], { now: at("2026-09-01T13:03:00Z") });
+      const item = (await readRepairItem(env, UPSTREAM_SIGNATURE)).item;
+      assert.equal(item.first_deferred_at, null);
+      assert.equal(item.consecutive_deferrals, 0);
+      assert.equal(item.state, outcome === "repaired" ? "repaired" : "queued");
+      assert.equal(mail.sent.length, 0);
+    }
+  } finally { mail.restore(); }
+});
+
+test("elapsed time without a newer scheduled observation does not escalate upstream waiting", async () => {
+  const env = { ALERT_STATE: kv(), RESEND_API_KEY: "rk" };
+  const mail = captureSends();
+  try {
+    await deferUpstream(env, "2026-09-01T12:02:00Z");
+    await liveCycle(env.ALERT_STATE, "2026-09-03T12:02:00Z");
+    const pickup = await dispatchRepairQueue(env, { now: at("2026-09-03T12:02:00Z"), runId: CYCLE.run_id });
+    assert.deepEqual(pickup.items, []);
+    assert.deepEqual(pickup.judgment_alerts, []);
+    assert.equal(mail.sent.length, 0);
+  } finally { mail.restore(); }
+});

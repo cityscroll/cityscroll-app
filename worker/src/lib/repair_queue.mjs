@@ -11,8 +11,8 @@
 // and reports the outcome back on its next heartbeat.
 //
 // MAIL POLICY lives with the caller, but the states here are what it keys on:
-// queueing, pickup, retry, and a successful repair are all silent. Only
-// `needs_judgment` — a repair that failed terminally or asked for a decision —
+// queueing, pickup, retry, deferral, and a successful repair are all silent. Only
+// `needs_judgment` — terminal repair failure, persistent upstream outage, or a decision —
 // produces the one further owner alert.
 //
 // SANITIZATION: records carry bounded, redacted prose and https links only.
@@ -33,6 +33,8 @@ export const REPAIR_LINK_LIMIT = 300;
 export const REPAIR_REPEAT_COUNT_MAX = 9999;
 export const REPAIR_LEASE_MS = 15 * 60 * 1000;
 export const REPAIR_MAX_ATTEMPTS = 3;
+// Elapsed time, not heartbeat count: only a fresh upstream recheck can escalate.
+export const REPAIR_UPSTREAM_PERSISTENCE_MS = 24 * 60 * 60 * 1000;
 export const REPAIR_LEASE_BATCH = 3;
 
 // Queueing is not authorization. Pickup permits a bounded diagnosis and a
@@ -44,7 +46,7 @@ export const REPAIR_LEASE_BATCH = 3;
 export const REPAIR_SCOPE = "diagnose-and-propose";
 
 export const REPAIR_STATES = Object.freeze([
-  "queued", "leased", "repaired", "needs_judgment",
+  "queued", "leased", "waiting_upstream", "repaired", "needs_judgment",
 ]);
 
 /**
@@ -59,7 +61,7 @@ export const REPAIR_STATES = Object.freeze([
  * rail can key on, so no playbook could ever match it and no number of further
  * attempts would change that. It retires too, for the reason below.
  */
-export const REPAIR_RESULT_OUTCOMES = Object.freeze(["repaired", "failed", "judgment", "recovered", "unkeyable"]);
+export const REPAIR_RESULT_OUTCOMES = Object.freeze(["repaired", "failed", "judgment", "deferred", "recovered", "unkeyable"]);
 
 // Alerts about the repair loop itself never re-enter the repair loop, or a
 // failed fix would queue a repair for its own failure notice.
@@ -184,6 +186,9 @@ export function normalizeRepairItem(raw) {
     attempts: Number.isFinite(Number(raw.attempts)) && Number(raw.attempts) > 0 ? Math.floor(Number(raw.attempts)) : 0,
     result,
     judgment_reason: sanitizeText(raw.judgment_reason) || null,
+    first_deferred_at: isoOr(raw.first_deferred_at, null),
+    consecutive_deferrals: Number.isFinite(Number(raw.consecutive_deferrals))
+      ? Math.min(Math.max(0, Math.floor(Number(raw.consecutive_deferrals))), REPAIR_REPEAT_COUNT_MAX) : 0,
     created_at: isoOr(raw.created_at, firstSeen),
     updated_at: isoOr(raw.updated_at, firstSeen),
   };
@@ -312,12 +317,16 @@ export async function upsertRepairItem(env, input = {}, { now = new Date(), hear
   }
 
   const pickup = repairPickupState(heartbeat, now);
-  const lastSeen = lastSeenOf(input, now);
+  const observedLastSeen = lastSeenOf(input, now);
+  const lastSeen = prior && Date.parse(prior.last_seen) > Date.parse(observedLastSeen) ? prior.last_seen : observedLastSeen;
   const firstSeen = prior?.first_seen || isoOr(input.first_seen, lastSeen);
   const repeatCount = prior ? Math.min(prior.repeat_count + 1, REPAIR_REPEAT_COUNT_MAX) : 1;
   // A repeat of a signature whose repair already finished is a fresh failure of
   // the same shape: the item reopens for pickup, keeping its first-seen history
   // and its repeat count rather than starting a second item.
+  //
+  // A deferred check waits for a newer monitor observation. Replayed findings
+  // and scheduler heartbeats alone never trigger another upstream request.
   //
   // An item parked at the judgment boundary is different. It reopens at most
   // once a UTC day — the rhythm rel-09 already uses to re-surface a finding that
@@ -326,6 +335,7 @@ export async function upsertRepairItem(env, input = {}, { now = new Date(), hear
   // still there tomorrow still gets another bounded attempt.
   const reopen = !prior
     || prior.state === "repaired"
+    || (prior.state === "waiting_upstream" && Date.parse(lastSeen) > Date.parse(prior.last_seen))
     || (prior.state === "needs_judgment" && utcDay(lastSeenOf(input, now)) > utcDay(prior.updated_at));
   const state = reopen ? "queued" : prior.state;
   const item = normalizeRepairItem({
@@ -343,10 +353,12 @@ export async function upsertRepairItem(env, input = {}, { now = new Date(), hear
     latest_receipt_url: input.receipt_url || prior?.latest_receipt_url || null,
     context: { findings: input.findings?.length ? input.findings : prior?.context?.findings },
     state,
-    next_pickup_at: pickup.at,
-    pickup_blocked_reason: pickup.blocked,
+    next_pickup_at: state === "waiting_upstream" ? null : pickup.at,
+    pickup_blocked_reason: state === "waiting_upstream" ? "waiting for the next scheduled upstream observation" : pickup.blocked,
     lease: state === "leased" ? prior?.lease : null,
-    attempts: reopen ? 0 : (prior?.attempts || 0),
+    attempts: reopen && prior?.state !== "waiting_upstream" ? 0 : (prior?.attempts || 0),
+    first_deferred_at: prior?.state === "repaired" ? null : prior?.first_deferred_at,
+    consecutive_deferrals: prior?.state === "repaired" ? 0 : prior?.consecutive_deferrals,
     result: reopen ? null : (prior?.result || null),
     judgment_reason: reopen ? null : (prior?.judgment_reason || null),
     created_at: prior?.created_at || firstSeen,
@@ -408,7 +420,7 @@ export async function leaseRepairItems(env, { runId, now = new Date(), limit = R
     if (leased.length >= limit) break;
     const { item } = await readRepairItem(env, signature);
     if (!item) continue;
-    if (isTerminalRepairState(item.state) || item.state === "needs_judgment") continue;
+    if (isTerminalRepairState(item.state) || item.state === "needs_judgment" || item.state === "waiting_upstream") continue;
     if (item.state === "leased") {
       const expires = Date.parse(item.lease?.expires_at || "");
       if (Number.isFinite(expires) && expires > now.getTime()) continue;
@@ -449,7 +461,9 @@ export async function leaseRepairItems(env, { runId, now = new Date(), limit = R
 /**
  * The cycle reports what its bounded repair task did. A success retires the
  * item silently. A retryable failure returns the item to the queue, still
- * silent, so retry never becomes mail. A terminal failure or an explicit
+ * silent, so retry never becomes mail. Upstream deferrals wait for a newer
+ * scheduled observation and only escalate on a check after the persistence
+ * window. A terminal failure or an explicit
  * request for a decision moves the item to the judgment boundary, which is the
  * only outcome that produces a further owner alert.
  */
@@ -466,7 +480,13 @@ export async function completeRepairItem(env, report = {}, { now = new Date() } 
   }
   // A dispatcher reports only what it did. `recovered` is the monitor's word,
   // never a repair task's, so it is not accepted from this direction.
-  const outcome = ["repaired", "failed", "judgment", "unkeyable"].includes(report.outcome) ? report.outcome : "failed";
+  const deferred = report.outcome === "deferred";
+  const firstDeferredAt = deferred ? (item.first_deferred_at || now.toISOString()) : null;
+  const consecutiveDeferrals = deferred ? item.consecutive_deferrals + 1 : 0;
+  const persistentUpstream = deferred
+    && now.getTime() - Date.parse(firstDeferredAt) >= REPAIR_UPSTREAM_PERSISTENCE_MS;
+  const outcome = persistentUpstream ? "judgment"
+    : ["repaired", "failed", "judgment", "unkeyable", "deferred"].includes(report.outcome) ? report.outcome : "failed";
   const result = {
     outcome,
     observed_at: now.toISOString(),
@@ -481,9 +501,9 @@ export async function completeRepairItem(env, report = {}, { now = new Date() } 
   // the rail reads" is not a question, and asking it daily is how an item nobody
   // can act on outlives the condition that produced it.
   const retire = outcome === "repaired" || outcome === "unkeyable";
-  const state = retire ? "repaired" : (retryable ? "queued" : "needs_judgment");
+  const state = retire ? "repaired" : outcome === "deferred" ? "waiting_upstream" : (retryable ? "queued" : "needs_judgment");
   const judgmentReason = state === "needs_judgment"
-    ? sanitizeText(report.judgment_reason)
+    ? (persistentUpstream ? `the upstream remains unavailable after ${REPAIR_UPSTREAM_PERSISTENCE_MS / 3_600_000} hours of deferred checks` : sanitizeText(report.judgment_reason))
       || (outcome === "judgment"
         ? "the automatic repair asked for a decision before changing anything"
         : `automatic repair stopped after ${item.attempts} attempt(s) without a fix`)
@@ -493,6 +513,12 @@ export async function completeRepairItem(env, report = {}, { now = new Date() } 
     state,
     lease: null,
     result,
+    first_deferred_at: firstDeferredAt,
+    consecutive_deferrals: consecutiveDeferrals,
+    // A completed upstream check did not spend a failed local repair attempt.
+    attempts: deferred ? Math.max(0, item.attempts - 1) : item.attempts,
+    next_pickup_at: state === "waiting_upstream" ? null : item.next_pickup_at,
+    pickup_blocked_reason: state === "waiting_upstream" ? "waiting for the next scheduled upstream observation" : item.pickup_blocked_reason,
     judgment_reason: judgmentReason,
     updated_at: now.toISOString(),
   });
@@ -542,6 +568,8 @@ export async function recoverRepairItem(env, signature, { now = new Date(), reas
   const next = normalizeRepairItem({
     ...item,
     state: "repaired",
+    first_deferred_at: null,
+    consecutive_deferrals: 0,
     lease: null,
     judgment_reason: null,
     result: {
@@ -645,7 +673,8 @@ export async function readRepairQueue(env, { now = new Date(), limit = 30 } = {}
     schema: "cityscroll.ops-repair-queue.v1",
     observed_at: now.toISOString(),
     repair_scope: REPAIR_SCOPE,
-    open: items.filter((item) => item.state === "queued" || item.state === "leased").length,
+    open: items.filter((item) => item.state === "queued" || item.state === "leased" || item.state === "waiting_upstream").length,
+    waiting_upstream: items.filter((item) => item.state === "waiting_upstream").length,
     needs_judgment: items.filter((item) => item.state === "needs_judgment").length,
     malformed,
     items,
@@ -663,6 +692,7 @@ export function repairQueueSentence(queue) {
     return " This finding was not queued for automatic repair: the repair queue write did not land, so it stays an open operational finding.";
   }
   const item = queue.item;
+  if (item.state === "waiting_upstream") return " Waiting for the next scheduled upstream check; no owner decision is needed during the deferral window.";
   if (item.next_pickup_at) {
     return ` Queued for automatic repair, next pickup at ${item.next_pickup_at}.`;
   }

@@ -1173,6 +1173,8 @@ export function repairOutcomeFromExit(code, signal) {
   // reads, so there is nothing to retry and nothing to decide. The queue retires
   // it rather than parking it for a person to answer again tomorrow.
   if (code === 3) return "unkeyable";
+  // Upstream outages wait for new scheduled evidence, without an owner decision.
+  if (code === 4) return "deferred";
   return "failed";
 }
 

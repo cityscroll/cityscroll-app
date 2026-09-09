@@ -57,6 +57,7 @@ test("a dispatcher exit code maps to exactly one queue outcome", () => {
   assert.equal(repairOutcomeFromExit(2, null), "judgment");
   assert.equal(repairOutcomeFromExit(1, null), "failed");
   assert.equal(repairOutcomeFromExit(3, null), "unkeyable");
+  assert.equal(repairOutcomeFromExit(4, null), "deferred");
   assert.equal(repairOutcomeFromExit(0, "SIGKILL"), "failed");
 });
 
@@ -113,7 +114,7 @@ test("a cycle with no configured dispatcher asks for a decision instead of prete
 
 test("repair outcomes outlive the process and are reported exactly once", async () => {
   await withTempDir("crol-repair", async (stateDir) => {
-    const spawn = fakeSpawn({ code: 0, stdout: "fixed" });
+    const spawn = fakeSpawn({ code: 4, stdout: "waiting-upstream" });
     const results = await runLeasedRepairTasks(stateDir, [
       leasedItem(),
       leasedItem({ signature: "b".repeat(64), lease: { lease_id: "bbbbbbbbbbbb-cycle-1" } }),
@@ -145,6 +146,7 @@ test("repair outcomes outlive the process and are reported exactly once", async 
       assert.equal(refused.status, "failed");
       assert.equal(posted.repair_dispatch, true);
       assert.equal(posted.repair_results.length, 2);
+      assert.ok(posted.repair_results.every((row) => row.outcome === "deferred"));
       assert.equal(JSON.parse(await readFile(join(stateDir, "repair", "pending-results.json"), "utf8")).results.length, 2);
 
       const accepted = await publishHeartbeat(stateDir, now, [], {
@@ -203,5 +205,17 @@ test("a cycle without a dispatcher declares that on the heartbeat so nothing is 
       if (priorUrl === undefined) delete process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL; else process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL = priorUrl;
       if (priorCommand === undefined) delete process.env.CITYSCROLL_REPAIR_DISPATCH_COMMAND; else process.env.CITYSCROLL_REPAIR_DISPATCH_COMMAND = priorCommand;
     }
+  });
+});
+
+
+test("a deferred dispatcher result retains its outcome in the pending receipt", async () => {
+  await withTempDir("repair-deferred", async (stateDir) => {
+    const spawn = fakeSpawn({ code: 4, stdout: "waiting-upstream: SODA 524" });
+    const results = await runLeasedRepairTasks(stateDir, [leasedItem()], { command: "/opt/repair/dispatch", spawnImpl: spawn.impl });
+    assert.equal(results[0].outcome, "deferred");
+    assert.equal(results[0].judgment_reason, undefined);
+    const pending = JSON.parse(await readFile(join(stateDir, "repair", "pending-results.json"), "utf8"));
+    assert.equal(pending.results[0].outcome, "deferred");
   });
 });
