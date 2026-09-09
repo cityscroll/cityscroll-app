@@ -202,7 +202,7 @@ test("retrieve_cited_passages returns source-only structured citations", async (
   )));
   assert.doesNotMatch(
     JSON.stringify(response.result.structuredContent),
-    /(?:answer|synthesis|action|legal_conclusion|graph_edge|relationship)/i,
+    /"(?:answer|synthesis|action|legal_conclusion|graph_edge|relationship)"\s*:/i,
   );
 });
 

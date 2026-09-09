@@ -27,7 +27,94 @@
       "type": [
         "object",
         "null"
-      ]
+      ],
+      "properties": {
+        "source_presence": {
+          "type": "object",
+          "required": [
+            "status",
+            "publisher_identifier"
+          ],
+          "properties": {
+            "status": {
+              "const": "present"
+            },
+            "publisher_identifier": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "source_observation": {
+          "type": "object",
+          "required": [
+            "observed_at",
+            "observed_on"
+          ],
+          "properties": {
+            "observed_at": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "observed_on": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "minutes": {
+          "type": "object",
+          "required": [
+            "status",
+            "checked_at"
+          ],
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "Publisher minutes freshness status, or unknown when not supplied."
+            },
+            "checked_at": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "city_record_join": {
+          "type": "object",
+          "required": [
+            "status",
+            "reason",
+            "scope"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "source_record",
+                "matched",
+                "none",
+                "unknown"
+              ]
+            },
+            "reason": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "scope": {
+              "type": "string"
+            }
+          }
+        }
+      }
     },
     "source": {
       "type": [

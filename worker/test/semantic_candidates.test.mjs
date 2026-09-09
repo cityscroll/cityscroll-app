@@ -66,7 +66,11 @@ test("typed candidate retrieval uses the committed manifest and exact source pas
   assert.match(response.corpus.manifest_sha256, /^[a-f0-9]{64}$/);
   assert.equal(response.index.schema, "cityscroll.semantic_retrieval.source_passage_map.v1");
   assert.match(response.index.version, /^[a-f0-9]{64}$/);
-  assert.deepEqual(response.hard_scope, {
+  const { corpus, ...queryScope } = response.hard_scope;
+  assert.equal(corpus.observed_on, response.corpus.observed_on);
+  assert.equal(corpus.coverage.state, "partial");
+  assert.equal(corpus.source_families.length, 3);
+  assert.deepEqual(queryScope, {
     state: "applied",
     filters: { source_family: "city_record_notice" },
   });

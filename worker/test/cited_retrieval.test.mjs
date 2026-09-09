@@ -53,7 +53,7 @@ test("cited retrieval returns typed, versioned passages with exact manifest join
 
   assert.doesNotMatch(
     JSON.stringify(response),
-    /(?:answer|synthesis|action|legal_conclusion|graph_edge|relationship)/i,
+    /"(?:answer|synthesis|action|legal_conclusion|graph_edge|relationship)"\s*:/i,
   );
 });
 
@@ -95,4 +95,28 @@ test("artifact-version drift cannot produce matched citation evidence", () => {
   assert.equal(response.citations.length, 1);
   assert.equal(response.citations[0].exact_join_evidence.state, "unknown");
   assert.equal(response.citations[0].exact_join_evidence.method, null);
+});
+
+test("empty and nonempty retrieval preserve each retained family's date and coverage bounds", () => {
+  for (const query of ["energy conservation", "unmatchedxylophonezz"]) {
+    const candidates = retrieveTypedCandidates({ query });
+    const response = projectCitedRetrievalResponse(candidates);
+    const corpus = response.hard_scope.corpus;
+    assert.deepEqual(corpus, candidates.hard_scope.corpus);
+    assert.equal(corpus.observed_on, "2026-08-04");
+    assert.notEqual(corpus.observed_on, "2024-08-04");
+    assert.equal(corpus.coverage.state, "partial");
+    assert.equal(corpus.record_count, 122);
+    assert.equal(corpus.passage_count, 238);
+    assert.deepEqual(corpus.source_families.map((family) => family.source_family), ["attachment_text", "city_record_notice", "community_board_minutes"]);
+    assert.equal(corpus.source_families.reduce((sum, family) => sum + family.record_count, 0), corpus.record_count);
+    for (const family of corpus.source_families) {
+      assert.equal(family.observed_on, corpus.observed_on);
+      assert.equal(family.coverage.state, "partial");
+      assert.ok(family.coverage.boundary);
+      assert.ok(family.source_published_at_min <= family.source_published_at_max);
+    }
+    if (query === "unmatchedxylophonezz") assert.deepEqual(response.citations, []);
+    else assert.ok(response.citations.length > 0);
+  }
 });

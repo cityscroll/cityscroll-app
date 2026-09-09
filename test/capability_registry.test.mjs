@@ -132,10 +132,10 @@ test("the registry is frozen, versioned, owned, and contains the federated searc
   assert.equal(ENTITY_DOSSIER_CAPABILITY.version, "1.0.0");
   assert.equal(ENTITY_DOSSIER_CAPABILITY.owner, "entity-resolution");
   assert.equal(ENTITY_RELATIONSHIPS_CAPABILITY.reference, "entity.relationships.get@1");
-  assert.equal(ENTITY_RELATIONSHIPS_CAPABILITY.version, "1.0.0");
+  assert.equal(ENTITY_RELATIONSHIPS_CAPABILITY.version, "1.1.0");
   assert.equal(ENTITY_RELATIONSHIPS_CAPABILITY.owner, "entity-resolution");
   assert.equal(CITED_PASSAGES_CAPABILITY.reference, "cited.passages.retrieve@1");
-  assert.equal(CITED_PASSAGES_CAPABILITY.version, "1.0.0");
+  assert.equal(CITED_PASSAGES_CAPABILITY.version, "1.1.0");
   assert.equal(CITED_PASSAGES_CAPABILITY.owner, "semantic-retrieval");
   assert.equal(FEDERATED_SEARCH_CAPABILITY.reference, FEDERATED_SEARCH_CAPABILITY_REFERENCE);
   assert.equal(FEDERATED_SEARCH_CAPABILITY.version, "1.1.0");

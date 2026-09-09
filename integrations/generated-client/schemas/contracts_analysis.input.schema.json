@@ -25,14 +25,16 @@
     },
     "agency": {
       "type": "string",
-      "maxLength": 240
+      "maxLength": 240,
+      "description": "Exact case-sensitive label from filters.discovery.agency.accepted_labels; omit agency to discover the set."
     },
     "vendor": {
       "type": "string",
       "maxLength": 240
     },
     "fiscal_year": {
-      "type": "integer"
+      "type": "integer",
+      "description": "NYC registration fiscal year, July 1 of the preceding year through June 30, derived from registration date."
     },
     "amount_band": {
       "type": "string",

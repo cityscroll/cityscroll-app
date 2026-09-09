@@ -78,7 +78,111 @@
       "type": [
         "object",
         "null"
-      ]
+      ],
+      "properties": {
+        "discovery": {
+          "type": "object",
+          "required": [
+            "agency",
+            "fiscal_year"
+          ],
+          "properties": {
+            "agency": {
+              "type": "object",
+              "required": [
+                "match",
+                "accepted_labels",
+                "requested_label",
+                "status",
+                "suggestions",
+                "message"
+              ],
+              "properties": {
+                "match": {
+                  "const": "exact_label"
+                },
+                "status": {
+                  "enum": [
+                    "not_requested",
+                    "recognized",
+                    "unrecognized"
+                  ]
+                },
+                "accepted_labels": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "requested_label": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "suggestions": {
+                  "type": "array",
+                  "maxItems": 5,
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "message": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "fiscal_year": {
+              "type": "object",
+              "required": [
+                "field",
+                "definition",
+                "accepted_values",
+                "requested_value",
+                "period_start",
+                "period_end"
+              ],
+              "properties": {
+                "field": {
+                  "const": "registration_fiscal_year"
+                },
+                "definition": {
+                  "type": "string"
+                },
+                "accepted_values": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "integer"
+                  }
+                },
+                "requested_value": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "period_start": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "period_end": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "freshness": {
       "type": [

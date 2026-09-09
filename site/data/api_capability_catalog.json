@@ -422,9 +422,9 @@
     {
       "reference": "entity.relationships.get@1",
       "id": "entity.relationships.get",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "title": "Entity Relationships Get",
-      "description": "Traverse bounded, evidence-bearing public relationships from one exact canonical CityScroll entity. Only the closed node and edge vocabularies are returned.",
+      "description": "Traverse bounded, evidence-bearing public relationships from one exact canonical CityScroll entity. Only the closed node and edge vocabularies are returned. Published agency graphs give person-leader nodes available_detail: separate dossier availability, an exact leadership read path when available, observation date, confidence, and source limitation.",
       "owner": "entity-resolution",
       "operation": "read",
       "authority": {
@@ -460,6 +460,7 @@
           "community-district",
           "council-district"
         ],
+        "leaderDetail": "published agency graph person-leader.available_detail preserves opaque identity, declares no separate dossier, and links the canonical agency dossier leadership field only when the published person identity agrees; observed_on, confidence, and source_limitation bound the assertion",
         "edgeTypes": [
           "named_vendor_on_award",
           "named_vendor_on_solicitation",
@@ -612,9 +613,9 @@
     {
       "reference": "cited.passages.retrieve@1",
       "id": "cited.passages.retrieve",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "title": "Cited Passages Retrieve",
-      "description": "Retrieve source passages with stable citations and exact source joins. Returns source text only; it does not generate an answer or infer civic relationships.",
+      "description": "Retrieve source passages with stable citations and exact source joins. Returns source text only. hard_scope.corpus includes observed_on, source_families with coverage and source publication-date bounds, record_count, and passage_count even when no citations match. It does not generate an answer or infer civic relationships.",
       "owner": "semantic-retrieval",
       "operation": "read",
       "authority": {
@@ -726,6 +727,7 @@
         "sourceIdentity": "citations[].source.id + citations[].source.url",
         "passageIdentity": "citations[].passage.id",
         "exactJoinEvidence": "citations[].exact_join_evidence",
+        "corpusScope": "hard_scope.corpus.source_families: per-family observed_on, coverage bounds, retained record counts, and source publication date bounds; hard_scope.corpus includes total record_count and passage_count even for empty results",
         "corpusReceipt": "retrieval.corpus.manifest_sha256 + retrieval.corpus.content_sha256",
         "passageMapReceipt": "retrieval.index.version + retrieval.index.corpus_sha256"
       },
@@ -1341,9 +1343,9 @@
     {
       "reference": "contracts.analysis@1",
       "id": "contracts.analysis",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "title": "Contracts Analysis",
-      "description": "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, and coverage. Each group lists the exact contributing registration IDs in contract_ids and, at the same index in contract_procurement_ids, the canonical procurement ID get_contract accepts, or null when that contract is not individually retrievable. Does not report payments or spending.",
+      "description": "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, and coverage. Each group lists the exact contributing registration IDs in contract_ids and, at the same index in contract_procurement_ids, the canonical procurement ID get_contract accepts, or null when that contract is not individually retrievable. Does not report payments or spending. Omit agency to discover filters.discovery.agency.accepted_labels; retry an unrecognized label using a suggested exact label. fiscal_year is derived from registration date, July 1 through June 30.",
       "owner": "procurement",
       "operation": "read",
       "authority": {
@@ -1371,9 +1373,9 @@
           "count"
         ],
         "filters": {
-          "agency": "case-insensitive exact agency label after projection normalization",
-          "vendor": "case-insensitive exact prime-vendor label after projection normalization",
-          "fiscalYear": "exact NYC registration fiscal year",
+          "agency": "case-sensitive exact projected agency label; call without agency and read filters.discovery.agency.accepted_labels before filtering",
+          "vendor": "case-sensitive exact projected prime-vendor label",
+          "fiscalYear": "NYC registration fiscal year derived from registration date: July 1 of the preceding year through June 30; not award, payment, or source partition year",
           "amountBand": "exact versioned current registered-value band",
           "minAmount": "inclusive current registered-value floor",
           "maxAmount": "inclusive current registered-value ceiling",
@@ -1404,6 +1406,7 @@
           "freshness",
           "error"
         ],
+        "filterDiscovery": "filters.discovery publishes accepted agency labels, suggestions for unrecognized labels, and registration fiscal-year semantics independently of the selected result population",
         "availability": [
           "complete",
           "empty",
@@ -1852,9 +1855,9 @@
     {
       "reference": "meeting.get@1",
       "id": "meeting.get",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "title": "Meeting Get",
-      "description": "Get one exact source-qualified meeting from the shared CityScroll meeting read model. Preserves source receipt, coverage, freshness, and attached meeting documents.",
+      "description": "Get one exact source-qualified meeting from the shared CityScroll meeting read model. Preserves source receipt, coverage, freshness, and attached meeting documents. source_presence, source_observation, minutes, and city_record_join are independent states; no notice join does not mean no source meeting.",
       "owner": "meetings",
       "operation": "read",
       "authority": {
@@ -1878,6 +1881,7 @@
       "output_schema": "cityscroll.capability.meeting_get.output.v1",
       "output_contract": {
         "schema": "cityscroll.capability.meeting_get.output.v1",
+        "recordStates": "meeting.source_presence (present), source_observation (observed_at/observed_on), minutes (publisher status or unknown), city_record_join (source_record/matched/none/unknown); absent joins never erase publisher meeting identity or board_ref",
         "fields": [
           "capability_reference",
           "availability",

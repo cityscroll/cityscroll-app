@@ -106,7 +106,87 @@
       }
     },
     "hard_scope": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "corpus": {
+          "type": "object",
+          "required": [
+            "observed_on",
+            "source_families",
+            "coverage",
+            "record_count",
+            "passage_count"
+          ],
+          "properties": {
+            "observed_on": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "source_families": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "source_family",
+                  "observed_on",
+                  "coverage",
+                  "record_count",
+                  "source_published_at_min",
+                  "source_published_at_max"
+                ],
+                "properties": {
+                  "source_family": {
+                    "type": "string",
+                    "enum": [
+                      "attachment_text",
+                      "city_record_notice",
+                      "community_board_minutes"
+                    ]
+                  },
+                  "observed_on": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "coverage": {
+                    "type": "object"
+                  },
+                  "record_count": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "source_published_at_min": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "source_published_at_max": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            },
+            "coverage": {
+              "type": "object"
+            },
+            "record_count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "passage_count": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
     },
     "coverage": {
       "type": "object",

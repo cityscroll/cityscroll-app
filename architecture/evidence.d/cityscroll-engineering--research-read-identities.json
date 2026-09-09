@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/research-read-identities",
+  "status": "implemented",
+  "fingerprint": "research-read-identities.v1",
+  "updated_at": "2026-09-09T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "contracts-analysis-projection",
+      "path": "site/contracts_analysis_projection.mjs"
+    },
+    {
+      "id": "contracts",
+      "path": "worker/src/contracts.mjs"
+    },
+    {
+      "id": "public-relationship-graph",
+      "path": "worker/src/public_relationship_graph.mjs"
+    },
+    {
+      "id": "meetings",
+      "path": "capabilities/meetings.mjs"
+    },
+    {
+      "id": "semantic-candidates",
+      "path": "worker/src/semantic_candidates.mjs"
+    },
+    {
+      "id": "cited-retrieval",
+      "path": "worker/src/cited_retrieval.mjs"
+    },
+    {
+      "id": "meeting-research-states-tests",
+      "path": "worker/test/meeting_research_states.test.mjs"
+    }
+  ]
+}

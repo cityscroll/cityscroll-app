@@ -319,7 +319,24 @@ const CONTRACTS_ANALYSIS_OUTPUT_SCHEMA = Object.freeze({
     population: { type: ["object", "null"] },
     coverage: { type: ["object", "null"] },
     contract_detail: { type: ["object", "null"] },
-    filters: { type: ["object", "null"] },
+    filters: { type: ["object", "null"], properties: {
+      discovery: { type: "object", required: ["agency", "fiscal_year"], properties: {
+        agency: { type: "object", required: ["match", "accepted_labels", "requested_label", "status", "suggestions", "message"], properties: {
+          match: { const: "exact_label" },
+          status: { enum: ["not_requested", "recognized", "unrecognized"] },
+          accepted_labels: { type: "array", uniqueItems: true, items: { type: "string" } },
+          requested_label: { type: ["string", "null"] },
+          suggestions: { type: "array", maxItems: 5, items: { type: "string" } },
+          message: { type: ["string", "null"] },
+        } },
+        fiscal_year: { type: "object", required: ["field", "definition", "accepted_values", "requested_value", "period_start", "period_end"], properties: {
+          field: { const: "registration_fiscal_year" }, definition: { type: "string" },
+          accepted_values: { type: "array", uniqueItems: true, items: { type: "integer" } },
+          requested_value: { type: ["integer", "null"] },
+          period_start: { type: ["string", "null"] }, period_end: { type: ["string", "null"] },
+      } },
+    } },
+    } },
     freshness: { type: ["object", "null"] },
     error: { type: ["string", "null"] },
   },
@@ -448,7 +465,7 @@ const MCP_REGISTERED_AND_PILOT_TOOLS = [
   },
   {
     name: "get_entity_relationships",
-    description: "Traverse bounded, evidence-bearing public relationships from one exact canonical CityScroll entity. Only the closed node and edge vocabularies are returned.",
+    description: "Traverse bounded, evidence-bearing public relationships from one exact canonical CityScroll entity. Only the closed node and edge vocabularies are returned. Published agency graphs give person-leader nodes available_detail: separate dossier availability, an exact leadership read path when available, observation date, confidence, and source limitation.",
     inputSchema: {
       type: "object", additionalProperties: false,
       properties: {
@@ -490,7 +507,7 @@ const MCP_REGISTERED_AND_PILOT_TOOLS = [
   },
   {
     name: "retrieve_cited_passages",
-    description: "Retrieve source passages with stable citations and exact source joins. Returns source text only; it does not generate an answer or infer civic relationships.",
+    description: "Retrieve source passages with stable citations and exact source joins. Returns source text only. hard_scope.corpus includes observed_on, source_families with coverage and source publication-date bounds, record_count, and passage_count even when no citations match. It does not generate an answer or infer civic relationships.",
     inputSchema: {
       type: "object", additionalProperties: false,
       properties: {
@@ -546,15 +563,15 @@ const MCP_REGISTERED_AND_PILOT_TOOLS = [
   },
   {
     name: "analyze_contracts",
-    description: "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, and coverage. Each group lists the exact contributing registration IDs in contract_ids and, at the same index in contract_procurement_ids, the canonical procurement ID get_contract accepts, or null when that contract is not individually retrievable. Does not report payments or spending.",
+    description: "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, and coverage. Each group lists the exact contributing registration IDs in contract_ids and, at the same index in contract_procurement_ids, the canonical procurement ID get_contract accepts, or null when that contract is not individually retrievable. Does not report payments or spending. Omit agency to discover filters.discovery.agency.accepted_labels; retry an unrecognized label using a suggested exact label. fiscal_year is derived from registration date, July 1 through June 30.",
     inputSchema: {
       type: "object", additionalProperties: false,
       properties: {
         group_by: { type: "string", enum: CONTRACTS_ANALYSIS_GROUPS, default: "agency", description: "Grouping dimension." },
         measure: { type: "string", enum: CONTRACTS_ANALYSIS_MEASURES, default: "current", description: "current or original registered contract value, or unique contract count." },
-        agency: { type: "string", maxLength: CONTRACTS_ANALYSIS_LIMITS.filterMaximumLength },
+        agency: { type: "string", maxLength: CONTRACTS_ANALYSIS_LIMITS.filterMaximumLength, description: "Exact case-sensitive label from filters.discovery.agency.accepted_labels; omit agency to discover the set." },
         vendor: { type: "string", maxLength: CONTRACTS_ANALYSIS_LIMITS.filterMaximumLength },
-        fiscal_year: { type: "integer" },
+        fiscal_year: { type: "integer", description: "NYC registration fiscal year, July 1 of the preceding year through June 30, derived from registration date." },
         amount_band: { type: "string", maxLength: CONTRACTS_ANALYSIS_LIMITS.filterMaximumLength },
         min_amount: { type: "number" },
         max_amount: { type: "number" },
@@ -582,7 +599,7 @@ const MCP_REGISTERED_AND_PILOT_TOOLS = [
   },
   {
     name: "get_meeting",
-    description: "Get one exact source-qualified meeting from the shared CityScroll meeting read model. Preserves source receipt, coverage, freshness, and attached meeting documents.",
+    description: "Get one exact source-qualified meeting from the shared CityScroll meeting read model. Preserves source receipt, coverage, freshness, and attached meeting documents. source_presence, source_observation, minutes, and city_record_join are independent states; no notice join does not mean no source meeting.",
     inputSchema: { type: "object", additionalProperties: false, properties: { meeting_id: { type: "string", minLength: 1, maxLength: MEETING_GET_LIMITS.meetingIdMaximumLength, description: "Exact canonical meeting id, including its meeting: prefix." } }, required: ["meeting_id"] },
     outputSchema: {
       type: "object", additionalProperties: false,
@@ -590,7 +607,12 @@ const MCP_REGISTERED_AND_PILOT_TOOLS = [
       properties: {
         capability_reference: { type: "string", const: MEETING_GET_CAPABILITY_REFERENCE },
         availability: { type: "string", enum: ["available", "not_yet_public", "unavailable"] },
-        meeting: { type: ["object", "null"] },
+        meeting: { type: ["object", "null"], properties: {
+          source_presence: { type: "object", required: ["status", "publisher_identifier"], properties: { status: { const: "present" }, publisher_identifier: { type: ["string", "null"] } } },
+          source_observation: { type: "object", required: ["observed_at", "observed_on"], properties: { observed_at: { type: ["string", "null"] }, observed_on: { type: ["string", "null"] } } },
+          minutes: { type: "object", required: ["status", "checked_at"], properties: { status: { type: "string", description: "Publisher minutes freshness status, or unknown when not supplied." }, checked_at: { type: ["string", "null"] } } },
+          city_record_join: { type: "object", required: ["status", "reason", "scope"], properties: { status: { enum: ["source_record", "matched", "none", "unknown"] }, reason: { type: ["string", "null"] }, scope: { type: "string" } } },
+        } },
         source: { type: ["object", "null"] },
         coverage: { type: ["object", "null"] },
         freshness: { type: ["object", "null"] },

@@ -1,5 +1,5 @@
 {
-  "actual_semantic_sha256": "2f16da33f52a17e7a2d9b45b423f7ad5987c136ea92e7b4bd854eff38fd83cdc",
+  "actual_semantic_sha256": "82f918c9d6fac9e203c4ab29c3101d860ae3f59349bdc3390386045dc2f921f8",
   "checks": [
     {
       "actual_projection": {
@@ -713,6 +713,50 @@
             }
           ],
           "hard_scope": {
+            "corpus": {
+              "coverage": {
+                "boundary": "Only the records enumerated below are included; this is not a complete publisher or CityScroll corpus.",
+                "state": "partial"
+              },
+              "observed_on": "2026-08-04",
+              "passage_count": 238,
+              "record_count": 122,
+              "source_families": [
+                {
+                  "coverage": {
+                    "boundary": "Coverage is limited to the 1 source records retained for this family. Publication-date bounds do not imply continuous coverage.",
+                    "state": "partial"
+                  },
+                  "observed_on": "2026-08-04",
+                  "record_count": 1,
+                  "source_family": "attachment_text",
+                  "source_published_at_max": "2024-05-15",
+                  "source_published_at_min": "2024-05-15"
+                },
+                {
+                  "coverage": {
+                    "boundary": "Coverage is limited to the 120 source records retained for this family. Publication-date bounds do not imply continuous coverage.",
+                    "state": "partial"
+                  },
+                  "observed_on": "2026-08-04",
+                  "record_count": 120,
+                  "source_family": "city_record_notice",
+                  "source_published_at_max": "2026-07-31T00:00:00.000",
+                  "source_published_at_min": "2015-07-16T00:00:00.000"
+                },
+                {
+                  "coverage": {
+                    "boundary": "Coverage is limited to the 1 source records retained for this family. Publication-date bounds do not imply continuous coverage.",
+                    "state": "partial"
+                  },
+                  "observed_on": "2026-08-04",
+                  "record_count": 1,
+                  "source_family": "community_board_minutes",
+                  "source_published_at_max": "2026-06-10",
+                  "source_published_at_min": "2026-06-10"
+                }
+              ]
+            },
             "filters": {
               "source_family": "city_record_notice"
             },
@@ -765,7 +809,7 @@
           "forbidden_paths": [],
           "passed": true
         },
-        "semantic_output_sha256": "a7b681017372321e137d1fd30baf6b06c95e2876a93133a06c2852fc7154cd68"
+        "semantic_output_sha256": "f603325194a0daf58c3618082e2e1a140fdf4f82f849162a83a149f6d74ecdde"
       },
       "capability_reference": "cited.passages.retrieve@1",
       "expected_projection": {
@@ -791,6 +835,50 @@
             }
           ],
           "hard_scope": {
+            "corpus": {
+              "coverage": {
+                "boundary": "Only the records enumerated below are included; this is not a complete publisher or CityScroll corpus.",
+                "state": "partial"
+              },
+              "observed_on": "2026-08-04",
+              "passage_count": 238,
+              "record_count": 122,
+              "source_families": [
+                {
+                  "coverage": {
+                    "boundary": "Coverage is limited to the 1 source records retained for this family. Publication-date bounds do not imply continuous coverage.",
+                    "state": "partial"
+                  },
+                  "observed_on": "2026-08-04",
+                  "record_count": 1,
+                  "source_family": "attachment_text",
+                  "source_published_at_max": "2024-05-15",
+                  "source_published_at_min": "2024-05-15"
+                },
+                {
+                  "coverage": {
+                    "boundary": "Coverage is limited to the 120 source records retained for this family. Publication-date bounds do not imply continuous coverage.",
+                    "state": "partial"
+                  },
+                  "observed_on": "2026-08-04",
+                  "record_count": 120,
+                  "source_family": "city_record_notice",
+                  "source_published_at_max": "2026-07-31T00:00:00.000",
+                  "source_published_at_min": "2015-07-16T00:00:00.000"
+                },
+                {
+                  "coverage": {
+                    "boundary": "Coverage is limited to the 1 source records retained for this family. Publication-date bounds do not imply continuous coverage.",
+                    "state": "partial"
+                  },
+                  "observed_on": "2026-08-04",
+                  "record_count": 1,
+                  "source_family": "community_board_minutes",
+                  "source_published_at_max": "2026-06-10",
+                  "source_published_at_min": "2026-06-10"
+                }
+              ]
+            },
             "filters": {
               "source_family": "city_record_notice"
             },
@@ -843,7 +931,7 @@
           "forbidden_paths": [],
           "passed": true
         },
-        "semantic_output_sha256": "a7b681017372321e137d1fd30baf6b06c95e2876a93133a06c2852fc7154cd68"
+        "semantic_output_sha256": "f603325194a0daf58c3618082e2e1a140fdf4f82f849162a83a149f6d74ecdde"
       },
       "id": "cited-passages-city-record",
       "input": {
@@ -855,17 +943,17 @@
       },
       "provider_id": "worker-semantic.cited-passages",
       "provider_parity": {
-        "static_projection_sha256": "029e6c2e395a7fb0ac6838e1fe9ab3bdfb40051a7e5e65459b66ec429646547e",
+        "static_projection_sha256": "96e8f7b656b90d9bb78e6780a1b383badbc00fe3aa0c8a15661d629bb06ae554",
         "status": "pass",
-        "worker_projection_sha256": "029e6c2e395a7fb0ac6838e1fe9ab3bdfb40051a7e5e65459b66ec429646547e"
+        "worker_projection_sha256": "96e8f7b656b90d9bb78e6780a1b383badbc00fe3aa0c8a15661d629bb06ae554"
       }
     }
   ],
-  "expected_semantic_sha256": "2f16da33f52a17e7a2d9b45b423f7ad5987c136ea92e7b4bd854eff38fd83cdc",
+  "expected_semantic_sha256": "82f918c9d6fac9e203c4ab29c3101d860ae3f59349bdc3390386045dc2f921f8",
   "fixture": {
     "id": "cs-05-acme-constellation-v1",
     "schema": "cityscroll.capability_semantic_scout_fixture.v1",
-    "sha256": "ebc1f2734d34c37f29d3b281d95851a6c77581d9c7b3b2ec16da2a91d4da314f"
+    "sha256": "0d2454834d3b1bfcb9269b557d6012bc5accf37c7087b1c3d8363720353373fd"
   },
   "generated_at": "2026-08-19T00:00:00.000Z",
   "registry": [

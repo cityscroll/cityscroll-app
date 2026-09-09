@@ -290,3 +290,39 @@ test("HTTP adapter preserves not_yet_public and unavailable response bytes", asy
   assert.equal(unavailable.status, 503);
   assert.equal(await unavailable.text(), JSON.stringify({ error: "relationship-graph-unavailable" }));
 });
+
+test("a published leader advertises the agency leadership read without inventing a person dossier", async () => {
+  const { handleEntityDossier } = await import("../src/entity_dossier.mjs");
+  const graph = (await executeEntityRelationships(workerD1EntityRelationships(null), { entityId: "agency:id:buildings" })).graph;
+  const leader = graph.nodes.find((node) => node.type === "person-leader");
+  assert.ok(leader);
+  assert.equal(leader.available_detail.dossier.status, "not_yet_public");
+  assert.equal(leader.available_detail.dossier.href, null);
+  assert.equal(leader.available_detail.observed_on, leader.provenance.observed_at.slice(0, 10));
+  assert.deepEqual(leader.available_detail.confidence, leader.confidence);
+  assert.match(leader.available_detail.source_limitation, /not independent verification/);
+  const response = await handleEntityDossier(new Request(leader.available_detail.leadership.href), {});
+  assert.equal(response.status, 200);
+  const dossier = await response.json();
+  assert.equal(dossier.leadership.person_entity_id, leader.id);
+  assert.equal(dossier.leadership.person, leader.name);
+  assert.equal(dossier.leadership.observed_at, leader.provenance.observed_at);
+  for (const id of [leader.id, leader.id.replaceAll("%20", " ")]) {
+    const missing = await handleEntityDossier(new Request(`https://api.cityscroll.org/entity-dossier?id=${encodeURIComponent(id)}&format=json`), { DB: { prepare: () => ({ bind: () => ({ all: async () => ({ results: [] }) }) }) } });
+    assert.equal(missing.status, 404);
+    assert.equal((await missing.json()).public_status, "not_yet_public");
+  }
+});
+
+test("leader detail does not link a different published person", async () => {
+  const { AGENCY_ENTITY_PUBLICATION } = await import("../src/lib/published_agency_entity.mjs");
+  const publication = structuredClone(AGENCY_ENTITY_PUBLICATION);
+  const officer = publication.officers["agency:id:buildings"];
+  assert.ok(officer);
+  officer.person_entity_id = "person-leader:buildings:name:different-person";
+  const result = await executeEntityRelationships(workerD1EntityRelationships(null, { publication }), { entityId: "agency:id:buildings" });
+  const leader = result.graph.nodes.find((node) => node.type === "person-leader");
+  assert.equal(leader.available_detail.leadership.status, "unknown");
+  assert.equal(leader.available_detail.leadership.href, null);
+  assert.equal(leader.available_detail.leadership.entity_id, null);
+});

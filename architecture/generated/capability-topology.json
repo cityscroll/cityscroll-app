@@ -311,7 +311,7 @@
     {
       "reference": "entity.relationships.get@1",
       "id": "entity.relationships.get",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "owner": "entity-resolution",
       "operation": "read",
       "authority": {
@@ -419,7 +419,7 @@
     {
       "reference": "cited.passages.retrieve@1",
       "id": "cited.passages.retrieve",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "owner": "semantic-retrieval",
       "operation": "read",
       "authority": {
@@ -482,6 +482,7 @@
         "sourceIdentity": "citations[].source.id + citations[].source.url",
         "passageIdentity": "citations[].passage.id",
         "exactJoinEvidence": "citations[].exact_join_evidence",
+        "corpusScope": "hard_scope.corpus.source_families: per-family observed_on, coverage bounds, retained record counts, and source publication date bounds; hard_scope.corpus includes total record_count and passage_count even for empty results",
         "corpusReceipt": "retrieval.corpus.manifest_sha256 + retrieval.corpus.content_sha256",
         "passageMapReceipt": "retrieval.index.version + retrieval.index.corpus_sha256"
       },
@@ -908,7 +909,7 @@
     {
       "reference": "contracts.analysis@1",
       "id": "contracts.analysis",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "owner": "procurement",
       "operation": "read",
       "authority": {
@@ -1254,7 +1255,7 @@
     {
       "reference": "meeting.get@1",
       "id": "meeting.get",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "owner": "meetings",
       "operation": "read",
       "authority": {
