@@ -1,0 +1,226 @@
+{
+  "provenance": {
+    "description": "Published Bronx CB6 meeting lost when the next calendar read returned HTTP 403.",
+    "committed_source_revision": "6b6e372ebcfda2d3e65ec5bf5fb81b5f4c1d005e",
+    "before_deployment": "https://12eaa2de.cityscroll.pages.dev",
+    "after_deployment": "https://f9027773.cityscroll.pages.dev",
+    "successful_read_at": "2026-09-08T15:55:37.525Z",
+    "failed_read_at": "2026-09-08T16:51:02.506Z",
+    "before_source_records": 12,
+    "after_source_records": 0
+  },
+  "board": {
+    "id": "bronx-cb-06",
+    "name": "Bronx Community Board 6",
+    "borough": "Bronx",
+    "district": 6,
+    "home": "https://cbbronx.cityofnewyork.us/cb6/",
+    "observed": "2026-08-13",
+    "upcoming": {
+      "source_type": "upcoming_meetings",
+      "publisher": "Bronx Community Board 6",
+      "publisher_kind": "board_owned_official",
+      "url": "https://cbbronx.cityofnewyork.us/cb6/calendar/",
+      "format": "board-owned WordPress HTML/event calendar",
+      "fetch_mode": "machine-fetchable",
+      "access_constraint": null,
+      "seen_on": "2026-08-13",
+      "archive_depth": {
+        "status": "unknown",
+        "earliest_year": null,
+        "latest_year": null
+      },
+      "stable_key": "publisher_event_id|start_at",
+      "stable_event_key": "publisher_event_id|start_at",
+      "stable_document_key": null,
+      "status": "verified",
+      "verification": {
+        "status": "observed",
+        "seen_on": "2026-08-13",
+        "fetchability": "machine_fetchable",
+        "access_note": null,
+        "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+        "reason": null
+      }
+    },
+    "minutes": {
+      "source_type": "minutes",
+      "publisher": "Bronx Community Board 6",
+      "publisher_kind": "board_owned_official",
+      "url": "https://cbbronx.cityofnewyork.us/cb6/minutes/",
+      "format": "board-owned HTML + PDF/DOCX",
+      "fetch_mode": "machine-fetchable",
+      "access_constraint": null,
+      "seen_on": "2026-08-13",
+      "archive_depth": {
+        "status": "unknown",
+        "earliest_year": null,
+        "latest_year": null
+      },
+      "stable_key": "publisher_document_id|document_url",
+      "stable_event_key": null,
+      "stable_document_key": "publisher_document_id|document_url",
+      "status": "verified",
+      "verification": {
+        "status": "observed",
+        "seen_on": "2026-08-13",
+        "fetchability": "machine_fetchable",
+        "access_note": null,
+        "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+        "reason": null
+      }
+    },
+    "committees": {
+      "source_type": "committees",
+      "publisher": null,
+      "publisher_kind": null,
+      "url": null,
+      "format": null,
+      "fetch_mode": null,
+      "access_constraint": null,
+      "seen_on": "2026-08-13",
+      "archive_depth": {
+        "status": "unknown",
+        "earliest_year": null,
+        "latest_year": null
+      },
+      "stable_key": null,
+      "stable_event_key": null,
+      "stable_document_key": null,
+      "status": "absent_in_pass",
+      "verification": {
+        "status": "not_observed",
+        "seen_on": "2026-08-13",
+        "fetchability": "unknown",
+        "access_note": null,
+        "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+        "reason": "not_observed_in_pass"
+      }
+    },
+    "roster": {
+      "source_type": "roster",
+      "publisher": null,
+      "publisher_kind": null,
+      "url": null,
+      "format": null,
+      "fetch_mode": null,
+      "access_constraint": null,
+      "seen_on": "2026-08-13",
+      "archive_depth": {
+        "status": "unknown",
+        "earliest_year": null,
+        "latest_year": null
+      },
+      "stable_key": null,
+      "stable_event_key": null,
+      "stable_document_key": null,
+      "status": "absent_in_pass",
+      "verification": {
+        "status": "not_observed",
+        "seen_on": "2026-08-13",
+        "fetchability": "unknown",
+        "access_note": null,
+        "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+        "reason": "not_observed_in_pass"
+      }
+    },
+    "bylaws": {
+      "source_type": "bylaws",
+      "publisher": null,
+      "publisher_kind": null,
+      "url": null,
+      "format": null,
+      "fetch_mode": null,
+      "access_constraint": null,
+      "seen_on": "2026-08-13",
+      "archive_depth": {
+        "status": "unknown",
+        "earliest_year": null,
+        "latest_year": null
+      },
+      "stable_key": null,
+      "stable_event_key": null,
+      "stable_document_key": null,
+      "status": "absent_in_pass",
+      "verification": {
+        "status": "not_observed",
+        "seen_on": "2026-08-13",
+        "fetchability": "unknown",
+        "access_note": null,
+        "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+        "reason": "not_observed_in_pass"
+      }
+    }
+  },
+  "source_record": {
+    "schema": "cityscroll.community_board_source_record.v1",
+    "source_url": "https://cbbronx.cityofnewyork.us/cb6/calendar/",
+    "board_id": "bronx-cb-06",
+    "body_id": "bronx-cb-06",
+    "body": "Bronx Community Board 6",
+    "body_name": "Bronx Community Board 6",
+    "body_evidence": {
+      "board_id": "bronx-cb-06",
+      "basis": "explicit_source_descriptor"
+    },
+    "record_kind": "event",
+    "record_id": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+    "source_record_id": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+    "event_id": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+    "document_id": null,
+    "video_id": null,
+    "date": "2026-10-15",
+    "meeting_date": "2026-10-15",
+    "start_at": "2026-10-15T18:30:00-04:00",
+    "category": "upcoming_meetings",
+    "title": "Transportation & Health Committees",
+    "address": "1932 Arthur Avenue 403A, Bronx, NY, 10457",
+    "format": "html",
+    "publisher_identifier": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+    "publisher_identifiers": [
+      "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/"
+    ],
+    "publisher_matter_ids": [],
+    "record_url": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+    "observed_receipt": {
+      "schema": "cityscroll.community_board_source_receipt.v1",
+      "source_url": "https://cbbronx.cityofnewyork.us/cb6/calendar/",
+      "observed_at": "2026-09-07T13:14:16.382Z",
+      "status": "ok",
+      "fetch_status": "200",
+      "content_type": "text/html; charset=UTF-8",
+      "content_length": 129515,
+      "parser": "html_pdf_v1",
+      "reason": null
+    },
+    "end_at": "2026-10-15T20:00:00-04:00",
+    "venue_name": "Board District Office",
+    "mode": "in-person",
+    "participation": {
+      "links": [
+        {
+          "label": "Meeting information",
+          "url": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/"
+        }
+      ],
+      "remote_join_url": null,
+      "emails": [],
+      "phones": [],
+      "source_url": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/"
+    },
+    "publisher_event_id": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+    "source_role": "upcoming_meetings",
+    "meeting_documents": [],
+    "detail_receipt": {
+      "schema": "cityscroll.community_board_source_receipt.v1",
+      "source_url": "https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+      "observed_at": "2026-09-07T13:14:16.382Z",
+      "status": "ok",
+      "fetch_status": "200",
+      "content_type": "text/html; charset=UTF-8",
+      "content_length": 60227,
+      "parser": "html_pdf_v1",
+      "reason": null
+    }
+  }
+}

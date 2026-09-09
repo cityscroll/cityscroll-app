@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/community-board-meeting-recovery",
+  "status": "implemented",
+  "fingerprint": "community-board-meeting-recovery.v1",
+  "updated_at": "2026-09-09T00:00:00.000Z",
+  "projections": [
+    { "id": "materialized-source-condition-seam", "path": "tools/build_community_board_meeting_index.mjs" },
+    { "id": "meeting-document-report-actions", "path": "site/meeting_document.mjs" },
+    { "id": "publisher-failure-reproduction", "path": "test/fixtures/community_board_meeting_recovery.json" },
+    { "id": "meeting-recovery-contract", "path": "test/community_board_meeting_index.test.mjs" }
+  ]
+}

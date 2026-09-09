@@ -323,7 +323,10 @@ export function materializeCommunityBoardMeetingRow(record, board, observedAt, o
     participation: meeting.participation,
     meeting_documents: meeting.meeting_documents,
     short_title: meeting.title,
-    start_date: observedAt,
+    start_date: record.source_refresh?.status === "unavailable"
+      ? record.observed_receipt?.observed_at || null
+      : observedAt,
+    ...(record.source_refresh ? { source_refresh: record.source_refresh } : {}),
     type_of_notice_description: record.category || "Board meeting",
     section_name: "Community Board Meetings",
     meeting_join: {
@@ -393,12 +396,17 @@ async function enrichEventRecord(record, descriptor, fetchImpl, observedAt) {
   };
 }
 
-export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, observedAt = new Date().toISOString() } = {}) {
-  const inventory = readJson(INVENTORY);
-  const registry = readJson(REGISTRY);
-  const committeeRegistry = readJson(COMMITTEE_REGISTRY);
+export async function buildCommunityBoardMeetingIndex({
+  fetchImpl = fetch,
+  observedAt = new Date().toISOString(),
+  inventory = readJson(INVENTORY),
+  registry = readJson(REGISTRY),
+  committeeRegistry = readJson(COMMITTEE_REGISTRY),
+  retainedSnapshots = readRetainedCommunityBoardSnapshots(),
+  previousIndex = existsSync(OUTPUT) ? readCommunityBoardMeetingIndex(OUTPUT) : null,
+} = {}) {
   const boardById = new Map((inventory.boards || []).map((board) => [board.id, board]));
-  const descriptors = sourceDescriptors(inventory, registry, readRetainedCommunityBoardSnapshots());
+  const descriptors = sourceDescriptors(inventory, registry, retainedSnapshots);
   const byBoard = {};
   const sourceRecordsByBoard = {};
   const receipts = [];
@@ -426,7 +434,26 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
       source_role: descriptor.source_role,
       source_url: record.source_url || descriptor.url || null,
     }));
-    if (descriptor.source_role === "upcoming_meetings" && !retained) {
+    // A failed publisher read is not evidence of an empty calendar. Retain
+    // only this exact board/source/role's successful observations, including
+    // their dates and attachments. The failed attempt gets its own receipt.
+    const preservePrevious = !retained && contract && descriptor.url && result.receipt?.status !== "ok";
+    if (preservePrevious) {
+      records = (previousIndex?.source_records_by_board?.[descriptor.board_id] || [])
+        .filter((record) => record.board_id === descriptor.board_id
+          && record.source_role === descriptor.source_role
+          && record.source_url === descriptor.url
+          && record.observed_receipt?.status === "ok")
+        .map((record) => ({
+          ...record,
+          source_refresh: {
+            status: "unavailable",
+            observed_at: result.receipt.observed_at,
+            receipt: result.receipt,
+          },
+        }));
+    }
+    if (descriptor.source_role === "upcoming_meetings" && !retained && !preservePrevious) {
       const enriched = [];
       for (const record of records) {
         const next = await enrichEventRecord(record, descriptor, fetchImpl, observedAt);
@@ -437,6 +464,7 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
     }
     allRecords.push(...records);
     const roleReceipt = sourceRoleReceipt(descriptor, result, records, observedAt);
+    if (preservePrevious && records.length) roleReceipt.retained_previous_records = records.length;
     receipts.push(roleReceipt);
     if (records.length) {
       if (!sourceRecordsByBoard[descriptor.board_id]) sourceRecordsByBoard[descriptor.board_id] = [];
@@ -549,13 +577,14 @@ export function assembleCommunityBoardMeetingIndex({
  * Re-derive rows, institution edges and coverage from the committed index's own
  * source records, contacting no publisher.
  */
-export function rematerializeCommunityBoardMeetingIndex() {
-  const inventory = readJson(INVENTORY);
-  const registry = readJson(REGISTRY);
-  const committeeRegistry = readJson(COMMITTEE_REGISTRY);
+export function rematerializeCommunityBoardMeetingIndex({
+  inventory = readJson(INVENTORY),
+  registry = readJson(REGISTRY),
+  committeeRegistry = readJson(COMMITTEE_REGISTRY),
+  committed = readCommunityBoardMeetingIndex(OUTPUT),
+  retainedSnapshots = readRetainedCommunityBoardSnapshots(),
+} = {}) {
   const boardById = new Map((inventory.boards || []).map((board) => [board.id, board]));
-  const committed = readCommunityBoardMeetingIndex(OUTPUT);
-  const retainedSnapshots = readRetainedCommunityBoardSnapshots();
   const descriptors = sourceDescriptors(inventory, registry, retainedSnapshots);
   const sourceRecordsByBoard = mergeRetainedSourceRecords(
     committed.source_records_by_board || {},
@@ -569,7 +598,7 @@ export function rematerializeCommunityBoardMeetingIndex() {
     ));
     // A role the build never fetched has no observation to preserve, so its
     // receipt is re-derived from the descriptor rather than carried forward.
-    if (!committedReceipt || committedReceipt.state === "unavailable" || committedReceipt.state === "not-yet-checked") {
+    if (!committedReceipt || committedReceipt.state === "not-yet-checked") {
       return sourceRoleReceipt(descriptor, null, [], committed.generated_at);
     }
     return { ...committedReceipt, retained_snapshot: committedReceipt.retained_snapshot ?? null };
