@@ -1,0 +1,108 @@
+{
+  "classification": "acquisition_regression",
+  "grounded_at": "1b765e199183a733dfd862ea5a2daf054a557c06",
+  "source_url": "https://zap-api-production.herokuapp.com/projects/2025K0305",
+  "observed_on": "2026-09-09",
+  "source_response_sha256": "2b3b030b1049359600cecf11f5409231774a1ca4767c4fdb2e355686babb6331",
+  "failed_run_url": "https://github.com/cityscroll/cityscroll-app/actions/runs/34312625501",
+  "retained_refresh_revision": "cdd28dfd291a706f91f18ff740b69164f407f71f",
+  "reconstruction": "The retained refresh predates the failed run. Remove rows for its four logged failed project requests; other inputs come from that retained refresh. This reconstructs the failure, not the discarded full acquisition.",
+  "counterfactual": {
+    "committed": {
+      "project_id": "2025K0305",
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.community_board_review",
+        "spine_phase_id": "community_board",
+        "status": "known"
+      },
+      "published_next_opportunity": {
+        "status": "published",
+        "checked": true,
+        "checked_vintage": "2026-09-06",
+        "source_id": "7cfc36ab-cecd-ef11-b8e9-001dd809b68c",
+        "source": "zap-api-milestones",
+        "label": "Review Session - Pre-Hearing Review / Post Referral",
+        "date": "2026-11-30",
+        "representing": "City Planning Commission",
+        "phase_id": "cpc",
+        "body_ref": "agency:id:city-planning-commission"
+      },
+      "next_procedural_body": {
+        "body_ref": "agency:id:city-planning-commission",
+        "source_id": "7cfc36ab-cecd-ef11-b8e9-001dd809b68c",
+        "source": "zap-api-milestones"
+      }
+    },
+    "retained_refresh": {
+      "project_id": "2025K0305",
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.community_board_review",
+        "spine_phase_id": "community_board",
+        "status": "known"
+      },
+      "published_next_opportunity": {
+        "status": "published",
+        "checked": true,
+        "checked_vintage": "2026-09-09",
+        "source_id": "7cfc36ab-cecd-ef11-b8e9-001dd809b68c",
+        "source": "zap-api-milestones",
+        "label": "Review Session - Pre-Hearing Review / Post Referral",
+        "date": "2026-11-30",
+        "representing": "City Planning Commission",
+        "phase_id": "cpc",
+        "body_ref": "agency:id:city-planning-commission"
+      },
+      "next_procedural_body": {
+        "body_ref": "agency:id:city-planning-commission",
+        "source_id": "7cfc36ab-cecd-ef11-b8e9-001dd809b68c",
+        "source": "zap-api-milestones"
+      }
+    },
+    "failed_request_reconstruction": {
+      "project_id": "2025K0305",
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.community_board_review",
+        "spine_phase_id": "community_board",
+        "status": "known"
+      },
+      "published_next_opportunity": {
+        "status": "none",
+        "checked": true,
+        "checked_vintage": "2026-09-09",
+        "source_id": null,
+        "source": "land_upcoming_hearings",
+        "label": null,
+        "date": null,
+        "representing": null,
+        "phase_id": null,
+        "body_ref": null
+      },
+      "next_procedural_body": null
+    },
+    "recovered_publisher_response": {
+      "project_id": "2025K0305",
+      "expected_next_stage": {
+        "stage_id": "ulurp_197c.community_board_review",
+        "spine_phase_id": "community_board",
+        "status": "known"
+      },
+      "published_next_opportunity": {
+        "status": "published",
+        "checked": true,
+        "checked_vintage": "2026-09-09",
+        "source_id": "7cfc36ab-cecd-ef11-b8e9-001dd809b68c",
+        "source": "zap-api-milestones",
+        "label": "Review Session - Pre-Hearing Review / Post Referral",
+        "date": "2026-11-30",
+        "representing": "City Planning Commission",
+        "phase_id": "cpc",
+        "body_ref": "agency:id:city-planning-commission"
+      },
+      "next_procedural_body": {
+        "body_ref": "agency:id:city-planning-commission",
+        "source_id": "7cfc36ab-cecd-ef11-b8e9-001dd809b68c",
+        "source": "zap-api-milestones"
+      }
+    }
+  }
+}
