@@ -1,15 +1,12 @@
 {
   "schema": "cityscroll.mandate_rule_attachment_densify.v1",
-  "built_at": "2026-09-07T14:19:11.497Z",
-  "method": "fixture",
-  "attempted_count": 5,
+  "built_at": "2026-09-09T06:55:40.954Z",
+  "method": "city_record_getfile_pdf_v1",
+  "attempted_count": 2,
   "densified_count": 2,
   "densified_ids": [
     "20260605008",
-    "20260708002",
-    "dcwp-adopted",
-    "dot-proposed",
-    "external-ambiguous"
+    "20260708002"
   ],
   "failures": []
 }

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "delivery_tier": "resident-snapshot",
-  "generated_at": "2026-09-07T13:15:48.314Z",
+  "generated_at": "2026-09-09T06:52:16.670Z",
   "source_vintages": {
-    "default_open": "2026-09-07T13:15:48.314Z",
+    "default_open": "2026-09-09T06:52:16.670Z",
     "domain_observations": "2026-08-03T22:31:10.617Z",
     "award_warehouse": "2026-09-05T13:44:00.909Z"
   },
@@ -76,25 +76,25 @@
       "selection_method_description": "Request for Proposals"
     },
     {
-      "request_id": "20260819034",
-      "start_date": "2026-08-26T00:00:00.000",
-      "agency_name": "Housing Authority",
+      "request_id": "20260821030",
+      "start_date": "2026-08-28T00:00:00.000",
+      "agency_name": "Brooklyn Bridge Park",
       "type_of_notice_description": "Solicitation",
-      "category_description": "Goods",
-      "short_title": "SMPD_Materials_Door Locking, Electromagnetic Devices and Accessories",
-      "pin": "527263",
-      "due_date": "2026-09-08T12:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
+      "category_description": "Goods and Services",
+      "short_title": "Brooklyn Bridge Park 334 Furman St. FF&E Services",
+      "pin": "BBP 334 Furman St. F",
+      "due_date": "2026-09-22T16:00:00.000",
+      "selection_method_description": "Request for Proposals"
     },
     {
-      "request_id": "20260819035",
-      "start_date": "2026-08-26T00:00:00.000",
-      "agency_name": "Housing Authority",
+      "request_id": "20260824035",
+      "start_date": "2026-08-28T00:00:00.000",
+      "agency_name": "Design and Construction",
       "type_of_notice_description": "Solicitation",
-      "category_description": "Goods",
-      "short_title": "SMPD_MATERIALS_GROUNDS MAINTENANCE",
-      "pin": "527267",
-      "due_date": "2026-09-08T12:00:00.000",
+      "category_description": "Construction Related Services",
+      "short_title": "HWS2026R-PRIOR NOTICE SIDEWALKS, STATEN ISLAND",
+      "pin": "85027B0013",
+      "due_date": "2026-09-21T14:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
@@ -142,6 +142,17 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
+      "request_id": "20260812004",
+      "start_date": "2026-08-18T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "Expressions of interest for Mattress Hauling and Recycling Services",
+      "pin": "526301",
+      "due_date": "2026-09-22T23:59:00.000",
+      "selection_method_description": "Request for Information"
+    },
+    {
       "request_id": "20260810026",
       "start_date": "2026-08-17T00:00:00.000",
       "agency_name": "City University",
@@ -161,17 +172,6 @@
       "short_title": "Installation and Warranty Service of Security System for 8th Floor for 345 Adams Street",
       "pin": "06826B0003",
       "due_date": "2026-09-18T17:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260810057",
-      "start_date": "2026-08-17T00:00:00.000",
-      "agency_name": "Parks and Recreation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "BG-424M Brooklyn Park Tree Planting FY24",
-      "pin": "84627B0006",
-      "due_date": "2026-09-08T10:30:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
@@ -285,6 +285,17 @@
       "selection_method_description": "Competitive Sealed Proposals"
     },
     {
+      "request_id": "20260727026",
+      "start_date": "2026-08-10T00:00:00.000",
+      "agency_name": "Brooklyn Navy Yard Development Corp.",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Restoration of Boilers at Building 62",
+      "pin": "000350",
+      "due_date": "2026-09-22T12:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
       "request_id": "20260803033",
       "start_date": "2026-08-10T00:00:00.000",
       "agency_name": "Citywide Administrative Services",
@@ -296,16 +307,6 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
-      "request_id": "20260804007",
-      "start_date": "2026-08-10T00:00:00.000",
-      "agency_name": "City University",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "CUNY Graduate School of Public Health and Health Policy -New Workstations, Glazing Upgrade for Storefront, IT and HVAC Work",
-      "due_date": "2026-09-08T23:59:00.000",
-      "selection_method_description": "Public Bid"
-    },
-    {
       "request_id": "20260729031",
       "start_date": "2026-08-07T00:00:00.000",
       "agency_name": "Transportation",
@@ -315,17 +316,6 @@
       "pin": "84126P0011",
       "due_date": "2026-09-11T14:00:00.000",
       "selection_method_description": "Competitive Sealed Proposals"
-    },
-    {
-      "request_id": "20260728025",
-      "start_date": "2026-08-06T00:00:00.000",
-      "agency_name": "Transportation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "84127Y0866-Request for Information (RFI) for E-Bike Battery Cabinets in NYC",
-      "pin": "84127Y0866",
-      "due_date": "2026-09-08T17:00:00.000",
-      "selection_method_description": "Request for Information"
     },
     {
       "request_id": "20260729027",
@@ -358,6 +348,17 @@
       "pin": "82626B0053",
       "due_date": "2026-09-09T10:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260728022",
+      "start_date": "2026-08-04T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "CAT-506-CM: Construction Management Services for Water Supply Resource Recovery Facilities Rotating Biological Contactors Replacements.",
+      "pin": "82626P0028",
+      "due_date": "2026-09-22T16:00:00.000",
+      "selection_method_description": "Competitive Sealed Proposals"
     },
     {
       "request_id": "20260727023",
@@ -1522,17 +1523,6 @@
         "unlocated_reason": "no_place_signal",
         "virtual_only": false
       }
-    },
-    {
-      "request_id": "20260722002",
-      "start_date": "2026-07-28T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Bid Extension: SMPD PS RFP 521201 - GENERAL, PROFESSIONAL, AND TECHNICAL-INFORMATION TECHNOLOGY STAFF AUGMENTATION SERVICES",
-      "pin": "521201",
-      "due_date": "2026-09-08T14:00:00.000",
-      "selection_method_description": "Request for Proposals"
     },
     {
       "request_id": "20260722007",
@@ -6740,6 +6730,17 @@
         "unlocated_reason": "no_place_signal",
         "virtual_only": false
       }
+    },
+    {
+      "request_id": "20260428035",
+      "start_date": "2026-05-05T00:00:00.000",
+      "agency_name": "Education",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods and Services",
+      "short_title": "Bid Extension: Requirements Contracts for Postsecondary Pathways Programs",
+      "pin": "R1866040",
+      "due_date": "2026-09-22T13:00:00.000",
+      "selection_method_description": "Request for Proposals"
     },
     {
       "request_id": "20260421016",

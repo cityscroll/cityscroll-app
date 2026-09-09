@@ -1,25 +1,28 @@
 {
   "schema_version": 2,
   "kind": "land_upcoming_hearings_materialization",
-  "observed_at": "2026-08-23T08:51:36.144Z",
+  "observed_at": "2026-09-09T06:52:06.323Z",
   "method": "zap_published_hearing_sweep_v2",
   "mode": "live",
   "projects_listed": 235,
   "projects_fetched": 234,
   "projects_failed": 1,
-  "hearings_extracted": 402,
-  "disposition_hearings_extracted": 73,
-  "milestone_hearings_extracted": 329,
-  "before_upcoming_count": 1,
-  "milestone_upcoming_count": 181,
-  "incremental_milestone_count": 181,
+  "unavailable_project_ids": [
+    "2026X0464"
+  ],
+  "hearings_extracted": 401,
+  "disposition_hearings_extracted": 77,
+  "milestone_hearings_extracted": 324,
+  "before_upcoming_count": 4,
+  "milestone_upcoming_count": 160,
+  "incremental_milestone_count": 160,
   "accepted_milestone_classes": {
-    "cpc_pre_hearing_review_session": 93,
-    "cpc_public_hearing": 88
+    "cpc_pre_hearing_review_session": 83,
+    "cpc_public_hearing": 77
   },
-  "published_meeting_dates_evaluated": 899,
-  "hearing_shaped_candidates_reviewed": 855,
-  "upcoming_count": 182,
+  "published_meeting_dates_evaluated": 890,
+  "hearing_shaped_candidates_reviewed": 846,
+  "upcoming_count": 164,
   "statuses": [
     "In Public Review",
     "Noticed",
@@ -29,18 +32,18 @@
   "detector_ok": true,
   "detector_findings": [],
   "sample_project_ids": [
-    "2021K0376",
-    "2022Q0160",
-    "2024M0193",
-    "2025K0497",
-    "2025M0329",
-    "2026R0189",
-    "2026R0319",
-    "2023Q0424",
-    "2024M0278",
-    "2024Q0324",
-    "2025Q0124",
-    "2025X0283"
+    "2022Q0214",
+    "2024K0369",
+    "2023Q0211",
+    "2022X0393",
+    "2023K0357",
+    "2023Q0351",
+    "2025K0150",
+    "2020M0383",
+    "2023M0117",
+    "2023M0200",
+    "2025M0360",
+    "2020Q0157"
   ],
   "reviewed_false_positive_sample": [
     {

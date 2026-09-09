@@ -2,12 +2,12 @@
   "schema": "cityscroll.community_board_land_positions.v1",
   "method": "retained_board_identity_reverse_index_v1",
   "negative_rule": "A recorded position is one board's advisory recommendation on one application, read back from the identity the retained record already carries. It is never a decision on the project, never a count of meetings, and a recorded tally is the vote on the recommendation motion rather than a count of support for the development.",
-  "generated_at": "2026-09-06T15:58:50.482Z",
+  "generated_at": "2026-09-09T06:46:42.537Z",
   "source": {
     "publisher": "NYC Department of City Planning, Zoning Application Portal",
     "dataset_id": "hgx4-8ukb",
     "source_url": "https://data.cityofnewyork.us/d/hgx4-8ukb",
-    "observed_on": "2026-09-06T15:58:50.482Z"
+    "observed_on": "2026-09-09T06:46:42.537Z"
   },
   "counts": {
     "retained_projects": 40,

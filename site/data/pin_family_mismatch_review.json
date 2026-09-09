@@ -2,21 +2,21 @@
   "schema_version": 1,
   "version": "pin_family_mismatch_review_v1",
   "title": "PIN-family Checkbook ↔ PASSPort contract-id mismatches",
-  "observed_on": "2026-09-06",
-  "generated_at": "2026-09-06T22:12:11.527Z",
+  "observed_on": "2026-09-09",
+  "generated_at": "2026-09-09T06:33:01.880Z",
   "sources": {
     "crosswalk": "site/data/passport_checkbook_crosswalk.json",
     "spine": "site/data/procurement_spine_sources.json"
   },
   "metrics": {
-    "pin_family_id_mismatches": 130,
-    "auto_related_instrument": 118,
+    "pin_family_id_mismatches": 129,
+    "auto_related_instrument": 117,
     "needs_review": 12,
     "auto_same_contract": 0,
     "by_rule": {
       "successor_term": 39,
       "later_term_renewal": 8,
-      "fms_document_type_mismatch": 71
+      "fms_document_type_mismatch": 70
     },
     "public_same_contract_rule": "contract_id_exact only; PIN-family id mismatches are not sold as the same contract"
   },
@@ -4208,65 +4208,6 @@
         },
         "amount_ratio": 0.37441304599999997,
         "term_gap_days": -768
-      }
-    },
-    {
-      "pair_id": "pf:CTA184620267200151::MMA1-846-20258806887",
-      "identity_class": "related_instrument",
-      "label_source": "rule",
-      "rule": "fms_document_type_mismatch",
-      "rationale": "Checkbook CTA1 and PASSPort MMA1 are different FMS document types sharing a PIN (requirement contract / task order vs master agreement, or another instrument pair). They are related, not the same registered contract.",
-      "evidence": {
-        "pin": "84622P0006006R001",
-        "epin": "84622P0006006R001",
-        "join_method": "pin_epin_exact",
-        "checkbook": {
-          "contract_id": "CTA184620267200151",
-          "subject_ref": "contract:CTA184620267200151",
-          "source_record_id": "checkbook:contract:CTA184620267200151",
-          "vendor": "ENTECH ENGINEERING PC",
-          "agency": "Department of Parks and Recreation",
-          "current_amount": 634732,
-          "original_amount": 634732,
-          "spent_amount": 259095,
-          "start": "2025-09-08",
-          "end": "2026-10-08",
-          "registered": "2025-08-14",
-          "status": "registered",
-          "fms": {
-            "type": "CTA1",
-            "agency": "846",
-            "form": "compact"
-          }
-        },
-        "passport": {
-          "contract_id": "MMA1-846-20258806887",
-          "subject_ref": "contract:MMA1-846-20258806887",
-          "source_record_id": "passport:contract:MMA1-846-20258806887",
-          "vendor": "ENTECH ENGINEERING PC",
-          "agency": "DEPARTMENT OF PARKS AND RECREATION",
-          "current_amount": 15000000,
-          "award_amount": 15000000,
-          "paid_amount": 0,
-          "start": "2025-04-26",
-          "end": "2027-04-25",
-          "registered": "2025-05-08",
-          "status": "Registered",
-          "title": "CNYG-2922MR -Construction Management Services Renewal",
-          "procurement_method": "Renewal",
-          "fms": {
-            "type": "MMA1",
-            "agency": "846",
-            "form": "hyphen"
-          }
-        },
-        "vendor_same": true,
-        "vendor_stems": {
-          "checkbook": "ENTECH ENGINEERING",
-          "passport": "ENTECH ENGINEERING"
-        },
-        "amount_ratio": 0.04231546666666667,
-        "term_gap_days": -594
       }
     },
     {
