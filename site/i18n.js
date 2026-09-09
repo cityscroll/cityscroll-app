@@ -4637,6 +4637,11 @@ function applyStrings() {
     el.setAttribute("href", url.pathname + url.search + url.hash);
   });
   document.querySelectorAll('a[href*="#investigation"]').forEach(function(el) {
+    // Keep the default in-page footer contract, including after a language switch.
+    if (lang === "en" && el.getAttribute("data-i18n") === "footer_investigation") {
+      el.setAttribute("href", "#investigation");
+      return;
+    }
     // Canonical documents use a root <base>; a bare fragment otherwise loses lang.
     el.setAttribute("href", languageURL(el.getAttribute("href"), lang, document.baseURI || location.href));
   });

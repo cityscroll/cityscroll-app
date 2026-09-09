@@ -64,5 +64,30 @@
       "journeys": 8
     }
   },
-  "required_gate": "passed"
+  "required_gate": "passed",
+  "default_footer_compatibility": {
+    "source_sha256": {
+      "site/i18n.js": "e2f5150f2215cccfd82ad8ea582f316db510786e49a55a9e8e8b9eedf5f3e43a",
+      "test/guide_contextual_access.test.mjs": "7b8209ea16c52f9be74f186da1a10205edb361e64f96383b414e45fa83896284"
+    },
+    "commands": [
+      {
+        "command": "node --test test/guide_contextual_access.test.mjs",
+        "exit_status": 0
+      },
+      {
+        "command": "tools/prepare_functional_site.sh",
+        "exit_status": 0
+      },
+      {
+        "command": "tools/run_a11y_ci_shard.sh routes-focus primary",
+        "exit_status": 0
+      },
+      {
+        "command": "make prepush",
+        "exit_status": 0
+      }
+    ],
+    "status": "passed"
+  }
 }

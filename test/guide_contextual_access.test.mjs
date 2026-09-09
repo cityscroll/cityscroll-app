@@ -265,8 +265,10 @@ test('home Guide links carry the selected language through the existing runtime 
 
 test('investigation links retain language despite the document root base URL', () => {
   assert.match(home, /href="#investigation"[^>]*data-i18n="footer_investigation"/);
-  const links = ['#investigation', '/#investigation/shared/example'].map(href => ({
-    href, getAttribute() { return this.href; }, setAttribute(_key, value) { this.href = value; },
+  const links = ['#investigation', '/#investigation/shared/example'].map((href, index) => ({
+    href,
+    getAttribute(key) { return key === 'data-i18n' ? (index === 0 ? 'footer_investigation' : null) : this.href; },
+    setAttribute(_key, value) { this.href = value; },
   }));
   const document = {
     baseURI: 'https://cityscroll.org/',
@@ -276,12 +278,14 @@ test('investigation links retain language despite the document root base URL', (
   };
   const context = { window: {}, document, URL, location: { href: 'https://cityscroll.org/vendors/example/?lang=es&token=example' } };
   runInNewContext(i18n, context);
-  for (const locale of ['es', 'zh-Hans', 'ar', 'en']) {
+  for (const locale of [undefined, 'en', 'es', 'zh-Hans', 'ar', 'en']) {
     context.window.LANG = locale;
     context.window.applyStrings();
+    const selected = locale || 'en';
+    if (selected === 'en') assert.equal(links[0].href, '#investigation');
     for (const link of links) {
       const url = new URL(link.href, document.baseURI);
-      assert.equal(url.searchParams.get('lang'), locale === 'en' ? null : locale);
+      assert.equal(url.searchParams.get('lang'), selected === 'en' ? null : selected);
       assert.equal(url.pathname, '/');
       assert.match(url.hash, /^#investigation/);
       assert.ok(!url.searchParams.has('token'));

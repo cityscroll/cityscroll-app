@@ -73,3 +73,16 @@ weekly-review section renderer. The [input receipt](review-input.json) records
 those inputs and output hashes. It carries the evidence for continued wording,
 translation and example upkeep without adding a scheduler, claiming external
 consumption, or making that consumption a closing condition.
+
+## Default-language footer compatibility
+
+The footer retains exactly `#investigation` when no language or English is
+selected, including after switching back from Spanish, Simplified Chinese or
+Arabic. Non-default languages still receive a URL carrying the selected
+language. This preserves the existing in-page link contract; the external-link
+functional test remains unchanged.
+
+The original journey captures retain their recorded source hashes. This bounded
+compatibility correction is covered by the expanded runtime regression and the
+complete routes-focus shard, with source hashes and command results recorded in
+[validation.json](validation.json).
