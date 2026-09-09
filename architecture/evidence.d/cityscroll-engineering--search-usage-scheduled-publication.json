@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/search-usage-scheduled-publication",
+  "status": "implemented",
+  "fingerprint": "search-usage-scheduled-publication.v1",
+  "updated_at": "2026-09-09T00:00:00.000Z",
+  "projections": [
+    { "id": "independent-scheduled-publication", "path": "worker/src/worker.mjs" },
+    { "id": "scheduled-publication-regression", "path": "worker/test/search_usage_schedule.test.mjs" },
+    { "id": "publication-evidence", "path": "docs/evidence/public-search-usage/README.md" },
+    { "id": "release-and-infrastructure-reference", "path": "docs/release/cloudflare-native-builds.md" }
+  ]
+}

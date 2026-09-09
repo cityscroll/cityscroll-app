@@ -256,6 +256,18 @@ export default {
 
   async scheduled(event, env, ctx) {
     const runId = `worker:${event.cron}:${new Date().toISOString()}`;
+    // Each scheduled window starts the receipt-only public summary independently.
+    // Early-return branches, delivery errors, and slow publisher refreshes must not
+    // prevent a publication attempt. waitUntil retains this work without delaying
+    // delivery; daily aggregates are idempotent across the three windows.
+    ctx.waitUntil((async () => {
+      try {
+        const r = await refreshPublicSearchUsageSnapshot(env);
+        console.log("public search usage snapshot:", JSON.stringify(r));
+      } catch (error) {
+        console.error("public search usage refresh failed:", String(error?.message || error));
+      }
+    })());
     // Morning live-derived caches: sell-facing ZAP lookup, upcoming hearings, and
     // staffing exams. Public SODA / OASys only — keep these off the 13:00 digest chain.
     if (event.cron === "0 8 * * *") {
@@ -509,15 +521,6 @@ export default {
       await ensureHistEra(env.ALERT_STATE, "watches_active", now);
     } catch (e) {
       console.error("watches_active snapshot failed (digest already ran):", String(e?.message || e));
-    }
-    // Public search-usage summary: read the accepted execution receipts once here and
-    // store the verified public projection, so a public /stats read never scans them.
-    // Fail-soft, and a failed refresh leaves the last verified snapshot standing.
-    try {
-      const r = await refreshPublicSearchUsageSnapshot(env);
-      console.log("public search usage snapshot:", JSON.stringify(r));
-    } catch (e) {
-      console.error("public search usage refresh failed (digest already ran):", String(e?.message || e));
     }
     // Public /stats: refresh and edge-cache the official corpus aggregate. Fail-soft.
     try {
