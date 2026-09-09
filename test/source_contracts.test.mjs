@@ -16,6 +16,7 @@ import {
 } from "../tools/source_contracts.mjs";
 import {
   formatFetchError,
+  freshnessLimit,
   verifyCheckbook,
   verifyHtml,
   verifySocrata,
@@ -548,18 +549,55 @@ test("the exam contract reads the same publisher field and limit its builder ing
   assert.equal(retained.source.stale_after_days, limit);
 });
 
-test("a limit held against publisher drift records why it was not rebased", () => {
+test("as-needed Council and CFB publication limits record their distinct cadence rationale", () => {
   const registry = loadSourceContracts();
-  for (const [id, limit] of [["nyc-council-members", 90], ["cfb-campaign-contributions", 30]]) {
+  for (const [id, servingLimit, rationale] of [
+    ["nyc-council-members", 90, /annual publication-review bound within multi-year Council terms/],
+    ["cfb-campaign-contributions", 30, /one January\/July filing year \(two semiannual reporting periods\)/],
+  ]) {
     const contract = registry.contracts.find((row) => row.id === id);
-    assert.equal(contract.max_stale_days, limit, id);
-    assert.equal(contract.freshness_policy.limit_days, limit, id);
-    assert.match(contract.freshness_policy.derivation, /held deliberately/, id);
-    assert.ok(contract.freshness_policy.observed_metadata_lag_days > limit, id);
-    // Both declare where our retained vintage lives, so the finding they keep
-    // raising states which side of the contract is actually behind.
+    assert.equal(contract.max_stale_days, 365, id);
+    assert.equal(contract.freshness_policy.limit_days, 365, id);
+    assert.equal(contract.freshness_contract.max_stale_days, 365, id);
+    assert.equal(freshnessLimit(contract), 365, id);
+    assert.equal(contract.freshness_contract.serving_max_age_days, servingLimit, id);
+    assert.equal(contract.freshness_contract.mode, "periodic", id);
+    assert.equal(contract.status, "live", id);
+    assert.match(contract.freshness_policy.derivation, rationale, id);
+    assert.match(contract.freshness_policy.derivation, /policy choice, not a measured annual cadence or a publisher guarantee/, id);
+    assert.match(contract.freshness_policy.evidence, /Update Frequency As needed and Automation No/, id);
+    assert.ok(contract.freshness_policy.evidence.includes(`/api/views/${contract.dataset_id}.json`), id);
+    assert.match(contract.freshness_policy.evidence, /exposes only the current revision/, id);
+    assert.equal(contract.freshness_policy.observed_on, "2026-09-09", id);
     const reference = contract.freshness_contract.retained_vintage;
     assert.ok(reference.artifact_path.startsWith("site/data/"), id);
     assert.ok(readRetainedVintage(reference).at, id);
+  }
+});
+
+test("as-needed sources pass the next daily check but still fail beyond the annual bound", async (t) => {
+  const registry = loadSourceContracts();
+  let now = Date.parse("2026-09-10T10:23:00Z");
+  t.mock.method(Date, "now", () => now);
+  for (const [id, published] of [
+    ["nyc-council-members", "2026-04-10T18:00:29Z"],
+    ["cfb-campaign-contributions", "2025-12-19T15:24:13Z"],
+  ]) {
+    const contract = registry.contracts.find((row) => row.id === id);
+    const publisherAt = Date.parse(published);
+    t.mock.method(globalThis, "fetch", async (url) => String(url).includes("/api/views/")
+      ? socrataMetadata({ rowsUpdatedAt: publisherAt / 1000, fields: contract.required_fields })
+      : new Response(JSON.stringify([{ [contract.required_fields[0]]: "sample" }]), { status: 200 }));
+    now = Date.parse("2026-09-10T10:23:00Z");
+    assert.match(await verifySocrata(contract), /d old \(rowsUpdatedAt\)/, id);
+    now = publisherAt + 365 * 86_400_000;
+    assert.match(await verifySocrata(contract), /365d old/, id);
+    now += 1;
+    await assert.rejects(verifySocrata(contract), (error) => {
+      assert.equal(error.finding.source_contract_id, id);
+      assert.equal(error.finding.limit_days, 365);
+      assert.equal(error.finding.publisher_updated_at, new Date(publisherAt).toISOString());
+      return true;
+    });
   }
 });
