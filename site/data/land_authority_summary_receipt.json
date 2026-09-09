@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.land_authority_summary_receipt.v1",
   "join_version": "ldp05_authority_summary_v1",
-  "generated_at": "2026-09-06T15:58:50.482Z",
+  "generated_at": "2026-09-09T06:46:42.537Z",
   "counts": {
     "universe": 40,
     "resolved": 24,
@@ -418,9 +418,9 @@
       "path": "site/data/land_default_ulurp.json",
       "count": 40,
       "vintage": {
-        "generated_at": "2026-09-06T15:58:50.482Z"
+        "generated_at": "2026-09-09T06:46:42.537Z"
       },
-      "sha256": "3fcdf60950a02a147bab4faac12ffb2b4e4a5601a5cbe70d392e387cbdee1b01"
+      "sha256": "0fa83a61d33015757c8572ad304323ad4ce35ef522cdd4c488f244ad477a7529"
     },
     "geography": {
       "path": "site/data/community_board_geography_lookup.json",
@@ -431,11 +431,11 @@
     },
     "upcoming_hearings": {
       "path": "site/data/land_upcoming_hearings.json",
-      "count": 169,
+      "count": 164,
       "vintage": {
-        "generated_at": "2026-09-06T16:04:14.693Z"
+        "generated_at": "2026-09-09T06:52:06.323Z"
       },
-      "sha256": "b5e52a318d028a86a09e83ea9b888e114c63c9d944478f1b138f3abba8bc7305"
+      "sha256": "9dc4491a47cebe0dea3500747aca212022b151766c718443056c374ad20db6b4"
     },
     "join_keys": [
       "project_id"
@@ -445,6 +445,6 @@
     "derivation": "node tools/build_land_authority_summary.mjs",
     "payload_path": "site/data/land_authority_summary.json",
     "payload_bytes": 111779,
-    "payload_sha256": "de7f744b29927fc574ff921337fd80ae3e7a8341c73ff567fff501862c5535fa"
+    "payload_sha256": "034a17b6fa9931af56779255f3f6a138d79bcdc35818b9e635e883f8602dbe4e"
   }
 }

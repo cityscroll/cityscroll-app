@@ -53,28 +53,28 @@
     "rejected"
   ],
   "existing_snapshot": {
-    "generated_at": "2026-09-07T14:37:06.580Z",
+    "generated_at": "2026-09-09T06:33:01.880Z",
     "artifacts": {
       "browse_rows": {
         "path": "site/data/procurement_browse_rows.json",
-        "sha256": "3df8215ab4001c26604dec57d6fcf3ee5edf163280744389be0b699802c66bdc",
-        "row_count": 19885
+        "sha256": "06cb9b9bf24c386dc2d14b69d5558d277bd098ed85e14f23312390293a264dbe",
+        "row_count": 19872
       },
       "spine_sources": {
         "path": "site/data/procurement_spine_sources.json",
-        "sha256": "899993a07d245edf6fc86b26ac48d8df0c0bdaa84af2ecbaa70cb64df4dec786",
+        "sha256": "91fdd022bcc19954da01890f056df495591fea1d2fe193fdbbd5ca0d4dfff7c8",
         "passport_contract_rows": 12782
       },
       "shared_read_model": {
         "path": "site/data/shared_procurement_read_model.json",
-        "sha256": "d5334d6159ca15b7dadac7009585c604112bfd3e3123152b52da0a7dafd42046",
-        "object_count": 19885
+        "sha256": "6fa4ef544802fd273ce03b267b58642320f17d8af61b451df9e31f7f1a540d9f",
+        "object_count": 19872
       }
     },
     "served_source_counts": {
-      "city_record": 13178,
-      "passport_public_contracts": 12782,
-      "checkbook_contracts": 1704
+      "city_record": 12690,
+      "passport_public_contracts": 12770,
+      "checkbook_contracts": 9060
     },
     "interpretation": "Counts are the committed CityScroll snapshot, not a claim that any source is a complete citywide inventory."
   },
@@ -496,7 +496,11 @@
     "demonstrated_missing_rows": 0,
     "production_card_proposed": false,
     "conclusion": "No distinct public DOE corpus is missing from the existing City Record, PASSPort, and Checkbook ingestion snapshot. The 3418 Checkbook-only and 2 PASSPort-only rows are already served by those existing source families; no DOE production card is proposed.",
-    "review_note": "Re-reviewed after the DOE canonical row count moved from 3836 to 3856 on the 2026-09-07 acquisition. Counts by source before -> after: city_record 436 -> 436 (unchanged), passport_public_contracts 438 -> 438 (unchanged), checkbook_contracts 3398 -> 3418. All 20 added rows are Checkbook contract rows, no new source-combination key appeared, and no DOE row is left without a recognised source family. The two sources this finding compares against are numerically unchanged and the added rows are Checkbook records now served rather than newly discovered gaps, so the finding is unchanged in substance: no distinct public DOE corpus is demonstrated missing, and no production card is proposed. The previous review, after the count moved from 618 to 3836, recorded the same direction of change: the fresh Checkbook pull widened the served window to the CROL Award publication window, which is the chosen semantics, replacing the retired 2000-row numeric cap."
+    "review_note": "Re-reviewed after the DOE canonical row count moved from 3836 to 3856 on the 2026-09-07 acquisition. Counts by source before -> after: city_record 436 -> 436 (unchanged), passport_public_contracts 438 -> 438 (unchanged), checkbook_contracts 3398 -> 3418. All 20 added rows are Checkbook contract rows, no new source-combination key appeared, and no DOE row is left without a recognised source family. The two sources this finding compares against are numerically unchanged and the added rows are Checkbook records now served rather than newly discovered gaps, so the finding is unchanged in substance: no distinct public DOE corpus is demonstrated missing, and no production card is proposed. The previous review, after the count moved from 618 to 3836, recorded the same direction of change: the fresh Checkbook pull widened the served window to the CROL Award publication window, which is the chosen semantics, replacing the retired 2000-row numeric cap.",
+    "served_measurement": {
+      "artifact": "site/data/procurement_browse_rows.json",
+      "generated_at": "2026-09-09T06:33:01.880Z"
+    }
   },
   "production_cards": [],
   "production_adapter_change": false

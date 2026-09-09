@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "delivery_tier": "resident-snapshot",
-  "generated_at": "2026-09-07T13:15:55.697Z",
+  "generated_at": "2026-09-09T06:52:25.670Z",
   "source": "site/data/property_domain_observations.json",
   "counts": {
     "total": 133,

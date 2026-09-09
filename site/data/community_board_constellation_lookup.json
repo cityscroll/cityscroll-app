@@ -9669,7 +9669,7 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": null,
+          "target_id": "meeting:community_board:https://cb5.org/event/executive-committee-20/",
           "target_name": "Upcoming & recent proceedings",
           "count": null,
           "state": "unknown",
@@ -9688,16 +9688,9 @@
           "provenance": {
             "source_system": null,
             "source_record_id": null,
-            "source_fields": [
-              "body_id",
-              "borough",
-              "district",
-              "name",
-              "directory_url",
-              "observed_on"
-            ],
+            "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-12T00:00:00.000Z",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },

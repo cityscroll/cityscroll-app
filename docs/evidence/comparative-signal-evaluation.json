@@ -15,9 +15,9 @@
         "metric_family": "within_contract_registered_amount_change",
         "basis": "frozen_inspection_receipt",
         "rule": "a detected change is shown only where the frozen receipt carries an inspection verdict for it",
-        "detected": 118,
+        "detected": 117,
         "shown": 2,
-        "admitted_unshown": 116,
+        "admitted_unshown": 115,
         "unshown_reason": "awaiting_extended_inspection_sample"
       }
     ]
@@ -27,7 +27,7 @@
     "source_contracts": "037d3a7f478fc4ce3b5b5979264e8fb16bb7a6599feb2858d238d88e329894d8",
     "award_receipts": "e0b92190ad9e371ce6eddca4449cbebc3fc08e30775cea3f7c663e447502b943",
     "story_signals": "df030ac7adc058eae1a45ace7684912563e1dc9161534ae6ca8a6e354ebeeafe",
-    "procurement": "014142fbdfe4367b20a639aae6a070f286a19d475be7786b72db5184dcbd0616",
+    "procurement": "62eded2231fa6babd12380397b08a03a5fe1371b61e59db9fdd688a85becfa0c",
     "negative_control": "977d6ba5b8c45ea784a965b21b8fa7a9b142de401e14451d88873cbc6da5b8de",
     "frozen_cases": "5b66dd57ddb81041fc7c66031143d19a904187a6bf64f5b03b7d1c06fd94753d"
   },
@@ -70,8 +70,8 @@
       "definition": "Outputs supported for inspection / eligible inputs actually evaluated by each shipped pilot",
       "aggregate": {
         "numerator": 3,
-        "denominator": 9078,
-        "rate": 0.00033
+        "denominator": 9058,
+        "rate": 0.000331
       },
       "families": {
         "source_bounded_award_rank": {
@@ -84,11 +84,11 @@
         "within_contract_registered_amount_change": {
           "denominator_basis": "unique committed Checkbook observations with two positive registered amounts",
           "numerator": 2,
-          "denominator": 9077,
-          "rate": 0.00022,
-          "source_observation_context": 9080,
-          "detected_changes": 118,
-          "admitted_unshown": 116
+          "denominator": 9057,
+          "rate": 0.000221,
+          "source_observation_context": 9060,
+          "detected_changes": 117,
+          "admitted_unshown": 115
         }
       }
     },

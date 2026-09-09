@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.source_vintage_observations.v1",
-  "generated_at": "2026-09-07T13:41:05.246Z",
+  "generated_at": "2026-09-09T06:54:36.054Z",
   "contract_count": 64,
   "observations": [
     {
@@ -294,14 +294,14 @@
       },
       "publisher_vintage": null,
       "publisher_vintage_basis": null,
-      "publisher_last_updated_at": null,
-      "publisher_last_update_basis": null,
+      "publisher_last_updated_at": "2025-12-19T15:24:13.000Z",
+      "publisher_last_update_basis": "warehouse_source_summary",
       "cityscroll_retrieval": {
-        "status": "unknown",
-        "retrieved_at": null,
+        "status": "succeeded",
+        "retrieved_at": "2026-09-07T21:21:17.547Z",
         "receipt_ref": null,
-        "receipt_schema": null,
-        "run_id": null
+        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
+        "run_id": "warehouse/receipts/proof/official_cfb_influence_latest.json"
       },
       "expected_cadence": "Periodic CFB disclosure filings",
       "expected_lag_tolerance_days": 30,
@@ -329,7 +329,7 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-09-07T13:02:33.872Z",
+        "retrieved_at": "2026-09-09T06:33:01.880Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
         "run_id": "warehouse/receipts/proof/checkbook_contracts_population_latest.json"
@@ -1331,10 +1331,10 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-09-06T07:20:20.822Z",
+        "retrieved_at": "2026-09-07T18:12:14.249Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "cb-minutes-probes:2026-09-06T07:20:20.822Z"
+        "run_id": "warehouse/receipts/proof/community_board_hearing_context_latest.json"
       },
       "expected_cadence": "Heterogeneous; usually monthly for verified full-board minutes pages",
       "expected_lag_tolerance_days": 45,

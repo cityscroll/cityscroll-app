@@ -1,23 +1,368 @@
 {
   "schema_version": 1,
   "title": "Population-backed Checkbook Contracts ↔ PASSPort Public crosswalk",
-  "observed_on": "2026-09-07",
-  "generated_at": "2026-09-07T13:02:33.872Z",
+  "observed_on": "2026-09-09",
+  "generated_at": "2026-09-09T06:33:01.880Z",
   "sources": {
     "passport": "site/data/procurement_spine_sources.json#rows.passport_contracts",
     "checkbook": "site/data/procurement_spine_sources.json#rows.checkbook_contracts"
   },
   "metrics": {
     "version": "passport_checkbook_crosswalk_v1",
-    "checkbook_contracts": 9832,
-    "matched": 2101,
+    "checkbook_contracts": 9811,
+    "matched": 2093,
     "ambiguous": 0,
-    "unmatched": 7731,
-    "coverage_rate": 0.2136899918633035,
+    "unmatched": 7718,
+    "coverage_rate": 0.2133319743145449,
     "denominator": "materialized Checkbook Contracts rows with contract_id or PIN",
     "acceptance_rule": "exact contract_id or strict PIN↔EPIN only; ambiguous candidates excluded"
   },
   "rows": [
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT104020279757276",
+      "checkbook_subject_ref": "contract:CT104020279757276",
+      "checkbook_contract_id": "CT104020279757276",
+      "checkbook_pin": null,
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT104020279757487",
+      "checkbook_subject_ref": "contract:CT104020279757487",
+      "checkbook_contract_id": "CT104020279757487",
+      "checkbook_pin": null,
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT104020279757502",
+      "checkbook_subject_ref": "contract:CT104020279757502",
+      "checkbook_contract_id": "CT104020279757502",
+      "checkbook_pin": null,
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT104020279757719",
+      "checkbook_subject_ref": "contract:CT104020279757719",
+      "checkbook_contract_id": "CT104020279757719",
+      "checkbook_pin": null,
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT104020279757720",
+      "checkbook_subject_ref": "contract:CT104020279757720",
+      "checkbook_contract_id": "CT104020279757720",
+      "checkbook_pin": null,
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT104020279757801",
+      "checkbook_subject_ref": "contract:CT104020279757801",
+      "checkbook_contract_id": "CT104020279757801",
+      "checkbook_pin": null,
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT104020279757935",
+      "checkbook_subject_ref": "contract:CT104020279757935",
+      "checkbook_contract_id": "CT104020279757935",
+      "checkbook_pin": null,
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT104020279757936",
+      "checkbook_subject_ref": "contract:CT104020279757936",
+      "checkbook_contract_id": "CT104020279757936",
+      "checkbook_pin": null,
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT104020279758029",
+      "checkbook_subject_ref": "contract:CT104020279758029",
+      "checkbook_contract_id": "CT104020279758029",
+      "checkbook_pin": null,
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT104020279758041",
+      "checkbook_subject_ref": "contract:CT104020279758041",
+      "checkbook_contract_id": "CT104020279758041",
+      "checkbook_pin": null,
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT104020279758148",
+      "checkbook_subject_ref": "contract:CT104020279758148",
+      "checkbook_contract_id": "CT104020279758148",
+      "checkbook_pin": null,
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT104020279758149",
+      "checkbook_subject_ref": "contract:CT104020279758149",
+      "checkbook_contract_id": "CT104020279758149",
+      "checkbook_pin": null,
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT104020279758175",
+      "checkbook_subject_ref": "contract:CT104020279758175",
+      "checkbook_contract_id": "CT104020279758175",
+      "checkbook_pin": null,
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT104020279758178",
+      "checkbook_subject_ref": "contract:CT104020279758178",
+      "checkbook_contract_id": "CT104020279758178",
+      "checkbook_pin": null,
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT104020279758179",
+      "checkbook_subject_ref": "contract:CT104020279758179",
+      "checkbook_contract_id": "CT104020279758179",
+      "checkbook_pin": null,
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT104020279758235",
+      "checkbook_subject_ref": "contract:CT104020279758235",
+      "checkbook_contract_id": "CT104020279758235",
+      "checkbook_pin": null,
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT105720278802113",
+      "checkbook_subject_ref": "contract:CT105720278802113",
+      "checkbook_contract_id": "CT105720278802113",
+      "checkbook_pin": "05727U0002001",
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT110220271400991",
+      "checkbook_subject_ref": "contract:CT110220271400991",
+      "checkbook_contract_id": "CT110220271400991",
+      "checkbook_pin": "10220272001881",
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT126020278801160",
+      "checkbook_subject_ref": "contract:CT126020278801160",
+      "checkbook_contract_id": "CT126020278801160",
+      "checkbook_pin": "26026N0044001",
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT126020278802590",
+      "checkbook_subject_ref": "contract:CT126020278802590",
+      "checkbook_contract_id": "CT126020278802590",
+      "checkbook_pin": "26026N0011054",
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT181620278800534",
+      "checkbook_subject_ref": "contract:CT181620278800534",
+      "checkbook_contract_id": "CT181620278800534",
+      "checkbook_pin": "81626R0002002",
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT185620278802005",
+      "checkbook_subject_ref": "contract:CT185620278802005",
+      "checkbook_contract_id": "CT185620278802005",
+      "checkbook_pin": "85627U0007001",
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT185620278802075",
+      "checkbook_subject_ref": "contract:CT185620278802075",
+      "checkbook_contract_id": "CT185620278802075",
+      "checkbook_pin": "85627U0005001",
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
+    },
     {
       "status": "unmatched",
       "join_method": null,
@@ -5697,21 +6042,6 @@
       "checkbook_subject_ref": "contract:CT181620271403135",
       "checkbook_contract_id": "CT181620271403135",
       "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT182620278802124",
-      "checkbook_subject_ref": "contract:CT182620278802124",
-      "checkbook_contract_id": "CT182620278802124",
-      "checkbook_pin": "82626P0008001",
       "passport_source_record_id": null,
       "passport_subject_ref": null,
       "passport_contract_id": null,
@@ -12229,21 +12559,6 @@
       "checkbook_subject_ref": "contract:CT181620271402208",
       "checkbook_contract_id": "CT181620271402208",
       "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT182620278801812",
-      "checkbook_subject_ref": "contract:CT182620278801812",
-      "checkbook_contract_id": "CT182620278801812",
-      "checkbook_pin": "82625B0046001",
       "passport_source_record_id": null,
       "passport_subject_ref": null,
       "passport_contract_id": null,
@@ -21288,6 +21603,21 @@
           "contract_id"
         ]
       }
+    },
+    {
+      "status": "unmatched",
+      "join_method": null,
+      "checkbook_source_record_id": "checkbook:contract:CT184620268807386",
+      "checkbook_subject_ref": "contract:CT184620268807386",
+      "checkbook_contract_id": "CT184620268807386",
+      "checkbook_pin": "84626B0034001",
+      "passport_source_record_id": null,
+      "passport_subject_ref": null,
+      "passport_contract_id": null,
+      "passport_epin": null,
+      "input_value": null,
+      "candidate_subject_refs": [],
+      "provenance": null
     },
     {
       "status": "unmatched",
@@ -118886,21 +119216,6 @@
     {
       "status": "unmatched",
       "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CTA181920267202477",
-      "checkbook_subject_ref": "contract:CTA181920267202477",
-      "checkbook_contract_id": "CTA181920267202477",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
       "checkbook_source_record_id": "checkbook:contract:CTA181920267202806",
       "checkbook_subject_ref": "contract:CTA181920267202806",
       "checkbook_contract_id": "CTA181920267202806",
@@ -122025,21 +122340,6 @@
       "checkbook_source_record_id": "checkbook:contract:CT104320261407251",
       "checkbook_subject_ref": "contract:CT104320261407251",
       "checkbook_contract_id": "CT104320261407251",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT104320261408506",
-      "checkbook_subject_ref": "contract:CT104320261408506",
-      "checkbook_contract_id": "CT104320261408506",
       "checkbook_pin": null,
       "passport_source_record_id": null,
       "passport_subject_ref": null,
@@ -131099,28 +131399,6 @@
       "input_value": "CT185020268802996",
       "candidate_subject_refs": [
         "contract:CT1-850-20268802996"
-      ],
-      "provenance": {
-        "method": "passport_checkbook_crosswalk_v1",
-        "source_fields": [
-          "contract_id"
-        ]
-      }
-    },
-    {
-      "status": "matched",
-      "join_method": "contract_id_exact",
-      "checkbook_source_record_id": "checkbook:contract:CT185620268802064",
-      "checkbook_subject_ref": "contract:CT185620268802064",
-      "checkbook_contract_id": "CT185620268802064",
-      "checkbook_pin": "85626U0006001",
-      "passport_source_record_id": "passport:contract:CT1-856-20268802064",
-      "passport_subject_ref": "contract:CT1-856-20268802064",
-      "passport_contract_id": "CT1-856-20268802064",
-      "passport_epin": "85626U0006001",
-      "input_value": "CT185620268802064",
-      "candidate_subject_refs": [
-        "contract:CT1-856-20268802064"
       ],
       "provenance": {
         "method": "passport_checkbook_crosswalk_v1",
@@ -140220,21 +140498,6 @@
       "provenance": null
     },
     {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:MMA180620266200586",
-      "checkbook_subject_ref": "contract:MMA180620266200586",
-      "checkbook_contract_id": "MMA180620266200586",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
       "status": "matched",
       "join_method": "contract_id_exact",
       "checkbook_source_record_id": "checkbook:contract:MMA184620268802950",
@@ -142878,21 +143141,6 @@
     {
       "status": "unmatched",
       "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT104320261405596",
-      "checkbook_subject_ref": "contract:CT104320261405596",
-      "checkbook_contract_id": "CT104320261405596",
-      "checkbook_pin": "043CUCF1931SAGAFASHIONSTRA",
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
       "checkbook_source_record_id": "checkbook:contract:CT107120261404291",
       "checkbook_subject_ref": "contract:CT107120261404291",
       "checkbook_contract_id": "CT107120261404291",
@@ -142926,21 +143174,6 @@
       "checkbook_source_record_id": "checkbook:contract:CT181620261405791",
       "checkbook_subject_ref": "contract:CT181620261405791",
       "checkbook_contract_id": "CT181620261405791",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT181620261405792",
-      "checkbook_subject_ref": "contract:CT181620261405792",
-      "checkbook_contract_id": "CT181620261405792",
       "checkbook_pin": null,
       "passport_source_record_id": null,
       "passport_subject_ref": null,
@@ -148230,28 +148463,6 @@
       "provenance": null
     },
     {
-      "status": "matched",
-      "join_method": "contract_id_exact",
-      "checkbook_source_record_id": "checkbook:contract:CT185820268803249",
-      "checkbook_subject_ref": "contract:CT185820268803249",
-      "checkbook_contract_id": "CT185820268803249",
-      "checkbook_pin": "85826W0040001",
-      "passport_source_record_id": "passport:contract:CT1-858-20268803249",
-      "passport_subject_ref": "contract:CT1-858-20268803249",
-      "passport_contract_id": "CT1-858-20268803249",
-      "passport_epin": "85826W0040001",
-      "input_value": "CT185820268803249",
-      "candidate_subject_refs": [
-        "contract:CT1-858-20268803249"
-      ],
-      "provenance": {
-        "method": "passport_checkbook_crosswalk_v1",
-        "source_fields": [
-          "contract_id"
-        ]
-      }
-    },
-    {
       "status": "unmatched",
       "join_method": null,
       "checkbook_source_record_id": "checkbook:contract:CTA184620267201246",
@@ -149512,28 +149723,6 @@
       "input_value": "CT185620268803145",
       "candidate_subject_refs": [
         "contract:CT1-856-20268803145"
-      ],
-      "provenance": {
-        "method": "passport_checkbook_crosswalk_v1",
-        "source_fields": [
-          "contract_id"
-        ]
-      }
-    },
-    {
-      "status": "matched",
-      "join_method": "contract_id_exact",
-      "checkbook_source_record_id": "checkbook:contract:CT185820268803084",
-      "checkbook_subject_ref": "contract:CT185820268803084",
-      "checkbook_contract_id": "CT185820268803084",
-      "checkbook_pin": "85826W0039001",
-      "passport_source_record_id": "passport:contract:CT1-858-20268803084",
-      "passport_subject_ref": "contract:CT1-858-20268803084",
-      "passport_contract_id": "CT1-858-20268803084",
-      "passport_epin": "85826W0039001",
-      "input_value": "CT185820268803084",
-      "candidate_subject_refs": [
-        "contract:CT1-858-20268803084"
       ],
       "provenance": {
         "method": "passport_checkbook_crosswalk_v1",
@@ -153696,21 +153885,6 @@
     {
       "status": "unmatched",
       "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CTA102520268802597",
-      "checkbook_subject_ref": "contract:CTA102520268802597",
-      "checkbook_contract_id": "CTA102520268802597",
-      "checkbook_pin": "02526Z0001001",
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
       "checkbook_source_record_id": "checkbook:contract:CTA185020268801862",
       "checkbook_subject_ref": "contract:CTA185020268801862",
       "checkbook_contract_id": "CTA185020268801862",
@@ -156124,51 +156298,6 @@
       "provenance": null
     },
     {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CTA112720267201036",
-      "checkbook_subject_ref": "contract:CTA112720267201036",
-      "checkbook_contract_id": "CTA112720267201036",
-      "checkbook_pin": "127FY2300031",
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CTA182620267200601",
-      "checkbook_subject_ref": "contract:CTA182620267200601",
-      "checkbook_contract_id": "CTA182620267200601",
-      "checkbook_pin": "82623Z8011KXLC004",
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CTA184620268802346",
-      "checkbook_subject_ref": "contract:CTA184620268802346",
-      "checkbook_contract_id": "CTA184620268802346",
-      "checkbook_pin": "84626Z0023001",
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
       "status": "matched",
       "join_method": "contract_id_exact",
       "checkbook_source_record_id": "checkbook:contract:MA185720268801095",
@@ -158369,21 +158498,6 @@
     {
       "status": "unmatched",
       "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT185620268802630",
-      "checkbook_subject_ref": "contract:CT185620268802630",
-      "checkbook_contract_id": "CT185620268802630",
-      "checkbook_pin": "85626C0025001",
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
       "checkbook_source_record_id": "checkbook:contract:CTA184620268802373",
       "checkbook_subject_ref": "contract:CTA184620268802373",
       "checkbook_contract_id": "CTA184620268802373",
@@ -159363,55 +159477,10 @@
     {
       "status": "unmatched",
       "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT184620268802540",
-      "checkbook_subject_ref": "contract:CT184620268802540",
-      "checkbook_contract_id": "CT184620268802540",
-      "checkbook_pin": "84626C0091001",
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT184620268802542",
-      "checkbook_subject_ref": "contract:CT184620268802542",
-      "checkbook_contract_id": "CT184620268802542",
-      "checkbook_pin": "84626C0135001",
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
       "checkbook_source_record_id": "checkbook:contract:CT184620268802547",
       "checkbook_subject_ref": "contract:CT184620268802547",
       "checkbook_contract_id": "CT184620268802547",
       "checkbook_pin": "84626C0136001",
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT184620268802566",
-      "checkbook_subject_ref": "contract:CT184620268802566",
-      "checkbook_contract_id": "CT184620268802566",
-      "checkbook_pin": "84626C0089001",
       "passport_source_record_id": null,
       "passport_subject_ref": null,
       "passport_contract_id": null,
@@ -159438,249 +159507,9 @@
     {
       "status": "unmatched",
       "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT104020263003428",
-      "checkbook_subject_ref": "contract:CT104020263003428",
-      "checkbook_contract_id": "CT104020263003428",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT104020263011962",
-      "checkbook_subject_ref": "contract:CT104020263011962",
-      "checkbook_contract_id": "CT104020263011962",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
       "checkbook_source_record_id": "checkbook:contract:CT104020263011964",
       "checkbook_subject_ref": "contract:CT104020263011964",
       "checkbook_contract_id": "CT104020263011964",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT104020263012008",
-      "checkbook_subject_ref": "contract:CT104020263012008",
-      "checkbook_contract_id": "CT104020263012008",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT104020263012132",
-      "checkbook_subject_ref": "contract:CT104020263012132",
-      "checkbook_contract_id": "CT104020263012132",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT104020263012394",
-      "checkbook_subject_ref": "contract:CT104020263012394",
-      "checkbook_contract_id": "CT104020263012394",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT104020263012943",
-      "checkbook_subject_ref": "contract:CT104020263012943",
-      "checkbook_contract_id": "CT104020263012943",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT104020263012989",
-      "checkbook_subject_ref": "contract:CT104020263012989",
-      "checkbook_contract_id": "CT104020263012989",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT104020263013016",
-      "checkbook_subject_ref": "contract:CT104020263013016",
-      "checkbook_contract_id": "CT104020263013016",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT104020263013247",
-      "checkbook_subject_ref": "contract:CT104020263013247",
-      "checkbook_contract_id": "CT104020263013247",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT104020263013385",
-      "checkbook_subject_ref": "contract:CT104020263013385",
-      "checkbook_contract_id": "CT104020263013385",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT104020263013647",
-      "checkbook_subject_ref": "contract:CT104020263013647",
-      "checkbook_contract_id": "CT104020263013647",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT104020263013778",
-      "checkbook_subject_ref": "contract:CT104020263013778",
-      "checkbook_contract_id": "CT104020263013778",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT104020263013881",
-      "checkbook_subject_ref": "contract:CT104020263013881",
-      "checkbook_contract_id": "CT104020263013881",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT104020263013915",
-      "checkbook_subject_ref": "contract:CT104020263013915",
-      "checkbook_contract_id": "CT104020263013915",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT104020263013927",
-      "checkbook_subject_ref": "contract:CT104020263013927",
-      "checkbook_contract_id": "CT104020263013927",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT104020263014108",
-      "checkbook_subject_ref": "contract:CT104020263014108",
-      "checkbook_contract_id": "CT104020263014108",
       "checkbook_pin": null,
       "passport_source_record_id": null,
       "passport_subject_ref": null,
@@ -159786,21 +159615,6 @@
       "checkbook_subject_ref": "contract:CT184620268802515",
       "checkbook_contract_id": "CT184620268802515",
       "checkbook_pin": "84626C0134001",
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT184620268802532",
-      "checkbook_subject_ref": "contract:CT184620268802532",
-      "checkbook_contract_id": "CT184620268802532",
-      "checkbook_pin": "84626C0117001",
       "passport_source_record_id": null,
       "passport_subject_ref": null,
       "passport_contract_id": null,
@@ -160020,28 +159834,6 @@
     {
       "status": "matched",
       "join_method": "contract_id_exact",
-      "checkbook_source_record_id": "checkbook:contract:CT184620268801784",
-      "checkbook_subject_ref": "contract:CT184620268801784",
-      "checkbook_contract_id": "CT184620268801784",
-      "checkbook_pin": "84623B0099001",
-      "passport_source_record_id": "passport:contract:CT1-846-20268801784",
-      "passport_subject_ref": "contract:CT1-846-20268801784",
-      "passport_contract_id": "CT1-846-20268801784",
-      "passport_epin": "84623B0099001",
-      "input_value": "CT184620268801784",
-      "candidate_subject_refs": [
-        "contract:CT1-846-20268801784"
-      ],
-      "provenance": {
-        "method": "passport_checkbook_crosswalk_v1",
-        "source_fields": [
-          "contract_id"
-        ]
-      }
-    },
-    {
-      "status": "matched",
-      "join_method": "contract_id_exact",
       "checkbook_source_record_id": "checkbook:contract:MMA185020258808362",
       "checkbook_subject_ref": "contract:MMA185020258808362",
       "checkbook_contract_id": "MMA185020258808362",
@@ -160060,21 +159852,6 @@
           "contract_id"
         ]
       }
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT105620261402761",
-      "checkbook_subject_ref": "contract:CT105620261402761",
-      "checkbook_contract_id": "CT105620261402761",
-      "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
     },
     {
       "status": "matched",
@@ -160120,21 +159897,6 @@
       "checkbook_subject_ref": "contract:CT183620261402432",
       "checkbook_contract_id": "CT183620261402432",
       "checkbook_pin": null,
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT184620268802448",
-      "checkbook_subject_ref": "contract:CT184620268802448",
-      "checkbook_contract_id": "CT184620268802448",
-      "checkbook_pin": "84626C0095001",
       "passport_source_record_id": null,
       "passport_subject_ref": null,
       "passport_contract_id": null,
@@ -160583,21 +160345,6 @@
       "provenance": null
     },
     {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT180620268800930",
-      "checkbook_subject_ref": "contract:CT180620268800930",
-      "checkbook_contract_id": "CT180620268800930",
-      "checkbook_pin": "80624B0068001",
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
       "status": "matched",
       "join_method": "pin_strip_suffix",
       "checkbook_source_record_id": "checkbook:contract:MMA185020268801294",
@@ -160844,28 +160591,6 @@
     {
       "status": "matched",
       "join_method": "contract_id_exact",
-      "checkbook_source_record_id": "checkbook:contract:CT180620268800988",
-      "checkbook_subject_ref": "contract:CT180620268800988",
-      "checkbook_contract_id": "CT180620268800988",
-      "checkbook_pin": "80624B0068004",
-      "passport_source_record_id": "passport:contract:CT1-806-20268800988",
-      "passport_subject_ref": "contract:CT1-806-20268800988",
-      "passport_contract_id": "CT1-806-20268800988",
-      "passport_epin": "80624B0068004",
-      "input_value": "CT180620268800988",
-      "candidate_subject_refs": [
-        "contract:CT1-806-20268800988"
-      ],
-      "provenance": {
-        "method": "passport_checkbook_crosswalk_v1",
-        "source_fields": [
-          "contract_id"
-        ]
-      }
-    },
-    {
-      "status": "matched",
-      "join_method": "contract_id_exact",
       "checkbook_source_record_id": "checkbook:contract:MA185720268801303",
       "checkbook_subject_ref": "contract:MA185720268801303",
       "checkbook_contract_id": "MA185720268801303",
@@ -160934,29 +160659,6 @@
         "method": "passport_checkbook_crosswalk_v1",
         "source_fields": [
           "contract_id"
-        ]
-      }
-    },
-    {
-      "status": "matched",
-      "join_method": "pin_epin_exact",
-      "checkbook_source_record_id": "checkbook:contract:CTA184620267200151",
-      "checkbook_subject_ref": "contract:CTA184620267200151",
-      "checkbook_contract_id": "CTA184620267200151",
-      "checkbook_pin": "84622P0006006R001",
-      "passport_source_record_id": "passport:contract:MMA1-846-20258806887",
-      "passport_subject_ref": "contract:MMA1-846-20258806887",
-      "passport_contract_id": "MMA1-846-20258806887",
-      "passport_epin": "84622P0006006R001",
-      "input_value": "84622P0006006R001",
-      "candidate_subject_refs": [
-        "contract:MMA1-846-20258806887"
-      ],
-      "provenance": {
-        "method": "passport_checkbook_crosswalk_v1",
-        "source_fields": [
-          "pin",
-          "epin"
         ]
       }
     },
@@ -161566,28 +161268,6 @@
       }
     },
     {
-      "status": "matched",
-      "join_method": "contract_id_exact",
-      "checkbook_source_record_id": "checkbook:contract:CT184620258808697",
-      "checkbook_subject_ref": "contract:CT184620258808697",
-      "checkbook_contract_id": "CT184620258808697",
-      "checkbook_pin": "84624B0072001",
-      "passport_source_record_id": "passport:contract:CT1-846-20258808697",
-      "passport_subject_ref": "contract:CT1-846-20258808697",
-      "passport_contract_id": "CT1-846-20258808697",
-      "passport_epin": "84624B0072001",
-      "input_value": "CT184620258808697",
-      "candidate_subject_refs": [
-        "contract:CT1-846-20258808697"
-      ],
-      "provenance": {
-        "method": "passport_checkbook_crosswalk_v1",
-        "source_fields": [
-          "contract_id"
-        ]
-      }
-    },
-    {
       "status": "unmatched",
       "join_method": null,
       "checkbook_source_record_id": "checkbook:contract:CT104220251418349",
@@ -161601,28 +161281,6 @@
       "input_value": null,
       "candidate_subject_refs": [],
       "provenance": null
-    },
-    {
-      "status": "matched",
-      "join_method": "contract_id_exact",
-      "checkbook_source_record_id": "checkbook:contract:CT184120268801007",
-      "checkbook_subject_ref": "contract:CT184120268801007",
-      "checkbook_contract_id": "CT184120268801007",
-      "checkbook_pin": "84124B0006001",
-      "passport_source_record_id": "passport:contract:CT1-841-20268801007",
-      "passport_subject_ref": "contract:CT1-841-20268801007",
-      "passport_contract_id": "CT1-841-20268801007",
-      "passport_epin": "84124B0006001",
-      "input_value": "CT184120268801007",
-      "candidate_subject_refs": [
-        "contract:CT1-841-20268801007"
-      ],
-      "provenance": {
-        "method": "passport_checkbook_crosswalk_v1",
-        "source_fields": [
-          "contract_id"
-        ]
-      }
     },
     {
       "status": "unmatched",
@@ -161951,21 +161609,6 @@
       "provenance": null
     },
     {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CTA185620258840316",
-      "checkbook_subject_ref": "contract:CTA185620258840316",
-      "checkbook_contract_id": "CTA185620258840316",
-      "checkbook_pin": "85621T0001001",
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
-    },
-    {
       "status": "matched",
       "join_method": "contract_id_exact",
       "checkbook_source_record_id": "checkbook:contract:CT183620268800803",
@@ -162134,21 +161777,6 @@
           "contract_id"
         ]
       }
-    },
-    {
-      "status": "unmatched",
-      "join_method": null,
-      "checkbook_source_record_id": "checkbook:contract:CT185020258808049",
-      "checkbook_subject_ref": "contract:CT185020258808049",
-      "checkbook_contract_id": "CT185020258808049",
-      "checkbook_pin": "85025L0037001",
-      "passport_source_record_id": null,
-      "passport_subject_ref": null,
-      "passport_contract_id": null,
-      "passport_epin": null,
-      "input_value": null,
-      "candidate_subject_refs": [],
-      "provenance": null
     },
     {
       "status": "unmatched",

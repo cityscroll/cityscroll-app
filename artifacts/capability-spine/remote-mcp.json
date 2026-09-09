@@ -269,7 +269,7 @@
     },
     {
       "adapter_id": "mcp.get_person_or_organization@1",
-      "adapter_semantic_sha256": "418490a8d658a017ffc3c99fe1e9a478942ba10a0a9c5f8603a868e4b3eb780c",
+      "adapter_semantic_sha256": "29971983bc6f8b62d13c5ed5ceb72f74c3f3ed694c8110bee9898633a8b77bf9",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -283,7 +283,7 @@
       },
       "calls": 1,
       "capability_reference": "people.get@1",
-      "direct_semantic_sha256": "418490a8d658a017ffc3c99fe1e9a478942ba10a0a9c5f8603a868e4b3eb780c",
+      "direct_semantic_sha256": "29971983bc6f8b62d13c5ed5ceb72f74c3f3ed694c8110bee9898633a8b77bf9",
       "name": "get_person_or_organization",
       "operation_class": "read",
       "parity": "pass",
@@ -294,7 +294,7 @@
     },
     {
       "adapter_id": "mcp.browse_organizations@1",
-      "adapter_semantic_sha256": "7d6921f7f54d3c985a1c7404ab619e5ce2abc45875c4ab1bf6e45de53e5e3c3c",
+      "adapter_semantic_sha256": "a3b1a643096ba983dfa7d3f1e71b258f86d35f71cd674657c4634a3085e8dff4",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -312,7 +312,7 @@
       },
       "calls": 1,
       "capability_reference": "organizations.browse@1",
-      "direct_semantic_sha256": "7d6921f7f54d3c985a1c7404ab619e5ce2abc45875c4ab1bf6e45de53e5e3c3c",
+      "direct_semantic_sha256": "a3b1a643096ba983dfa7d3f1e71b258f86d35f71cd674657c4634a3085e8dff4",
       "name": "browse_organizations",
       "operation_class": "read",
       "parity": "pass",
@@ -348,7 +348,7 @@
     },
     {
       "adapter_id": "mcp.get_land_project@1",
-      "adapter_semantic_sha256": "6264cc42f0dfb45a9b56580a05d51a76aefb5868d193d14a2a39ad89a4c99e1c",
+      "adapter_semantic_sha256": "e47011530494ac402b386ae6245d70ee5bdcacbdb4cb078c99b6f7ed4ec7b85b",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -362,7 +362,7 @@
       },
       "calls": 1,
       "capability_reference": "land.project.get@1",
-      "direct_semantic_sha256": "6264cc42f0dfb45a9b56580a05d51a76aefb5868d193d14a2a39ad89a4c99e1c",
+      "direct_semantic_sha256": "e47011530494ac402b386ae6245d70ee5bdcacbdb4cb078c99b6f7ed4ec7b85b",
       "name": "get_land_project",
       "operation_class": "read",
       "parity": "pass",
@@ -373,7 +373,7 @@
     },
     {
       "adapter_id": "mcp.browse_land_projects@1",
-      "adapter_semantic_sha256": "c6da7dafe2f494f32b1e3961894b0fd69ae52fc18c2b7f328e039e70431799c1",
+      "adapter_semantic_sha256": "734c4bd93fe6cde50a815975c568dc9d1ea1cf0728422ea2ac58159edccf8838",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -390,7 +390,7 @@
       },
       "calls": 1,
       "capability_reference": "land.projects.browse@1",
-      "direct_semantic_sha256": "c6da7dafe2f494f32b1e3961894b0fd69ae52fc18c2b7f328e039e70431799c1",
+      "direct_semantic_sha256": "734c4bd93fe6cde50a815975c568dc9d1ea1cf0728422ea2ac58159edccf8838",
       "name": "browse_land_projects",
       "operation_class": "read",
       "parity": "pass",
@@ -401,7 +401,7 @@
     },
     {
       "adapter_id": "mcp.get_land_decision_path@1",
-      "adapter_semantic_sha256": "d62c9afc051719b8aa6e4d29d0386516958da501d9f30f1a8febbb9f619dc2df",
+      "adapter_semantic_sha256": "4a96ce0ed379e3891aa7c061744a37952616faf4326a17c02a6989a10386c7b0",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -415,7 +415,7 @@
       },
       "calls": 1,
       "capability_reference": "land.decision_path.get@1",
-      "direct_semantic_sha256": "d62c9afc051719b8aa6e4d29d0386516958da501d9f30f1a8febbb9f619dc2df",
+      "direct_semantic_sha256": "4a96ce0ed379e3891aa7c061744a37952616faf4326a17c02a6989a10386c7b0",
       "name": "get_land_decision_path",
       "operation_class": "read",
       "parity": "pass",

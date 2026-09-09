@@ -10,9 +10,9 @@
     "land_default": {
       "path": "site/data/land_default_ulurp.json",
       "count_field": 40,
-      "generated_at": "2026-09-06T15:58:50.482Z",
+      "generated_at": "2026-09-09T06:46:42.537Z",
       "bytes": 278847,
-      "sha256": "3fcdf60950a02a147bab4faac12ffb2b4e4a5601a5cbe70d392e387cbdee1b01"
+      "sha256": "0fa83a61d33015757c8572ad304323ad4ce35ef522cdd4c488f244ad477a7529"
     },
     "zap_bbl": {
       "path": "site/data/zap_bbl_warehouse_lookup.json",
@@ -35,7 +35,7 @@
     "property_observations": {
       "path": "site/data/property_domain_observations.json",
       "property_count": 133,
-      "sha256": "6d25536006ca0b76b87bcfde332fddfd25d9262e02ae5ff44d87177d2167244b",
+      "sha256": "178c455d47c659073f77cb1b8d570f44dc81218aacf7da5f21763dff9ffbfff5",
       "consulted_for_mapping": false
     }
   },
