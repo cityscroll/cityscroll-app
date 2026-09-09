@@ -80,6 +80,19 @@ function parseArgs(argv) {
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
+async function fetchWithRetry(fetchImpl, url, options, sleep) {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return await fetchImpl(url, options);
+    } catch (error) {
+      const retryable = !error.status || error.status === 408 || error.status === 429 || error.status >= 500;
+      if (!retryable || attempt >= 3) throw error;
+      console.warn(`Retrying publisher request (${attempt}/2): ${url}`);
+      await sleep(DEFAULT_POLITE_DELAY_MS * attempt);
+    }
+  }
+}
+
 function emptyMilestoneReview() {
   return {
     published_meeting_dates_evaluated: 0,
@@ -130,12 +143,13 @@ async function fetchJson(url, { timeoutMs = 20000 } = {}) {
 
 /**
  * List sell-facing project_ids (+ borough/name/status) from Open Data SODA.
- * Fail-soft per status so one query outage still yields others.
+ * An incomplete status listing cannot establish the sweep's project universe.
  */
 export async function listActiveLandProjects({
   fetchImpl = fetchJson,
   statuses = LAND_HEARING_SWEEP_STATUSES,
   max = DEFAULT_MAX_PROJECTS,
+  sleep = wait,
 } = {}) {
   const cap = Math.max(1, Math.min(Number(max) || DEFAULT_MAX_PROJECTS, 1000));
   const ordered = [];
@@ -151,14 +165,8 @@ export async function listActiveLandProjects({
       + `&$where=${encodeURIComponent(where)}`
       + `&$order=current_milestone_date DESC`
       + `&$limit=${remaining}`;
-    let rows = [];
-    try {
-      rows = await fetchImpl(url, { timeoutMs: 20000 });
-    } catch (e) {
-      console.warn(`SODA list failed for status=${status}: ${e.message || e}`);
-      continue;
-    }
-    if (!Array.isArray(rows)) continue;
+    const rows = await fetchWithRetry(fetchImpl, url, { timeoutMs: 20000 }, sleep);
+    if (!Array.isArray(rows)) throw new Error(`Invalid project listing for status=${status}`);
     for (const row of rows) {
       const id = String(row.project_id || "").trim();
       if (!id || !/^[A-Za-z0-9][A-Za-z0-9_-]{2,24}$/.test(id)) continue;
@@ -186,16 +194,22 @@ export async function sweepHearingLogistics(projects, {
   fetchImpl = fetchJson,
   delayMs = DEFAULT_POLITE_DELAY_MS,
   onProgress = null,
+  sleep = wait,
 } = {}) {
   const all = [];
   const milestoneReview = emptyMilestoneReview();
   let fetched = 0;
   let failed = 0;
+  const unavailableProjectIds = [];
   for (let i = 0; i < projects.length; i++) {
     const meta = projects[i];
     const url = `${ZAP_API_BASE}/projects/${encodeURIComponent(meta.project_id)}`;
     try {
-      const payload = await fetchImpl(url, { timeoutMs: 25000 });
+      const payload = await fetchWithRetry(fetchImpl, url, { timeoutMs: 25000 }, sleep);
+      const record = parseZapApiProject(payload);
+      if (record.project_id !== meta.project_id || !Array.isArray(payload.included)) {
+        throw new Error(`Invalid ZAP project evidence for ${meta.project_id}`);
+      }
       const result = materializationRowsFromZapApiPayload(payload, meta);
       all.push(...result.hearings);
       mergeMilestoneReview(milestoneReview, result.milestone_review);
@@ -203,16 +217,21 @@ export async function sweepHearingLogistics(projects, {
     } catch (e) {
       failed += 1;
       console.warn(`ZAP fetch failed ${meta.project_id}: ${e.message || e}`);
+      // A publisher 404/410 is unavailable evidence, never a checked-empty
+      // calendar. Other failures leave the last verified snapshot untouched.
+      if (e.status !== 404 && e.status !== 410) throw e;
+      unavailableProjectIds.push(meta.project_id);
     }
     if (typeof onProgress === "function" && ((i + 1) % 20 === 0 || i + 1 === projects.length)) {
       onProgress({ index: i + 1, total: projects.length, fetched, failed, hearings: all.length });
     }
-    if (i + 1 < projects.length && delayMs > 0) await wait(delayMs);
+    if (i + 1 < projects.length && delayMs > 0) await sleep(delayMs);
   }
   return {
     hearings: all,
     projects_fetched: fetched,
     projects_failed: failed,
+    unavailable_project_ids: unavailableProjectIds.sort(),
     milestone_review: milestoneReview,
   };
 }
@@ -299,8 +318,8 @@ function runCheck() {
   );
 }
 
-async function main() {
-  const args = parseArgs(process.argv.slice(2));
+export async function main(argv = process.argv.slice(2), { fetchImpl = fetchJson, sleep = wait, writeImpl = writeJson } = {}) {
+  const args = parseArgs(argv);
   if (args.help) {
     console.log(`Usage:
   node tools/build_land_upcoming_hearings.mjs --live [--limit N] [--polite-delay-ms 350]
@@ -326,6 +345,7 @@ async function main() {
   let projectsListed = 0;
   let projectsFetched = 0;
   let projectsFailed = 0;
+  let unavailableProjectIds = [];
   let milestoneReview = emptyMilestoneReview();
   let mode = args.live ? "live" : "fixture";
 
@@ -340,11 +360,13 @@ async function main() {
     console.log(
       `listing sell-facing ZAP projects (statuses=${LAND_HEARING_SWEEP_STATUSES.join("|")}, max=${max})…`,
     );
-    const projects = await listActiveLandProjects({ max });
+    const projects = await listActiveLandProjects({ max, fetchImpl, sleep });
     projectsListed = projects.length;
     console.log(`listed ${projectsListed}; sweeping ZAP API (delay=${args.delayMs}ms)…`);
     const sweep = await sweepHearingLogistics(projects, {
       delayMs: args.delayMs,
+      fetchImpl,
+      sleep,
       onProgress: ({ index, total, fetched, failed, hearings }) => {
         console.log(
           `  progress ${index}/${total} fetched=${fetched} failed=${failed} hearings=${hearings}`,
@@ -354,6 +376,7 @@ async function main() {
     allHearings = sweep.hearings;
     projectsFetched = sweep.projects_fetched;
     projectsFailed = sweep.projects_failed;
+    unavailableProjectIds = sweep.unavailable_project_ids;
     milestoneReview = sweep.milestone_review;
   }
 
@@ -363,6 +386,7 @@ async function main() {
     projects_listed: projectsListed,
     projects_fetched: projectsFetched,
     projects_failed: projectsFailed,
+    unavailable_project_ids: unavailableProjectIds,
     statuses: LAND_HEARING_SWEEP_STATUSES.slice(),
     polite_delay_ms: args.live ? args.delayMs : null,
     milestone_review: milestoneReview,
@@ -386,8 +410,8 @@ async function main() {
     return;
   }
 
-  writeJson(OUT, snap);
-  writeJson(RECEIPT, receipt);
+  writeImpl(OUT, snap);
+  writeImpl(RECEIPT, receipt);
   console.log(
     "wrote",
     OUT,

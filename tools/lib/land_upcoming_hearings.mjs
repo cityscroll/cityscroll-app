@@ -448,6 +448,7 @@ export function buildUpcomingHearingsSnapshot(allHearings, opts = {}) {
     projects_listed: opts.projects_listed ?? null,
     projects_fetched: opts.projects_fetched ?? null,
     projects_failed: opts.projects_failed ?? null,
+    unavailable_project_ids: [...new Set(opts.unavailable_project_ids || [])].sort(),
     hearings_extracted: traceable.length,
     disposition_hearings_extracted: dispositionRows.length,
     milestone_hearings_extracted: milestoneRows.length,
@@ -472,7 +473,8 @@ export function buildUpcomingHearingsSnapshot(allHearings, opts = {}) {
       + "Derived from ZAP disposition dcp-publichearinglocation + dcp-dateofpublichearing "
       + "and exact hearing-shaped ZAP milestone titles with dcp-reviewmeetingdate "
       + "across sell-facing Open Data project statuses. Synthetic rows are forbidden; "
-      + "an empty list means no future hearing dates were published at materialization time. "
+      + "An empty list reports no future hearing dates only for successfully checked projects; "
+      + "unavailable_project_ids identifies publisher records that could not be checked. "
       + "Unparsed free text stays on hearing_location_raw; absent venue and remote-mode fields remain null.",
     materialization,
     hearings: clean,
@@ -498,6 +500,7 @@ export function buildMaterializationReceipt(snapshot, extra = {}) {
     projects_listed: mat.projects_listed,
     projects_fetched: mat.projects_fetched,
     projects_failed: mat.projects_failed,
+    unavailable_project_ids: mat.unavailable_project_ids || [],
     hearings_extracted: mat.hearings_extracted,
     disposition_hearings_extracted: mat.disposition_hearings_extracted,
     milestone_hearings_extracted: mat.milestone_hearings_extracted,

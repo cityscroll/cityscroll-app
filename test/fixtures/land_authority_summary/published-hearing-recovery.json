@@ -1,0 +1,38 @@
+{
+  "source_url": "https://zap-api-production.herokuapp.com/projects/2025K0305",
+  "observed_on": "2026-09-09",
+  "selection": "Project identity and the two published hearing milestones; unrelated fields omitted.",
+  "payload": {
+    "data": {
+      "type": "projects",
+      "id": "2025K0305",
+      "attributes": {
+        "dcp-name": "2025K0305",
+        "dcp-projectname": "Westshore LSGD Mapping Actions",
+        "dcp-publicstatus": "Filed"
+      }
+    },
+    "included": [
+      {
+        "type": "milestones",
+        "id": "7cfc36ab-cecd-ef11-b8e9-001dd809b68c",
+        "attributes": {
+          "milestonename": "Review Session - Pre-Hearing Review / Post Referral",
+          "display-name": "Review Session - Pre-Hearing Review / Post Referral",
+          "dcp-reviewmeetingdate": "2026-11-30T05:00:00.000Z",
+          "statuscode": "Not Started"
+        }
+      },
+      {
+        "type": "milestones",
+        "id": "88fc36ab-cecd-ef11-b8e9-001dd809b68c",
+        "attributes": {
+          "milestonename": "CPC Public Meeting - Public Hearing",
+          "display-name": "City Planning Commission Review",
+          "dcp-reviewmeetingdate": "2026-12-02T05:00:00.000Z",
+          "statuscode": "Not Started"
+        }
+      }
+    ]
+  }
+}

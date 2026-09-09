@@ -21,13 +21,95 @@ import {
   LAND_HEARING_MATERIALIZATION_METHOD,
   ZAP_MILESTONE_HEARING_SOURCE,
 } from "../tools/lib/land_upcoming_hearings.mjs";
-import { loadFixtureHearings } from "../tools/build_land_upcoming_hearings.mjs";
+import { loadFixtureHearings, main as buildHearings, sweepHearingLogistics } from "../tools/build_land_upcoming_hearings.mjs";
+import { materializeLandAuthoritySummaries } from "../site/land_authority_summary.mjs";
+import { landAuthorityPanelProjection, landAuthoritySummaryHTML } from "../site/land_authority_summary_view.mjs";
 import { parseZapApiProject } from "../worker/src/lib/zap_outcomes.mjs";
 import { extractFn } from "./contract/site_extract.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const FIX = join(ROOT, "test/fixtures/zap_hearing_logistics/2024Q0292.json");
 const PROD = join(ROOT, "site/data/land_upcoming_hearings.json");
+const recovery = JSON.parse(readFileSync(join(ROOT, "test/fixtures/land_authority_summary/published-hearing-recovery.json"), "utf8"));
+const noWait = async () => {};
+
+test("a timed-out project is retried without losing its still-published CPC dates", async () => {
+  let attempts = 0;
+  const delays = [];
+  const sweep = await sweepHearingLogistics([{ project_id: "2025K0305" }], {
+    fetchImpl: async () => {
+      if (++attempts < 3) throw new DOMException("This operation was aborted", "AbortError");
+      return recovery.payload;
+    },
+    sleep: async (ms) => delays.push(ms),
+  });
+  assert.equal(attempts, 3);
+  assert.deepEqual(delays, [350, 700]);
+  assert.equal(sweep.projects_fetched, 1);
+  assert.equal(sweep.projects_failed, 0);
+  assert.deepEqual(sweep.hearings.map((row) => row.hearing_date), ["2026-11-30", "2026-12-02"]);
+  assert.equal(sweep.hearings[0].milestone_id, "7cfc36ab-cecd-ef11-b8e9-001dd809b68c");
+  assert.ok(sweep.hearings.every((row) => isTraceableHearingRow(row)));
+});
+
+test("exhausted transient retries leave both the prior snapshot and receipt untouched", async () => {
+  for (const failure of ["listing", "project", "malformed-listing", "malformed-project"]) {
+    const writes = [];
+    let failures = 0;
+    await assert.rejects(buildHearings(["--live", "--limit", "1"], {
+      fetchImpl: async (url) => {
+        const listing = url.includes("/resource/");
+        if (failure === (listing ? "malformed-listing" : "malformed-project")) return {};
+        if (failure === (listing ? "listing" : "project")) {
+          failures++;
+          throw new DOMException("This operation was aborted", "AbortError");
+        }
+        return listing ? [{ project_id: "2025K0305" }] : recovery.payload;
+      },
+      sleep: noWait,
+      writeImpl: (...args) => writes.push(args),
+    }), /aborted|Invalid/);
+    assert.equal(failures, failure.startsWith("malformed") ? 0 : 3);
+    assert.deepEqual(writes, [], `${failure}: no partial output or fresh receipt may replace retained evidence`);
+  }
+});
+
+test("a publisher 404 stays unavailable through acquisition, summary, and panel", async () => {
+  const writes = [];
+  let missingCalls = 0;
+  await buildHearings(["--live", "--limit", "2", "--today", "2026-09-09"], {
+    fetchImpl: async (url) => {
+      if (url.includes("/resource/")) return [{ project_id: "2025K0305" }, { project_id: "2026X0464" }];
+      if (url.endsWith("/2025K0305")) return recovery.payload;
+      missingCalls++;
+      throw Object.assign(new Error("HTTP 404"), { status: 404 });
+    },
+    sleep: noWait,
+    writeImpl: (path, value) => writes.push(value),
+  });
+  assert.equal(missingCalls, 1, "permanent absence is not retried");
+  assert.equal(writes.length, 2);
+  const [snapshot, receipt] = writes;
+  assert.deepEqual(snapshot.materialization.unavailable_project_ids, ["2026X0464"]);
+  assert.deepEqual(receipt.unavailable_project_ids, ["2026X0464"]);
+  assert.equal(snapshot.materialization.projects_failed, 1);
+  assert.equal(snapshot.hearings.length, 2, "successful project evidence remains publishable");
+  const { payload } = materializeLandAuthoritySummaries({
+    landDefault: { projects: [{ project_id: "2026X0464" }] },
+    publishedOpportunities: snapshot,
+    asOf: snapshot.generated_at,
+  });
+  const summary = payload.summaries["2026X0464"];
+  assert.equal(summary.published_next_opportunity.status, "unknown");
+  assert.equal(summary.published_next_opportunity.checked, false);
+  assert.equal(summary.expected_next_stage, null);
+  assert.equal(summary.next_procedural_body, null);
+  const projection = landAuthorityPanelProjection(summary);
+  assert.equal(projection.published_next_status, "unknown");
+  const html = landAuthoritySummaryHTML(summary, { t: (key) => key, escape: (value) => String(value ?? "") });
+  assert.match(html, /data-land-authority-published-next="unknown"/);
+  assert.doesNotMatch(html, /data-land-authority-calendar="1"|data-land-authority-published-next="none"/);
+});
 
 function baseRow(over = {}) {
   return {

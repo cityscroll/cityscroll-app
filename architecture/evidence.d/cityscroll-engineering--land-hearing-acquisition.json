@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/land-hearing-acquisition",
+  "status": "implemented",
+  "fingerprint": "land-hearing-acquisition.v1",
+  "updated_at": "2026-09-09T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "hearing-acquisition",
+      "path": "tools/build_land_upcoming_hearings.mjs"
+    },
+    {
+      "id": "hearing-availability",
+      "path": "tools/lib/land_upcoming_hearings.mjs"
+    },
+    {
+      "id": "authority-availability",
+      "path": "site/land_authority_summary.mjs"
+    },
+    {
+      "id": "hearing-acquisition-counterfactual",
+      "path": "docs/evidence/land-hearing-acquisition/counterfactual.json"
+    }
+  ]
+}

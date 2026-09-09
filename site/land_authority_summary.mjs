@@ -301,7 +301,7 @@ function hearingsList(publishedOpportunities) {
 function publishedOpportunity(projectId, publishedOpportunities, asOf) {
   const hearings = hearingsList(publishedOpportunities);
   const vintage = authorityIsoDate(publishedOpportunities?.generated_at);
-  if (!hearings) {
+  if (!hearings || publishedOpportunities?.materialization?.unavailable_project_ids?.includes(projectId)) {
     return {
       status: "unknown",
       checked: false,
@@ -731,6 +731,7 @@ export function materializeLandAuthoritySummaries(inputs = {}) {
       publishedOpportunities: {
         hearings,
         generated_at: publishedOpportunities.generated_at,
+        materialization: publishedOpportunities.materialization,
       },
       asOf,
       generatedAt,
@@ -878,5 +879,4 @@ export function authorityActorHref(bodyRef) {
   if (agency) return `/agencies/${encodeURIComponent(agency[1])}/`;
   return null;
 }
-
 
