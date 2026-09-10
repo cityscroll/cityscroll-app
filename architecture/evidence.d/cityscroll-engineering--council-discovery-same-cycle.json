@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/council-discovery-same-cycle",
+  "status": "implemented",
+  "fingerprint": "council-discovery-same-cycle.v1",
+  "updated_at": "2026-09-10T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "council-discovery-cycle",
+      "path": "worker/src/lib/council_discovery_cycle.mjs"
+    },
+    {
+      "id": "council-discovery-health",
+      "path": "worker/src/lib/council_discovery_health.mjs"
+    },
+    {
+      "id": "launch-readback",
+      "path": "tools/council_discovery_launch_readback.mjs"
+    },
+    {
+      "id": "production-provenance",
+      "path": "tools/lib/production_provenance.mjs"
+    },
+    {
+      "id": "launch-readback-schema",
+      "path": "docs/evidence/council-discovery-launch/schema.json"
+    },
+    {
+      "id": "launch-readback-evidence",
+      "path": "docs/evidence/council-discovery-launch/production-readback.json"
+    },
+    {
+      "id": "council-discovery-cycle-tests",
+      "path": "test/council_discovery_cycle.test.mjs"
+    }
+  ]
+}

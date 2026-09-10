@@ -198,8 +198,27 @@ export function validateFirstClassRefreshContracts(registry, options = {}) {
         routes.add(route);
       }
     }
+    if (artifact?.depends_on != null) {
+      if (!Array.isArray(artifact.depends_on)) {
+        errors.push(`${label}: depends_on must be an array of artifact ids`);
+      } else {
+        for (const dependency of artifact.depends_on) {
+          if (typeof dependency !== "string" || !dependency.trim()) {
+            errors.push(`${label}: depends_on entries must be artifact ids`);
+          }
+        }
+      }
+    }
     if (evidenceFields.has(artifact?.production_evidence_field)) errors.push(`${label}: duplicate production_evidence_field`);
     evidenceFields.add(artifact?.production_evidence_field);
+  }
+  for (const artifact of artifacts) {
+    for (const dependency of artifact?.depends_on || []) {
+      if (!ids.has(dependency)) {
+        errors.push(`${artifact.id}: depends_on names unknown artifact ${dependency}`);
+      }
+      if (dependency === artifact.id) errors.push(`${artifact.id}: depends_on cannot name itself`);
+    }
   }
   const discovered = options.discoveredPaths || discoverFirstClassArtifactPaths(root);
   for (const path of discovered) {
@@ -211,11 +230,39 @@ export function validateFirstClassRefreshContracts(registry, options = {}) {
   return [...new Set(errors)].sort();
 }
 
-export function buildScheduledRefreshPlan(registry) {
-  const artifacts = [...(registry?.first_class_artifacts || [])].sort((left, right) => (
+/**
+ * Cadence, then declared depends_on, then path. A producer named in depends_on
+ * is acquired and built before its consumers so shared meeting artifacts cannot
+ * observe a stale Council vintage from the same refresh.
+ */
+export function orderFirstClassArtifacts(artifacts = []) {
+  const byId = new Map(artifacts.map((artifact) => [artifact.id, artifact]));
+  const visiting = new Set();
+  const seen = new Set();
+  const ordered = [];
+  function visit(artifact) {
+    if (!artifact?.id || seen.has(artifact.id)) return;
+    if (visiting.has(artifact.id)) {
+      throw new Error(`first-class refresh depends_on cycle at ${artifact.id}`);
+    }
+    visiting.add(artifact.id);
+    for (const dependency of artifact.depends_on || []) {
+      if (byId.has(dependency)) visit(byId.get(dependency));
+    }
+    visiting.delete(artifact.id);
+    seen.add(artifact.id);
+    ordered.push(artifact);
+  }
+  const sorted = [...artifacts].sort((left, right) => (
     Number(left.normal_refresh_cadence_hours) - Number(right.normal_refresh_cadence_hours)
     || left.public_artifact_path.localeCompare(right.public_artifact_path)
   ));
+  for (const artifact of sorted) visit(artifact);
+  return ordered;
+}
+
+export function buildScheduledRefreshPlan(registry) {
+  const artifacts = orderFirstClassArtifacts(registry?.first_class_artifacts || []);
   const groups = [];
   for (const cadence of [...new Set(artifacts.map((artifact) => Number(artifact.normal_refresh_cadence_hours)))].sort((a, b) => a - b)) {
     const members = artifacts.filter((artifact) => Number(artifact.normal_refresh_cadence_hours) === cadence);
@@ -337,7 +384,9 @@ export function rematerializationIsNotAcquisition(artifact = {}) {
 export function runRefreshCommands(registry, options = {}) {
   const root = options.root || ROOT;
   const now = validInstant(options.now || new Date().toISOString());
-  const selected = selectedArtifactsForRun(registry, root, now, options.all === true);
+  const selected = orderFirstClassArtifacts(
+    selectedArtifactsForRun(registry, root, now, options.all === true),
+  );
   const commands = [];
   const seen = new Set();
   const acquisitionFailed = new Set();

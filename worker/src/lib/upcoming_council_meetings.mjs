@@ -336,6 +336,12 @@ export function buildUpcomingCouncilMeetingsView({
       basis: "authenticated-events-acquisition",
       observed_at: generatedAt,
       events_observed: eventRows.length,
+      last_successful_observation: generatedAt,
+      upcoming: eligible.length,
+      standalone: meetings.filter((meeting) => !meeting.city_record_notice?.matched_in_window).length,
+      exactly_joined: meetings.filter((meeting) => meeting.city_record_notice?.method === "exact_date_body_tokens").length,
+      collection_suppressed: 0,
+      truncated: itemsDeferred + (eventsFetch && !eventsFetch.complete ? 1 : 0),
     },
     counts: {
       eligible_events: eligible.length,
@@ -346,6 +352,8 @@ export function buildUpcomingCouncilMeetingsView({
       events_items_deferred: itemsDeferred,
       events_items_unavailable: itemsUnavailable,
       events_items_truncated: itemsTruncated,
+      standalone: meetings.filter((meeting) => !meeting.city_record_notice?.matched_in_window).length,
+      exactly_joined: meetings.filter((meeting) => meeting.city_record_notice?.method === "exact_date_body_tokens").length,
     },
     meetings,
   };

@@ -41,6 +41,7 @@ import {
   handleAdminPassportIngest,
   handleAdminPassportIngestMeta,
   handleAdminSourceHealthReceipts,
+  handleAdminCouncilDiscoveryHealth,
   handleAdminBoardResolutionReview,
   handleAdminOpsAlert,
   handleAdminDigestWatchdog,
@@ -248,6 +249,7 @@ export default {
     if (pathname === "/admin/passport-ingest") return handleAdminPassportIngest(request, env);
     if (pathname === "/admin/passport-ingest-meta") return handleAdminPassportIngestMeta(request, env);
     if (pathname === "/admin/source-health-receipts") return handleAdminSourceHealthReceipts(request, env);
+    if (pathname === "/admin/council-discovery-health") return handleAdminCouncilDiscoveryHealth(request, env);
     if (pathname === "/admin/board-resolution-review") return handleAdminBoardResolutionReview(request, env);
     if (pathname === "/admin/attachment-metadata") return handleAdminAttachmentMetadata(request, env);
     if (pathname === "/" || pathname === "/health") {
@@ -270,9 +272,22 @@ export default {
         console.error("public search usage refresh failed:", String(error?.message || error));
       }
     })());
-    // Morning live-derived caches: sell-facing ZAP lookup, upcoming hearings, and
-    // staffing exams. Public SODA / OASys only — keep these off the 13:00 digest chain.
+    // Morning live-derived caches. Council Events acquisition runs first so the
+    // shared meeting view, route slices, Search, Now, and later alert replay
+    // consume the same vintage instead of yesterday's snapshot.
     if (event.cron === "0 8 * * *") {
+      try {
+        const r = await withWorkerAcquisitionReceipt(env, "nyc-council-legistar", runId, () => refreshMeetingOutcomes(env));
+        console.log("meeting outcomes:", JSON.stringify(r));
+      } catch (error) {
+        console.error("meeting outcomes refresh failed:", String(error?.message || error));
+      }
+      try {
+        const r = await withWorkerAcquisitionReceipt(env, "city-record", runId, () => refreshHearings(env, undefined, undefined, { includeCommunityBoard: true }));
+        console.log("hearings:", JSON.stringify(r));
+      } catch (error) {
+        console.error("hearing refresh failed:", String(error?.message || error));
+      }
       try {
         const r = await withWorkerAcquisitionReceipt(env, "zap-projects", runId, () => refreshZapProjectsLookup(env));
         console.log("land zap lookup:", JSON.stringify(r));
@@ -457,6 +472,14 @@ export default {
     } catch (e) {
       console.error("suggestion validation failed (digest continues):", String(e?.message || e));
     }
+    // Council Events acquisition precedes every shared meeting consumer so a
+    // newly observed eligible hearing is in the same cycle's hearings view.
+    try {
+      const r = await withWorkerAcquisitionReceipt(env, "nyc-council-legistar", runId, () => refreshMeetingOutcomes(env));
+      console.log("meeting outcomes:", JSON.stringify(r));
+    } catch (e) {
+      console.error("meeting outcomes refresh failed (digest continues):", String(e?.message || e));
+    }
     // Hearings use a small read-optimized materialized view over both City Record sections that carry
     // public events. A daily refresh keeps location extraction and GeoSearch work off the
     // browser path; a stale view remains usable if either upstream is briefly unavailable.
@@ -471,12 +494,6 @@ export default {
       console.log("properties:", JSON.stringify(r));
     } catch (e) {
       console.error("Property refresh failed (digest continues):", String(e?.message || e));
-    }
-    try {
-      const r = await withWorkerAcquisitionReceipt(env, "nyc-council-legistar", runId, () => refreshMeetingOutcomes(env));
-      console.log("meeting outcomes:", JSON.stringify(r));
-    } catch (e) {
-      console.error("meeting outcomes refresh failed (digest continues):", String(e?.message || e));
     }
     try {
       const r = await withWorkerAcquisitionReceipt(env, "nyc-council-legistar", `${runId}:exact-matter`, () => refreshExactMatterRoster(env));

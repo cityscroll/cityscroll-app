@@ -33,7 +33,13 @@ import {
   SEARCH_USAGE_WINDOW_DAYS,
 } from "./search_usage.mjs";
 
-export const OPS_CONTRACT_VERSION = "1.19.0";
+import {
+  COUNCIL_DISCOVERY_CYCLE_STEPS,
+  COUNCIL_DISCOVERY_HEALTH_DEFINITIONS,
+  COUNCIL_DISCOVERY_HEALTH_SCHEMA,
+} from "./council_discovery_health.mjs";
+
+export const OPS_CONTRACT_VERSION = "1.20.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -69,6 +75,19 @@ export const DIGEST_MODES = Object.freeze([
     description: "06:00 ET full render against live data; delivery and state advancement disabled.",
   },
 ]);
+
+export const COUNCIL_DISCOVERY = Object.freeze({
+  schema: COUNCIL_DISCOVERY_HEALTH_SCHEMA,
+  endpoint: "/admin/council-discovery-health",
+  public_visibility: "backstage-only",
+  cycle_steps: COUNCIL_DISCOVERY_CYCLE_STEPS,
+  metrics: Object.entries(COUNCIL_DISCOVERY_HEALTH_DEFINITIONS).map(([id, definition]) => ({
+    id,
+    definition,
+  })),
+  last_known_good:
+    "A failed or empty-source Council acquisition retains the last publishable snapshot and reports unavailable or stale. It never publishes zero as complete.",
+});
 
 export const DIGEST_SHADOW = Object.freeze({
   contract: "digest-shadow.v1",
@@ -581,6 +600,12 @@ export const ADMIN_ROUTES = Object.freeze([
     description: "List latest source-health acquisition receipts retained in worker state.",
   },
   {
+    path: "/admin/council-discovery-health",
+    methods: ["GET"],
+    auth: "ADMIN_KEY",
+    description: "Operator Council-discovery population health: upcoming, standalone, exactly-joined, collection-suppressed, truncated, and last-successful-observation. Not served on public /stats.",
+  },
+  {
     path: "/usage",
     methods: ["GET"],
     auth: "USAGE_KEY",
@@ -923,6 +948,7 @@ export function buildOpsContract(opts = {}) {
       "Machine-readable ops contract for desk panels. No secrets. Not served on public /stats.",
     digest_modes: DIGEST_MODES,
     digest_shadow: DIGEST_SHADOW,
+    council_discovery: COUNCIL_DISCOVERY,
     daylog: {
       kv_key_pattern: "digest:daylog:YYYY-MM-DD",
       actions: DAYLOG_ACTIONS,
