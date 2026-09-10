@@ -30,6 +30,10 @@ vehicles. Frozen award examples are published awards, not currently open bids.
 The selected choices describe an unsaved watch.
 No account or password is needed. This is separate from the city's own account system.
 
+Public meetings use the same **Match more precisely** control. The board, place, and
+upcoming-event window you already chose stay the boundary. Extra wording only narrows it.
+Exact Council-matter watches and other topics do not offer these controls.
+
 ::: figure choose-scope
 
 ## Step 2 — Check the preview

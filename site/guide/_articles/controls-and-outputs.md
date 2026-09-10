@@ -7,7 +7,7 @@ url: /guide/reference/controls-and-outputs/
 reader_question: What can this control do, and what do I get back?
 purpose: Look up common controls, their effects and the files or links they produce.
 description: What each control on CityScroll does when you use it — searching, filtering, following, calendars, links and exports — and what state you are left in.
-last_reviewed: 2026-09-06
+last_reviewed: 2026-09-10
 return_to_task: Browse public records by type | /browse/
 related:
   - Glossary of terms used in this guide | /guide/reference/glossary/
@@ -44,6 +44,7 @@ record pages, and every page of this guide, do not.
 | Create a watch | The tab where a watch is built, from a topic and a place | Nothing is started. Choosing a topic or a place does not start a watch |
 | More topics | Opens the rest of the topics, including staffing and exams, mandates, and a weekly City Council District watch | The same unstarted watch, on a different topic |
 | Narrow it down | Adds a keyword, an agency, a City Council District, or a Community Board | A narrower watch, still unstarted |
+| Match more precisely | On contracts and public meetings, include any or all of a few words, treat an entry as an exact phrase, or exclude words. Exact Council-matter watches and other topics do not show this control | The same unstarted watch, now matching those words in the title or body of each record |
 | Choose a Community Board watch | Takes a borough and then a board number, in that order | A watch identified by both, because a board number alone names several boards |
 | Preview matches | Shows the records this watch would match, with a summary of what the watch is | Nothing is saved and no email is sent. A preview is not a subscription |
 | Email frequency | Daily when there are matches, or a weekly digest that sends on Monday | Which of the two you chose |

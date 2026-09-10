@@ -21,7 +21,7 @@ import { signToken, listUnsubscribe } from "optin-token";
 import { issueEmailSessionToken } from "./session.mjs";
 import { compileSub, getProcurementDigestSnapshot, mergeCompiledRows, rowsForCompiledQuery, vendorStem } from "./lib/compile.mjs";
 import { mergeSolicitationCoverageRows, SOLICITATION_COVERAGE_CAP } from "./lib/solicitation_coverage.mjs";
-import { evaluateMoneyTextQueryWatch, TEXT_QUERY_EVAL_STATUS } from "./lib/watch_text_query_procurement.mjs";
+import { evaluateAdmittedTextQueryWatch, TEXT_QUERY_EVAL_STATUS } from "./lib/evaluate_watch_text_query.mjs";
 import { textQueryEvaluationSupported } from "../../site/watch_text_query.mjs";
 import { compileSub_d1, toDigestRow, OFF_MIRROR_LENSES } from "./lib/compile_d1.mjs";
 import {
@@ -831,9 +831,10 @@ async function finalizeOutboxDelivery(env, reservation, subscriberId, ctx, items
 
 async function loadWatchRows(env, s, ctx, q, { sodaLimit = null, warnLabel = "alerts" } = {}) {
   if (s.filter?.text_query && textQueryEvaluationSupported(s.lens)) {
-    const evaluation = await evaluateMoneyTextQueryWatch({
+    const evaluation = await evaluateAdmittedTextQueryWatch({
       db: env.DB || null,
       snapshot: getProcurementDigestSnapshot(),
+      env,
       sub: s,
       todayISO: ctx.today,
       limit: Number(sodaLimit) || 25,

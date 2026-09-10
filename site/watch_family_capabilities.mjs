@@ -15,6 +15,7 @@ const CAPABILITIES = [
     lens: "money",
     filter: { noticeType: "award" },
     rank: 10,
+    preciseMatching: true,
     terms: ["contract", "contracts", "award", "awards", "rfp", "procurement"],
   },
   {
@@ -33,6 +34,7 @@ const CAPABILITIES = [
     lens: "meetings",
     filter: {},
     rank: 30,
+    preciseMatching: true,
     terms: ["meeting", "meetings", "hearing", "hearings", "testimony"],
   },
   {
@@ -69,6 +71,7 @@ const CAPABILITIES = [
     lens: "money",
     filter: { noticeType: "solicitation" },
     rank: 70,
+    preciseMatching: true,
     terms: ["procurement", "opportunity", "opportunities", "solicitation", "bid", "bids"],
   },
   {
@@ -143,4 +146,22 @@ export function rankWatchFamilySuggestions(input = "") {
 
 export function isWatchFamilyCapability(value) {
   return WATCH_FAMILY_CAPABILITIES.some((capability) => capability.id === String(value || ""));
+}
+
+/**
+ * Families that may offer labelled any/all, phrase, and exclusion controls.
+ * Exact Council-matter watches share the meetings lens but are not a family
+ * seed and must not silently become keyword watches.
+ */
+export function watchFamilyAdmitsPreciseMatching(id) {
+  return WATCH_FAMILY_CAPABILITIES.some((capability) => (
+    capability.id === String(id || "") && capability.preciseMatching === true
+  ));
+}
+
+export function lensFamilyAdmitsPreciseMatching(lens, filter = {}) {
+  if (filter?.matter_ref || filter?.provision_id) return false;
+  return WATCH_FAMILY_CAPABILITIES.some((capability) => (
+    capability.lens === String(lens || "") && capability.preciseMatching === true
+  ));
 }

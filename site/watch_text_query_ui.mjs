@@ -282,7 +282,9 @@ export function watchFilterFromTextQueryControls({
   const hasStructuredScope = structuredScope || Boolean(
     next.agency || next.category || next.minAmount || next.maxAmount || next.noticeType
     || (Array.isArray(next.geographies) && next.geographies.length)
-    || next.borough || next.boro || next.procurement_id,
+    || next.borough || next.boro || next.procurement_id
+    || next.communityBoard || next.dateWindow || next.when || next.locationScope
+    || next.communityDistrict || next.councilDistrict,
   );
   const built = textQueryFromControls(seeded, { structuredScope: hasStructuredScope });
   delete next.keywords;
@@ -340,6 +342,7 @@ export function textQueryControlsHtml({
   open = false,
 } = {}) {
   if (!textQueryUiSupported(lens)) return "";
+  if (filter?.matter_ref || filter?.provision_id) return "";
   const state = controls || controlsFromTextQuery(filter?.text_query);
   const active = textQueryControlsAreActive(state) || Boolean(filter?.text_query);
   const detailsOpen = open || active ? " open" : "";

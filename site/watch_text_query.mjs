@@ -82,6 +82,9 @@ export const TEXT_QUERY_STRUCTURED_SCOPE_FIELDS = Object.freeze([
   "communityDistrict",
   "councilDistrict",
   "communityBoard",
+  "dateWindow",
+  "when",
+  "locationScope",
 ]);
 
 /**
@@ -92,13 +95,21 @@ export const TEXT_QUERY_STRUCTURED_SCOPE_FIELDS = Object.freeze([
  * evaluator must refuse the watch (fail closed) rather than silently run it as
  * an unfiltered legacy query. Money evaluation uses the shared procurement
  * adapter (`site/watch_text_query_eval.mjs`) on owned notice and procurement-
- * object materializations. This registry is the single source both the worker
- * compilers and the tests consult — no path may accept a v1 expression it does
- * not register support for.
+ * object materializations. Meetings evaluation uses the same predicate on the
+ * owned meeting-notice projection (title and retained body as separate fields).
+ * Exact Council-matter watches stay outside this registry even though they
+ * share the meetings lens — admission refuses `matter_ref` plus `text_query`.
+ * This registry is the single source both the worker compilers and the tests
+ * consult — no path may accept a v1 expression it does not register support for.
  */
 export const TEXT_QUERY_SUPPORT = Object.freeze({
   money: Object.freeze({
     lens: "money",
+    admission: true,
+    evaluation: true,
+  }),
+  meetings: Object.freeze({
+    lens: "meetings",
     admission: true,
     evaluation: true,
   }),

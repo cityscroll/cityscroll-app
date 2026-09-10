@@ -141,6 +141,11 @@ function materializedMeetingRows(filter, todayISO, dateWindow, sourceRows = MEET
     }));
 }
 
+/** Scope-only meeting rows for an admitted v1 expression. Keywords stay unused. */
+export function scopedMeetingWatchRows(filter, todayISO, sourceRows) {
+  return materializedMeetingRows(filter, todayISO, filter?.dateWindow || filter?.when, sourceRows);
+}
+
 // N months after an ISO date, as an ISO date — pure function of todayISO (not Date.now()),
 // so compileSub() stays deterministic/testable. Used for the "due within N months" upper
 // bound on Solicitation queries. Exported so compile_d1.mjs's D1-mirror path computes the
@@ -658,6 +663,8 @@ export function compileSub(sub, todayISO) {
         idField: "meeting_id",
         kind: "meetings",
         readRows: () => materializedMeetingRows(f, todayISO, f.dateWindow || f.when),
+        textQuery: f.text_query || undefined,
+        soda: false,
         routeReadModel: {
           kind: "meetings",
           todayISO,

@@ -98,9 +98,10 @@ test("A1: software + exclude maintenance is E2; adding consulting is E3, without
   assert.doesNotMatch(html, /JSON|predicate|planner|text_query/i);
 });
 
-test("A2: simple keyword stays a keyword watch; precise controls only on money", () => {
+test("A2: simple keyword stays a keyword watch; unsupported lenses hide precise controls", () => {
   assert.equal(textQueryUiSupported("money"), true);
-  assert.equal(textQueryUiSupported("meetings"), false);
+  assert.equal(textQueryUiSupported("meetings"), true);
+  assert.equal(textQueryUiSupported("land"), false);
   const simple = watchFilterFromTextQueryControls({
     lens: "money",
     keyword: "software",
@@ -110,8 +111,14 @@ test("A2: simple keyword stays a keyword watch; precise controls only on money",
   assert.deepEqual(simple.filter.keywords, ["software"]);
   assert.equal(simple.filter.text_query, undefined);
 
-  const meetingsHtml = textQueryControlsHtml({ lens: "meetings", filter: {} });
-  assert.equal(meetingsHtml, "");
+  const landHtml = textQueryControlsHtml({ lens: "land", filter: {} });
+  assert.equal(landHtml, "");
+  const exactHtml = textQueryControlsHtml({
+    lens: "meetings",
+    filter: { matter_ref: "legistar:nyc:matter:79200" },
+  });
+  assert.equal(exactHtml, "");
+  assert.match(textQueryControlsHtml({ lens: "meetings", filter: {} }), /Match more precisely/);
 
   const params = new URLSearchParams("lens=money&q=software&agency=Parks");
   const parsed = watchFromFollowingParams(params);

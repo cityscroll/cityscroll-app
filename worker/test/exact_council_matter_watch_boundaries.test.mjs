@@ -26,6 +26,7 @@ test("fail-closed paths never compile as all meetings", () => {
     { matter_ref: "legistar:nyc:matter:79200", communityBoard: "community-board:brooklyn-cb-02" },
     { matter_ref: "legistar:nyc:matter:79200", request_ids: ["20260707021"] },
     { matter_ref: "legistar:nyc:matter:79200", agency: "City Council" },
+    { matter_ref: "legistar:nyc:matter:79200", text_query: { version: 1, all: [[{ kind: "term", value: "rat" }]] } },
   ];
   for (const filter of cases) {
     const prepared = prepareWatchFilter("meetings", filter);
@@ -53,6 +54,19 @@ test("owner isolation and removal leave the other owner's baseline in place", as
     { subscriber_id: "subscriber:left", status: "removed" },
     { subscriber_id: "subscriber:right", status: "active" },
   ]);
+});
+
+test("an exact matter watch cannot be converted into a keyword or precise-text watch", () => {
+  const filter = {
+    matter_ref: "legistar:nyc:matter:79200",
+    text_query: { version: 1, all: [[{ kind: "term", value: "translation" }]] },
+  };
+  const prepared = prepareWatchFilter("meetings", filter);
+  assert.equal(prepared.ok, false);
+  assert.equal(compileSub({ lens: "meetings", filter: sanitize("meetings", filter) }, "2026-08-10"), null);
+  const exact = exactCouncilMatterWatch({ lens: "meetings", filter });
+  assert.equal(exact.status, "unsupported");
+  assert.equal(exact.replayable, false);
 });
 
 test("D1 compiler never exposes a fabricated matter query option", () => {

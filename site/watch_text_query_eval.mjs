@@ -1,9 +1,9 @@
 /**
  * Shared precise-watch evaluation over an admitted field projection.
  *
- * Every supported procurement renderer (D1 notices, CROL-negative snapshot
- * rows, previews that reuse those materializations) calls this scan so
- * inclusion, exclusion, and field evidence cannot drift by adapter. Candidate
+ * Every supported renderer (procurement notices, CROL-negative snapshot rows,
+ * and general meeting notices) calls this scan so inclusion, exclusion, and
+ * field evidence cannot drift by adapter. Candidate
  * retrieval may over-fetch; the v1 predicate in `watch_text_query.mjs` decides
  * membership, and that decision is applied before the displayed or delivered
  * limit. Ranking and new publishers are out of scope.
@@ -56,6 +56,91 @@ export function procurementRecordIdentity(row = {}) {
   return row.request_id || row.procurement_id || row.digest_id || null;
 }
 
+export const MEETING_BODY_STATUS = Object.freeze({
+  present: "present",
+  missing: "missing",
+  failed: "failed",
+});
+
+/**
+ * Meeting notices: published title and retained body as *separate* fields.
+ * `search_text`, generated summaries, and matter-subject tokens are never
+ * concatenated into this projection, so a phrase cannot be manufactured.
+ */
+export function projectMeetingNoticeFields(row = {}) {
+  return [
+    { name: "title", value: row.short_title || row.title || null },
+    { name: "description", value: meetingBodyText(row) },
+  ];
+}
+
+export function meetingRecordIdentity(row = {}) {
+  return row.meeting_id || row.request_id || null;
+}
+
+export function compareMeetingEventThenId(left, right) {
+  const dateL = String(left?.event_date || left?.start_date || "").slice(0, 19);
+  const dateR = String(right?.event_date || right?.start_date || "").slice(0, 19);
+  const byDate = dateL.localeCompare(dateR);
+  if (byDate) return byDate;
+  return String(meetingRecordIdentity(left) || "").localeCompare(String(meetingRecordIdentity(right) || ""));
+}
+
+function meetingBodyText(row = {}) {
+  if (meetingBodyStatus(row) === MEETING_BODY_STATUS.failed) return null;
+  const body = row.additional_description_1 ?? row.description ?? row.body;
+  if (body == null) return null;
+  const text = String(body);
+  return text === "" ? null : text;
+}
+
+/** Optional missing body is not a failed acquisition. */
+export function meetingBodyStatus(row = {}) {
+  const flagged = row.body_acquisition || row.body_status || row.bodyAcquisition;
+  if (flagged === "failed" || flagged === MEETING_BODY_STATUS.failed) {
+    return MEETING_BODY_STATUS.failed;
+  }
+  const body = row.additional_description_1 ?? row.description ?? row.body;
+  if (body == null || String(body) === "") return MEETING_BODY_STATUS.missing;
+  return MEETING_BODY_STATUS.present;
+}
+
+export function decideMeetingTextQuery(row, expression) {
+  const named = projectMeetingNoticeFields(row);
+  const status = meetingBodyStatus(row);
+  if (status === MEETING_BODY_STATUS.failed) {
+    const titleOnly = explainTextQuery(named.filter((field) => field.name === "title"), expression);
+    const exclusions = Array.isArray(expression?.none) && expression.none.length > 0;
+    if (!exclusions && titleOnly.match) {
+      return {
+        match: true,
+        identity: meetingRecordIdentity(row),
+        evidence: titleOnly,
+        fields: named,
+        body_status: status,
+        unevaluated: false,
+      };
+    }
+    return {
+      match: false,
+      identity: meetingRecordIdentity(row),
+      evidence: titleOnly,
+      fields: named,
+      body_status: status,
+      unevaluated: true,
+    };
+  }
+  const evidence = explainTextQuery(named, expression);
+  return {
+    match: evidence.match,
+    identity: meetingRecordIdentity(row),
+    evidence,
+    fields: named,
+    body_status: status,
+    unevaluated: false,
+  };
+}
+
 export function comparePublicationThenId(left, right) {
   const dateL = String(left?.start_date || "").slice(0, 10);
   const dateR = String(right?.start_date || "").slice(0, 10);
@@ -93,6 +178,9 @@ export function evaluateProjectedRecords(records, {
   scanBudget = PROCUREMENT_TEXT_QUERY_EVAL.scanBudget,
   cursor = null,
   clock = null,
+  compare = comparePublicationThenId,
+  identityOf = procurementRecordIdentity,
+  decide = null,
 } = {}) {
   if (!Array.isArray(records)) {
     return {
@@ -107,9 +195,13 @@ export function evaluateProjectedRecords(records, {
     };
   }
 
-  const ordered = [...records].sort(comparePublicationThenId);
+  const decideRow = typeof decide === "function"
+    ? decide
+    : (row) => decideProcurementTextQuery(row, expression, projectFields);
+  const ordered = [...records].sort(compare);
   const accepted = [];
   let scanned = 0;
+  let unevaluated = 0;
   const startOffset = Number.isInteger(cursor?.offset) && cursor.offset > 0 ? cursor.offset : 0;
 
   for (let index = startOffset; index < ordered.length; index += 1) {
@@ -121,31 +213,39 @@ export function evaluateProjectedRecords(records, {
         rows: accepted,
         scanned,
         continuation: { offset: index, scanned },
-        markSeenIds: accepted.map(procurementRecordIdentity).filter(Boolean),
+        markSeenIds: accepted.map(identityOf).filter(Boolean),
         clock,
+        unevaluated,
         candidate_term_groups: textQueryCandidateTermGroups(expression),
       };
     }
     scanned += 1;
-    const decision = decideProcurementTextQuery(row, expression, projectFields);
+    const decision = decideRow(row, expression, projectFields);
+    if (decision?.unevaluated) {
+      unevaluated += 1;
+      continue;
+    }
     if (!decision.match) continue;
     accepted.push({
       ...row,
       text_query_evidence: decision.evidence,
+      body_status: decision.body_status || row.body_status || undefined,
     });
     if (accepted.length >= limit) break;
   }
 
   const exhausted = startOffset + scanned >= ordered.length;
   const filled = accepted.length >= limit;
+  const blocked = unevaluated > 0 && !filled;
   return {
-    status: exhausted || filled ? TEXT_QUERY_EVAL_STATUS.complete : TEXT_QUERY_EVAL_STATUS.incomplete,
-    reason: exhausted || filled ? null : "scan_budget",
+    status: blocked || !(exhausted || filled) ? TEXT_QUERY_EVAL_STATUS.incomplete : TEXT_QUERY_EVAL_STATUS.complete,
+    reason: blocked ? "body_acquisition_failed" : (exhausted || filled ? null : "scan_budget"),
     rows: accepted,
     scanned,
     continuation: exhausted || filled ? null : { offset: startOffset + scanned, scanned },
-    markSeenIds: accepted.map(procurementRecordIdentity).filter(Boolean),
+    markSeenIds: accepted.map(identityOf).filter(Boolean),
     clock,
+    unevaluated,
     candidate_term_groups: textQueryCandidateTermGroups(expression),
   };
 }
@@ -177,17 +277,23 @@ export function collectExcludedProjectedRecords(records, {
   projectFields,
   limit = 8,
   scanBudget = PROCUREMENT_TEXT_QUERY_EVAL.scanBudget,
+  compare = comparePublicationThenId,
+  decide = null,
 } = {}) {
   if (!Array.isArray(records)) {
     return { status: TEXT_QUERY_EVAL_STATUS.unavailable, rows: [], scanned: 0 };
   }
-  const ordered = [...records].sort(comparePublicationThenId);
+  const decideRow = typeof decide === "function"
+    ? decide
+    : (row) => decideProcurementTextQuery(row, expression, projectFields);
+  const ordered = [...records].sort(compare);
   const excluded = [];
   let scanned = 0;
   for (const row of ordered) {
     if (scanned >= scanBudget || excluded.length >= limit) break;
     scanned += 1;
-    const decision = decideProcurementTextQuery(row, expression, projectFields);
+    const decision = decideRow(row, expression, projectFields);
+    if (decision?.unevaluated) continue;
     if (decision.match) continue;
     if (!decision.evidence?.exclusion) continue;
     if (decision.evidence.groups?.length && decision.evidence.groups.some((group) => !group)) continue;
@@ -207,5 +313,24 @@ export function collectExcludedNoticeRecords(records, options) {
   return collectExcludedProjectedRecords(records, {
     ...options,
     projectFields: projectProcurementNoticeFields,
+  });
+}
+
+export function evaluateMeetingRecords(records, options) {
+  return evaluateProjectedRecords(records, {
+    ...options,
+    projectFields: projectMeetingNoticeFields,
+    compare: compareMeetingEventThenId,
+    identityOf: meetingRecordIdentity,
+    decide: (row, expression) => decideMeetingTextQuery(row, expression),
+  });
+}
+
+export function collectExcludedMeetingRecords(records, options) {
+  return collectExcludedProjectedRecords(records, {
+    ...options,
+    projectFields: projectMeetingNoticeFields,
+    compare: compareMeetingEventThenId,
+    decide: (row, expression) => decideMeetingTextQuery(row, expression),
   });
 }

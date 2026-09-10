@@ -237,11 +237,11 @@ test("A3: malformed, unsupported, and calendar-incompatible expressions are refu
   assert.equal(versionRes.status, 400);
   assert.match(await versionRes.text(), /cannot be admitted/);
 
-  const meetings = new URL("https://api.cityscroll.org/feed.xml");
-  meetings.searchParams.set("lens", "meetings");
-  meetings.searchParams.set("filter", JSON.stringify({ keywords: [], text_query: E3 }));
-  const meetingsRes = await handleFeed(new Request(meetings), {}, {});
-  assert.equal(meetingsRes.status, 400);
+  const land = new URL("https://api.cityscroll.org/feed.xml");
+  land.searchParams.set("lens", "land");
+  land.searchParams.set("filter", JSON.stringify({ keywords: [], text_query: E3 }));
+  const landRes = await handleFeed(new Request(land), {}, {});
+  assert.equal(landRes.status, 400);
 });
 
 test("A5: a previously delivered match may remain in the feed without being re-emailed", async () => {

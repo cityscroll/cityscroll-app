@@ -137,7 +137,8 @@ test("A3/A6: malformed JSON, unknown keys, over-limit atoms, and mixed keywords 
     keywords: [],
     text_query: { version: 1, all: [[term("a")], [term("b")], [term("c")], [term("d")], [term("e")]] },
   }).ok, false);
-  assert.equal(prepareWatchFilter("meetings", { keywords: [], text_query: E3 }).ok, false);
+  assert.equal(prepareWatchFilter("land", { keywords: [], text_query: E3 }).ok, false);
+  assert.equal(prepareWatchFilter("meetings", { keywords: [], text_query: E3 }).ok, true);
   const mixed = prepareWatchFilter("money", { keywords: ["software"], text_query: E3 });
   assert.equal(mixed.ok, false);
   assert.equal(mixed.reason, "text-query-legacy_keywords_present");

@@ -12,9 +12,9 @@ import { compileSub, getProcurementDigestSnapshot, rowsForCompiledQuery } from "
 import { feedItems } from "./lib/feed.mjs";
 import { prepareWatchFilter, resolveLens } from "./lib/filter.mjs";
 import {
-  evaluateMoneyTextQueryWatch,
+  evaluateAdmittedTextQueryWatch,
   TEXT_QUERY_EVAL_STATUS,
-} from "./lib/watch_text_query_procurement.mjs";
+} from "./lib/evaluate_watch_text_query.mjs";
 import { textQueryEvaluationSupported } from "../../site/watch_text_query.mjs";
 import { previewQueryRevision } from "../../site/watch_text_query_ui.mjs";
 import { corsHeaders } from "./lib/cors.mjs";
@@ -52,14 +52,16 @@ function previewItemFromRow(row) {
 async function previewFor(watch, fetchImpl, todayISO = new Date().toISOString().slice(0, 10), env = {}, options = {}) {
   if (watch?.filter?.text_query && textQueryEvaluationSupported(watch.lens)) {
     try {
-      const evaluated = await evaluateMoneyTextQueryWatch({
+      const evaluated = await evaluateAdmittedTextQueryWatch({
         db: env.DB || null,
         snapshot: getProcurementDigestSnapshot(),
+        env,
         sub: watch,
         todayISO,
         limit: 5,
         cursor: options.cursor || null,
         clock: todayISO,
+        sourceRows: options.sourceRows || null,
       });
       const revision = previewQueryRevision(watch.filter);
       if (evaluated.status === TEXT_QUERY_EVAL_STATUS.unavailable) {
@@ -73,10 +75,12 @@ async function previewFor(watch, fetchImpl, todayISO = new Date().toISOString().
           queryRevision: revision,
         };
       }
-      const kind = evaluated.rows[0]?.type_of_notice_description === "Award"
-        || (evaluated.rows[0]?.procurement_id && !evaluated.rows[0]?.request_id)
-        ? "award"
-        : "rfp";
+      const kind = watch.lens === "meetings"
+        ? "meetings"
+        : evaluated.rows[0]?.type_of_notice_description === "Award"
+          || (evaluated.rows[0]?.procurement_id && !evaluated.rows[0]?.request_id)
+          ? "award"
+          : "rfp";
       const items = feedItems(kind, evaluated.rows)
         .slice(0, 5)
         .map((item, index) => ({ ...item, ...previewItemFromRow(evaluated.rows[index]) }));
@@ -87,9 +91,13 @@ async function previewFor(watch, fetchImpl, todayISO = new Date().toISOString().
         status: evaluated.status,
         continuation: evaluated.continuation,
         excludedItems: (evaluated.excludedRows || []).map((row) => ({
-          id: row.request_id || row.procurement_id,
+          id: row.meeting_id || row.request_id || row.procurement_id,
           title: row.short_title || row.title || row.request_id,
-          url: row.request_id ? `https://cityscroll.org/notices/${encodeURIComponent(row.request_id)}` : null,
+          url: row.meeting_id
+            ? `https://cityscroll.org/meetings/${encodeURIComponent(row.meeting_id)}/`
+            : row.request_id
+              ? `https://cityscroll.org/notices/${encodeURIComponent(row.request_id)}`
+              : null,
           excerpt: row.text_query_evidence?.exclusion?.passage || null,
         })),
         queryRevision: revision,
@@ -163,7 +171,7 @@ function personalWatchHtml(watch, credential) {
     </div>
     <div class="following-watch-actions">
       ${context.currentMatchesHref ? `<a class="following-current-matches" href="${esc(context.currentMatchesHref)}">See current matches</a>` : ""}
-      ${watch.lens === "money" ? `<a class="following-change-matching" data-following-change-matching href="${esc(context.followingHref)}">${esc("Change what this matches")}</a>` : ""}
+      ${watch.lens === "money" || watch.lens === "meetings" ? `<a class="following-change-matching" data-following-change-matching href="${esc(context.followingHref)}">${esc("Change what this matches")}</a>` : ""}
       ${followingWatchScopeLinksHtml(context, { entityClass: "following-watch-entity" })}
     </div>
     ${watchFacts(context)}
@@ -256,7 +264,10 @@ export async function handleFollowing(request, env = {}, ctx = {}, options = {})
     } catch { cursor = null; }
   }
   const preview = parsed.requested
-    ? await previewFor(watch, options.fetchImpl || fetch, options.todayISO, env, { cursor })
+    ? await previewFor(watch, options.fetchImpl || fetch, options.todayISO, env, {
+      cursor,
+      sourceRows: options.sourceRows || null,
+    })
     : { items: [], count: null, error: null, status: null, excludedItems: [] };
   const view = buildFollowingViewModel({
     ...parsed,
