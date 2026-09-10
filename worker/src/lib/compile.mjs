@@ -25,6 +25,7 @@ import { mergeProcurementDigestMatches, PROCUREMENT_DIGEST_LIMIT } from "../../.
 import { landProcedureSodaWhere } from "../../../site/land_procedure_facet.mjs";
 import { landFamilySodaWhere, landRowMatchesFamily, normalizeLandFamily } from "../../../site/land_status_facets.mjs";
 import { landRowMatchesRegulatoryEffect, normalizeLandRegulatoryEffect } from "../../../site/land_regulatory_effect.mjs";
+import { closingWeekEndISO } from "../../../site/closing_this_week.mjs";
 import { normalizeGeographyKey } from "../../../site/scope_v0.mjs";
 import { normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
 import {
@@ -560,10 +561,8 @@ export function compileSub(sub, todayISO) {
     }
     let where = `type_of_notice_description='Solicitation' AND due_date > '${todayISO}'`;
     if (f.closingWeek) {
-      // Same week window the Money "Closing this week" chip uses (7 calendar days).
-      const d = new Date(todayISO + "T00:00:00Z");
-      d.setUTCDate(d.getUTCDate() + 7);
-      where += ` AND due_date <= '${d.toISOString().slice(0, 10)}'`;
+      // Same week window the Money "Closing this week" chip uses (7 civic days).
+      where += ` AND due_date <= '${closingWeekEndISO(todayISO)}'`;
     } else if (f.months) {
       where += ` AND due_date <= '${monthsFromISO(todayISO, Number(f.months))}'`;
     }

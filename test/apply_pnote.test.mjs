@@ -9,6 +9,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { civicDayISO, daysUntilDue } from "../site/closing_this_week.mjs";
 
 const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "site", "i18n.js"), "utf8");
@@ -34,7 +35,7 @@ const windowStub = { LANG: "en", LANG_META: { en: { intlDate: "en-US" } } };
 const { t, tn } = new Function("window", i18nSrc + "\nreturn { t: window.t, tn: window.tn };")(windowStub);
 
 const { buildApply, mailtoFor, icsForRFP } = new Function(
-  "t", "tn", "window",
+  "t", "tn", "window", "civicDayISO", "daysUntilDue",
   extractConst("REQ_URL") +
   extractConst("EXT_ATTRS") +
   extractConst("extSR") +
@@ -51,7 +52,7 @@ const { buildApply, mailtoFor, icsForRFP } = new Function(
   extractFn("icsForRFP") +
   extractFn("buildApply") +
   "return { buildApply, mailtoFor, icsForRFP };"
-)(t, tn, windowStub);
+)(t, tn, windowStub, civicDayISO, daysUntilDue);
 
 const base = {
   request_id: "20260101001",

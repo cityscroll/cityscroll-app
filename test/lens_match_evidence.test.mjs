@@ -25,6 +25,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { civicDayISO, daysUntilDue } from "../site/closing_this_week.mjs";
 import { landProjectDisplayTitle, noticeDisplayTitle } from "../site/display_title.mjs";
 import {
   landObservedDates,
@@ -84,7 +85,7 @@ const {
   matchEvidence, resultMatchEvidence, matchText, digTitleHTML, digEvidenceHTML,
   moneyRowHTML, landRowHTML, feedCardHTML, roleRowHTML, personRowHTML,
 } = new Function(
-  "t", "tn", "fmtNumber", "window", "moneyListCardInteractionsHTML", "solicitationListChipsHTML", "landProjectDisplayTitle", "noticeDisplayTitle", "constellationLink", "officialSourceLink", "listEntityMentionHTML", "landLink", "objectCardInteractionProjection", "renderObjectCardCopy", "renderObjectCardTitle", "landProcedureLabelKey", "resolveLandProcedure", "landObservedDates", "landFamilyChipsHTML", "landRegulatoryEffectChipHTML", "renderProcurementRowCoverageHtml",
+  "t", "tn", "fmtNumber", "window", "moneyListCardInteractionsHTML", "solicitationListChipsHTML", "landProjectDisplayTitle", "noticeDisplayTitle", "constellationLink", "officialSourceLink", "listEntityMentionHTML", "landLink", "objectCardInteractionProjection", "renderObjectCardCopy", "renderObjectCardTitle", "landProcedureLabelKey", "resolveLandProcedure", "landObservedDates", "landFamilyChipsHTML", "landRegulatoryEffectChipHTML", "renderProcurementRowCoverageHtml", "civicDayISO", "daysUntilDue",
   extractDecl("JUNK_PINS") +
   extractDecl("JUNK_PIN_TEXT_RE") +
   extractFn("usablePin") +
@@ -154,6 +155,8 @@ const {
   landFamilyChipsHTML,
   landRegulatoryEffectChipHTML,
   renderProcurementRowCoverageHtml,
+  civicDayISO,
+  daysUntilDue,
 );
 
 // Real fixture: request_id 20260709010 (see file header for provenance). additional_description_1

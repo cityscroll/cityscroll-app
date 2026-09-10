@@ -217,6 +217,37 @@ function previewWorkingHTML(scopeId){
   return `${previewScopeHeaderHTML(scopeId,"",null,{loading:true})}<div class="nlworking"><span class="loading"></span><span>${t("translating")}</span></div>`;
 }
 
+async function renderClosingWeekPreview({text, extrasHTML="", recoveryHTML="", deepLink, filter}={}){
+  const output=$("#nltrans");
+  if(!output) return;
+  const [{civicDayISO}, {moneySuggestionDestinationRows}] = await Promise.all([
+    import("../closing_this_week.mjs"),
+    import("../suggestion_destination.mjs"),
+  ]);
+  const today=civicDayISO();
+  let rows=[];
+  try{
+    const snapshot=typeof loadMoneyResidentSnapshot==="function"
+      ? await loadMoneyResidentSnapshot()
+      : null;
+    rows=[...moneySuggestionDestinationRows({filter, snapshot, today})];
+  }catch{
+    rows=Array.isArray(globalThis.currentRows) ? [...globalThis.currentRows] : [];
+  }
+  const renderRow=typeof moneyRowHTML==="function"
+    ? (row,index)=>moneyRowHTML(row,index,[])
+    : (row)=>`<article>${nlqEscape(row?.short_title || "")}</article>`;
+  output.innerHTML=renderInterpretPreview({
+    query:text,
+    rows,
+    renderRow,
+    heading:t("preview_panel_heading"),
+    empty:t("nl_no_matches_note"),
+    escape:nlqEscape,
+  })+extrasHTML+recoveryHTML;
+  if(deepLink) bindNLQResolvedActions(text, deepLink);
+}
+
 async function renderPreviewFormFactor(scopeId, {focusToggle=false}={}){
   const output=$("#nltrans");
   const state=previewFormFactorState;
@@ -298,11 +329,22 @@ async function nlTranslate(){
     closingWeek=!!p.closingWeek && !wantsAward;
     $("#closingweek").classList.toggle("on", closingWeek);
     $("#closingweek").setAttribute("aria-pressed", String(closingWeek));
+    const extrasHTML=askCitedQuotesHTML(p.cited_quotes)+nlqResolvedActionsHTML(deepLink);
+    // Closing-this-week is a dated Contracts predicate, not a keyword. Federated
+    // search of the raw phrase cannot see due dates, so Preview would say
+    // nothing while the list below showed the same solicitations. Both surfaces
+    // share moneySuggestionDestinationRows / filterMoneySnapshot.
+    if(closingWeek){
+      previewFormFactorState=null;
+      if(typeof search==="function") await search();
+      await renderClosingWeekPreview({text, extrasHTML, recoveryHTML:recovery, deepLink, filter:p});
+      return;
+    }
     // Interpretation builds the Contracts deep link and the money pane state, but
     // it never narrows the preview: retrieval goes through the shared federated
     // capability under the explicit all-sources default. Narrowing to Contracts is
     // one action on the same query and reissues the registered Contracts scope.
-    previewFormFactorState={scopeId:"all", text, extrasHTML:askCitedQuotesHTML(p.cited_quotes)+nlqResolvedActionsHTML(deepLink), recoveryHTML:recovery, deepLink};
+    previewFormFactorState={scopeId:"all", text, extrasHTML, recoveryHTML:recovery, deepLink};
     await renderPreviewFormFactor("all");
   }catch(_error){
     previewFormFactorState=null;

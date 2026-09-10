@@ -21,6 +21,7 @@ import {
   vendorStemsFromEntityRefs,
 } from "../resident_snapshot_queries.mjs";
 import { moneyEvaluationClockMs, moneyStaleSourceNoticeHTML } from "../money-freshness.mjs";
+import { civicDayISO, closingWeekEndISO } from "../closing_this_week.mjs";
 import {
   CONTRACTS_BROWSE_SCOPE,
   CONTRACT_SCOPED_RETRIEVAL_IDLE,
@@ -278,8 +279,7 @@ let moneyNlResolved = {};
 // Set only for the default open-contracts search; every other mode/filter
 // leaves this null so its "nothing found" reading is unaffected.
 let currentMoneyFreshness = null;
-// determinism-lint: allow clock the closing-this-week bound is relative to now by definition; it filters the list rather than being shown.
-const weekOutISO = () => new Date(Date.now()+7*86400000).toISOString().slice(0,10) + "T23:59:59";
+const weekOutISO = () => closingWeekEndISO(civicDayISO()) + "T23:59:59";
 function moneyActiveFilterChip(item){
   const value = item.value;
   if(item.kind==="noticeType"){

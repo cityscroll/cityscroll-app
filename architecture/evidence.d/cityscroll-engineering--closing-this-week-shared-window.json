@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/closing-this-week-shared-window",
+  "status": "implemented",
+  "fingerprint": "closing-this-week-shared-window.v1",
+  "updated_at": "2026-09-10T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "closing-this-week-window",
+      "path": "site/closing_this_week.mjs"
+    },
+    {
+      "id": "closing-this-week-suggestion-rows",
+      "path": "site/suggestion_destination.mjs"
+    },
+    {
+      "id": "closing-this-week-agreement-tests",
+      "path": "test/closing_this_week.test.mjs"
+    }
+  ]
+}

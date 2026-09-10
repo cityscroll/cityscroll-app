@@ -158,6 +158,7 @@
     "site/civic_time_ledger_runtime.mjs",
     "site/civic_time_ledger.mjs",
     "site/clarity.js",
+    "site/closing_this_week.mjs",
     "site/code_history_backfill.mjs",
     "site/code_provision_history.mjs",
     "site/code_provision_watch_scope.mjs",

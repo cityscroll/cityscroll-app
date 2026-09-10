@@ -1,4 +1,5 @@
 import { cityRecordRequestUrl } from "../city_record_id.mjs";
+import { civicDayISO, daysUntilDue } from "../closing_this_week.mjs";
 import {
   externalActionLink as renderExternalActionLink,
   installObjectCardCopyLinks,
@@ -270,8 +271,7 @@ function fdt(s, opts){
   // determinism-lint: allow timezone a date without a clock is rendered in the reader's locale; the UTC-pinned branch above covers the date-only case.
   return d.toLocaleDateString(_loc,{year:"numeric",month:"long",day:"numeric"});
 }
-// determinism-lint: allow clock a countdown to a deadline is a statement about now; the deadline itself arrives from the record.
-function daysLeft(s){ if(!s) return null; return Math.ceil((new Date(s) - new Date())/86400000); }
+function daysLeft(s){ if(!s) return null; return daysUntilDue(s, civicDayISO()); }
 // Honest deadline label: due dates in year >= 2090 are rolling placeholders (pre-qualified-list
 // entries), not real deadlines — mirrors worker/src/ingest.mjs's ROLLING_YEAR /
 // worker/src/alerts.mjs's dueLabel(). Never render one as a real date or a day-count.
