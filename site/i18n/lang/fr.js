@@ -833,6 +833,7 @@
     following_subscribed: "Vous êtes abonné : nous vous enverrons des courriels. Vous pouvez gérer ou annuler votre abonnement à tout moment.",
     following_match_precisely: "Affiner la correspondance",
     following_include_legend: "Inclure",
+    following_term_label: "Mot ou expression",
     following_include_of: "parmi ces éléments",
     following_include_any: "l’un de ces éléments",
     following_include_all: "tous ces éléments",

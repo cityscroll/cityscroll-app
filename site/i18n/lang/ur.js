@@ -831,6 +831,7 @@
     following_subscribed: "آپ کی رکنیت ہو گئی ہے — ہم آپ کو ای میل بھیجیں گے۔ کسی بھی وقت رکنیت کا انتظام یا اسے منسوخ کریں۔",
     following_match_precisely: "زیادہ درست میل",
     following_include_legend: "شامل کریں",
+    following_term_label: "لفظ یا فقرہ",
     following_include_of: "ان میں سے",
     following_include_any: "ان میں سے کوئی",
     following_include_all: "یہ سب",

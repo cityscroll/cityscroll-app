@@ -307,6 +307,7 @@ test("A6: create-preview-save-edit-feed-return journey and translations/escaping
     "following_include_any",
     "following_include_all",
     "following_treat_phrase",
+    "following_term_label",
     "following_exclude_label",
     "following_also_require",
     "following_excluded_results",
@@ -334,6 +335,27 @@ test("A6: precise-matching summaries have visible names; closed parents hide nes
   assert.match(css, /\.following-precise-require:not\(\[open\]\)\s*>\s*:not\(summary\)/);
   const hideRule = css.slice(css.indexOf(".following-refinements:not([open])"));
   assert.match(hideRule.slice(0, 600), /display:\s*none/);
+});
+
+test("A6: every precise-matching term input has an id and a wrapping label", () => {
+  const html = textQueryControlsHtml({ lens: "money", filter: {} });
+  const names = ["tq_i0", "tq_i1", "tq_i2", "tq_i3", "tq_g2_0", "tq_g2_1", "tq_x0", "tq_x1", "tq_x2", "tq_x3"];
+  assert.equal([...html.matchAll(/data-following-precise-input/g)].length, names.length);
+  for (const name of names) {
+    const id = `following-precise-${name.replaceAll("_", "-")}`;
+    assert.match(
+      html,
+      new RegExp(`<label class="following-precise-term" for="${id}">[\\s\\S]*?<input id="${id}" name="${name}"`),
+    );
+    assert.match(html, new RegExp(`<span data-i18n="following_term_label">Word or phrase</span>`));
+    const phraseId = `${id}p`;
+    assert.match(html, new RegExp(`<input id="${phraseId}" type="checkbox" name="${name}p"`));
+  }
+  const page = renderFollowingDocument(buildFollowingViewModel({ lens: "money" }, templates));
+  assert.match(page, /<label class="following-precise-term" for="following-precise-tq-i0"/);
+  const termTags = [...page.matchAll(/<input\b[^>]*data-following-precise-input[^>]*>/g)].map((match) => match[0]);
+  assert.equal(termTags.length, names.length);
+  for (const tag of termTags) assert.match(tag, /\sid="following-precise-/);
 });
 
 test("atom and phrase conversion, stale preview, and no-JS params", () => {

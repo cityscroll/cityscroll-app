@@ -829,6 +829,7 @@
     following_subscribed: "Вы подписаны — мы будем присылать письма. Изменить или отменить подписку можно в любое время.",
     following_match_precisely: "Уточнить совпадения",
     following_include_legend: "Включить",
+    following_term_label: "Слово или фраза",
     following_include_of: "из этих",
     following_include_any: "любое из этих",
     following_include_all: "все эти",

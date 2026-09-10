@@ -2957,6 +2957,12 @@ select {
   gap: var(--space-1);
 }
 
+.following-precise-term {
+  display: grid;
+  gap: var(--space-1);
+  font: 500 .8125rem/1.3 var(--font-interface);
+}
+
 .following-precise-entry input[type="text"],
 .following-precise-entry input:not([type]),
 .following-precise-entry input[type="search"] {

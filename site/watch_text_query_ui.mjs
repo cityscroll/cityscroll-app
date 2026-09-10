@@ -298,18 +298,26 @@ export function textQueryUiSupported(lens) {
   return textQueryAdmissionSupported(lens) && textQueryEvaluationSupported(lens);
 }
 
-function slotInput(name, slot, { phraseLabel }) {
+function fieldId(name) {
+  return `following-precise-${String(name).replace(/_/g, "-")}`;
+}
+
+function slotInput(name, slot, { phraseLabel, termLabel }) {
   const value = esc(slot?.value || "");
   const checked = slot?.phrase ? " checked" : "";
+  const id = fieldId(name);
+  const phraseId = fieldId(`${name}p`);
   return `<div class="following-precise-entry">
-    <input name="${esc(name)}" value="${value}" autocomplete="off" data-following-precise-input>
-    <label class="following-precise-phrase"><input type="checkbox" name="${esc(name)}p" value="1"${checked} data-following-precise-phrase> <span data-i18n="following_treat_phrase">${esc(phraseLabel)}</span></label>
+    <label class="following-precise-term" for="${id}"><span data-i18n="following_term_label">${esc(termLabel)}</span>
+    <input id="${id}" name="${esc(name)}" value="${value}" autocomplete="off" data-following-precise-input></label>
+    <label class="following-precise-phrase" for="${phraseId}"><input id="${phraseId}" type="checkbox" name="${esc(name)}p" value="1"${checked} data-following-precise-phrase> <span data-i18n="following_treat_phrase">${esc(phraseLabel)}</span></label>
   </div>`;
 }
 
 function modeSelect(name, mode, { anyLabel, allLabel }) {
   const anyOn = mode !== INCLUDE_MODE_ALL;
-  return `<select name="${esc(name)}" data-following-precise-mode aria-label="${esc(anyLabel)}">
+  const id = fieldId(name);
+  return `<select id="${id}" name="${esc(name)}" data-following-precise-mode aria-label="${esc(anyLabel)}">
     <option value="any"${anyOn ? " selected" : ""} data-i18n="following_include_any">${esc(anyLabel)}</option>
     <option value="all"${anyOn ? "" : " selected"} data-i18n="following_include_all">${esc(allLabel)}</option>
   </select>`;
@@ -336,21 +344,15 @@ export function textQueryControlsHtml({
   const active = textQueryControlsAreActive(state) || Boolean(filter?.text_query);
   const detailsOpen = open || active ? " open" : "";
   const requireOpen = state.requireOpen || (state.require || []).some((slot) => slot.value) ? " open" : "";
-  const includeFields = state.include.slice(0, 2).map((slot, index) => slotInput(`tq_i${index}`, slot, {
+  const termSlot = (name, slot) => slotInput(name, slot, {
     phraseLabel: "Treat this as an exact phrase",
-  })).join("");
-  const extraInclude = state.include.slice(2).map((slot, index) => slotInput(`tq_i${index + 2}`, slot, {
-    phraseLabel: "Treat this as an exact phrase",
-  })).join("");
-  const requireFields = state.require.map((slot, index) => slotInput(`tq_g2_${index}`, slot, {
-    phraseLabel: "Treat this as an exact phrase",
-  })).join("");
-  const excludeFields = state.exclude.slice(0, 2).map((slot, index) => slotInput(`tq_x${index}`, slot, {
-    phraseLabel: "Treat this as an exact phrase",
-  })).join("");
-  const extraExclude = state.exclude.slice(2).map((slot, index) => slotInput(`tq_x${index + 2}`, slot, {
-    phraseLabel: "Treat this as an exact phrase",
-  })).join("");
+    termLabel: "Word or phrase",
+  });
+  const includeFields = state.include.slice(0, 2).map((slot, index) => termSlot(`tq_i${index}`, slot)).join("");
+  const extraInclude = state.include.slice(2).map((slot, index) => termSlot(`tq_i${index + 2}`, slot)).join("");
+  const requireFields = state.require.map((slot, index) => termSlot(`tq_g2_${index}`, slot)).join("");
+  const excludeFields = state.exclude.slice(0, 2).map((slot, index) => termSlot(`tq_x${index}`, slot)).join("");
+  const extraExclude = state.exclude.slice(2).map((slot, index) => termSlot(`tq_x${index + 2}`, slot)).join("");
   return `<details class="following-precise"${detailsOpen} data-following-precise>
     ${disclosureSummary("following_match_precisely", "Match more precisely")}
     <div class="following-precise-body">

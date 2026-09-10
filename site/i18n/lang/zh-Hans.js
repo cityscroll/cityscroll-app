@@ -829,6 +829,7 @@
     following_subscribed: "订阅成功，我们会向你发送邮件。你可以随时管理或取消订阅。",
     following_match_precisely: "更精确地匹配",
     following_include_legend: "包含",
+    following_term_label: "词语或短语",
     following_include_of: "以下内容",
     following_include_any: "其中任一",
     following_include_all: "以下全部",

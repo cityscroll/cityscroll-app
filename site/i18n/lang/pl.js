@@ -837,6 +837,7 @@
     following_subscribed: "Subskrypcja została włączona — będziemy wysyłać e-maile. Możesz nią zarządzać lub zrezygnować w dowolnym momencie.",
     following_match_precisely: "Dopasuj dokładniej",
     following_include_legend: "Uwzględnij",
+    following_term_label: "Słowo lub fraza",
     following_include_of: "z tych",
     following_include_any: "którekolwiek z tych",
     following_include_all: "wszystkie te",

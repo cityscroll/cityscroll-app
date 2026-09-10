@@ -25,7 +25,7 @@
         "height": 900
       },
       "route": "/following/?lens=money&tq_i0=software&tq_x0=maintenance&type=award",
-      "sha256": "fd6141552e14d37e09b0b40573e2293987b7f08cd13883e43b8fa61be39737c2"
+      "sha256": "01216d2476c3d4ac1f50f06b32a12fcebe6345fb32c17db360f5e5c20e12bbf6"
     },
     {
       "assertion": "Narrow/touch layout keeps the same labelled controls, 44px summary target, and excluded SolarWinds passage.",
@@ -35,7 +35,7 @@
         "height": 844
       },
       "route": "/following/?lens=money&tq_i0=software&tq_x0=maintenance&type=award",
-      "sha256": "fd6141552e14d37e09b0b40573e2293987b7f08cd13883e43b8fa61be39737c2"
+      "sha256": "01216d2476c3d4ac1f50f06b32a12fcebe6345fb32c17db360f5e5c20e12bbf6"
     }
   ]
 }

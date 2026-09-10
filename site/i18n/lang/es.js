@@ -829,6 +829,7 @@
     following_subscribed: "Ya estás suscrito: te enviaremos correos. Puedes gestionar o cancelar la suscripción cuando quieras.",
     following_match_precisely: "Afinar la coincidencia",
     following_include_legend: "Incluir",
+    following_term_label: "Palabra o frase",
     following_include_of: "de estas",
     following_include_any: "cualquiera de estas",
     following_include_all: "todas estas",

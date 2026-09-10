@@ -831,6 +831,7 @@
     following_subscribed: "تم اشتراكك — سنرسل إليك رسائل إلكترونية. يمكنك إدارة الاشتراك أو إلغاؤه في أي وقت.",
     following_match_precisely: "طابق بدقة أكبر",
     following_include_legend: "ضمّن",
+    following_term_label: "كلمة أو عبارة",
     following_include_of: "من هذه",
     following_include_any: "أيًّا من هذه",
     following_include_all: "كل هذه",

@@ -829,6 +829,7 @@
     following_subscribed: "구독되었습니다. 이메일을 보내드리겠습니다. 언제든지 구독을 관리하거나 취소할 수 있습니다.",
     following_match_precisely: "더 정확히 맞추기",
     following_include_legend: "포함",
+    following_term_label: "단어 또는 구",
     following_include_of: "다음 중",
     following_include_any: "다음 중 하나",
     following_include_all: "다음 모두",

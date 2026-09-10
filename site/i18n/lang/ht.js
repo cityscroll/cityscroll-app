@@ -828,6 +828,7 @@
     following_subscribed: "Ou abòne — n ap voye imèl ba ou. Ou ka jere oswa anile abònman an nenpòt lè.",
     following_match_precisely: "Fè matche pi presi",
     following_include_legend: "Mete ladan",
+    following_term_label: "Mo oswa fraz",
     following_include_of: "nan sa yo",
     following_include_any: "nenpòt nan sa yo",
     following_include_all: "tout sa yo",

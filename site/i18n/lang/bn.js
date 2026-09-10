@@ -829,6 +829,7 @@
     following_subscribed: "আপনার সাবস্ক্রিপশন হয়েছে — আমরা ইমেইল পাঠাব। যেকোনো সময় পরিচালনা করুন বা বাতিল করুন।",
     following_match_precisely: "আরও নির্ভুলভাবে মিলান",
     following_include_legend: "অন্তর্ভুক্ত করুন",
+    following_term_label: "শব্দ বা বাক্যাংশ",
     following_include_of: "এগুলোর",
     following_include_any: "এগুলোর যেকোনো",
     following_include_all: "এগুলোর সব",

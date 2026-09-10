@@ -977,6 +977,7 @@ const STRINGS = {
     following_subscribed: "You're subscribed — we'll email you. Manage or unsubscribe anytime.",
     following_match_precisely: "Match more precisely",
     following_include_legend: "Include",
+    following_term_label: "Word or phrase",
     following_include_of: "of these",
     following_include_any: "any of these",
     following_include_all: "all of these",
