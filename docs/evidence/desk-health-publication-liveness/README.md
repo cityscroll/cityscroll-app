@@ -26,9 +26,9 @@ Proposed operator-service budgets, distinct from publisher freshness: monitor in
 
 ## Production observations retained here
 
-[`production-watchdog-read.json`](production-watchdog-read.json) is a live production read of the independent watchdog. Isolated pause and failure fixtures are labeled isolated and are not that read.
+The current live production observation is the newest dated envelope in this directory (`production-watchdog-read-YYYY-MM-DD.json`). Refresh it with `CITYSCROLL_ADMIN_KEY_FILE=/path/to/key node tools/capture_desk_publication_production_read.mjs`, which records scheduled Deploy Cloudflare Pages runs, Reliability watchdog observer cycles, the scheduler heartbeat, and the private Desk destination. Observer cycles do not count as publication; only a scheduled or dispatched Pages run may produce a publication heartbeat. [`production-watchdog-read.json`](production-watchdog-read.json) is the 2026-09-06 historical read and is not current.
 
-The scheduled Pages publication path last succeeded on 2026-08-07 and the next scheduled attempt on 2026-09-05 failed during public origin deploy. Successful push deploys in between are unrelated application deploys, not Desk evidence publication. The first-class dataset-refresh workflow has no observed runs; missing that input is not proof that the Pages collector is stopped.
+Isolated pause and failure fixtures are labeled isolated and are not that read. Successful push deploys are unrelated application deploys, not Desk evidence publication. Dataset-refresh pull requests remain backlog.
 
 ## Capture policy
 
