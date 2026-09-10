@@ -118,11 +118,24 @@ test("public artifact gate rejects repository-only paths", () => {
 
 test("scheduled Pages deploys stage the authenticated graph and record a Desk publication heartbeat", () => {
   const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
+  const action = read(".github/actions/build-site/action.yml");
+  const build = read("tools/build_cloudflare_pages.mjs");
   assert.match(workflow, /name: data-source-graph-\$\{\{ github\.run_id \}\}/);
   assert.match(workflow, /desk-health-publication-cycle\.json/);
   assert.match(workflow, /cycle: "desk-publication"/);
   assert.match(workflow, /github\.event_name == 'schedule'/);
   assert.match(workflow, /secrets\.ADMIN_KEY/);
+  assert.match(workflow, /Stamp Desk publication clock after accepted heartbeat/);
+  assert.match(workflow, /--stamp-publication/);
+  assert.match(workflow, /--heartbeat-accepted/);
+  assert.match(workflow, /--publication-at/);
+  assert.match(workflow, /overwrite: true/);
+  assert.match(action, /DESK_PUBLICATION_OBSERVATION_AT/);
+  assert.match(build, /GITHUB_EVENT_NAME/);
+  const heartbeat = workflow.indexOf("Record Desk publication heartbeat");
+  const stamp = workflow.indexOf("Stamp Desk publication clock after accepted heartbeat");
+  const retain = workflow.indexOf("Retain publication receipt after heartbeat");
+  assert.ok(heartbeat >= 0 && stamp > heartbeat && retain > stamp);
 });
 
 test("Pages deploy retains and binds release-surface evidence", () => {

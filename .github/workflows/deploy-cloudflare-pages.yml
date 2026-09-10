@@ -98,6 +98,7 @@ jobs:
             .artifacts/desk-health-publication-cycle.json
           if-no-files-found: error
       - name: Record Desk publication heartbeat
+        id: desk_publication_heartbeat
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         env:
           CITYSCROLL_ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
@@ -124,6 +125,41 @@ jobs:
             -H "authorization: Bearer $CITYSCROLL_ADMIN_KEY" \
             -H "content-type: application/json" \
             --data "$payload"
+      - name: Stamp Desk publication clock after accepted heartbeat
+        if: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && success() }}
+        run: |
+          set -euo pipefail
+          PUBLICATION_AT="$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"
+          node tools/desk_health_publication_cycle.mjs \
+            --write .artifacts/desk-health-publication-cycle.json \
+            --stamp-publication \
+            --heartbeat-accepted \
+            --publication-at "$PUBLICATION_AT" \
+            --now "$PUBLICATION_AT" \
+            --event "${GITHUB_EVENT_NAME}" \
+            --run-id "${GITHUB_RUN_ID}"
+      - name: Record rejected heartbeat on the publication receipt
+        if: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && failure() && steps.desk_publication_heartbeat.outcome == 'failure' }}
+        run: |
+          set -euo pipefail
+          node tools/desk_health_publication_cycle.mjs \
+            --write .artifacts/desk-health-publication-cycle.json \
+            --stamp-publication \
+            --heartbeat-rejected \
+            --now "$(date -u +%Y-%m-%dT%H:%M:%S.000Z)" \
+            --event "${GITHUB_EVENT_NAME}" \
+            --run-id "${GITHUB_RUN_ID}"
+      - name: Retain publication receipt after heartbeat
+        if: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: data-source-graph-${{ github.run_id }}
+          path: |
+            docs/data-source-graph.json
+            docs/data-source-graph.html
+            .artifacts/desk-health-publication-cycle.json
+          if-no-files-found: error
+          overwrite: true
       - name: Verify hosting budgets
         run: node tools/check_pages_bundle_sizes.mjs --site-dir _site
       - name: Deploy to Cloudflare Pages

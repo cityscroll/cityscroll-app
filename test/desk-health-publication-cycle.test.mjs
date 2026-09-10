@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
@@ -19,12 +21,16 @@ import {
   PUBLICATION_RECEIPT_SCHEMA,
   classifyPublicationEvent,
   consecutiveUnattendedPublicationCycles,
+  buildPerRunPublicationCycle,
   evaluatePublicationCycle,
   independentWatchdogFinding,
   isQualifyingUnattendedPublicationReceipt,
   loadPublicationCycleContract,
+  publicationReceiptFromCycle,
   publicationReceiptQualificationFindings,
+  readPublicationCycleReceipt,
   retainLastSuccess,
+  stampDeskPublication,
   cycleClock,
 } from "../tools/desk_health_publication_cycle.mjs";
 import {
@@ -296,10 +302,19 @@ test("existing scheduled rails collect, stage, and independently watch the publi
   assert.match(workflow, /desk-health-publication-cycle/);
   assert.match(workflow, /data-source-graph-/);
   assert.match(workflow, /cycle":"desk-publication"|desk-publication/);
+  assert.match(workflow, /--stamp-publication/);
+  assert.match(workflow, /--heartbeat-accepted/);
+  assert.match(workflow, /--heartbeat-rejected/);
+  assert.match(workflow, /--publication-at/);
+  assert.match(workflow, /--event "\$\{GITHUB_EVENT_NAME\}"/);
+  assert.match(workflow, /overwrite: true/);
   assert.match(watchdogs, /cron:\s*"50 \* \* \* \*"/);
   assert.match(watchdogs, /admin\/reliability\/scheduler/);
   assert.match(pagesBuild, /desk_health_publication_cycle/);
   assert.match(pagesBuild, /appendOutput\("data-source-graph-dir"/);
+  assert.match(pagesBuild, /--event/);
+  assert.match(pagesBuild, /DESK_PUBLICATION_OBSERVATION_AT/);
+  assert.match(pagesBuild, /GITHUB_EVENT_NAME/);
   assert.match(runner, /evaluatePublicationCycle|publication_cycle/);
   assert.match(reliability, /DESK_PUBLICATION_HEARTBEAT/);
   assert.match(reliability, /frozen-publication/);
@@ -722,3 +737,191 @@ test("a same-day capture keeps the earlier dated envelope as history", () => {
     "production-watchdog-read-2026-09-11.json",
   );
 });
+
+const MONITOR_AT = "2026-09-06T10:15:00.000Z";
+const OBSERVATION_AT = "2026-09-06T10:20:00.000Z";
+const PUBLICATION_AT = "2026-09-06T10:25:00.000Z";
+
+function fixtureCycleReceipt({
+  event = "schedule",
+  collectionStatus = "succeeded",
+  heartbeatAccepted = true,
+  heartbeatRejected = false,
+  publicationAt = PUBLICATION_AT,
+  isolated = false,
+  runIdentity = "34140178131",
+} = {}) {
+  const cycle = buildPerRunPublicationCycle({
+    now: heartbeatAccepted ? publicationAt : OBSERVATION_AT,
+    event,
+    isolated,
+    monitorAt: MONITOR_AT,
+    observationAt: OBSERVATION_AT,
+    publicationAt: heartbeatAccepted ? publicationAt : null,
+    heartbeatAccepted,
+    heartbeatRejected,
+    collectionStatus,
+    evidenceRevision: "rev-fixture",
+    runIdentity,
+    destination: contract.destination,
+  });
+  return publicationReceiptFromCycle(cycle, { event, result: collectionStatus });
+}
+
+function runCycleTool(args, env = {}) {
+  return spawnSync(process.execPath, [join(ROOT, "tools/desk_health_publication_cycle.mjs"), ...args], {
+    cwd: ROOT,
+    encoding: "utf8",
+    env: { ...process.env, ...env },
+  });
+}
+
+test("a fixture scheduled cycle yields a receipt the liveness reader accepts", () => {
+  const receipt = fixtureCycleReceipt({ event: "schedule" });
+  assert.equal(receipt.event, "schedule");
+  assert.equal(receipt.isolated, false);
+  assert.equal(receipt.run_identity, "34140178131");
+  assert.equal(receipt.failing_stage, null);
+  assert.ok(receipt.destination);
+  assert.equal(receipt.evidence_revision, "rev-fixture");
+  assert.equal(receipt.clocks.last_monitor_attempt.at, MONITOR_AT);
+  assert.equal(receipt.clocks.last_successful_observation.at, OBSERVATION_AT);
+  assert.equal(receipt.clocks.last_successful_desk_publication.at, PUBLICATION_AT);
+  assert.ok(Date.parse(MONITOR_AT) <= Date.parse(OBSERVATION_AT));
+  assert.ok(Date.parse(OBSERVATION_AT) < Date.parse(PUBLICATION_AT));
+  assert.ok(Date.parse(PUBLICATION_AT) - Date.parse(OBSERVATION_AT) <= 2 * 60 * 60 * 1000);
+  assert.deepEqual(publicationReceiptQualificationFindings(receipt), []);
+  assert.equal(isQualifyingUnattendedPublicationReceipt(receipt), true);
+  assert.deepEqual(consecutiveUnattendedPublicationCycles([receipt]), [receipt]);
+});
+
+test("a push run records event=push and is not counted as an unattended publication cycle", () => {
+  const receipt = fixtureCycleReceipt({ event: "push", runIdentity: "push-run-1" });
+  assert.equal(receipt.event, "push");
+  assert.ok(publicationReceiptQualificationFindings(receipt).some((item) => /event=schedule/.test(item)));
+  assert.equal(isQualifyingUnattendedPublicationReceipt(receipt), false);
+  assert.deepEqual(consecutiveUnattendedPublicationCycles([receipt]), []);
+});
+
+test("a failed publication keeps failing_stage and does not stamp a publication clock", () => {
+  const rejected = fixtureCycleReceipt({
+    heartbeatAccepted: false,
+    heartbeatRejected: true,
+    runIdentity: "rejected-run",
+  });
+  assert.equal(rejected.event, "schedule");
+  assert.equal(rejected.failing_stage, "rejected-heartbeat");
+  assert.equal(rejected.clocks.last_successful_observation.at, OBSERVATION_AT);
+  assert.equal(rejected.clocks.last_successful_desk_publication.at, null);
+  assert.ok(publicationReceiptQualificationFindings(rejected).some((item) => /failing_stage/.test(item)));
+  assert.equal(isQualifyingUnattendedPublicationReceipt(rejected), false);
+
+  const collectorFailed = fixtureCycleReceipt({
+    collectionStatus: "failed",
+    heartbeatAccepted: false,
+    runIdentity: "collector-failed-run",
+  });
+  assert.equal(collectorFailed.failing_stage, "collector-failure");
+  assert.equal(collectorFailed.clocks.last_successful_desk_publication.at, null);
+  assert.equal(isQualifyingUnattendedPublicationReceipt(collectorFailed), false);
+
+  const collected = fixtureCycleReceipt({ heartbeatAccepted: false, runIdentity: "pending-run" });
+  const stamped = stampDeskPublication(collected, { heartbeatAccepted: false });
+  assert.equal(stamped.failing_stage, "rejected-heartbeat");
+  assert.equal(stamped.clocks.last_successful_desk_publication.at, null);
+});
+
+test("collection and publication clocks stay ordered and inside the two-hour window", () => {
+  const receipt = fixtureCycleReceipt();
+  const monitor = Date.parse(receipt.clocks.last_monitor_attempt.at);
+  const observation = Date.parse(receipt.clocks.last_successful_observation.at);
+  const publication = Date.parse(receipt.clocks.last_successful_desk_publication.at);
+  assert.ok(monitor <= observation && observation < publication);
+  assert.ok(publication - observation <= 2 * 60 * 60 * 1000);
+  assert.notEqual(receipt.clocks.last_successful_observation.at, receipt.clocks.last_successful_desk_publication.at);
+
+  const collapsed = stampDeskPublication(fixtureCycleReceipt({ heartbeatAccepted: false }), {
+    publicationAt: OBSERVATION_AT,
+    heartbeatAccepted: true,
+  });
+  assert.ok(publicationReceiptQualificationFindings(collapsed).some((item) => /collapses collection and publication/.test(item)));
+
+  const late = fixtureCycleReceipt({ publicationAt: "2026-09-06T13:20:00.000Z" });
+  assert.ok(publicationReceiptQualificationFindings(late).some((item) => /two hours/.test(item)));
+});
+
+test("the receipt writer records the GitHub event and stamps publication only after an accepted heartbeat", () => {
+  const root = mkdtempSync(join(tmpdir(), "desk-publication-receipt-"));
+  try {
+    const graphPath = join(root, "graph.json");
+    const receiptPath = join(root, "receipt.json");
+    writeFileSync(graphPath, `${JSON.stringify({ sources_hash: "rev-cli" }, null, 2)}\n`);
+    const collected = runCycleTool([
+      "--from-graph", graphPath,
+      "--write", receiptPath,
+      "--run-id", "34364169860",
+      "--result", "succeeded",
+      "--event", "schedule",
+      "--now", OBSERVATION_AT,
+      "--monitor-at", MONITOR_AT,
+      "--observation-at", OBSERVATION_AT,
+    ]);
+    assert.equal(collected.status, 0, collected.stderr);
+    const before = readPublicationCycleReceipt(receiptPath);
+    assert.equal(before.event, "schedule");
+    assert.equal(before.isolated, false);
+    assert.equal(before.run_identity, "34364169860");
+    assert.equal(before.clocks.last_successful_observation.at, OBSERVATION_AT);
+    assert.equal(before.clocks.last_successful_desk_publication.at, null);
+    assert.equal(isQualifyingUnattendedPublicationReceipt(before), false);
+
+    const stamped = runCycleTool([
+      "--write", receiptPath,
+      "--stamp-publication",
+      "--heartbeat-accepted",
+      "--publication-at", PUBLICATION_AT,
+      "--now", PUBLICATION_AT,
+      "--event", "schedule",
+      "--run-id", "34364169860",
+    ]);
+    assert.equal(stamped.status, 0, stamped.stderr);
+    const after = readPublicationCycleReceipt(receiptPath);
+    assert.deepEqual(publicationReceiptQualificationFindings(after), []);
+    assert.equal(isQualifyingUnattendedPublicationReceipt(after), true);
+    assert.equal(after.clocks.last_successful_desk_publication.at, PUBLICATION_AT);
+
+    const pushPath = join(root, "push.json");
+    const push = runCycleTool([
+      "--from-graph", graphPath,
+      "--write", pushPath,
+      "--run-id", "push-9",
+      "--result", "succeeded",
+      "--event", "push",
+      "--now", OBSERVATION_AT,
+      "--stamp-publication",
+      "--heartbeat-accepted",
+      "--publication-at", PUBLICATION_AT,
+    ]);
+    assert.equal(push.status, 0, push.stderr);
+    const pushReceipt = readPublicationCycleReceipt(pushPath);
+    assert.equal(pushReceipt.event, "push");
+    assert.equal(isQualifyingUnattendedPublicationReceipt(pushReceipt), false);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("check mode stays pure and write mode requires an injected clock", () => {
+  const check = runCycleTool(["--check"]);
+  assert.equal(check.status, 0, check.stderr);
+  assert.match(check.stdout, /desk health publication cycle contract is current/);
+
+  const write = runCycleTool(["--write", join(tmpdir(), "desk-publication-missing-now.json")]);
+  assert.notEqual(write.status, 0);
+  assert.match(write.stderr, /injected --now clock/);
+
+  const cycleTool = readFileSync(join(ROOT, "tools/desk_health_publication_cycle.mjs"), "utf8");
+  assert.match(cycleTool, /if \(args\.check\) \{\n    console\.log\("desk health publication cycle contract is current"\);\n    return;/);
+  assert.doesNotMatch(cycleTool, /args\.now \|\| new Date\(\)/);
+});
+
