@@ -86,9 +86,20 @@ async function commentAlreadyExists(github, issueNumber, marker) {
   return comments.some((comment) => String(comment.body || "").includes(marker));
 }
 
-function withMarker(body, marker) {
-  return `${body || ""}\n\n${marker}`.trim();
+function intentMarkers(issue) {
+  return [issue?.marker, issue?.observation_marker].filter(Boolean);
 }
+
+function withIntentMarkers(body, issue) {
+  const markers = intentMarkers(issue);
+  return markers.length ? `${body || ""}\n\n${markers.join("\n")}`.trim() : String(body || "").trim();
+}
+
+function textHasMarker(text, marker) {
+  return Boolean(marker) && String(text || "").includes(marker);
+}
+
+
 
 /** Apply one issue intent. Markers make create-comment and close replay safe after
  * a timeout that may have happened after GitHub accepted the mutation. */
@@ -110,7 +121,7 @@ export async function applyIssueIntent(github, issue) {
       ])];
       if (!ids.length || !ids.every((id) => issue.healthy_ids.includes(id))) continue;
       if (!(await commentAlreadyExists(github, candidate.number, issue.marker))) {
-        await github.createComment(candidate.number, withMarker(issue.body, issue.marker));
+        await github.createComment(candidate.number, withIntentMarkers(issue.body, issue));
       }
       await github.updateIssue(candidate.number, { state: "closed", state_reason: "completed" });
       closed += 1;
@@ -120,31 +131,44 @@ export async function applyIssueIntent(github, issue) {
   const existing = openIssues.find((candidate) => issueMatches(candidate, issue));
   if (issue.mode === "open") {
     if (!existing) {
-      const created = await github.createIssue({ title: issue.title, body: withMarker(issue.body, issue.marker) });
-      return { action: "created", issue_number: created.number };
+      const created = await github.createIssue({ title: issue.title, body: withIntentMarkers(issue.body, issue) });
+      return { action: "created", issue_number: created.number, comment_written: true };
     }
     // Some monitors need the current condition on the issue itself, including
     // corrections to an earlier diagnosis. The event marker makes retries safe.
     if (issue.refresh_existing && !String(existing.body || "").includes(issue.marker)) {
-      await github.updateIssue(existing.number, { title: issue.title, body: withMarker(issue.body, issue.marker) });
-      return { action: "updated", issue_number: existing.number };
+      await github.updateIssue(existing.number, { title: issue.title, body: withIntentMarkers(issue.body, issue) });
+      return { action: "updated", issue_number: existing.number, comment_written: false };
     }
     // The create request may have succeeded before the network timed out. The
     // marker is stored in the issue body as well as comments so that replay
     // does not turn that ambiguous outcome into a duplicate comment.
     if (String(existing.body || "").includes(issue.marker)) {
-      return { action: "already-recorded", issue_number: existing.number };
+      return { action: "already-recorded", issue_number: existing.number, comment_written: false };
     }
     if (await commentAlreadyExists(github, existing.number, issue.marker)) {
-      return { action: "already-recorded", issue_number: existing.number };
+      return { action: "already-recorded", issue_number: existing.number, comment_written: false };
     }
-    await github.createComment(existing.number, withMarker(issue.body, issue.marker));
-    return { action: "commented", issue_number: existing.number };
+    // The same rehearsal receipt observed on a later cycle is not a new finding.
+    // Record the suppression on the replay result; do not comment again.
+    if (issue.observation_marker && (
+      textHasMarker(existing.body, issue.observation_marker)
+      || await commentAlreadyExists(github, existing.number, issue.observation_marker)
+    )) {
+      return {
+        action: "unchanged-observation",
+        issue_number: existing.number,
+        comment_written: false,
+        comment_suppressed: "unchanged-observation",
+      };
+    }
+    await github.createComment(existing.number, withIntentMarkers(issue.body, issue));
+    return { action: "commented", issue_number: existing.number, comment_written: true };
   }
   if (issue.mode === "close") {
-    if (!existing) return { action: "already-recovered" };
+    if (!existing) return { action: "already-recovered", comment_written: false };
     if (!(await commentAlreadyExists(github, existing.number, issue.marker))) {
-      await github.createComment(existing.number, withMarker(issue.body, issue.marker));
+      await github.createComment(existing.number, withIntentMarkers(issue.body, issue));
     }
     await github.updateIssue(existing.number, { state: "closed", state_reason: "completed" });
     return { action: "closed", issue_number: existing.number };

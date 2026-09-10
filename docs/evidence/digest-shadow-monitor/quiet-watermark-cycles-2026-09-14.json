@@ -1,0 +1,106 @@
+{
+  "schema": "cityscroll.digest_shadow_monitor_observation.v1",
+  "updated_at": "2026-09-10T12:00:00.000Z",
+  "observations": [
+    {
+      "run_key": "2026-09-06T10-10",
+      "observed_at": "2026-09-06T10:10:00.000Z",
+      "run_day": null,
+      "collapse_stage": null,
+      "source_candidates": null,
+      "finding_severity": "attention",
+      "comment_written": true,
+      "comment_suppressed": null
+    },
+    {
+      "run_key": "2026-09-06T13-10",
+      "observed_at": "2026-09-06T13:10:00.000Z",
+      "run_day": null,
+      "collapse_stage": null,
+      "source_candidates": null,
+      "finding_severity": "attention",
+      "comment_written": false,
+      "comment_suppressed": "unchanged-observation"
+    },
+    {
+      "run_key": "2026-09-07T10-10",
+      "observed_at": "2026-09-07T10:10:00.000Z",
+      "run_day": "2026-09-07",
+      "collapse_stage": null,
+      "source_candidates": 580,
+      "finding_severity": "attention",
+      "comment_written": true,
+      "comment_suppressed": null
+    },
+    {
+      "run_key": "2026-09-07T13-10",
+      "observed_at": "2026-09-07T13:10:00.000Z",
+      "run_day": "2026-09-07",
+      "collapse_stage": null,
+      "source_candidates": 580,
+      "finding_severity": "attention",
+      "comment_written": false,
+      "comment_suppressed": "unchanged-observation"
+    },
+    {
+      "run_key": "2026-09-08T10-10",
+      "observed_at": "2026-09-08T10:10:53.282Z",
+      "run_day": "2026-09-08",
+      "collapse_stage": "watermark_fresh",
+      "source_candidates": 437,
+      "finding_severity": "info",
+      "comment_written": false,
+      "comment_suppressed": null
+    },
+    {
+      "run_key": "2026-09-08T10-11",
+      "observed_at": "2026-09-08T10:11:00.000Z",
+      "run_day": "2026-09-08",
+      "collapse_stage": "watermark_fresh",
+      "source_candidates": 437,
+      "finding_severity": "info",
+      "comment_written": false,
+      "comment_suppressed": null
+    },
+    {
+      "run_key": "2026-09-08T13-10",
+      "observed_at": "2026-09-08T13:10:00.000Z",
+      "run_day": "2026-09-08",
+      "collapse_stage": "watermark_fresh",
+      "source_candidates": 437,
+      "finding_severity": "info",
+      "comment_written": false,
+      "comment_suppressed": null
+    },
+    {
+      "run_key": "2026-09-09T10-10",
+      "observed_at": "2026-09-09T10:10:00.000Z",
+      "run_day": "2026-09-09",
+      "collapse_stage": "watermark_fresh",
+      "source_candidates": 408,
+      "finding_severity": "info",
+      "comment_written": false,
+      "comment_suppressed": null
+    },
+    {
+      "run_key": "2026-09-09T13-10",
+      "observed_at": "2026-09-09T13:10:00.000Z",
+      "run_day": "2026-09-09",
+      "collapse_stage": "watermark_fresh",
+      "source_candidates": 408,
+      "finding_severity": "info",
+      "comment_written": false,
+      "comment_suppressed": null
+    },
+    {
+      "run_key": "2026-09-10T10-10",
+      "observed_at": "2026-09-10T10:10:00.000Z",
+      "run_day": "2026-09-10",
+      "collapse_stage": "watermark_fresh",
+      "source_candidates": 379,
+      "finding_severity": "info",
+      "comment_written": false,
+      "comment_suppressed": null
+    }
+  ]
+}

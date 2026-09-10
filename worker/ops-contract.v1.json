@@ -76,7 +76,9 @@
       "poll_status": "HTTP 200 when READY or DEGRADED_UPSTREAM; NEEDS_ATTENTION returns HTTP 503 with the JSON body",
       "upstream_policy": "A source that did not answer within its retry budget is recorded in upstream_incidents, never in redlines: it names no affected digest, holds no delivery, and reports DEGRADED_UPSTREAM rather than NEEDS_ATTENTION. A source that rejects the query itself stays a redline.",
       "trailing_average_basis": "built_digest_items — new notices plus forecasts over every day-log entry that built a digest, delivered or not, so a held or capped day cannot lower the baseline the next run is judged against",
-      "wake": "Scheduled post-rehearsal and post-delivery monitors open or update a repair issue for redlines, missing runs, or open degraded receipts.",
+      "trailing_baseline_method": "weekday-matched median of built_digest_items when at least two same-weekday samples exist in the 30-day history; otherwise the median of the last 7 days, so a one-day backlog spike cannot dominate ordinary weekdays",
+      "quiet_watermark_policy": "A collapse at watermark_fresh with source_candidates at or above the floor is an informational observation, not a redline: the per-watch seen set already holds every candidate. An empty source_candidates stage still redlines.",
+      "wake": "Scheduled post-rehearsal and post-delivery monitors open or update a repair issue for redlines, missing runs, or open degraded receipts. A quiet-watermark observation does not open or comment an attention issue.",
       "rerun": "Authenticated POST /admin/digest-shadow rebuilds all previews after a repair; affected_digest_ids scopes diagnosis.",
       "delivery_effect": "At 12:45 UTC, only affected_digest_ids still redlined are held from the 13:00 UTC delivery path; unrelated digests remain eligible."
     },

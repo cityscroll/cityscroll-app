@@ -1,20 +1,15 @@
 // 06:00 ET digest shadow run: execute the real account builders inline with delivery and
 // state advancement disabled, persist rendered previews in D1, and publish structured redlines.
 
-import { runAlerts } from "./alerts.mjs";
-import { recordDigestShadowHoldState } from "./digest_shadow_hold.mjs";
-import {
-  ONTOLOGY_DELTA_SHADOW_CONTRACT,
-  buildDefaultOntologyDeltaCandidates,
-  reconcileOntologyDeltaCandidates,
-} from "./lib/ontology_delta_alert.mjs";
-import { describeCollapse, mergeFunnels } from "./lib/digest_funnel.mjs";
+import { describeCollapse, mergeFunnels, normalizeFunnel } from "./lib/digest_funnel.mjs";
 import { dayLogBuiltItemTotal } from "./lib/digest_ops.mjs";
 import {
   DIGEST_SHADOW_DEGRADED_UPSTREAM,
   UPSTREAM_UNAVAILABLE,
   classifyDigestResultError,
 } from "./lib/upstream_failure.mjs";
+
+const ONTOLOGY_DELTA_SHADOW_CONTRACT = "ontology-delta-shadow.v1";
 
 export const DIGEST_SHADOW_CONTRACT = "digest-shadow.v1";
 export const DIGEST_SHADOW_READY = "READY";
@@ -28,6 +23,13 @@ const TRAILING_DAYS = 7;
 const COLLAPSE_RATIO = 0.25;
 const EXPLOSION_RATIO = 4;
 const MIN_TRAILING_AVERAGE = 4;
+// A watermark that already holds every candidate is the quiet inbox the digest
+// is designed to send. Paging it as aggregate_count_collapse treats a Monday
+// backlog still sitting in a 7-day mean as an outage. Distinguish by the
+// funnel's collapsing stage, never by item count alone.
+export const QUIET_WATERMARK_CANDIDATE_FLOOR = 1;
+const WEEKDAY_MATCH_MIN_SAMPLES = 2;
+const WEEKDAY_MATCH_WEEKS = 4;
 
 function dayOffset(day, delta) {
   const d = new Date(`${day}T00:00:00.000Z`);
@@ -37,6 +39,62 @@ function dayOffset(day, delta) {
 
 function finiteCount(value) {
   return Number.isFinite(Number(value)) ? Math.max(0, Number(value)) : 0;
+}
+
+function weekdayUtc(day) {
+  if (!day) return null;
+  const parsed = new Date(`${day}T00:00:00.000Z`);
+  return Number.isNaN(parsed.getTime()) ? null : parsed.getUTCDay();
+}
+
+function median(values) {
+  if (!values.length) return null;
+  const sorted = [...values].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 === 1 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+}
+
+function historyItemTotal(log) {
+  const built = dayLogBuiltItemTotal(log);
+  const total = built == null ? Number(log?.totalNotices) : built;
+  return Number.isFinite(total) ? total : null;
+}
+
+/** True when the funnel emptied at the per-watch seen watermark with candidates still present. */
+export function isQuietWatermarkCollapse(funnel, collapse = describeCollapse(funnel)) {
+  const normalized = normalizeFunnel(funnel);
+  return collapse?.stage === "watermark_fresh"
+    && normalized.source_candidates >= QUIET_WATERMARK_CANDIDATE_FLOOR
+    && normalized.items === 0;
+}
+
+/**
+ * Spike-robust comparison baseline. Prefer the median of the same weekday over
+ * recent weeks so a one-day backlog cannot dominate ordinary weekdays; fall
+ * back to the median of the last seven days when that weekday has too few samples.
+ */
+export function trailingItemBaseline(history = [], day) {
+  const rows = (Array.isArray(history) ? history : [])
+    .map((log) => ({ day: log?.day || null, total: historyItemTotal(log) }))
+    .filter((row) => row.total != null);
+  const want = weekdayUtc(day);
+  const sameWeekday = rows
+    .filter((row) => want != null && weekdayUtc(row.day) === want)
+    .slice(0, WEEKDAY_MATCH_WEEKS)
+    .map((row) => row.total);
+  if (sameWeekday.length >= WEEKDAY_MATCH_MIN_SAMPLES) {
+    return {
+      value: median(sameWeekday),
+      method: "weekday_matched_median",
+      history_days: sameWeekday.length,
+    };
+  }
+  const window = rows.slice(0, TRAILING_DAYS).map((row) => row.total);
+  return {
+    value: median(window),
+    method: "median",
+    history_days: window.length,
+  };
 }
 
 function markerCount(html) {
@@ -327,20 +385,38 @@ export function buildDigestShadowSummary({
   // average manufactures the next explosion. The day log's own entries are read instead, and
   // only a log with no entries to read falls back to the delivered figure.
   const historicalTotals = history.slice(0, TRAILING_DAYS)
-    .map((log) => {
-      const built = dayLogBuiltItemTotal(log);
-      return built == null ? Number(log?.totalNotices) : built;
-    })
-    .filter(Number.isFinite);
+    .map(historyItemTotal)
+    .filter((total) => total != null);
   const trailingAverage = historicalTotals.length
     ? historicalTotals.reduce((sum, count) => sum + count, 0) / historicalTotals.length
     : null;
+  const baseline = trailingItemBaseline(history, day);
+  const trailingBaseline = baseline.value;
+  const observations = [];
   // A source that did not answer is already reported, and is a sufficient explanation for a day
   // that built fewer items than usual. Raising a second, differently-worded finding for the same
   // outage would only put a name on it that points at us.
   const aggregateComparable = upstreamIncidents.length === 0;
-  if (trailingAverage != null && trailingAverage >= MIN_TRAILING_AVERAGE && aggregateComparable) {
-    const ratio = totalItems / trailingAverage;
+  const quietWatermark = isQuietWatermarkCollapse(selectionFunnel, collapse);
+  if (quietWatermark) {
+    // Informational: candidates were present and the seen watermark already held them.
+    // This is not an attention redline and it does not hold anyone's mail.
+    observations.push({
+      code: "quiet_watermark",
+      severity: "info",
+      stage: collapse.stage,
+      reason: collapse.reason,
+      evidence: {
+        source_candidates: selectionFunnel.source_candidates,
+        watermark_fresh: selectionFunnel.watermark_fresh,
+        current_item_count: totalItems,
+        trailing_average: trailingAverage,
+        trailing_baseline: trailingBaseline,
+        trailing_baseline_method: baseline.method,
+      },
+    });
+  } else if (trailingBaseline != null && trailingBaseline >= MIN_TRAILING_AVERAGE && aggregateComparable) {
+    const ratio = totalItems / trailingBaseline;
     if (ratio < COLLAPSE_RATIO) {
       redlines.push(redline(
         "aggregate_count_collapse",
@@ -354,8 +430,10 @@ export function buildDigestShadowSummary({
           current_item_count: totalItems,
           evaluated_count: results.length,
           trailing_average: trailingAverage,
+          trailing_baseline: trailingBaseline,
+          trailing_baseline_method: baseline.method,
           ratio,
-          history_days: historicalTotals.length,
+          history_days: baseline.history_days,
           collapse_stage: collapse?.stage || null,
         },
       ));
@@ -380,7 +458,14 @@ export function buildDigestShadowSummary({
         "aggregate_count_explosion",
         "run",
         "Aggregate digest items exploded against the trailing average.",
-        { current_item_count: totalItems, trailing_average: trailingAverage, ratio, history_days: historicalTotals.length },
+        {
+          current_item_count: totalItems,
+          trailing_average: trailingAverage,
+          trailing_baseline: trailingBaseline,
+          trailing_baseline_method: baseline.method,
+          ratio,
+          history_days: baseline.history_days,
+        },
       ));
     }
   }
@@ -425,8 +510,13 @@ export function buildDigestShadowSummary({
     // this run was compared against items built or items delivered.
     trailing_average_basis: "built_digest_items",
     trailing_average_comparable: aggregateComparable,
+    // The number the collapse/explosion ratio actually uses. Median (weekday-matched
+    // when enough samples exist) so a one-day backlog cannot dominate ordinary weekdays.
+    trailing_baseline: trailingBaseline,
+    trailing_baseline_method: baseline.method,
     selection_funnel: selectionFunnel,
     collapse_stage: collapse?.stage || null,
+    observations,
     redlines,
     // Kept apart from redlines on purpose. These say a source was away; they never say our
     // digest is wrong, and they never name a digest into the delivery hold.
@@ -542,13 +632,18 @@ export async function persistDigestShadow(db, summary) {
 /** Run the real digest builders with delivery, queue fan-out, and state advancement disabled. */
 export async function runDigestShadow(env, {
   now = new Date(),
-  runAlertsFn = runAlerts,
+  runAlertsFn = null,
   ontologyDeltaCandidates = null,
 } = {}) {
   if (!env.DB) throw new Error("digest shadow requires DB");
+  const [{ runAlerts }, { recordDigestShadowHoldState }, ontology] = await Promise.all([
+    runAlertsFn ? Promise.resolve({ runAlerts: runAlertsFn }) : import("./alerts.mjs"),
+    import("./digest_shadow_hold.mjs"),
+    import("./lib/ontology_delta_alert.mjs"),
+  ]);
   const at = new Date(now);
   const shadowEnv = { ...env, ALERTS_LIVE: "false", QUEUE_DIGESTS: "false" };
-  const run = await runAlertsFn(shadowEnv, undefined, {
+  const run = await runAlerts(shadowEnv, undefined, {
     now: at,
     live: false,
     forceInline: true,
@@ -562,9 +657,9 @@ export async function runDigestShadow(env, {
   const day = at.toISOString().slice(0, 10);
   const history = await readHistory(env, day);
   const candidates = ontologyDeltaCandidates == null
-    ? await buildDefaultOntologyDeltaCandidates(env.DB)
+    ? await ontology.buildDefaultOntologyDeltaCandidates(env.DB)
     : ontologyDeltaCandidates;
-  const ontologyDelta = await reconcileOntologyDeltaCandidates(env.DB, candidates, {
+  const ontologyDelta = await ontology.reconcileOntologyDeltaCandidates(env.DB, candidates, {
     observedAt: at,
   });
   const failedDigestIds = (Array.isArray(run?.results) ? run.results : [])

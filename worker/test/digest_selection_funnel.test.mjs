@@ -23,7 +23,12 @@ import {
   normalizeFunnel,
 } from "../src/lib/digest_funnel.mjs";
 import { enqueueEvaluatedSection, SECTION_STATUS } from "../src/lib/digest_outbox.mjs";
-import { buildDigestShadowSummary } from "../src/digest_shadow.mjs";
+import {
+  DIGEST_SHADOW_ATTENTION,
+  DIGEST_SHADOW_READY,
+  QUIET_WATERMARK_CANDIDATE_FLOOR,
+  buildDigestShadowSummary,
+} from "../src/digest_shadow.mjs";
 
 const migration = readFileSync(new URL("../migrations/0018_digest_outbox.sql", import.meta.url), "utf8");
 
@@ -116,42 +121,123 @@ test("merged funnels keep every stage", () => {
   assert.equal(merged.watermark_fresh, 0);
 });
 
-test("the shadow receipt names the collapsing stage beside the aggregate ratio", () => {
-  // Seven trailing days near 47 items, then a run with candidates and no items.
-  const history = Array.from({ length: 7 }, (_, index) => ({
-    day: `2026-08-2${index + 1}`,
-    totalNotices: 47,
-    sentCount: 3,
-  }));
-  const out = buildDigestShadowSummary({
+function spikeHistory() {
+  // One Monday backlog day, then ordinary weekdays. The 7-day mean is dominated
+  // by the spike; the weekday-matched / median baseline is not.
+  return [
+    { day: "2026-09-07", totalNotices: 234, sentCount: 5 },
+    { day: "2026-09-06", totalNotices: 8, sentCount: 2 },
+    { day: "2026-09-05", totalNotices: 12, sentCount: 2 },
+    { day: "2026-09-04", totalNotices: 10, sentCount: 2 },
+    { day: "2026-09-03", totalNotices: 9, sentCount: 1 },
+    { day: "2026-09-02", totalNotices: 11, sentCount: 2 },
+    { day: "2026-09-01", totalNotices: 8, sentCount: 1 },
+  ];
+}
+
+function watermarkRun(candidates, { now, history = spikeHistory() } = {}) {
+  return buildDigestShadowSummary({
     run: {
       results: [{
         sub: "account:ja***",
         kind: "rollup",
         selection_funnel: funnel({
-          source_candidates: 290,
-          delivery_authorized: 290,
-          lens_evaluated: 290,
+          source_candidates: candidates,
+          delivery_authorized: candidates,
+          lens_evaluated: candidates,
           watermark_fresh: 0,
         }),
       }],
     },
     history,
-    now: new Date("2026-09-05T10:00:00.000Z"),
+    now,
   });
+}
+
+test("a quiet watermark with candidates above the floor is informational, not an attention redline", () => {
+  assert.ok(QUIET_WATERMARK_CANDIDATE_FLOOR >= 1);
+  const out = watermarkRun(290, { now: new Date("2026-09-08T10:00:00.000Z") });
 
   assert.equal(out.total_items, 0);
   assert.equal(out.collapse_stage, "watermark_fresh");
   assert.equal(out.selection_funnel.source_candidates, 290);
+  assert.equal(out.status, DIGEST_SHADOW_READY);
+  assert.equal(out.ok, true);
+  assert.equal(out.redlines.find((item) => item.code === "aggregate_count_collapse"), undefined);
+  assert.equal(out.redlines.find((item) => item.code === "selection_stage_collapse"), undefined);
 
-  const aggregate = out.redlines.find((item) => item.code === "aggregate_count_collapse");
-  assert.equal(aggregate.evidence.collapse_stage, "watermark_fresh");
+  const observation = out.observations.find((item) => item.code === "quiet_watermark");
+  assert.ok(observation, "the receipt must still name the stage");
+  assert.equal(observation.severity, "info");
+  assert.equal(observation.stage, "watermark_fresh");
+  assert.equal(observation.evidence.source_candidates, 290);
+  assert.equal(observation.evidence.watermark_fresh, 0);
+});
 
-  const stage = out.redlines.find((item) => item.code === "selection_stage_collapse");
-  assert.ok(stage, "the receipt must name the stage, not only the ratio");
-  assert.equal(stage.evidence.stage, "watermark_fresh");
-  assert.equal(stage.evidence.entering_count, 290);
-  assert.equal(stage.evidence.surviving_count, 0);
+test("an empty source still raises an attention collapse", () => {
+  const out = buildDigestShadowSummary({
+    run: {
+      results: [{
+        sub: "account:ja***",
+        kind: "rollup",
+        selection_funnel: funnel({ source_candidates: 0 }),
+      }],
+    },
+    history: spikeHistory(),
+    now: new Date("2026-09-08T10:00:00.000Z"),
+  });
+
+  assert.equal(out.collapse_stage, "source_candidates");
+  assert.equal(out.status, DIGEST_SHADOW_ATTENTION);
+  assert.ok(out.redlines.find((item) => item.code === "aggregate_count_collapse"));
+  assert.equal(out.observations.find((item) => item.code === "quiet_watermark"), undefined);
+});
+
+test("retained watermark-exhausted days do not raise an attention finding", () => {
+  // Measured 2026-09-08..10: candidates stayed in the 379–437 range, watermark_fresh=0, items=0.
+  const retained = [
+    { day: "2026-09-08", candidates: 437 },
+    { day: "2026-09-09", candidates: 408 },
+    { day: "2026-09-10", candidates: 379 },
+  ];
+  for (const row of retained) {
+    const out = watermarkRun(row.candidates, { now: new Date(`${row.day}T10:00:00.000Z`) });
+    assert.equal(out.status, DIGEST_SHADOW_READY, row.day);
+    assert.equal(out.collapse_stage, "watermark_fresh", row.day);
+    assert.ok(out.selection_funnel.source_candidates > QUIET_WATERMARK_CANDIDATE_FLOOR, row.day);
+    assert.deepEqual(out.redlines.map((item) => item.code), [], row.day);
+    assert.equal(out.observations[0]?.code, "quiet_watermark", row.day);
+  }
+});
+
+test("a one-day backlog does not collapse ordinary weekdays against the trailing baseline", () => {
+  const html = `<ul>${Array.from({ length: 8 }, () => '<li data-digest-item="1">item</li>').join("")}</ul>`
+    + '<a href="https://cityscroll.org/#notice/1">View</a>'
+    + '<a href="https://api.cityscroll.org/unsubscribe?example=1">Unsubscribe</a>';
+  const out = buildDigestShadowSummary({
+    run: {
+      results: [{
+        sub: "account:ja***",
+        new: 8,
+        forecasts: 0,
+        preview: {
+          subject: "CityScroll: 8 new",
+          html,
+          listUnsubscribe: "<https://api.cityscroll.org/unsubscribe?example=1>",
+        },
+        selection_funnel: funnel({
+          source_candidates: 400, delivery_authorized: 400, lens_evaluated: 400,
+          watermark_fresh: 8, content_deduped: 8, owed_drained: 8, items: 8,
+        }),
+      }],
+    },
+    history: spikeHistory(),
+    now: new Date("2026-09-08T10:00:00.000Z"),
+  });
+  assert.equal(out.total_items, 8);
+  assert.equal(out.collapse_stage, null);
+  assert.equal(out.redlines.find((item) => item.code === "aggregate_count_collapse"), undefined);
+  assert.equal(out.status, DIGEST_SHADOW_READY);
 });
 
 test("a healthy run raises neither the aggregate nor the stage redline", () => {

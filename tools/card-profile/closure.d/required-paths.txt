@@ -1753,6 +1753,7 @@ tools/depot_rederive.mjs
 tools/derive_card_profile.mjs
 tools/derived_json_build_boundary.mjs
 tools/determinism_lint.mjs
+tools/digest_shadow_monitor.mjs
 tools/drift_synthesis.mjs
 tools/elder_merge_slot.mjs
 tools/ensure_stable_pages.mjs
