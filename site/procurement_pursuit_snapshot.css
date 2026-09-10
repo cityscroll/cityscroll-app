@@ -93,8 +93,7 @@
 }
 
 .pursuit-match-reasons ul,
-.pursuit-preference-reasons ul,
-.pursuit-cannot-verify-list {
+.pursuit-preference-reasons ul {
   margin: 0;
   padding-left: 18px;
 }
@@ -149,11 +148,5 @@
 .pursuit-sign-in-note {
   margin: 0;
   font-size: 13px;
-  color: var(--muted, #5b6470);
-}
-
-.pursuit-cannot-verify-note {
-  margin: 0 0 6px;
-  font-size: 12px;
   color: var(--muted, #5b6470);
 }

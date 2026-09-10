@@ -3,11 +3,11 @@
  * (procurement-pursuit-decision, Card 3).
  *
  * A compact, provenance-tagged answer to the initial bid/no-bid question --
- * identity, decision facts, fit/context handoff, official action, and an
- * explicit "what CityScroll cannot verify" disclosure -- assembled from
- * records already surfaced elsewhere on procurement detail. This is a view-
- * model composition layer: it never ingests a new source, infers a missing
- * fact, or scores an opportunity.
+ * identity, decision facts, fit/context handoff, and official action --
+ * assembled from records already surfaced elsewhere on procurement detail.
+ * This is a view-model composition layer: it never ingests a new source,
+ * infers a missing fact, or scores an opportunity. If a fact is not in the
+ * published record, the snapshot simply omits a claim about it.
  *
  * Reused, not reinvented:
  *   - solicitationResponseContextReady() (./solicitation_response_context.mjs)
@@ -56,23 +56,6 @@ export const PURSUIT_FIELD_STATUS = Object.freeze({
   NOT_OBSERVED: "not_observed",
   UNAVAILABLE: "unavailable",
 });
-
-/**
- * Fixed, closed disclosure list: CityScroll cannot verify these from public
- * records regardless of how complete a given solicitation's published facts
- * are. This is a constant honest disclaimer, not a per-fixture computed
- * list, so an unknown never reads as a failed requirement (rule 5).
- */
-export const PURSUIT_UNVERIFIABLE_ROWS = Object.freeze([
-  { key: "package_eligibility", label: "Full package eligibility requirements" },
-  { key: "experience_requirements", label: "Experience requirements" },
-  { key: "staffing_requirements", label: "Staffing or team requirements" },
-  { key: "qa_content", label: "Q&A content" },
-  { key: "amendment_documents", label: "Amendment documents" },
-  { key: "issuing_team", label: "Internal issuing team" },
-  { key: "existing_relationship", label: "An existing relationship with the agency" },
-  { key: "team_feasibility", label: "Whether your team can staff this in time" },
-]);
 
 function text(value) {
   const s = String(value ?? "").trim();
@@ -247,7 +230,6 @@ export function buildPursuitSnapshot(row = {}, opts = {}) {
       contextual_page_href: text(opts.contextual_page_href),
     },
     official_action: officialActionSection(atom, opts),
-    cannot_verify: PURSUIT_UNVERIFIABLE_ROWS,
     urls: { cityscroll_url: atom.cityscroll_url, official_url: atom.official_url },
   };
 }
@@ -418,15 +400,6 @@ function officialActionSectionHtml(action) {
   return `<div class="pursuit-fact-group" data-pursuit-section="official-action">${links ? `<p class="pursuit-official-links">${links}</p>` : ""}${signIn}</div>`;
 }
 
-function cannotVerifySectionHtml(rows) {
-  const items = rows.map((row) => `<li>${esc(row.label)}</li>`).join("");
-  return `<div class="pursuit-fact-group" data-pursuit-section="cannot-verify">
-    <p class="pursuit-subhead">What CityScroll cannot verify</p>
-    <p class="pursuit-cannot-verify-note">CityScroll's sources do not carry these -- this is not a finding that they are missing from the actual solicitation package.</p>
-    <ul class="pursuit-cannot-verify-list">${items}</ul>
-  </div>`;
-}
-
 /**
  * Render the pursuit snapshot to a self-contained HTML section. Callers
  * embed this near the top of procurement detail, above the existing
@@ -441,6 +414,5 @@ export function renderPursuitSnapshotHtml(snapshot, { headingId = "pursuit-snaps
     ${decisionFactsSectionHtml(snapshot.decision_facts)}
     ${fitContextSectionHtml(snapshot.fit_context)}
     ${officialActionSectionHtml(snapshot.official_action)}
-    ${cannotVerifySectionHtml(snapshot.cannot_verify)}
   </section>`;
 }

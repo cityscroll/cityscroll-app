@@ -48,9 +48,9 @@ Official action: PASSPort solicitation → `https://passport.cityofnewyork.us/pa
 
 Official action: Official notice → `https://a856-cityrecord.nyc.gov/RequestDetail/REQ-CAMA-1`
 
-Confirms acceptance criterion 3's requirement for Fixture B directly: amount,
-M/WBE, and package eligibility (in the constant "cannot verify" disclosure)
-are explicit unknowns, never absent-looking negatives, and no `$0` appears.
+Confirms acceptance criterion 3's requirement for Fixture B directly: amount
+and M/WBE are explicit unknowns ("No published ..."), never absent-looking
+negatives, and no `$0` appears.
 
 ## Sparse (Fixture D — MTA CBTC solicitation, S48020)
 

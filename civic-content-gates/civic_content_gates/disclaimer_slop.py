@@ -93,6 +93,21 @@ PATTERNS = (
             re.IGNORECASE,
         ),
     ),
+    Pattern(
+        "absence_caveat_shape",
+        "absence-caveat disclaimer",
+        re.compile(
+            r"(?:"
+            r"\bwhat\b.{0,80}\bcannot verify\b|"
+            r"\bcannot verify\b|"
+            r"\bsources do not (?:carry|include)\b|"
+            r"\bdo not carry these\b|"
+            r"\bthis is not a finding that\b|"
+            r"\bnot a finding that they are missing\b"
+            r")",
+            re.IGNORECASE | re.DOTALL,
+        ),
+    ),
 )
 
 # These short forms carry a concrete evidence, timing, or source boundary. They

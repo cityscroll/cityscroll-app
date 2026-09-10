@@ -495,6 +495,66 @@ test("no_disclaimer_slop: repository wrapper blocks provisional destination disc
   }
 });
 
+test("no_disclaimer_slop: flags a cannot-verify absence-caveat list and still passes sourced copy", () => {
+  const dir = mkdtempSync(join(tmpdir(), "ccg-absence-caveat-"));
+  try {
+    writeFileSync(
+      join(dir, "index.html"),
+      `<!doctype html><html><body><main>` +
+        `<p class="pursuit-subhead">What CityScroll cannot verify</p>` +
+        `<p>CityScroll's sources do not carry these -- this is not a finding that they are missing from the actual solicitation package.</p>` +
+        `<ul>` +
+        `<li>Full package eligibility requirements</li>` +
+        `<li>Experience requirements</li>` +
+        `<li>Staffing or team requirements</li>` +
+        `<li>Q&amp;A content</li>` +
+        `<li>Amendment documents</li>` +
+        `<li>Internal issuing team</li>` +
+        `<li>An existing relationship with the agency</li>` +
+        `<li>Whether your team can staff this in time</li>` +
+        `</ul>` +
+        `</main></body></html>\n`,
+    );
+    writeFileSync(
+      join(dir, "copy.mjs"),
+      `export const note = "CityScroll's sources do not include these facts.";\n`,
+    );
+    const blocked = runPython([
+      "-m", "civic_content_gates", "check", "no_disclaimer_slop",
+      "--root", dir, "--no-disclaimer-slop-mode", "block",
+    ]);
+    assert.notEqual(blocked.status, 0, `absence-caveat list must fail closed: ${blocked.stdout}\n${blocked.stderr}`);
+    assert.match(blocked.stdout, /absence-caveat disclaimer/);
+    assert.match(blocked.stdout, /cannot verify/);
+    assert.match(blocked.stdout, /sources do not carry/);
+    assert.match(blocked.stdout, /not a finding that/);
+    assert.match(blocked.stdout, /sources do not include/);
+
+    writeFileSync(
+      join(dir, "index.html"),
+      `<!doctype html><html><body><main>` +
+        `<h2>Pursuit snapshot</h2>` +
+        `<p>Title: Playground reconstruction solicitation</p>` +
+        `<p>Agency: Department of Parks and Recreation</p>` +
+        `<p>Due date: Aug 5</p>` +
+        `<p>Official notice is on the City Record.</p>` +
+        `</main></body></html>\n`,
+    );
+    writeFileSync(
+      join(dir, "copy.mjs"),
+      `export const note = "PASSPort sign-in is required to reach the solicitation package documents.";\n`,
+    );
+    const honest = runPython([
+      "-m", "civic_content_gates", "check", "no_disclaimer_slop",
+      "--root", dir, "--no-disclaimer-slop-mode", "block",
+    ]);
+    assert.equal(honest.status, 0, `sourced copy must still pass: ${honest.stdout}\n${honest.stderr}`);
+    assert.doesNotMatch(honest.stdout, /absence-caveat disclaimer/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("no_disclaimer_slop: CI defaults the rendered census to blocking enforcement", () => {
   const workflow = readFileSync(join(ROOT, ".github", "workflows", "ci.yml"), "utf8");
   const a11yShard = workflow.slice(

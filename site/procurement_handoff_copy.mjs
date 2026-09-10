@@ -2,9 +2,8 @@
  * Honest handoff copy for solicitation fields a vendor cannot reach from
  * public records (procurement-pursuit-decision, card "PPD-07").
  *
- * The pursuit snapshot already carries a fixed disclosure of what CityScroll
- * cannot verify, and already tells a vendor that the solicitation package and
- * the question-and-answer content require signing in to the vendor portal.
+ * The pursuit snapshot already tells a vendor that the solicitation package
+ * and the question-and-answer content require signing in to the vendor portal.
  * This module extends that register from a measured classification instead of
  * a hand-kept list: given the access classification produced by the
  * `access_feasibility` research lane
