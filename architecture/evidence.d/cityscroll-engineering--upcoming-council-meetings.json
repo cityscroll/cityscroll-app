@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/upcoming-council-meetings",
+  "status": "implemented",
+  "fingerprint": "upcoming-council-meetings.v1",
+  "updated_at": "2026-09-10T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "upcoming-council-meetings-projection",
+      "path": "worker/src/lib/upcoming_council_meetings.mjs"
+    },
+    {
+      "id": "pinned-contracts-hearing-fixture",
+      "path": "test/fixtures/legistar/upcoming_contracts_22691.json"
+    },
+    {
+      "id": "upcoming-client-contract",
+      "path": "test/legistar_client.test.mjs"
+    },
+    {
+      "id": "upcoming-outcomes-contract",
+      "path": "test/contract/meeting_outcomes.test.mjs"
+    },
+    {
+      "id": "upcoming-worker-failure-states",
+      "path": "worker/test/legistar.test.mjs"
+    }
+  ]
+}

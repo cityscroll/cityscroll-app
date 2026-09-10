@@ -6,6 +6,10 @@ import {
   applyApiLimits,
   buildMeetingOutcomes,
 } from "../../worker/src/lib/meeting_outcomes.mjs";
+import {
+  assertPublicUpcomingProjection,
+  buildUpcomingCouncilMeetingsView,
+} from "../../worker/src/lib/upcoming_council_meetings.mjs";
 import { normalizeHearing } from "../../worker/src/lib/hearings.mjs";
 import {
   MEETING_ORIGINS,
@@ -177,4 +181,49 @@ test("API caps remain bounded regardless of requested limit", () => {
   assert.equal(limited.offset, 120);
   assert.equal(limited.total, 250);
   assert.equal(limited.rows.length, 100);
+});
+
+// ---------------------------------------------------------------------------
+// Upcoming Council meetings: source-qualified projection without a notice
+// ---------------------------------------------------------------------------
+
+const upcomingFixture = JSON.parse(await readFile(
+  new URL("../fixtures/legistar/upcoming_contracts_22691.json", import.meta.url),
+  "utf8",
+));
+
+test("upcoming projection keeps Events identity for an unmatched Contracts hearing", () => {
+  const pinned = new Date("2026-09-09T12:00:00.000Z");
+  const eventId = String(upcomingFixture.event.EventId);
+  const result = buildUpcomingCouncilMeetingsView({
+    eventRows: [upcomingFixture.event],
+    itemsByEventId: new Map([
+      [eventId, { rows: upcomingFixture.event_items, fetchError: null }],
+    ]),
+    now: pinned,
+    cityRecordByEventId: new Map(),
+    eventsFetch: { ok: true, complete: true, pages: 1 },
+  });
+
+  assert.equal(result.publishable, true);
+  assert.equal(result.view.meetings.length, 1);
+  const meeting = result.view.meetings[0];
+  assert.equal(meeting.meeting_id, `meeting:nyc_legistar_events:${eventId}`);
+  assert.equal(meeting.identity.event_guid, upcomingFixture.event.EventGuid);
+  assert.equal(meeting.date, "2026-09-23");
+  assert.equal(meeting.wall_time, "2026-09-23T10:00:00");
+  assert.equal(meeting.governing_body.name, "Committee on Contracts");
+  assert.match(meeting.venue.address, /250 Broadway/);
+  assert.equal(meeting.url, upcomingFixture.event.EventInSiteURL);
+  assert.ok(meeting.documents.some((doc) => doc.category === "Agenda"));
+  assert.ok(meeting.source_receipt.observed_at);
+  assert.equal(meeting.city_record_notice.matched_in_window, false);
+  assert.match(meeting.agenda.search_text, /M\/WBE Utilization and the Required Disparity Study/);
+  assert.equal(result.view.discovery.horizon_days, 120);
+  assert.equal(result.view.discovery.item_concurrency, 6);
+  assert.equal(result.view.source_health.status, "healthy");
+  assertPublicUpcomingProjection(result.view);
+  const serialized = JSON.stringify(result.view);
+  assert.equal(serialized.includes("token="), false);
+  assert.equal(/webapi\.legistar\.com/i.test(serialized), false);
 });
