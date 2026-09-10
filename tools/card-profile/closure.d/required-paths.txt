@@ -2219,6 +2219,7 @@ worker/src/lib/search_usage.mjs
 worker/src/lib/search_usage_daily.mjs
 worker/src/lib/secret_compare.mjs
 worker/src/lib/session.mjs
+worker/src/lib/solicitation_coverage.mjs
 worker/src/lib/solicitation_procurement_method.mjs
 worker/src/lib/source_acquisition_receipt.mjs
 worker/src/lib/source_records.mjs
@@ -2389,6 +2390,7 @@ worker/test/fixtures/forecast-accuracy/frozen_set.json
 worker/test/fixtures/lifecycle-coherence/build_cases.mjs
 worker/test/fixtures/lifecycle-coherence/procurement_cases.json
 worker/test/fixtures/mirror_redirect_regressions.json
+worker/test/fixtures/money-watch-coverage-current-corpus.json
 worker/test/fixtures/normalize_pairs.json
 worker/test/fixtures/performance_coverage_historical.v1.json
 worker/test/fixtures/performance_query_weighted.json
