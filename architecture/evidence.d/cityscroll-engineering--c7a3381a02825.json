@@ -35,6 +35,10 @@
     },
     {
       "id": "production-watchdog-read",
+      "path": "docs/evidence/desk-health-publication-liveness/production-watchdog-read-2026-09-10T0523.json"
+    },
+    {
+      "id": "production-watchdog-read-history-2026-09-10",
       "path": "docs/evidence/desk-health-publication-liveness/production-watchdog-read-2026-09-10.json"
     },
     {

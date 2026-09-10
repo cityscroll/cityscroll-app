@@ -18,6 +18,8 @@ export const FAILING_STAGES = Object.freeze([
 ]);
 
 const HOUR_MS = 60 * 60 * 1000;
+export const PUBLICATION_WITHIN_OBSERVATION_MS = 2 * HOUR_MS;
+export const CONSECUTIVE_UNATTENDED_CYCLE_MS = 26 * HOUR_MS;
 
 export function loadPublicationCycleContract(root = ROOT) {
   return JSON.parse(readFileSync(join(root, CONTRACT_PATH), "utf8"));
@@ -291,6 +293,111 @@ export function publicationReceiptFromCycle(cycle, extras = {}) {
     isolated: cycle.isolated === true,
     ...extras,
   };
+}
+
+function clockAt(clocks, name) {
+  const at = clocks?.[name]?.at;
+  if (typeof at !== "string" || !at.trim()) return null;
+  const epoch = Date.parse(at);
+  return Number.isFinite(epoch) ? epoch : null;
+}
+
+function hasDestination(value) {
+  if (typeof value === "string") return value.trim().length > 0;
+  if (!value || typeof value !== "object") return false;
+  return Boolean(value.operator_visible || value.artifact);
+}
+
+/**
+ * Independent reader of a retained per-run publication receipt.
+ * Returns every reason the receipt cannot count. Never fills missing fields
+ * from GitHub run metadata.
+ */
+export function publicationReceiptQualificationFindings(receipt) {
+  if (!receipt || receipt.schema !== PUBLICATION_RECEIPT_SCHEMA) {
+    return ["not a cityscroll.desk_publication_receipt.v1 receipt"];
+  }
+  const findings = [];
+  if (receipt.isolated !== false) findings.push("receipt is not a live production cycle");
+  if (receipt.event !== "schedule") findings.push("receipt does not record event=schedule");
+  const runIdentity = receipt.run_identity == null ? "" : String(receipt.run_identity).trim();
+  if (!runIdentity) findings.push("receipt is missing run_identity");
+  if (!hasDestination(receipt.destination)) findings.push("receipt is missing destination");
+  if (receipt.evidence_revision == null || String(receipt.evidence_revision).trim() === "") {
+    findings.push("receipt is missing evidence_revision");
+  }
+  if (receipt.failing_stage !== null) findings.push("receipt failing_stage is not null");
+  const monitor = clockAt(receipt.clocks, "last_monitor_attempt");
+  const observation = clockAt(receipt.clocks, "last_successful_observation");
+  const publication = clockAt(receipt.clocks, "last_successful_desk_publication");
+  if (monitor == null || observation == null || publication == null) {
+    findings.push("receipt clocks are incomplete");
+    return findings;
+  }
+  if (!(monitor <= observation && observation <= publication)) {
+    findings.push("receipt clocks are not ordered last_monitor_attempt <= last_successful_observation <= last_successful_desk_publication");
+  }
+  if (observation === publication) {
+    findings.push("receipt collapses collection and publication to one timestamp");
+  }
+  if (publication - observation > PUBLICATION_WITHIN_OBSERVATION_MS) {
+    findings.push("publication is more than two hours after observation");
+  }
+  return findings;
+}
+
+export function publicationReceiptQualificationFinding(receipt) {
+  return publicationReceiptQualificationFindings(receipt)[0] || null;
+}
+
+export function isQualifyingUnattendedPublicationReceipt(receipt) {
+  return publicationReceiptQualificationFindings(receipt).length === 0;
+}
+
+/**
+ * Trailing streak of qualifying unattended publication receipts, oldest first.
+ * Adjacent cycles must fall within 26 hours; run identities must be unique.
+ */
+export function consecutiveUnattendedPublicationCycles(receipts) {
+  const qualifying = (Array.isArray(receipts) ? receipts : [])
+    .filter(isQualifyingUnattendedPublicationReceipt)
+    .slice()
+    .sort((left, right) => (
+      Date.parse(right.clocks.last_successful_desk_publication.at)
+      - Date.parse(left.clocks.last_successful_desk_publication.at)
+    ));
+  const streak = [];
+  const seen = new Set();
+  for (const receipt of qualifying) {
+    const identity = String(receipt.run_identity);
+    if (seen.has(identity)) continue;
+    if (streak.length) {
+      const newer = Date.parse(streak[streak.length - 1].clocks.last_successful_desk_publication.at);
+      const older = Date.parse(receipt.clocks.last_successful_desk_publication.at);
+      if (newer - older > CONSECUTIVE_UNATTENDED_CYCLE_MS) break;
+    }
+    seen.add(identity);
+    streak.push(receipt);
+  }
+  return streak.slice().reverse();
+}
+
+export function publicationReceiptRetentionGap(retrieved) {
+  const rows = Array.isArray(retrieved) ? retrieved : [];
+  if (!rows.length) {
+    return "No per-run cityscroll.desk_publication_receipt.v1 file was retained for the consecutive scheduled Pages runs.";
+  }
+  const reasons = [];
+  const seen = new Set();
+  for (const receipt of rows) {
+    for (const finding of publicationReceiptQualificationFindings(receipt)) {
+      if (seen.has(finding)) continue;
+      seen.add(finding);
+      reasons.push(finding);
+    }
+  }
+  if (!reasons.length) return null;
+  return `Retained per-run receipts do not satisfy the liveness reader: ${reasons.join("; ")}. The envelope leaves consecutive_unattended_publication_cycles empty rather than synthesizing those fields from GitHub run metadata.`;
 }
 
 export function writePublicationCycleReceipt(path, cycle, extras = {}) {
