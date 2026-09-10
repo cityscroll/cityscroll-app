@@ -503,6 +503,7 @@ site/data/source_contracts.json
 site/data/source_health_public.json
 site/data/staffing_default_hires.json
 site/data/staffing_exams.json
+site/data/upcoming_council_meetings.json
 site/data/zap_outcome_sources/verification_receipts/zap_api_outcomes_2026-07-30.json
 site/data/zap_projects_warehouse_lookup.json
 site/data_health_navigation.mjs
@@ -616,6 +617,7 @@ site/meeting_origin.mjs
 site/meeting_outcomes_static.mjs
 site/meeting_phase_spine.mjs
 site/meeting_process_profile.mjs
+site/meeting_same_proceeding.mjs
 site/meeting_search_producer.mjs
 site/meeting_source_completeness.mjs
 site/meetings_card_interaction.mjs
@@ -2091,6 +2093,7 @@ worker/src/lib/confirm_email.mjs
 worker/src/lib/continuation_replay.mjs
 worker/src/lib/contract_forecast_predictions.mjs
 worker/src/lib/cors.mjs
+worker/src/lib/council_discovery_health.mjs
 worker/src/lib/council_district.mjs
 worker/src/lib/council_matter_watch_activation.mjs
 worker/src/lib/coverage_ledger.mjs

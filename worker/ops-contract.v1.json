@@ -1,6 +1,6 @@
 {
   "contract": "ops-contract.v1",
-  "version": "1.19.0",
+  "version": "1.20.0",
   "generated_at": "2026-08-05T13:55:23.589Z",
   "min_compatible_version": "1.0.0",
   "note": "Machine-readable ops contract for desk panels. No secrets. Not served on public /stats.",
@@ -98,6 +98,64 @@
       "override": "Authenticated POST with action=override-hold, digest_ids, and reason",
       "successful_rerun": "Authenticated READY rerun clears overrides and releases every digest"
     }
+  },
+  "council_discovery": {
+    "schema": "cityscroll.council_discovery_health.v1",
+    "endpoint": "/admin/council-discovery-health",
+    "public_visibility": "backstage-only",
+    "cycle_steps": [
+      {
+        "id": "council-acquisition",
+        "role": "acquisition"
+      },
+      {
+        "id": "shared-meetings",
+        "role": "consumer"
+      },
+      {
+        "id": "route-slices",
+        "role": "consumer"
+      },
+      {
+        "id": "search",
+        "role": "consumer"
+      },
+      {
+        "id": "now",
+        "role": "consumer"
+      },
+      {
+        "id": "alert-replay",
+        "role": "consumer"
+      }
+    ],
+    "metrics": [
+      {
+        "id": "upcoming",
+        "definition": "Eligible Events-feed rows whose publisher EventDate falls inside the documented upcoming horizon of the acquisition clock."
+      },
+      {
+        "id": "standalone",
+        "definition": "Upcoming Events-feed meetings with no exact_date_body_tokens City Record join in this cycle."
+      },
+      {
+        "id": "exactly_joined",
+        "definition": "Upcoming Events-feed meetings with a measured exact_date_body_tokens City Record join. The join is a relation, not a merge."
+      },
+      {
+        "id": "collection_suppressed",
+        "definition": "Upcoming Events-feed meetings hidden from collection lists because an exact City Record join made the notice the representative. Permalinks stay resolvable."
+      },
+      {
+        "id": "truncated",
+        "definition": "Eligible upcoming events whose nested EventItems this run deferred past the documented item-events cap, plus an Events page that did not complete."
+      },
+      {
+        "id": "last_successful_observation",
+        "definition": "Timestamp of the last publishable upcoming Council snapshot. Failed or empty-source acquisitions leave this stamp unchanged."
+      }
+    ],
+    "last_known_good": "A failed or empty-source Council acquisition retains the last publishable snapshot and reports unavailable or stale. It never publishes zero as complete."
   },
   "daylog": {
     "kv_key_pattern": "digest:daylog:YYYY-MM-DD",
@@ -994,6 +1052,14 @@
       ],
       "auth": "ADMIN_KEY",
       "description": "List latest source-health acquisition receipts retained in worker state."
+    },
+    {
+      "path": "/admin/council-discovery-health",
+      "methods": [
+        "GET"
+      ],
+      "auth": "ADMIN_KEY",
+      "description": "Operator Council-discovery population health: upcoming, standalone, exactly-joined, collection-suppressed, truncated, and last-successful-observation. Not served on public /stats."
     },
     {
       "path": "/usage",

@@ -104,7 +104,7 @@
     "pir_eligible_source_type_rows": 0,
     "text_bearing_council_rows": 0,
     "note": "The retained meeting read model is a current/upcoming meeting snapshot. It does not retain 2022–2025 Council transcripts, agency testimony, or Finance Division briefing papers.",
-    "sha256": "92ed975faa26f1805f6d13860cb7a0a4910bac6d73fe319bb58c2d3a34e0f411"
+    "sha256": "2009858ba7fe82ce8565909321745b7074bc839d54e271361ab79a30cae81802"
   },
   "sufficient_for_recurrent_corpus_claim": false,
   "limitation": "Labeled gold cases are fixture controls spanning 2022–2025. They are not a recurrent estimate of all Council material. The retained app meeting corpus currently contributes zero PIR-eligible 2022–2025 source spans."

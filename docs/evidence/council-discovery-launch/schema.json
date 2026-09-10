@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/council-discovery-launch-readback.v1.schema.json",
+  "title": "Council discovery launch production read-back",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "proceeding", "provenance", "paths", "counts"],
+  "properties": {
+    "schema": { "const": "cityscroll.council_discovery_launch_readback.v1" },
+    "title": { "type": "string" },
+    "proceeding": {
+      "type": "object",
+      "required": ["publisher_key", "insite_calendar"],
+      "properties": {
+        "event_day": { "type": "string" },
+        "publisher_key": {
+          "type": "object",
+          "required": ["kind", "event_id"],
+          "properties": {
+            "kind": { "const": "event_id" },
+            "event_id": { "type": "string" },
+            "meeting_id": { "type": "string" }
+          }
+        },
+        "insite_calendar": {
+          "type": "object",
+          "required": ["kind", "meeting_id"],
+          "properties": {
+            "kind": { "const": "cross-reference" },
+            "meeting_id": { "type": "string" },
+            "note": { "type": "string" }
+          }
+        },
+        "pinned_fixture_clock": { "type": "string" }
+      }
+    },
+    "provenance": { "type": "object" },
+    "paths": { "type": "array" },
+    "counts": { "type": "object" },
+    "rolling_release_gate": { "type": "string" }
+  }
+}

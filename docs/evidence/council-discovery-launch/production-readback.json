@@ -1,0 +1,132 @@
+{
+  "schema": "cityscroll.council_discovery_launch_readback.v1",
+  "title": "Council discovery launch production read-back",
+  "proceeding": {
+    "event_day": "2026-09-23",
+    "publisher_key": {
+      "kind": "event_id",
+      "event_id": "22691",
+      "meeting_id": "meeting:nyc_legistar_events:22691"
+    },
+    "insite_calendar": {
+      "kind": "cross-reference",
+      "meeting_id": "1439673",
+      "note": "Measured public InSite calendar identity for the same proceeding. Never an EventId."
+    },
+    "pinned_fixture_clock": "2026-09-09"
+  },
+  "provenance": {
+    "schema": "cityscroll.production_provenance.v1",
+    "evidence_class": "live-production-read",
+    "isolated": false,
+    "observed_at": "2026-09-10T16:04:51.264Z",
+    "observer": {
+      "tool": "tools/council_discovery_launch_readback.mjs",
+      "source_revision": "71df6ffa8a6bc3ef2da14155cf1404355db87ffb"
+    },
+    "methods": [
+      "GET"
+    ],
+    "bases": [
+      "https://cityscroll.org",
+      "https://api.cityscroll.org"
+    ]
+  },
+  "paths": [
+    {
+      "id": "meetings",
+      "url": "https://cityscroll.org/data/shared_meeting_read_model.json",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "Events-feed EventId 22691 present; InSite 1439673 is not treated as EventId",
+      "evidence": {
+        "publisher_event_id": "22691",
+        "insite_calendar_id": "1439673",
+        "identity_distinction": "publisher key is EventId; InSite calendar number is a cross-reference"
+      },
+      "note": null,
+      "route": "https://cityscroll.org/browse/meetings/"
+    },
+    {
+      "id": "search",
+      "url": "https://api.cityscroll.org/search?q=M%2FWBE%20utilization",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "Events-feed EventId 22691 present; InSite 1439673 is not treated as EventId",
+      "evidence": {
+        "publisher_event_id": "22691",
+        "insite_calendar_id": "1439673",
+        "identity_distinction": "publisher key is EventId; InSite calendar number is a cross-reference"
+      },
+      "note": null,
+      "route": "https://cityscroll.org/search/?q=M%2FWBE%20utilization"
+    },
+    {
+      "id": "now",
+      "url": "https://api.cityscroll.org/hearings",
+      "method": "GET",
+      "status": 200,
+      "state": "not-yet-observed",
+      "assertion": "Response did not include the Events-feed publisher key EventId 22691",
+      "evidence": {
+        "missing": [
+          "22691",
+          "Committee on Contracts"
+        ]
+      },
+      "note": "not-yet-observed, never passed.",
+      "route": "https://cityscroll.org/now/"
+    },
+    {
+      "id": "canonical-detail",
+      "url": "https://cityscroll.org/meetings/meeting%3Anyc_legistar_events%3A22691",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "Events-feed EventId 22691 present; InSite 1439673 is not treated as EventId",
+      "evidence": {
+        "publisher_event_id": "22691",
+        "insite_calendar_id": "1439673",
+        "identity_distinction": "publisher key is EventId; InSite calendar number is a cross-reference"
+      },
+      "note": null
+    },
+    {
+      "id": "ics",
+      "url": "https://api.cityscroll.org/meeting.ics?id=meeting%3Anyc_legistar_events%3A22691",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "Events-feed EventId 22691 present; InSite 1439673 is not treated as EventId",
+      "evidence": {
+        "publisher_event_id": "22691",
+        "insite_calendar_id": "1439673",
+        "identity_distinction": "publisher key is EventId; InSite calendar number is a cross-reference"
+      },
+      "note": null
+    },
+    {
+      "id": "watch-preview",
+      "url": "https://cityscroll.org/following?lens=meetings&filter=%7B%22keywords%22%3A%5B%22M%2FWBE%22%5D%7D",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "Events-feed EventId 22691 present; InSite 1439673 is not treated as EventId",
+      "evidence": {
+        "publisher_event_id": "22691",
+        "insite_calendar_id": "1439673",
+        "identity_distinction": "publisher key is EventId; InSite calendar number is a cross-reference"
+      },
+      "note": null
+    }
+  ],
+  "counts": {
+    "passed": 5,
+    "not-yet-observed": 1,
+    "failed": 0,
+    "total": 6
+  },
+  "rolling_release_gate": "Release gates assert eligible-population properties and freshness bounds. This dated read-back is evidence, not a permanent named-event gate."
+}

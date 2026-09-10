@@ -416,6 +416,7 @@
 /site/data/source_health_public.json
 /site/data/staffing_default_hires.json
 /site/data/staffing_exams.json
+/site/data/upcoming_council_meetings.json
 /site/data/zap_outcome_sources/verification_receipts/zap_api_outcomes_2026-07-30.json
 /site/data/zap_projects_warehouse_lookup.json
 /site/data_health_navigation.mjs

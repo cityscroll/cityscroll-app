@@ -8,6 +8,7 @@ import {
   buildScheduledRefreshPlan,
   discoverFirstClassArtifactPaths,
   discoverFirstClassRoutes,
+  orderFirstClassArtifacts,
   productionFreshnessFindings,
   runRefreshCommands,
   validateFirstClassRefreshContracts,
@@ -98,6 +99,19 @@ test("scheduled plan groups by cadence and orders acquisition before owning buil
     assert.deepEqual(group.stages.map((stage) => stage.kind), ["acquisition", "owning-builder", "dependent-materializer"]);
     assert.deepEqual(group.stages.map((stage) => stage.order), [1, 2, 3]);
   }
+});
+
+test("shared meetings wait for the upcoming Council snapshot in the same cadence group", () => {
+  const registry = canonical();
+  const errors = validateFirstClassRefreshContracts(registry, { root: ROOT });
+  assert.deepEqual(errors, []);
+  const ordered = orderFirstClassArtifacts(registry.first_class_artifacts);
+  const upcoming = ordered.findIndex((row) => row.id === "upcoming-council-meetings");
+  const shared = ordered.findIndex((row) => row.id === "shared-meetings");
+  assert.ok(upcoming >= 0 && shared > upcoming);
+  const daily = buildScheduledRefreshPlan(registry).groups.find((group) => group.cadence_hours === 24);
+  assert.ok(daily.artifacts.indexOf("site/data/upcoming_council_meetings.json")
+    < daily.artifacts.indexOf("site/data/shared_meeting_read_model.json"));
 });
 
 test("refresh execution completes acquisitions before rebuilding affected artifacts", () => {

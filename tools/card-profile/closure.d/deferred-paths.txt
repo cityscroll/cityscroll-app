@@ -194,7 +194,6 @@ site/data/ulurp_recommendation_sources/verification_receipts/ulurp_recommendatio
 site/data/ulurp_recommendation_sources/verification_receipts/ulurp_recommendations_2026-08-11.json
 site/data/ulurp_recommendation_sources/verification_receipts/ulurp_recommendations_source_records_2026-08-12.json
 site/data/ulurp_recommendations_lookup.json
-site/data/upcoming_council_meetings.json
 site/data/watch_templates.json
 site/data/zap_bbl_warehouse_lookup.json
 site/data/zap_outcome_sources/verification_receipts/zap_hearing_logistics_2026-08-04.json

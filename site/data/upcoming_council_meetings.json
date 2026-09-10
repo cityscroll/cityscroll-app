@@ -29,7 +29,13 @@
     "status": "healthy",
     "basis": "authenticated-events-acquisition",
     "observed_at": "2026-09-09T12:00:00.000Z",
-    "events_observed": 1
+    "events_observed": 1,
+    "last_successful_observation": "2026-09-09T12:00:00.000Z",
+    "upcoming": 1,
+    "standalone": 1,
+    "exactly_joined": 0,
+    "collection_suppressed": 0,
+    "truncated": 0
   },
   "counts": {
     "eligible_events": 1,
@@ -39,7 +45,9 @@
     "events_no_published_items": 0,
     "events_items_deferred": 0,
     "events_items_unavailable": 0,
-    "events_items_truncated": 0
+    "events_items_truncated": 0,
+    "standalone": 1,
+    "exactly_joined": 0
   },
   "meetings": [
     {

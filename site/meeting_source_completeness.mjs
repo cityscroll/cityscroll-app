@@ -273,7 +273,7 @@ const legistar = [
     materialized_as: "meeting_id meeting:nyc_legistar_events:<EventId>, source_keys event_id, and council_event.event_id",
     document_use: "source-qualified meeting identity; Council outcome link remains after an exact City Record join",
     search_use: "canonical meeting_id and search document object_ref",
-    alert_use: "not contributed to meeting alerts",
+    alert_use: "meeting identity and delivery deduplication for Council-native watches",
     disposition: "materialized_support",
   }),
   ...rows(["EventBodyName", "EventTitle"], {
@@ -282,7 +282,7 @@ const legistar = [
     materialized_as: "council_event.body_name and council_event.title",
     document_use: "Council meeting heading and institution line on the shared meeting document",
     search_use: "search_text and result title from the publisher body name",
-    alert_use: "not contributed to meeting alerts",
+    alert_use: "keyword matching from the publisher body name",
     disposition: "rendered",
   }),
   ...rows(["EventDate", "EventTime"], {
@@ -291,7 +291,7 @@ const legistar = [
     materialized_as: "council_event.start_time and council_event.event_date",
     document_use: "When line on the shared meeting document as New York wall time",
     search_use: "date ordering and windowing; not free-text",
-    alert_use: "not contributed to meeting alerts in this publication; calendar/watch is a later surface",
+    alert_use: "upcoming-event window and calendar payload for Council-native watches",
     disposition: "rendered",
   }),
   ...rows(["EventInSiteURL", "EventAgendaFile", "EventMinutesFile"], {

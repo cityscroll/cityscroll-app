@@ -68,6 +68,9 @@ import {
   renderPinFamilyVerifyPage,
 } from "./lib/pin_family_verify.mjs";
 import { buildOpsContract } from "./lib/ops_contract.mjs";
+import { HEARINGS_KV_KEY } from "./hearings.mjs";
+import { UPCOMING_COUNCIL_MEETINGS_KV_KEY } from "./lib/upcoming_council_meetings.mjs";
+import { councilDiscoveryHealth } from "./lib/council_discovery_health.mjs";
 import boardResolutionReviewQueue from "./data/community_board_resolution_review_queue.json" with { type: "json" };
 import { PerformanceQueryError } from "./lib/performance_query.mjs";
 import {
@@ -2146,4 +2149,37 @@ export async function handleAdminSourceHealthReceipts(req, env) {
     observed_at: new Date().toISOString(),
     receipts,
   }, 200);
+}
+
+function parseKvJson(raw) {
+  if (!raw) return null;
+  try {
+    return typeof raw === "string" ? JSON.parse(raw) : raw;
+  } catch {
+    return null;
+  }
+}
+
+/** GET /admin/council-discovery-health — operator population health, never public /stats. */
+export async function handleAdminCouncilDiscoveryHealth(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "GET") return json({ error: "method not allowed" }, 405);
+  let upcoming = null;
+  let shared = null;
+  try {
+    upcoming = parseKvJson(env?.ALERT_STATE ? await env.ALERT_STATE.get(UPCOMING_COUNCIL_MEETINGS_KV_KEY) : null);
+  } catch {
+    upcoming = null;
+  }
+  try {
+    shared = parseKvJson(env?.ALERT_STATE ? await env.ALERT_STATE.get(HEARINGS_KV_KEY) : null);
+  } catch {
+    shared = null;
+  }
+  return json(councilDiscoveryHealth({
+    upcomingView: upcoming,
+    sharedModel: shared?.read_model || shared,
+    now: new Date(),
+  }), 200);
 }

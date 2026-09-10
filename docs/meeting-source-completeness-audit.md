@@ -22,8 +22,12 @@ A later City Record notice that satisfies the existing exact date-and-body join
 does not overwrite either meeting identifier. Collections show one
 representative and prefer the City Record object when that join exists; both
 permalinks stay resolvable. Date-only, title-only, ambiguous, or failed
-candidates remain separate. Search, alert, calendar, and resident-surface
-publication of unmatched Legistar meetings remain later work.
+candidates remain separate. Unmatched Legistar meetings publish on Meetings,
+Search, Now, canonical detail, calendar, and watches. Operator health reports
+upcoming, standalone, exactly-joined, collection-suppressed, truncated, and
+last-successful-observation values. Scheduled acquisition precedes every shared
+meeting consumer so a newly observed eligible event reaches those surfaces in
+the same publication cycle.
 
 ## Source-to-surface summary
 
@@ -37,7 +41,7 @@ community-board source-record fields, and 37 Legistar fields.
 | City Record printout or rule-detail body | Bounded derived description, place, and participation fields; raw attachment text is not republished | About this meeting only when richer notice paragraphs are absent | Bounded materialized description | Derived place and access context |
 | Community-board publisher identity, board identity, and receipt | Source-qualified meeting identity, board ref, source record, and freshness envelope | Canonical board and official-source links; source checked time | Typed board scope and result identity | Typed place scope and freshness |
 | Community-board start/end, venue, description, committee, participation, and exact documents | `event_date`, `event_end`, `venue`, `description`, `committee`, `participation`, `meeting_documents` | When/Ends, Where, About, Institution, participation, agenda, minutes | Materialized `search_text` | Upcoming window, keywords, place, and access actions |
-| Legistar Event and EventItem fields | Joined `council_event`, `agenda_items`, matters, actions, and vote spines | Council outcome heading, date, location, agenda, matter, and action records | Intentionally separate from shared meeting search | Intentionally separate from meeting alerts |
+| Legistar Event and EventItem fields | Joined `council_event`, `agenda_items`, matters, actions, and vote spines plus the source-qualified `meeting:nyc_legistar_events:<EventId>` identity | Council outcome heading, date, location, agenda, matter, and action records; unmatched Events still render as Meetings documents | Shared meeting search from publisher body, venue, and agenda text | Identity, upcoming window, and keywords for Council-native watches |
 | Legistar vote and attachment fields | Roll-call counts, named votes, typed `votes_on` edges, and canonical documents | Joined Council roll call and attachment links | Intentionally separate from shared meeting search | Intentionally separate from meeting alerts |
 
 ## Gaps closed by the audit
