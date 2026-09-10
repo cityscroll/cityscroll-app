@@ -556,6 +556,7 @@
 /site/matter_publication_generation.mjs
 /site/measurement_review_source.mjs
 /site/meeting_capability_projection.mjs
+/site/meeting_delivery_identity.mjs
 /site/meeting_document.mjs
 /site/meeting_matter_stamps.mjs
 /site/meeting_object_contract.mjs

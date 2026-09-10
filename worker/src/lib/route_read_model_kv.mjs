@@ -183,7 +183,10 @@ export async function loadMeetingRows(env, { todayISO, endISO, communityBoard } 
 }
 
 export async function loadMeetingRecord(env, meetingId) {
-  if (missingBinding(env)) return MEETING_ICS_FLOOR.meeting_id === meetingId ? MEETING_ICS_FLOOR : null;
+  if (missingBinding(env)) {
+    if (MEETING_ICS_FLOOR.meeting_id === meetingId) return MEETING_ICS_FLOOR;
+    return MEETING_FLOOR_ROWS.find((row) => row?.meeting_id === meetingId) || null;
+  }
   const manifest = await manifestFor(env.ALERT_STATE, "meetings");
   const key = manifest.id_to_slice?.[meetingId];
   if (!key) return null;

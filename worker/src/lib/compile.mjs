@@ -49,6 +49,7 @@ import communityBoardDistricts from "../data/community_board_districts.json" wit
 import landDefaultFloor from "../../../site/data/land_default_ulurp.json" with { type: "json" };
 import { zoningHearingRowsForScope } from "../../../site/zoning_hearing_calendar.mjs";
 import { projectCalendarOccurrencesForRecord } from "../../../site/project_calendar.mjs";
+import { collapseMeetingDeliveryRows } from "../../../site/meeting_delivery_identity.mjs";
 export { vendorStem };
 
 const EMPTY_PROCUREMENT_DIGEST = Object.freeze({ rows: Object.freeze([]) });
@@ -95,7 +96,29 @@ function localFloorMeetingRows(todayISO) {
   const base = Date.parse(`${todayISO}T19:00:00-04:00`);
   if (!Number.isFinite(base)) return MEETING_FLOOR_ROWS;
   const eventDate = new Date(base + 2 * 86400000).toISOString();
-  return MEETING_FLOOR_ROWS.map((row) => ({ ...row, event_date: eventDate }));
+  return MEETING_FLOOR_ROWS.map((row) => (
+    row.source_system === "nyc_legistar_events" ? row : { ...row, event_date: eventDate }
+  ));
+}
+
+function meetingRowInWindow(row, todayISO, end) {
+  if (!row?.meeting_id || !row.event_date) return false;
+  const day = String(row.event_date).slice(0, 10);
+  if (day <= todayISO) return false;
+  if (end && day > end) return false;
+  return true;
+}
+
+function meetingRowMatchesWatch(row, filter, keywords) {
+  if (filter?.agency && String(row.agency || row.agency_name || "") !== String(filter.agency)) return false;
+  if (keywords.length && !keywords.every((keyword) => String(row.search_text || "").toLowerCase().includes(keyword))) {
+    return false;
+  }
+  if (!filter?.borough && !filter?.neighborhood && !filter?.communityDistrict
+    && !filter?.councilDistrict && !filter?.locationScope && !filter?.place_role) {
+    return true;
+  }
+  return hearingMatchesLocation(row, filter);
 }
 
 function materializedMeetingRows(filter, todayISO, dateWindow, sourceRows = MEETING_FLOOR_ROWS) {
@@ -103,16 +126,19 @@ function materializedMeetingRows(filter, todayISO, dateWindow, sourceRows = MEET
   const keywords = (Array.isArray(filter?.keywords) ? filter.keywords : [])
     .map((value) => String(value || "").trim().toLowerCase()).filter(Boolean);
   const rows = sourceRows === MEETING_FLOOR_ROWS ? localFloorMeetingRows(todayISO) : sourceRows;
-  return rows
-    .filter((row) => row?.meeting_id && row.event_date && String(row.event_date).slice(0, 10) > todayISO)
-    .filter((row) => !end || String(row.event_date).slice(0, 10) <= end)
-    .filter((row) => !filter?.agency || String(row.agency || row.agency_name || "") === String(filter.agency))
-    .filter((row) => !keywords.length || keywords.every((keyword) => String(row.search_text || "").toLowerCase().includes(keyword)))
-    .filter((row) => !filter?.borough && !filter?.neighborhood && !filter?.communityDistrict
-      && !filter?.councilDistrict && !filter?.locationScope && !filter?.place_role
-      ? true
-      : hearingMatchesLocation(row, filter))
-    .map((row) => ({ ...row, request_id: row.meeting_id, start_date: row.source_receipt?.observed_at || row.event_date }));
+  const dated = rows.filter((row) => meetingRowInWindow(row, todayISO, end));
+  const matchedIds = new Set(dated
+    .filter((row) => meetingRowMatchesWatch(row, filter, keywords))
+    .map((row) => row.meeting_id)
+    .filter(Boolean));
+  const clustered = collapseMeetingDeliveryRows(dated);
+  return clustered
+    .filter((row) => (row.delivery_aliases || []).some((id) => matchedIds.has(id)) || matchedIds.has(row.meeting_id))
+    .map((row) => ({
+      ...row,
+      request_id: row.meeting_id,
+      start_date: row.source_receipt?.observed_at || row.event_date,
+    }));
 }
 
 // N months after an ISO date, as an ISO date — pure function of todayISO (not Date.now()),

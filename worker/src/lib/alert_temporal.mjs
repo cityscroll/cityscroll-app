@@ -1,6 +1,7 @@
 // Digest temporal reconciliation.
 //
 import { reconcileRulemakingOutcomeRows } from "../../../site/civic_outcome_transition.mjs";
+import { reconcileMeetingDelivery } from "../../../site/meeting_delivery_identity.mjs";
 
 // A source record has several clocks. Event time says when the civic action happens;
 // publication time says when the publisher asserted it; recorded time says when this
@@ -96,6 +97,9 @@ export function seenIdsForDeliveredRows({
 }
 
 export function reconcileTemporalCandidates({ lens, rows = [], seen = new Set(), rulesView = null, idField = "request_id" } = {}) {
+  if (lens === "meetings" && idField === "meeting_id") {
+    return reconcileMeetingDelivery({ rows, seen });
+  }
   if (lens !== "rules") {
     const fresh = rows.filter((row) => row?.[idField] && !seen.has(row[idField]));
     return {

@@ -82,7 +82,7 @@ function sourceValue(input) {
 }
 
 function objectRefForRecord(record = {}) {
-  return text(record.object_ref || record.subject_ref || record.meeting_id
+  return text(record.object_ref || record.delivery_key || record.subject_ref || record.meeting_id
     || record.procurement_id || record.project_id || record.request_id || record.record_id
     || (record.exam_number ? `exam:${record.exam_number}` : null));
 }

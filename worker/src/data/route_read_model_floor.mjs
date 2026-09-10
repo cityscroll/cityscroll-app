@@ -100,6 +100,21 @@ export const MEETING_FLOOR_ROWS = Object.freeze([
     agency: null,
     source_url: "https://example.test/meeting/landmarks-2",
   }),
+  Object.freeze({
+    meeting_id: "meeting:nyc_legistar_events:22691",
+    source_system: "nyc_legistar_events",
+    event_id: "22691",
+    title: "Committee on Contracts",
+    search_text: "Committee on Contracts Oversight - M/WBE Utilization and the Required Disparity Study. T2026-2485 minority- and women-owned business participation 250 Broadway - 8th Floor - Hearing Room 2",
+    event_date: "2026-09-23T10:00:00",
+    venue: { address: "250 Broadway - 8th Floor - Hearing Room 2" },
+    committee: { name: "Committee on Contracts" },
+    agency: null,
+    request_id: null,
+    collection_visibility: "visible",
+    same_proceeding: null,
+    source_url: "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22691&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+  }),
 ]);
 
 export const MEETING_ICS_FLOOR = Object.freeze({

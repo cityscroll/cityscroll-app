@@ -608,6 +608,7 @@ site/matter_coverage_recovery.mjs
 site/matter_phase_spine.mjs
 site/matter_publication_generation.mjs
 site/meeting_capability_projection.mjs
+site/meeting_delivery_identity.mjs
 site/meeting_document.mjs
 site/meeting_matter_stamps.mjs
 site/meeting_object_contract.mjs
