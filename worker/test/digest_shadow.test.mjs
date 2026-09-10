@@ -597,6 +597,7 @@ test("Worker cron, D1 migration, and independent scheduled wake monitor are wire
   const ontologyMigration = readFileSync(new URL("../migrations/0020_ontology_delta_shadow.sql", import.meta.url), "utf8");
   const workflow = readFileSync(new URL("../../.github/workflows/digest-shadow-monitor.yml", import.meta.url), "utf8");
   const runner = readFileSync(new URL("../../tools/external_schedule_runner.mjs", import.meta.url), "utf8");
+  const monitor = readFileSync(new URL("../../tools/digest_shadow_monitor.mjs", import.meta.url), "utf8");
   assert.match(wrangler, /crons\s*=\s*\[\s*"0 8 \* \* \*",\s*"0 10 \* \* \*",\s*"0 13 \* \* \*",?\s*\]/);
   assert.match(migration, /CREATE TABLE IF NOT EXISTS digest_shadow_runs/);
   assert.match(migration, /CREATE TABLE IF NOT EXISTS digest_shadow_previews/);
@@ -606,7 +607,8 @@ test("Worker cron, D1 migration, and independent scheduled wake monitor are wire
   const schedules = readFileSync(new URL("../../tools/external_schedule_jobs.json", import.meta.url), "utf8");
   assert.match(schedules, /"id": "digest-shadow-monitor"/);
   assert.match(schedules, /"10 13 \* \* \*"/);
-  assert.match(runner, /degraded_receipt/);
+  assert.match(runner, /runDigestShadowJob/);
+  assert.match(monitor, /degraded_receipt/);
   assert.match(holdMigration, /CREATE TABLE IF NOT EXISTS digest_shadow_hold_overrides/);
   assert.match(schedules, /"10 10 \* \* \*"/);
   assert.doesNotMatch(workflow, /schedule:|issues:\s*write|issues\.create/);

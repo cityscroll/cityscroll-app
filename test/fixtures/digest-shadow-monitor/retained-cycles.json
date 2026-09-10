@@ -1,0 +1,188 @@
+{
+  "schema": "cityscroll.digest_shadow_monitor_retained_cycles.v1",
+  "note": "Sanitized rehearsal fields from the 2026-09-06..10 scheduled-monitor receipts. Ontology receipts, preview HTML, and recipient fields are omitted.",
+  "cycles": [
+    {
+      "run_key": "2026-09-06T10-10",
+      "observed_at": "2026-09-06T10:10:00.000Z",
+      "http_status": 401,
+      "degraded_reason": "admin-credential-rejected",
+      "summary": {}
+    },
+    {
+      "run_key": "2026-09-06T13-10",
+      "observed_at": "2026-09-06T13:10:00.000Z",
+      "http_status": 401,
+      "degraded_reason": "admin-credential-rejected",
+      "summary": {}
+    },
+    {
+      "run_key": "2026-09-07T10-10",
+      "observed_at": "2026-09-07T10:10:00.000Z",
+      "http_status": 503,
+      "summary": {
+        "run_day": "2026-09-07",
+        "ran_at": "2026-09-07T10:00:17.477Z",
+        "status": "NEEDS_ATTENTION",
+        "total_items": 234,
+        "collapse_stage": null,
+        "selection_funnel": {
+          "source_candidates": 580,
+          "delivery_authorized": 538,
+          "lens_evaluated": 538,
+          "watermark_fresh": 172,
+          "content_deduped": 159,
+          "owed_drained": 234,
+          "items": 234
+        }
+      }
+    },
+    {
+      "run_key": "2026-09-07T13-10",
+      "observed_at": "2026-09-07T13:10:00.000Z",
+      "http_status": 503,
+      "summary": {
+        "run_day": "2026-09-07",
+        "ran_at": "2026-09-07T10:00:17.477Z",
+        "status": "NEEDS_ATTENTION",
+        "total_items": 234,
+        "collapse_stage": null,
+        "selection_funnel": {
+          "source_candidates": 580,
+          "delivery_authorized": 538,
+          "lens_evaluated": 538,
+          "watermark_fresh": 172,
+          "content_deduped": 159,
+          "owed_drained": 234,
+          "items": 234
+        }
+      }
+    },
+    {
+      "run_key": "2026-09-08T10-10",
+      "observed_at": "2026-09-08T10:10:53.282Z",
+      "http_status": 503,
+      "summary": {
+        "run_day": "2026-09-08",
+        "ran_at": "2026-09-08T10:01:03.664Z",
+        "status": "NEEDS_ATTENTION",
+        "total_items": 0,
+        "collapse_stage": "watermark_fresh",
+        "selection_funnel": {
+          "source_candidates": 437,
+          "delivery_authorized": 437,
+          "lens_evaluated": 437,
+          "watermark_fresh": 0,
+          "content_deduped": 0,
+          "owed_drained": 0,
+          "items": 0
+        }
+      }
+    },
+    {
+      "run_key": "2026-09-08T10-11",
+      "observed_at": "2026-09-08T10:11:00.000Z",
+      "http_status": 503,
+      "summary": {
+        "run_day": "2026-09-08",
+        "ran_at": "2026-09-08T10:01:03.664Z",
+        "status": "NEEDS_ATTENTION",
+        "total_items": 0,
+        "collapse_stage": "watermark_fresh",
+        "selection_funnel": {
+          "source_candidates": 437,
+          "delivery_authorized": 437,
+          "lens_evaluated": 437,
+          "watermark_fresh": 0,
+          "content_deduped": 0,
+          "owed_drained": 0,
+          "items": 0
+        }
+      }
+    },
+    {
+      "run_key": "2026-09-08T13-10",
+      "observed_at": "2026-09-08T13:10:00.000Z",
+      "http_status": 503,
+      "summary": {
+        "run_day": "2026-09-08",
+        "ran_at": "2026-09-08T10:01:03.664Z",
+        "status": "NEEDS_ATTENTION",
+        "total_items": 0,
+        "collapse_stage": "watermark_fresh",
+        "selection_funnel": {
+          "source_candidates": 437,
+          "delivery_authorized": 437,
+          "lens_evaluated": 437,
+          "watermark_fresh": 0,
+          "content_deduped": 0,
+          "owed_drained": 0,
+          "items": 0
+        }
+      }
+    },
+    {
+      "run_key": "2026-09-09T10-10",
+      "observed_at": "2026-09-09T10:10:00.000Z",
+      "http_status": 503,
+      "summary": {
+        "run_day": "2026-09-09",
+        "ran_at": "2026-09-09T10:00:38.602Z",
+        "status": "NEEDS_ATTENTION",
+        "total_items": 0,
+        "collapse_stage": "watermark_fresh",
+        "selection_funnel": {
+          "source_candidates": 408,
+          "delivery_authorized": 408,
+          "lens_evaluated": 408,
+          "watermark_fresh": 0,
+          "content_deduped": 0,
+          "owed_drained": 0,
+          "items": 0
+        }
+      }
+    },
+    {
+      "run_key": "2026-09-09T13-10",
+      "observed_at": "2026-09-09T13:10:00.000Z",
+      "http_status": 503,
+      "summary": {
+        "run_day": "2026-09-09",
+        "ran_at": "2026-09-09T10:00:38.602Z",
+        "status": "NEEDS_ATTENTION",
+        "total_items": 0,
+        "collapse_stage": "watermark_fresh",
+        "selection_funnel": {
+          "source_candidates": 408,
+          "delivery_authorized": 408,
+          "lens_evaluated": 408,
+          "watermark_fresh": 0,
+          "content_deduped": 0,
+          "owed_drained": 0,
+          "items": 0
+        }
+      }
+    },
+    {
+      "run_key": "2026-09-10T10-10",
+      "observed_at": "2026-09-10T10:10:00.000Z",
+      "http_status": 503,
+      "summary": {
+        "run_day": "2026-09-10",
+        "ran_at": "2026-09-10T10:00:31.209Z",
+        "status": "NEEDS_ATTENTION",
+        "total_items": 0,
+        "collapse_stage": "watermark_fresh",
+        "selection_funnel": {
+          "source_candidates": 379,
+          "delivery_authorized": 379,
+          "lens_evaluated": 379,
+          "watermark_fresh": 0,
+          "content_deduped": 0,
+          "owed_drained": 0,
+          "items": 0
+        }
+      }
+    }
+  ]
+}

@@ -20,6 +20,7 @@ import {
   persistScheduleResult,
   replayOutbox,
 } from "./external_schedule_outbox.mjs";
+import { runDigestShadowJob } from "./digest_shadow_monitor.mjs";
 import {
   CREDENTIAL_FAILURES,
   credentialFailureLine,
@@ -315,121 +316,6 @@ function sanitize(value) {
   return value.replace(/([?&](?:token|s)=)[^&\s]+/gi, "$1[redacted]").replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, "[redacted-email]");
 }
 
-async function runDigestShadow(job, context) {
-  const url = process.env.CITYSCROLL_DIGEST_SHADOW_URL || "https://api.cityscroll.org/admin/digest-shadow";
-  const fetchImpl = context.fetchImpl || globalThis.fetch;
-  // The scheduler runs under a launch agent with no login shell, so the admin
-  // credential usually arrives as a mode-0600 file rather than an inherited
-  // export. Resolving it the same way every other scheduler call does keeps an
-  // unauthenticated probe from reporting the upstream service as unavailable.
-  const key = adminKey();
-  if (!key) {
-    const result = {
-      observed_at: context.now.toISOString(),
-      status: "degraded",
-      http_status: null,
-      degraded_reason: "admin-credential-missing",
-      summary: {},
-      body: "The digest shadow probe has no admin credential, so the rehearsal was not contacted. This is a scheduler configuration fault, not an upstream failure.",
-    };
-    return { result, issue: issueIntent(job, context.runKey, result, "open", { title: "Digest shadow probe has no admin credential" }) };
-  }
-  const response = await fetchImpl(url, { headers: { Authorization: `Bearer ${key}` } });
-  let report = {};
-  let parseFailure = null;
-  try { report = await response.json(); } catch (error) { parseFailure = String(error?.message || error); report = {}; }
-  const summary = report.summary || (report.status ? report : {});
-  const today = context.now.toISOString().slice(0, 10);
-  const observed = summary.status || null;
-  const healthy = response.ok && summary.run_day === today && observed === DIGEST_SHADOW_READY_STATUS;
-  const upstream = observed === DIGEST_SHADOW_DEGRADED_UPSTREAM_STATUS && summary.run_day === today;
-  const redlines = Array.isArray(summary.redlines) ? summary.redlines : [];
-  const incidents = Array.isArray(summary.upstream_incidents) ? summary.upstream_incidents : [];
-  // A run that never produced a summary used to be reported as the bare word UNAVAILABLE, which
-  // says only that the probe learned nothing. The route already states why in its own response;
-  // that reason is carried through instead of being dropped on the floor.
-  const unreachable = digestShadowUnreachableReason({ response, report, summary, parseFailure, today });
-  const degradedReason = healthy
-    ? null
-    : upstream
-      ? "upstream-source-unavailable"
-      : unreachable
-        ? unreachable.reason
-        : response.status === 401 || response.status === 403
-          ? "admin-credential-rejected"
-          : "rehearsal-not-ready";
-  const result = {
-    observed_at: context.now.toISOString(),
-    status: healthy ? "healthy" : "degraded",
-    http_status: response.status,
-    degraded_reason: degradedReason,
-    // Whether the finding is about the digest we build or about a source that did not answer.
-    // The two need different repairs and only one of them is ours to make.
-    fault_domain: healthy ? null : upstream ? "upstream_source" : unreachable ? "rehearsal_reachability" : "digest_build",
-    summary: sanitize(summary),
-    body: digestShadowIssueBody({ healthy, upstream, unreachable, observed, redlines, incidents, report }),
-  };
-  // Two findings, kept apart on purpose, because they have different owners. One is about the
-  // digest this monitor exists to judge; the other is about a source it reads. A run that cannot
-  // reach the rehearsal at all makes no claim about the source either way.
-  const digestFinding = {
-    ...result,
-    body: upstream
-      ? "The digest shadow rehearsal found no fault in the digest. This finding is closed; the source that did not answer is reported separately."
-      : result.body,
-  };
-  const intents = [{
-    result: digestFinding,
-    issue: issueIntent(job, context.runKey, digestFinding, healthy || upstream ? "close" : "open"),
-  }];
-  if (upstream) {
-    intents.push({
-      result,
-      issue: issueIntent(job, context.runKey, result, "open", { title: DIGEST_SHADOW_UPSTREAM_ISSUE_TITLE }),
-    });
-  } else if (!unreachable) {
-    const clearedSource = {
-      ...result,
-      body: "Every source the digest shadow rehearsal reads answered on this run.",
-    };
-    intents.push({
-      result: clearedSource,
-      issue: issueIntent(job, context.runKey, clearedSource, "close", { title: DIGEST_SHADOW_UPSTREAM_ISSUE_TITLE }),
-    });
-  }
-  return { result, intents };
-}
-
-const DIGEST_SHADOW_READY_STATUS = "READY";
-const DIGEST_SHADOW_DEGRADED_UPSTREAM_STATUS = "DEGRADED_UPSTREAM";
-const DIGEST_SHADOW_UPSTREAM_ISSUE_TITLE = "Digest shadow source is unavailable";
-
-/**
- * Why the probe holds no rehearsal to judge. Reachability failures are a class of their own:
- * nothing is known about the digest, so nothing may be said about it.
- */
-function digestShadowUnreachableReason({ response, report, summary, parseFailure, today }) {
-  if (parseFailure) return { reason: "rehearsal-response-unreadable", detail: `the response body did not parse: ${parseFailure}` };
-  if (report?.error === "not-run") return { reason: "rehearsal-not-run", detail: `no rehearsal is stored for ${today}` };
-  if (report?.error === "no-store") return { reason: "rehearsal-store-unavailable", detail: "the rehearsal store was not reachable" };
-  if (report?.error === "shadow-read-failed") return { reason: "rehearsal-read-failed", detail: `the stored rehearsal could not be read: ${report.detail || "no detail given"}` };
-  if (report?.error) return { reason: "rehearsal-error", detail: `the rehearsal route answered ${JSON.stringify(report.error)}` };
-  if (!summary?.status) return { reason: "rehearsal-summary-absent", detail: `HTTP ${response.status} carried no rehearsal summary` };
-  if (summary.run_day !== today) return { reason: "rehearsal-stale", detail: `the newest stored rehearsal is for ${summary.run_day || "an unknown day"}, not ${today}` };
-  return null;
-}
-
-function digestShadowIssueBody({ healthy, upstream, unreachable, observed, redlines, incidents, report }) {
-  if (healthy) return "The digest shadow rehearsal is READY.";
-  if (unreachable) {
-    return `The digest shadow rehearsal could not be read: ${unreachable.detail}. Nothing is claimed about the digest itself.\n\n${JSON.stringify({ reason: unreachable.reason, route_error: sanitize(report?.error || null), detail: sanitize(report?.detail || null) }, null, 2)}`;
-  }
-  if (upstream) {
-    return `The digest shadow rehearsal found no fault in the digest; a source it reads did not answer.\n\n${JSON.stringify({ upstream_incidents: sanitize(incidents) }, null, 2).slice(0, 16000)}`;
-  }
-  return `The digest shadow rehearsal reported ${observed || "an unnamed status"}.\n\n${JSON.stringify({ redlines: sanitize(redlines), upstream_incidents: sanitize(incidents), degraded_receipt: sanitize(report?.degraded_receipt || null) }, null, 2).slice(0, 16000)}`;
-}
-
 /**
  * Observe whether the promised daily search-use snapshot exists, and report it.
  *
@@ -653,12 +539,13 @@ export async function runScheduledJob(job, options = {}) {
     stateDir,
     fetchImpl: options.fetchImpl,
     probeRunner: options.probeRunner,
+    observationPath: options.observationPath || process.env.CITYSCROLL_DIGEST_SHADOW_OBSERVATION_PATH || null,
   };
   let output;
   if (job.runner === "action-links") output = await runActionLinks(job, context);
   else if (job.runner === "source-contracts") output = await runSourceContracts(job, context);
   else if (job.runner === "source-freshness") output = await runFreshnessWatchdog(job, context);
-  else if (job.runner === "digest-shadow") output = await runDigestShadow(job, context);
+  else if (job.runner === "digest-shadow") output = await runDigestShadowJob(job, context);
   else if (job.runner === "stats-daily-snapshot") output = await runStatsDailySnapshot(job, context);
   else if (job.runner === "notice-synthetic-probe") output = await runNoticeSyntheticProbe(job, context);
   else throw new Error(`unknown external schedule runner: ${job.runner}`);
