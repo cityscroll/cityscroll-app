@@ -6,7 +6,12 @@ import { dirname, resolve } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
-import { committedPatterns, loadClosure } from "../tools/card_profile_closure.mjs";
+import {
+  committedPatterns,
+  declaredCoverageFailureMessage,
+  declaredCoverageGaps,
+  loadClosure
+} from "../tools/card_profile_closure.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const require = createRequire(import.meta.url);
@@ -56,21 +61,8 @@ test("every tracked path inside the declared coverage is materialised by the com
   // this fails until `node tools/derive_card_profile.mjs` reruns. It mirrors the
   // declaredClosure predicate in the deriver rather than byte-comparing a
   // regeneration, so the byte-heavy trees the profile defers stay untaxed.
-  const underAny = (path, trees) => trees.some((tree) => path === tree || path.startsWith(`${tree}/`));
-  const matches = (path) =>
-    patterns.some((pattern) => (pattern.endsWith("/") ? path.startsWith(pattern.slice(1)) : path === pattern.slice(1)));
-  const declared = [...tracked].filter((file) => {
-    if (config.always_include_paths.includes(file)) return true;
-    if (!file.includes("/")) return true;
-    if (!underAny(file, config.include_trees)) return false;
-    return !underAny(file, config.exclude_trees);
-  });
-  const missing = declared.filter((path) => !matches(path));
-  assert.ok(
-    missing.length === 0,
-    `${missing.length} tracked path(s) inside the declared coverage are not covered by the committed patterns, ` +
-      `regenerate with: node tools/derive_card_profile.mjs — starting with ${missing.slice(0, 3).join(", ")}`
-  );
+  const missing = declaredCoverageGaps(tracked, patterns, config);
+  assert.equal(missing.length, 0, declaredCoverageFailureMessage(missing));
 });
 
 test("every path the profile declares is a tracked path", () => {

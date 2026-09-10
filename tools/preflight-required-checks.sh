@@ -39,6 +39,7 @@ Covered: all four families of CI's `unit-family` matrix, in that order, each run
 even if an earlier one fails (CI runs them in parallel with fail-fast: false):
   - static-standards  syntax, i18n, static lint, generated-source and read-model checks
   - site-node         site unit tests + Community Board ontology gates
+                      (+ card-profile declared coverage when site/ changed)
   - contract          site/worker contract tests
   - worker            worker dependencies + worker unit tests
 
@@ -385,6 +386,30 @@ family_static_standards() {
   run_and_fail python3 -m unittest tests.test_diagnostic_card_producer
 }
 
+# Same predicate as tools/git-hooks/pre-push `needs_full`: the comparison range
+# touches site/. make prepush has no push range, so this also looks at
+# origin/main..HEAD plus the index and working tree. --full already means the
+# hook saw site/ (or the caller asked for the heavy tier).
+preflight_site_paths_changed() {
+  if [[ "$RUN_FULL" == "1" ]]; then
+    return 0
+  fi
+  if git rev-parse --verify origin/main >/dev/null 2>&1; then
+    local base
+    base="$(git merge-base origin/main HEAD 2>/dev/null || true)"
+    if [[ -n "$base" ]] && git diff --name-only "${base}..HEAD" 2>/dev/null | grep -qE '^site/'; then
+      return 0
+    fi
+  fi
+  if git diff --name-only --cached HEAD 2>/dev/null | grep -qE '^site/'; then
+    return 0
+  fi
+  if git diff --name-only HEAD 2>/dev/null | grep -qE '^site/'; then
+    return 0
+  fi
+  return 1
+}
+
 family_site_node() {
   run_banner "Unit tests (site + worker)" "Site unit tests + board ontology gates" \
     "node --test test/*.test.mjs"
@@ -397,6 +422,16 @@ family_site_node() {
     test/people_organizations_community_boards.test.mjs
   run_and_fail node tools/no_live_external_reads.mjs --check
   run_and_fail node tools/build_geocoder_address_index.mjs --check
+  # CI's site-node family fails test/card_profile.test.mjs when a new site/
+  # module is tracked but missing from the committed sparse patterns. derive
+  # --check used to verify only requiredPaths (observed / seed-tree / corpus),
+  # so a new include-tree file passed locally. Run the same check the test uses,
+  # but only when site/ changed, so the fast tier stays fast.
+  if preflight_site_paths_changed; then
+    run_banner "Unit tests (site + worker)" "Card-profile declared coverage" \
+      "node tools/derive_card_profile.mjs --check"
+    run_and_fail node tools/derive_card_profile.mjs --check
+  fi
 }
 
 family_contract() {

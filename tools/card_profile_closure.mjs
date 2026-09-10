@@ -108,6 +108,36 @@ export function materialisedByPatterns(patterns, path) {
   );
 }
 
+function underAny(path, trees) {
+  return (trees ?? []).some((tree) => path === tree || path.startsWith(`${tree}/`));
+}
+
+/**
+ * Structural trees the reduced profile must materialise: always-include paths,
+ * repository-root documents, and every tracked path under an include tree that
+ * no exclude tree defers. A file added there without regenerating the pattern
+ * list is absent from every reduced checkout.
+ */
+export function isDeclaredCoveragePath(file, config) {
+  if ((config.always_include_paths ?? []).includes(file)) return true;
+  if (!file.includes("/")) return true;
+  if (!underAny(file, config.include_trees)) return false;
+  return !underAny(file, config.exclude_trees);
+}
+
+export function declaredCoverageGaps(tracked, patterns, config) {
+  return [...tracked]
+    .filter((file) => isDeclaredCoveragePath(file, config) && !materialisedByPatterns(patterns, file))
+    .sort();
+}
+
+export function declaredCoverageFailureMessage(missing) {
+  return (
+    `${missing.length} tracked path(s) inside the declared coverage are not covered by the committed patterns, ` +
+    `regenerate with: node tools/derive_card_profile.mjs — starting with ${missing.slice(0, 3).join(", ")}`
+  );
+}
+
 /**
  * The closure contract with its inventories attached, in the shape every
  * consumer already reads: `required_paths`, `deferred_hydration_set.paths`,
