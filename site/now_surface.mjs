@@ -3,6 +3,7 @@ import { classifyPropertyActionCharacter } from "./property_action_character.mjs
 import { projectPropertyRecord } from "./property_action_projection.mjs";
 import { landProjectDisplayTitle, noticeDisplayTitle } from "./display_title.mjs";
 import { recordIsCancelled } from "./calendar_occurrence.mjs";
+import { meetingCanonicalHref } from "./meeting_object_contract.mjs";
 
 export const NOW_SURFACE_SCHEMA_VERSION = 1;
 export const NOW_ACTION_HORIZON_DAYS = 30;
@@ -16,7 +17,7 @@ const SOURCE_META = Object.freeze({
   staffing: { label: "DCAS exam schedules", system: "dcas" },
   rules: { label: "NYC Rules + City Record", system: "nyc_rules_city_record" },
   property: { label: "City Record · Property Disposition", system: "city_record" },
-  meetings: { label: "City Record · Hearings and Meetings", system: "city_record" },
+  meetings: { label: "Official hearings and meetings", system: "city_record" },
   land: { label: "ZAP", system: "zap" },
 });
 
@@ -363,23 +364,44 @@ function propertyEvents(payload, options) {
   return out;
 }
 
+function meetingIdFor(row) {
+  const meetingId = String(row?.meeting_id || "").trim();
+  if (meetingId) return meetingId;
+  const requestId = String(row?.request_id || "").trim();
+  if (requestId && requestId !== "undefined") return `meeting:city_record:${requestId}`;
+  return null;
+}
+
+function meetingSourceMeta(row) {
+  const system = String(row?.source_system || "").trim();
+  if (system === "nyc_legistar_events") {
+    return { domain: "meetings", label: "NYC Council calendar", system };
+  }
+  if (system === "community_board") {
+    return { domain: "meetings", label: "Community board calendar", system };
+  }
+  return source("meetings");
+}
+
 function meetingEvents(payload, options) {
   const out = [];
-  for (const row of payload?.hearings || []) {
+  for (const row of payload?.hearings || payload?.rows || []) {
+    if (row?.collection_visibility === "suppressed") continue;
     if (!withinHorizon(options.today, row.event_date, options.eventHorizonDays)) continue;
-    const route = officialNoticeRoute(row.request_id);
+    const meetingId = meetingIdFor(row);
+    const route = meetingCanonicalHref(meetingId);
     if (!route) continue;
     const kind = /\bhearing\b/i.test(`${row.type_of_notice_description || ""} ${row.title || ""}`)
       ? "hearing"
       : "meeting";
     out.push({
-      id: `meetings:${row.request_id}`,
+      id: `meetings:${meetingId}`,
       lane: "happening_soon",
       kind,
       title: noticeDisplayTitle({ title: row.title, request_id: row.request_id }, kind === "hearing" ? "Hearing" : "Meeting"),
-      agency: row.agency || null,
+      agency: row.agency || row.committee?.name || null,
       domain: "meetings",
-      source: source("meetings"),
+      source: meetingSourceMeta(row),
       route,
       time: time(row.event_date, { basis: "published_event_date", precision: String(row.event_date).includes("T") ? "instant" : "day", sourceField: "event_date" }),
       place: placeFrom(row.affected_area || row.venue),

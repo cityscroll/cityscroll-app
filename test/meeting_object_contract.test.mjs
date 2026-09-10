@@ -91,6 +91,11 @@ test("Events feed EventId is the Legistar publisher key and InSite calendar id i
   );
   assert.equal(meetingCanonicalHref(record), "/meetings/meeting%3Anyc_legistar_events%3A22691");
   assert.equal(resolveMeetingRoute(record.source_url, [record]).meeting_id, record.meeting_id);
+  assert.equal(
+    resolveMeetingRoute(meetingCanonicalHref(record), [record]).meeting_id,
+    record.meeting_id,
+  );
+  assert.equal(resolveMeetingRoute("/notices/undefined", [record]), null);
 });
 
 test("both producers preserve their exact source key in one shared object shape", () => {

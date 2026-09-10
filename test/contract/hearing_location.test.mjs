@@ -158,3 +158,21 @@ test("meeting access facts distinguish in-person, remote, hybrid, and unknown", 
   assert.equal(missing.meeting_access.remote_join_url, null);
 
 });
+
+test("Council calendar rows keep their meeting_id route and never emit a City Record notice URL", () => {
+  const browser = normalizeHearingRow({
+    meeting_id: "meeting:nyc_legistar_events:22691",
+    source_system: "nyc_legistar_events",
+    event_id: "22691",
+    title: "Committee on Contracts",
+    event_date: "2026-09-23T10:00:00",
+    venue: { address: "250 Broadway - 8th Floor - Hearing Room 2" },
+    source_url: "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22691",
+  });
+  assert.equal(browser.meeting_id, "meeting:nyc_legistar_events:22691");
+  assert.equal(browser.request_id, null);
+  assert.equal(browser.source_url, "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22691");
+  assert.equal(browser.compatibility.legacy_notice_href, null);
+  assert.doesNotMatch(JSON.stringify(browser), /RequestDetail/);
+  assert.doesNotMatch(JSON.stringify(browser), /undefined/);
+});

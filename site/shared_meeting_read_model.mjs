@@ -50,7 +50,7 @@ function sourceReceipt(record, source, observedAt) {
   if (record.source_receipt || record.observed_receipt) {
     return record.source_receipt || record.observed_receipt;
   }
-  if (source !== "city_record") return null;
+  if (source !== "city_record" && source !== "nyc_legistar_events") return null;
   return {
     schema: "cityscroll.meeting_source_receipt.v1",
     source_url: record.source_url || null,
@@ -235,8 +235,9 @@ function materializeMeetingDetails(row, checkedAt) {
  * Normalize and combine admitted meeting producers into one bounded read model.
  * `communityBoardIndex` is deliberately optional: absence becomes an
  * explicit unavailable source state and never causes a broad fallback query.
- * `nycLegistarEventsIndex` is omitted from production snapshots until a later
- * publication rung; tests pass it to prove identity, join, and freshness.
+ * `nycLegistarEventsIndex` is the upcoming Council calendar snapshot. Callers
+ * that omit it keep the prior two-source envelope; production snapshots pass
+ * the materialized index (or null) so the source is present or unavailable.
  */
 export function buildSharedMeetingReadModel({
   cityRecordRows = [],

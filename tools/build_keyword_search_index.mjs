@@ -222,7 +222,7 @@ const output = {
       [buildLandSearchDocuments(land)],
     ),
     meetings: family(
-      "City Record and official community-board meeting snapshots",
+      "City Record, City Council calendar, and official community-board meeting snapshots",
       meetings.generated_at,
       [buildMeetingSearchDocuments(meetings)],
     ),

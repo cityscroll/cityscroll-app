@@ -185,6 +185,7 @@ export function buildMeetingSearchDocuments(readModel = {}) {
       total: documents.length,
       city_record: stats.city_record.indexed,
       community_board: stats.community_board.indexed,
+      nyc_legistar_events: stats.nyc_legistar_events.indexed,
       not_indexed: Object.values(stats).reduce((sum, value) => sum + value.notIndexed, 0),
       exact_duplicates: Object.values(stats).reduce((sum, value) => sum + value.duplicates, 0),
     }),

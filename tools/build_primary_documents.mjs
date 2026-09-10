@@ -17,6 +17,7 @@ import { buildExamsDocument } from "../site/exams_surface.mjs";
 import { buildStaffingDocument } from "../site/staffing_surface.mjs";
 import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
 import { readCommunityBoardMeetingIndex } from "./lib/community_board_meeting_index_io.mjs";
+import { readUpcomingCouncilMeetingsIndex } from "./lib/upcoming_council_meetings_io.mjs";
 import { eligibleCityRecordMeetings } from "../site/city_record_meeting.mjs";
 import { normalizeHearing } from "../worker/src/lib/hearings.mjs";
 import { EXAMS_SURFACE, PEOPLE_ORGANIZATIONS_SURFACE, STAFFING_SURFACE } from "../site/browse_surface_contracts.mjs";
@@ -45,6 +46,9 @@ export function resolvePinnedBuildClock(env = process.env) {
 function json(path) {
   if (path === "/data/community_board_meeting_index.json") {
     return readCommunityBoardMeetingIndex(new URL("../site/data/community_board_meeting_index.json", import.meta.url));
+  }
+  if (path === "/data/upcoming_council_meetings.json") {
+    return readUpcomingCouncilMeetingsIndex(new URL("../site/data/upcoming_council_meetings.json", import.meta.url));
   }
   return JSON.parse(readFileSync(join(SITE, path.replace(/^\//, "")), "utf8"));
 }
@@ -143,9 +147,11 @@ export function primaryDocumentOutputs(options = {}) {
   // rows come first so an exact id is upgraded rather than duplicated.
   const cityRecordRows = [...cityRecordMeetings, ...(payloads.meetings.rows || [])];
   const communityBoardMeetings = json("/data/community_board_meeting_index.json");
+  const upcomingCouncilMeetings = json("/data/upcoming_council_meetings.json");
   const sharedMeetings = buildSharedMeetingReadModel({
     cityRecordRows,
     communityBoardIndex: communityBoardMeetings,
+    nycLegistarEventsIndex: upcomingCouncilMeetings,
     meetingOutcomes: outcomes,
     generatedAt: materialization.generated_at,
     now: communityBoardMeetings.generated_at || materialization.generated_at,
@@ -279,9 +285,11 @@ function buildSharedMeetingArtifacts() {
   const outcomes = json("/data/meeting_outcomes_snapshot.json");
   const cityRecordRows = [...cityRecordMeetings, ...(payloads.meetings.rows || [])];
   const communityBoardMeetings = json("/data/community_board_meeting_index.json");
+  const upcomingCouncilMeetings = json("/data/upcoming_council_meetings.json");
   const sharedMeetings = buildSharedMeetingReadModel({
     cityRecordRows,
     communityBoardIndex: communityBoardMeetings,
+    nycLegistarEventsIndex: upcomingCouncilMeetings,
     meetingOutcomes: outcomes,
     generatedAt: materialization.generated_at,
     now: communityBoardMeetings.generated_at || materialization.generated_at,

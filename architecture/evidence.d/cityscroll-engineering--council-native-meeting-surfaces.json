@@ -1,0 +1,41 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/council-native-meeting-surfaces",
+  "status": "implemented",
+  "fingerprint": "council-native-meeting-surfaces.v1",
+  "updated_at": "2026-09-10T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "upcoming-council-meetings-read-index",
+      "path": "tools/lib/upcoming_council_meetings_io.mjs"
+    },
+    {
+      "id": "upcoming-council-meetings-snapshot",
+      "path": "site/data/upcoming_council_meetings.json"
+    },
+    {
+      "id": "upcoming-council-meetings-snapshot-builder",
+      "path": "tools/build_upcoming_council_meetings_snapshot.mjs"
+    },
+    {
+      "id": "primary-document-meeting-build",
+      "path": "tools/build_primary_documents.mjs"
+    },
+    {
+      "id": "worker-hearings-read-model",
+      "path": "worker/src/hearings.mjs"
+    },
+    {
+      "id": "now-surface-meeting-routes",
+      "path": "site/now_surface.mjs"
+    },
+    {
+      "id": "meeting-search-producer",
+      "path": "site/meeting_search_producer.mjs"
+    },
+    {
+      "id": "council-native-search-producer-tests",
+      "path": "test/universal_search_meeting_producer.test.mjs"
+    }
+  ]
+}
