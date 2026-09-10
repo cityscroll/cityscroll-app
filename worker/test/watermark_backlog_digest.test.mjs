@@ -421,6 +421,8 @@ test("district owed rows recorded under a prior watch_id still drain on the curr
       project_name: "Held district land action",
       public_status: "In review",
       district_kind: "rezone",
+      council_district: "3",
+      watch_filter: { councilDistrict: "3" },
     },
   });
   const state = kv();

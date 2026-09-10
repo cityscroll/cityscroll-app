@@ -105,3 +105,38 @@ test("two current watches of the same lens do not guess; the row stays owed", ()
   assert.equal(receipt.attached_count, 0);
   assert.equal(receipt.unattached[0].reason, OWED_ATTACH_REASONS.LENS_AMBIGUOUS);
 });
+
+test("lens fallback carries a row whose recorded filter equals the current watch filter", () => {
+  const section = { ...districtSection(), filter: { councilDistrict: "3" } };
+  const owed = [owedItem({
+    payload: {
+      district_item_id: "land:2019M0059:2023-03-13",
+      district_section: "land",
+      project_id: "2019M0059",
+      project_name: "Held district land action",
+      watch_filter: { councilDistrict: "3" },
+    },
+  })];
+  const receipt = attachOwedRows([section], owed);
+  assert.equal(receipt.attached_by.lens, 1);
+  assert.equal(receipt.unattached_count, 0);
+  assert.equal(section.new, 1);
+});
+
+test("lens fallback keeps a row owed with filter_mismatch when the current watch filter changed", () => {
+  const section = { ...districtSection(), filter: { councilDistrict: "12" } };
+  const owed = [owedItem({
+    payload: {
+      district_item_id: "land:2019M0059:2023-03-13",
+      district_section: "land",
+      project_id: "2019M0059",
+      project_name: "Held district land action",
+      council_district: "3",
+      watch_filter: { councilDistrict: "3" },
+    },
+  })];
+  const receipt = attachOwedRows([section], owed);
+  assert.equal(receipt.attached_count, 0);
+  assert.equal(section.new, 0);
+  assert.equal(receipt.unattached[0].reason, OWED_ATTACH_REASONS.FILTER_MISMATCH);
+});

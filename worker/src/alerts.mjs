@@ -974,6 +974,7 @@ export async function processOneSub(env, s, ctx) {
       queryLabel: describeFilter(s.lens, s.filter),
       status: SECTION_STATUS.SUCCESS,
       watchId: s.watch_id,
+      filter: s.filter || {},
       kind: q.kind,
       freshRows: fresh,
       new: fresh.length,
@@ -1211,6 +1212,7 @@ export async function processAccountRollup(env, subs, ctx) {
           subKey: s.key,
           lens: s.lens,
           queryLabel: describeFilter(s.lens, s.filter),
+          filter: s.filter || {},
           skipped: "paused",
           new: 0,
           forecasts: 0,
@@ -1223,7 +1225,9 @@ export async function processAccountRollup(env, subs, ctx) {
 
     const owed = await owedForSubscriber(env, subscriberId);
     for (const section of sections) {
-      section.watchId = subs.find((s) => s.key === section.subKey)?.watch_id || null;
+      const watch = subs.find((s) => s.key === section.subKey);
+      section.watchId = watch?.watch_id || null;
+      section.filter = watch?.filter || section.filter || {};
     }
     const owedAttach = attachOwedRows(sections, owed);
     // Provider-submit cutoff: last current-revision read after evaluation and
@@ -1450,6 +1454,7 @@ async function evaluateSubSection(env, s, ctx) {
     lens: s.lens,
     freq: s.freq || "daily",
     queryLabel: describeFilter(s.lens, s.filter),
+    filter: s.filter || {},
     lang: s.lang || "en",
     email: s.email,
     new: 0,

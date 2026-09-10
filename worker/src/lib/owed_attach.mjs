@@ -5,6 +5,7 @@ export const OWED_ATTACH_REASONS = Object.freeze({
   SECTION_NOT_READY: "section_not_ready",
   LENS_AMBIGUOUS: "lens_ambiguous",
   NO_CURRENT_LENS_WATCH: "no_current_lens_watch",
+  FILTER_MISMATCH: "filter_mismatch",
 });
 
 function payloadRow(item) {
@@ -74,6 +75,78 @@ function applyOwedEntries(section, entries) {
     ...carried.map((row) => row.request_id || row.procurement_id || row.district_item_id).filter(Boolean),
   ])].slice(0, 100);
   section.action = "match";
+}
+
+function text(value) {
+  return value == null ? "" : String(value).trim();
+}
+
+function asFilter(value) {
+  return value && typeof value === "object" && !Array.isArray(value) ? value : {};
+}
+
+function canonicalFilter(value) {
+  const filter = asFilter(value);
+  const entries = Object.keys(filter).sort().flatMap((key) => {
+    const raw = filter[key];
+    if (raw == null || raw === false || raw === "") return [];
+    if (Array.isArray(raw) && raw.length === 0) return [];
+    return [[key, raw]];
+  });
+  return JSON.stringify(Object.fromEntries(entries));
+}
+
+function filtersEqual(a, b) {
+  return canonicalFilter(a) === canonicalFilter(b);
+}
+
+function recordedFilter(item, row) {
+  for (const candidate of [item?.filter, item?.watch_filter, row?.watch_filter, row?.filter]) {
+    if (candidate && typeof candidate === "object" && !Array.isArray(candidate)) return candidate;
+  }
+  return null;
+}
+
+function rowMatchesFilter(row, filter) {
+  const f = asFilter(filter);
+  const council = text(f.councilDistrict);
+  if (council) {
+    const got = text(row?.council_district || row?.councilDistrict || row?.cc_district);
+    if (got !== council) return false;
+  }
+  const community = text(f.communityDistrict);
+  if (community) {
+    const got = text(row?.community_district || row?.communityDistrict);
+    if (got !== community) return false;
+  }
+  const boro = text(f.boro || f.borough);
+  if (boro) {
+    const got = text(row?.borough || row?.boro);
+    if (got.toLowerCase() !== boro.toLowerCase()) return false;
+  }
+  const status = text(f.status);
+  if (status && status.toLowerCase() !== "all") {
+    const got = text(row?.public_status || row?.status);
+    if (!got.toLowerCase().includes(status.toLowerCase())) return false;
+  }
+  const keywords = Array.isArray(f.keywords) ? f.keywords.map((kw) => text(kw)).filter(Boolean) : [];
+  if (keywords.length) {
+    const hay = [row?.project_name, row?.short_title, row?.agency_name, row?.vendor_name]
+      .map((part) => text(part).toLowerCase())
+      .join(" ");
+    if (!keywords.every((kw) => hay.includes(kw.toLowerCase()))) return false;
+  }
+  const requestId = text(f.requestId);
+  if (requestId && text(row?.request_id) !== requestId) return false;
+  return true;
+}
+
+/** Lens fallback may carry a row only when it still belongs to the current watch. */
+export function owedSatisfiesCurrentFilter(section, item, row) {
+  const current = asFilter(section?.filter);
+  const recorded = recordedFilter(item, row);
+  if (recorded && filtersEqual(recorded, current)) return true;
+  return rowMatchesFilter(row, current);
 }
 
 function unattachedReason(sections, item) {
@@ -162,6 +235,15 @@ export function attachOwedRows(sections, owed) {
     }
     const lensSection = entry.item.lens ? byLens.get(entry.item.lens) : null;
     if (lensSection && lensSection !== "ambiguous") {
+      if (!owedSatisfiesCurrentFilter(lensSection, entry.item, entry.row)) {
+        receipt.unattached.push({
+          item_id: publicIdentityRef(entry.item.item_id),
+          watch_id: publicIdentityRef(entry.item.watch_id),
+          lens: publicIdentityRef(entry.item.lens),
+          reason: OWED_ATTACH_REASONS.FILTER_MISMATCH,
+        });
+        continue;
+      }
       add(lensSection, entry, "lens");
       continue;
     }
