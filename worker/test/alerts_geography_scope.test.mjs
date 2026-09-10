@@ -38,8 +38,9 @@ test("geography watches replay the exact materialized Near You membership", () =
 
 test("the D1 notice mirror is bypassed for materialized geography watches", () => {
   const source = readFileSync(new URL("worker/src/alerts.mjs", ROOT), "utf8");
+  assert.match(source, /!s\.filter\?\.geographies\?\.length/);
   assert.equal(
-    (source.match(/!s\.filter\?\.geographies\?\.length/g) || []).length,
+    (source.match(/await loadWatchRows\(/g) || []).length,
     3,
     "single, rollup, and queued alert evaluators must all use the geography artifact",
   );

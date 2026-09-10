@@ -805,6 +805,7 @@
 /site/watch_family_capabilities.mjs
 /site/watch_templates.mjs
 /site/watch_text_query.mjs
+/site/watch_text_query_eval.mjs
 /site/zap_action_labels.mjs
 /site/zoning_hearing_calendar.mjs
 /test/
@@ -814,6 +815,7 @@
 /warehouse/experiments/semantic-layer-trial/build_corpus.mjs
 /warehouse/experiments/semantic-layer-trial/source_passage_map.json
 /warehouse/fixtures/citywide-payroll/
+/warehouse/fixtures/procurement-project-context/city-record-ddc-notices.json
 /warehouse/lib/attachment_embeddings.mjs
 /warehouse/lib/attachment_metadata.mjs
 /warehouse/lib/attachment_tables.mjs

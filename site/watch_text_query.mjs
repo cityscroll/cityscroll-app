@@ -90,15 +90,17 @@ export const TEXT_QUERY_STRUCTURED_SCOPE_FIELDS = Object.freeze([
  * canonicalize + identity) is wired for that lens. `evaluation` means a
  * delivery/preview path consumes the expression; until it is true, every
  * evaluator must refuse the watch (fail closed) rather than silently run it as
- * an unfiltered legacy query. This registry is the single source both the
- * worker compilers and the tests consult — no path may accept a v1 expression
- * it does not register support for.
+ * an unfiltered legacy query. Money evaluation uses the shared procurement
+ * adapter (`site/watch_text_query_eval.mjs`) on owned notice and procurement-
+ * object materializations. This registry is the single source both the worker
+ * compilers and the tests consult — no path may accept a v1 expression it does
+ * not register support for.
  */
 export const TEXT_QUERY_SUPPORT = Object.freeze({
   money: Object.freeze({
     lens: "money",
     admission: true,
-    evaluation: false,
+    evaluation: true,
   }),
 });
 
@@ -338,4 +340,88 @@ export function matchesTextQuery(fields, expression) {
   if (canonical.all.length && !canonical.all.every((group) => group.some(matchesAtom))) return false;
   if (canonical.none?.length && canonical.none.some(matchesAtom)) return false;
   return true;
+}
+
+/**
+ * Conservative candidate-retrieval groups for SQL LIKE / haystack pushdown.
+ * Each required group becomes one OR-of-tokens group so retrieval is a
+ * *superset* of canonical matches. Exclusions are never pushed: a LIKE
+ * exclusion can omit a valid row when HTML or tokenization differs.
+ * The shared predicate still decides membership.
+ */
+export function textQueryCandidateTermGroups(expression) {
+  const validated = validateTextQuery(expression, { structuredScope: true });
+  if (!validated.ok || !validated.canonical) return [];
+  return validated.canonical.all
+    .map((group) => [...new Set(group.flatMap((atom) => atomTokens(atom)))])
+    .filter((group) => group.length);
+}
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function atomPassage(cleaned, atom, radius = 70) {
+  const tokens = atomTokens(atom);
+  if (!tokens.length || !cleaned) return null;
+  const pattern = new RegExp(tokens.map(escapeRegExp).join("[^\\p{L}\\p{N}]+"), "iu");
+  const match = cleaned.match(pattern);
+  if (!match || match.index == null) return null;
+  const start = Math.max(0, match.index - radius);
+  const end = Math.min(cleaned.length, match.index + match[0].length + radius);
+  return {
+    index: match.index,
+    hit: match[0],
+    passage: `${start > 0 ? "…" : ""}${cleaned.slice(start, end)}${end < cleaned.length ? "…" : ""}`,
+  };
+}
+
+/**
+ * Field-evidence companion to `matchesTextQuery`. `namedFields` is
+ * `[{ name, value }, ...]`; each atom is still evaluated within one field.
+ * Returns `{ match, groups, exclusion }` where `groups` has one hit per
+ * required group (the first matching alternative) and `exclusion` is the
+ * first matching excluded atom, or null.
+ */
+export function explainTextQuery(namedFields, expression) {
+  const fields = (Array.isArray(namedFields) ? namedFields : [])
+    .filter((field) => field && field.value != null && field.value !== "")
+    .map((field) => ({
+      name: String(field.name || "field"),
+      value: field.value,
+      tokens: textQueryTokens(field.value),
+      cleaned: cleanNoticeText(String(field.value)),
+    }));
+  if (expression == null) {
+    return { match: true, groups: [], exclusion: null };
+  }
+  const validated = validateTextQuery(expression, { structuredScope: true });
+  if (!validated.ok) return { match: false, groups: [], exclusion: null };
+  const canonical = validated.canonical;
+  if (!canonical) return { match: true, groups: [], exclusion: null };
+
+  const locate = (atom) => {
+    for (const field of fields) {
+      if (!atomMatchesField(atom, field.tokens)) continue;
+      const found = atomPassage(field.cleaned, atom);
+      return {
+        atom: { kind: atom.kind, value: atom.value },
+        field: field.name,
+        passage: found?.passage || field.cleaned,
+        hit: found?.hit || atom.value,
+      };
+    }
+    return null;
+  };
+
+  const groups = canonical.all.map((group) => {
+    for (const atom of group) {
+      const hit = locate(atom);
+      if (hit) return hit;
+    }
+    return null;
+  });
+  const exclusion = (canonical.none || []).map(locate).find(Boolean) || null;
+  const match = groups.every(Boolean) && !exclusion;
+  return { match, groups, exclusion };
 }

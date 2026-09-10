@@ -799,6 +799,7 @@ site/walk_entry.mjs
 site/watch_family_capabilities.mjs
 site/watch_templates.mjs
 site/watch_text_query.mjs
+site/watch_text_query_eval.mjs
 site/zap_action_labels.mjs
 site/zoning_hearing_calendar.mjs
 test/abo_award_panel.test.mjs
@@ -1109,12 +1110,14 @@ test/fixtures/land_prediction_features/sparse.json
 test/fixtures/land_prediction_features/unknown.json
 test/fixtures/land_prediction_shadow/gold.v1.json
 test/fixtures/land_use_action_type/2024M0158.json
+test/fixtures/legistar/upcoming_contracts_22691.json
 test/fixtures/procurement_search/golden_cohort.json
 test/fixtures/repository_governance/positive/test-example.mjs
 test/fixtures/rules_stage/20260728026.json
 test/fixtures/rum_semantic_components.mjs
 test/fixtures/source_contracts/mocs-field-case.json
 test/fixtures/ulurp_statutory_clock/certified_elurp_2024Q0419.json
+test/fixtures/watch_text_query/procurement_titles_snapshot.json
 test/fixtures/zap_outcomes/joined_timbale_terrace.json
 test/following_controller.test.mjs
 test/following_graph_context.test.mjs
@@ -1887,6 +1890,7 @@ warehouse/datasets.v0.json
 warehouse/experiments/semantic-layer-trial/build_corpus.mjs
 warehouse/experiments/semantic-layer-trial/source_passage_map.json
 warehouse/fixtures/citywide-payroll/product_seed.json
+warehouse/fixtures/procurement-project-context/city-record-ddc-notices.json
 warehouse/lib/attachment_embeddings.mjs
 warehouse/lib/attachment_metadata.mjs
 warehouse/lib/attachment_tables.mjs
@@ -2231,8 +2235,10 @@ worker/src/lib/ulurp_recommendation_rows_source_records.mjs
 worker/src/lib/ulurp_recommendation_source_records.mjs
 worker/src/lib/ulurp_recommendations_join.mjs
 worker/src/lib/ulurp_statutory_predictions.mjs
+worker/src/lib/upcoming_council_meetings.mjs
 worker/src/lib/upstream_failure.mjs
 worker/src/lib/usage.mjs
+worker/src/lib/watch_text_query_procurement.mjs
 worker/src/lib/watchlog.mjs
 worker/src/lib/worker_health.mjs
 worker/src/lib/zap_bbl_warehouse_lookup.mjs

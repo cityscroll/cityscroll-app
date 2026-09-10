@@ -21,7 +21,7 @@ import {
   mandatePredictionDigestRowsForAgency,
   mergeObligationDigestWithPredictions,
 } from "../../../site/mandate_prediction_alerts.mjs";
-import { mergeProcurementDigestMatches } from "../../../site/procurement_digest_compile.mjs";
+import { mergeProcurementDigestMatches, PROCUREMENT_DIGEST_LIMIT } from "../../../site/procurement_digest_compile.mjs";
 import { landProcedureSodaWhere } from "../../../site/land_procedure_facet.mjs";
 import { landFamilySodaWhere, landRowMatchesFamily, normalizeLandFamily } from "../../../site/land_status_facets.mjs";
 import { landRowMatchesRegulatoryEffect, normalizeLandRegulatoryEffect } from "../../../site/land_regulatory_effect.mjs";
@@ -53,6 +53,10 @@ export function useProcurementDigestSnapshot(snapshot) {
   const previous = digestSnapshot;
   digestSnapshot = snapshot && typeof snapshot === "object" ? snapshot : EMPTY_PROCUREMENT_DIGEST;
   return () => { digestSnapshot = previous; };
+}
+
+export function getProcurementDigestSnapshot() {
+  return digestSnapshot;
 }
 
 export function mergeCompiledRows(q, rows) {
@@ -448,6 +452,23 @@ export function compileSub(sub, todayISO) {
     const procurementId = typeof f.procurement_id === "string" && f.procurement_id.trim()
       ? f.procurement_id.trim()
       : null;
+    if (f.text_query != null && textQueryEvaluationSupported(sub.lens)) {
+      // Owned materialization only: the precise evaluator pages D1 + the
+      // procurement snapshot. Do not emit a SODA $q — that path is not a
+      // faithful v1 predicate (legacy keyword watches still use it).
+      const wantsAward = f.noticeType === "award" || (!f.noticeType && (f.minAmount || f.maxAmount) && !f.closingWeek);
+      return {
+        url: null,
+        params: {},
+        idField: "digest_id",
+        kind: procurementId || wantsAward ? "award" : "rfp",
+        readRows: () => mergeRows([]),
+        mergeRows,
+        textQuery: f.text_query,
+        soda: false,
+        limit: PROCUREMENT_DIGEST_LIMIT,
+      };
+    }
     if (procurementId) {
       return {
         url: null,

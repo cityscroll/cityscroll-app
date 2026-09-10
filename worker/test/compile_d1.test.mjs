@@ -102,6 +102,37 @@ test("money/months → dueBefore forwarded, computed the same way compile.mjs co
   assert.equal(opts.dueBefore, "2026-09-30");
 });
 
+test("money text_query preserves agency, amount, category, process and temporal facets without LIKE-folding the expression", () => {
+  const opts = subToD1Opts({
+    lens: "money",
+    filter: {
+      text_query: { version: 1, all: [[{ kind: "term", value: "software" }]], none: [{ kind: "term", value: "maintenance" }] },
+      agency: "Health and Mental Hygiene",
+      category: "Goods",
+      minAmount: 100000,
+      noticeType: "award",
+    },
+  }, "2026-09-09");
+  assert.equal(opts.noticeType, "Award");
+  assert.equal(opts.agency, "Health and Mental Hygiene");
+  assert.equal(opts.category, "Goods");
+  assert.equal(opts.minAmount, 100000);
+  assert.equal(opts.orderBy, "start_date");
+  assert.equal(opts.termGroups, undefined);
+  const compiled = compileSub_d1({
+    lens: "money",
+    filter: {
+      text_query: { version: 1, all: [[{ kind: "phrase", value: "construction management" }]] },
+      noticeType: "award",
+    },
+  }, "2026-09-09");
+  assert.ok(compiled.textQuery);
+  const { sql, params } = buildNoticesQuery(compiled.opts);
+  assert.doesNotMatch(sql, /haystack LIKE/, "digest SQL must not decide the v1 phrase");
+  assert.equal(params.includes("%construction management%"), false);
+  assert.match(sql, /ORDER BY start_date DESC/);
+});
+
 test("money: agency + category + keywords + noticeType + months all compile together", () => {
   const opts = subToD1Opts({ lens: "money", filter: {
     keywords: ["construction"], agency: "Buildings", category: "Construction/Construction Services",

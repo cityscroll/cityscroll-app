@@ -10,6 +10,8 @@ import { procurementCanonicalHref } from "./procurement_object_contract.mjs";
 import { procurementProcessStates } from "./procurement_process_state_vocabulary.mjs";
 import { compactProcurementProcessEvents } from "./procurement_process_watch.mjs";
 import { vendorStem } from "./vendor_stem.mjs";
+import { matchesTextQuery } from "./watch_text_query.mjs";
+import { projectProcurementObjectFields } from "./watch_text_query_eval.mjs";
 
 export const PROCUREMENT_DIGEST_SNAPSHOT_SCHEMA = "cityscroll.procurement_digest_snapshot.v1";
 export const PROCUREMENT_DIGEST_LIMIT = 25;
@@ -217,6 +219,12 @@ function rowMatchesProcessState(row, filter = {}) {
   return states.includes(requested);
 }
 
+function rowMatchesTextQuery(row, filter = {}) {
+  if (filter.text_query == null) return true;
+  const named = projectProcurementObjectFields(row);
+  return matchesTextQuery(named.map((field) => field.value), filter.text_query);
+}
+
 function rowMatchesFilter(row, filter = {}, lens = "money") {
   if (!row?.procurement_id) return false;
   if (filter.procurement_id && text(filter.procurement_id, 320) !== row.procurement_id) return false;
@@ -230,6 +238,10 @@ function rowMatchesFilter(row, filter = {}, lens = "money") {
     if (stem.length < 3) return false;
     return vendorStem(row.vendor_name) === stem;
   }
+  // Exact-id rows still honor an admitted v1 expression: never return early
+  // and skip exclusions. Unsupported identity+expression combinations fail
+  // closed in the compilers; this matcher applies the predicate.
+  if (!rowMatchesTextQuery(row, filter)) return false;
   if (filter.procurement_id) return true;
   if (filter.agency && text(row.agency_name, 240) !== text(filter.agency, 240)) return false;
   if (!rowMatchesProcessState(row, filter)) return false;
@@ -244,6 +256,7 @@ function rowMatchesFilter(row, filter = {}, lens = "money") {
   if (!text(filter.processState, 80)
     && stages.length
     && !stages.some((stage) => AWARD_STAGES.has(String(stage).toLowerCase()))) return false;
+  if (filter.text_query != null) return true;
   const keywords = Array.isArray(filter.keywords) ? filter.keywords.map((value) => String(value || "").trim().toLowerCase()).filter(Boolean) : [];
   if (keywords.length) {
     const haystack = [
@@ -264,7 +277,12 @@ export function matchProcurementDigestRows(source, filter = {}, options = {}) {
     .map((row) => (row?.object_type === "procurement" ? procurementDigestRow(row, source) : compactRowFromDigest(row)))
     .filter(Boolean)
     .filter((row) => rowMatchesFilter(row, filter, lens))
-    .sort((left, right) => String(right.start_date || "").localeCompare(String(left.start_date || "")));
+    .sort((left, right) => {
+      const byDate = String(right.start_date || "").localeCompare(String(left.start_date || ""));
+      if (byDate) return byDate;
+      return String(left.procurement_id || "").localeCompare(String(right.procurement_id || ""));
+    });
+  // Filter (including text_query) already ran; only then apply the display limit.
   return matched.slice(0, Math.max(0, limit)).map((row) => Object.freeze(stampDigestIdentity(row)));
 }
 

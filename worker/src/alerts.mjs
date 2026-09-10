@@ -19,7 +19,9 @@ import cfg from "../alerts.config.json" with { type: "json" };
 import { capDecision } from "@jimdc/sendcap";
 import { signToken, listUnsubscribe } from "optin-token";
 import { issueEmailSessionToken } from "./session.mjs";
-import { compileSub, mergeCompiledRows, rowsForCompiledQuery, vendorStem } from "./lib/compile.mjs";
+import { compileSub, getProcurementDigestSnapshot, mergeCompiledRows, rowsForCompiledQuery, vendorStem } from "./lib/compile.mjs";
+import { evaluateMoneyTextQueryWatch, TEXT_QUERY_EVAL_STATUS } from "./lib/watch_text_query_procurement.mjs";
+import { textQueryEvaluationSupported } from "../../site/watch_text_query.mjs";
 import { compileSub_d1, toDigestRow, OFF_MIRROR_LENSES } from "./lib/compile_d1.mjs";
 import {
   d1DispatchExactCouncilMatter,
@@ -879,6 +881,51 @@ async function finalizeOutboxDelivery(env, reservation, subscriberId, ctx, items
   }
 }
 
+async function loadWatchRows(env, s, ctx, q, { sodaLimit = null, warnLabel = "alerts" } = {}) {
+  if (s.filter?.text_query && textQueryEvaluationSupported(s.lens)) {
+    const evaluation = await evaluateMoneyTextQueryWatch({
+      db: env.DB || null,
+      snapshot: getProcurementDigestSnapshot(),
+      sub: s,
+      todayISO: ctx.today,
+      limit: Number(sodaLimit) || 25,
+      clock: ctx.today,
+    });
+    return {
+      rows: evaluation.rows || [],
+      usedD1: evaluation.retrieval === "legacy_like" || evaluation.retrieval === "legacy_like_fts_absent",
+      evaluation,
+    };
+  }
+
+  let rows;
+  let usedD1 = false;
+  if (env.DB && !OFF_MIRROR_LENSES.has(s.lens) && !s.filter?.geographies?.length) {
+    try {
+      const fresh = await isMirrorFresh(env.DB, ctx.today);
+      if (fresh) {
+        const d1 = compileSub_d1(s, ctx.today);
+        if (d1?.opts && !d1.unsupported && !d1.nativeReader) {
+          const { sql, params } = buildNoticesQuery(d1.opts);
+          const res = await env.DB.prepare(sql).bind(...params).all();
+          let mapped = (res.results ?? []).map(toDigestRow);
+          if (d1.postFilter) mapped = mapped.filter(d1.postFilter);
+          rows = mergeCompiledRows(q, mapped);
+          usedD1 = true;
+        }
+      }
+    } catch (e) {
+      console.warn(`${warnLabel}: D1 fast path failed, falling back to SODA:`, String(e?.message || e));
+    }
+  }
+  if (!usedD1) {
+    const compiled = sodaLimit != null ? { ...q, params: { ...q.params, "$limit": String(sodaLimit) } } : q;
+    rows = await rowsForCompiledQuery(compiled, env);
+    if (q.postFilter && s.lens !== "property") rows = rows.filter(q.postFilter);
+  }
+  return { rows, usedD1, evaluation: null };
+}
+
 export async function processOneSub(env, s, ctx) {
   s = await normalizeWatchIdentity(s);
   const digestId = await digestShadowId("digest", s.key);
@@ -916,33 +963,24 @@ export async function processOneSub(env, s, ctx) {
     // of today (mirror is fresh). Falls back to the live-SODA path on any failure or when the
     // mirror is stale — graceful degradation per the mission rule.
     // land/ZAP lenses are NOT in the D1 mirror and always use the SODA path (explicit, not accidental).
-    let rows;
-    let usedD1 = false;
-    if (env.DB && !OFF_MIRROR_LENSES.has(s.lens) && !s.filter?.geographies?.length) {
-      try {
-        const fresh = await isMirrorFresh(env.DB, ctx.today);
-        if (fresh) {
-          const d1 = compileSub_d1(s, ctx.today);
-          if (d1?.opts && !d1.unsupported && !d1.nativeReader) {
-            const { results: d1Rows } = await (async () => {
-              const { sql, params } = buildNoticesQuery(d1.opts);
-              const res = await env.DB.prepare(sql).bind(...params).all();
-              return res;
-            })();
-            let mapped = (d1Rows ?? []).map(toDigestRow);
-            if (d1.postFilter) mapped = mapped.filter(d1.postFilter);
-            rows = mergeCompiledRows(q, mapped);
-            usedD1 = true;
-          }
-        }
-      } catch (e) {
-        console.warn("alerts: D1 fast path failed, falling back to SODA:", String(e?.message || e));
-      }
+    const loaded = await loadWatchRows(env, s, ctx, q, { warnLabel: "alerts" });
+    if (loaded.evaluation?.status === TEXT_QUERY_EVAL_STATUS.unavailable) {
+      return {
+        sub: s.key,
+        skipped: "text-query-unavailable",
+        kind: "subscription",
+        textQueryEvaluation: loaded.evaluation,
+      };
     }
-    if (!usedD1) {
-      rows = await rowsForCompiledQuery(q, env);
-      if (q.postFilter && s.lens !== "property") rows = rows.filter(q.postFilter); // property needs the full parcel stream for stage transitions
+    if (loaded.evaluation?.status === TEXT_QUERY_EVAL_STATUS.incomplete && !(loaded.rows || []).length) {
+      return {
+        sub: s.key,
+        skipped: "text-query-incomplete",
+        kind: "subscription",
+        textQueryEvaluation: loaded.evaluation,
+      };
     }
+    let rows = loaded.rows;
     // Narrowing counts only — nothing below reads the funnel to decide anything.
     const funnel = emptyFunnel();
     funnel.source_candidates = rows.length;
@@ -1475,30 +1513,14 @@ async function evaluateSubSection(env, s, ctx) {
     }
 
     const forecasts = await matchForecasts(env, s, ctx.today);
-    let rows;
-    let usedD1 = false;
-    if (env.DB && !OFF_MIRROR_LENSES.has(s.lens) && !s.filter?.geographies?.length) {
-      try {
-        const fresh = await isMirrorFresh(env.DB, ctx.today);
-        if (fresh) {
-          const d1 = compileSub_d1(s, ctx.today);
-          if (d1?.opts && !d1.unsupported && !d1.nativeReader) {
-            const { sql, params } = buildNoticesQuery(d1.opts);
-            const res = await env.DB.prepare(sql).bind(...params).all();
-            let mapped = (res.results ?? []).map(toDigestRow);
-            if (d1.postFilter) mapped = mapped.filter(d1.postFilter);
-            rows = mergeCompiledRows(q, mapped);
-            usedD1 = true;
-          }
-        }
-      } catch (e) {
-        console.warn("alerts: D1 fast path failed (rollup), falling back to SODA:", String(e?.message || e));
-      }
+    const loaded = await loadWatchRows(env, s, ctx, q, { warnLabel: "alerts (rollup)" });
+    if (loaded.evaluation?.status === TEXT_QUERY_EVAL_STATUS.unavailable) {
+      return { ...base, status: SECTION_STATUS.SKIPPED, skipped: "text-query-unavailable", textQueryEvaluation: loaded.evaluation };
     }
-    if (!usedD1) {
-      rows = await rowsForCompiledQuery(q, env);
-      if (q.postFilter && s.lens !== "property") rows = rows.filter(q.postFilter);
+    if (loaded.evaluation?.status === TEXT_QUERY_EVAL_STATUS.incomplete && !(loaded.rows || []).length) {
+      return { ...base, status: SECTION_STATUS.SKIPPED, skipped: "text-query-incomplete", textQueryEvaluation: loaded.evaluation };
     }
+    let rows = loaded.rows;
     // Narrowing counts only — nothing below reads the funnel to decide anything.
     const funnel = emptyFunnel();
     funnel.source_candidates = rows.length;
@@ -1972,40 +1994,38 @@ async function evaluateCatchUpSub(env, s, ctx) {
     if (matterDispatch?.nativeReader && !matterWatchDeliveryEnabled(env)) {
       return { ...base, status: SECTION_STATUS.SKIPPED, skipped: "feature-gated", zeroMatch: true, new: 0, found: 0 };
     }
-    const sourceParams = { ...q.params, "$limit": "100" };
     let rows;
-    let mirrorError = null;
-    if (env.DB && !OFF_MIRROR_LENSES.has(s.lens) && !s.filter?.geographies?.length) {
-      try {
-        const fresh = await isMirrorFresh(env.DB, ctx.today);
-        if (fresh) {
-          const d1 = compileSub_d1(s, ctx.today);
-          if (d1?.opts && !d1.unsupported && !d1.nativeReader) {
-            const { sql, params } = buildNoticesQuery(d1.opts);
-            const res = await env.DB.prepare(sql).bind(...params).all();
-            rows = (res.results ?? []).map(toDigestRow);
-            if (d1.postFilter) rows = rows.filter(d1.postFilter);
-            rows = mergeCompiledRows(q, rows);
-          }
-        }
-      } catch (error) {
-        mirrorError = error;
-        console.warn("catch-up evaluator: D1 path failed, falling back to SODA:", String(error?.message || error));
+    try {
+      const loaded = await loadWatchRows(env, s, ctx, q, { sodaLimit: 100, warnLabel: "catch-up evaluator" });
+      if (loaded.evaluation?.status === TEXT_QUERY_EVAL_STATUS.unavailable) {
+        return {
+          ...base,
+          status: SECTION_STATUS.SKIPPED,
+          skipped: "text-query-unavailable",
+          zeroMatch: true,
+          new: 0,
+          found: 0,
+          textQueryEvaluation: loaded.evaluation,
+        };
       }
-    }
-    if (!rows) {
-      try {
-        rows = await rowsForCompiledQuery({ ...q, params: sourceParams }, env);
-        if (q.postFilter && s.lens !== "property") rows = rows.filter(q.postFilter);
-      } catch (error) {
+      rows = loaded.rows;
+      if (!rows) {
         return {
           ...base,
           status: SECTION_STATUS.FAILED,
-          error: String(error?.message || mirrorError?.message || mirrorError || error),
+          error: String(loaded.error?.message || loaded.error || "catch-up-source-unavailable"),
           found: 0,
           new: 0,
         };
       }
+    } catch (error) {
+      return {
+        ...base,
+        status: SECTION_STATUS.FAILED,
+        error: String(error?.message || error),
+        found: 0,
+        new: 0,
+      };
     }
 
     rows = rows.filter((row) => rowAfterDeliveryNotBefore(s, row));
