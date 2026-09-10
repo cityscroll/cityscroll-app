@@ -321,3 +321,34 @@ test("previewOnly rehearsal does not enqueue owed rows; dry-run without it still
   assert.equal(await enqueueCount(true), 0);
   assert.ok((await enqueueCount(false)) > 0, "dry-run without previewOnly must still write digest_outbox_items");
 });
+
+test("rollup provider submit sends the reserved delivery id as Idempotency-Key", async () => {
+  const { sqlite, DB } = makeDb();
+  const first = sub("one", "land", { status: "all" });
+  const second = sub("two", "land", { status: "all" });
+  insertOwed(sqlite, {
+    watchId: first.watch_id,
+    itemId: "land:OWED-IDEM",
+    payload: { project_id: "OWED-IDEM", project_name: "Idempotent harbor project", public_status: "In review" },
+  });
+  const original = globalThis.fetch;
+  const headers = [];
+  globalThis.fetch = async (url, options) => {
+    const target = String(url);
+    if (target.includes("api.resend.com/emails")) {
+      headers.push(options.headers || {});
+      return { ok: true, json: async () => ({ id: "provider:test" }) };
+    }
+    return { ok: true, json: async () => [] };
+  };
+  try {
+    const result = await processAccountRollup(env(DB), [first, second], ctx().ctx);
+    assert.equal(result.sent, true);
+    assert.equal(headers.length, 1);
+    assert.ok(headers[0]["Idempotency-Key"], "unchanged retries reuse the reserved delivery id");
+    assert.match(headers[0]["Idempotency-Key"], /^digest:/);
+  } finally {
+    globalThis.fetch = original;
+    sqlite.close();
+  }
+});

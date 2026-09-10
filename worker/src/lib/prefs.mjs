@@ -9,6 +9,7 @@
 import { normalizeEmail, FREQS, SUPPORTED_LANGS } from "./subscriptions.mjs";
 import { admitTextQuery, sanitize } from "./filter.mjs";
 import { describeFilter } from "./confirm_email.mjs";
+import { stampWatchQueryRevision } from "./watch_query_revision.mjs";
 
 export const PREFS_SCOPE = "prefs";
 /** Preference-center link lifetime (~60 days — same order as unsubscribe links). */
@@ -106,7 +107,14 @@ export function applyWatchPatch(record, patch = {}) {
     if (admission.canonical) next.filter.text_query = admission.canonical;
     else delete next.filter.text_query;
   }
-  return { ok: true, record: next };
+  let queryRevisionChanged = false;
+  if (patch.filter != null || Array.isArray(patch.keywords)) {
+    const stamped = stampWatchQueryRevision(next);
+    Object.assign(next, { query_revision: stamped.record.query_revision });
+    if (!stamped.record.query_revision) delete next.query_revision;
+    queryRevisionChanged = stamped.changed;
+  }
+  return { ok: true, record: next, queryRevisionChanged };
 }
 
 /**
@@ -120,7 +128,21 @@ export function parsePrefsAction(body = {}) {
   if (body.freq != null) patch.freq = body.freq;
   if (body.paused != null) patch.paused = body.paused === true || body.paused === "true" || body.paused === "1";
   if (body.lang != null) patch.lang = body.lang;
-  if (body.filter && typeof body.filter === "object") patch.filter = body.filter;
+  if (body.filter != null) {
+    if (typeof body.filter === "object") patch.filter = body.filter;
+    else if (typeof body.filter === "string") {
+      try { patch.filter = JSON.parse(body.filter); } catch { /* keep keywords-only */ }
+    }
+  }
+  if (body.text_query != null) {
+    let expression = body.text_query;
+    if (typeof expression === "string") {
+      try { expression = JSON.parse(expression); } catch { expression = null; }
+    }
+    if (expression && typeof expression === "object") {
+      patch.filter = { ...(patch.filter || {}), text_query: expression };
+    }
+  }
   if (body.keywords != null) {
     // Accept comma-separated string or array.
     if (typeof body.keywords === "string") {

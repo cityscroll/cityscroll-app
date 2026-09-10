@@ -33,6 +33,8 @@ export function watchSnapshot(record) {
   if (freq) snapshot.freq = freq;
   if (typeof record.paused === "boolean") snapshot.paused = record.paused;
   else snapshot.paused = false;
+  const revision = nonEmptyString(record.query_revision);
+  if (revision) snapshot.query_revision = revision;
   return Object.keys(snapshot).length ? snapshot : undefined;
 }
 
@@ -48,6 +50,9 @@ export function updateDetail(beforeRecord, afterRecord) {
   }
   if (before.paused !== after.paused) {
     changes.push(`${before.paused ? "paused" : "active"} → ${after.paused ? "paused" : "active"}`);
+  }
+  if ((before.query_revision || null) !== (after.query_revision || null)) {
+    changes.push("expression revised");
   }
   return changes.join("; ") || undefined;
 }
@@ -89,6 +94,8 @@ function cleanSnapshot(value) {
   if (label) clean.label = label;
   if (freq) clean.freq = freq;
   if (typeof value.paused === "boolean") clean.paused = value.paused;
+  const revision = nonEmptyString(value.query_revision);
+  if (revision) clean.query_revision = revision;
   return Object.keys(clean).length ? clean : undefined;
 }
 

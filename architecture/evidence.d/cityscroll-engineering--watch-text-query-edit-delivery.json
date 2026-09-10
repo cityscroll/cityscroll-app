@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/watch-text-query-edit-delivery",
+  "status": "implemented",
+  "fingerprint": "watch-text-query-edit-delivery.v1",
+  "updated_at": "2026-09-10T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "watch-query-revision",
+      "path": "worker/src/lib/watch_query_revision.mjs"
+    },
+    {
+      "id": "digest-outbox-query-revision-migration",
+      "path": "worker/migrations/0030_digest_outbox_query_revision.sql"
+    },
+    {
+      "id": "watch-text-query-edit-delivery-tests",
+      "path": "worker/test/watch_text_query_edit_delivery.test.mjs"
+    },
+    {
+      "id": "watch-text-query-edit-delivery-receipt",
+      "path": "test/fixtures/watch_text_query/edit_delivery_acceptance.md"
+    }
+  ]
+}
