@@ -22,3 +22,5 @@ maps procurement evaluation (filter-before-limit, notice vs procurement-object
 identity, and handler paths) to `worker/test/watch_text_query_procurement.test.mjs`.
 `edit_delivery_acceptance.md` maps saved-edit and queued-delivery continuity
 to `worker/test/watch_text_query_edit_delivery.test.mjs`.
+`transport_acceptance.md` maps feed, link, and machine-handoff round-trips to
+`test/watch_text_query_transport.test.mjs` and `worker/test/watch_text_query_feed.test.mjs`.

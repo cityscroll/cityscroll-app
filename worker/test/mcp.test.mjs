@@ -324,6 +324,58 @@ test("create_watch without secrets fails closed as a tool error", async () => {
   assert.match(res.result.content[0].text, /isn't configured/);
 });
 
+test("preview_watch admits a structured filter without a model call and rejects unsupported rich input", async () => {
+  const env = { SUBS: new MockKV(), NL_METER: new MockKV() };
+  const originalFetch = globalThis.fetch;
+  const soda = [];
+  globalThis.fetch = async (url) => {
+    const target = String(url);
+    if (target.includes("api.anthropic.com") || target.includes("data.cityofnewyork.us")) {
+      soda.push(target);
+      throw new Error(`unexpected network: ${target}`);
+    }
+    return { ok: true, json: async () => [] };
+  };
+  try {
+    const ok = await (await handleMcp(post({
+      jsonrpc: "2.0", id: 91, method: "tools/call",
+      params: {
+        name: "preview_watch",
+        arguments: {
+          lens: "money",
+          filter: {
+            keywords: [],
+            noticeType: "award",
+            text_query: {
+              version: 1,
+              all: [[{ kind: "term", value: "software" }, { kind: "term", value: "consulting" }]],
+              none: [{ kind: "term", value: "maintenance" }],
+            },
+          },
+        },
+      },
+    }), env)).json();
+    assert.equal(ok.result?.isError, undefined);
+    assert.deepEqual(soda, []);
+    assert.match(ok.result.content[0].text, /Understood as:/);
+
+    const rejected = await (await handleMcp(post({
+      jsonrpc: "2.0", id: 92, method: "tools/call",
+      params: {
+        name: "preview_watch",
+        arguments: {
+          lens: "money",
+          filter: { keywords: [], text_query: { version: 2, all: [[{ kind: "term", value: "software" }]] } },
+        },
+      },
+    }), env)).json();
+    assert.equal(rejected.result.isError, true);
+    assert.match(rejected.result.content[0].text, /cannot be used as written/);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test("notifications (no id) get 202, unknown methods get -32601", async () => {
   const env = { SUBS: new MockKV(), NL_METER: new MockKV() };
   const notif = await handleMcp(post({ jsonrpc: "2.0", method: "notifications/initialized" }), env);

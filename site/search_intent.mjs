@@ -15,6 +15,7 @@ import { resolveKeywordQuery } from "./keyword_matcher.mjs";
 import { mandateSubjectRef } from "./mandate_subject_ref.mjs";
 import { scopeFromLensState, scopeFromRouteHash } from "./scope_v0.mjs";
 import { LENSES, resolveLens, sanitize } from "../worker/src/lib/filter.mjs";
+import { validateTextQuery } from "./watch_text_query.mjs";
 
 export const SEARCH_INTENT_SCHEMA = "cityscroll.search_intent.v1";
 
@@ -33,6 +34,7 @@ export const SEARCH_INTENT_KEYS = Object.freeze([
   "place",
   "time",
   "compiler",
+  "text_query",
 ]);
 
 const TYPED_REF = /^(?:agency:[^:\s]+:[^:\s]+|community-board:[a-z]+(?:-[a-z]+)*-cb-\d{2}|vendor:stem:[^:\s]+|entity:official:[^:\s]+|project:[A-Za-z0-9][A-Za-z0-9_-]{2,24}|notice:[A-Za-z0-9][A-Za-z0-9_-]{3,39}|pin:[A-Za-z0-9][A-Za-z0-9_-]{3,39}|exam:\d{4}|bbl:\d{10}|mandate:[A-Za-z0-9][A-Za-z0-9._-]{0,79})$/i;
@@ -116,6 +118,12 @@ function emptyTime() {
   };
 }
 
+function canonicalTextQuery(value) {
+  if (value == null) return null;
+  const validated = validateTextQuery(value, { structuredScope: true });
+  return validated.ok && validated.canonical ? validated.canonical : null;
+}
+
 function freezeIntent({
   text = "",
   domains = [],
@@ -124,6 +132,7 @@ function freezeIntent({
   place = emptyPlace(),
   time = emptyTime(),
   compiler = null,
+  text_query = null,
 } = {}) {
   return freezeDeep({
     schema: SEARCH_INTENT_SCHEMA,
@@ -147,6 +156,10 @@ function freezeIntent({
         : null,
     },
     compiler: SEARCH_INTENT_COMPILERS.includes(compiler) ? compiler : null,
+    // Canonical structured expression, or null. `text` is never a substitute:
+    // collapsing alternatives/phrases/exclusions into one q string would claim
+    // a faithful projection while dropping the expression.
+    text_query: canonicalTextQuery(text_query),
   });
 }
 
@@ -170,7 +183,10 @@ export function searchIntentFromScope(scope) {
   const topic = scope?.topic && typeof scope.topic === "object" ? scope.topic : {};
   const facets = scope?.facets && typeof scope.facets === "object" ? scope.facets : {};
   const values = facets.values && typeof facets.values === "object" ? facets.values : {};
-  const text = topic.query || (Array.isArray(topic.keywords) ? topic.keywords.join(" ") : "");
+  const textQuery = values.text_query ?? topic.text_query ?? null;
+  const text = textQuery
+    ? ""
+    : (topic.query || (Array.isArray(topic.keywords) ? topic.keywords.join(" ") : ""));
   const relation = relationOf(values.connection_relation);
   return freezeIntent({
     text,
@@ -180,6 +196,7 @@ export function searchIntentFromScope(scope) {
     place: scope?.place,
     time: scope?.time_window,
     compiler: "scope_v0",
+    text_query: textQuery,
   });
 }
 
@@ -235,13 +252,15 @@ export function searchIntentFromNlFilter(lens, input) {
   const filter = sanitize(lens, input);
   const knownLens = LENSES[resolved] || LENSES[lens] ? (resolved || lens) : null;
   const relation = relationOf(filter.connection_relation);
+  const textQuery = filter.text_query ?? input?.text_query ?? null;
   return freezeIntent({
-    text: Array.isArray(filter.keywords) ? filter.keywords.join(" ") : "",
+    text: textQuery ? "" : (Array.isArray(filter.keywords) ? filter.keywords.join(" ") : ""),
     domains: knownLens ? [knownLens] : [],
     entity_refs: refsFromKnownFields(filter),
     relations: relation ? [relation] : [],
     place: placeFromFilter(filter),
     time: timeFromFilter(filter),
     compiler: "nl_sanitize",
+    text_query: textQuery,
   });
 }

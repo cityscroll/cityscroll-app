@@ -25,6 +25,30 @@ test("parseFeedQuery: lens + q/agency/min extracted, keywords capped at 4", () =
   assert.equal(filter.minAmount, 250000);
 });
 
+test("parseFeedQuery: modern filter JSON keeps a structured text_query instead of flattening it into q", () => {
+  const expression = {
+    version: 1,
+    all: [[{ kind: "term", value: "software" }, { kind: "term", value: "consulting" }]],
+    none: [{ kind: "term", value: "maintenance" }],
+  };
+  const sp = new URLSearchParams({
+    lens: "money",
+    filter: JSON.stringify({
+      keywords: [],
+      agency: "Parks",
+      minAmount: 100000,
+      text_query: expression,
+    }),
+  });
+  const parsed = parseFeedQuery(sp);
+  assert.equal(parsed.modern, true);
+  assert.equal(parsed.error, null);
+  assert.equal(parsed.lens, "money");
+  assert.deepEqual(parsed.filter.text_query, expression);
+  assert.equal(parsed.filter.agency, "Parks");
+  assert.equal(parsed.filter.minAmount, 100000);
+});
+
 test("feedItems: City Record rows → CityScroll permalinks, titles cleaned, dates carried", () => {
   const items = feedItems("rules", [CR_ROW]);
   assert.equal(items.length, 1);

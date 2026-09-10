@@ -492,6 +492,10 @@ function feedURLs(){
   if(!API) return null;
   const {lens,filter}=aLensFilter();
   if(lens==="district") return null;
+  if(filter && filter.text_query){
+    if(typeof CrolScope?.standingFeedUrlsFromWatch !== "function") return null;
+    return CrolScope.standingFeedUrlsFromWatch({lens, filter}, { apiBase: API });
+  }
   const q=new URLSearchParams({lens});
   if(filter.keywords && filter.keywords.length) q.set("q", filter.keywords.join(" "));
   if(filter.agency) q.set("agency", filter.agency);
@@ -504,10 +508,12 @@ function feedURLs(){
 function renderFeedLinks(){
   const el=$("#afeeds"); if(!el) return;
   const u=feedURLs(); if(!u){ el.innerHTML=""; return; }
+  const calendar = u.ics
+    ? ` · <a href="${u.ics}">${t("calendar_ics")}</a> ${t("feeds_suffix")}`
+    : "";
   el.innerHTML=`${t("prefer_feeds_html")}
     <a href="${u.atom}">RSS/Atom</a> ·
-    <a href="${u.json}">JSON Feed</a> ·
-    <a href="${u.ics}">${t("calendar_ics")}</a> ${t("feeds_suffix")}`;
+    <a href="${u.json}">JSON Feed</a>${calendar}`;
 }
 // awardwatch has no notices list to preview — the "digest" is a one-off notification, not a
 // standing query, so this just confirms what's about to be watched (or asks the reader to

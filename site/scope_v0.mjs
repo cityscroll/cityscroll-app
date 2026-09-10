@@ -388,17 +388,35 @@ function isSubscriptionWatch(value) {
       || Object.prototype.hasOwnProperty.call(value, "filter")));
 }
 
+function textQueryFromWatchFilter(filter) {
+  if (!filter || typeof filter !== "object" || Array.isArray(filter)) return undefined;
+  if (!Object.prototype.hasOwnProperty.call(filter, "text_query")) return undefined;
+  return filter.text_query;
+}
+
 /** Normalize either a canonical scope or an existing {lens, filter} watch to one watch wire. */
 export function subscriptionWatchFromScope(input = {}, { lens } = {}) {
   const source = isSubscriptionWatch(input) ? input : null;
   const sourceLens = lens || source?.lens;
+  const sourceTextQuery = textQueryFromWatchFilter(source?.filter);
   const scope = source
     ? scopeFromGeographyWatch(source, { language: source.language || "en" })
     : scopeWithGeographies(input);
   const watch = watchFromGeographyScope(scope, { lens: sourceLens });
+  const filter = compactSubscriptionFilter(watch.filter);
+  // Geography conversion is a place-key projector. A precise-watch expression
+  // must ride the watch filter as structured JSON, never as topic.query.
+  const scopedTextQuery = textQueryFromWatchFilter(filter)
+    ?? textQueryFromWatchFilter(scope?.facets?.values);
+  if (sourceTextQuery !== undefined) {
+    if (sourceTextQuery == null) delete filter.text_query;
+    else filter.text_query = sourceTextQuery;
+  } else if (scopedTextQuery != null) {
+    filter.text_query = scopedTextQuery;
+  }
   return {
     lens: watch.lens,
-    filter: compactSubscriptionFilter(watch.filter),
+    filter,
   };
 }
 
@@ -409,6 +427,22 @@ export function subscriptionParamsFromWatch(input = {}) {
     lens: watch.lens,
     filter: JSON.stringify(watch.filter),
   });
+}
+
+/**
+ * Standing Atom/JSON feed URLs for a watch. Calendar is omitted (null) when the
+ * selected scope cannot be replayed — never a broader ICS substitute.
+ */
+export function standingFeedUrlsFromWatch(input = {}, { apiBase = "https://api.cityscroll.org" } = {}) {
+  const watch = subscriptionWatchFromScope(input);
+  const params = subscriptionParamsFromWatch(watch);
+  const base = String(apiBase || "https://api.cityscroll.org").replace(/\/+$/, "");
+  const qs = params.toString();
+  return {
+    atom: `${base}/feed.xml?${qs}`,
+    json: `${base}/feed.json?${qs}`,
+    ics: calendarFeedUrlForScope(watch, { base: `${base}/feed.ics` }),
+  };
 }
 
 /** Fields that the standing feed can replay through compileSub without dropping a constraint. */

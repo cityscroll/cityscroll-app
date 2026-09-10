@@ -672,6 +672,7 @@ function sanitizeDeepLinkFilter(lens, input){
   if(!out.provision_id) delete out.provision_id;
   if(!out.matter_ref) delete out.matter_ref;
   if(!out.matter_scope_version) delete out.matter_scope_version;
+  if(f.text_query?.version===1) out.text_query=f.text_query;
   return out;
 }
 // raw is already percent-decoded (URLSearchParams.get()). null on anything malformed, truncated
@@ -684,6 +685,7 @@ function parseWatchParam(raw){
   if(!obj || typeof obj !== "object" || Array.isArray(obj)) return null;
   const lens = typeof obj.lens === "string" ? obj.lens : null;
   if(!lens || !DEEPLINK_LENSES[lens]) return null;
+  if(obj.filter?.text_query!=null&&obj.filter.text_query.version!==1) return null;
   return { lens, filter: sanitizeDeepLinkFilter(lens, obj.filter) };
 }
 // The "We understood this as" echo chips, reusing each lens's own chip builder so a deep-linked
