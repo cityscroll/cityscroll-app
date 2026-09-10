@@ -16,5 +16,7 @@ All request IDs and titles are public records (original records at
 the retained snapshot only; rolling production gates must assert population
 properties instead of requiring these records to stay in a publisher window.
 
-`acceptance.md` maps each acceptance item to the delivered path and the exact
-ID sets asserted by the tests.
+`acceptance.md` maps each matching-contract acceptance item to the delivered
+path and the exact ID sets asserted by the tests. `evaluation_acceptance.md`
+maps procurement evaluation (filter-before-limit, notice vs procurement-object
+identity, and handler paths) to `worker/test/watch_text_query_procurement.test.mjs`.

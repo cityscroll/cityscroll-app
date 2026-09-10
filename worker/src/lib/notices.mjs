@@ -117,16 +117,18 @@ export function buildNoticesQuery(opts = {}) {
 
   let orderBy;
   const explicit = opts.orderBy;
-  if (explicit === "start_date") orderBy = "start_date DESC";
-  else if (explicit === "contract_amount") orderBy = "contract_amount DESC, start_date DESC";
+  if (explicit === "start_date") {
+    orderBy = opts.stablePaging ? "start_date DESC, request_id ASC" : "start_date DESC";
+  } else if (explicit === "contract_amount") orderBy = "contract_amount DESC, start_date DESC";
   else if (explicit === "score" && allTerms.length) orderBy = "_score DESC, start_date DESC";
   else if (hasAmount) orderBy = "contract_amount DESC, start_date DESC";
   else if (allTerms.length) orderBy = "_score DESC, start_date DESC";
-  else orderBy = "start_date DESC";
+  else orderBy = opts.stablePaging ? "start_date DESC, request_id ASC" : "start_date DESC";
 
   const whereSql = where.length ? "WHERE " + where.join(" AND ") : "";
   const limit = Math.max(1, Math.min(opts.limit ?? 15, 100));
-  const sql = `SELECT *, (${scoreExpr}) AS _score FROM notices ${whereSql} ORDER BY ${orderBy} LIMIT ${limit}`;
+  const offset = Number.isInteger(opts.offset) && opts.offset > 0 ? Math.min(opts.offset, 100000) : 0;
+  const sql = `SELECT *, (${scoreExpr}) AS _score FROM notices ${whereSql} ORDER BY ${orderBy} LIMIT ${limit}${offset ? ` OFFSET ${offset}` : ""}`;
   return { sql, params, terms: allTerms };
 }
 

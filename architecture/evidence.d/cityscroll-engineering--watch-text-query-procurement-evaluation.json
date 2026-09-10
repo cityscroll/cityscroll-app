@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/watch-text-query-procurement-evaluation",
+  "status": "implemented",
+  "fingerprint": "watch-text-query-procurement-evaluation.v1",
+  "updated_at": "2026-09-10T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "watch-text-query-eval",
+      "path": "site/watch_text_query_eval.mjs"
+    },
+    {
+      "id": "watch-text-query-procurement-adapter",
+      "path": "worker/src/lib/watch_text_query_procurement.mjs"
+    },
+    {
+      "id": "watch-text-query-procurement-tests",
+      "path": "worker/test/watch_text_query_procurement.test.mjs"
+    },
+    {
+      "id": "watch-text-query-evaluation-receipt",
+      "path": "test/fixtures/watch_text_query/evaluation_acceptance.md"
+    }
+  ]
+}

@@ -34,6 +34,9 @@ export function subToD1Opts(sub, todayISO) {
   // Same fail-closed rule as compileSub(): a text_query the D1 mirror cannot
   // evaluate must not silently become an unfiltered query. Returning null makes
   // the caller fall back to compileSub(), which refuses the watch the same way.
+  // When evaluation is registered, structured facets still compile here; the
+  // expression is NOT folded into termGroups (LIKE is only a candidate
+  // superset, applied by the precise evaluator).
   if (f.text_query != null && !textQueryEvaluationSupported(sub?.lens)) return null;
   const kws = (Array.isArray(f.keywords) ? f.keywords : []).filter(Boolean);
   const lens = sub.lens;
@@ -146,7 +149,13 @@ export function compileSub_d1(sub, todayISO) {
     }
   }
 
-  return { opts, postFilter };
+  return {
+    opts,
+    postFilter,
+    ...(f.text_query != null && textQueryEvaluationSupported(sub?.lens)
+      ? { textQuery: f.text_query }
+      : {}),
+  };
 }
 
 // Map a D1 notices row → field names that subDigestHtml and the alerts diff expect.

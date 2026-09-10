@@ -24,15 +24,14 @@ const expr = (all, none = []) => ({ version: 1, all, none });
 
 const softwareWatch = expr([[term("software")]], [term("maintenance")]);
 
-test("support registry: money admits the contract, no lens evaluates yet", () => {
+test("support registry: money admits and evaluates; other lenses stay closed", () => {
   assert.equal(textQueryAdmissionSupported("money"), true);
+  assert.equal(textQueryEvaluationSupported("money"), true);
   assert.equal(textQueryAdmissionSupported("meetings"), false);
   assert.equal(textQueryAdmissionSupported("alerts"), false);
   assert.equal(textQueryAdmissionSupported("obligations"), false, "legacy alias must not leak admission");
-  for (const support of Object.values(TEXT_QUERY_SUPPORT)) {
-    assert.equal(support.evaluation, false, "no delivery path consumes v1 in this contract stage");
-  }
-  assert.equal(textQueryEvaluationSupported("money"), false);
+  assert.equal(textQueryEvaluationSupported("meetings"), false);
+  assert.equal(TEXT_QUERY_SUPPORT.money.evaluation, true);
 });
 
 test("prepareWatchFilter admits a valid money expression and stores the canonical form", () => {
@@ -143,13 +142,24 @@ test("encodeWatchFilter serializes an admitted watch without losing text_query",
   assert.equal(encoded, equivalent);
 });
 
-test("compilers refuse a text_query watch instead of silently unfiltering it", () => {
-  const sub = { lens: "money", filter: sanitize("money", { text_query: softwareWatch }) };
-  assert.equal(compileSub(sub, "2026-09-09"), null);
-  assert.equal(subToD1Opts(sub, "2026-09-09"), null);
-  assert.equal(compileSub_d1(sub, "2026-09-09"), null);
-  // The refusal is the expression, not the lens: the same lens without
-  // text_query still compiles exactly as before (A5 dispatch preservation).
+test("money text_query compiles to owned materialization, not an unfiltered or SODA query", () => {
+  const sub = { lens: "money", filter: sanitize("money", { text_query: softwareWatch, noticeType: "award" }) };
+  const compiled = compileSub(sub, "2026-09-09");
+  assert.ok(compiled);
+  assert.equal(compiled.soda, false);
+  assert.equal(compiled.url, null);
+  assert.ok(compiled.textQuery);
+  assert.equal("$q" in (compiled.params || {}), false);
+  const d1 = compileSub_d1(sub, "2026-09-09");
+  assert.ok(d1?.opts);
+  assert.equal(d1.opts.noticeType, "Award");
+  assert.equal(d1.opts.termGroups, undefined, "expression is not folded into LIKE termGroups");
+  assert.deepEqual(d1.textQuery, sub.filter.text_query);
+  // Unsupported lenses still refuse rather than silently unfilter.
+  const meetings = { lens: "meetings", filter: { text_query: softwareWatch } };
+  assert.equal(compileSub(meetings, "2026-09-09"), null);
+  assert.equal(subToD1Opts(meetings, "2026-09-09"), null);
+  // Legacy keyword money watches still compile exactly as before.
   const legacySub = { lens: "money", filter: sanitize("money", { keywords: ["software"], minAmount: 100000 }) };
   assert.ok(compileSub(legacySub, "2026-09-09"));
   assert.ok(subToD1Opts(legacySub, "2026-09-09"));

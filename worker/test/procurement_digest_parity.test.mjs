@@ -6,6 +6,7 @@ import { DatabaseSync } from "node:sqlite";
 import { processOneSub } from "../src/alerts.mjs";
 import { useProcurementDigestSnapshot } from "../src/lib/compile.mjs";
 import { sanitize } from "../src/lib/filter.mjs";
+import { matchProcurementDigestRows } from "../../site/procurement_digest_compile.mjs";
 import { buildSharedProcurementReadModel } from "../../site/shared_procurement_read_model.mjs";
 
 const cohort = JSON.parse(readFileSync(
@@ -185,5 +186,37 @@ test("agency award watches deliver CROL-negative snapshot rows when City Record 
   } finally {
     restore();
     sqlite.close();
+  }
+});
+
+test("precise expression keeps CROL-negative identity and does not bypass exclusions or duplicate a contract", () => {
+  const restore = useProcurementDigestSnapshot(model);
+  try {
+    const excluded = matchProcurementDigestRows(model, sanitize("money", {
+      procurement_id: CROL_NEGATIVE_ID,
+      noticeType: "award",
+      text_query: { version: 1, all: [[{ kind: "term", value: "legal" }]], none: [{ kind: "term", value: "services" }] },
+    }), { lens: "money" });
+    assert.deepEqual(excluded, [], "exact-id branch must apply the exclusion, not return early");
+
+    const matched = matchProcurementDigestRows(model, sanitize("money", {
+      procurement_id: CROL_NEGATIVE_ID,
+      noticeType: "award",
+      text_query: { version: 1, all: [[{ kind: "term", value: "legal" }]] },
+    }), { lens: "money" });
+    assert.equal(matched.length, 1);
+    assert.equal(matched[0].procurement_id, CROL_NEGATIVE_ID);
+    assert.equal(matched[0].request_id, undefined);
+    assert.doesNotMatch(matched[0].canonical_href || "", /notices\//);
+
+    const agency = matchProcurementDigestRows(model, sanitize("money", {
+      noticeType: "award",
+      agency: "Office of the Comptroller",
+      text_query: { version: 1, all: [[{ kind: "term", value: "legal" }]] },
+    }), { lens: "money" });
+    const ids = agency.map((row) => row.digest_id || row.procurement_id);
+    assert.equal(ids.filter((id) => id === CROL_NEGATIVE_ID).length, 1, "one contract, not duplicated");
+  } finally {
+    restore();
   }
 });
