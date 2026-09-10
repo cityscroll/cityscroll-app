@@ -1109,6 +1109,7 @@ test/fixtures/land_prediction_features/sparse.json
 test/fixtures/land_prediction_features/unknown.json
 test/fixtures/land_prediction_shadow/gold.v1.json
 test/fixtures/land_use_action_type/2024M0158.json
+test/fixtures/legistar/upcoming_contracts_22691.json
 test/fixtures/procurement_search/golden_cohort.json
 test/fixtures/repository_governance/positive/test-example.mjs
 test/fixtures/rules_stage/20260728026.json
@@ -2231,6 +2232,7 @@ worker/src/lib/ulurp_recommendation_rows_source_records.mjs
 worker/src/lib/ulurp_recommendation_source_records.mjs
 worker/src/lib/ulurp_recommendations_join.mjs
 worker/src/lib/ulurp_statutory_predictions.mjs
+worker/src/lib/upcoming_council_meetings.mjs
 worker/src/lib/upstream_failure.mjs
 worker/src/lib/usage.mjs
 worker/src/lib/watchlog.mjs
