@@ -5,6 +5,11 @@ keeps the initial pattern set intentionally small: a warning that fires often is
 quickly ignored. Findings recommend a positive rewrite that says what the thing
 is, why it matters, and what the reader should do.
 
+Absence-caveats are a construction, not a phrase list: a heading or short lead
+in negative scope that introduces a list of undetermined items. Ordinary
+negative sentences, coverage notes, and methodology limits without that
+enumeration are not refused.
+
 The default mode is ``warn``. ``block`` is the calibrated enforcement mode.
 Reviewed exceptions may use the allowlist file or an adjacent
 ``no-disclaimer-slop: ignore`` comment.
@@ -15,7 +20,7 @@ import argparse
 import json
 import re
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Iterable, Optional, Sequence
@@ -93,22 +98,39 @@ PATTERNS = (
             re.IGNORECASE,
         ),
     ),
-    Pattern(
-        "absence_caveat_shape",
-        "absence-caveat disclaimer",
-        re.compile(
-            r"(?:"
-            r"\bwhat\b.{0,80}\bcannot verify\b|"
-            r"\bcannot verify\b|"
-            r"\bsources do not (?:carry|include)\b|"
-            r"\bdo not carry these\b|"
-            r"\bthis is not a finding that\b|"
-            r"\bnot a finding that they are missing\b"
-            r")",
-            re.IGNORECASE | re.DOTALL,
-        ),
-    ),
 )
+
+ABSENCE_CAVEAT_RULE_ID = "absence_caveat_shape"
+ABSENCE_CAVEAT_RULE_NAME = "absence-caveat disclaimer"
+
+# Negative scope names the family of "we did not determine this" leads. The
+# enumeration (a following list, a colon-led series, or short parallel
+# fragments) is required separately; matching one of these phrases alone is
+# not a finding.
+NEGATIVE_SCOPE_RE = re.compile(
+    r"(?:"
+    r"\bcan(?:\s+not|not)\s+verify\b|"
+    r"\bnot\s+confirmed\s+by\b|"
+    r"\boutside\s+what\s+(?:we|the\s+site)\s+can\s+check\b|"
+    r"\bdo(?:es)?\s+not\s+(?:carry|include)\b|"
+    r"\bnot\s+a\s+finding\b|"
+    r"\bunable\s+to\s+establish\b|"
+    r"\bno\s+record\s+of\b|"
+    r"\bnot\s+part\s+of\s+(?:our|the)\s+sources\b|"
+    r"\bwe\s+(?:were|are)\s+unable\s+to\s+(?:establish|confirm|verify|determine)\b|"
+    r"\bcould\s+not\s+(?:establish|confirm|verify|determine)\b"
+    r")",
+    re.IGNORECASE,
+)
+HTML_STRUCTURE_HINT_RE = re.compile(
+    r"<\s*(?:p|h[1-6]|ul|ol|li|div|section|article|blockquote)\b",
+    re.IGNORECASE,
+)
+SERIES_SPLIT_RE = re.compile(r"\s*(?:,|;|·|•|\band\b)\s*", re.IGNORECASE)
+# A long paragraph that happens to contain "not a finding" is not introducing
+# the list that follows it. Headings and short leads are.
+ABSENCE_INTRODUCER_MAX_CHARS = 120
+SHORT_FRAGMENT_MAX_CHARS = 80
 
 # These short forms carry a concrete evidence, timing, or source boundary. They
 # are deliberately retained as positive product copy; the gate targets defensive
@@ -168,6 +190,101 @@ class VisibleTextExtractor(HTMLParser):
     def handle_data(self, data: str) -> None:
         if data.strip() and not self._skipping():
             self.parts.append((data, self.getpos()[0]))
+
+
+@dataclass
+class _Block:
+    kind: str
+    text: str
+    line: int
+    items: tuple[str, ...] = field(default_factory=tuple)
+
+
+class StructuredTextExtractor(HTMLParser):
+    """Visible block structure: headings, leads, and lists with line offsets."""
+
+    SKIP_TAGS = {"code", "pre", "script", "style", "template"}
+    HEADING_TAGS = {"h1", "h2", "h3", "h4", "h5", "h6"}
+    LEAD_TAGS = {"p"}
+    LIST_TAGS = {"ul", "ol"}
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self._stack: list[str] = []
+        self._lead: Optional[dict[str, object]] = None
+        self._lists: list[dict[str, object]] = []
+        self.blocks: list[_Block] = []
+
+    def _skipping(self) -> bool:
+        return any(tag in self.SKIP_TAGS for tag in self._stack)
+
+    def _in_list(self) -> bool:
+        return bool(self._lists)
+
+    def _close_tag(self, tag: str) -> None:
+        tag = tag.lower()
+        for index in range(len(self._stack) - 1, -1, -1):
+            if self._stack[index] == tag:
+                del self._stack[index:]
+                break
+
+    def handle_starttag(self, tag: str, attrs) -> None:  # noqa: ANN001 - HTMLParser API
+        tag = tag.lower()
+        self._stack.append(tag)
+        if self._skipping():
+            return
+        if tag in self.LIST_TAGS:
+            self._lists.append({"line": self.getpos()[0], "items": [], "item_parts": None})
+        elif tag == "li" and self._lists:
+            self._lists[-1]["item_parts"] = []
+        elif tag in self.HEADING_TAGS or tag in self.LEAD_TAGS:
+            if not self._in_list():
+                self._lead = {
+                    "kind": "heading" if tag in self.HEADING_TAGS else "lead",
+                    "line": self.getpos()[0],
+                    "parts": [],
+                }
+
+    def handle_startendtag(self, tag: str, attrs) -> None:  # noqa: ANN001 - HTMLParser API
+        return
+
+    def handle_endtag(self, tag: str) -> None:
+        tag = tag.lower()
+        skipping = self._skipping()
+        self._close_tag(tag)
+        if skipping:
+            return
+        if tag == "li" and self._lists:
+            current = self._lists[-1]
+            parts = current.get("item_parts")
+            if isinstance(parts, list):
+                text = _normalise(" ".join(parts))
+                if text:
+                    current["items"].append(text)  # type: ignore[union-attr]
+            current["item_parts"] = None
+        elif tag in self.LIST_TAGS and self._lists:
+            current = self._lists.pop()
+            items = tuple(str(item) for item in current["items"])  # type: ignore[union-attr]
+            if items:
+                self.blocks.append(_Block("list", " ".join(items), int(current["line"]), items))
+        elif tag in self.HEADING_TAGS or tag in self.LEAD_TAGS:
+            if self._lead is not None and not self._in_list():
+                parts = self._lead["parts"]
+                text = _normalise(" ".join(str(part) for part in parts))  # type: ignore[union-attr]
+                if text:
+                    self.blocks.append(_Block(str(self._lead["kind"]), text, int(self._lead["line"])))
+                self._lead = None
+
+    def handle_data(self, data: str) -> None:
+        if self._skipping() or not data.strip():
+            return
+        if self._lists:
+            parts = self._lists[-1].get("item_parts")
+            if isinstance(parts, list):
+                parts.append(data)
+                return
+        if self._lead is not None:
+            self._lead["parts"].append(data)  # type: ignore[union-attr]
 
 
 def _normalise(text: str) -> str:
@@ -247,6 +364,137 @@ def _visible_text(source: str) -> tuple[str, list[tuple[int, int, int]]]:
         offset += len(piece)
         segments.append((start, offset, line))
     return "".join(pieces), segments
+
+
+def _structured_blocks(source: str) -> list[_Block]:
+    parser = StructuredTextExtractor()
+    parser.feed(source)
+    parser.close()
+    if parser._lead is not None:
+        parts = parser._lead["parts"]
+        text = _normalise(" ".join(str(part) for part in parts))  # type: ignore[union-attr]
+        if text:
+            parser.blocks.append(_Block(str(parser._lead["kind"]), text, int(parser._lead["line"])))
+        parser._lead = None
+    while parser._lists:
+        current = parser._lists.pop()
+        items = tuple(str(item) for item in current["items"])  # type: ignore[union-attr]
+        if items:
+            parser.blocks.append(_Block("list", " ".join(items), int(current["line"]), items))
+    return parser.blocks
+
+
+def _colon_led_series(text: str) -> Optional[list[str]]:
+    match = NEGATIVE_SCOPE_RE.search(text)
+    if not match:
+        return None
+    rest = text[match.end():]
+    colon = rest.find(":")
+    if colon < 0:
+        return None
+    series_text = rest[colon + 1:].strip()
+    if not series_text:
+        return None
+    items = [_normalise(part).strip(" .") for part in SERIES_SPLIT_RE.split(series_text) if _normalise(part).strip(" .")]
+    return items if len(items) >= 2 else None
+
+
+def _is_short_fragment(text: str) -> bool:
+    compact = _normalise(text)
+    if not compact or compact.endswith(":") or compact.endswith("?"):
+        return False
+    return len(compact) <= SHORT_FRAGMENT_MAX_CHARS
+
+
+def _is_introducer(block: _Block) -> bool:
+    if block.kind not in {"heading", "lead"}:
+        return False
+    if not NEGATIVE_SCOPE_RE.search(block.text):
+        return False
+    if block.kind == "heading":
+        return True
+    return len(block.text) <= ABSENCE_INTRODUCER_MAX_CHARS or block.text.rstrip().endswith(":")
+
+
+def _absence_finding(path: str, line: int, text: str) -> Finding:
+    return Finding(path, line, ABSENCE_CAVEAT_RULE_ID, ABSENCE_CAVEAT_RULE_NAME, _normalise(text))
+
+
+def _find_absence_in_blocks(
+    blocks: Sequence[_Block],
+    path: str,
+    lines: Sequence[str],
+    line_offset: int = 0,
+) -> list[Finding]:
+    findings: list[Finding] = []
+    length = len(blocks)
+    index = 0
+    while index < length:
+        block = blocks[index]
+        line = block.line + line_offset
+        if block.kind in {"heading", "lead"} and NEGATIVE_SCOPE_RE.search(block.text):
+            if _ignored(lines, line):
+                index += 1
+                continue
+            if _colon_led_series(block.text):
+                findings.append(_absence_finding(path, line, block.text))
+                index += 1
+                continue
+            if _is_introducer(block):
+                lookahead = index + 1
+                if (
+                    lookahead < length
+                    and blocks[lookahead].kind == "lead"
+                    and NEGATIVE_SCOPE_RE.search(blocks[lookahead].text)
+                ):
+                    lookahead += 1
+                if lookahead < length and blocks[lookahead].kind == "list" and blocks[lookahead].items:
+                    findings.append(_absence_finding(path, line, block.text))
+                    index += 1
+                    continue
+                fragments: list[_Block] = []
+                cursor = index + 1
+                while (
+                    cursor < length
+                    and blocks[cursor].kind == "lead"
+                    and _is_short_fragment(blocks[cursor].text)
+                ):
+                    fragments.append(blocks[cursor])
+                    cursor += 1
+                if len(fragments) >= 2:
+                    findings.append(_absence_finding(path, line, block.text))
+        index += 1
+    return findings
+
+
+def _find_absence_in_plain_text(text: str, path: str, lines: Sequence[str], line: int) -> list[Finding]:
+    compact = _normalise(text)
+    if not compact or not NEGATIVE_SCOPE_RE.search(compact):
+        return []
+    if _ignored(lines, line):
+        return []
+    if _colon_led_series(compact):
+        return [_absence_finding(path, line, compact)]
+    raw_lines = [part.strip() for part in re.split(r"[\r\n]+", text) if part.strip()]
+    if len(raw_lines) >= 3 and _is_introducer(_Block("lead", _normalise(raw_lines[0]), line)):
+        fragments = [_normalise(part) for part in raw_lines[1:] if _is_short_fragment(part)]
+        if len(fragments) >= 2:
+            return [_absence_finding(path, line, raw_lines[0])]
+    return []
+
+
+def _find_absence_caveat(
+    source: str,
+    path: str,
+    lines: Sequence[str],
+    *,
+    html: bool,
+    line: int = 1,
+) -> list[Finding]:
+    if html or HTML_STRUCTURE_HINT_RE.search(source):
+        blocks = _structured_blocks(source)
+        return _find_absence_in_blocks(blocks, path, lines, line_offset=line - 1)
+    return _find_absence_in_plain_text(source, path, lines, line)
 
 
 def _javascript_strings(source: str) -> Iterable[tuple[str, int]]:
@@ -360,9 +608,11 @@ def scan(
         if path.suffix.lower() == ".html":
             text, segments = _visible_text(source)
             findings.extend(_find_in_text(text, relative, lines, segments=segments))
+            findings.extend(_find_absence_caveat(source, relative, lines, html=True))
         else:
             for text, line in _javascript_strings(source):
                 findings.extend(_find_in_text(text, relative, lines, line=line))
+                findings.extend(_find_absence_caveat(text, relative, lines, html=False, line=line))
 
     # The English dictionary is copied into several locale bundles as a fallback.
     # One finding per distinct copy keeps the warning useful while the source path

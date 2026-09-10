@@ -5,6 +5,8 @@ Patterns live in civic_content_gates.disclaimer_slop. They include a
 provenance-restatement class for copy that repeats what per-link markers
 already say (City Record awards, Checkbook live-on, timeline-lead search).
 Do not allowlist that class — put the source on the link and drop the wall.
+Absence-caveats are matched as a heading or short lead in negative scope
+that introduces a list of undetermined items, not as a closed phrase list.
 
 This wrapper also adds product-specific search patterns for standing coverage
 self-deprecation, per-collection debug breakdowns, and implementation labels.

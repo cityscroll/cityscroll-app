@@ -94,9 +94,13 @@ say what the thing is, why it matters, and what the reader should do — for exa
 “Default: X, because Y; do Z.” Standing provenance walls that restate what a
 per-link marker already shows (City Record awards, Checkbook “live on”,
 timeline-lead search) are a first-class class — keep the marker, drop the wall.
-Headings or lists introduced as absence-caveats (“cannot verify”, “sources do
-not carry”, “this is not a finding that”) are the same class: omit the claim
-rather than narrating what was not found.
+Headings or short leads in negative scope that introduce a list of
+undetermined items — a following `<ul>`/`<ol>`, a colon-led series, or two or
+more short parallel fragments — are the same class: omit the claim rather than
+narrating what was not found. The scanner matches that construction, so a
+caveat introduced as “not confirmed by our sources” or “we were unable to
+establish” is refused the same way as “cannot verify”. An ordinary negative
+sentence with no list behind it is not refused.
 
 The repository wrapper is:
 
