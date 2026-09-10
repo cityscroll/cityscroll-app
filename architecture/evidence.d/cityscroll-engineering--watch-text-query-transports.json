@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/watch-text-query-transports",
+  "status": "implemented",
+  "fingerprint": "watch-text-query-transports.v1",
+  "updated_at": "2026-09-10T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "watch-text-query-feed-handler",
+      "path": "worker/src/feed.mjs"
+    },
+    {
+      "id": "watch-text-query-feed-serializers",
+      "path": "worker/src/lib/feed.mjs"
+    },
+    {
+      "id": "watch-text-query-search-intent",
+      "path": "site/search_intent.mjs"
+    },
+    {
+      "id": "watch-text-query-transport-tests",
+      "path": "test/watch_text_query_transport.test.mjs"
+    },
+    {
+      "id": "watch-text-query-feed-tests",
+      "path": "worker/test/watch_text_query_feed.test.mjs"
+    },
+    {
+      "id": "watch-text-query-transport-receipt",
+      "path": "test/fixtures/watch_text_query/transport_acceptance.md"
+    }
+  ]
+}

@@ -30,6 +30,7 @@ function assertFrozenIntent(intent, compiler) {
   assert.ok(Object.isFrozen(intent.relations));
   assert.ok(Object.isFrozen(intent.place));
   assert.ok(Object.isFrozen(intent.time));
+  if (intent.text_query) assert.ok(Object.isFrozen(intent.text_query));
 }
 
 test("SearchIntent is one frozen cityscroll.search_intent.v1 object", () => {
@@ -162,6 +163,28 @@ test("empty compiler inputs emit the empty frozen intent shape", () => {
   assert.deepEqual(searchIntentFromRouteHash("#unknown"), { ...empty, compiler: "scope_v0" });
   assert.deepEqual(searchIntentFromKeywordQuery(""), { ...empty, compiler: "keyword_query" });
   assert.deepEqual(searchIntentFromNlFilter("money", {}), { ...empty, compiler: "nl_sanitize", domains: ["money"] });
+});
+
+test("a precise expression is projected as text_query, never collapsed into text", () => {
+  const expression = {
+    version: 1,
+    all: [[{ kind: "term", value: "software" }, { kind: "term", value: "consulting" }]],
+    none: [{ kind: "term", value: "maintenance" }],
+  };
+  const intent = searchIntentFromNlFilter("money", {
+    keywords: [],
+    agency: "Department of Parks and Recreation",
+    minAmount: 100000,
+    text_query: expression,
+  });
+  assertFrozenIntent(intent, "nl_sanitize");
+  assert.equal(intent.text, "");
+  assert.deepEqual(intent.text_query, {
+    version: 1,
+    all: [[{ kind: "term", value: "consulting" }, { kind: "term", value: "software" }]],
+    none: [{ kind: "term", value: "maintenance" }],
+  });
+  assert.deepEqual(intent.domains, ["money"]);
 });
 
 test("projector reads the three compilers and does not import retrieval or Ask", () => {

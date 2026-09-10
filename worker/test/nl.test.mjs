@@ -121,6 +121,7 @@ test("handleNl: SearchIntent is a sibling and the legacy filter envelope stays b
         rolling_months: 3,
       },
       compiler: "nl_sanitize",
+      text_query: null,
     });
     assert.deepEqual(Object.keys(body), ["filter", "lens", "model", "confidence", "search_intent", "cited_quotes"]);
   } finally {

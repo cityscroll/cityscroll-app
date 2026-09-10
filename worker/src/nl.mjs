@@ -11,7 +11,7 @@
 //   4. Tiny max_tokens (the answer is a small JSON object).
 // Worst case ≈ MAX_CALLS_PER_DAY × (~600 in + ~200 out tokens) on Haiku ≈ tens of cents/day.
 
-import { sanitize, filterConfidence, MAX_INPUT, MAX_CALLS_PER_DAY, LENSES } from "./lib/filter.mjs";
+import { filterConfidence, MAX_INPUT, MAX_CALLS_PER_DAY, LENSES, prepareWatchFilter } from "./lib/filter.mjs";
 import { bumpStat, bumpStatAllTime, bumpCategoryStat, bumpCategoryDayStat, bumpHistDay } from "./lib/stats.mjs";
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
@@ -130,8 +130,16 @@ export async function parseLensFilter(env, lens, rawText) {
     const data = await r.json();
     const block = (data.content || []).find((b) => b.type === "tool_use");
     if (!block) return { degraded: true, reason: "no-tool" };
-    const filter = sanitize(lens, block.input);
-    return { filter, lens, model: MODEL, confidence: filterConfidence(lens, filter) };
+    const prepared = prepareWatchFilter(lens, block.input);
+    if (!prepared.ok) {
+      return {
+        degraded: true,
+        reason: prepared.reason,
+        correction: "That matching request cannot be used as written. Use the explicit any/all/phrase and exclude controls, or remove the unsupported constraint.",
+      };
+    }
+    const filter = prepared.filter;
+    return { filter, lens: prepared.lens, model: MODEL, confidence: filterConfidence(prepared.lens, filter) };
   } catch (e) {
     return { degraded: true, reason: "error", message: String(e?.message || e) };
   }
@@ -151,7 +159,29 @@ export async function handleNl(req, env) {
   try { body = await req.json(); } catch { /* ignore bad body */ }
   const text = String(body.text || "").slice(0, MAX_INPUT).trim();
   const lens = LENSES[body.lens] ? body.lens : "money"; // unknown/missing → money (back-compat)
-  if (!text) return json({ error: "empty" }, 400, cors);
+  const explicitFilter = body.filter && typeof body.filter === "object" && !Array.isArray(body.filter)
+    ? body.filter
+    : null;
+  if (!text && !explicitFilter) return json({ error: "empty" }, 400, cors);
+
+  if (explicitFilter) {
+    const prepared = prepareWatchFilter(lens, explicitFilter);
+    if (!prepared.ok) {
+      return json({
+        error: "unsupported_filter",
+        reason: prepared.reason,
+        correction: "That matching request cannot be used as written. Edit the explicit matching controls and retry.",
+      }, 400, cors);
+    }
+    const response = {
+      filter: prepared.filter,
+      lens: prepared.lens,
+      model: null,
+      confidence: filterConfidence(prepared.lens, prepared.filter),
+      search_intent: searchIntentFromNlFilter(prepared.lens, prepared.filter),
+    };
+    return json(withCitedQuotes(response, text), 200, cors);
+  }
 
   // Denial-of-wallet ceilings. The per-IP bucket is distinct from the surface bucket;
   // both fail closed for this paid public endpoint. Over cap → client uses its on-device

@@ -6,6 +6,7 @@
 import { cleanNoticeText as stripHtml } from "../../../site/text_clean.mjs";
 import { landProjectDisplayTitle, noticeDisplayTitle } from "../../../site/display_title.mjs";
 import { calendarFeedUnsupportedFilterFields } from "../../../site/scope_v0.mjs";
+import { textQueryEvaluationSupported } from "../../../site/watch_text_query.mjs";
 import {
   calendarOccurrenceFromLegacyFeedItem,
   deduplicateCalendarOccurrences,
@@ -38,19 +39,40 @@ export function parseFeedQuery(searchParams) {
   } };
 }
 
+function filterHasTextQuery(filter) {
+  return !!(filter && typeof filter === "object" && !Array.isArray(filter)
+    && Object.prototype.hasOwnProperty.call(filter, "text_query")
+    && filter.text_query != null);
+}
+
+function formatAllowsTextQuery(lens, format) {
+  if (format === "ics" || format === "calendar") return false;
+  return textQueryEvaluationSupported(lens);
+}
+
 /** Modern scope filters must be replayable or the feed must refuse them explicitly. */
-export function unsupportedModernFeedFilterFields(lens, filter) {
+export function unsupportedModernFeedFilterFields(lens, filter, { format } = {}) {
   // Inspect the raw filter first. Calendar replay reconstructs a geography
   // watch and would drop text_query, which is exactly the silent-widening
-  // failure this contract forbids. Refuse the field until a later transport
-  // path can replay it; do not add it to the calendar allowlist here.
+  // failure this contract forbids. Atom/JSON may replay an admitted v1
+  // expression on a registered evaluation lens; ICS never does.
+  const allowTextQuery = filterHasTextQuery(filter) && formatAllowsTextQuery(lens, format);
   const extra = [];
-  if (filter && typeof filter === "object" && !Array.isArray(filter)
-      && Object.prototype.hasOwnProperty.call(filter, "text_query")
-      && filter.text_query != null) {
-    extra.push("text_query");
-  }
-  return [...new Set([...extra, ...calendarFeedUnsupportedFilterFields({ lens, filter })])].sort();
+  if (filterHasTextQuery(filter) && !allowTextQuery) extra.push("text_query");
+  return [...new Set([
+    ...extra,
+    ...calendarFeedUnsupportedFilterFields({ lens, filter })
+      .filter((key) => key !== "text_query" || !allowTextQuery),
+  ])].sort();
+}
+
+function textQueryEvidenceSummary(row) {
+  const groups = row?.text_query_evidence?.groups;
+  if (!Array.isArray(groups)) return "";
+  return groups
+    .map((group) => group?.passage || group?.hit)
+    .filter(Boolean)
+    .join(" · ");
 }
 
 // Normalize compileSub result rows → neutral feed items.
@@ -107,7 +129,8 @@ export function feedItems(kind, rows) {
         url: href,
         title: r.short_title || "Contract",
         date: r.start_date || null,
-        summary: [r.agency_name, usd(r.contract_amount), r.vendor_name ? "→ " + stripHtml(r.vendor_name) : ""]
+        summary: [r.agency_name, usd(r.contract_amount), r.vendor_name ? "→ " + stripHtml(r.vendor_name) : "",
+          textQueryEvidenceSummary(r)]
           .filter(Boolean).join(" · "),
         eventDate: null,
         phase: r.primary_stage || "Registered contract",
@@ -236,6 +259,7 @@ export function feedItems(kind, rows) {
         r.agency_name, usd(r.contract_amount), r.vendor_name ? "→ " + stripHtml(r.vendor_name) : "",
         r.due_date ? "due " + d10(r.due_date) : "", r.event_date ? "event " + d10(r.event_date) : "",
         r.street_address_1 && !/not listed|^n\/?a$|^none$|^various|^see /i.test(String(r.street_address_1).trim()) ? stripHtml(r.street_address_1) : "",
+        textQueryEvidenceSummary(r),
       ].filter(Boolean).join(" · "),
       eventDate: r.event_date || r.due_date || null,
       phase,

@@ -169,9 +169,25 @@ test("money text_query compiles to owned materialization, not an unfiltered or S
   );
 });
 
-test("modern feed filters refuse to replay a text_query until transports support it", () => {
+test("modern Atom/JSON feeds replay an admitted money text_query; ICS still refuses it", () => {
   assert.deepEqual(
     unsupportedModernFeedFilterFields("money", { keywords: [], text_query: softwareWatch }),
+    [],
+  );
+  assert.deepEqual(
+    unsupportedModernFeedFilterFields("money", { keywords: [], text_query: softwareWatch }, { format: "atom" }),
+    [],
+  );
+  assert.deepEqual(
+    unsupportedModernFeedFilterFields("money", { keywords: [], text_query: softwareWatch }, { format: "json" }),
+    [],
+  );
+  assert.deepEqual(
+    unsupportedModernFeedFilterFields("money", { keywords: [], text_query: softwareWatch }, { format: "ics" }),
+    ["text_query"],
+  );
+  assert.deepEqual(
+    unsupportedModernFeedFilterFields("meetings", { keywords: [], text_query: softwareWatch }, { format: "atom" }),
     ["text_query"],
   );
   assert.deepEqual(unsupportedModernFeedFilterFields("money", { keywords: ["software"] }), []);

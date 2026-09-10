@@ -101,8 +101,10 @@ export {
   MCP_TOOLS,
 } from "../../capabilities/mcp_tool_declarations.mjs";
 import { parseLensFilter } from "./nl.mjs";
-import { LENSES } from "./lib/filter.mjs";
-import { compileSub } from "./lib/compile.mjs";
+import { prepareWatchFilter } from "./lib/filter.mjs";
+import { compileSub, getProcurementDigestSnapshot, rowsForCompiledQuery } from "./lib/compile.mjs";
+import { evaluateMoneyTextQueryWatch } from "./lib/watch_text_query_procurement.mjs";
+import { textQueryEvaluationSupported } from "../../site/watch_text_query.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { isValidEmail, buildSubscription } from "./lib/subscriptions.mjs";
 import { enrollAndWelcome } from "./subscribe.mjs";
@@ -250,18 +252,61 @@ async function fetchSodaRows(url, params) {
   return r.json();
 }
 
-async function runPreview(env, lens, request) {
-  const mcpCap = Number(env.MCP_MAX_CALLS_PER_DAY) || 200;
-  if (await overSurfaceCap(env.NL_METER, "mcp", mcpCap)) {
-    return { error: "Daily capacity for plain-English parsing is exhausted — try tomorrow, or use search_notices with structured filters (not metered)." };
+async function runPreview(env, lens, request, { filter: explicitFilter } = {}) {
+  const todayISO = new Date().toISOString().slice(0, 10);
+  let filter;
+  if (explicitFilter && typeof explicitFilter === "object" && !Array.isArray(explicitFilter)) {
+    const prepared = prepareWatchFilter(lens, explicitFilter);
+    if (!prepared.ok) {
+      return {
+        error: `That watch cannot be used as written (${prepared.reason}). Edit the matching controls and try again.`,
+        reason: prepared.reason,
+        correction: "Use the explicit any/all/phrase and exclude controls. Unsupported rich input is not saved as a broader watch.",
+      };
+    }
+    lens = prepared.lens;
+    filter = prepared.filter;
+  } else {
+    const mcpCap = Number(env.MCP_MAX_CALLS_PER_DAY) || 200;
+    if (await overSurfaceCap(env.NL_METER, "mcp", mcpCap)) {
+      return { error: "Daily capacity for plain-English parsing is exhausted — try tomorrow, or use search_notices with structured filters (not metered)." };
+    }
+    const parsed = await parseLensFilter(env, lens, request);
+    if (parsed.degraded) {
+      const correction = parsed.correction
+        ? ` ${parsed.correction}`
+        : " Try plainer wording.";
+      return { error: `Couldn't parse that request (${parsed.reason}).${correction}` };
+    }
+    filter = parsed.filter;
   }
-  const parsed = await parseLensFilter(env, lens, request);
-  if (parsed.degraded) return { error: `Couldn't parse that request (${parsed.reason}). Try plainer wording.` };
-  const q = compileSub({ lens, filter: parsed.filter }, new Date().toISOString().slice(0, 10));
+  const sub = { lens, filter };
+  if (filter?.text_query && textQueryEvaluationSupported(lens)) {
+    const evaluation = await evaluateMoneyTextQueryWatch({
+      db: env.DB || null,
+      snapshot: getProcurementDigestSnapshot(),
+      sub,
+      todayISO,
+      clock: todayISO,
+      fetchImpl: null,
+    });
+    return {
+      filter,
+      label: describeFilter(lens, filter),
+      kind: "award",
+      rows: (evaluation.rows || []).slice(0, 10),
+    };
+  }
+  const q = compileSub(sub, todayISO);
   if (!q) return { error: `The '${lens}' lens can't be replayed as a standing watch yet.` };
-  let rows = await fetchSodaRows(q.url, q.params);
+  let rows;
+  if (q.url) {
+    rows = await fetchSodaRows(q.url, q.params);
+  } else {
+    rows = await rowsForCompiledQuery(q, env);
+  }
   if (q.postFilter) rows = rows.filter(q.postFilter);
-  return { filter: parsed.filter, label: describeFilter(lens, parsed.filter), kind: q.kind, rows: rows.slice(0, 10) };
+  return { filter, label: describeFilter(lens, filter), kind: q.kind, rows: rows.slice(0, 10) };
 }
 
 function previewText(p) {
@@ -449,7 +494,12 @@ async function callTool(env, req, name, args, { federatedProvider = null } = {})
     case "preview_watch": {
       const lens = String(args.lens || "");
       if (!SUBSCRIBABLE.has(lens)) return toolError("lens must be one of: " + [...SUBSCRIBABLE].join(", "));
-      const p = await runPreview(env, lens, String(args.request || ""));
+      const explicit = args.filter && typeof args.filter === "object" && !Array.isArray(args.filter)
+        ? args.filter
+        : null;
+      const request = String(args.request || "");
+      if (!explicit && !request) return toolError("request or filter is required.");
+      const p = await runPreview(env, lens, request, { filter: explicit });
       if (p.error) return toolError(p.error);
       return text(previewText(p));
     }
@@ -461,7 +511,12 @@ async function callTool(env, req, name, args, { federatedProvider = null } = {})
       if (!SUBSCRIBABLE.has(lens)) return toolError("lens must be one of: " + [...SUBSCRIBABLE].join(", "));
       // Same per-address ceiling as the web form — welcome emails cost sends.
       if (await overActorLimit(env.SUBS, "mcpsub", email, 5)) return toolError("Daily limit reached for that address — try tomorrow.");
-      const p = await runPreview(env, lens, String(args.request || ""));
+      const explicit = args.filter && typeof args.filter === "object" && !Array.isArray(args.filter)
+        ? args.filter
+        : null;
+      const request = String(args.request || "");
+      if (!explicit && !request) return toolError("request or filter is required.");
+      const p = await runPreview(env, lens, request, { filter: explicit });
       if (p.error) return toolError(p.error);
       const sub = buildSubscription({ email, lens, filter: p.filter, freq: args.freq === "weekly" ? "weekly" : "daily" });
       try {

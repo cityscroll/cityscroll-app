@@ -21,6 +21,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { sanitize as workerSanitize, LENSES as WORKER_LENSES } from "../worker/src/lib/filter.mjs";
+import { textQueryAdmissionSupported, validateTextQuery } from "../site/watch_text_query.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = SITE_SOURCE;
@@ -61,7 +62,7 @@ const {
   DEEPLINK_LENSES, sanitizeDeepLinkFilter, parseWatchParam, watchChipsFor, parseNoticeHashSegment,
   matchEvidence, digTitleHTML, digEvidenceHTML, matchText, enTitle,
 } = new Function(
-  "t", "tSection", "window",
+  "t", "tSection", "window", "validateTextQuery", "textQueryAdmissionSupported",
   extractFn("cleanText") +
   extractFn("enTitle") +
   extractFn("money") +
@@ -86,7 +87,7 @@ const {
   extractFn("watchChipsFor") +
   extractFn("parseNoticeHashSegment") +
   "return { DEEPLINK_LENSES, sanitizeDeepLinkFilter, parseWatchParam, watchChipsFor, parseNoticeHashSegment, matchEvidence, digTitleHTML, digEvidenceHTML, matchText, enTitle };",
-)(t, tSection, windowStub);
+)(t, tSection, windowStub, validateTextQuery, textQueryAdmissionSupported);
 
 // ---- dual-implementation cross-check (same convention as external_awards_registry.test.mjs) --
 
@@ -101,6 +102,14 @@ test("sanitizeDeepLinkFilter (client) and sanitize() (worker) clamp identically 
     ["entity", { name: "  Acme Corp  ", kind: "vendor" }],
     ["land", { boro: "brooklyn", status: "all" }],
     ["bogus-lens", { keywords: ["x"] }],
+    ["money", {
+      keywords: [],
+      text_query: {
+        version: 1,
+        all: [[{ kind: "term", value: "consulting" }, { kind: "term", value: "software" }]],
+        none: [{ kind: "term", value: "maintenance" }],
+      },
+    }],
   ];
   for (const [lens, input] of cases) {
     assert.deepEqual(sanitizeDeepLinkFilter(lens, input), workerSanitize(lens, input), `lens=${lens}`);

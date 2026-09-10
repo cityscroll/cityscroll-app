@@ -682,29 +682,31 @@ const MCP_REGISTERED_AND_PILOT_TOOLS = [
   },
   {
     name: "preview_watch",
-    description: "Preview what a plain-English standing watch would deliver, without subscribing. Lens: money (procurement), land (rezonings), property, rules, meetings, people.",
+    description: "Preview what a standing watch would deliver, without subscribing. Lens: money (procurement), land (rezonings), property, rules, meetings, people. Pass a structured filter to keep alternatives, phrases, and exclusions; plain English remains optional.",
     inputSchema: {
       type: "object", additionalProperties: false,
       properties: {
         lens: { type: "string", enum: [...SUBSCRIBABLE_LENSES] },
         request: { type: "string", description: "Plain-English description, e.g. 'construction awards over $1M from Parks'." },
+        filter: { type: "object", description: "Structured standing-watch filter. When present, the watch is admitted from this object and no plain-English parse is used." },
       },
-      required: ["lens", "request"],
+      required: ["lens"],
     },
     annotations: MCP_OPEN_WORLD_READ_ANNOTATIONS,
   },
   {
     name: "create_watch",
-    description: "Create a standing email watch from plain English. The watch starts immediately; the welcome email states its scope and includes manage and unsubscribe links.",
+    description: "Create a standing email watch. The watch starts immediately; the welcome email states its scope and includes manage and unsubscribe links. Pass a structured filter to keep alternatives, phrases, and exclusions; plain English remains optional.",
     inputSchema: {
       type: "object", additionalProperties: false,
       properties: {
         email: { type: "string" },
         lens: { type: "string", enum: [...SUBSCRIBABLE_LENSES] },
         request: { type: "string", description: "Plain-English description of what to watch." },
+        filter: { type: "object", description: "Structured standing-watch filter. When present, the watch is admitted from this object and no plain-English parse is used." },
         freq: { type: "string", enum: ["daily", "weekly"], description: "Digest frequency (default daily)." },
       },
-      required: ["email", "lens", "request"],
+      required: ["email", "lens"],
     },
     annotations: MCP_MUTATION_ANNOTATIONS,
   },
