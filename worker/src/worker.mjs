@@ -18,6 +18,7 @@ import { handlePins } from "./pins.mjs";
 import { handleFeedback } from "./feedback.mjs";
 import {
   handleAdminSubs,
+  handleAdminWatchSeenMembership,
   handleAdminWatchLog,
   handleAdminWatchLogEnrich,
   handleAdminDeprecatedOptInRecovery,
@@ -216,6 +217,7 @@ export default {
     if (pathname.startsWith("/r/")) return handleRedirect(request, env, ctx, pathname);
     if (pathname === "/api") return Response.redirect("https://cityscroll.org/api.html", 302);
     if (pathname === "/admin/subs") return handleAdminSubs(request, env);
+    if (pathname === "/admin/watch-seen-membership") return handleAdminWatchSeenMembership(request, env);
     if (pathname === "/admin/watch-log") return handleAdminWatchLog(request, env);
     if (pathname === "/admin/watch-log/enrich") return handleAdminWatchLogEnrich(request, env);
     if (pathname === "/admin/recover-deprecated-opt-in") return handleAdminDeprecatedOptInRecovery(request, env);

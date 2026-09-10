@@ -126,6 +126,13 @@ import {
   readDigestShadowDegradedReceipt,
   resolveDigestShadowHold,
 } from "./digest_shadow_hold.mjs";
+import {
+  WATCH_SEEN_MEMBERSHIP_SCHEMA,
+  parseSeenSet,
+  parseWatchQueries,
+  seenMembership,
+  internalWatchReference,
+} from "./lib/watch_seen_membership.mjs";
 
 // Store digests rather than publishing the desk's private recipient addresses in this repo.
 const DIGEST_TEST_SEND_ALLOWLIST = new Set([
@@ -552,6 +559,74 @@ export async function handleAdminSubs(req, env) {
     });
   }
   return json(body, 200);
+}
+
+/**
+ * GET/POST /admin/watch-seen-membership?key=…
+ *
+ * Read-only membership probe: seen-set size plus which of the supplied ids are
+ * members. Does not dump the stored set, subscriber addresses, or watch filters.
+ * GET takes one watch_key and optional comma-separated ids; POST takes
+ * `{ watches: [{ watch_key, ids }] }`. Never writes KV/D1.
+ */
+export async function handleAdminWatchSeenMembership(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "GET" && req.method !== "POST") return json({ error: "method not allowed" }, 405);
+  if (!env.ALERT_STATE) return json({ error: "no-store" }, 503);
+
+  let body = null;
+  if (req.method === "POST") {
+    try { body = await req.json(); } catch { return json({ error: "invalid-json" }, 400); }
+  }
+  const url = new URL(req.url);
+  const parsed = parseWatchQueries(body, {
+    watchKeyParam: url.searchParams.get("watch_key"),
+    idsParam: url.searchParams.get("ids"),
+  });
+  if (!parsed.ok) return json({ error: parsed.error }, 400);
+
+  const watches = [];
+  for (const query of parsed.watches) {
+    if (env.SUBS) {
+      let record = null;
+      try { record = await env.SUBS.get(query.watch_key); } catch { /* treat as missing */ }
+      if (!record) {
+        watches.push({
+          internal_reference: await internalWatchReference(query.watch_key),
+          error: "watch-not-found",
+        });
+        continue;
+      }
+    }
+    let seenRaw = null;
+    let lastSent = null;
+    try { seenRaw = await env.ALERT_STATE.get(`seen:${query.watch_key}`); } catch { /* unreadable */ }
+    try { lastSent = await env.ALERT_STATE.get(`lastsent:${query.watch_key}`); } catch { /* ignore */ }
+    const stored = parseSeenSet(seenRaw);
+    const membership = stored.ok
+      ? seenMembership(stored.ids, query.ids)
+      : {
+        seen_set_size: null,
+        supplied_id_count: query.ids.length,
+        seen_member_count: null,
+        unseen_member_count: null,
+        seen_member_ids: [],
+        unseen_member_ids: [],
+      };
+    watches.push({
+      internal_reference: await internalWatchReference(query.watch_key),
+      last_sent_on: lastSent || null,
+      ...(stored.ok ? {} : { error: stored.error }),
+      ...membership,
+    });
+  }
+
+  return json({
+    schema: WATCH_SEEN_MEMBERSHIP_SCHEMA,
+    taken_at: new Date().toISOString(),
+    watches,
+  }, 200);
 }
 
 function wantsHtml(req) {
