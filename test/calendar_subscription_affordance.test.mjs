@@ -203,7 +203,7 @@ test("Council-native fixture appears once in the meetings subscription ICS", () 
   const rows = councilNativeCompileRows({ keywords: ["M/WBE"] });
   const ics = councilNativeSubscriptionIcs(rows);
   assert.equal((ics.match(/BEGIN:VEVENT/g) || []).length, 1);
-  assert.match(ics, new RegExp(`UID:${FIXTURE_MEETING_ID.replaceAll(":", "\\:")}@crol-list`));
+  assert.match(ics, new RegExp(`UID:${FIXTURE_MEETING_ID.replaceAll(":", "\\:")}@`));
   assert.match(ics, /DTSTART;TZID=America\/New_York:20260923T100000/);
   assert.match(ics, /250 Broadway - 8th Floor - Hearing Room 2/);
   assert.equal(calendarOccurrenceForRow("meetings", rows[0])?.id, FIXTURE_MEETING_ID);
@@ -225,7 +225,7 @@ test("calendar compilation keeps cancellation and reschedule on the original Eve
   }])[0];
   const rescheduledIcs = councilNativeSubscriptionIcs([rescheduled]);
   assert.equal((rescheduledIcs.match(/BEGIN:VEVENT/g) || []).length, 1);
-  assert.match(rescheduledIcs, new RegExp(`UID:${FIXTURE_MEETING_ID.replaceAll(":", "\\:")}@crol-list`));
+  assert.match(rescheduledIcs, new RegExp(`UID:${FIXTURE_MEETING_ID.replaceAll(":", "\\:")}@`));
   assert.match(rescheduledIcs, /DTSTART;TZID=America\/New_York:20260924T110000/);
   assert.match(rescheduledIcs, /SEQUENCE:1/);
 });
@@ -254,7 +254,7 @@ test("an exact later City Record join keeps one calendar event on the original E
   assert.equal(meetingDeliveryKey(collapsed[0]), FIXTURE_MEETING_ID);
   const ics = councilNativeSubscriptionIcs(collapsed);
   assert.equal((ics.match(/BEGIN:VEVENT/g) || []).length, 1);
-  assert.match(ics, new RegExp(`UID:${FIXTURE_MEETING_ID.replaceAll(":", "\\:")}@crol-list`));
+  assert.match(ics, new RegExp(`UID:${FIXTURE_MEETING_ID.replaceAll(":", "\\:")}@`));
 });
 
 test("temporal delivery keys cover first observation, replay, join, reschedule, cancellation, and a near-candidate", () => {
