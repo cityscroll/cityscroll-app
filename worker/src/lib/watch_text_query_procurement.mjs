@@ -21,6 +21,7 @@ import {
   TEXT_QUERY_EVAL_STATUS,
   decideProcurementTextQuery,
   evaluateNoticeRecords,
+  collectExcludedNoticeRecords,
   projectProcurementNoticeFields,
   projectProcurementObjectFields,
 } from "../../../site/watch_text_query_eval.mjs";
@@ -142,6 +143,11 @@ export async function evaluateD1NoticeTextQuery(db, {
     scanBudget: mapped.length,
     clock,
   });
+  const excluded = collectExcludedNoticeRecords(mapped, {
+    expression,
+    limit: 8,
+    scanBudget: mapped.length,
+  });
   const hitBudget = !exhausted && scanned >= scanBudget && evaluated.rows.length < limit;
   return {
     ...evaluated,
@@ -152,6 +158,7 @@ export async function evaluateD1NoticeTextQuery(db, {
     scanned,
     continuation: hitBudget ? { offset, scanned } : evaluated.continuation,
     clock,
+    excludedRows: excluded.rows,
   };
 }
 
@@ -275,6 +282,7 @@ export async function evaluateMoneyTextQueryWatch({
     fts: false,
     publisher_fetch: false,
     fields: projectProcurementNoticeFields({}),
+    excludedRows: noticeEval?.excludedRows || [],
   };
 }
 

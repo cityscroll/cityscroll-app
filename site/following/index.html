@@ -72,7 +72,7 @@
       </div>
     </section>
   </div>
-  <form class="following-form" method="get" action="https://cityscroll.org/following" data-following-preview-form>
+  <form id="following-preview-form" class="following-form" method="get" action="https://cityscroll.org/following" data-following-preview-form>
     <input type="hidden" name="lens" value="money">
     <input type="hidden" name="filter" value="{}">
 
@@ -97,6 +97,85 @@
           <p id="following-community-board-help">Choose a borough and board (1–18). We’ll email its meetings.</p>
         </div>
       </div>
+      <details class="following-precise" data-following-precise>
+    <summary data-i18n-aria="following_match_precisely" aria-label="Match more precisely"><span data-i18n="following_match_precisely">Match more precisely</span></summary>
+    <div class="following-precise-body">
+      <fieldset class="following-precise-include">
+        <legend data-i18n="following_include_legend">Include</legend>
+        <div class="following-precise-mode-row">
+          <span data-i18n="following_include_of">of these</span>
+          <select id="following-precise-tq-mode" name="tq_mode" data-following-precise-mode aria-label="any of these">
+    <option value="any" selected data-i18n="following_include_any">any of these</option>
+    <option value="all" data-i18n="following_include_all">all of these</option>
+  </select>
+        </div>
+        <div class="following-precise-entry">
+    <label class="following-precise-term" for="following-precise-tq-i0"><span data-i18n="following_term_label">Word or phrase</span>
+    <input id="following-precise-tq-i0" name="tq_i0" value="" autocomplete="off" data-following-precise-input></label>
+    <label class="following-precise-phrase" for="following-precise-tq-i0p"><input id="following-precise-tq-i0p" type="checkbox" name="tq_i0p" value="1" data-following-precise-phrase> <span data-i18n="following_treat_phrase">Treat this as an exact phrase</span></label>
+  </div><div class="following-precise-entry">
+    <label class="following-precise-term" for="following-precise-tq-i1"><span data-i18n="following_term_label">Word or phrase</span>
+    <input id="following-precise-tq-i1" name="tq_i1" value="" autocomplete="off" data-following-precise-input></label>
+    <label class="following-precise-phrase" for="following-precise-tq-i1p"><input id="following-precise-tq-i1p" type="checkbox" name="tq_i1p" value="1" data-following-precise-phrase> <span data-i18n="following_treat_phrase">Treat this as an exact phrase</span></label>
+  </div>
+        <details class="following-precise-more">
+          <summary data-i18n-aria="following_more_alternatives" aria-label="More alternatives"><span data-i18n="following_more_alternatives">More alternatives</span></summary>
+          <div class="following-precise-entry">
+    <label class="following-precise-term" for="following-precise-tq-i2"><span data-i18n="following_term_label">Word or phrase</span>
+    <input id="following-precise-tq-i2" name="tq_i2" value="" autocomplete="off" data-following-precise-input></label>
+    <label class="following-precise-phrase" for="following-precise-tq-i2p"><input id="following-precise-tq-i2p" type="checkbox" name="tq_i2p" value="1" data-following-precise-phrase> <span data-i18n="following_treat_phrase">Treat this as an exact phrase</span></label>
+  </div><div class="following-precise-entry">
+    <label class="following-precise-term" for="following-precise-tq-i3"><span data-i18n="following_term_label">Word or phrase</span>
+    <input id="following-precise-tq-i3" name="tq_i3" value="" autocomplete="off" data-following-precise-input></label>
+    <label class="following-precise-phrase" for="following-precise-tq-i3p"><input id="following-precise-tq-i3p" type="checkbox" name="tq_i3p" value="1" data-following-precise-phrase> <span data-i18n="following_treat_phrase">Treat this as an exact phrase</span></label>
+  </div>
+        </details>
+      </fieldset>
+      <details class="following-precise-require">
+        <summary data-i18n-aria="following_also_require" aria-label="Also require"><span data-i18n="following_also_require">Also require</span></summary>
+        <input type="hidden" name="tq_g2" value="0" data-following-precise-require-flag>
+        <div class="following-precise-mode-row">
+          <select id="following-precise-tq-g2-mode" name="tq_g2_mode" data-following-precise-mode aria-label="any of these">
+    <option value="any" selected data-i18n="following_include_any">any of these</option>
+    <option value="all" data-i18n="following_include_all">all of these</option>
+  </select>
+        </div>
+        <div class="following-precise-entry">
+    <label class="following-precise-term" for="following-precise-tq-g2-0"><span data-i18n="following_term_label">Word or phrase</span>
+    <input id="following-precise-tq-g2-0" name="tq_g2_0" value="" autocomplete="off" data-following-precise-input></label>
+    <label class="following-precise-phrase" for="following-precise-tq-g2-0p"><input id="following-precise-tq-g2-0p" type="checkbox" name="tq_g2_0p" value="1" data-following-precise-phrase> <span data-i18n="following_treat_phrase">Treat this as an exact phrase</span></label>
+  </div><div class="following-precise-entry">
+    <label class="following-precise-term" for="following-precise-tq-g2-1"><span data-i18n="following_term_label">Word or phrase</span>
+    <input id="following-precise-tq-g2-1" name="tq_g2_1" value="" autocomplete="off" data-following-precise-input></label>
+    <label class="following-precise-phrase" for="following-precise-tq-g2-1p"><input id="following-precise-tq-g2-1p" type="checkbox" name="tq_g2_1p" value="1" data-following-precise-phrase> <span data-i18n="following_treat_phrase">Treat this as an exact phrase</span></label>
+  </div>
+      </details>
+      <fieldset class="following-precise-exclude">
+        <legend data-i18n="following_exclude_label">Exclude these words or phrases</legend>
+        <div class="following-precise-entry">
+    <label class="following-precise-term" for="following-precise-tq-x0"><span data-i18n="following_term_label">Word or phrase</span>
+    <input id="following-precise-tq-x0" name="tq_x0" value="" autocomplete="off" data-following-precise-input></label>
+    <label class="following-precise-phrase" for="following-precise-tq-x0p"><input id="following-precise-tq-x0p" type="checkbox" name="tq_x0p" value="1" data-following-precise-phrase> <span data-i18n="following_treat_phrase">Treat this as an exact phrase</span></label>
+  </div><div class="following-precise-entry">
+    <label class="following-precise-term" for="following-precise-tq-x1"><span data-i18n="following_term_label">Word or phrase</span>
+    <input id="following-precise-tq-x1" name="tq_x1" value="" autocomplete="off" data-following-precise-input></label>
+    <label class="following-precise-phrase" for="following-precise-tq-x1p"><input id="following-precise-tq-x1p" type="checkbox" name="tq_x1p" value="1" data-following-precise-phrase> <span data-i18n="following_treat_phrase">Treat this as an exact phrase</span></label>
+  </div>
+        <details class="following-precise-more">
+          <summary data-i18n-aria="following_more_exclusions" aria-label="More exclusions"><span data-i18n="following_more_exclusions">More exclusions</span></summary>
+          <div class="following-precise-entry">
+    <label class="following-precise-term" for="following-precise-tq-x2"><span data-i18n="following_term_label">Word or phrase</span>
+    <input id="following-precise-tq-x2" name="tq_x2" value="" autocomplete="off" data-following-precise-input></label>
+    <label class="following-precise-phrase" for="following-precise-tq-x2p"><input id="following-precise-tq-x2p" type="checkbox" name="tq_x2p" value="1" data-following-precise-phrase> <span data-i18n="following_treat_phrase">Treat this as an exact phrase</span></label>
+  </div><div class="following-precise-entry">
+    <label class="following-precise-term" for="following-precise-tq-x3"><span data-i18n="following_term_label">Word or phrase</span>
+    <input id="following-precise-tq-x3" name="tq_x3" value="" autocomplete="off" data-following-precise-input></label>
+    <label class="following-precise-phrase" for="following-precise-tq-x3p"><input id="following-precise-tq-x3p" type="checkbox" name="tq_x3p" value="1" data-following-precise-phrase> <span data-i18n="following_treat_phrase">Treat this as an exact phrase</span></label>
+  </div>
+        </details>
+      </fieldset>
+    </div>
+  </details>
     </details>
 
     <div class="following-form-actions">

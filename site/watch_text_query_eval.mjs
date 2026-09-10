@@ -167,3 +167,45 @@ export function evaluateProcurementObjectRecords(records, options) {
 export function recordMatchesProcurementTextQuery(row, expression, projectFields) {
   return matchesTextQuery(namedValues(projectFields(row)), expression);
 }
+
+/**
+ * Records that satisfy every required group but are rejected by an exclusion.
+ * Used by the optional preview disclosure; never attached to delivered digests.
+ */
+export function collectExcludedProjectedRecords(records, {
+  expression,
+  projectFields,
+  limit = 8,
+  scanBudget = PROCUREMENT_TEXT_QUERY_EVAL.scanBudget,
+} = {}) {
+  if (!Array.isArray(records)) {
+    return { status: TEXT_QUERY_EVAL_STATUS.unavailable, rows: [], scanned: 0 };
+  }
+  const ordered = [...records].sort(comparePublicationThenId);
+  const excluded = [];
+  let scanned = 0;
+  for (const row of ordered) {
+    if (scanned >= scanBudget || excluded.length >= limit) break;
+    scanned += 1;
+    const decision = decideProcurementTextQuery(row, expression, projectFields);
+    if (decision.match) continue;
+    if (!decision.evidence?.exclusion) continue;
+    if (decision.evidence.groups?.length && decision.evidence.groups.some((group) => !group)) continue;
+    excluded.push({
+      ...row,
+      text_query_evidence: decision.evidence,
+    });
+  }
+  return {
+    status: TEXT_QUERY_EVAL_STATUS.complete,
+    rows: excluded,
+    scanned,
+  };
+}
+
+export function collectExcludedNoticeRecords(records, options) {
+  return collectExcludedProjectedRecords(records, {
+    ...options,
+    projectFields: projectProcurementNoticeFields,
+  });
+}

@@ -71,7 +71,7 @@
       "article": "follow-a-search",
       "locale": "en",
       "status": "complete",
-      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "source_sha256": "1c05687136f98de4d826b1abb997546e417954d77e118f1a4b76ef82e3effa09",
       "required_segments": 38,
       "intentional_source_segments": 1
     },
@@ -223,7 +223,7 @@
       "article": "follow-a-search",
       "locale": "es",
       "status": "complete",
-      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "source_sha256": "1c05687136f98de4d826b1abb997546e417954d77e118f1a4b76ef82e3effa09",
       "required_segments": 37,
       "intentional_source_segments": 1
     },
@@ -375,7 +375,7 @@
       "article": "follow-a-search",
       "locale": "zh-Hans",
       "status": "complete",
-      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "source_sha256": "1c05687136f98de4d826b1abb997546e417954d77e118f1a4b76ef82e3effa09",
       "required_segments": 37,
       "intentional_source_segments": 1
     },
@@ -527,7 +527,7 @@
       "article": "follow-a-search",
       "locale": "ru",
       "status": "complete",
-      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "source_sha256": "1c05687136f98de4d826b1abb997546e417954d77e118f1a4b76ef82e3effa09",
       "required_segments": 38,
       "intentional_source_segments": 1
     },
@@ -679,7 +679,7 @@
       "article": "follow-a-search",
       "locale": "bn",
       "status": "complete",
-      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "source_sha256": "1c05687136f98de4d826b1abb997546e417954d77e118f1a4b76ef82e3effa09",
       "required_segments": 38,
       "intentional_source_segments": 1
     },
@@ -831,7 +831,7 @@
       "article": "follow-a-search",
       "locale": "ht",
       "status": "complete",
-      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "source_sha256": "1c05687136f98de4d826b1abb997546e417954d77e118f1a4b76ef82e3effa09",
       "required_segments": 38,
       "intentional_source_segments": 1
     },
@@ -983,7 +983,7 @@
       "article": "follow-a-search",
       "locale": "ko",
       "status": "complete",
-      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "source_sha256": "1c05687136f98de4d826b1abb997546e417954d77e118f1a4b76ef82e3effa09",
       "required_segments": 38,
       "intentional_source_segments": 1
     },
@@ -1135,7 +1135,7 @@
       "article": "follow-a-search",
       "locale": "fr",
       "status": "complete",
-      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "source_sha256": "1c05687136f98de4d826b1abb997546e417954d77e118f1a4b76ef82e3effa09",
       "required_segments": 38,
       "intentional_source_segments": 1
     },
@@ -1287,7 +1287,7 @@
       "article": "follow-a-search",
       "locale": "pl",
       "status": "complete",
-      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "source_sha256": "1c05687136f98de4d826b1abb997546e417954d77e118f1a4b76ef82e3effa09",
       "required_segments": 38,
       "intentional_source_segments": 1
     },
@@ -1439,7 +1439,7 @@
       "article": "follow-a-search",
       "locale": "ar",
       "status": "complete",
-      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "source_sha256": "1c05687136f98de4d826b1abb997546e417954d77e118f1a4b76ef82e3effa09",
       "required_segments": 37,
       "intentional_source_segments": 1
     },
@@ -1591,7 +1591,7 @@
       "article": "follow-a-search",
       "locale": "ur",
       "status": "complete",
-      "source_sha256": "18d164d60ef4316b0e21f95b06a28d263ffdfcf0633d0c1943974f4c1b1501c9",
+      "source_sha256": "1c05687136f98de4d826b1abb997546e417954d77e118f1a4b76ef82e3effa09",
       "required_segments": 38,
       "intentional_source_segments": 1
     },

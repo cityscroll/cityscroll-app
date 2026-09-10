@@ -7,7 +7,7 @@ url: /guide/how-to/follow-a-search/
 reader_question: How do I get told when new records match what I care about?
 purpose: Preview a watch, create it with your email address, and manage or stop its updates.
 description: Preview what a watch would match, create it with one step, then change how often it emails, pause it, or stop it — and know which action did what.
-last_reviewed: 2026-09-08
+last_reviewed: 2026-09-10
 return_to_task: Open Following | /following/
 related:
   - Find and narrow records | /guide/how-to/find-and-narrow-records/
@@ -22,7 +22,12 @@ sources:
 
 Open [Following](/following/) with JavaScript switched on. Under **What do you want to follow?**,
 choose a topic such as **Contracts and RFPs**. Under **Where?**, choose a borough or **Any place**.
-Open **Narrow it down** to add a keyword or agency. The selected choices describe an unsaved watch.
+Open **Narrow it down** to add a keyword or agency. For contracts, open **Match more precisely**
+to include any or all of a few words, treat an entry as an exact phrase, or exclude words.
+Example: include software, exclude maintenance, preview the awards, then tighten the exclusion
+if a useful record such as a Greenway project was removed because its body mentioned maintenance
+vehicles. Frozen award examples are published awards, not currently open bids.
+The selected choices describe an unsaved watch.
 No account or password is needed. This is separate from the city's own account system.
 
 ::: figure choose-scope

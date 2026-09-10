@@ -40,6 +40,14 @@ import {
 import { followingPersonalIslandHtml } from "./following_personal_state.mjs";
 import { exactProvisionWatch } from "./code_provision_watch_scope.mjs";
 import { councilMatterWatchSummaryHtml, exactCouncilMatterWatch } from "./council_matter_watch.mjs";
+import {
+  describeTextQuery,
+  parseTextQueryControlParams,
+  textQueryControlsAreActive,
+  textQueryControlsHtml,
+  textQueryUiSupported,
+  watchFilterFromTextQueryControls,
+} from "./watch_text_query_ui.mjs";
 
 const API_BASE = "https://api.cityscroll.org";
 const SITE_BASE = "https://cityscroll.org";
@@ -209,6 +217,20 @@ export function watchFromFollowingParams(input) {
     setOrDelete("dateWindow", params.get("when"));
   }
   if (params.has("type")) setOrDelete("noticeType", params.get("type"));
+  if (textQueryUiSupported(lens)) {
+    const controls = parseTextQueryControlParams(params);
+    const hasControlParams = [...params.keys()].some((key) => key.startsWith("tq_"));
+    if (hasControlParams || textQueryControlsAreActive(controls)) {
+      const built = watchFilterFromTextQueryControls({
+        lens,
+        filter,
+        keyword: params.get("q") || (Array.isArray(filter.keywords) ? filter.keywords[0] : ""),
+        controls,
+        structuredScope: true,
+      });
+      filter = built.filter;
+    }
+  }
   const watch = normalizedWatch(lens, filter);
   if (watch.lens === "meetings") {
     const exact = exactCouncilMatterWatch(watch);
@@ -424,7 +446,8 @@ export function buildFollowingGraphContext(watch = {}, options = {}) {
     topicLabel: LENS_LABELS[normalized.lens] || normalized.lens,
     placeLabel: boardLabel || filter.borough || filter.boro || filter.neighborhood || "Citywide",
     keywordLabel: Array.isArray(filter.keywords) && filter.keywords.length
-      ? filter.keywords.join(" ") : null,
+      ? filter.keywords.join(" ")
+      : (describeTextQuery(filter.text_query)?.summary || null),
     agencyLabel: filter.agency || null,
     districtLabel: filter.councilDistrict
       ? `City Council District ${filter.councilDistrict}`
@@ -493,9 +516,14 @@ function placeRoleClause(role, filter) {
 function refinementClauses(f) {
   const filter = f && typeof f === "object" ? f : {};
   const clauses = [];
-  const keywords = Array.isArray(filter.keywords) ? filter.keywords.filter(Boolean) : [];
-  if (keywords.length) {
-    clauses.push(`mentioning ${keywords.map((keyword) => quoteTerm(keyword)).join(" and ")}`);
+  const described = describeTextQuery(filter.text_query);
+  if (described?.summary) {
+    clauses.push(described.summary);
+  } else {
+    const keywords = Array.isArray(filter.keywords) ? filter.keywords.filter(Boolean) : [];
+    if (keywords.length) {
+      clauses.push(`mentioning ${keywords.map((keyword) => quoteTerm(keyword)).join(" and ")}`);
+    }
   }
   if (filter.agency) clauses.push(`from ${filter.agency}`);
   if (filter.name) clauses.push(`named ${filter.name}`);
@@ -618,7 +646,7 @@ export function followingWatchIdentityHtml(context, {
 function scopeSummary(lens, filter) {
   const chips = [{ axis: "topic", label: LENS_LABELS[lens] || lens }];
   const values = [
-    ["keywords", Array.isArray(filter.keywords) ? filter.keywords.join(" ") : null],
+    ["keywords", Array.isArray(filter.keywords) ? filter.keywords.join(" ") : (describeTextQuery(filter.text_query)?.summary || null)],
     ["agency", filter.agency],
     ["borough", filter.borough || filter.boro],
     ["neighborhood", filter.neighborhood],
@@ -747,6 +775,9 @@ export function followingPreviewItemHtml(item, options = {}) {
   const next = row.nextStep
     ? `<p class="following-dig-next"><span class="following-dig-next-label">Next step:</span> ${esc(row.nextStep)}</p>`
     : "";
+  const excerpt = row.excerpt
+    ? `<p class="following-dig-excerpt" data-following-match-excerpt>${esc(row.excerpt)}</p>`
+    : "";
   const chips = phase
     ? `<div class="following-dig-awareness" aria-label="Status">${phase}</div>`
     : "";
@@ -755,6 +786,7 @@ export function followingPreviewItemHtml(item, options = {}) {
   return `<li class="following-digitem${focusClass}" data-preview-id="${esc(row.id)}"${focusAttr}>
     <div class="following-dig-title">${constellationLink({ href, label: title, className: "following-record-link", escape: esc })}</div>
     ${summary}
+    ${excerpt}
     ${chips}
     ${next}
     <p class="following-dig-open">${constellationLink({ href, label: "Open on CityScroll", className: "following-record-open", escape: esc })}</p>
@@ -799,6 +831,11 @@ export function buildFollowingViewModel(input = {}, templateRegistry = {}) {
     matchCount: matchCount == null && requested && !unrecognized ? previewItems.length : matchCount,
     previewItems,
     previewError: unrecognized ? null : (input.previewError || null),
+    previewStatus: unrecognized ? null : (input.previewStatus || null),
+    previewContinuation: unrecognized ? null : (input.previewContinuation || null),
+    previewSeq: input.previewSeq || null,
+    excludedItems: unrecognized ? [] : (Array.isArray(input.excludedItems) ? input.excludedItems : []),
+    editKey: input.editKey || null,
     scopeSummary: unrecognized ? [] : scopeSummary(watch.lens, watch.filter),
     ruleSentence,
     graphContext,
@@ -993,6 +1030,31 @@ function previewFocusHtml(view) {
   </aside>`;
 }
 
+function excludedResultsHtml(view) {
+  const rows = Array.isArray(view.excludedItems) ? view.excludedItems : [];
+  if (!rows.length) return "";
+  const items = rows.map((item) => {
+    const passage = item.excerpt
+      ? `<p class="following-excluded-passage">${esc(item.excerpt)}</p>`
+      : "";
+    return `<li class="following-excluded-item" data-excluded-id="${esc(item.id || "")}">
+      <div class="following-dig-title">${constellationLink({
+        href: item.url || `/notices/${encodeURIComponent(item.id || "")}`,
+        label: item.title || item.id || "Record",
+        className: "following-record-link",
+        escape: esc,
+      })}</div>
+      <p class="following-excluded-why" data-i18n="following_excluded_why">Left out because this passage matched the exclusion</p>
+      ${passage}
+    </li>`;
+  }).join("");
+  return `<details class="following-excluded" data-following-excluded>
+    <summary data-i18n-aria="following_excluded_results" aria-label="Left-out records"><span data-i18n="following_excluded_results">Left-out records</span></summary>
+    <p class="following-excluded-note">These records stay out of email. They are shown so you can tighten the exclusion before saving.</p>
+    <ol class="following-excluded-list">${items}</ol>
+  </details>`;
+}
+
 function previewHtml(view) {
   if (!view.requested) return "";
   if (view.scopeStatus === "unrecognized_scope") {
@@ -1001,23 +1063,43 @@ function previewHtml(view) {
     <p class="following-note" role="status" data-following-handoff-status="unrecognized_scope">This watch link is not recognized. Nothing was saved. Start from a search or a record.</p>
   </section>`;
   }
-  const count = view.matchCount ?? view.previewItems.length;
-  const body = view.previewError
-    ? `<p class="following-note" role="status">${esc(view.previewError)}</p>`
-    : view.previewItems.length
-      ? `<ol class="following-diglist">${view.previewItems.map((item) => followingPreviewItemHtml(item, {
-        focused: previewItemMatchesFocus(item, view.handoff),
-      })).join("")}</ol>`
-      : `<p class="following-empty">No matches now — still watch for new.</p>`;
+  const status = view.previewStatus || (view.previewError ? "unavailable" : "complete");
+  const seqAttr = view.previewSeq != null ? ` data-following-preview-seq="${esc(String(view.previewSeq))}"` : "";
+  if (status === "unavailable") {
+    return `<section class="following-preview" data-following-preview-panel data-following-preview-status="unavailable"${seqAttr} aria-labelledby="following-preview-heading">
+    <p class="following-kicker">Preview</p><h2 id="following-preview-heading">Preview not ready</h2>
+    <p class="following-note" role="status">${esc(view.previewError || "The preview is not ready. Your wording is still here.")}</p>
+    <p><button type="submit" form="following-preview-form" class="following-preview-retry" data-following-preview-retry data-i18n="following_preview_retry">Retry preview</button></p>
+  </section>`;
+  }
+  const count = status === "incomplete"
+    ? (view.matchCount ?? view.previewItems.length)
+    : (view.matchCount ?? view.previewItems.length);
+  const body = view.previewItems.length
+    ? `<ol class="following-diglist">${view.previewItems.map((item) => followingPreviewItemHtml(item, {
+      focused: previewItemMatchesFocus(item, view.handoff),
+    })).join("")}</ol>`
+    : (status === "incomplete"
+      ? `<p class="following-note" role="status">This preview is not finished. More records may match.</p>`
+      : `<p class="following-empty">No matches now — still watch for new.</p>`);
+  const coverage = status === "incomplete"
+    ? `<p class="following-note" data-following-preview-incomplete="true">This preview is not finished. More records may match.</p>
+      ${view.previewContinuation ? `<p><button type="submit" form="following-preview-form" name="preview_continue" value="${esc(JSON.stringify(view.previewContinuation))}" data-following-preview-continue data-i18n="following_preview_continue">Show more matches</button></p>` : ""}`
+    : `<p>${view.previewItems.length < count ? `${view.previewItems.length} recent matches are shown.` : "Every current match is shown."}</p>`;
+  const awardNote = view.filter?.noticeType === "award" || view.previewItems.some((item) => /award/i.test(item.phase || ""))
+    ? `<p class="following-preview-vintage">These are published awards in the retained records, not currently open bids.</p>`
+    : "";
   const partial = !view.previewError && view.handoff?.focus && !view.previewItems.some((item) => previewItemMatchesFocus(item, view.handoff))
     ? `<p class="following-note" data-following-preview-partial="true">The record you started from is not in the current matches. The saved watch still uses the criteria above.</p>`
     : "";
-  return `<section class="following-preview" data-following-preview-panel data-scope-count="${count}" aria-labelledby="following-preview-heading">
-    <p class="following-kicker">Preview</p><h2 id="following-preview-heading">${count} matching records</h2>
-    <p>${view.previewItems.length < count ? `${view.previewItems.length} recent matches are shown.` : "Every current match is shown."}</p>
+  return `<section class="following-preview" data-following-preview-panel data-following-preview-status="${esc(status)}" data-scope-count="${count}"${seqAttr} aria-labelledby="following-preview-heading">
+    <p class="following-kicker">Preview</p><h2 id="following-preview-heading">${status === "incomplete" ? `${view.previewItems.length} matching records so far` : `${count} matching records`}</h2>
+    ${coverage}
+    ${awardNote}
     ${previewFocusHtml(view)}
     ${partial}
     ${body}
+    ${excludedResultsHtml(view)}
   </section>`;
 }
 
@@ -1049,6 +1131,22 @@ function subscribeHtml(view) {
     </section>`;
   }
   if (!view.requested) return "";
+  if (view.editKey) {
+    return `<section class="following-subscribe" data-following-subscribe-panel aria-labelledby="following-subscribe-heading">
+    <p class="following-kicker">Delivery</p><h2 id="following-subscribe-heading" data-i18n="following_save_changes">Save changes</h2>
+    <form method="post" action="${API_BASE}/prefs" data-following-edit-form data-following-subscribe-form>
+      <input type="hidden" name="action" value="update">
+      <input type="hidden" name="key" value="${esc(view.editKey)}">
+      <input type="hidden" name="lens" value="${esc(view.lens)}">
+      <input type="hidden" name="filter" value="${esc(JSON.stringify(view.filter))}">
+      <input type="hidden" name="freq" value="${esc(view.frequency)}" data-following-subscribe-freq>
+      <button type="submit" data-following-subscribe-submit data-i18n="following_save_changes">Save changes</button>
+      <a class="following-cancel-edit" href="/following/#your-following" data-following-cancel-edit data-i18n="following_cancel_edit">Cancel</a>
+      <p id="following-delivery-help" class="following-note">Saving updates this watch. Cancel leaves it unchanged.</p>
+      <p data-following-submit-status role="status" aria-live="polite"></p>
+    </form>
+  </section>`;
+  }
   return `<section class="following-subscribe" data-following-subscribe-panel aria-labelledby="following-subscribe-heading">
     <p class="following-kicker">Delivery</p><h2 id="following-subscribe-heading" data-i18n="following_create_heading">Create this watch</h2>
     <form method="post" action="${API_BASE}/subscribe" data-following-subscribe-form>
@@ -1133,10 +1231,13 @@ function controlsHtml(view) {
   if (view.scopeStatus === "unrecognized_scope") {
     return `<p class="following-note" role="status" data-following-handoff-status="unrecognized_scope">This watch link is not recognized. Choose a topic below or start from a search.</p>`;
   }
-  const query = Array.isArray(view.filter.keywords) ? view.filter.keywords.join(" ") : "";
+  const described = describeTextQuery(view.filter.text_query);
+  const query = Array.isArray(view.filter.keywords) && view.filter.keywords.length
+    ? view.filter.keywords.join(" ")
+    : (described?.groups?.[0]?.[0]?.value || "");
   const borough = placeBorough(view.filter);
   const exactMatter = Boolean(view.filter.matter_ref);
-  const refinementsOpen = !exactMatter && (query || view.filter.agency || view.filter.councilDistrict || view.filter.communityBoard || view.lens === "meetings") ? " open" : "";
+  const refinementsOpen = !exactMatter && (query || described || view.filter.agency || view.filter.councilDistrict || view.filter.communityBoard || view.lens === "meetings") ? " open" : "";
   const councilFieldHidden = view.lens !== "district" ? " hidden" : "";
   const boardFieldHidden = view.lens !== "meetings" ? " hidden" : "";
   const boardSelection = communityBoardSelectionFromRef(view.filter.communityBoard);
@@ -1152,7 +1253,7 @@ function controlsHtml(view) {
   const projectField = view.projectId ? `<input type="hidden" name="project" value="${esc(view.projectId)}">` : "";
   const originField = view.originRoute ? `<input type="hidden" name="from" value="${esc(view.originRoute)}">` : "";
   return `${topicPlacePickersHtml(view)}
-  <form class="following-form" method="get" action="${SITE_BASE}/following" data-following-preview-form>
+  <form id="following-preview-form" class="following-form" method="get" action="${SITE_BASE}/following" data-following-preview-form>
     <input type="hidden" name="lens" value="${esc(view.lens || "money")}">
     <input type="hidden" name="filter" value="${esc(JSON.stringify(view.filter || {}))}">
     ${noticeField}${projectField}${originField}
@@ -1183,6 +1284,7 @@ function controlsHtml(view) {
           <p id="following-community-board-help">Choose a borough and board (1–18). We’ll email its meetings.</p>
         </div>
       </div>
+      ${textQueryControlsHtml({ lens: view.lens, filter: view.filter })}
     </details>`}
     ${view.requested ? cadenceCardsHtml(view) : ""}
     <div class="following-form-actions">

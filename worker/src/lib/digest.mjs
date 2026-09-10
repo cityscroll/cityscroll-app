@@ -134,3 +134,39 @@ export function matchEvidence(title, description, terms) {
 
   return { field: "unknown", term: words[0] };
 }
+
+/**
+ * Digest evidence from a precise-watch decision. Uses the admitted field
+ * passages on the row rather than a keyword substring scan, so each required
+ * group is explained by the field that actually matched.
+ */
+export function matchEvidenceFromTextQuery(row) {
+  const groups = row?.text_query_evidence?.groups;
+  if (!Array.isArray(groups) || !groups.length) return null;
+  const hits = groups.filter(Boolean);
+  if (!hits.length) return null;
+  const titleHit = hits.find((hit) => hit.field === "title");
+  const other = hits.find((hit) => hit.field !== "title") || null;
+  if (titleHit && !other) {
+    const title = stripHtml(row.short_title || row.title || "");
+    const term = String(titleHit.hit || titleHit.atom?.value || "");
+    const index = term ? title.toLowerCase().indexOf(term.toLowerCase()) : -1;
+    if (index >= 0) return { field: "title", term: title.slice(index, index + term.length), index };
+    return { field: "title", term, index: 0 };
+  }
+  const hit = other || titleHit;
+  const passage = String(hit.passage || "");
+  const needle = String(hit.hit || hit.atom?.value || "");
+  const at = needle ? passage.toLowerCase().indexOf(needle.toLowerCase()) : -1;
+  if (at < 0) {
+    return { field: hit.field === "title" ? "title" : "description", term: needle || passage, index: 0, before: "", hit: needle || passage, after: "" };
+  }
+  return {
+    field: hit.field === "title" ? "title" : "description",
+    term: passage.slice(at, at + needle.length),
+    index: at,
+    before: passage.slice(0, at),
+    hit: passage.slice(at, at + needle.length),
+    after: passage.slice(at + needle.length),
+  };
+}

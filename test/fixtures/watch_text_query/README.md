@@ -24,3 +24,5 @@ identity, and handler paths) to `worker/test/watch_text_query_procurement.test.m
 to `worker/test/watch_text_query_edit_delivery.test.mjs`.
 `transport_acceptance.md` maps feed, link, and machine-handoff round-trips to
 `test/watch_text_query_transport.test.mjs` and `worker/test/watch_text_query_feed.test.mjs`.
+`ui_acceptance.md` maps the procurement reader controls and Following preview
+to `test/watch_text_query_ui.test.mjs` and `worker/test/watch_text_query_preview.test.mjs`.
