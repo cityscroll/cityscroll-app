@@ -59,6 +59,22 @@ test("meeting coverage rejects a collapse in the share of rich materialized noti
   );
 });
 
+test("City Record richness floors ignore Council calendar rows in the same read model", () => {
+  const materialized = Array.from({ length: 20 }, (_, index) => materializedRow(index));
+  const council = {
+    meeting_id: "meeting:nyc_legistar_events:22691",
+    source_system: "nyc_legistar_events",
+    event_id: "22691",
+    title: "Committee on Contracts",
+    event_date: "2026-09-23T10:00:00",
+  };
+  const model = readModelFor(materialized, [council]);
+  model.counts.city_record = 20;
+  const summary = assertMeetingCoverage(model, materialized, materialized, SILENT);
+  assert.deepEqual(summary, { materialized: 20, rich: 20 });
+  assert.equal(model.rows.some((row) => row.meeting_id === council.meeting_id), true);
+});
+
 test("meeting coverage reports the retired request-id sentinels instead of failing on them", () => {
   const materialized = Array.from({ length: 20 }, (_, index) => materializedRow(index));
   const retained = { meeting_id: "meeting:city_record:20260713006", request_id: "20260713006" };

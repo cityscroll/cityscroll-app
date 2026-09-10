@@ -201,7 +201,7 @@ test("A3: an absolute destination on a host this site owns stays internal naviga
   owned.meetings.hearings[0].source_url = "https://cityscroll.org/notices/hearing-next";
   box.innerHTML = "";
   renderNowSurface(buildNowSurface(owned, { today: TODAY, compileActionRail: CrolActions.compileActionRail }));
-  const card = box.innerHTML.match(/<article class="now-card" data-now-item="meetings:hearing-next"[\s\S]*?<\/article>/)[0];
+  const card = box.innerHTML.match(/<article class="now-card" data-now-item="meetings:meeting:city_record:hearing-next"[\s\S]*?<\/article>/)[0];
   for (const control of controlsOf(card)) {
     assert.doesNotMatch(control.href, /^https:\/\/cityscroll\.org/);
     assert.equal(control.attributes, "");
@@ -235,9 +235,9 @@ test("A4: an objection card keeps its action and names the destination it opens"
 });
 
 test("A4: an event with no compiled action still offers the ordinary way on", () => {
-  const [control] = controlsOf(renderCards().get("meetings:hearing-next"));
+  const [control] = controlsOf(renderCards().get("meetings:meeting:city_record:hearing-next"));
   assert.equal(control.label, STRINGS.now_open_details);
-  assert.equal(control.href, "/notices/hearing-next");
+  assert.equal(control.href, "/meetings/meeting%3Acity_record%3Ahearing-next");
 });
 
 /* ---------- failure recovery ---------- */

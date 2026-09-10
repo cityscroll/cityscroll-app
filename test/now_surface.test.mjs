@@ -192,7 +192,7 @@ test("Now compiles two independently ordered lanes from existing action and time
   assert.deepEqual(
     surface.happening_soon.items.map((item) => item.id),
     [
-      "meetings:hearing-next",
+      "meetings:meeting:city_record:hearing-next",
       "land:2026X0001:2026-08-05",
       "rules:rule-comment:public_hearing:2026-08-07",
       "property:property-actions:auction:2026-08-09",
@@ -302,6 +302,67 @@ test("Property action characters project into destination scopes without changin
   assert.deepEqual(participation.scope_domains, ["property", "meetings"]);
 });
 
+test("Now meeting cards link through meeting_id and never invent a City Record notice route", () => {
+  const surface = buildNowSurface(fixtureSources(), {
+    today: TODAY,
+    compileActionRail: CrolActions.compileActionRail,
+  });
+  const cityRecord = surface.happening_soon.items.find((item) => item.id.startsWith("meetings:"));
+  assert.equal(cityRecord.route, "/meetings/meeting%3Acity_record%3Ahearing-next");
+  assert.doesNotMatch(cityRecord.route, /undefined|\/notices\//);
+
+  const missingNotice = buildNowSurface({
+    ...fixtureSources(),
+    meetings: {
+      status: "available",
+      generated_at: "2026-09-09T12:00:00.000Z",
+      hearings: [
+        {
+          title: "A hearing without a notice id",
+          event_date: "2026-09-10T10:00:00",
+        },
+      ],
+    },
+  }, { today: "2026-09-09" });
+  assert.equal(missingNotice.happening_soon.items.some((item) => item.domain === "meetings"), false);
+  assert.equal(
+    JSON.stringify(missingNotice).includes("/notices/undefined")
+      || JSON.stringify(missingNotice).includes("/notices/null"),
+    false,
+  );
+});
+
+test("the Council calendar fixture appears in Now's happening-soon lane inside the thirty-day horizon", () => {
+  const meetingId = "meeting:nyc_legistar_events:22691";
+  const surface = buildNowSurface({
+    ...Object.fromEntries(["money", "staffing", "rules", "property", "land"].map((domain) => [
+      domain,
+      { status: "available" },
+    ])),
+    meetings: {
+      status: "available",
+      generated_at: "2026-09-09T12:00:00.000Z",
+      hearings: [
+        {
+          meeting_id: meetingId,
+          source_system: "nyc_legistar_events",
+          title: "Committee on Contracts",
+          event_date: "2026-09-23T10:00:00",
+          committee: { name: "Committee on Contracts" },
+          venue: { address: "250 Broadway - 8th Floor - Hearing Room 2" },
+          source_url: "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22691",
+        },
+      ],
+    },
+  }, { today: "2026-09-09" });
+  const item = surface.happening_soon.items.find((row) => row.id === `meetings:${meetingId}`);
+  assert.ok(item);
+  assert.equal(item.route, "/meetings/meeting%3Anyc_legistar_events%3A22691");
+  assert.equal(item.source.system, "nyc_legistar_events");
+  assert.doesNotMatch(item.route, /undefined|\/notices\//);
+  assert.equal(item.time.day, "2026-09-23");
+});
+
 test("an opaque future scope can filter both lanes without changing their compiler contract", () => {
   const calls = [];
   const scope = { geography: { borough: "Bronx" } };
@@ -367,7 +428,7 @@ test("meeting records that are not hearings carry the Meeting event kind", () =>
     event_date: "2026-08-06T18:00:00",
   });
   const surface = buildNowSurface(sources, { today: TODAY, compileActionRail: CrolActions.compileActionRail });
-  assert.equal(surface.happening_soon.items.find((item) => item.id === "meetings:meeting-next")?.kind, "meeting");
+  assert.equal(surface.happening_soon.items.find((item) => item.id === "meetings:meeting:city_record:meeting-next")?.kind, "meeting");
 });
 
 test("Now is promoted as a document route while civic objects remain Browse groups", () => {

@@ -195,13 +195,13 @@
       "land": 0,
       "property": 0,
       "rules": 0,
-      "meetings": 26,
+      "meetings": 27,
       "money": 212
     }
   },
   "note": "Each polygon membership has exactly one routed located_in candidate. Citywide, virtual, and unlocated remain non-polygon buckets. Weak agency-HQ and vendor fallbacks remain evidence-only.",
   "boundary_vintage": "2026-05-26",
-  "built_at": "2026-09-09T11:59:26.375Z",
+  "built_at": "2026-09-10T08:36:51.430Z",
   "subject_counts": {
     "borough": 5,
     "community-district": 59,

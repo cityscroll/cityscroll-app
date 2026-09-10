@@ -7,7 +7,8 @@
     "checked_at": "2026-09-07T13:14:16.382Z",
     "sources": {
       "city_record": "available",
-      "community_board": "available"
+      "community_board": "available",
+      "nyc_legistar_events": "available"
     }
   },
   "sources": {
@@ -1538,15 +1539,46 @@
           }
         }
       ]
+    },
+    "nyc_legistar_events": {
+      "source_system": "nyc_legistar_events",
+      "status": "available",
+      "available": true,
+      "generated_at": "2026-09-09T12:00:00.000Z",
+      "max_age_ms": 129600000,
+      "row_count": 1,
+      "reason": null,
+      "coverage": {
+        "eligible_events": 1,
+        "meetings": 1,
+        "agenda_items": 2,
+        "events_with_items": 1,
+        "events_no_published_items": 0,
+        "events_items_deferred": 0,
+        "events_items_unavailable": 0,
+        "events_items_truncated": 0,
+        "source_health": {
+          "status": "healthy",
+          "basis": "authenticated-events-acquisition",
+          "observed_at": "2026-09-09T12:00:00.000Z",
+          "events_observed": 1
+        }
+      },
+      "board_coverage": null
     }
   },
   "counts": {
-    "total": 530,
+    "total": 531,
     "city_record": 119,
     "community_board": 411,
-    "meeting_documents": 4429,
-    "attached_meeting_documents": 73
+    "meeting_documents": 4430,
+    "attached_meeting_documents": 73,
+    "nyc_legistar_events": 1,
+    "collection": 531,
+    "suppressed": 0,
+    "same_proceeding": 0
   },
+  "same_proceeding": [],
   "rows": [
     {
       "object_type": "meeting",
@@ -48933,6 +48965,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -50296,6 +50331,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -50744,6 +50782,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -52982,6 +53023,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -54660,6 +54704,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -54796,6 +54843,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -55910,6 +55960,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -56048,6 +56101,163 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-09-07T13:14:16.382Z"
+      }
+    },
+    {
+      "event_id": "22691",
+      "meeting_id": "meeting:nyc_legistar_events:22691",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22691",
+        "event_guid": "0996EE1D-9814-4C5D-B338-EF2C19BBE32F"
+      },
+      "event_date": "2026-09-23T10:00:00",
+      "wall_time": "2026-09-23T10:00:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+      },
+      "committee": {
+        "name": "Committee on Contracts",
+        "href": null
+      },
+      "governing_body": {
+        "name": "Committee on Contracts",
+        "body_id": "6"
+      },
+      "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22691&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22691&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "description": "Oversight - M/WBE Utilization and the Required Disparity Study. | T2026-2485 | A Local Law to amend the administrative code of the city of New York, in relation to reporting on minority- and women-owned business participation in subcontracts for human services contracts | Reporting on minority- and women-owned business participation in subcontracts for human services contracts. | Int 0834-2026",
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "441401",
+            "agenda_number": null,
+            "title": "Oversight - M/WBE Utilization and the Required Disparity Study.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79438",
+              "matter_file": "T2026-2485",
+              "matter_name": "Oversight - M/WBE Utilization and the Required Disparity Study.",
+              "matter_type": "Oversight",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "441407",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to reporting on minority- and women-owned business participation in subcontracts for human services contracts",
+            "body_text": null,
+            "matter": {
+              "matter_id": "78550",
+              "matter_file": "Int 0834-2026",
+              "matter_name": "Reporting on minority- and women-owned business participation in subcontracts for human services contracts.",
+              "matter_type": "Introduction",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "search_text": "Oversight - M/WBE Utilization and the Required Disparity Study. | T2026-2485 | A Local Law to amend the administrative code of the city of New York, in relation to reporting on minority- and women-owned business participation in subcontracts for human services contracts | Reporting on minority- and women-owned business participation in subcontracts for human services contracts. | Int 0834-2026"
+      },
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22691_A_Committee_on_Contracts_26-09-23_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "meeting_documents": [],
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-09-09T12:00:00.000Z",
+        "row_version": null,
+        "last_modified_utc": "2026-08-27T19:49:15.833",
+        "agenda_last_published_utc": "2026-08-27T19:49:15.767"
+      },
+      "insite_calendar": {
+        "meeting_id": 1439673,
+        "meeting_guid": "3EE38827-576A-47C0-90DF-175CC5333154",
+        "url": "https://nyc.legistar.com/MeetingDetail.aspx?ID=1439673&GUID=3EE38827-576A-47C0-90DF-175CC5333154",
+        "note": "Measured public InSite calendar identity for the same proceeding. The Events API identity is EventId 22691; this materialization keeps the API identity."
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "source_keys": [
+        {
+          "source_system": "nyc_legistar_events",
+          "key_type": "event_id",
+          "value": "22691"
+        }
+      ],
+      "publisher_identifier": "22691",
+      "title": "Committee on Contracts",
+      "event_end": null,
+      "meeting_family": "descriptive_meeting_v0",
+      "participation": null,
+      "agency": null,
+      "board_name": null,
+      "search_text": "Committee on Contracts Committee on Contracts Oversight - M/WBE Utilization and the Required Disparity Study. | T2026-2485 | A Local Law to amend the administrative code of the city of New York, in relation to reporting on minority- and women-owned business participation in subcontracts for human services contracts | Reporting on minority- and women-owned business participation in subcontracts for human services contracts. | Int 0834-2026 250 Broadway - 8th Floor - Hearing Room 2 Committee on Contracts Oversight - M/WBE Utilization and the Required Disparity Study. | T2026-2485 | A Local Law to amend the administrative code of the city of New York, in relation to reporting on minority- and women-owned business participation in subcontracts for human services contracts | Reporting on minority- and women-owned business participation in subcontracts for human services contracts. | Int 0834-2026 250 Broadway - 8th Floor - Hearing Room 2",
+      "affected_area": null,
+      "source_system": "nyc_legistar_events",
+      "meeting_origin": "nyc_legistar_events_observed",
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22691&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+      },
+      "request_id": null,
+      "source_record_id": "22691",
+      "board_id": null,
+      "publisher_cross_references": [
+        {
+          "kind": "insite_calendar",
+          "meeting_id": "1439673",
+          "meeting_guid": "3EE38827-576A-47C0-90DF-175CC5333154",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?ID=1439673&GUID=3EE38827-576A-47C0-90DF-175CC5333154",
+          "note": "Measured public InSite calendar identity for the same proceeding. The Events API identity is EventId 22691; this materialization keeps the API identity."
+        }
+      ],
+      "source_record": {
+        "source_system": "nyc_legistar_events",
+        "identifier": "22691",
+        "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22691&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+        "receipt": {
+          "source_system": "nyc_legistar_events",
+          "observed_at": "2026-09-09T12:00:00.000Z",
+          "row_version": null,
+          "last_modified_utc": "2026-08-27T19:49:15.833",
+          "agenda_last_published_utc": "2026-08-27T19:49:15.767"
+        }
+      },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -61348,6 +61558,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -61482,6 +61695,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -61614,6 +61830,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -61746,6 +61965,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -64558,6 +64780,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -64692,6 +64917,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -64828,6 +65056,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -64947,6 +65178,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -68233,6 +68467,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -68366,6 +68603,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -70996,6 +71236,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -71130,6 +71373,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -71297,6 +71543,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -76535,6 +76784,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -76671,6 +76923,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -76802,6 +77057,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -76933,6 +77191,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -80907,6 +81168,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -81032,6 +81296,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -81160,6 +81427,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -81294,6 +81564,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -81825,6 +82098,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -81965,6 +82241,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -82106,6 +82385,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -82246,6 +82528,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -82374,6 +82659,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -82502,6 +82790,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -82630,6 +82921,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -82764,6 +83058,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -82903,6 +83200,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -87138,6 +87438,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -91935,6 +92238,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -93935,6 +94241,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -96243,6 +96552,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -96354,6 +96666,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -98514,6 +98829,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -98659,6 +98977,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -99268,6 +99589,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -99379,6 +99703,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -99489,6 +99816,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -99594,6 +99924,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -100182,6 +100515,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -100272,6 +100608,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -100362,6 +100701,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -100452,6 +100794,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -100812,6 +101157,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -100994,6 +101342,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -101378,6 +101729,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -101489,6 +101843,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -101852,6 +102209,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -103225,6 +103585,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -103370,6 +103733,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -103481,6 +103847,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -103613,6 +103982,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -103753,6 +104125,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -103916,6 +104291,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -104006,6 +104384,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -104152,6 +104533,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -104266,6 +104650,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -104605,6 +104992,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -104695,6 +105085,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -104806,6 +105199,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -105166,6 +105562,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -105774,6 +106173,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -105885,6 +106287,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -105979,6 +106384,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -106090,6 +106498,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -106248,6 +106659,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -106608,6 +107022,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -106764,6 +107181,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -107117,6 +107537,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -107381,6 +107804,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -107492,6 +107918,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -107922,6 +108351,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -108012,6 +108444,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -108158,6 +108593,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -108302,6 +108740,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -108446,6 +108887,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -109043,6 +109487,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -109154,6 +109601,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -109765,6 +110215,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -111121,6 +111574,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -111232,6 +111688,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -111635,6 +112094,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -111899,6 +112361,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -112301,6 +112766,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -112412,6 +112880,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -112579,6 +113050,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -112978,6 +113452,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -114084,6 +114561,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -114190,6 +114670,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -114323,6 +114806,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -114485,6 +114971,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -115591,6 +116080,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -115706,6 +116198,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -118363,6 +118858,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -128055,6 +128553,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -128141,6 +128642,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -128227,6 +128731,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -128313,6 +128820,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -128399,6 +128909,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -128485,6 +128998,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -128567,6 +129083,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -128649,6 +129168,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -128731,6 +129253,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -128813,6 +129338,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -128895,6 +129423,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -129020,6 +129551,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -129118,6 +129652,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -129254,6 +129791,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -129336,6 +129876,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -176729,6 +177272,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -178092,6 +178638,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -178540,6 +179089,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -180778,6 +181330,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -182456,6 +183011,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -182592,6 +183150,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -183706,6 +184267,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -183844,6 +184408,163 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-09-07T13:14:16.382Z"
+      }
+    },
+    {
+      "event_id": "22691",
+      "meeting_id": "meeting:nyc_legistar_events:22691",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22691",
+        "event_guid": "0996EE1D-9814-4C5D-B338-EF2C19BBE32F"
+      },
+      "event_date": "2026-09-23T10:00:00",
+      "wall_time": "2026-09-23T10:00:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+      },
+      "committee": {
+        "name": "Committee on Contracts",
+        "href": null
+      },
+      "governing_body": {
+        "name": "Committee on Contracts",
+        "body_id": "6"
+      },
+      "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22691&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22691&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "description": "Oversight - M/WBE Utilization and the Required Disparity Study. | T2026-2485 | A Local Law to amend the administrative code of the city of New York, in relation to reporting on minority- and women-owned business participation in subcontracts for human services contracts | Reporting on minority- and women-owned business participation in subcontracts for human services contracts. | Int 0834-2026",
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "441401",
+            "agenda_number": null,
+            "title": "Oversight - M/WBE Utilization and the Required Disparity Study.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79438",
+              "matter_file": "T2026-2485",
+              "matter_name": "Oversight - M/WBE Utilization and the Required Disparity Study.",
+              "matter_type": "Oversight",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "441407",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to reporting on minority- and women-owned business participation in subcontracts for human services contracts",
+            "body_text": null,
+            "matter": {
+              "matter_id": "78550",
+              "matter_file": "Int 0834-2026",
+              "matter_name": "Reporting on minority- and women-owned business participation in subcontracts for human services contracts.",
+              "matter_type": "Introduction",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "search_text": "Oversight - M/WBE Utilization and the Required Disparity Study. | T2026-2485 | A Local Law to amend the administrative code of the city of New York, in relation to reporting on minority- and women-owned business participation in subcontracts for human services contracts | Reporting on minority- and women-owned business participation in subcontracts for human services contracts. | Int 0834-2026"
+      },
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22691_A_Committee_on_Contracts_26-09-23_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "meeting_documents": [],
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-09-09T12:00:00.000Z",
+        "row_version": null,
+        "last_modified_utc": "2026-08-27T19:49:15.833",
+        "agenda_last_published_utc": "2026-08-27T19:49:15.767"
+      },
+      "insite_calendar": {
+        "meeting_id": 1439673,
+        "meeting_guid": "3EE38827-576A-47C0-90DF-175CC5333154",
+        "url": "https://nyc.legistar.com/MeetingDetail.aspx?ID=1439673&GUID=3EE38827-576A-47C0-90DF-175CC5333154",
+        "note": "Measured public InSite calendar identity for the same proceeding. The Events API identity is EventId 22691; this materialization keeps the API identity."
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "source_keys": [
+        {
+          "source_system": "nyc_legistar_events",
+          "key_type": "event_id",
+          "value": "22691"
+        }
+      ],
+      "publisher_identifier": "22691",
+      "title": "Committee on Contracts",
+      "event_end": null,
+      "meeting_family": "descriptive_meeting_v0",
+      "participation": null,
+      "agency": null,
+      "board_name": null,
+      "search_text": "Committee on Contracts Committee on Contracts Oversight - M/WBE Utilization and the Required Disparity Study. | T2026-2485 | A Local Law to amend the administrative code of the city of New York, in relation to reporting on minority- and women-owned business participation in subcontracts for human services contracts | Reporting on minority- and women-owned business participation in subcontracts for human services contracts. | Int 0834-2026 250 Broadway - 8th Floor - Hearing Room 2 Committee on Contracts Oversight - M/WBE Utilization and the Required Disparity Study. | T2026-2485 | A Local Law to amend the administrative code of the city of New York, in relation to reporting on minority- and women-owned business participation in subcontracts for human services contracts | Reporting on minority- and women-owned business participation in subcontracts for human services contracts. | Int 0834-2026 250 Broadway - 8th Floor - Hearing Room 2",
+      "affected_area": null,
+      "source_system": "nyc_legistar_events",
+      "meeting_origin": "nyc_legistar_events_observed",
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22691&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+      },
+      "request_id": null,
+      "source_record_id": "22691",
+      "board_id": null,
+      "publisher_cross_references": [
+        {
+          "kind": "insite_calendar",
+          "meeting_id": "1439673",
+          "meeting_guid": "3EE38827-576A-47C0-90DF-175CC5333154",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?ID=1439673&GUID=3EE38827-576A-47C0-90DF-175CC5333154",
+          "note": "Measured public InSite calendar identity for the same proceeding. The Events API identity is EventId 22691; this materialization keeps the API identity."
+        }
+      ],
+      "source_record": {
+        "source_system": "nyc_legistar_events",
+        "identifier": "22691",
+        "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22691&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+        "receipt": {
+          "source_system": "nyc_legistar_events",
+          "observed_at": "2026-09-09T12:00:00.000Z",
+          "row_version": null,
+          "last_modified_utc": "2026-08-27T19:49:15.833",
+          "agenda_last_published_utc": "2026-08-27T19:49:15.767"
+        }
+      },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -189144,6 +189865,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -189278,6 +190002,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -189410,6 +190137,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -189542,6 +190272,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -192354,6 +193087,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -192488,6 +193224,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -192624,6 +193363,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -192743,6 +193485,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -196029,6 +196774,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -196162,6 +196910,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -198792,6 +199543,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -198926,6 +199680,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -199093,6 +199850,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -204331,6 +205091,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -204467,6 +205230,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -204598,6 +205364,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -204729,6 +205498,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -208703,6 +209475,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -208828,6 +209603,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -208956,6 +209734,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -209090,6 +209871,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -209621,6 +210405,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -209761,6 +210548,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -209902,6 +210692,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -210042,6 +210835,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -210170,6 +210966,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -210298,6 +211097,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -210426,6 +211228,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -210560,6 +211365,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -210699,6 +211507,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -214934,6 +215745,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -219731,6 +220545,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -221731,6 +222548,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -224039,6 +224859,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -224150,6 +224973,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -226310,6 +227136,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -226455,6 +227284,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -227064,6 +227896,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -227175,6 +228010,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -227285,6 +228123,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -227390,6 +228231,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -227978,6 +228822,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -228068,6 +228915,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -228158,6 +229008,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -228248,6 +229101,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -228608,6 +229464,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -228790,6 +229649,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -229174,6 +230036,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -229285,6 +230150,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -229648,6 +230516,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -231021,6 +231892,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -231166,6 +232040,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -231277,6 +232154,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -231409,6 +232289,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -231549,6 +232432,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -231712,6 +232598,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -231802,6 +232691,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -231948,6 +232840,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -232062,6 +232957,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -232401,6 +233299,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -232491,6 +233392,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -232602,6 +233506,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -232962,6 +233869,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -233570,6 +234480,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -233681,6 +234594,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -233775,6 +234691,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -233886,6 +234805,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -234044,6 +234966,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -234404,6 +235329,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -234560,6 +235488,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -234913,6 +235844,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -235177,6 +236111,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -235288,6 +236225,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -235718,6 +236658,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -235808,6 +236751,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -235954,6 +236900,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -236098,6 +237047,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -236242,6 +237194,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -236839,6 +237794,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -236950,6 +237908,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -237561,6 +238522,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -238917,6 +239881,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -239028,6 +239995,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -239431,6 +240401,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -239695,6 +240668,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -240097,6 +241073,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -240208,6 +241187,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -240375,6 +241357,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -240774,6 +241759,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -241880,6 +242868,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -241986,6 +242977,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -242119,6 +243113,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -242281,6 +243278,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -243387,6 +244387,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -243502,6 +244505,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -246159,6 +247165,9 @@
           "method": "exact_date_body_tokens"
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -255851,6 +256860,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -255937,6 +256949,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -256023,6 +257038,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -256109,6 +257127,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -256195,6 +257216,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -256281,6 +257305,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -256363,6 +257390,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -256445,6 +257475,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -256527,6 +257560,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -256609,6 +257645,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -256691,6 +257730,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -256816,6 +257858,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -256914,6 +257959,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -257050,6 +258098,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -257132,6 +258183,9 @@
           "reason": null
         }
       },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,

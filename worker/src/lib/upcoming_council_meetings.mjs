@@ -376,6 +376,69 @@ function collectStrings(value, out) {
   else if (value && typeof value === "object") for (const entry of Object.values(value)) collectStrings(entry, out);
 }
 
+function projectUpcomingMeetingRow(meeting) {
+  const eventId = meeting?.identity?.event_id
+    || (String(meeting?.meeting_id || "").startsWith("meeting:nyc_legistar_events:")
+      ? String(meeting.meeting_id).slice("meeting:nyc_legistar_events:".length)
+      : null);
+  const documents = Array.isArray(meeting?.documents) ? meeting.documents : [];
+  return {
+    event_id: eventId,
+    meeting_id: meeting.meeting_id,
+    identity: meeting.identity || null,
+    event_date: meeting.wall_time || meeting.date || null,
+    wall_time: meeting.wall_time || null,
+    time_zone: meeting.time_zone || UPCOMING_COUNCIL_MEETINGS_TIME_ZONE,
+    venue: meeting.venue || null,
+    committee: meeting.governing_body || null,
+    governing_body: meeting.governing_body || null,
+    source_url: meeting.url || null,
+    url: meeting.url || null,
+    description: meeting.agenda?.search_text || meeting.description || null,
+    agenda: meeting.agenda || null,
+    documents,
+    meeting_documents: documents.map((doc) => ({
+      document_url: doc.url || doc.document_url || null,
+      title: doc.name || doc.title || null,
+      role: String(doc.category || doc.name || doc.role || "").toLowerCase() || null,
+      meeting_id: meeting.meeting_id || null,
+      source_receipt: meeting.source_receipt || null,
+      attachment_status: "attached",
+    })),
+    source_receipt: meeting.source_receipt || null,
+    insite_calendar: meeting.insite_calendar || null,
+    city_record_notice: meeting.city_record_notice || null,
+  };
+}
+
+/**
+ * Project the upcoming Council-meetings materialization into the shared
+ * meeting read model's nyc_legistar_events index. Accepts the KV/view
+ * snapshot or an already-projected index. Missing or unrecognized input
+ * becomes null so the source envelope is unavailable rather than omitted.
+ */
+export function upcomingCouncilMeetingsIndex(value) {
+  if (!value || typeof value !== "object") return null;
+  if (Array.isArray(value.rows)) {
+    return {
+      generated_at: value.generated_at || null,
+      coverage: value.coverage || value.counts || null,
+      rows: value.rows,
+    };
+  }
+  if (value.schema !== UPCOMING_COUNCIL_MEETINGS_SCHEMA || !Array.isArray(value.meetings)) {
+    return null;
+  }
+  return {
+    generated_at: value.generated_at || null,
+    coverage: {
+      ...(value.counts || {}),
+      source_health: value.source_health || null,
+    },
+    rows: value.meetings.map(projectUpcomingMeetingRow),
+  };
+}
+
 /**
  * Fail-closed sanitization gate for the public projection: no string in the
  * materialized view may carry a credential (`token=`) or an authenticated

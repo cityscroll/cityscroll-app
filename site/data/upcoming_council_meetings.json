@@ -1,0 +1,131 @@
+{
+  "schema": "cityscroll.upcoming_council_meetings.v1",
+  "schema_version": 1,
+  "generated_at": "2026-09-09T12:00:00.000Z",
+  "source": {
+    "name": "NYC Council Legistar (authenticated Web API)",
+    "dataset": "Events",
+    "publisher_landing": "https://council.nyc.gov/legislation/api/"
+  },
+  "identity_policy": {
+    "identity": "meeting:nyc_legistar_events:<EventId>",
+    "merge": "none",
+    "city_record_link": "metadata-only; an exact date-and-body notice join links, it never merges or replaces a source identity"
+  },
+  "discovery": {
+    "basis": "shared authenticated Events acquisition of the daily refresh (no additional Events request)",
+    "horizon_days": 120,
+    "window_start": "2026-09-09",
+    "window_end": "2027-01-07",
+    "events_pages": 0,
+    "events_page_truncated": false,
+    "item_events_max": 60,
+    "item_concurrency": 6,
+    "item_events_attempted": 1,
+    "item_events_deferred": 0,
+    "item_discovery_truncated": false
+  },
+  "source_health": {
+    "status": "healthy",
+    "basis": "authenticated-events-acquisition",
+    "observed_at": "2026-09-09T12:00:00.000Z",
+    "events_observed": 1
+  },
+  "counts": {
+    "eligible_events": 1,
+    "meetings": 1,
+    "agenda_items": 2,
+    "events_with_items": 1,
+    "events_no_published_items": 0,
+    "events_items_deferred": 0,
+    "events_items_unavailable": 0,
+    "events_items_truncated": 0
+  },
+  "meetings": [
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22691",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22691",
+        "event_guid": "0996EE1D-9814-4C5D-B338-EF2C19BBE32F"
+      },
+      "governing_body": {
+        "name": "Committee on Contracts",
+        "body_id": "6"
+      },
+      "date": "2026-09-23",
+      "wall_time": "2026-09-23T10:00:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22691&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/9/22691_A_Committee_on_Contracts_26-09-23_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "441401",
+            "agenda_number": null,
+            "title": "Oversight - M/WBE Utilization and the Required Disparity Study.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79438",
+              "matter_file": "T2026-2485",
+              "matter_name": "Oversight - M/WBE Utilization and the Required Disparity Study.",
+              "matter_type": "Oversight",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "441407",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to reporting on minority- and women-owned business participation in subcontracts for human services contracts",
+            "body_text": null,
+            "matter": {
+              "matter_id": "78550",
+              "matter_file": "Int 0834-2026",
+              "matter_name": "Reporting on minority- and women-owned business participation in subcontracts for human services contracts.",
+              "matter_type": "Introduction",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "search_text": "Oversight - M/WBE Utilization and the Required Disparity Study. | T2026-2485 | A Local Law to amend the administrative code of the city of New York, in relation to reporting on minority- and women-owned business participation in subcontracts for human services contracts | Reporting on minority- and women-owned business participation in subcontracts for human services contracts. | Int 0834-2026"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-09-09T12:00:00.000Z",
+        "row_version": null,
+        "last_modified_utc": "2026-08-27T19:49:15.833",
+        "agenda_last_published_utc": "2026-08-27T19:49:15.767"
+      },
+      "insite_calendar": {
+        "meeting_id": 1439673,
+        "meeting_guid": "3EE38827-576A-47C0-90DF-175CC5333154",
+        "url": "https://nyc.legistar.com/MeetingDetail.aspx?ID=1439673&GUID=3EE38827-576A-47C0-90DF-175CC5333154",
+        "note": "Measured public InSite calendar identity for the same proceeding. The Events API identity is EventId 22691; this materialization keeps the API identity."
+      }
+    }
+  ]
+}

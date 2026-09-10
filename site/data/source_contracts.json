@@ -2684,11 +2684,19 @@
         {
           "path": "tools/build_person_votes_lookup.mjs",
           "contains": "person_votes"
+        },
+        {
+          "path": "tools/build_upcoming_council_meetings_snapshot.mjs",
+          "contains": "buildUpcomingCouncilMeetingsSnapshot"
+        },
+        {
+          "path": "tools/build_primary_documents.mjs",
+          "contains": "nycLegistarEventsIndex"
         }
       ],
       "delivery_tier": "inline-at-build",
       "endpoint": "https://webapi.legistar.com/v1/nyc/Bodies",
-      "gap": "Materialized (2026-07-30): daily edge ingest from authenticated webapi.legistar.com/v1/nyc with the strict exact_date_body_tokens join (modern event join 100%, 59/59). EventItems carry inline matters (98.3%) and action outcomes; best-effort roll-call votes and attachments are fetched for flagged items (~10% of events publish roll-call detail on the endpoint). Hearing agenda/minutes PDFs surface at the event level. Upcoming unmatched Events now receive a distinct sanitized meeting projection with bounded EventItems discovery; resident Meeting, Search, and Now surfaces remain notice-keyed. Remaining sub-gap: pre-modern (pre-2025) historical events join at 73% and sparse roll-call detail is often not published on the endpoint for subcommittee voice votes.",
+      "gap": "Materialized (2026-07-30): daily edge ingest from authenticated webapi.legistar.com/v1/nyc with the strict exact_date_body_tokens join (modern event join 100%, 59/59). EventItems carry inline matters (98.3%) and action outcomes; best-effort roll-call votes and attachments are fetched for flagged items (~10% of events publish roll-call detail on the endpoint). Hearing agenda/minutes PDFs surface at the event level. Upcoming unmatched Events receive a distinct sanitized meeting projection with bounded EventItems discovery, and Meetings, Search, Now, canonical detail, HTTP, and MCP consume that shared meeting object through meeting_id. Remaining sub-gap: pre-modern (pre-2025) historical events join at 73% and sparse roll-call detail is often not published on the endpoint for subcommittee voice votes.",
       "join_keys": [
         "body_id",
         "matter_id",
@@ -4359,6 +4367,25 @@
       "resident_stale_behavior": "Do not describe meeting notices as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show meeting notices as unavailable; never report that no meetings exist because acquisition failed.",
       "production_evidence_field": "first_class.meeting_notices"
+    },
+    {
+      "id": "upcoming-council-meetings",
+      "public_artifact_path": "site/data/upcoming_council_meetings.json",
+      "primary_routes": ["/browse/meetings/", "/now/", "/search/"],
+      "source_contract_id": "nyc-council-legistar",
+      "acquisition_command": ["node", "tools/build_upcoming_council_meetings_snapshot.mjs"],
+      "owning_builder": "tools/build_upcoming_council_meetings_snapshot.mjs",
+      "builder_command": ["node", "tools/build_upcoming_council_meetings_snapshot.mjs"],
+      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_keyword_search_index.mjs"],
+      "normal_refresh_cadence_hours": 24,
+      "warning_age_hours": 48,
+      "hard_maximum_age_hours": 168,
+      "vintage_fields": ["generated_at"],
+      "population_fields": ["counts.meetings", "meetings"],
+      "last_known_good_behavior": "Retain the last verified upcoming Council calendar snapshot within its hard age and disclose degraded freshness.",
+      "resident_stale_behavior": "Do not describe Council calendar hearings as current after the hard maximum age.",
+      "resident_unavailable_behavior": "Show Council calendar coverage as unavailable; never report that no Council hearings exist because acquisition failed.",
+      "production_evidence_field": "first_class.upcoming_council_meetings"
     },
     {
       "id": "meeting-outcomes",

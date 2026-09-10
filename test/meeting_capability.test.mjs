@@ -231,6 +231,64 @@ test("a past community-board meeting in the committed coverage resolves through 
   assert.equal(result.freshness.as_of, COMMITTED_READ_MODEL.generated_at);
 });
 
+test("page, HTTP, and meeting.get share the Council calendar fixture identity and facts", async () => {
+  const generatedAt = "2026-09-09T12:00:00.000Z";
+  const eventRow = {
+    ...upcomingFixture.event,
+    insite_calendar: upcomingFixture.insite_calendar,
+    description: upcomingFixture.event_items.map((item) => item.EventItemTitle).join(" | "),
+  };
+  const model = buildSharedMeetingReadModel({
+    cityRecordRows: [],
+    communityBoardIndex: { generated_at: generatedAt, rows: [] },
+    nycLegistarEventsIndex: { generated_at: generatedAt, rows: [eventRow] },
+    generatedAt,
+    now: generatedAt,
+  });
+  const meetingId = `meeting:nyc_legistar_events:${upcomingFixture.event.EventId}`;
+  const result = meetingGetFromModel(model, { meetingId });
+  const executed = await executeMeetingGet(
+    {
+      capabilityReference: MEETING_GET_CAPABILITY_REFERENCE,
+      providerId: "worker-static.shared-meeting.get",
+      execute: (value) => meetingGetFromModel(model, value),
+    },
+    { meetingId },
+  );
+  assert.equal(result.availability, "available");
+  assert.equal(executed.meeting.meeting_id, meetingId);
+  assert.equal(result.meeting.meeting_id, meetingId);
+  assert.equal(result.meeting.event_date, "2026-09-23T10:00:00");
+  assert.match(result.meeting.venue.address, /250 Broadway/);
+  assert.match(result.meeting.venue.address, /Hearing Room 2/);
+  assert.equal(result.meeting.committee.name, "Committee on Contracts");
+  assert.match(result.meeting.description, /M\/WBE Utilization and the Required Disparity Study/);
+  assert.match(result.meeting.source_url, /LEGID=22691/);
+  assert.equal(result.meeting.participation?.remote_join_url || null, null);
+
+  const html = renderMeetingDocument(result.meeting, model);
+  assert.match(html, /City Council meeting/);
+  assert.match(html, /September 23, 2026 at 10:00 AM New York time/);
+  assert.match(html, /250 Broadway/);
+  assert.match(html, /Hearing Room 2/);
+  assert.match(html, /Committee on Contracts/);
+  assert.match(html, /M\/WBE Utilization and the Required Disparity Study/);
+  assert.match(html, /https:\/\/nyc\.legistar\.com\/MeetingDetail\.aspx\?LEGID=22691/);
+  assert.doesNotMatch(html, /Join online|Join remotely/);
+  assert.doesNotMatch(html, /RequestDetail\/(?:undefined)?["']/);
+  assert.equal(meetingCollectionRows(model).map((row) => row.meeting_id).join(), meetingId);
+
+  const values = new Map([[HEARINGS_KV_KEY, JSON.stringify(model)]]);
+  const response = await handleHearings(
+    new Request(`https://api.cityscroll.org/hearings?id=${encodeURIComponent(meetingId)}`),
+    { ALERT_STATE: { get: async (key) => values.get(key) } },
+  );
+  const body = await response.json();
+  assert.equal(response.status, 200);
+  assert.equal(body.capability.meeting.meeting_id, meetingId);
+  assert.equal(body.capability.meeting.source_system, "nyc_legistar_events");
+});
+
 test("meeting.get resolves the Events feed identity before and after an exact join", () => {
   const generatedAt = peerIdentityFixture.pinned_clock;
   const eventRow = {

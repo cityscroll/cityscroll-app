@@ -252,6 +252,42 @@ function hearingDecision(row, body) {
   return matter ? hearingPlainText(matter[1]) : title || "The notice does not give a short plain-language summary.";
 }
 function normalizeHearingRow(row) {
+  if (row && (row.source_system === "nyc_legistar_events"
+    || String(row.meeting_id || "").indexOf("meeting:nyc_legistar_events:") === 0)) {
+    var eventId = String(row.event_id || row.publisher_identifier
+      || (row.identity && row.identity.event_id)
+      || String(row.meeting_id || "").slice("meeting:nyc_legistar_events:".length) || "").trim();
+    var councilMeetingId = String(row.meeting_id || (eventId ? "meeting:nyc_legistar_events:" + eventId : "")).trim() || null;
+    var councilSource = row.source_url || row.url
+      || (eventId ? "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=" + encodeURIComponent(eventId) : null);
+    var councilParticipation = row.participation || { links: [], remote_join_url: null, emails: [], phones: [], source_url: councilSource };
+    return {
+      object_type: "meeting", schema: "cityscroll.meeting_object.v1", meeting_id: councilMeetingId,
+      source_keys: eventId ? [{ source_system: "nyc_legistar_events", key_type: "event_id", value: eventId }] : [],
+      publisher_identifier: eventId || null, request_id: null, event_id: eventId || null,
+      source_system: "nyc_legistar_events", source_record_id: row.source_record_id || eventId || null,
+      source_section: row.section_name || "City Council Meetings",
+      agency: row.agency || null, notice_type: row.type_of_notice_description || "Council meeting",
+      title: hearingPlainText(row.title || row.short_title) || "City Council meeting",
+      event_date: row.event_date || row.wall_time || null,
+      event_end: row.event_end || null,
+      published_at: row.start_date || null,
+      decides: hearingPlainText(row.title || row.short_title) || "City Council meeting",
+      affects: [], affected_area: row.affected_area || { scope: "unlocated" }, venue: row.venue || null,
+      participation: councilParticipation,
+      source_url: councilSource, description: hearingPlainText(row.description || row.search_text || ""),
+      committee: row.committee || row.governing_body || null,
+      meeting_documents: row.meeting_documents || [],
+      minutes_freshness: row.minutes_freshness || null, search_text: row.search_text || null,
+      institution_refs: row.institution_refs || { agency_ref: null, board_ref: null },
+      compatibility: { legacy_notice_href: null, legacy_fragment_href: null, publisher_href: councilSource },
+      publisher_cross_references: row.publisher_cross_references || null,
+      meeting_origin: row.meeting_origin || "nyc_legistar_events_observed",
+      source_receipt: row.source_receipt || null, join_status: row.join_status || "unknown",
+      meeting_join: row.meeting_join || null,
+      collection_visibility: row.collection_visibility || null,
+    };
+  }
   if (row && row.source_system === "community_board") {
     var boardSource = row.source_url || row.record_url || null;
     var boardPublisherId = String(row.publisher_identifier || row.source_record_id || row.record_id || "").trim();

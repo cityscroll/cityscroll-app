@@ -8,6 +8,10 @@ import { withDistricts } from "./lib/council_district.mjs";
 import { meetingCalendarICS } from "../../site/hearing_attend_pack.mjs";
 import { sourceSignalsFromHtml } from "../../site/hearing_logistics.mjs";
 import { buildSharedMeetingReadModel } from "../../site/shared_meeting_read_model.mjs";
+import {
+  UPCOMING_COUNCIL_MEETINGS_KV_KEY,
+  upcomingCouncilMeetingsIndex,
+} from "./lib/upcoming_council_meetings.mjs";
 import { loadMeetingReadModelForId, loadMeetingRecord, loadMeetingRows } from "./lib/route_read_model_kv.mjs";
 import {
   MEETING_GET_CAPABILITY_REFERENCE,
@@ -173,6 +177,17 @@ async function geocodeAll(fetchImpl, addresses) {
   return output;
 }
 
+async function loadUpcomingCouncilMeetingsIndex(env, override) {
+  if (override !== undefined) return upcomingCouncilMeetingsIndex(override) || override || null;
+  if (!env?.ALERT_STATE) return null;
+  try {
+    const raw = await env.ALERT_STATE.get(UPCOMING_COUNCIL_MEETINGS_KV_KEY);
+    return upcomingCouncilMeetingsIndex(raw ? JSON.parse(raw) : null);
+  } catch {
+    return null;
+  }
+}
+
 export async function buildHearingView(fetchImpl = fetch, now = new Date(), options = {}) {
   const rows = await fetchRows(fetchImpl, now);
   const enriched = await Promise.all(rows.map((row) => enrichRuleSource(fetchImpl, row)));
@@ -186,6 +201,9 @@ export async function buildHearingView(fetchImpl = fetch, now = new Date(), opti
   const readModel = buildSharedMeetingReadModel({
     cityRecordRows: hearings,
     communityBoardIndex: options.communityBoardIndex || null,
+    nycLegistarEventsIndex: options.nycLegistarEventsIndex === undefined
+      ? null
+      : options.nycLegistarEventsIndex,
     generatedAt: now.toISOString(),
     now: now.toISOString(),
   });
@@ -201,7 +219,9 @@ export async function buildHearingView(fetchImpl = fetch, now = new Date(), opti
       url: "https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx",
     },
     counts: {
-      total: hearings.length + readModel.counts.community_board,
+      total: hearings.length
+        + readModel.counts.community_board
+        + (readModel.counts.nyc_legistar_events || 0),
       local: hearings.filter((record) => record.affected_area.scope === "local").length,
       citywide: hearings.filter((record) => record.affected_area.scope === "citywide").length,
       unlocated: hearings.filter((record) => record.affected_area.scope === "unlocated").length,
@@ -221,8 +241,13 @@ export async function refreshHearings(env, fetchImpl = fetch, now = new Date(), 
       rows: rows.filter((row) => row?.source_system === "community_board"),
     };
   }
+  const nycLegistarEventsIndex = await loadUpcomingCouncilMeetingsIndex(
+    env,
+    options.nycLegistarEventsIndex,
+  );
   const view = await buildHearingView(fetchImpl, now, {
     communityBoardIndex,
+    nycLegistarEventsIndex,
   });
   await env.ALERT_STATE.put(HEARINGS_KV_KEY, JSON.stringify(view));
   return { status: "success", ...view.counts };

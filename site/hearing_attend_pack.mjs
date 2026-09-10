@@ -32,6 +32,27 @@ export function meetingCalendarHasEventTime(record = {}) {
   return Boolean(start && !start.dateOnly);
 }
 
+const MONTH_NAMES = Object.freeze([
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+]);
+
+/**
+ * Resident-facing New York wall time for a materialized meeting timestamp.
+ * Naive publisher stamps stay in America/New_York; zoned instants convert.
+ */
+export function formatMeetingWhen(value) {
+  const parts = localParts(value);
+  if (!parts) return null;
+  const month = MONTH_NAMES[parts.month - 1];
+  const dateLabel = `${month} ${parts.day}, ${parts.year}`;
+  if (parts.dateOnly) return dateLabel;
+  const suffix = parts.hour >= 12 ? "PM" : "AM";
+  const hour12 = parts.hour % 12 || 12;
+  const minute = String(parts.minute).padStart(2, "0");
+  return `${dateLabel} at ${hour12}:${minute} ${suffix} New York time`;
+}
+
 function stamp(parts) {
   const pad = value => String(value).padStart(2, "0");
   return `${parts.year}${pad(parts.month)}${pad(parts.day)}T${pad(parts.hour)}${pad(parts.minute)}${pad(parts.second)}`;

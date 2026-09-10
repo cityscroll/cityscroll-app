@@ -1,11 +1,21 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
+import {
+  resolveKeywordQuery,
+  searchKeywordDocuments,
+} from "../site/keyword_matcher.mjs";
 import {
   buildMeetingSearchDocuments,
   materializeMeetingSearchDocument,
 } from "../site/meeting_search_producer.mjs";
+import { meetingCanonicalHref } from "../site/meeting_object_contract.mjs";
 import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
+import {
+  buildUpcomingCouncilMeetingsView,
+  upcomingCouncilMeetingsIndex,
+} from "../worker/src/lib/upcoming_council_meetings.mjs";
 
 const NOW = "2026-08-14T12:00:00Z";
 
@@ -137,4 +147,49 @@ test("rows without an exact canonical meeting identity are not indexed", () => {
     title: "Title and date are not identity",
     event_date: "2026-08-20",
   }), null);
+});
+
+const PINNED_NOW = "2026-09-09T12:00:00.000Z";
+const upcomingFixture = JSON.parse(
+  readFileSync(new URL("./fixtures/legistar/upcoming_contracts_22691.json", import.meta.url), "utf8"),
+);
+const UPCOMING_EVENT_ID = String(upcomingFixture.event.EventId);
+const UPCOMING_MEETING_ID = `meeting:nyc_legistar_events:${UPCOMING_EVENT_ID}`;
+
+function councilNativeReadModel() {
+  const { view } = buildUpcomingCouncilMeetingsView({
+    eventRows: [upcomingFixture.event],
+    itemsByEventId: new Map([[UPCOMING_EVENT_ID, { rows: upcomingFixture.event_items, fetchError: null }]]),
+    now: new Date(PINNED_NOW),
+  });
+  view.meetings[0].insite_calendar = upcomingFixture.insite_calendar;
+  return buildSharedMeetingReadModel({
+    cityRecordRows: [],
+    communityBoardIndex: { generated_at: PINNED_NOW, rows: [] },
+    nycLegistarEventsIndex: upcomingCouncilMeetingsIndex(view),
+    generatedAt: PINNED_NOW,
+    now: PINNED_NOW,
+  });
+}
+
+test("Council calendar hearings project the same SearchDocument shape as other meeting sources", () => {
+  const projected = buildMeetingSearchDocuments(councilNativeReadModel());
+  assert.equal(projected.documents.length, 1);
+  const document = projected.documents[0];
+  assert.equal(document.object_ref, UPCOMING_MEETING_ID);
+  assert.equal(document.canonical_href, meetingCanonicalHref(UPCOMING_MEETING_ID));
+  assert.equal(document.provenance.source_system, "nyc_legistar_events");
+  assert.deepEqual(document.source_observation_refs, [`nyc_legistar_events:${UPCOMING_EVENT_ID}`]);
+  assert.equal(projected.counts.nyc_legistar_events, 1);
+  assert.equal(projected.coverage.nyc_legistar_events.status, "available");
+});
+
+test("publisher-supplied Council calendar text is searchable without a City Record notice", () => {
+  const documents = buildMeetingSearchDocuments(councilNativeReadModel()).documents;
+  for (const query of ["M/WBE utilization", "disparity study", "Committee on Contracts"]) {
+    const hits = searchKeywordDocuments(documents, resolveKeywordQuery(query), { limit: 5 });
+    assert.equal(hits.length, 1, query);
+    assert.equal(hits[0].object_ref, UPCOMING_MEETING_ID, query);
+    assert.ok(hits[0].match_evidence?.snippet?.text, query);
+  }
 });

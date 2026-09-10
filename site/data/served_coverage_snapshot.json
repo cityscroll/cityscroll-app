@@ -187,7 +187,7 @@
           "source_id": "city-record",
           "source_name": "City Record Online",
           "state": "measured",
-          "value": 530,
+          "value": 531,
           "evidence_vintage": "2026-09-09T06:52:08.255Z",
           "vintage_field": "sources.city_record.generated_at",
           "vintage_basis": "single"
