@@ -21,6 +21,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const PKG = join(ROOT, "civic-content-gates");
 const STANDARDS = join(ROOT, "test", "standards");
+const DISCLAIMER_FIXTURES = join(ROOT, "test", "fixtures", "disclaimer_slop");
 
 function runPython(args, { cwd = ROOT, env = {} } = {}) {
   return spawnSync("python3", args, {
@@ -478,10 +479,7 @@ test("no_disclaimer_slop: repository wrapper blocks provisional destination disc
   try {
     writeFileSync(
       join(dir, "index.html"),
-      `<!doctype html><html><body><main>` +
-        `<p>Provisional: destination not verified</p>` +
-        `<p>Destination not verified</p>` +
-        `</main></body></html>\n`,
+      readFileSync(join(DISCLAIMER_FIXTURES, "official-profile-provisional-caveat.html"), "utf8"),
     );
     const blocked = runPython([
       join(STANDARDS, "no_disclaimer_slop.py"),
@@ -490,6 +488,8 @@ test("no_disclaimer_slop: repository wrapper blocks provisional destination disc
     ]);
     assert.notEqual(blocked.status, 0, "provisional destination disclaimer must fail the repository gate");
     assert.match(blocked.stdout, /provisional_destination_disclaimer/);
+    assert.match(blocked.stdout, /Provisional: destination not verified/);
+    assert.match(blocked.stdout, /Destination not verified/);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
@@ -500,24 +500,15 @@ test("no_disclaimer_slop: flags a cannot-verify absence-caveat list and still pa
   try {
     writeFileSync(
       join(dir, "index.html"),
-      `<!doctype html><html><body><main>` +
-        `<p class="pursuit-subhead">What CityScroll cannot verify</p>` +
-        `<p>CityScroll's sources do not carry these -- this is not a finding that they are missing from the actual solicitation package.</p>` +
-        `<ul>` +
-        `<li>Full package eligibility requirements</li>` +
-        `<li>Experience requirements</li>` +
-        `<li>Staffing or team requirements</li>` +
-        `<li>Q&amp;A content</li>` +
-        `<li>Amendment documents</li>` +
-        `<li>Internal issuing team</li>` +
-        `<li>An existing relationship with the agency</li>` +
-        `<li>Whether your team can staff this in time</li>` +
-        `</ul>` +
-        `</main></body></html>\n`,
+      readFileSync(join(DISCLAIMER_FIXTURES, "pursuit-snapshot-cannot-verify.html"), "utf8"),
     );
     writeFileSync(
       join(dir, "copy.mjs"),
-      `export const note = "CityScroll's sources do not include these facts.";\n`,
+      `export const html = \`<div class="pursuit-fact-group" data-pursuit-section="cannot-verify">
+    <p class="pursuit-subhead">What CityScroll cannot verify</p>
+    <p class="pursuit-cannot-verify-note">CityScroll's sources do not carry these -- this is not a finding that they are missing from the actual solicitation package.</p>
+    <ul class="pursuit-cannot-verify-list"><li>Full package eligibility requirements</li></ul>
+  </div>\`;\n`,
     );
     const blocked = runPython([
       "-m", "civic_content_gates", "check", "no_disclaimer_slop",
@@ -526,19 +517,10 @@ test("no_disclaimer_slop: flags a cannot-verify absence-caveat list and still pa
     assert.notEqual(blocked.status, 0, `absence-caveat list must fail closed: ${blocked.stdout}\n${blocked.stderr}`);
     assert.match(blocked.stdout, /absence-caveat disclaimer/);
     assert.match(blocked.stdout, /cannot verify/);
-    assert.match(blocked.stdout, /sources do not carry/);
-    assert.match(blocked.stdout, /not a finding that/);
-    assert.match(blocked.stdout, /sources do not include/);
 
     writeFileSync(
       join(dir, "index.html"),
-      `<!doctype html><html><body><main>` +
-        `<h2>Pursuit snapshot</h2>` +
-        `<p>Title: Playground reconstruction solicitation</p>` +
-        `<p>Agency: Department of Parks and Recreation</p>` +
-        `<p>Due date: Aug 5</p>` +
-        `<p>Official notice is on the City Record.</p>` +
-        `</main></body></html>\n`,
+      readFileSync(join(DISCLAIMER_FIXTURES, "honest-sourced-pursuit.html"), "utf8"),
     );
     writeFileSync(
       join(dir, "copy.mjs"),
@@ -552,6 +534,66 @@ test("no_disclaimer_slop: flags a cannot-verify absence-caveat list and still pa
     assert.doesNotMatch(honest.stdout, /absence-caveat disclaimer/);
   } finally {
     rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("no_disclaimer_slop: absence-caveat shape refuses shipped specimens and paraphrases, not honest copy", () => {
+  const dir = mkdtempSync(join(tmpdir(), "ccg-absence-caveat-shape-"));
+  try {
+    for (const name of [
+      "official-profile-provisional-caveat.html",
+      "pursuit-snapshot-cannot-verify.html",
+      "paraphrase-not-confirmed.html",
+      "paraphrase-outside-what-we-can-check.html",
+      "paraphrase-unable-to-establish.html",
+    ]) {
+      writeFileSync(join(dir, name), readFileSync(join(DISCLAIMER_FIXTURES, name), "utf8"));
+    }
+    writeFileSync(
+      join(dir, "paraphrase-not-confirmed.mjs"),
+      `export const copy = \`<h2>Not confirmed by the published notices</h2><ul><li>Bid bond amount</li><li>Insurance riders</li></ul>\`;\n`,
+    );
+
+    const blocked = runPython([
+      join(STANDARDS, "no_disclaimer_slop.py"),
+      "--root", dir,
+      "--mode", "block",
+    ]);
+    assert.notEqual(blocked.status, 0, `absence-caveat specimens must fail closed: ${blocked.stdout}\n${blocked.stderr}`);
+    assert.match(blocked.stdout, /provisional_destination_disclaimer/);
+    assert.match(blocked.stdout, /Provisional: destination not verified/);
+    assert.match(blocked.stdout, /absence-caveat disclaimer/);
+    assert.match(blocked.stdout, /What CityScroll cannot verify/);
+    assert.match(blocked.stdout, /Not confirmed by the published notices/);
+    assert.match(blocked.stdout, /outside what we can check/);
+    assert.match(blocked.stdout, /We were unable to establish/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+
+  const honestDir = mkdtempSync(join(tmpdir(), "ccg-absence-caveat-honest-"));
+  try {
+    for (const name of [
+      "honest-ordinary-negative.html",
+      "honest-coverage-methodology-vintage.html",
+      "honest-petition-scope.html",
+      "honest-sourced-pursuit.html",
+    ]) {
+      writeFileSync(join(honestDir, name), readFileSync(join(DISCLAIMER_FIXTURES, name), "utf8"));
+    }
+    writeFileSync(
+      join(honestDir, "ordinary-negative.mjs"),
+      `export const note = "CityScroll's sources do not include these facts.";\n`,
+    );
+    const honest = runPython([
+      join(STANDARDS, "no_disclaimer_slop.py"),
+      "--root", honestDir,
+      "--mode", "block",
+    ]);
+    assert.equal(honest.status, 0, `honest copy must still pass: ${honest.stdout}\n${honest.stderr}`);
+    assert.doesNotMatch(honest.stdout, /absence-caveat disclaimer/);
+  } finally {
+    rmSync(honestDir, { recursive: true, force: true });
   }
 });
 
