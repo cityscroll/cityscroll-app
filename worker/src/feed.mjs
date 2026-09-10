@@ -9,7 +9,7 @@ import { compileSub, getProcurementDigestSnapshot, rowsForCompiledQuery } from "
 import { bumpStat } from "./lib/stats.mjs";
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
-import { evaluateMoneyTextQueryWatch } from "./lib/watch_text_query_procurement.mjs";
+import { evaluateAdmittedTextQueryWatch } from "./lib/evaluate_watch_text_query.mjs";
 import { textQueryEvaluationSupported } from "../../site/watch_text_query.mjs";
 import {
   parseFeedQuery,
@@ -81,9 +81,10 @@ export async function handleFeed(request, env, ctx) {
   let rows;
   try {
     if (sub.filter?.text_query && textQueryEvaluationSupported(sub.lens)) {
-      const evaluation = await evaluateMoneyTextQueryWatch({
+      const evaluation = await evaluateAdmittedTextQueryWatch({
         db: env?.DB || null,
         snapshot: getProcurementDigestSnapshot(),
+        env,
         sub,
         todayISO,
         clock: todayISO,

@@ -103,7 +103,7 @@ export {
 import { parseLensFilter } from "./nl.mjs";
 import { prepareWatchFilter } from "./lib/filter.mjs";
 import { compileSub, getProcurementDigestSnapshot, rowsForCompiledQuery } from "./lib/compile.mjs";
-import { evaluateMoneyTextQueryWatch } from "./lib/watch_text_query_procurement.mjs";
+import { evaluateAdmittedTextQueryWatch } from "./lib/evaluate_watch_text_query.mjs";
 import { textQueryEvaluationSupported } from "../../site/watch_text_query.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { isValidEmail, buildSubscription } from "./lib/subscriptions.mjs";
@@ -282,9 +282,10 @@ async function runPreview(env, lens, request, { filter: explicitFilter } = {}) {
   }
   const sub = { lens, filter };
   if (filter?.text_query && textQueryEvaluationSupported(lens)) {
-    const evaluation = await evaluateMoneyTextQueryWatch({
+    const evaluation = await evaluateAdmittedTextQueryWatch({
       db: env.DB || null,
       snapshot: getProcurementDigestSnapshot(),
+      env,
       sub,
       todayISO,
       clock: todayISO,
@@ -293,7 +294,7 @@ async function runPreview(env, lens, request, { filter: explicitFilter } = {}) {
     return {
       filter,
       label: describeFilter(lens, filter),
-      kind: "award",
+      kind: lens === "meetings" ? "meetings" : "award",
       rows: (evaluation.rows || []).slice(0, 10),
     };
   }

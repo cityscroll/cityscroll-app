@@ -25,7 +25,7 @@ const BROADENING_FIELDS = Object.freeze([
   "category", "minAmount", "maxAmount", "borough", "boro", "communityBoard",
   "communityDistrict", "councilDistrict", "neighborhood", "locationScope",
   "dateWindow", "when", "process", "nearMe", "place_role", "request_ids",
-  "procurement_id", "mandate_id", "provision_id",
+  "procurement_id", "mandate_id", "provision_id", "text_query",
 ]);
 
 function freeze(value) {

@@ -24,14 +24,16 @@ const expr = (all, none = []) => ({ version: 1, all, none });
 
 const softwareWatch = expr([[term("software")]], [term("maintenance")]);
 
-test("support registry: money admits and evaluates; other lenses stay closed", () => {
+test("support registry: money and general meetings admit and evaluate; other lenses stay closed", () => {
   assert.equal(textQueryAdmissionSupported("money"), true);
   assert.equal(textQueryEvaluationSupported("money"), true);
-  assert.equal(textQueryAdmissionSupported("meetings"), false);
+  assert.equal(textQueryAdmissionSupported("meetings"), true);
+  assert.equal(textQueryEvaluationSupported("meetings"), true);
   assert.equal(textQueryAdmissionSupported("alerts"), false);
   assert.equal(textQueryAdmissionSupported("obligations"), false, "legacy alias must not leak admission");
-  assert.equal(textQueryEvaluationSupported("meetings"), false);
+  assert.equal(textQueryAdmissionSupported("land"), false);
   assert.equal(TEXT_QUERY_SUPPORT.money.evaluation, true);
+  assert.equal(TEXT_QUERY_SUPPORT.meetings.evaluation, true);
 });
 
 test("prepareWatchFilter admits a valid money expression and stores the canonical form", () => {
@@ -61,7 +63,7 @@ test("prepareWatchFilter admits a valid money expression and stores the canonica
 
 test("prepareWatchFilter rejects unsupported lenses and malformed expressions explicitly", () => {
   for (const [lens, filter, reason] of [
-    ["meetings", { text_query: softwareWatch }, "text-query-unsupported_lens"],
+    ["land", { text_query: softwareWatch }, "text-query-unsupported_lens"],
     ["alerts", { text_query: softwareWatch }, "text-query-unsupported_lens"],
     ["money", { text_query: { version: 2, all: [[term("software")]] } }, "text-query-unsupported_version"],
     ["money", { text_query: { version: 1, all: [[]] } }, "text-query-empty_group"],
@@ -125,7 +127,8 @@ test("sanitize preserves a canonical text_query and never adds one when absent",
   assert.equal("text_query" in sanitize("money", legacy), false);
   // Unsupported lens: sanitize is a clamp, so the expression is dropped here —
   // which is exactly why every save path gates through prepareWatchFilter.
-  assert.equal("text_query" in sanitize("meetings", { text_query: softwareWatch }), false);
+  assert.equal("text_query" in sanitize("land", { text_query: softwareWatch }), false);
+  assert.ok("text_query" in sanitize("meetings", { text_query: softwareWatch }));
 });
 
 test("encodeWatchFilter serializes an admitted watch without losing text_query", () => {
@@ -155,10 +158,16 @@ test("money text_query compiles to owned materialization, not an unfiltered or S
   assert.equal(d1.opts.noticeType, "Award");
   assert.equal(d1.opts.termGroups, undefined, "expression is not folded into LIKE termGroups");
   assert.deepEqual(d1.textQuery, sub.filter.text_query);
-  // Unsupported lenses still refuse rather than silently unfilter.
-  const meetings = { lens: "meetings", filter: { text_query: softwareWatch } };
-  assert.equal(compileSub(meetings, "2026-09-09"), null);
-  assert.equal(subToD1Opts(meetings, "2026-09-09"), null);
+  const meetings = { lens: "meetings", filter: sanitize("meetings", { text_query: softwareWatch }) };
+  const meetingCompiled = compileSub(meetings, "2026-09-01");
+  assert.ok(meetingCompiled);
+  assert.equal(meetingCompiled.kind, "meetings");
+  assert.equal(meetingCompiled.soda, false);
+  assert.ok(meetingCompiled.textQuery);
+  assert.equal(subToD1Opts(meetings, "2026-09-01"), null, "meetings stay off the D1 notices mirror");
+  const land = { lens: "land", filter: { text_query: softwareWatch } };
+  assert.equal(compileSub(land, "2026-09-09"), null);
+  assert.equal(subToD1Opts(land, "2026-09-09"), null);
   // Legacy keyword money watches still compile exactly as before.
   const legacySub = { lens: "money", filter: sanitize("money", { keywords: ["software"], minAmount: 100000 }) };
   assert.ok(compileSub(legacySub, "2026-09-09"));
@@ -188,6 +197,14 @@ test("modern Atom/JSON feeds replay an admitted money text_query; ICS still refu
   );
   assert.deepEqual(
     unsupportedModernFeedFilterFields("meetings", { keywords: [], text_query: softwareWatch }, { format: "atom" }),
+    [],
+  );
+  assert.deepEqual(
+    unsupportedModernFeedFilterFields("meetings", { keywords: [], text_query: softwareWatch }, { format: "ics" }),
+    ["text_query"],
+  );
+  assert.deepEqual(
+    unsupportedModernFeedFilterFields("land", { keywords: [], text_query: softwareWatch }, { format: "atom" }),
     ["text_query"],
   );
   assert.deepEqual(unsupportedModernFeedFilterFields("money", { keywords: ["software"] }), []);

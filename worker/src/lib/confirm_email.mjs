@@ -74,7 +74,10 @@ function geographyLabel(key) {
 export function describeFilter(lens, filter) {
   const f = filter || {};
   if (lens === "meetings" && normalizeCommunityBoardRef(f.communityBoard)) {
-    return `${communityBoardLabel(f.communityBoard)} meetings`;
+    const described = describeTextQuery(f.text_query);
+    return described?.summary
+      ? `${communityBoardLabel(f.communityBoard)} meetings, ${described.summary}`
+      : `${communityBoardLabel(f.communityBoard)} meetings`;
   }
   if (lens === "district") {
     return `City Council District ${f.councilDistrict || "?"} weekly digest`;

@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/watch-text-query-meeting-evaluation",
+  "status": "implemented",
+  "fingerprint": "watch-text-query-meeting-evaluation.v1",
+  "updated_at": "2026-09-10T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "watch-text-query-meeting-adapter",
+      "path": "worker/src/lib/watch_text_query_meetings.mjs"
+    },
+    {
+      "id": "watch-text-query-eval",
+      "path": "site/watch_text_query_eval.mjs"
+    },
+    {
+      "id": "watch-text-query-meeting-tests",
+      "path": "worker/test/watch_text_query_meetings.test.mjs"
+    },
+    {
+      "id": "watch-text-query-meeting-ui-tests",
+      "path": "test/watch_text_query_meeting_ui.test.mjs"
+    },
+    {
+      "id": "watch-text-query-meeting-receipt",
+      "path": "test/fixtures/watch_text_query/meeting_acceptance.md"
+    },
+    {
+      "id": "watch-text-query-meeting-capture",
+      "path": "docs/evidence/watch-text-query-meeting-controls/capture-manifest.json"
+    }
+  ]
+}

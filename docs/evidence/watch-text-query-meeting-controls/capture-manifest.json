@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.watch-text-query-meeting-controls.capture.v1",
+  "note": "Textual capture manifest. No image binaries are committed; local captures stay under the ignored .artifacts/ path.",
+  "route": "/following/?lens=meetings",
+  "surface": "site/following_view.mjs meeting precise matching controls",
+  "revision": "f1482be8dd8620ca796449a60bae30d7ce3aa8fb",
+  "runner": "test/watch_text_query_meeting_ui.test.mjs",
+  "data_vintage": "Frozen meeting-notice materialization generated_at 2026-09-09T06:52:08.255Z. Counts are not a live census.",
+  "inputs": [
+    {
+      "path": "site/data/meeting_notice_materialization.json",
+      "sha256": "98c3563cf90d2198d420a7aec4414c5fff76c54d379127074824b4418a8bd27f"
+    }
+  ],
+  "captures": [
+    {
+      "assertion": "Desktop Following meeting preview for whole-token rat shows labelled any/all controls and 20260803009.",
+      "population": "measured",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/following/?lens=meetings&tq_i0=rat",
+      "sha256": "732b6d62068e82223d8cf9c716fb08cafd3477de8108977e2a0a41c65edf3f97"
+    },
+    {
+      "assertion": "Narrow/touch layout keeps labelled controls, 44px summary target, and keyboard-recoverable failed-load retry.",
+      "population": "measured",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "route": "/following/?lens=meetings&tq_i0=rat",
+      "sha256": "732b6d62068e82223d8cf9c716fb08cafd3477de8108977e2a0a41c65edf3f97"
+    }
+  ]
+}

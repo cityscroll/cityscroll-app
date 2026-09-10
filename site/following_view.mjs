@@ -689,7 +689,9 @@ export function composeWatchRuleSentence(lens, filter = {}, options = {}) {
     return `Notify me when New York City Council matter ${matterId} has a newly observed official action.`;
   }
   if (wanted === "meetings" && communityBoardLabel(f.communityBoard)) {
-    return `Notify me when meetings for ${communityBoardLabel(f.communityBoard)} are published.`;
+    const described = describeTextQuery(f.text_query);
+    const refine = described?.summary ? ` ${described.summary}` : "";
+    return `Notify me when meetings for ${communityBoardLabel(f.communityBoard)}${refine} are published.`;
   }
   if (wanted === "district") {
     const n = f.councilDistrict || "?";

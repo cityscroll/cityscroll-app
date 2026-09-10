@@ -95,9 +95,10 @@ export function feedItems(kind, rows) {
       return {
         id: String(r.meeting_id),
         url: `https://cityscroll.org/meetings/${encodeURIComponent(r.meeting_id)}/`,
-        title: r.title || "Meeting",
+        title: r.title || r.short_title || "Meeting",
         date: r.start_date || r.event_date || null,
-        summary: [r.board_name || r.agency || r.agency_name, r.committee?.name, r.venue?.address || r.venue?.name]
+        summary: [r.board_name || r.agency || r.agency_name, r.committee?.name, r.venue?.address || r.venue?.name,
+          textQueryEvidenceSummary(r)]
           .filter(Boolean).join(" · "),
         eventDate: r.event_date || null,
         phase: "Hearing / meeting",

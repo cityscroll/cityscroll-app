@@ -354,7 +354,7 @@ function prefsHtmlResponse(email, watches, token, flash) {
         <input type="hidden" name="action" value="update" />
         <label style="display:block;font-size:13px;color:#5b6470;margin-bottom:4px">Keywords (comma-separated)</label>
         <input name="keywords" value="${esc(w.filter?.text_query ? "" : kw)}" style="width:100%;box-sizing:border-box;padding:8px;margin-bottom:8px;border:1px solid #dde1e7;border-radius:6px;font:15px system-ui" />
-        ${w.lens === "money" ? textQueryControlsHtml({ lens: "money", filter: w.filter || {}, open: Boolean(w.filter?.text_query) }) : ""}
+        ${textQueryControlsHtml({ lens: w.lens, filter: w.filter || {}, open: Boolean(w.filter?.text_query) })}
         <label style="display:block;font-size:13px;color:#5b6470;margin-bottom:4px">Frequency</label>
         <select name="freq" style="padding:8px;margin-bottom:10px;border:1px solid #dde1e7;border-radius:6px;font:15px system-ui">
           <option value="daily"${w.freq === "daily" ? " selected" : ""}>daily</option>

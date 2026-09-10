@@ -26,3 +26,8 @@ to `worker/test/watch_text_query_edit_delivery.test.mjs`.
 `test/watch_text_query_transport.test.mjs` and `worker/test/watch_text_query_feed.test.mjs`.
 `ui_acceptance.md` maps the procurement reader controls and Following preview
 to `test/watch_text_query_ui.test.mjs` and `worker/test/watch_text_query_preview.test.mjs`.
+`meeting_acceptance.md` maps general meeting evaluation, preview, save, email,
+and feed to `worker/test/watch_text_query_meetings.test.mjs` and
+`test/watch_text_query_meeting_ui.test.mjs`. Meeting field evidence uses the
+tracked meeting-notice materialization at
+`site/data/meeting_notice_materialization.json`.

@@ -4,7 +4,9 @@ import test from "node:test";
 import {
   WATCH_FAMILY_CAPABILITIES,
   WATCH_FAMILY_CAPABILITIES_SCHEMA,
+  lensFamilyAdmitsPreciseMatching,
   rankWatchFamilySuggestions,
+  watchFamilyAdmitsPreciseMatching,
 } from "../site/watch_family_capabilities.mjs";
 import {
   buildFollowingViewModel,
@@ -36,6 +38,17 @@ test("the canonical watch-family capability spans every public follow family", (
     assert.ok(capability.description);
     assert.ok(capability.filter && typeof capability.filter === "object");
   }
+});
+
+test("precise matching is admitted only on contracts, procurement, and general meetings", () => {
+  assert.equal(watchFamilyAdmitsPreciseMatching("meetings"), true);
+  assert.equal(watchFamilyAdmitsPreciseMatching("contracts-awards"), true);
+  assert.equal(watchFamilyAdmitsPreciseMatching("procurement"), true);
+  assert.equal(watchFamilyAdmitsPreciseMatching("rezonings-land-use"), false);
+  assert.equal(watchFamilyAdmitsPreciseMatching("mandates"), false);
+  assert.equal(lensFamilyAdmitsPreciseMatching("meetings"), true);
+  assert.equal(lensFamilyAdmitsPreciseMatching("meetings", { matter_ref: "legistar:nyc:matter:79200" }), false);
+  assert.equal(lensFamilyAdmitsPreciseMatching("land"), false);
 });
 
 test("family ranking keeps the full span and raises a matching family", () => {

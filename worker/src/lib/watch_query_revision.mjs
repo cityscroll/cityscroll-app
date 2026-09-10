@@ -32,6 +32,7 @@
 
 import { canonicalTextQuery } from "../../../site/watch_text_query.mjs";
 import {
+  decideMeetingTextQuery,
   decideProcurementTextQuery,
   projectProcurementNoticeFields,
   projectProcurementObjectFields,
@@ -87,16 +88,22 @@ function payloadRow(item) {
   }
 }
 
-function projectFieldsForPayload(row) {
+function projectFieldsForPayload(row, watch) {
+  if (watch?.lens === "meetings" || row?.meeting_id) return null;
   if (row?.procurement_id && !row?.request_id) return projectProcurementObjectFields;
   return projectProcurementNoticeFields;
 }
 
+function decidePayload(row, expression, watch) {
+  if (watch?.lens === "meetings" || row?.meeting_id) return decideMeetingTextQuery(row, expression);
+  return decideProcurementTextQuery(row, expression, projectFieldsForPayload(row, watch));
+}
+
 /** Decide whether one owed payload still matches the watch's current expression. */
-export function owedPayloadMatchesExpression(row, expression) {
+export function owedPayloadMatchesExpression(row, expression, watch) {
   if (!row || typeof row !== "object") return false;
   if (expression == null) return true;
-  return decideProcurementTextQuery(row, expression, projectFieldsForPayload(row)).match;
+  return decidePayload(row, expression, watch).match;
 }
 
 function suppressionForItem(item, watch, decision) {
@@ -119,9 +126,9 @@ function suppressionForItem(item, watch, decision) {
   };
 }
 
-function decisionForPayload(row, expression) {
+function decisionForPayload(row, expression, watch) {
   if (!row || expression == null) return { match: true, evidence: { exclusion: null } };
-  return decideProcurementTextQuery(row, expression, projectFieldsForPayload(row));
+  return decidePayload(row, expression, watch);
 }
 
 /**
@@ -155,7 +162,7 @@ export async function reconcileWatchOwedMembership(db, { watch, now = null } = {
   for (const item of membership) {
     if (item.status === "delivered") continue;
     const row = payloadRow(item);
-    const decision = decisionForPayload(row, expression);
+    const decision = decisionForPayload(row, expression, watch);
     if (item.status === "owed") {
       if (decision.match) {
         await stampOutboxQueryRevision(db, {
