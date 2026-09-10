@@ -40,7 +40,17 @@ export function parseFeedQuery(searchParams) {
 
 /** Modern scope filters must be replayable or the feed must refuse them explicitly. */
 export function unsupportedModernFeedFilterFields(lens, filter) {
-  return calendarFeedUnsupportedFilterFields({ lens, filter });
+  // Inspect the raw filter first. Calendar replay reconstructs a geography
+  // watch and would drop text_query, which is exactly the silent-widening
+  // failure this contract forbids. Refuse the field until a later transport
+  // path can replay it; do not add it to the calendar allowlist here.
+  const extra = [];
+  if (filter && typeof filter === "object" && !Array.isArray(filter)
+      && Object.prototype.hasOwnProperty.call(filter, "text_query")
+      && filter.text_query != null) {
+    extra.push("text_query");
+  }
+  return [...new Set([...extra, ...calendarFeedUnsupportedFilterFields({ lens, filter })])].sort();
 }
 
 // Normalize compileSub result rows → neutral feed items.

@@ -33,6 +33,7 @@ import {
   sodaAgencyNameClause,
 } from "../../../site/institution_follow_scope.mjs";
 import { examNumbersForAgency } from "../../../site/staffing_agency_scope.mjs";
+import { textQueryEvaluationSupported } from "../../../site/watch_text_query.mjs";
 import examCertification from "../../../site/data/exam_certification_constellation.json" with { type: "json" };
 import { loadStaffingExams } from "./staffing_exams_kv.mjs";
 import { loadLandUpcomingHearingsSnapshot } from "./land_upcoming_hearings_kv.mjs";
@@ -258,6 +259,12 @@ export async function rowsForCompiledQuery(q, env, fetchImpl = fetch) {
 
 export function compileSub(sub, todayISO) {
   const f = (sub && sub.filter) || {};
+  // Precise-watch expressions (text_query v1) must never disappear into the
+  // legacy keyword compilers: a compiled query that ignored them would silently
+  // widen a saved watch into an unfiltered one. Until a lens's evaluator is
+  // registered in the support registry, refuse the whole compile (callers fail
+  // closed: the digest skips the watch, feeds and previews report it unrunnable).
+  if (f.text_query != null && !textQueryEvaluationSupported(sub?.lens)) return null;
   const kws = (Array.isArray(f.keywords) ? f.keywords : []).filter(Boolean);
   const requestIds = Array.isArray(f.request_ids)
     ? [...new Set(f.request_ids.map((value) => String(value || "").trim())

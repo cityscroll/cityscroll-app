@@ -18,6 +18,7 @@ import {
   exactInstitutionNoticeMatches,
   interpretStoredInstitutionFollow,
 } from "../../../site/institution_follow_scope.mjs";
+import { textQueryEvaluationSupported } from "../../../site/watch_text_query.mjs";
 
 // Lenses whose data lives outside the D1 notices mirror — always use SODA for these.
 // land (ZAP dataset hgx4-8ukb) is the primary case.
@@ -30,6 +31,10 @@ export function subToD1Opts(sub, todayISO) {
   const matter = d1DispatchExactCouncilMatter(sub);
   if (matter) return null;
   const f = (sub && sub.filter) || {};
+  // Same fail-closed rule as compileSub(): a text_query the D1 mirror cannot
+  // evaluate must not silently become an unfiltered query. Returning null makes
+  // the caller fall back to compileSub(), which refuses the watch the same way.
+  if (f.text_query != null && !textQueryEvaluationSupported(sub?.lens)) return null;
   const kws = (Array.isArray(f.keywords) ? f.keywords : []).filter(Boolean);
   const lens = sub.lens;
   const requestIds = Array.isArray(f.request_ids)

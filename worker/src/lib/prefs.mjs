@@ -7,7 +7,7 @@
 // No passwords / full accounts — identity comes from the signed email link.
 
 import { normalizeEmail, FREQS, SUPPORTED_LANGS } from "./subscriptions.mjs";
-import { sanitize } from "./filter.mjs";
+import { admitTextQuery, sanitize } from "./filter.mjs";
 import { describeFilter } from "./confirm_email.mjs";
 
 export const PREFS_SCOPE = "prefs";
@@ -86,13 +86,25 @@ export function applyWatchPatch(record, patch = {}) {
     const lens = next.lens;
     if (!lens) return { ok: false, reason: "bad-lens" };
     // Merge into existing filter so partial keyword edits work, then sanitize.
+    // A merge that produces a text_query (new or carried over from the saved
+    // watch) must pass admission first: rejecting the patch keeps the prior
+    // persisted watch instead of silently dropping the expression — sanitize
+    // alone would convert a precise watch into an unfiltered one.
     const merged = { ...(next.filter || {}), ...patch.filter };
+    const admission = admitTextQuery(lens, merged);
+    if (!admission.ok) return { ok: false, reason: `text-query-${admission.code}` };
     next.filter = sanitize(lens, merged);
+    if (admission.canonical) next.filter.text_query = admission.canonical;
+    else delete next.filter.text_query;
   }
   // Keyword-only convenience: { keywords: [...] } without full filter object.
   if (Array.isArray(patch.keywords) && next.lens) {
     const merged = { ...(next.filter || {}), keywords: patch.keywords };
+    const admission = admitTextQuery(next.lens, merged);
+    if (!admission.ok) return { ok: false, reason: `text-query-${admission.code}` };
     next.filter = sanitize(next.lens, merged);
+    if (admission.canonical) next.filter.text_query = admission.canonical;
+    else delete next.filter.text_query;
   }
   return { ok: true, record: next };
 }

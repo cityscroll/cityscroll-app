@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/watch-text-query",
+  "status": "implemented",
+  "fingerprint": "watch-text-query.v1",
+  "updated_at": "2026-09-10T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "watch-text-query-schema",
+      "path": "site/watch_text_query.mjs"
+    },
+    {
+      "id": "watch-text-query-predicate-tests",
+      "path": "test/watch_text_query.test.mjs"
+    },
+    {
+      "id": "watch-text-query-admission-tests",
+      "path": "worker/test/watch_text_query_validation.test.mjs"
+    },
+    {
+      "id": "watch-text-query-title-fixture",
+      "path": "test/fixtures/watch_text_query/procurement_titles_snapshot.json"
+    },
+    {
+      "id": "watch-text-query-meeting-fixture",
+      "path": "test/fixtures/watch_text_query/rat_inspection_meeting.json"
+    },
+    {
+      "id": "watch-text-query-fixture-readme",
+      "path": "test/fixtures/watch_text_query/README.md"
+    },
+    {
+      "id": "watch-text-query-acceptance-receipt",
+      "path": "test/fixtures/watch_text_query/acceptance.md"
+    }
+  ]
+}

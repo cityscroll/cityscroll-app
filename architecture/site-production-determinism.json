@@ -594,6 +594,7 @@
     "site/walk_entry.mjs",
     "site/watch_family_capabilities.mjs",
     "site/watch_templates.mjs",
+    "site/watch_text_query.mjs",
     "site/zap_action_labels.mjs",
     "site/zoning_hearing_calendar.mjs"
   ],

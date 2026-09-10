@@ -10,6 +10,11 @@ import {
 import { normalizeGeographyKey, PLACE_ROLES } from "../../../site/scope_v0.mjs";
 import { normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
 import { KNOWN_PROCUREMENT_PROCESS_STATES } from "../../../site/procurement_process_state_vocabulary.mjs";
+import {
+  TEXT_QUERY_STRUCTURED_SCOPE_FIELDS,
+  textQueryAdmissionSupported,
+  validateTextQuery,
+} from "../../../site/watch_text_query.mjs";
 
 export const MAX_INPUT = 600;          // characters of NL we accept (a paragraph, not a novel)
 export const MAX_CALLS_PER_DAY = 300;  // denial-of-wallet ceiling
@@ -311,7 +316,8 @@ export function sanitize(lens, input) {
       matter_scope_version: Number.isInteger(exact.watch_scope_version) ? exact.watch_scope_version : 0,
     };
   }
-  const fields = LENSES[resolveLens(lens)] || LENSES[lens] || LENSES.money;
+  const resolvedLens = resolveLens(lens);
+  const fields = LENSES[resolvedLens] || LENSES[lens] || LENSES.money;
   const f = input || {};
   const out = {};
   for (const name of fields) out[name] = clampField(name, f[name]);
@@ -326,13 +332,65 @@ export function sanitize(lens, input) {
   if (!out.interest) delete out.interest;
   if (!out.matter_ref) delete out.matter_ref;
   if (!out.matter_scope_version) delete out.matter_scope_version;
+  // text_query (precise-watch expression, watch_text_query.v1) is additive the
+  // same way: omitted entirely when absent so legacy identities are
+  // byte-stable, and carried only in its canonical form. IMPORTANT: sanitize is
+  // a clamp, not a gate — an invalid expression is dropped here, so every
+  // save/edit path must first refuse invalid input via admitTextQuery() /
+  // prepareWatchFilter(); dropping is only safe for read-only projections.
+  if (f.text_query != null && textQueryAdmissionSupported(resolvedLens)) {
+    const validation = validateTextQuery(f.text_query, { structuredScope: true });
+    if (validation.ok && validation.canonical) out.text_query = validation.canonical;
+  }
   return out;
 }
 
 /**
- * Validate exact-matter attempts before sanitize can drop them into all meetings.
+ * Admission for the optional precise-watch expression (`text_query`,
+ * watch_text_query.v1). This is the gate every save/edit path must pass BEFORE
+ * sanitize(): it rejects unsupported lenses, malformed or over-limit
+ * expressions, keywords+expression ambiguity, and scope-less negative-only
+ * input with explicit codes — never by silently dropping a constraint (which
+ * would convert a precise watch into an unfiltered one).
+ *
+ * Returns { ok: true, present, canonical } — canonical is null for an absent
+ * or constraint-free expression (callers omit the field).
+ */
+export function admitTextQuery(lens, rawFilter) {
+  const f = rawFilter && typeof rawFilter === "object" && !Array.isArray(rawFilter) ? rawFilter : {};
+  const present = Object.prototype.hasOwnProperty.call(f, "text_query") && f.text_query != null;
+  if (!present) return { ok: true, present: false, canonical: null };
+  const resolved = resolveLens(lens);
+  if (!textQueryAdmissionSupported(resolved)) {
+    return { ok: false, present: true, code: "unsupported_lens" };
+  }
+  // Negative-only expressions ride on structured scope, so judge the scope
+  // from the filter's other fields clamped exactly as sanitize() clamps them.
+  const scopeFilter = sanitize(resolved, { ...f, text_query: null });
+  const structuredScope = TEXT_QUERY_STRUCTURED_SCOPE_FIELDS.some((name) => {
+    const v = scopeFilter[name];
+    return Array.isArray(v) ? v.length > 0 : v !== null && v !== undefined && v !== false && v !== "";
+  });
+  const validation = validateTextQuery(f.text_query, { structuredScope });
+  if (!validation.ok) return { ok: false, present: true, code: validation.code };
+  // Nonempty legacy keywords plus text_query is ambiguous (two text semantics
+  // in one watch). An explicit conversion resolves the legacy form by emitting
+  // keywords: []; until then this is rejected, not merged.
+  if (validation.canonical && Array.isArray(scopeFilter.keywords) && scopeFilter.keywords.length) {
+    return { ok: false, present: true, code: "legacy_keywords_present" };
+  }
+  return { ok: true, present: true, canonical: validation.canonical };
+}
+
+/**
+ * Validate exact-matter attempts before sanitize can drop them into all meetings,
+ * and refuse precise-watch expressions that this lens cannot admit.
  */
 export function prepareWatchFilter(lens, filter) {
+  const admission = admitTextQuery(lens, filter);
+  if (!admission.ok) {
+    return { ok: false, reason: `text-query-${admission.code}`, lens: null, filter: {} };
+  }
   const exact = exactCouncilMatterWatch({ lens, filter });
   if (exact.attempted) {
     if (exact.status !== "ok") {
@@ -340,7 +398,13 @@ export function prepareWatchFilter(lens, filter) {
     }
     return { ok: true, lens: exact.lens, filter: exact.filter, exact };
   }
-  return { ok: true, lens: resolveLens(lens), filter: sanitize(lens, filter), exact };
+  const sanitized = sanitize(lens, filter);
+  // sanitize carries a canonical text_query already; re-assert the admitted
+  // canonical form so the stored filter is exactly what admission validated
+  // (and an empty expression stays omitted rather than surviving as {}).
+  if (admission.canonical) sanitized.text_query = admission.canonical;
+  else delete sanitized.text_query;
+  return { ok: true, lens: resolveLens(lens), filter: sanitized, exact };
 }
 
 // Field evidence 2026-07-14: the ask button "required very specific wording" and a paraphrase
@@ -357,7 +421,7 @@ export function filterConfidence(lens, filter) {
     const v = f[name];
     if (Array.isArray(v)) return v.length > 0;
     return v !== null && v !== undefined && v !== false && v !== "";
-  });
+  }) || (Array.isArray(f.text_query?.all) && f.text_query.all.length > 0);
   return hasSignal ? "high" : "low";
 }
 

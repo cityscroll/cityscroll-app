@@ -21,8 +21,10 @@ import {
   summarizeSignupLifecycle,
   formatSignupLifecycleSummary,
   subCanonical,
+  subscriptionKey,
   topiclessIntentKey,
 } from "../src/lib/subscriptions.mjs";
+import { prepareWatchFilter } from "../src/lib/filter.mjs";
 
 test("isValidEmail accepts well-formed and rejects junk", () => {
   for (const ok of ["a@b.co", "Jane.Doe@example.com", "x+y@sub.domain.org"]) {
@@ -210,4 +212,79 @@ test("subCanonical excludes lang — changing language does not produce a differ
   const en = subCanonical({ ...base });
   const es = subCanonical({ ...base, lang: "es" });
   assert.equal(en, es, "subCanonical must be identical regardless of lang");
+});
+
+// --- Precise-watch expression identity (text_query v1) ---
+// A5: absent expressions keep legacy identities byte-stable; equivalent v1
+// expressions share one canonical identity; an intentional change differs.
+
+test("subCanonical is byte-stable for legacy filters without text_query", () => {
+  // Exact-string pin: the canonical form of a legacy filter is unchanged by
+  // the text_query contract (no new keys, no reordered keys).
+  assert.equal(
+    subCanonical({ email: "a@b.com", lens: "money", filter: { keywords: ["software"], agency: "Health and Mental Hygiene" } }),
+    '{"email":"a@b.com","lens":"money","filter":{"keywords":["software"],"agency":"Health and Mental Hygiene"}}',
+  );
+  assert.equal(
+    subCanonical({ email: "a@b.com", lens: "money", filter: {} }),
+    '{"email":"a@b.com","lens":"money","filter":{}}',
+  );
+});
+
+test("equivalent v1 expressions produce one subscription identity", async () => {
+  const preparedA = prepareWatchFilter("money", {
+    keywords: [],
+    text_query: {
+      version: 1,
+      all: [[{ kind: "term", value: "CONSULTING" }, { kind: "term", value: "Software" }]],
+      none: [{ kind: "term", value: "maintenance" }, { kind: "term", value: "Maintenance" }],
+    },
+  });
+  const preparedB = prepareWatchFilter("money", {
+    keywords: [],
+    text_query: {
+      version: 1,
+      all: [[{ kind: "term", value: "software" }, { kind: "term", value: "consulting" }, { kind: "term", value: "consulting" }]],
+      none: [{ kind: "term", value: "MAINTENANCE" }],
+    },
+  });
+  assert.equal(preparedA.ok, true);
+  assert.equal(preparedB.ok, true);
+  assert.equal(
+    subCanonical({ email: "reader@example.com", lens: "money", filter: preparedA.filter }),
+    subCanonical({ email: "reader@example.com", lens: "money", filter: preparedB.filter }),
+  );
+  assert.equal(
+    await subscriptionKey({ email: "reader@example.com", lens: "money", filter: preparedA.filter }),
+    await subscriptionKey({ email: "reader@example.com", lens: "money", filter: preparedB.filter }),
+  );
+});
+
+test("an intentional expression change is a different watch identity", async () => {
+  const before = prepareWatchFilter("money", {
+    keywords: [],
+    text_query: { version: 1, all: [[{ kind: "term", value: "software" }]] },
+  });
+  const after = prepareWatchFilter("money", {
+    keywords: [],
+    text_query: {
+      version: 1,
+      all: [[{ kind: "term", value: "software" }]],
+      none: [{ kind: "term", value: "maintenance" }],
+    },
+  });
+  assert.equal(before.ok && after.ok, true);
+  assert.notEqual(
+    subCanonical({ email: "reader@example.com", lens: "money", filter: before.filter }),
+    subCanonical({ email: "reader@example.com", lens: "money", filter: after.filter }),
+  );
+  assert.notEqual(
+    await subscriptionKey({ email: "reader@example.com", lens: "money", filter: before.filter }),
+    await subscriptionKey({ email: "reader@example.com", lens: "money", filter: after.filter }),
+  );
+  // Frequency stays outside identity, expression or not.
+  assert.equal(
+    subCanonical({ email: "reader@example.com", lens: "money", filter: after.filter, freq: "daily" }),
+    subCanonical({ email: "reader@example.com", lens: "money", filter: after.filter, freq: "weekly" }),
+  );
 });

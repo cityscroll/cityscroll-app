@@ -1,0 +1,2240 @@
+{
+ "schema": "cityscroll.watch_text_query_title_projection.v1",
+ "source": "NYC City Record procurement notices (public records) via the resident procurement snapshot",
+ "generated_at": "2026-09-09T06:52:16.670Z",
+ "row_count": 378,
+ "titled_row_count": 340,
+ "note": "Frozen title projection retained as a regression fixture: exact expected ID sets for precise-watch matching are asserted against these rows. Row counts describe this retained snapshot, not a live production census. Original records: https://a856-cityrecord.nyc.gov/RequestDetail/{request_id}",
+ "rows": [
+  {
+   "request_id": "20260828020",
+   "start_date": "2026-09-03T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Community Violence Intervention and Prevention (CVIP) Strategy and Procurement Development RFP"
+  },
+  {
+   "request_id": "20260828021",
+   "start_date": "2026-09-03T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Correction: Strategic Planning for Community Safety in New York City RFP"
+  },
+  {
+   "request_id": "20260825021",
+   "start_date": "2026-09-01T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "01727P0002-Strengthening Communities Database #2"
+  },
+  {
+   "request_id": "20260824046",
+   "start_date": "2026-08-31T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Notice of Intent to Enter into Negotiations for the operation, renovation, and maintenance of a restaurant and banquet facility at Clearview Park, Queens"
+  },
+  {
+   "request_id": "20260818018",
+   "start_date": "2026-08-28T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "SMD_ MATERIAL JANITORIAL PESTICIDES"
+  },
+  {
+   "request_id": "20260821027",
+   "start_date": "2026-08-28T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Public Relations Services"
+  },
+  {
+   "request_id": "20260821030",
+   "start_date": "2026-08-28T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Brooklyn Bridge Park 334 Furman St. FF&E Services"
+  },
+  {
+   "request_id": "20260824035",
+   "start_date": "2026-08-28T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "HWS2026R-PRIOR NOTICE SIDEWALKS, STATEN ISLAND"
+  },
+  {
+   "request_id": "20260811024",
+   "start_date": "2026-08-19T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Microsoft 365 Copilot Pre-Rollout Security Readiness Assessment"
+  },
+  {
+   "request_id": "20260811025",
+   "start_date": "2026-08-19T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Cost Allocation Assessment and Advisory Services"
+  },
+  {
+   "request_id": "20260810056",
+   "start_date": "2026-08-18T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Q010A-120M Little Bay Park Waterfront Reconstruction"
+  },
+  {
+   "request_id": "20260811018",
+   "start_date": "2026-08-18T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "B244-122M PO Jeff Herman Ballfield Reconstruction"
+  },
+  {
+   "request_id": "20260812004",
+   "start_date": "2026-08-18T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Expressions of interest for Mattress Hauling and Recycling Services"
+  },
+  {
+   "request_id": "20260810026",
+   "start_date": "2026-08-17T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Brooklyn College \u001a Campus-Wide Building Management System Phase 1"
+  },
+  {
+   "request_id": "20260810037",
+   "start_date": "2026-08-17T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Installation and Warranty Service of Security System for 8th Floor for 345 Adams Street"
+  },
+  {
+   "request_id": "20260811028",
+   "start_date": "2026-08-17T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "82626B0052-BWS - CRO-661: Delivery of Sulfuric Acid - 78 and 93 percent"
+  },
+  {
+   "request_id": "20260810046",
+   "start_date": "2026-08-14T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "HH112CGIU Keener Building - Charles Gay Annex Fire Alarm & Emergency Lighting Upgrade"
+  },
+  {
+   "request_id": "20260810047",
+   "start_date": "2026-08-14T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "EC-SEH27 Reconstruction of Existing Sewers, The Bronx"
+  },
+  {
+   "request_id": "20260810048",
+   "start_date": "2026-08-14T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "ACEDCA215 Brooklyn Children\u001as Museum HVAC Upgrade"
+  },
+  {
+   "request_id": "20260810049",
+   "start_date": "2026-08-14T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "PV279ACON New York City Center Chiller Replacement"
+  },
+  {
+   "request_id": "20260810059",
+   "start_date": "2026-08-14T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "FIRE ALARM REPLACEMENT AT BELLEVUE HOSPITAL CENTER"
+  },
+  {
+   "request_id": "20260806027",
+   "start_date": "2026-08-12T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Virtual Chief Information Security Officer (vCISO) Services"
+  },
+  {
+   "request_id": "20260729003",
+   "start_date": "2026-08-11T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Bid Extension: RFP 521165 - Risk Management Consulting Services"
+  },
+  {
+   "request_id": "20260804040",
+   "start_date": "2026-08-11T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "SMD_A&CM_RFQ #517996 - Elevator Rehabilitation at Straus and Rutgers"
+  },
+  {
+   "request_id": "20260727024",
+   "start_date": "2026-08-10T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "82627P0001-BEDC HVR-200: Construction Management Services for the Hillview Reservoir Flow Control Improvements"
+  },
+  {
+   "request_id": "20260727026",
+   "start_date": "2026-08-10T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Restoration of Boilers at Building 62"
+  },
+  {
+   "request_id": "20260803033",
+   "start_date": "2026-08-10T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "85726B0042-2600031-SKIMMER VESSEL (DEP)"
+  },
+  {
+   "request_id": "20260729031",
+   "start_date": "2026-08-07T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Professional Engineering Services in Connection with The East River Bridges Capital Program Development Study"
+  },
+  {
+   "request_id": "20260729027",
+   "start_date": "2026-08-05T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Correction: Car Transportation Services"
+  },
+  {
+   "request_id": "20260721001",
+   "start_date": "2026-08-04T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Bid Extension: Visual Inspections of Fire Standpipe and Sprinkler Systems"
+  },
+  {
+   "request_id": "20260722032",
+   "start_date": "2026-08-04T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Correction: 82626B0053-BWS-CRO-654 Diving Services for Underwater Maintenance at Multiple DEP Facilities"
+  },
+  {
+   "request_id": "20260728022",
+   "start_date": "2026-08-04T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "CAT-506-CM: Construction Management Services for Water Supply Resource Recovery Facilities Rotating Biological Contactors Replacements."
+  },
+  {
+   "request_id": "20260727023",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Hardware Maintenance and Support of ADA Kiosks"
+  },
+  {
+   "request_id": "20260727027",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "VERTIV UPS Replacement for Data Center"
+  },
+  {
+   "request_id": "20260728002",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Bid 2600050 - ELECTRIC VEHICLE SUPPLY EQUIPMENT - Class 5"
+  },
+  {
+   "request_id": "20260728003",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Bid 2600050 - ELECTRIC VEHICLE SUPPLY EQUIPMENT - Class 1,2"
+  },
+  {
+   "request_id": "20260728004",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Rental of Heavy Equipment Rental for Central Forestry Tree Planting Project"
+  },
+  {
+   "request_id": "20260728005",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Preliminary Design and Design Services for Hillview Reservoir Cast-in-Place Concrete Tanks"
+  },
+  {
+   "request_id": "20260728006",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "OH-812: Reconstruction of Main Pump System OH WRRF"
+  },
+  {
+   "request_id": "20260728007",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Immediate Emergency Demolition - 2592 3rd Ave, BX"
+  },
+  {
+   "request_id": "20260728008",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Summer Youth Employment Program NAQ"
+  },
+  {
+   "request_id": "20260728009",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Beacon Program NAE"
+  },
+  {
+   "request_id": "20260728010",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Summer Youth Employment NAQ"
+  },
+  {
+   "request_id": "20260728011",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Integrated Commercial Hotels Program"
+  },
+  {
+   "request_id": "20260728012",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Integrated Support Hotels Program"
+  },
+  {
+   "request_id": "20260728013",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Renewal - Shelter Facilities for Homeless Single Adults at The Spot Shelter"
+  },
+  {
+   "request_id": "20260728014",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Renewal - SA El Cacique Court + Annex (401 beds)"
+  },
+  {
+   "request_id": "20260728015",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Emergency Shelter Beds and Support Services"
+  },
+  {
+   "request_id": "20260728016",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Single Room Occupancy Housing Services- Washington Avenue"
+  },
+  {
+   "request_id": "20260728017",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Emergency Shelter Services Women Survival Space (48 Beds)"
+  },
+  {
+   "request_id": "20260728018",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Single Room Occupancy Housing Services at West 46th Street"
+  },
+  {
+   "request_id": "20260728019",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Prevention Services - Family Support - BX4"
+  },
+  {
+   "request_id": "20260728020",
+   "start_date": "2026-08-03T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 SONYC Pilot NAE"
+  },
+  {
+   "request_id": "20260724026",
+   "start_date": "2026-07-31T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Hexagon Extreme Support, As Needed"
+  },
+  {
+   "request_id": "20260724027",
+   "start_date": "2026-07-31T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Bid Extension: SMD_Services_IDIQ Contract for Maintenance, Service & Repair of Emergency Backup Generators, Citywide"
+  },
+  {
+   "request_id": "20260727005",
+   "start_date": "2026-07-31T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Janitorial /Cleaning Services"
+  },
+  {
+   "request_id": "20260727006",
+   "start_date": "2026-07-31T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Arches Program, South Bronx"
+  },
+  {
+   "request_id": "20260727007",
+   "start_date": "2026-07-31T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based - Queens 04 Middle School"
+  },
+  {
+   "request_id": "20260727008",
+   "start_date": "2026-07-31T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "SYEP Continuation Plan Contract"
+  },
+  {
+   "request_id": "20260727009",
+   "start_date": "2026-07-31T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Summer Youth Employment Program NAQ"
+  },
+  {
+   "request_id": "20260727010",
+   "start_date": "2026-07-31T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Summer Youth Employment Program (SYEP) NAQ"
+  },
+  {
+   "request_id": "20260727011",
+   "start_date": "2026-07-31T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Summer Youth Employment Program (SYEP) NAQ"
+  },
+  {
+   "request_id": "20260727012",
+   "start_date": "2026-07-31T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Single Room Occupancy Housing Services,. Abraham Plaza"
+  },
+  {
+   "request_id": "20260727013",
+   "start_date": "2026-07-31T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Single Room Occupancy Housing Services, Warren Residence"
+  },
+  {
+   "request_id": "20260727014",
+   "start_date": "2026-07-31T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Casualty/Property/Brokerage Services Renewal #2"
+  },
+  {
+   "request_id": "20260727015",
+   "start_date": "2026-07-31T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Q099-424M: Al Oerter Recreation Center Gym Floor Reconstruction, Queens"
+  },
+  {
+   "request_id": "20260727016",
+   "start_date": "2026-07-31T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Microsoft Dynamics Developer: PSR & CTDB"
+  },
+  {
+   "request_id": "20260727017",
+   "start_date": "2026-07-31T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "ON-CALL WASTEWATER LINE MAINTENANCE"
+  },
+  {
+   "request_id": "20260723031",
+   "start_date": "2026-07-30T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Catering Services"
+  },
+  {
+   "request_id": "20260724010",
+   "start_date": "2026-07-30T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Heat Pump Water Heaters"
+  },
+  {
+   "request_id": "20260724011",
+   "start_date": "2026-07-30T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Equine Veterinarian services for NYC Parks"
+  },
+  {
+   "request_id": "20260724012",
+   "start_date": "2026-07-30T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Armored Car Services for collection of monies from parking"
+  },
+  {
+   "request_id": "20260724013",
+   "start_date": "2026-07-30T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "SYEP NAQ FY26"
+  },
+  {
+   "request_id": "20260724014",
+   "start_date": "2026-07-30T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Summer Youth Employment NAQ"
+  },
+  {
+   "request_id": "20260724015",
+   "start_date": "2026-07-30T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Summer Youth Employment Program NAQ: Career Ready"
+  },
+  {
+   "request_id": "20260724016",
+   "start_date": "2026-07-30T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Summer Youth Employment Program NAQ"
+  },
+  {
+   "request_id": "20260724017",
+   "start_date": "2026-07-30T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Summer Youth Employment Program NAQ"
+  },
+  {
+   "request_id": "20260724018",
+   "start_date": "2026-07-30T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Integrated Commercial Hotels Program"
+  },
+  {
+   "request_id": "20260724019",
+   "start_date": "2026-07-30T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "SRO Housing Services, 21 Truxton St, Brooklyn, NY 11233"
+  },
+  {
+   "request_id": "20260724020",
+   "start_date": "2026-07-30T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Alternative to Placement and Aftercare Services"
+  },
+  {
+   "request_id": "20260724021",
+   "start_date": "2026-07-30T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Emergency Preparedness and Response Kits"
+  },
+  {
+   "request_id": "20260724022",
+   "start_date": "2026-07-30T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Road and Floor Inspections and Repairs at DSNY Transfer Station Sites"
+  },
+  {
+   "request_id": "20260723004",
+   "start_date": "2026-07-29T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "SolarWinds Software Maintenance"
+  },
+  {
+   "request_id": "20260723006",
+   "start_date": "2026-07-29T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "NTFP Financial Empowerment Center, Renewal #2"
+  },
+  {
+   "request_id": "20260723007",
+   "start_date": "2026-07-29T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "TUGBOATS FOR TOWING BARGES, RENEWAL 2"
+  },
+  {
+   "request_id": "20260723008",
+   "start_date": "2026-07-29T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Arches Program, Harlem\u00a0"
+  },
+  {
+   "request_id": "20260723009",
+   "start_date": "2026-07-29T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Beacon Program NAE"
+  },
+  {
+   "request_id": "20260723010",
+   "start_date": "2026-07-29T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Programs in Public Schools - Elementary"
+  },
+  {
+   "request_id": "20260723011",
+   "start_date": "2026-07-29T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Programs in Public Schools - Middle"
+  },
+  {
+   "request_id": "20260723012",
+   "start_date": "2026-07-29T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based Elementary"
+  },
+  {
+   "request_id": "20260723013",
+   "start_date": "2026-07-29T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Integrated Commercial Hotels Program"
+  },
+  {
+   "request_id": "20260723014",
+   "start_date": "2026-07-29T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Next Generation Data Platform - BOX.COM for OTI Applications"
+  },
+  {
+   "request_id": "20260723015",
+   "start_date": "2026-07-29T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Portable Extension/Folding Fire Ladders/rubber safety shoe"
+  },
+  {
+   "request_id": "20260721026",
+   "start_date": "2026-07-28T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FIRE EXTINGUISHER MAINTENANCE, INSTALLATION AND REPAIRS, CITYWIDE"
+  },
+  {
+   "request_id": "20260721027",
+   "start_date": "2026-07-28T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 SONYC Pilot NAE"
+  },
+  {
+   "request_id": "20260722007",
+   "start_date": "2026-07-28T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "ERDA Financial Empowerment Center Renewal #2"
+  },
+  {
+   "request_id": "20260722008",
+   "start_date": "2026-07-28T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "AE Services Design Demo Replacement BX 9/10/11 Garage RW 1"
+  },
+  {
+   "request_id": "20260722009",
+   "start_date": "2026-07-28T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "EXEC ODHR Lean Six Sigma Training 6084038X / 7084000X"
+  },
+  {
+   "request_id": "20260722010",
+   "start_date": "2026-07-28T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "GO-1 PREMIUM LICENSES"
+  },
+  {
+   "request_id": "20260722011",
+   "start_date": "2026-07-28T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "SYEP NAQ"
+  },
+  {
+   "request_id": "20260722012",
+   "start_date": "2026-07-28T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Summer Youth Employment NAQ"
+  },
+  {
+   "request_id": "20260722013",
+   "start_date": "2026-07-28T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "SYEP NAQ"
+  },
+  {
+   "request_id": "20260722014",
+   "start_date": "2026-07-28T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Programs in Public Schools - Elementary"
+  },
+  {
+   "request_id": "20260722015",
+   "start_date": "2026-07-28T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based CD - Brooklyn 15 Middle School"
+  },
+  {
+   "request_id": "20260722016",
+   "start_date": "2026-07-28T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Programs in Public Schools - Middle"
+  },
+  {
+   "request_id": "20260722017",
+   "start_date": "2026-07-28T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based Elementary"
+  },
+  {
+   "request_id": "20260722018",
+   "start_date": "2026-07-28T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Integrated Commercial Hotels Program"
+  },
+  {
+   "request_id": "20260722019",
+   "start_date": "2026-07-28T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Hotel Management Services for DHS Emergency Programs"
+  },
+  {
+   "request_id": "20260722020",
+   "start_date": "2026-07-28T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Prevention Services - Family Treatment/Rehabilitation"
+  },
+  {
+   "request_id": "20260722021",
+   "start_date": "2026-07-28T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Cargo cover with basket lift net"
+  },
+  {
+   "request_id": "20260720017",
+   "start_date": "2026-07-27T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Various Samsung Products"
+  },
+  {
+   "request_id": "20260720018",
+   "start_date": "2026-07-27T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Heavy Duty Cleaning for Brooklyn & Staten Island"
+  },
+  {
+   "request_id": "20260721005",
+   "start_date": "2026-07-27T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Chhaya Financial Empowerment Center Renewal #2"
+  },
+  {
+   "request_id": "20260721006",
+   "start_date": "2026-07-27T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Maintenance of Street Lights, Queens and Brooklyn"
+  },
+  {
+   "request_id": "20260721007",
+   "start_date": "2026-07-27T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Arches Program, South Bronx"
+  },
+  {
+   "request_id": "20260721008",
+   "start_date": "2026-07-27T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 COMPASS High NAE"
+  },
+  {
+   "request_id": "20260721009",
+   "start_date": "2026-07-27T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based CD - Queens 06 Middle School"
+  },
+  {
+   "request_id": "20260721010",
+   "start_date": "2026-07-27T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Cornerstone Community Centers NAE"
+  },
+  {
+   "request_id": "20260721011",
+   "start_date": "2026-07-27T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Beacon Program NAE"
+  },
+  {
+   "request_id": "20260721012",
+   "start_date": "2026-07-27T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "SRO Housing Services at Bishop Joseph M Sullivan"
+  },
+  {
+   "request_id": "20260721013",
+   "start_date": "2026-07-27T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "SRO Housing Services - 373 Dewitt Ave, Brooklyn, NY 11207"
+  },
+  {
+   "request_id": "20260721014",
+   "start_date": "2026-07-27T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Single Room Occupancy Housing Services, College Ave Apt."
+  },
+  {
+   "request_id": "20260721015",
+   "start_date": "2026-07-27T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Home Care Services Program, Citywide"
+  },
+  {
+   "request_id": "20260721016",
+   "start_date": "2026-07-27T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Single Room Occupancy Housing Services-Chelsea Court"
+  },
+  {
+   "request_id": "20260721017",
+   "start_date": "2026-07-27T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Emergency Shelter Services (Food Add-on)"
+  },
+  {
+   "request_id": "20260721018",
+   "start_date": "2026-07-27T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "X336-119M Hunts Point Riverside Park Dock Reconstruction"
+  },
+  {
+   "request_id": "20260723025",
+   "start_date": "2026-07-27T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260717019",
+   "start_date": "2026-07-24T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY26 Discretionary/City Council / Emergency Medical Services"
+  },
+  {
+   "request_id": "20260717024",
+   "start_date": "2026-07-24T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Call to Repair Hardware & Maintenance - Equipment"
+  },
+  {
+   "request_id": "20260720003",
+   "start_date": "2026-07-24T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Blanket Order for Professional Development Trainings"
+  },
+  {
+   "request_id": "20260720004",
+   "start_date": "2026-07-24T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Queens Civil Courthouse Plaza and Exterior Renovation"
+  },
+  {
+   "request_id": "20260720005",
+   "start_date": "2026-07-24T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Saturday Night Lights NAE"
+  },
+  {
+   "request_id": "20260720006",
+   "start_date": "2026-07-24T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based CD - Bronx 09 Middle School"
+  },
+  {
+   "request_id": "20260720007",
+   "start_date": "2026-07-24T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based CD - Bronx.02 Middle School"
+  },
+  {
+   "request_id": "20260720008",
+   "start_date": "2026-07-24T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Beacon Program NAE"
+  },
+  {
+   "request_id": "20260720009",
+   "start_date": "2026-07-24T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Beacon Program NAE"
+  },
+  {
+   "request_id": "20260720010",
+   "start_date": "2026-07-24T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Neighborhood Youth Team Sports  Grant FY27 NA"
+  },
+  {
+   "request_id": "20260720011",
+   "start_date": "2026-07-24T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Single Room Occupancy Housing Services- Schafer Hall SRO"
+  },
+  {
+   "request_id": "20260714017",
+   "start_date": "2026-07-23T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260715030",
+   "start_date": "2026-07-23T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "2 Lafayette Painting MWBE NCSP"
+  },
+  {
+   "request_id": "20260716020",
+   "start_date": "2026-07-23T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260717001",
+   "start_date": "2026-07-23T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Jobs NYC Center Furniture"
+  },
+  {
+   "request_id": "20260717005",
+   "start_date": "2026-07-23T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based - Bronx 11 Elementary"
+  },
+  {
+   "request_id": "20260717006",
+   "start_date": "2026-07-23T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "M286-123MR Asphalt Green Facility Capital Const Renewal #1"
+  },
+  {
+   "request_id": "20260717007",
+   "start_date": "2026-07-23T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "ESA: Transp. Planning & Engineering, Urban Design, All City"
+  },
+  {
+   "request_id": "20260717008",
+   "start_date": "2026-07-23T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "BronxWorks Financial Empowerment Center Renewal #2"
+  },
+  {
+   "request_id": "20260717009",
+   "start_date": "2026-07-23T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Design Build 1"
+  },
+  {
+   "request_id": "20260717010",
+   "start_date": "2026-07-23T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 NAE - FWC Rose McCarthy Residence (53 units)"
+  },
+  {
+   "request_id": "20260717011",
+   "start_date": "2026-07-23T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "On Call Sampling of Lead Containing Materials"
+  },
+  {
+   "request_id": "20260717012",
+   "start_date": "2026-07-23T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Single Room Occupancy Housing Svcs."
+  },
+  {
+   "request_id": "20260717013",
+   "start_date": "2026-07-23T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Dell Pro Slim Desktop Model QCS12"
+  },
+  {
+   "request_id": "20260717014",
+   "start_date": "2026-07-23T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "ESA: Transp. Planning & Engineering, Urban Design, All City"
+  },
+  {
+   "request_id": "20260715031",
+   "start_date": "2026-07-22T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Promotional Items and Advertising"
+  },
+  {
+   "request_id": "20260715042",
+   "start_date": "2026-07-22T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "IBM Maximo Upgrade, Maintenance & Consulting Services"
+  },
+  {
+   "request_id": "20260715043",
+   "start_date": "2026-07-22T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Prevention Services - Family Support - BX5"
+  },
+  {
+   "request_id": "20260716002",
+   "start_date": "2026-07-22T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Notice of Award:  BRIC Celebrate Brooklyn! Festival in Prospect Park"
+  },
+  {
+   "request_id": "20260716010",
+   "start_date": "2026-07-22T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "ESA: Transp. Planning & Engineering, Urban Design, All City"
+  },
+  {
+   "request_id": "20260716011",
+   "start_date": "2026-07-22T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Repair and replacement of High and Low Pressure Boilers - 3 year renewal"
+  },
+  {
+   "request_id": "20260716012",
+   "start_date": "2026-07-22T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Blanket Order for Professional Development Trainings"
+  },
+  {
+   "request_id": "20260716013",
+   "start_date": "2026-07-22T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based Middle School - \u00a0Brooklyn BK03"
+  },
+  {
+   "request_id": "20260716014",
+   "start_date": "2026-07-22T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based - Elementary"
+  },
+  {
+   "request_id": "20260716015",
+   "start_date": "2026-07-22T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based CD Manhattan 03 Elementary School"
+  },
+  {
+   "request_id": "20260716016",
+   "start_date": "2026-07-22T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Home Care Services Program Citywide"
+  },
+  {
+   "request_id": "20260716017",
+   "start_date": "2026-07-22T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Single Room Occupancy Services at Archies Place"
+  },
+  {
+   "request_id": "20260716018",
+   "start_date": "2026-07-22T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Renewal - FJC Family Law Legal Services"
+  },
+  {
+   "request_id": "20260716019",
+   "start_date": "2026-07-22T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "HyperFire Elite Package"
+  },
+  {
+   "request_id": "20260714018",
+   "start_date": "2026-07-21T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260714019",
+   "start_date": "2026-07-21T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "OCCUPATIONAL HEALTH CLINICAL STAFFING SERVICES"
+  },
+  {
+   "request_id": "20260714028",
+   "start_date": "2026-07-21T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "DELIVERY OF EXTENDED WARRANTY SERVICES FOR DELL DESKTOPS"
+  },
+  {
+   "request_id": "20260715006",
+   "start_date": "2026-07-21T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Training Classes for Assessing Officers"
+  },
+  {
+   "request_id": "20260715007",
+   "start_date": "2026-07-21T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based Middle"
+  },
+  {
+   "request_id": "20260715008",
+   "start_date": "2026-07-21T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Blanket Order for Management and Supervision Trainings"
+  },
+  {
+   "request_id": "20260715009",
+   "start_date": "2026-07-21T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "OH-88: Owls Head WWTP Final Settling System Rehabilitation"
+  },
+  {
+   "request_id": "20260715010",
+   "start_date": "2026-07-21T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Construction Management Services"
+  },
+  {
+   "request_id": "20260715011",
+   "start_date": "2026-07-21T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 New Contract   NY 15/15 Congregate Supportive Housing"
+  },
+  {
+   "request_id": "20260715012",
+   "start_date": "2026-07-21T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "MEMBERSHIP FEES FOR CT COURSE"
+  },
+  {
+   "request_id": "20260715013",
+   "start_date": "2026-07-21T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based CD - Bronx 06 Elementary School"
+  },
+  {
+   "request_id": "20260715014",
+   "start_date": "2026-07-21T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based  Middle School - Manhattan 03"
+  },
+  {
+   "request_id": "20260715015",
+   "start_date": "2026-07-21T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based Middle"
+  },
+  {
+   "request_id": "20260715016",
+   "start_date": "2026-07-21T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based CD - Brooklyn 18 Middle School"
+  },
+  {
+   "request_id": "20260715017",
+   "start_date": "2026-07-21T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based - Queens 01 Middle School"
+  },
+  {
+   "request_id": "20260715018",
+   "start_date": "2026-07-21T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center-Based CD- Queens 1 Elementary"
+  },
+  {
+   "request_id": "20260715019",
+   "start_date": "2026-07-21T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Renewal - SA Fane Shelter (61 beds)"
+  },
+  {
+   "request_id": "20260715021",
+   "start_date": "2026-07-21T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "85726B0053-ACS - Cereals"
+  },
+  {
+   "request_id": "20260715022",
+   "start_date": "2026-07-21T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Posit Connect and Workbench Renewal"
+  },
+  {
+   "request_id": "20260715023",
+   "start_date": "2026-07-21T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Special Waste Site Permitting"
+  },
+  {
+   "request_id": "20260710034",
+   "start_date": "2026-07-20T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260713034",
+   "start_date": "2026-07-20T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Technology Licenses and training solutions for the IT/Helpdesk Staff"
+  },
+  {
+   "request_id": "20260713035",
+   "start_date": "2026-07-20T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Support & Maintenance for Security System"
+  },
+  {
+   "request_id": "20260713036",
+   "start_date": "2026-07-20T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Acronis Cyber Protection Software License"
+  },
+  {
+   "request_id": "20260714005",
+   "start_date": "2026-07-20T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Volpe for CFTP/SFTP/VR Operation"
+  },
+  {
+   "request_id": "20260714006",
+   "start_date": "2026-07-20T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Maintenance of Street Lights Staten Island"
+  },
+  {
+   "request_id": "20260714007",
+   "start_date": "2026-07-20T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Marine When and Where Structural and Other Miscellaneous Repairs, Five Boroughs"
+  },
+  {
+   "request_id": "20260714008",
+   "start_date": "2026-07-20T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Operation of the NYC Organic Waste Facilities Renewal 2"
+  },
+  {
+   "request_id": "20260714009",
+   "start_date": "2026-07-20T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "82626P0012-BEDC-CAT-475-CM: Construction Management Services for the High Level Outlet (HLO) Installation at Gilboa Dam and Crest Gate Removal"
+  },
+  {
+   "request_id": "20260714010",
+   "start_date": "2026-07-20T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based Elementary School"
+  },
+  {
+   "request_id": "20260714011",
+   "start_date": "2026-07-20T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Neighborhood Youth Team Sports FY26 NA"
+  },
+  {
+   "request_id": "20260714012",
+   "start_date": "2026-07-20T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Renewal - Permanent Congregate Housing"
+  },
+  {
+   "request_id": "20260714013",
+   "start_date": "2026-07-20T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Renewal of Existing Solarwinds Licenses"
+  },
+  {
+   "request_id": "20260714014",
+   "start_date": "2026-07-20T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "(SPDES) Multi-Sector General Permit (MSGP) for Stormwater Discharges"
+  },
+  {
+   "request_id": "20260708001",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260710030",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Brother Toner & Drums"
+  },
+  {
+   "request_id": "20260713003",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Crystal Reports Professional Maintenance & Support Renewal"
+  },
+  {
+   "request_id": "20260713008",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Psychological Evaluations for Pre-Employment Candidates"
+  },
+  {
+   "request_id": "20260713009",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "HWEARC05B, Renewal of RC for Environmental Assessment"
+  },
+  {
+   "request_id": "20260713010",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "CRO-660 Software, Hardware, and Database Support Services"
+  },
+  {
+   "request_id": "20260713011",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 NA - PHS Transfer - MIH CBO Collaborative - Component B"
+  },
+  {
+   "request_id": "20260713012",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Arches Program Harlem"
+  },
+  {
+   "request_id": "20260713013",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Arches Program Harlem"
+  },
+  {
+   "request_id": "20260713014",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY 27 Compass Explore Program NAE"
+  },
+  {
+   "request_id": "20260713015",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 SONYC Pilot NAE"
+  },
+  {
+   "request_id": "20260713016",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Base CD Manhattan 03 Middle School"
+  },
+  {
+   "request_id": "20260713017",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based CD - Manhattan 07 & 10 Middle School"
+  },
+  {
+   "request_id": "20260713018",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Compass CB - SI 01 & MN 07 & 10 Elementary School"
+  },
+  {
+   "request_id": "20260713019",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Base Manhattan 03 Elementary School"
+  },
+  {
+   "request_id": "20260713020",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center-Based CD - Bronx 03 Elementary School"
+  },
+  {
+   "request_id": "20260713021",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based - Middle School"
+  },
+  {
+   "request_id": "20260713022",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Renewal - Permanent Congregate PLWHA (25 units)"
+  },
+  {
+   "request_id": "20260713023",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Renewal - FJC Immigration Legal Services"
+  },
+  {
+   "request_id": "20260713024",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "IT Consulting for SNAP Payment Error Rate (CAP) Reduction"
+  },
+  {
+   "request_id": "20260713025",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Printer Ribbons for Certificate of Fitness"
+  },
+  {
+   "request_id": "20260713026",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "NORC SERVICES TO OLDER ADULTS"
+  },
+  {
+   "request_id": "20260714021",
+   "start_date": "2026-07-17T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260702003",
+   "start_date": "2026-07-16T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260709003",
+   "start_date": "2026-07-16T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Horizontal Blinds, On-Call Blanket Order, Citywide"
+  },
+  {
+   "request_id": "20260709022",
+   "start_date": "2026-07-16T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "BLOOD CHEMISTRY SERVICES/BLOOD ANALYSES TESTING"
+  },
+  {
+   "request_id": "20260709031",
+   "start_date": "2026-07-16T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Laptop Purchase for Agency"
+  },
+  {
+   "request_id": "20260710004",
+   "start_date": "2026-07-16T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Leadership, Management, Supervision Trainings for Professional Development"
+  },
+  {
+   "request_id": "20260710005",
+   "start_date": "2026-07-16T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "EC-SEKN26 (REBID1) RECONSTRUCTION OF EXISTING SEWERS, North Brooklyn"
+  },
+  {
+   "request_id": "20260710006",
+   "start_date": "2026-07-16T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "CNYG-3916M Renewal: Procurement of Street Trees in Region 1"
+  },
+  {
+   "request_id": "20260710007",
+   "start_date": "2026-07-16T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Maintenance of Street Lights, Manhattan and The Bronx"
+  },
+  {
+   "request_id": "20260710008",
+   "start_date": "2026-07-16T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "BWS-26-DES: On call design services to support BWS On-Call and BWS JOC Program Design Services"
+  },
+  {
+   "request_id": "20260710009",
+   "start_date": "2026-07-16T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "CSO-GC-SFS-CM-RH3-CP3: Construction Management Services for the Superstructure of the Red Hook (RH-034) Combined Sewer Overflow Facility at the Gowanus Canal"
+  },
+  {
+   "request_id": "20260710010",
+   "start_date": "2026-07-16T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "82626P0006-BEPA: CEQRCTS"
+  },
+  {
+   "request_id": "20260710011",
+   "start_date": "2026-07-16T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Expanding Access to a Nurse Care Manager Model of Health Care"
+  },
+  {
+   "request_id": "20260710012",
+   "start_date": "2026-07-16T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 RQM MHY 191 Supported Housing"
+  },
+  {
+   "request_id": "20260710013",
+   "start_date": "2026-07-16T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Immediate Emergency Demo 83-34 Dongan Avenue, Queens"
+  },
+  {
+   "request_id": "20260710014",
+   "start_date": "2026-07-16T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "CMS Violence Prevention Mentoring Program"
+  },
+  {
+   "request_id": "20260710015",
+   "start_date": "2026-07-16T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Base CD - Bronx 02 Elementary School"
+  },
+  {
+   "request_id": "20260710016",
+   "start_date": "2026-07-16T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY26 NAQ NYTS award - YSEF"
+  },
+  {
+   "request_id": "20260710017",
+   "start_date": "2026-07-16T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Digitizing Records with Long-Term Retention"
+  },
+  {
+   "request_id": "20260710018",
+   "start_date": "2026-07-16T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Equipment purchase: laptops, webcams, and wired headsets"
+  },
+  {
+   "request_id": "20260708023",
+   "start_date": "2026-07-15T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260708025",
+   "start_date": "2026-07-15T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Notice of Award to Unwind Hospitality LLC for the development, operation, and maintenance of a snack bar and merchandise concession with the option of a full-service restaurant at the Orchard Beach Pavilion"
+  },
+  {
+   "request_id": "20260709004",
+   "start_date": "2026-07-15T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Degraw Firehouse Renovation"
+  },
+  {
+   "request_id": "20260709005",
+   "start_date": "2026-07-15T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "CNYG-1317MA1: Citywide HVAC Controls Building Automation Systems Installation, Citywide"
+  },
+  {
+   "request_id": "20260709006",
+   "start_date": "2026-07-15T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Printing of Parking Notices & Correspondence Services"
+  },
+  {
+   "request_id": "20260709007",
+   "start_date": "2026-07-15T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "CMS Violence Prevention Mentoring Program"
+  },
+  {
+   "request_id": "20260709008",
+   "start_date": "2026-07-15T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based CD -  Bronx 04 Elementary School"
+  },
+  {
+   "request_id": "20260709009",
+   "start_date": "2026-07-15T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based - Queens 12 & Bronx 09 Middle School"
+  },
+  {
+   "request_id": "20260709010",
+   "start_date": "2026-07-15T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Base CD - Queens 13 Middle School"
+  },
+  {
+   "request_id": "20260709011",
+   "start_date": "2026-07-15T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based CD - Queens 06 Elementary"
+  },
+  {
+   "request_id": "20260709012",
+   "start_date": "2026-07-15T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based CD - Bronx 3 Elementary School"
+  },
+  {
+   "request_id": "20260709013",
+   "start_date": "2026-07-15T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Base - Queens 06 Middle School"
+  },
+  {
+   "request_id": "20260709014",
+   "start_date": "2026-07-15T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based CD - Bronx 03 Elementary"
+  },
+  {
+   "request_id": "20260709015",
+   "start_date": "2026-07-15T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Renewal - Shelter Facilities for Homeless Single Adults at: Dona Carmen's Place Shelter"
+  },
+  {
+   "request_id": "20260709016",
+   "start_date": "2026-07-15T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Renewal -  Shelter Facilities for Homeless Single Adults at New Beginnings Men's Shelter"
+  },
+  {
+   "request_id": "20260709017",
+   "start_date": "2026-07-15T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Systems Requirements Analyst"
+  },
+  {
+   "request_id": "20260709018",
+   "start_date": "2026-07-15T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "2026283 - Komprise Multi-Year Software Renewal"
+  },
+  {
+   "request_id": "20260319023",
+   "start_date": "2026-07-14T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260630022",
+   "start_date": "2026-07-14T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Correction: SMD_A&CM_RFQ #521210 - Design-Build Services for In-Unit Renovations at Citywide Locations"
+  },
+  {
+   "request_id": "20260706047",
+   "start_date": "2026-07-14T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260707027",
+   "start_date": "2026-07-14T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Two Technical Support Technicians for DYFJ Crossroads"
+  },
+  {
+   "request_id": "20260707028",
+   "start_date": "2026-07-14T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Pitney Bowes Spectrum OnDemand License Renewal"
+  },
+  {
+   "request_id": "20260708004",
+   "start_date": "2026-07-14T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "NYC CoolRoofs Training Program Administration"
+  },
+  {
+   "request_id": "20260708005",
+   "start_date": "2026-07-14T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Arches Program, Staten Island"
+  },
+  {
+   "request_id": "20260708006",
+   "start_date": "2026-07-14T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Beacon ACS Prevention NAE"
+  },
+  {
+   "request_id": "20260708007",
+   "start_date": "2026-07-14T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based CD - Bronx 10 Elementary School"
+  },
+  {
+   "request_id": "20260708008",
+   "start_date": "2026-07-14T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based - Manhattan 11 Elementary"
+  },
+  {
+   "request_id": "20260708009",
+   "start_date": "2026-07-14T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based CD - Elementary, Manhattan 10"
+  },
+  {
+   "request_id": "20260708010",
+   "start_date": "2026-07-14T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Commissary - Renewal No. 1"
+  },
+  {
+   "request_id": "20260708011",
+   "start_date": "2026-07-14T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Prevention Services"
+  },
+  {
+   "request_id": "20260708012",
+   "start_date": "2026-07-14T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Secure Detention Surveillance System Installation and Maintenance"
+  },
+  {
+   "request_id": "20260708013",
+   "start_date": "2026-07-14T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "PO202600465 - IT Equipment"
+  },
+  {
+   "request_id": "20260708014",
+   "start_date": "2026-07-14T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Search and Rescue Camera Systems"
+  },
+  {
+   "request_id": "20260706028",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260706035",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "TREE CHIPPERS - DPR"
+  },
+  {
+   "request_id": "20260706039",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "General Construction Job Order Contract for Region 4, Brooklyn"
+  },
+  {
+   "request_id": "20260706045",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Notice of Award to Gabriel E Davila for the operation of a mobile truck at Allerton Playground"
+  },
+  {
+   "request_id": "20260706046",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Notice of Award to Gabriel E Davila for operation of a Mobile truck at Burns Playground"
+  },
+  {
+   "request_id": "20260706049",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "General Construction Job Order Contract for Region 5, Staten Island"
+  },
+  {
+   "request_id": "20260706050",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Electrical Job Order Contract Citywide"
+  },
+  {
+   "request_id": "20260707005",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMMERCIAL PRINTING AND DIRECT MAIL"
+  },
+  {
+   "request_id": "20260707006",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Q099-323M - Al Oerter Recreation Center HVAC Reconstruction, Queens"
+  },
+  {
+   "request_id": "20260707007",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Rehab of West Tremont Ave Bridge over Metro North Railroad Hudson Line & Major Deegan Expressway (I-87) & Bus Terminal"
+  },
+  {
+   "request_id": "20260707008",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "SWP-129 Operating Funds VI: Reimbursement of costs associated with the Operation of the Arkville Facility in Arkville, NY (Delaware County)"
+  },
+  {
+   "request_id": "20260707009",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "BWSO AWWA Membership 6005001X"
+  },
+  {
+   "request_id": "20260707010",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "BCS MDMS Support Services 6040164X"
+  },
+  {
+   "request_id": "20260707011",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "On-Call Electrical Services"
+  },
+  {
+   "request_id": "20260707012",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based Elementary"
+  },
+  {
+   "request_id": "20260707013",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27-28 Renewal Neighborhood Safety Councils"
+  },
+  {
+   "request_id": "20260707014",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based Elementary"
+  },
+  {
+   "request_id": "20260707015",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Base Middle"
+  },
+  {
+   "request_id": "20260707016",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "No. 1 - Lead Dust Abatement (Rodman's Neck)"
+  },
+  {
+   "request_id": "20260707017",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Renewal - Shelter Services to Homeless Adult Families at Beach Residence"
+  },
+  {
+   "request_id": "20260707018",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Renewal - NYCitizenship Program"
+  },
+  {
+   "request_id": "20260707019",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "OLDER ADULT CENTER SERVICES"
+  },
+  {
+   "request_id": "20260707020",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Pianos for Jazz Gallery and Mind-Builders Creative Arts"
+  },
+  {
+   "request_id": "20260707024",
+   "start_date": "2026-07-13T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260604012",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 RQM- MHY 9 Non-Medicaid Care Coordination"
+  },
+  {
+   "request_id": "20260605014",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 New Contract   816-2735-0048.A01"
+  },
+  {
+   "request_id": "20260618009",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 New Contract - Supportive Housing"
+  },
+  {
+   "request_id": "20260629043",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260702011",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY26 Extension Homeless SA at Marsha's House (81 Beds)"
+  },
+  {
+   "request_id": "20260702012",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "85726B0049-ACS - Snacks - CLASS 2 (Frozen)"
+  },
+  {
+   "request_id": "20260702013",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "85726B0047-ACS - Meats, Poultry, Fish - CLASS 1, 4"
+  },
+  {
+   "request_id": "20260702014",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "ELEVATOR INSPECTION, MAINTENANCE & REPAIRS"
+  },
+  {
+   "request_id": "20260702015",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Apparel for NYC Best and Facilities"
+  },
+  {
+   "request_id": "20260706002",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "LexisNexis NYCERS Risk Defense"
+  },
+  {
+   "request_id": "20260706004",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Cobol Developer Mainframe"
+  },
+  {
+   "request_id": "20260706005",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Application design and development services"
+  },
+  {
+   "request_id": "20260706007",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "CO306EXT2 Harlem Courthouse Exterior Rehabilitation"
+  },
+  {
+   "request_id": "20260706008",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "HWEARC05A, Renewal of Requirements Contracts for Professional Services for Environmental Assessment for Various Projects, Citywide"
+  },
+  {
+   "request_id": "20260706009",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "OC-21 Field Ops. Office Cleaning Services at Bureau of Water and Sewer Operations Facilities, Citywide"
+  },
+  {
+   "request_id": "20260706010",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "General Construction Job Order Contract for Region 3, Manhattan"
+  },
+  {
+   "request_id": "20260706011",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "JOC25-BWSO-1G (REN-1): General Construction Job Order Contract for Region 1, Queens"
+  },
+  {
+   "request_id": "20260706012",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "NA-PHS Transfer to MIH Component A Contract"
+  },
+  {
+   "request_id": "20260706013",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27_ NAE/New Contract Recreational and Socialization Services for Individuals with Autism Spectrum Disorders"
+  },
+  {
+   "request_id": "20260706014",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Beacon Program NAE"
+  },
+  {
+   "request_id": "20260706015",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Beacon Program NAE"
+  },
+  {
+   "request_id": "20260706016",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Office of Neighborhood Safety Councils"
+  },
+  {
+   "request_id": "20260706017",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "CMS Violence Prevention Mentoring Program"
+  },
+  {
+   "request_id": "20260706018",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based - Bronx 09 Middle School"
+  },
+  {
+   "request_id": "20260706019",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "COMPASS Center Based - Queens 13 Elementary School"
+  },
+  {
+   "request_id": "20260706020",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 COMPASS High NAE"
+  },
+  {
+   "request_id": "20260706021",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 - SA Skyway Shelter + Annexes (762 beds)"
+  },
+  {
+   "request_id": "20260706022",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Tier II Shelter Services for DVS- Serenity House"
+  },
+  {
+   "request_id": "20260706023",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Enhanced Family Foster Care (EFFC)"
+  },
+  {
+   "request_id": "20260706024",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Saturday Night Lights NAE"
+  },
+  {
+   "request_id": "20260706025",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "IT Relationship Manager"
+  },
+  {
+   "request_id": "20260706029",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Preventive Maintenance and Repair of Sump Pumps"
+  },
+  {
+   "request_id": "20260706030",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 NA/ Recovery Center/ New Contract"
+  },
+  {
+   "request_id": "20260706031",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 -28 Renewal Neighborhood Safety Councils"
+  },
+  {
+   "request_id": "20260706032",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Laboratory National Accreditation Renewal #1"
+  },
+  {
+   "request_id": "20260706033",
+   "start_date": "2026-07-10T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "JOC25-BWSO-2G REN-1: General Construction Job Order Contract for Region 2, Bronx"
+  },
+  {
+   "request_id": "20260701039",
+   "start_date": "2026-07-09T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260702004",
+   "start_date": "2026-07-09T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Prevention Services - Family Support - BK6"
+  },
+  {
+   "request_id": "20260702005",
+   "start_date": "2026-07-09T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Prevention Services - Family Support - Qns4"
+  },
+  {
+   "request_id": "20260702007",
+   "start_date": "2026-07-09T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260629032",
+   "start_date": "2026-07-08T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260630016",
+   "start_date": "2026-07-08T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "X123-124M Noble Playground Water Service Reconstruction, Bronx"
+  },
+  {
+   "request_id": "20260701003",
+   "start_date": "2026-07-08T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Ad Placement Services for Citywide Use"
+  },
+  {
+   "request_id": "20260701004",
+   "start_date": "2026-07-08T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "B3275 Assessments for Special Education"
+  },
+  {
+   "request_id": "20260701016",
+   "start_date": "2026-07-08T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Renewal - FWC Sammon Build Center (49 units)"
+  },
+  {
+   "request_id": "20260701017",
+   "start_date": "2026-07-08T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Renewal - SA McGuinness Assessment Center (200 beds)"
+  },
+  {
+   "request_id": "20260701018",
+   "start_date": "2026-07-08T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY27 Renewal - FWC Shelter Flagstone Family Center (161 units)"
+  },
+  {
+   "request_id": "20260701019",
+   "start_date": "2026-07-08T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Home Care Services Program Citywide"
+  },
+  {
+   "request_id": "20260701020",
+   "start_date": "2026-07-08T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "FY24 Discretionary support for the Crisis Management System"
+  },
+  {
+   "request_id": "20260701021",
+   "start_date": "2026-07-08T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Gift Cards for the NSCC Allowance Program"
+  },
+  {
+   "request_id": "20260701023",
+   "start_date": "2026-07-08T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Jotform Subscription"
+  },
+  {
+   "request_id": "20260701024",
+   "start_date": "2026-07-08T00:00:00.000",
+   "type_of_notice_description": "Award",
+   "short_title": "Audiometric Tests with Interpretation"
+  },
+  {
+   "request_id": "20260626002",
+   "start_date": "2026-07-07T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260626030",
+   "start_date": "2026-07-07T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260629002",
+   "start_date": "2026-07-07T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260625058",
+   "start_date": "2026-07-06T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260629024",
+   "start_date": "2026-07-06T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260624038",
+   "start_date": "2026-07-01T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260617050",
+   "start_date": "2026-06-30T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260623056",
+   "start_date": "2026-06-30T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260624023",
+   "start_date": "2026-06-30T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260618029",
+   "start_date": "2026-06-29T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260617041",
+   "start_date": "2026-06-25T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260616061",
+   "start_date": "2026-06-24T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260603051",
+   "start_date": "2026-06-22T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Bid Extension: 13202301: Harlem Community Retail Pharmacy"
+  },
+  {
+   "request_id": "20260615060",
+   "start_date": "2026-06-22T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260610061",
+   "start_date": "2026-06-17T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260603042",
+   "start_date": "2026-06-10T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260601047",
+   "start_date": "2026-06-09T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260529026",
+   "start_date": "2026-06-05T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260601039",
+   "start_date": "2026-06-04T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260521015",
+   "start_date": "2026-05-29T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260514019",
+   "start_date": "2026-05-20T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260428035",
+   "start_date": "2026-05-05T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Bid Extension: Requirements Contracts for Postsecondary Pathways Programs"
+  },
+  {
+   "request_id": "20260421016",
+   "start_date": "2026-04-28T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Bid Extension: 85624B0012-CSB 25th FL Construction at 1 Centre Street"
+  },
+  {
+   "request_id": "20260226026",
+   "start_date": "2026-03-05T00:00:00.000",
+   "type_of_notice_description": "Solicitation"
+  },
+  {
+   "request_id": "20260225006",
+   "start_date": "2026-03-03T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Bid Extension: Requirement Contract for Water Treatment of Cooling Towers"
+  },
+  {
+   "request_id": "20260206017",
+   "start_date": "2026-02-13T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Bid Extension: REQUIREMENTS CONTRACT FOR REMOVAL AND TRANSFER OF CAFETERIA AND KITCHEN EQUIPMENT"
+  },
+  {
+   "request_id": "20260130016",
+   "start_date": "2026-02-06T00:00:00.000",
+   "type_of_notice_description": "Solicitation",
+   "short_title": "Bid Extension: Requirements Contract for Central Station Monitoring of Fire Alarm Systems"
+  }
+ ]
+}

@@ -1,0 +1,18 @@
+{
+ "schema": "cityscroll.watch_text_query_meeting_fixture.v1",
+ "source": "NYC City Record public-hearing notices (public records) via the meeting-notice materialization",
+ "generated_at": "2026-09-09T06:52:08.255Z",
+ "row_count": 1,
+ "note": "Single retained meeting row: the whole-token positive control for term matching (the word rat appears as a whole word in this title and nowhere as a whole token in the procurement title snapshot). Retained snapshot row, not a live census.",
+ "rows": [
+  {
+   "request_id": "20260803009",
+   "start_date": "2026-08-12T00:00:00.000",
+   "event_date": "2026-09-14T10:00:00.000",
+   "agency_name": "Health and Mental Hygiene",
+   "type_of_notice_description": "Public Hearings",
+   "section_name": "Agency Rules",
+   "short_title": "New Rules Relating to Rat Inspections"
+  }
+ ]
+}
