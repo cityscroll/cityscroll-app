@@ -11,6 +11,7 @@ import {
   ensureSubscriptionIdentity,
   subCanonical,
 } from "../src/lib/subscriptions.mjs";
+import { queryRevisionForFilter } from "../src/lib/watch_query_revision.mjs";
 
 const migration = readFileSync(new URL("../migrations/0018_digest_outbox.sql", import.meta.url), "utf8");
 const SECRET = "test-secret-0123456789abcdef0123456789abcdef";
@@ -106,4 +107,53 @@ test("legacy /prefs filter edit preserves the outbox watch identity and KV addre
   assert.equal(stored.watch_id, await deriveWatchId(key));
   assert.equal(stored.subscriber_id, await deriveSubscriberId(legacy.email));
   assert.equal(subs.store.has(key), true);
+});
+
+test("precise-watch upgrade and equivalent expression edit keep the KV address and immutable ids", async () => {
+  const key = "sub:precise-upgrade-01";
+  const legacy = {
+    email: "person@example.com",
+    lens: "money",
+    filter: { keywords: ["software"], noticeType: "award" },
+    freq: "daily",
+    channel: "email",
+    createdAt: "2026-08-01T00:00:00.000Z",
+    lang: "en",
+  };
+  const subs = new MockKV({ [key]: JSON.stringify(legacy) });
+  const token = await signToken(SECRET, { sc: "prefs", e: legacy.email }, { ttlSeconds: 3600 });
+  const software = { version: 1, all: [[{ kind: "term", value: "software" }]] };
+  const upgrade = await handlePrefs(new Request("https://api.cityscroll.org/prefs", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({
+      token,
+      action: "update",
+      key,
+      filter: { keywords: [], noticeType: "award", text_query: software },
+    }),
+  }), { TOKEN_SECRET: SECRET, SUBS: subs });
+  assert.equal(upgrade.status, 200);
+  const stored = JSON.parse(await subs.get(key));
+  assert.equal(stored.watch_id, await deriveWatchId(key));
+  assert.equal(stored.subscriber_id, await deriveSubscriberId(legacy.email));
+  assert.equal(stored.freq, "daily");
+  assert.equal(stored.query_revision, queryRevisionForFilter(stored.filter));
+
+  const equivalent = await handlePrefs(new Request("https://api.cityscroll.org/prefs", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({
+      token,
+      action: "update",
+      key,
+      filter: { keywords: [], noticeType: "award", text_query: { version: 1, all: [[{ kind: "term", value: "SOFTWARE" }]] } },
+    }),
+  }), { TOKEN_SECRET: SECRET, SUBS: subs });
+  assert.equal(equivalent.status, 200);
+  const again = JSON.parse(await subs.get(key));
+  assert.equal(again.watch_id, stored.watch_id);
+  assert.equal(again.subscriber_id, stored.subscriber_id);
+  assert.equal(again.query_revision, stored.query_revision);
+  assert.equal([...subs.store.keys()].filter((name) => name.startsWith("sub:")).length, 1);
 });

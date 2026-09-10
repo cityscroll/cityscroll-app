@@ -96,6 +96,10 @@ import {
   failDelivery,
   markDeliveryAttempt,
 } from "./lib/digest_outbox.mjs";
+import {
+  applyPreparedDigestQueryRevisionCutoff,
+  queryRevisionForFilter,
+} from "./lib/watch_query_revision.mjs";
 import { evaluatePropertyWatch, propertyWatchStageLabel } from "./lib/property_saved_watch.mjs";
 import { groupDistrictDigestRows } from "../../site/district_weekly_digest.mjs";
 import { landProjectDisplayTitle } from "../../site/display_title.mjs";
@@ -762,6 +766,7 @@ async function enqueueNormalSection(env, s, section, rows, ctx, kind) {
       subscriberId: s.subscriber_id,
       sourceObservedAt: ctx.now || ctx.today,
       now: ctx.now || ctx.today,
+      queryRevision: s.query_revision || queryRevisionForFilter(s.filter),
     });
   } catch (error) {
     // The existing digest remains operational during a staged schema rollout or
@@ -1035,6 +1040,14 @@ export async function processOneSub(env, s, ctx) {
     outboxSection.outboxEnqueue = await enqueueNormalSection(env, s, outboxSection, enqueueRows, ctx, q.kind);
     if (ctx.injectCrash === "after-enqueue") throw new Error("injected-crash-after-enqueue");
     attachOwedRows([outboxSection], await owedForSubscriber(env, s.subscriber_id));
+    // Provider-submit cutoff: re-read the current expression before composing
+    // or submitting. A stale query revision rebuilds membership; after the
+    // provider accepts, there is no recall.
+    const cutoff = await applyPreparedDigestQueryRevisionCutoff(env, [s], [outboxSection], ctx);
+    s = cutoff.watches[0] || s;
+    if (s?.deleted) {
+      return { sub: s.key, skipped: "deleted", kind: "subscription" };
+    }
     fresh = outboxSection.freshRows || fresh;
     // Forecasts are digest content too, and the rollup path counts them the same way.
     funnel.owed_drained = fresh.length + forecasts.length;
@@ -1270,6 +1283,11 @@ export async function processAccountRollup(env, subs, ctx) {
       section.watchId = subs.find((s) => s.key === section.subKey)?.watch_id || null;
     }
     attachOwedRows(sections, owed);
+    // Provider-submit cutoff: last current-revision read after evaluation and
+    // attach, immediately before composing the provider payload and reserving
+    // the occasion. Stale content is rebuilt; accepted messages are not recalled.
+    const cutoff = await applyPreparedDigestQueryRevisionCutoff(env, subs, sections, ctx);
+    subs = cutoff.watches;
     const decision = rollupSendDecision(sections);
     const wanting = sections.filter(sectionWantsSend);
     const { allow: underCap, capped } = capDecision({
@@ -1382,7 +1400,9 @@ export async function processAccountRollup(env, subs, ctx) {
             try { await markDeliveryAttempt(env.DB, includedOutboxItems, ctx.now || ctx.today); } catch { /* receipt is best effort */ }
           }
           try {
-            providerAccepted = await sendEmail(env, ctx.FROM, email, subject, html, `<${unsubAllUrl}>`, true);
+            providerAccepted = await sendEmail(env, ctx.FROM, email, subject, html, `<${unsubAllUrl}>`, true, {
+              idempotencyKey: reservation?.deliveryId || null,
+            });
           } catch (error) {
             if (reservation?.reserved) {
               try {

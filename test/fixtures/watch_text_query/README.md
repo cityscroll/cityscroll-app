@@ -20,3 +20,5 @@ properties instead of requiring these records to stay in a publisher window.
 path and the exact ID sets asserted by the tests. `evaluation_acceptance.md`
 maps procurement evaluation (filter-before-limit, notice vs procurement-object
 identity, and handler paths) to `worker/test/watch_text_query_procurement.test.mjs`.
+`edit_delivery_acceptance.md` maps saved-edit and queued-delivery continuity
+to `worker/test/watch_text_query_edit_delivery.test.mjs`.

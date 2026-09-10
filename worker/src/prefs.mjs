@@ -28,6 +28,8 @@ import {
   applyWatchPatch,
   parsePrefsAction,
 } from "./lib/prefs.mjs";
+import { cancelOwedItemsForWatch } from "./lib/digest_outbox.mjs";
+import { reconcileWatchOwedMembership } from "./lib/watch_query_revision.mjs";
 
 const MAX_PREFS_ATTEMPTS_PER_IP_DAY = 60;
 const LEGACY_DOCUMENT_HOSTS = new Set(["api.cityscroll.org", "api.crol-list.org"]);
@@ -121,6 +123,8 @@ export async function handlePrefs(req, env) {
         flash,
         cutover: CUTOVER_COPY,
         watches,
+        submitted: flash?.submitted || null,
+        watch: flash?.watch || null,
       }, flash?.error ? 400 : 200);
     }
     return prefsHtmlResponse(email, watches, postToken, flash);
@@ -206,6 +210,11 @@ async function applyPrefsAction(env, email, action, key, patch) {
       const { removeExactMatterWatch } = await import("./lib/council_matter_watch_activation.mjs");
       await removeExactMatterWatch(env, record);
     } catch { /* removal still deletes the saved watch */ }
+    if (env.DB && record.watch_id) {
+      try {
+        await cancelOwedItemsForWatch(env.DB, { watchId: record.watch_id, reason: "cancelled:watch-removed" });
+      } catch { /* SUBS delete still proceeds */ }
+    }
     try { await env.SUBS.delete(key); } catch { /* idempotent */ }
     await appendWatchLog(env, {
       action, email: record.email, subKey: key, lens: record.lens,
@@ -238,10 +247,34 @@ async function applyPrefsAction(env, email, action, key, patch) {
 
   if (action === "update") {
     const applied = applyWatchPatch(record, patch);
-    if (!applied.ok) return { error: applied.reason || "Invalid update." };
+    if (!applied.ok) {
+      return {
+        error: applied.reason || "Invalid update.",
+        submitted: patch,
+        watch: toPrefsWatchRow(record, key),
+        key,
+      };
+    }
     const before = watchSnapshot(record);
     const after = watchSnapshot(applied.record);
-    await env.SUBS.put(key, JSON.stringify(applied.record));
+    try {
+      await env.SUBS.put(key, JSON.stringify(applied.record));
+    } catch {
+      return {
+        error: "Could not save. Your edit is still here — try again.",
+        submitted: patch,
+        watch: toPrefsWatchRow(record, key),
+        key,
+      };
+    }
+    if (applied.queryRevisionChanged && env.DB && applied.record.watch_id) {
+      try {
+        await reconcileWatchOwedMembership(env.DB, {
+          watch: applied.record,
+          now: new Date().toISOString(),
+        });
+      } catch { /* next digest cutoff still re-reads the saved expression */ }
+    }
     await appendWatchLog(env, {
       action, email: record.email, subKey: key, lens: applied.record.lens,
       label: watchLabel(applied.record) || applied.record.label,
@@ -299,7 +332,15 @@ function prefsHtmlResponse(email, watches, token, flash) {
     ? `<p style="padding:10px 12px;border-radius:8px;background:${flash.error ? "#fdeaec" : "#e7f4ec"};color:#12181f">${esc(flash.error || flash.message)}</p>`
     : "";
   const rows = (watches || []).map((w) => {
-    const kw = Array.isArray(w.filter?.keywords) ? w.filter.keywords.join(", ") : "";
+    const submitted = flash?.key === w.key ? flash.submitted : null;
+    const submittedKeywords = submitted?.keywords
+      ? (Array.isArray(submitted.keywords) ? submitted.keywords.join(", ") : String(submitted.keywords))
+      : (typeof submitted?.filter?.keywords === "string" ? submitted.filter.keywords : (
+        Array.isArray(submitted?.filter?.keywords) ? submitted.filter.keywords.join(", ") : null
+      ));
+    const kw = submittedKeywords != null
+      ? submittedKeywords
+      : (Array.isArray(w.filter?.keywords) ? w.filter.keywords.join(", ") : "");
     const status = w.paused
       ? `<span style="color:#a42;font-weight:bold">paused</span>`
       : `<span style="color:#2a6">active</span>`;

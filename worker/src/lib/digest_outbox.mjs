@@ -495,6 +495,13 @@ export async function enqueueEvaluatedSection(db, section, options = {}) {
     if (changes === 0) result.duplicates++;
     else result.enqueued++;
     result.item_ids.push(item.itemId);
+    if (options.queryRevision && changes !== 0) {
+      await stampOutboxQueryRevision(db, {
+        watchId: item.watchId,
+        itemId: item.itemId,
+        queryRevision: options.queryRevision,
+      });
+    }
   }
   if (result.rejected) {
     result.status = result.attempted ? SECTION_STATUS.PARTIAL_ERROR : SECTION_STATUS.FAILED;
@@ -541,6 +548,9 @@ export const OWED_CANCEL_MAX_SUBSCRIBERS = 50;
 
 /** Stamped on every operator-cancelled row so the reason survives in the ledger. */
 export const OWED_CANCEL_REASON = "cancelled:operator";
+
+/** Stamped when a precise-watch edit excludes an unsent item. Never a delivery. */
+export const QUERY_REVISION_CANCEL_REASON = "cancelled:query-revision";
 
 class OwedCancelScopeError extends TypeError {
   constructor(code, message) {
@@ -694,4 +704,142 @@ export async function cancelOwedItemsForWatch(db, { watchId, reason = "cancelled
   );
   const cancelled = changesFrom(result);
   return { watchId: id, matched, cancelled: cancelled == null ? matched : cancelled };
+}
+
+const SELECT_WATCH_MEMBERSHIP = `
+  SELECT watch_id, subscriber_id, item_id, lens, item_kind, payload_json,
+         source_observed_at, first_owed_at, owed_origin, status, delivered_at,
+         delivery_id, attempt_count, last_attempt_at, last_error
+    FROM digest_outbox_items
+   WHERE watch_id = ? AND status IN ('owed', 'cancelled')
+   ORDER BY first_owed_at ASC, item_id ASC
+`;
+
+const SELECT_WATCH_DELIVERED = `
+  SELECT item_id
+    FROM digest_outbox_items
+   WHERE watch_id = ? AND status = 'delivered'
+`;
+
+/** Unsent and query-revision-cancelled membership for one watch. */
+export async function listWatchMembership(db, watchId) {
+  if (!db?.prepare) throw new TypeError("owed lookup requires a D1 database");
+  const id = text(watchId);
+  if (!id) return [];
+  const statement = db.prepare(SELECT_WATCH_MEMBERSHIP);
+  const result = typeof statement.bind === "function"
+    ? await statement.bind(id).all()
+    : await statement.all(id);
+  return Array.isArray(result?.results) ? result.results : (Array.isArray(result) ? result : []);
+}
+
+/** Delivered tombstones for one watch — these must not be re-emailed. */
+export async function listDeliveredItemIds(db, watchId) {
+  if (!db?.prepare) throw new TypeError("owed lookup requires a D1 database");
+  const id = text(watchId);
+  if (!id) return [];
+  const statement = db.prepare(SELECT_WATCH_DELIVERED);
+  const result = typeof statement.bind === "function"
+    ? await statement.bind(id).all()
+    : await statement.all(id);
+  const rows = Array.isArray(result?.results) ? result.results : (Array.isArray(result) ? result : []);
+  return rows.map((row) => row.item_id).filter(Boolean);
+}
+
+/**
+ * Stamp the expression revision on an owed row. Fail-soft when the additive
+ * column has not been applied yet (staged schema rollout).
+ */
+export async function stampOutboxQueryRevision(db, { watchId, itemId, queryRevision } = {}) {
+  const watch = text(watchId);
+  const item = text(itemId);
+  const revision = text(queryRevision);
+  if (!db?.prepare || !watch || !item || !revision) return false;
+  try {
+    await runStatement(
+      db,
+      "UPDATE digest_outbox_items SET query_revision = ? WHERE watch_id = ? AND item_id = ? AND status = 'owed'",
+      [revision, watch, item],
+    );
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Cancel one owed item because the current expression no longer matches it.
+ * Uses the additive suppression columns when present; otherwise the existing
+ * last_error reason code. Never marks the row delivered.
+ */
+export async function cancelOwedItemForQueryRevision(db, {
+  watchId,
+  itemId,
+  queryRevision = null,
+  suppression = null,
+} = {}) {
+  if (!db?.prepare) throw new TypeError("owed cancel requires a D1 database");
+  const watch = text(watchId);
+  const item = text(itemId);
+  if (!watch || !item) throw new TypeError("watchId and itemId are required");
+  const reason = QUERY_REVISION_CANCEL_REASON;
+  const revision = text(queryRevision) || null;
+  const details = suppression ? JSON.stringify(suppression) : null;
+  try {
+    const result = await runStatement(
+      db,
+      `UPDATE digest_outbox_items
+          SET status = 'cancelled', last_error = ?, query_revision = ?, suppression_json = ?
+        WHERE watch_id = ? AND item_id = ? AND status = 'owed'`,
+      [reason, revision, details, watch, item],
+    );
+    return { cancelled: changesFrom(result) !== 0, reason };
+  } catch {
+    const result = await runStatement(
+      db,
+      `UPDATE digest_outbox_items
+          SET status = 'cancelled', last_error = ?
+        WHERE watch_id = ? AND item_id = ? AND status = 'owed'`,
+      [reason, watch, item],
+    );
+    return { cancelled: changesFrom(result) !== 0, reason };
+  }
+}
+
+/**
+ * Explicit eligibility transition: a query-revision cancellation may become
+ * owed again after an intentional later edit. Operator and watch-removed
+ * cancellations stay cancelled. Update-in-place so the uniqueness constraint
+ * cannot permanently block a newly valid membership.
+ */
+export async function restoreQueryRevisionCancelledItem(db, {
+  watchId,
+  itemId,
+  queryRevision = null,
+} = {}) {
+  if (!db?.prepare) throw new TypeError("owed restore requires a D1 database");
+  const watch = text(watchId);
+  const item = text(itemId);
+  if (!watch || !item) throw new TypeError("watchId and itemId are required");
+  const revision = text(queryRevision) || null;
+  try {
+    const result = await runStatement(
+      db,
+      `UPDATE digest_outbox_items
+          SET status = 'owed', last_error = NULL, suppression_json = NULL, query_revision = ?,
+              delivered_at = NULL, delivery_id = NULL
+        WHERE watch_id = ? AND item_id = ? AND status = 'cancelled' AND last_error = ?`,
+      [revision, watch, item, QUERY_REVISION_CANCEL_REASON],
+    );
+    return changesFrom(result) !== 0;
+  } catch {
+    const result = await runStatement(
+      db,
+      `UPDATE digest_outbox_items
+          SET status = 'owed', last_error = NULL, delivered_at = NULL, delivery_id = NULL
+        WHERE watch_id = ? AND item_id = ? AND status = 'cancelled' AND last_error = ?`,
+      [watch, item, QUERY_REVISION_CANCEL_REASON],
+    );
+    return changesFrom(result) !== 0;
+  }
 }
