@@ -13,6 +13,10 @@ import {
   handleMeetingOutcomes,
   refreshMeetingOutcomes,
 } from "../src/meeting_outcomes.mjs";
+import {
+  UPCOMING_COUNCIL_MEETINGS_KV_KEY,
+  UPCOMING_COUNCIL_MEETINGS_SCHEMA,
+} from "../src/lib/upcoming_council_meetings.mjs";
 
 const fixture = JSON.parse(await readFile(new URL("../../test/contract/fixtures/meeting_outcomes.json", import.meta.url), "utf8"));
 
@@ -203,4 +207,153 @@ test("OPTIONS and method gates are handled by handleMeetingOutcomes", async () =
     { ALERT_STATE: memoryKV() },
   );
   assert.equal(unsupported.status, 405);
+});
+
+const upcomingFixture = JSON.parse(await readFile(
+  new URL("../../test/fixtures/legistar/upcoming_contracts_22691.json", import.meta.url),
+  "utf8",
+));
+const UPCOMING_NOW = new Date("2026-09-09T12:00:00.000Z");
+const UPCOMING_TOKEN = "test-token-do-not-log";
+const PRIOR_UPCOMING = JSON.stringify({
+  schema: UPCOMING_COUNCIL_MEETINGS_SCHEMA,
+  schema_version: 1,
+  generated_at: "2026-09-08T12:00:00.000Z",
+  meetings: [{ meeting_id: "meeting:nyc_legistar_events:1" }],
+});
+
+function upcomingFetchImpl({
+  events = [upcomingFixture.event],
+  items = upcomingFixture.event_items,
+  notices = [],
+  eventsStatus = 200,
+  eventsBody = null,
+  networkError = null,
+} = {}) {
+  return async (url) => {
+    const parsed = new URL(url);
+    if (parsed.pathname.includes("/resource/")) {
+      return new Response(JSON.stringify(notices), { status: 200 });
+    }
+    if (networkError) throw new Error(networkError);
+    if (parsed.pathname === "/v1/nyc/Events") {
+      if (eventsStatus !== 200) {
+        return new Response("rate limited", {
+          status: eventsStatus,
+          headers: { "Retry-After": "30" },
+        });
+      }
+      if (eventsBody != null) return new Response(eventsBody, { status: 200 });
+      return new Response(JSON.stringify(events), { status: 200 });
+    }
+    if (parsed.pathname === `/v1/nyc/Events/${upcomingFixture.event.EventId}/EventItems`) {
+      return new Response(JSON.stringify(items), { status: 200 });
+    }
+    return new Response(JSON.stringify([]), { status: 200 });
+  };
+}
+
+async function seedUpcoming(kv, value = PRIOR_UPCOMING) {
+  await kv.put(UPCOMING_COUNCIL_MEETINGS_KV_KEY, value);
+  return kv;
+}
+
+test("refreshMeetingOutcomes materializes the unmatched Contracts hearing into its own snapshot", async () => {
+  const kv = memoryKV();
+  const result = await refreshMeetingOutcomes(
+    { ALERT_STATE: kv, LEGISTAR_API_TOKEN: UPCOMING_TOKEN },
+    upcomingFetchImpl(),
+    UPCOMING_NOW,
+  );
+  assert.equal(result.upcoming.status, "success");
+  const stored = JSON.parse(await kv.get(UPCOMING_COUNCIL_MEETINGS_KV_KEY));
+  assert.equal(stored.schema, UPCOMING_COUNCIL_MEETINGS_SCHEMA);
+  assert.equal(stored.meetings[0].meeting_id, `meeting:nyc_legistar_events:${upcomingFixture.event.EventId}`);
+  assert.match(stored.meetings[0].agenda.search_text, /M\/WBE Utilization and the Required Disparity Study/);
+  const serialized = JSON.stringify(stored);
+  assert.equal(serialized.includes(UPCOMING_TOKEN), false);
+  assert.equal(serialized.includes("token="), false);
+  assert.equal(/webapi\.legistar\.com/i.test(serialized), false);
+});
+
+test("token absence retains last-known-good upcoming data as unavailable", async () => {
+  const kv = await seedUpcoming(memoryKV());
+  const result = await refreshMeetingOutcomes(
+    { ALERT_STATE: kv },
+    upcomingFetchImpl(),
+    UPCOMING_NOW,
+  );
+  assert.equal(result.status, "no-token");
+  assert.equal(result.upcoming.status, "unavailable");
+  assert.equal(result.upcoming.reason, "token-absent");
+  assert.equal(await kv.get(UPCOMING_COUNCIL_MEETINGS_KV_KEY), PRIOR_UPCOMING);
+});
+
+test("Events rate limiting retains last-known-good upcoming data", async () => {
+  const kv = await seedUpcoming(memoryKV());
+  await assert.rejects(
+    refreshMeetingOutcomes(
+      { ALERT_STATE: kv, LEGISTAR_API_TOKEN: UPCOMING_TOKEN },
+      upcomingFetchImpl({ eventsStatus: 429 }),
+      UPCOMING_NOW,
+    ),
+    /rate-limited/,
+  );
+  assert.equal(await kv.get(UPCOMING_COUNCIL_MEETINGS_KV_KEY), PRIOR_UPCOMING);
+});
+
+test("malformed Events payloads retain last-known-good upcoming data", async () => {
+  const kv = await seedUpcoming(memoryKV());
+  await assert.rejects(
+    refreshMeetingOutcomes(
+      { ALERT_STATE: kv, LEGISTAR_API_TOKEN: UPCOMING_TOKEN },
+      upcomingFetchImpl({ eventsBody: "<html>not json</html>" }),
+      UPCOMING_NOW,
+    ),
+    /malformed/,
+  );
+  assert.equal(await kv.get(UPCOMING_COUNCIL_MEETINGS_KV_KEY), PRIOR_UPCOMING);
+});
+
+test("Events transport failure retains last-known-good upcoming data", async () => {
+  const kv = await seedUpcoming(memoryKV());
+  await assert.rejects(
+    refreshMeetingOutcomes(
+      { ALERT_STATE: kv, LEGISTAR_API_TOKEN: UPCOMING_TOKEN },
+      upcomingFetchImpl({ networkError: "ECONNRESET" }),
+      UPCOMING_NOW,
+    ),
+    /network/,
+  );
+  assert.equal(await kv.get(UPCOMING_COUNCIL_MEETINGS_KV_KEY), PRIOR_UPCOMING);
+});
+
+test("an empty Events acquisition does not publish a successful empty upcoming source", async () => {
+  const kv = await seedUpcoming(memoryKV());
+  const result = await refreshMeetingOutcomes(
+    { ALERT_STATE: kv, LEGISTAR_API_TOKEN: UPCOMING_TOKEN },
+    upcomingFetchImpl({ events: [] }),
+    UPCOMING_NOW,
+  );
+  assert.equal(result.upcoming.status, "unavailable");
+  assert.equal(result.upcoming.reason, "empty-source");
+  assert.equal(await kv.get(UPCOMING_COUNCIL_MEETINGS_KV_KEY), PRIOR_UPCOMING);
+});
+
+test("a credential-bearing upcoming projection fails closed and retains last-known-good", async () => {
+  const kv = await seedUpcoming(memoryKV());
+  const poisoned = {
+    ...upcomingFixture.event,
+    EventInSiteURL: "https://webapi.legistar.com/v1/nyc/Events?token=leaked",
+  };
+  await assert.rejects(
+    refreshMeetingOutcomes(
+      { ALERT_STATE: kv, LEGISTAR_API_TOKEN: UPCOMING_TOKEN },
+      upcomingFetchImpl({ events: [poisoned] }),
+      UPCOMING_NOW,
+    ),
+    /credential-bearing|authenticated publisher URL/,
+  );
+  assert.equal(await kv.get(UPCOMING_COUNCIL_MEETINGS_KV_KEY), PRIOR_UPCOMING);
+  assert.equal(kv.values.has(MEETING_OUTCOMES_KV_KEY), false);
 });

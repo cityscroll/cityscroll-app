@@ -3,10 +3,12 @@
 //   node --test test/legistar_client.test.mjs
 
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
 import {
   fetchLegistarEvents,
+  fetchLegistarEventsWindow,
   fetchLegistarBodies,
   fetchLegistarEventItems,
   fetchLegistarItemVotes,
@@ -15,6 +17,17 @@ import {
   boundedMap,
   LEGISTAR_API_BASE,
 } from "../worker/src/lib/legistar_client.mjs";
+import {
+  assertPublicUpcomingProjection,
+  buildUpcomingCouncilMeetingsView,
+  isEligibleUpcomingEvent,
+  selectUpcomingItemTargets,
+  upcomingCouncilMeetingsHealth,
+  upcomingWindow,
+  UPCOMING_COUNCIL_MEETINGS_HORIZON_DAYS,
+  UPCOMING_COUNCIL_MEETINGS_ITEM_CONCURRENCY,
+  UPCOMING_COUNCIL_MEETINGS_SCHEMA,
+} from "../worker/src/lib/upcoming_council_meetings.mjs";
 import { buildMeetingOutcomesView } from "../worker/src/lib/meeting_outcomes.mjs";
 import {
   measureOfficialVoteMetrics,
@@ -120,6 +133,70 @@ test("fetchLegistarEvents paginates Events with the token query and date filter"
 test("fetchLegistarEvents returns [] without a token", async () => {
   const rows = await fetchLegistarEvents({ token: null, fetchImpl: async () => new Response("[]") });
   assert.deepEqual(rows, []);
+});
+
+test("fetchLegistarEventsWindow reports pagination truncation at the page budget", async () => {
+  // Every page comes back full, so the page budget is the binding bound.
+  const pages = [];
+  const fetchImpl = async (url) => {
+    const u = new URL(url);
+    if (u.pathname === "/v1/nyc/Events") {
+      const skip = Number(u.searchParams.get("$skip"));
+      const page = Array.from({ length: 2 }, (_, i) => ({ ...EVENT, EventId: skip + i + 1 }));
+      pages.push(skip);
+      return new Response(JSON.stringify(page), { status: 200 });
+    }
+    return new Response(JSON.stringify([]), { status: 200 });
+  };
+  const result = await fetchLegistarEventsWindow({ token: TOKEN, fetchImpl, pageSize: 2, maxPages: 3 });
+  assert.equal(result.ok, true);
+  assert.equal(result.rows.length, 6);
+  assert.deepEqual(pages, [0, 2, 4]);
+  assert.equal(result.complete, false);
+  assert.equal(result.pages, 3);
+
+  // An under-full page ends pagination with complete: true.
+  const shortFetch = async () => new Response(JSON.stringify([{ ...EVENT }]), { status: 200 });
+  const complete = await fetchLegistarEventsWindow({ token: TOKEN, fetchImpl: shortFetch, pageSize: 200 });
+  assert.equal(complete.ok, true);
+  assert.equal(complete.rows.length, 1);
+  assert.equal(complete.complete, true);
+  assert.equal(complete.pages, 1);
+});
+
+test("fetchLegistarEventsWindow classifies rate limiting, malformed payloads, and transport failures", async () => {
+  const rateLimited = await fetchLegistarEventsWindow({
+    token: TOKEN,
+    fetchImpl: async () => new Response("rate limited", {
+      status: 429,
+      headers: { "Retry-After": "30" },
+    }),
+  });
+  assert.equal(rateLimited.ok, false);
+  assert.equal(rateLimited.kind, "rate-limited");
+  assert.equal(rateLimited.status, 429);
+  assert.ok(rateLimited.retryAfter);
+
+  const malformed = await fetchLegistarEventsWindow({
+    token: TOKEN,
+    fetchImpl: async () => new Response("<html>not json</html>", { status: 200 }),
+  });
+  assert.equal(malformed.ok, false);
+  assert.equal(malformed.kind, "malformed");
+
+  const unreachable = await fetchLegistarEventsWindow({
+    token: TOKEN,
+    fetchImpl: async () => { throw new Error("ECONNRESET"); },
+  });
+  assert.equal(unreachable.ok, false);
+  assert.equal(unreachable.kind, "network");
+  assert.equal(unreachable.retryAfter, null);
+
+  // The array wrapper keeps its throwing contract for real failures.
+  await assert.rejects(
+    fetchLegistarEvents({ token: TOKEN, fetchImpl: async () => new Response("no", { status: 429 }) }),
+    /legistar-events-rate-limited-429/,
+  );
 });
 
 test("fetchLegistarBodies uses the authenticated Bodies endpoint and preserves publisher rows", async () => {
@@ -340,6 +417,9 @@ test("buildMeetingOutcomesView degrades to notices-only gaps without a token", a
   assert.equal(view.counts.matched_notices, 0);
   assert.equal(view.counts.event_rows, 0);
   assert.equal(view.records[0].join.matched, false);
+  assert.equal(view.upcoming.publishable, false);
+  assert.equal(view.upcoming.reason, "token-absent");
+  assert.equal(view.upcoming.view, null);
 });
 
 test("buildMeetingOutcomesView fetches EventItems only for matched events", async () => {
@@ -372,4 +452,198 @@ test("buildMeetingOutcomesView fetches EventItems only for matched events", asyn
 
 test("token never appears in the API base constant", () => {
   assert.equal(LEGISTAR_API_BASE.includes("token"), false);
+});
+
+// ---------------------------------------------------------------------------
+// Upcoming Council meetings: eligibility horizon and bounded item discovery
+// ---------------------------------------------------------------------------
+
+const UPCOMING_FIXTURE = JSON.parse(await readFile(
+  new URL("./fixtures/legistar/upcoming_contracts_22691.json", import.meta.url),
+  "utf8",
+));
+
+const UPCOMING_NOW = new Date("2026-09-09T12:00:00.000Z");
+const UPCOMING_EVENT_ID = String(UPCOMING_FIXTURE.event.EventId);
+const UPCOMING_MEETING_ID = `meeting:nyc_legistar_events:${UPCOMING_EVENT_ID}`;
+
+function upcomingProjection(overrides = {}) {
+  return buildUpcomingCouncilMeetingsView({
+    eventRows: overrides.eventRows || [UPCOMING_FIXTURE.event],
+    itemsByEventId: overrides.itemsByEventId || new Map([
+      [UPCOMING_EVENT_ID, { rows: UPCOMING_FIXTURE.event_items, fetchError: null }],
+    ]),
+    now: overrides.now || UPCOMING_NOW,
+    cityRecordByEventId: overrides.cityRecordByEventId || new Map(),
+    eventsFetch: overrides.eventsFetch || { ok: true, complete: true, pages: 1 },
+  });
+}
+
+test("upcoming eligibility follows the documented horizon from the pinned clock", () => {
+  assert.equal(UPCOMING_COUNCIL_MEETINGS_HORIZON_DAYS, 120);
+  assert.equal(UPCOMING_COUNCIL_MEETINGS_ITEM_CONCURRENCY, 6);
+  const window = upcomingWindow(UPCOMING_NOW);
+  assert.equal(window.start, "2026-09-09");
+  assert.equal(window.end, "2027-01-07");
+  assert.equal(isEligibleUpcomingEvent(UPCOMING_FIXTURE.event, window), true);
+  // Past events and events beyond the horizon are not eligible.
+  assert.equal(isEligibleUpcomingEvent({ ...UPCOMING_FIXTURE.event, EventDate: "2026-09-08T00:00:00" }, window), false);
+  assert.equal(isEligibleUpcomingEvent({ ...UPCOMING_FIXTURE.event, EventDate: "2027-02-01T00:00:00" }, window), false);
+  assert.equal(isEligibleUpcomingEvent({ EventDate: "2026-09-23T00:00:00" }, window), false);
+});
+
+test("selectUpcomingItemTargets bounds discovery to the nearest events and reports deferral", () => {
+  const eligible = [
+    { EventId: 3, EventDate: "2026-10-05T00:00:00" },
+    { EventId: 1, EventDate: "2026-09-23T00:00:00" },
+    { EventId: 4, EventDate: "2026-11-02T00:00:00" },
+    { EventId: 2, EventDate: "2026-09-23T00:00:00" },
+  ];
+  const selection = selectUpcomingItemTargets(eligible, new Set(["2"]), 2);
+  // Nearest first, same-day ties by id; already-materialized events are skipped.
+  assert.deepEqual(selection.targets.map((e) => e.EventId), [1, 3]);
+  assert.equal(selection.already_materialized, 1);
+  assert.equal(selection.deferred, 1);
+  assert.equal(selection.truncated, true);
+});
+
+test("pinned Contracts hearing projects without a City Record notice", () => {
+  const result = upcomingProjection();
+  assert.equal(result.publishable, true);
+  assert.equal(result.view.meetings.length, 1);
+  const meeting = result.view.meetings[0];
+  assert.equal(meeting.meeting_id, UPCOMING_MEETING_ID);
+  assert.equal(meeting.identity.source_system, "nyc_legistar_events");
+  assert.equal(meeting.identity.event_id, UPCOMING_EVENT_ID);
+  assert.equal(meeting.identity.event_guid, UPCOMING_FIXTURE.event.EventGuid);
+  assert.equal(meeting.date, "2026-09-23");
+  assert.equal(meeting.wall_time, "2026-09-23T10:00:00");
+  assert.equal(meeting.time_zone, "America/New_York");
+  assert.equal(meeting.governing_body.name, "Committee on Contracts");
+  assert.match(meeting.venue.address, /250 Broadway/);
+  assert.match(meeting.venue.address, /Hearing Room 2/);
+  assert.equal(meeting.url, UPCOMING_FIXTURE.event.EventInSiteURL);
+  assert.equal(meeting.documents[0].url, UPCOMING_FIXTURE.event.EventAgendaFile);
+  assert.equal(meeting.source_receipt.source_system, "nyc_legistar_events");
+  assert.equal(meeting.source_receipt.observed_at, result.view.generated_at);
+  assert.equal(meeting.city_record_notice.matched_in_window, false);
+  assert.equal(meeting.city_record_notice.request_id, null);
+  assert.match(meeting.agenda.search_text, /M\/WBE Utilization and the Required Disparity Study/);
+  assert.equal(result.view.discovery.horizon_days, 120);
+  assert.equal(result.view.discovery.item_concurrency, 6);
+  assert.equal(result.view.discovery.item_discovery_truncated, false);
+  assert.equal(result.view.source_health.status, "healthy");
+  assertPublicUpcomingProjection(result.view);
+  assert.equal(UPCOMING_FIXTURE.insite_calendar.meeting_id, 1439673);
+});
+
+test("a later City Record notice links metadata without replacing Events identity", () => {
+  const result = upcomingProjection({
+    cityRecordByEventId: new Map([
+      [UPCOMING_EVENT_ID, { request_id: "20260923001", method: "exact_date_body_tokens" }],
+    ]),
+  });
+  const meeting = result.view.meetings[0];
+  assert.equal(meeting.meeting_id, UPCOMING_MEETING_ID);
+  assert.equal(meeting.city_record_notice.matched_in_window, true);
+  assert.equal(meeting.city_record_notice.request_id, "20260923001");
+  assert.equal(meeting.city_record_notice.method, "exact_date_body_tokens");
+});
+
+test("upcoming item discovery truncation is explicit when the event cap binds", () => {
+  const eligible = [
+    { ...UPCOMING_FIXTURE.event, EventId: 1, EventDate: "2026-09-23T00:00:00" },
+    { ...UPCOMING_FIXTURE.event, EventId: 2, EventDate: "2026-10-01T00:00:00" },
+    { ...UPCOMING_FIXTURE.event, EventId: 3, EventDate: "2026-11-01T00:00:00" },
+  ];
+  const result = upcomingProjection({
+    eventRows: eligible,
+    itemsByEventId: new Map([["1", { rows: UPCOMING_FIXTURE.event_items, fetchError: null }]]),
+  });
+  assert.equal(result.view.meetings.length, 3);
+  assert.equal(result.view.discovery.item_events_attempted, 1);
+  assert.equal(result.view.discovery.item_events_deferred, 2);
+  assert.equal(result.view.discovery.item_discovery_truncated, true);
+  assert.equal(result.view.meetings[1].agenda.status, "not_fetched");
+});
+
+test("empty authenticated Events rows are not a publishable upcoming source", () => {
+  const result = buildUpcomingCouncilMeetingsView({
+    eventRows: [],
+    now: UPCOMING_NOW,
+  });
+  assert.equal(result.publishable, false);
+  assert.equal(result.reason, "empty-source");
+  assert.equal(result.view, null);
+});
+
+test("public upcoming projection refuses credentials and authenticated publisher URLs", () => {
+  const result = upcomingProjection();
+  assertPublicUpcomingProjection(result.view);
+  const leaked = structuredClone(result.view);
+  leaked.meetings[0].url = "https://webapi.legistar.com/v1/nyc/Events?token=secret";
+  assert.throws(() => assertPublicUpcomingProjection(leaked), /authenticated publisher URL|credential-bearing/);
+});
+
+test("upcoming serving health is unavailable or stale rather than an empty success", () => {
+  assert.deepEqual(upcomingCouncilMeetingsHealth(null), { status: "unavailable", reason: "no-snapshot" });
+  const result = upcomingProjection();
+  assert.equal(upcomingCouncilMeetingsHealth(result.view, Date.parse("2026-09-09T12:00:00.000Z")).status, "healthy");
+  assert.equal(
+    upcomingCouncilMeetingsHealth(result.view, Date.parse("2026-09-12T00:00:00.000Z")).status,
+    "stale",
+  );
+  assert.equal(
+    upcomingCouncilMeetingsHealth({ ...result.view, schema_version: 0 }, Date.parse("2026-09-09T12:00:00.000Z")).status,
+    "stale",
+  );
+});
+
+test("buildMeetingOutcomesView fetches EventItems for eligible upcoming unmatched events at bounded concurrency", async () => {
+  const itemCalls = [];
+  let inFlight = 0;
+  let maxInFlight = 0;
+  const gate = async () => {
+    inFlight += 1;
+    maxInFlight = Math.max(maxInFlight, inFlight);
+    await new Promise((resolve) => setTimeout(resolve, 5));
+    inFlight -= 1;
+  };
+  const composed = async (url) => {
+    const u = new URL(url);
+    if (u.pathname === "/v1/nyc/Events") {
+      // One eligible upcoming event with no matching City Record notice, plus
+      // one past event nothing should fetch items for.
+      return new Response(JSON.stringify([
+        UPCOMING_FIXTURE.event,
+        { ...UPCOMING_FIXTURE.event, EventId: 99998, EventDate: "2026-08-01T00:00:00" },
+      ]), { status: 200 });
+    }
+    if (u.pathname === `/v1/nyc/Events/${UPCOMING_EVENT_ID}/EventItems`) {
+      itemCalls.push(u.pathname);
+      await gate();
+      return new Response(JSON.stringify(UPCOMING_FIXTURE.event_items), { status: 200 });
+    }
+    return new Response(JSON.stringify([]), { status: 200 });
+  };
+
+  const view = await buildMeetingOutcomesView({
+    token: TOKEN,
+    fetchImpl: composed,
+    now: UPCOMING_NOW,
+  });
+
+  // The unmatched upcoming event still received agenda discovery.
+  assert.deepEqual(itemCalls, [`/v1/nyc/Events/${UPCOMING_EVENT_ID}/EventItems`]);
+  assert.equal(view.upcoming.publishable, true);
+  assert.equal(view.upcoming.view.schema, UPCOMING_COUNCIL_MEETINGS_SCHEMA);
+  assert.equal(view.upcoming.view.meetings.length, 1);
+  assert.equal(view.upcoming.view.meetings[0].meeting_id, UPCOMING_MEETING_ID);
+  assert.match(view.upcoming.view.meetings[0].agenda.search_text, /M\/WBE Utilization and the Required Disparity Study/);
+  assert.equal(view.upcoming.view.meetings[0].city_record_notice.matched_in_window, false);
+  // The upcoming item rows also feed the outcomes view's unmatched-event
+  // diagnostic population (event_rows counts every acquired event).
+  assert.equal(view.counts.event_rows, 2);
+  assert.ok(maxInFlight <= UPCOMING_COUNCIL_MEETINGS_ITEM_CONCURRENCY, `observed concurrency ${maxInFlight} exceeded the bound`);
+  assertPublicUpcomingProjection(view.upcoming.view);
 });

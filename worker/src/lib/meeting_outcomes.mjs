@@ -1,9 +1,12 @@
 // Daily materialized meeting-outcome read model for NYC Council.
 //
-// City Record remains the event-discovery layer; the authenticated NYC Council
-// Legistar Web API (webapi.legistar.com/v1/nyc, secret LEGISTAR_API_TOKEN)
-// enriches outcomes — agenda items, matters, action outcomes, roll-call votes,
-// and hearing documents — once a council event is strictly joined to a notice.
+// City Record remains the event-discovery layer for outcome records; the
+// authenticated NYC Council Legistar Web API (webapi.legistar.com/v1/nyc,
+// secret LEGISTAR_API_TOKEN) enriches outcomes — agenda items, matters, action
+// outcomes, roll-call votes, and hearing documents — once a council event is
+// strictly joined to a notice. The same acquisition also feeds the distinct
+// upcoming-council-meetings materialization (upcoming_council_meetings.mjs),
+// which covers eligible announced events with no City Record match.
 //
 // The strict join (exact_date_body_tokens, measured at 100% on modern notices)
 // lives in legistar_join.mjs; this module owns the fetch + assembly + KV cache.
@@ -16,7 +19,7 @@ import {
   matterDetailUrl,
 } from "./legistar_join.mjs";
 import {
-  fetchLegistarEvents,
+  fetchLegistarEventsWindow,
   fetchLegistarEventItems,
   fetchLegistarItemVoteRows,
   fetchLegistarItemAttachmentRows,
@@ -28,6 +31,15 @@ import {
   MAX_ATTACHMENT_PROBES_PER_EVENT,
   MAX_TOTAL_ATTACHMENT_PROBES,
 } from "./legistar_client.mjs";
+import {
+  UPCOMING_COUNCIL_MEETINGS_ITEM_CONCURRENCY,
+  UPCOMING_COUNCIL_MEETINGS_KV_KEY,
+  assertPublicUpcomingProjection,
+  buildUpcomingCouncilMeetingsView,
+  isEligibleUpcomingEvent,
+  selectUpcomingItemTargets,
+  upcomingWindow,
+} from "./upcoming_council_meetings.mjs";
 import { dualWriteLegistarObservations } from "./legistar_source_records.mjs";
 import { retainNativeMatterObservations } from "./matter_observation_journal.mjs";
 import { linksFromMeetingRecord } from "./subject_registry.mjs";
@@ -904,14 +916,29 @@ export async function buildMeetingOutcomesView({
   const noticeRows = await buildNoticeRows(fetchImpl, now, { lookbackDays, noticeLimit });
 
   if (!token) {
-    return buildMeetingOutcomes(noticeRows, [], [], []);
+    const view = buildMeetingOutcomes(noticeRows, [], [], []);
+    return {
+      ...view,
+      upcoming: { publishable: false, reason: "token-absent", view: null },
+    };
   }
 
-  const eventRows = await fetchLegistarEvents({ token, fetchImpl, now, lookbackDays });
+  // One shared authenticated Events acquisition serves both materializations
+  // (no second Events request). A failure — rate limiting, malformed payload,
+  // transport — fails the whole refresh so last-known-good KV snapshots for
+  // both read models are retained.
+  const eventsFetch = await fetchLegistarEventsWindow({ token, fetchImpl, now, lookbackDays });
+  if (!eventsFetch.ok) {
+    throw new Error(`legistar-events-${eventsFetch.kind}${eventsFetch.status ? `-${eventsFetch.status}` : ""}`);
+  }
+  const eventRows = eventsFetch.rows;
 
-  // Strict join first so EventItems are fetched ONLY for matched events.
+  // Strict join first so outcome EventItems are fetched for matched events;
+  // the upcoming-council-meetings materialization extends the same bounded
+  // fan-out to eligible upcoming events — no City Record notice required.
   const byDate = buildMeetingDateIndex(eventRows);
   const matchedEventIds = new Set();
+  const cityRecordByEventId = new Map();
   for (const row of noticeRows) {
     const notice = normalizeNoticeForOutcomes(row);
     if (!notice.request_id) continue;
@@ -919,16 +946,36 @@ export async function buildMeetingOutcomesView({
       { event_date: notice.event_date, short_title: notice.title, title: notice.title },
       byDate,
     );
-    if (hit) matchedEventIds.add(String(hit.event_id));
+    if (!hit) continue;
+    matchedEventIds.add(String(hit.event_id));
+    // The first joined notice per event supplies link metadata only; it never
+    // merges or replaces the event's source-qualified identity.
+    if (!cityRecordByEventId.has(String(hit.event_id))) {
+      cityRecordByEventId.set(String(hit.event_id), {
+        request_id: notice.request_id,
+        method: hit.method,
+      });
+    }
   }
 
   const matchedEvents = eventRows.filter((e) => matchedEventIds.has(String(e.EventId)));
+  const upcomingBounds = upcomingWindow(now);
+  const eligibleUpcoming = eventRows.filter((raw) => isEligibleUpcomingEvent(raw, upcomingBounds));
+  const upcomingTargets = selectUpcomingItemTargets(eligibleUpcoming, matchedEventIds).targets;
   const itemBatches = await boundedMap(
-    matchedEvents,
-    (ev) => fetchLegistarEventItems({ eventId: ev.EventId, token, fetchImpl }).catch(() => []),
-    6,
+    [...matchedEvents, ...upcomingTargets],
+    async (ev) => {
+      try {
+        const rows = await fetchLegistarEventItems({ eventId: ev.EventId, token, fetchImpl });
+        return { event_id: String(ev.EventId), rows, fetchError: null };
+      } catch (error) {
+        return { event_id: String(ev.EventId), rows: [], fetchError: String(error?.message || error) };
+      }
+    },
+    UPCOMING_COUNCIL_MEETINGS_ITEM_CONCURRENCY,
   );
-  const eventItemRows = itemBatches.flat();
+  const itemsByEventId = new Map(itemBatches.map((batch) => [batch.event_id, batch]));
+  const eventItemRows = itemBatches.flatMap((batch) => batch.rows);
 
   const [voteBag, attachmentBag] = await Promise.all([
     collectVoteSummaries({ eventItemRows, token, fetchImpl }),
@@ -942,6 +989,16 @@ export async function buildMeetingOutcomesView({
     voteBag.summaries,
     attachmentBag.attachmentRows,
   );
+
+  // Distinct first-class materialization: sanitized upcoming Council meetings
+  // (eligible events inside the documented horizon, matched or not).
+  const upcoming = buildUpcomingCouncilMeetingsView({
+    eventRows,
+    itemsByEventId,
+    now,
+    cityRecordByEventId,
+    eventsFetch,
+  });
 
   // Shadow dual-write: never block the public meeting-outcomes materialization.
   let dualWrite = null;
@@ -984,21 +1041,39 @@ export async function buildMeetingOutcomesView({
     }
   }
 
-  return { ...view, dual_write: dualWrite, matter_journal: matterJournal };
+  return { ...view, upcoming, dual_write: dualWrite, matter_journal: matterJournal };
 }
 
 export async function refreshMeetingOutcomes(env, fetchImpl = fetch, now = new Date()) {
   if (!env?.ALERT_STATE) return { status: "skipped", reason: "no-kv" };
   const token = env?.LEGISTAR_API_TOKEN || null;
   const view = await buildMeetingOutcomesView({ token, fetchImpl, now, env });
-  // dual_write and matter_journal are operator telemetry only — strip before KV
-  // so public clients never see them.
-  const { dual_write: dualWrite, matter_journal: matterJournal, ...publicView } = view;
+  // dual_write, matter_journal, and the upcoming build state are run-scoped —
+  // strip the first two so public clients never see them; the upcoming view is
+  // materialized under its own read-model key, not folded into this one.
+  const { dual_write: dualWrite, matter_journal: matterJournal, upcoming, ...publicView } = view;
+
+  // Sanitization gate before any KV write: a credential-bearing projection
+  // fails the refresh with both read models' last-known-good snapshots intact.
+  if (upcoming?.publishable) assertPublicUpcomingProjection(upcoming.view);
+
   await env.ALERT_STATE.put(MEETING_OUTCOMES_KV_KEY, JSON.stringify(publicView));
+
+  // Token absence or an empty-source refusal retains the last-known-good
+  // upcoming snapshot; the state is published as unavailable (never as a
+  // successful empty source).
+  let upcomingWrite = { status: "unavailable", reason: "token-absent" };
+  if (upcoming?.publishable) {
+    await env.ALERT_STATE.put(UPCOMING_COUNCIL_MEETINGS_KV_KEY, JSON.stringify(upcoming.view));
+    upcomingWrite = { status: "success", ...upcoming.view.counts };
+  } else if (upcoming) {
+    upcomingWrite = { status: "unavailable", reason: upcoming.reason };
+  }
   return {
     status: token ? "success" : "no-token",
     enrichment: token ? "authenticated" : "unavailable",
     ...publicView.counts,
+    upcoming: upcomingWrite,
     dual_write: dualWrite || null,
     matter_journal: matterJournal || null,
   };

@@ -5,11 +5,11 @@
 // The token reaches the Worker as the env secret LEGISTAR_API_TOKEN and is NEVER
 // logged, persisted, or echoed — only stitched into the request URL in memory.
 //
-// Materialization is polite: one paginated Events fetch per run, then a nested
-// EventItems fetch ONLY for events that the strict notice→event join matched,
-// plus a bounded best-effort roll-call vote fetch. Exact-matter refresh is a
-// separate scheduled path over a roster; it never runs from a resident request.
-// No per-user live fan-out.
+// Materialization is polite: one paginated Events acquisition per run, then a
+// nested EventItems fetch for events the strict notice→event join matched plus
+// the bounded upcoming-events discovery set, and a bounded best-effort
+// roll-call vote fetch. Exact-matter refresh is a separate scheduled path over
+// a roster; it never runs from a resident request. No per-user live fan-out.
 //
 // Person-level vote rows are retained (not only aye/nay tallies) so the official
 // entity family can form votes_on edges naming the members who cast each vote.
@@ -335,10 +335,17 @@ export async function fetchLegistarMatterAttachments({ matterId, token, fetchImp
 }
 
 /**
- * Fetch Legistar Events whose EventDate falls in the look-back window, newest first.
- * Paginates with $top/$skip up to EVENTS_MAX_PAGES. Returns raw Legistar event rows.
+ * Fetch Legistar Events whose EventDate falls in the look-back window, newest
+ * first, with explicit failure kinds and pagination completeness. One page per
+ * authenticated request ($top/$skip, $orderby EventDate desc) up to maxPages.
+ *
+ * Returns { ok, kind, status, rows, pages, complete, retryAfter }. `complete`
+ * is true only when the publisher ran out of rows inside the page budget;
+ * a false `complete` means the row set is truncated by the page budget, not
+ * that the window is empty. `kind` reuses the fetchLegistarPage failure kinds
+ * (token-absent, rate-limited, forbidden, http, malformed, timeout, network).
  */
-export async function fetchLegistarEvents({
+export async function fetchLegistarEventsWindow({
   token,
   fetchImpl = fetch,
   now = new Date(),
@@ -347,8 +354,11 @@ export async function fetchLegistarEvents({
   endDate = null,
   pageSize = EVENTS_PAGE_SIZE,
   maxPages = EVENTS_MAX_PAGES,
+  timeoutMs = 15000,
 } = {}) {
-  if (!token) return [];
+  if (!token) {
+    return { ok: false, kind: "token-absent", status: 0, rows: [], pages: 0, complete: false, retryAfter: null };
+  }
   const since = startDate
     ? new Date(startDate).toISOString().replace(/\.\d{3}Z$/, "Z")
     : new Date(now.getTime() - lookbackDays * 86_400_000)
@@ -361,22 +371,84 @@ export async function fetchLegistarEvents({
     `EventDate ge datetime'${since}'`,
     until ? `EventDate lt datetime'${until}'` : null,
   ].filter(Boolean).join(" and ");
-  const rows = [];
   const boundedPageSize = Math.max(1, Math.min(1_000, Number(pageSize) || EVENTS_PAGE_SIZE));
   const boundedMaxPages = Math.max(1, Math.min(100, Number(maxPages) || EVENTS_MAX_PAGES));
+  const rows = [];
+  let pages = 0;
+  let complete = false;
+  let failure = null;
   for (let page = 0; page < boundedMaxPages; page += 1) {
-    const params = {
-      $top: String(boundedPageSize),
-      $skip: String(page * boundedPageSize),
-      $orderby: "EventDate desc",
-      $filter: filter,
-    };
-    const batch = await fetchJson(fetchImpl, authedUrl("Events", token, params));
-    if (!batch.length) break;
-    rows.push(...batch);
-    if (batch.length < boundedPageSize) break;
+    const result = await fetchLegistarPage({
+      path: "Events",
+      token,
+      fetchImpl,
+      skip: page * boundedPageSize,
+      top: boundedPageSize,
+      orderby: "EventDate desc",
+      filter,
+      timeoutMs,
+      now,
+    });
+    if (!result.ok) {
+      failure = result;
+      break;
+    }
+    pages += 1;
+    rows.push(...result.rows);
+    if (result.complete) {
+      complete = true;
+      break;
+    }
   }
-  return rows;
+  if (failure) {
+    return {
+      ok: false,
+      kind: failure.kind,
+      status: failure.status,
+      rows: [],
+      pages,
+      complete: false,
+      retryAfter: failure.retryAfter ?? null,
+    };
+  }
+  return { ok: true, kind: "ok", status: 200, rows, pages, complete, retryAfter: null };
+}
+
+/**
+ * Fetch Legistar Events whose EventDate falls in the look-back window, newest first.
+ * Paginates with $top/$skip up to EVENTS_MAX_PAGES. Returns raw Legistar event rows.
+ * Failures throw (callers retain last-known-good state); failure kinds live on
+ * fetchLegistarEventsWindow.
+ */
+export async function fetchLegistarEvents({
+  token,
+  fetchImpl = fetch,
+  now = new Date(),
+  lookbackDays = LEGISTAR_LOOKBACK_DAYS,
+  startDate = null,
+  endDate = null,
+  pageSize = EVENTS_PAGE_SIZE,
+  maxPages = EVENTS_MAX_PAGES,
+} = {}) {
+  const result = await fetchLegistarEventsWindow({
+    token,
+    fetchImpl,
+    now,
+    lookbackDays,
+    startDate,
+    endDate,
+    pageSize,
+    maxPages,
+  });
+  if (!result.ok) {
+    // Preserve the long-standing wrapper contract: a missing token yields an
+    // empty row set (callers degrade to unauthenticated operation); any real
+    // acquisition failure throws so callers retain last-known-good state.
+    if (result.kind === "token-absent") return [];
+    const suffix = result.status ? `-${result.kind}-${result.status}` : `-${result.kind}`;
+    throw new Error(`legistar-events${suffix}`);
+  }
+  return result.rows;
 }
 
 /**

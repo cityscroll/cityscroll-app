@@ -2634,12 +2634,20 @@
       "kind": "html",
       "landing_page": "https://council.nyc.gov/legislation/api/",
       "publisher_cadence": "Updated as meetings, agenda items, and votes change",
-      "product_freshness": "Daily edge materialization fetches authenticated Events (180-day window) and builds the meeting-outcomes read model. The daily site build copies a bounded per-notice snapshot, including explicit absent records, into meeting_outcomes_snapshot.json for notice-document first paint; the client endpoint remains a freshness enhancement. Person-level VotePersonId rows densify into person_votes_lookup.json for official profiles when identity is retained. OfficeRecord histories use the same authenticated path and retain source-row observations with retrieval timestamps; their member_of edge is held behind a dated exact-key sample gate.",
-      "used_for": "Meeting outcomes surface: matching notices to Council agenda trees, matters, action outcomes, roll-call votes, attachments, and supporting documents. When VotePersonId/VotePersonName rows are retained, person-level votes feed official profiles and votes_on edges (roll_call identity; tally_only when rows lack person identity). OfficeRecords provide BodyId-keyed committee nodes and descriptive temporal member_of observations only.",
+      "product_freshness": "Daily edge materialization fetches authenticated Events (180-day look-back, no extra Events request) and builds the meeting-outcomes read model plus a distinct upcoming-council-meetings snapshot for announced events inside a 120-day horizon, including events with no City Record match. Token absence, rate limiting, malformed payloads, and fetch failure retain last-known-good upcoming data and publish unavailable or stale rather than a successful empty source. The daily site build copies a bounded per-notice snapshot, including explicit absent records, into meeting_outcomes_snapshot.json for notice-document first paint; the client endpoint remains a freshness enhancement. Person-level VotePersonId rows densify into person_votes_lookup.json for official profiles when identity is retained. OfficeRecord histories use the same authenticated path and retain source-row observations with retrieval timestamps; their member_of edge is held behind a dated exact-key sample gate.",
+      "used_for": "Meeting outcomes surface: matching notices to Council agenda trees, matters, action outcomes, roll-call votes, attachments, and supporting documents. Upcoming announced Council meetings are materialized as a distinct source-qualified projection (meeting:nyc_legistar_events:<EventId>) with bounded EventItems discovery and explicit source health, including events no City Record notice has matched. When VotePersonId/VotePersonName rows are retained, person-level votes feed official profiles and votes_on edges (roll_call identity; tally_only when rows lack person identity). OfficeRecords provide BodyId-keyed committee nodes and descriptive temporal member_of observations only.",
       "code_references": [
         {
           "path": "worker/src/lib/legistar_client.mjs",
           "contains": "fetchLegistarEvents"
+        },
+        {
+          "path": "worker/src/lib/legistar_client.mjs",
+          "contains": "fetchLegistarEventsWindow"
+        },
+        {
+          "path": "worker/src/lib/upcoming_council_meetings.mjs",
+          "contains": "buildUpcomingCouncilMeetingsView"
         },
         {
           "path": "worker/src/lib/legistar_client.mjs",
@@ -2672,7 +2680,7 @@
       ],
       "delivery_tier": "inline-at-build",
       "endpoint": "https://webapi.legistar.com/v1/nyc/Bodies",
-      "gap": "Materialized (2026-07-30): daily edge ingest from authenticated webapi.legistar.com/v1/nyc with the strict exact_date_body_tokens join (modern event join 100%, 59/59). EventItems carry inline matters (98.3%) and action outcomes; best-effort roll-call votes and attachments are fetched for flagged items (~10% of events publish roll-call detail on the endpoint). Hearing agenda/minutes PDFs surface at the event level. Remaining sub-gap: pre-modern (pre-2025) historical events join at 73% and sparse roll-call detail is often not published on the endpoint for subcommittee voice votes.",
+      "gap": "Materialized (2026-07-30): daily edge ingest from authenticated webapi.legistar.com/v1/nyc with the strict exact_date_body_tokens join (modern event join 100%, 59/59). EventItems carry inline matters (98.3%) and action outcomes; best-effort roll-call votes and attachments are fetched for flagged items (~10% of events publish roll-call detail on the endpoint). Hearing agenda/minutes PDFs surface at the event level. Upcoming unmatched Events now receive a distinct sanitized meeting projection with bounded EventItems discovery; resident Meeting, Search, and Now surfaces remain notice-keyed. Remaining sub-gap: pre-modern (pre-2025) historical events join at 73% and sparse roll-call detail is often not published on the endpoint for subcommittee voice votes.",
       "join_keys": [
         "body_id",
         "matter_id",
