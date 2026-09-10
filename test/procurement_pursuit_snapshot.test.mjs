@@ -12,7 +12,6 @@ import test from "node:test";
 
 import {
   PURSUIT_FIELD_STATUS,
-  PURSUIT_UNVERIFIABLE_ROWS,
   buildPursuitSnapshot,
   pursuitSnapshotReady,
   renderPursuitSnapshotHtml,
@@ -265,17 +264,27 @@ test("superseded: a later PASSPort round on the same canonical procurement refle
   assert.doesNotMatch(html, /Aug 5/); // the superseded round's due date must not linger
 });
 
-/* ---------- Cannot-verify disclosure ---------- */
+/* ---------- No absence-caveat list ---------- */
 
-test("the cannot-verify disclosure is a fixed, closed list and never phrased as a failed requirement", () => {
-  assert.equal(PURSUIT_UNVERIFIABLE_ROWS.length, 8);
+test("the pursuit snapshot never renders a cannot-verify absence list or an empty leftover section", () => {
   const html = renderPursuitSnapshotHtml(buildPursuitSnapshot(completeSolicitation, {}));
-  for (const row of PURSUIT_UNVERIFIABLE_ROWS) {
-    const expected = row.label.replace(/&/g, "&amp;");
-    assert.ok(html.includes(expected), `missing cannot-verify row: ${row.label}`);
-  }
-  assert.doesNotMatch(html, /fail(ed|s)? (a )?requirement/i);
-  assert.doesNotMatch(html, /\bno\b.*\brequirement/i);
+  assert.match(html, /data-pursuit-section="identity"/);
+  assert.match(html, /data-pursuit-section="decision-facts"/);
+  assert.match(html, /Computer-Assisted Mass Appraisal/);
+  assert.match(html, /Finance/);
+  assert.match(html, /Aug 17/);
+  assert.doesNotMatch(html, /data-pursuit-section="cannot-verify"/);
+  assert.doesNotMatch(html, /pursuit-cannot-verify/);
+  assert.doesNotMatch(html, /What CityScroll cannot verify/);
+  assert.doesNotMatch(html, /sources do not carry/);
+  assert.doesNotMatch(html, /not a finding that/);
+  assert.doesNotMatch(html, /Full package eligibility requirements/);
+  assert.doesNotMatch(html, /Experience requirements/);
+  assert.doesNotMatch(html, /Staffing or team requirements/);
+  assert.doesNotMatch(html, /Amendment documents/);
+  assert.doesNotMatch(html, /Internal issuing team/);
+  assert.doesNotMatch(html, /empty leftover|cannot-verify/);
+  assert.doesNotMatch(html, /<div class="pursuit-fact-group"\s*>\s*<\/div>/);
 });
 
 /* ---------- money-history.mjs wiring (Fixtures B/C/E surface) ---------- */

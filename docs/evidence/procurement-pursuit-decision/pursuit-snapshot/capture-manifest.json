@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.procurement_pursuit_decision_pursuit_snapshot_manifest.v1",
-  "captured_at": "2026-09-04T20:47:07Z",
-  "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+  "captured_at": "2026-09-10T20:26:57Z",
+  "revision": "6766ea9f415ae6aa20e81cfe30b4879ba073a7dc",
   "note": "Card 3 (procurement-pursuit-decision): the pursuit snapshot on solicitation-stage procurement detail. Screenshot binaries are not committed to this repository; they are written to an external directory (default a docs-evidence/ sibling of the repository root, override with CAPTURE_EXTERNAL_OUT) named by 'external_filename' below, and this manifest is the reproducible, reviewable record of what each capture shows and why.",
   "external_output_directory_note": "Not committed; see external_filename per capture. Re-run this script to regenerate byte-identical captures (same sha256) at this revision.",
   "captures": [
@@ -13,7 +13,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "revision": "6766ea9f415ae6aa20e81cfe30b4879ba073a7dc",
       "fixture_ids": [
         "A"
       ],
@@ -21,8 +21,8 @@
       "renders_pursuit_snapshot": true,
       "assertion": "Fixture A (Parks, Playground reconstruction) renders a complete pursuit snapshot: exact PASSPort/City Record identity, a 35-calendar-day response window, the July 22 pre-bid conference, the July 29 questions deadline, the August 5 due date, and PASSPort/official destinations -- above the existing Contract facts section.",
       "external_filename": "pursuit-snapshot-complete-390x844.png",
-      "sha256": "1eddb5ca3e2bfefe305527e4f1857bea260b08c5912fa9bf720aba5ff29c9f3a",
-      "bytes": 275926,
+      "sha256": "b0a3f49f1296c62231d5e76d9058e4f18ae0bb89de35ab6400f1fc8c2a5cf41a",
+      "bytes": 259473,
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -37,7 +37,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "revision": "6766ea9f415ae6aa20e81cfe30b4879ba073a7dc",
       "fixture_ids": [
         "A"
       ],
@@ -45,8 +45,8 @@
       "renders_pursuit_snapshot": true,
       "assertion": "Fixture A (Parks, Playground reconstruction) renders a complete pursuit snapshot: exact PASSPort/City Record identity, a 35-calendar-day response window, the July 22 pre-bid conference, the July 29 questions deadline, the August 5 due date, and PASSPort/official destinations -- above the existing Contract facts section.",
       "external_filename": "pursuit-snapshot-complete-1440x900.png",
-      "sha256": "56571e138e344fe484d1e5808b2c179c1d96f309303b23b0fa529ddfd2fd067d",
-      "bytes": 350485,
+      "sha256": "2419ecb32127e3cf4aa24fe27123d53ab2124b3d615c9cc288ad9bd0265f0400",
+      "bytes": 322463,
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -61,7 +61,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "revision": "6766ea9f415ae6aa20e81cfe30b4879ba073a7dc",
       "fixture_ids": [
         "B"
       ],
@@ -69,8 +69,8 @@
       "renders_pursuit_snapshot": true,
       "assertion": "Fixture B (CAMA, Finance) renders because it has a named identity, an agency, and an actionable due date; amount, method, and M/WBE are explicit unknowns (\"No published ...\"), never absent-looking negatives.",
       "external_filename": "pursuit-snapshot-partial-390x844.png",
-      "sha256": "9f4a23ce898f2aabb17a9f91d7a1ace0667b51f695b7cafcc2781f5e20525329",
-      "bytes": 127425,
+      "sha256": "1275f63d4c2f7b381de3b4cd1699c9287c8928800abb202fa6ebcb8b2dd214f7",
+      "bytes": 97704,
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -85,7 +85,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "revision": "6766ea9f415ae6aa20e81cfe30b4879ba073a7dc",
       "fixture_ids": [
         "B"
       ],
@@ -93,8 +93,8 @@
       "renders_pursuit_snapshot": true,
       "assertion": "Fixture B (CAMA, Finance) renders because it has a named identity, an agency, and an actionable due date; amount, method, and M/WBE are explicit unknowns (\"No published ...\"), never absent-looking negatives.",
       "external_filename": "pursuit-snapshot-partial-1440x900.png",
-      "sha256": "25c25c50aaf5349a8f7f511a4f6bf7c33db103a8fa29b5c3efba0db7f9f03a23",
-      "bytes": 164777,
+      "sha256": "4a6935f24cc68e5a9ad45b5914ce8591accd0db7b8592dfb0a83079011f56ba6",
+      "bytes": 128441,
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -109,7 +109,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "revision": "6766ea9f415ae6aa20e81cfe30b4879ba073a7dc",
       "fixture_ids": [
         "D"
       ],
@@ -117,8 +117,8 @@
       "renders_pursuit_snapshot": true,
       "assertion": "Fixture D (sparse MTA CBTC solicitation) still renders identity, agency, and literal source status (\"Current opportunity\") with an explicit unpublished amount and due date -- never a fabricated due date, never hidden merely because it is sparse.",
       "external_filename": "pursuit-snapshot-sparse-390x844.png",
-      "sha256": "5d0276f9e8897c57f160b31cea7e5fcd7ece6e653dc7668aee453b48578883e3",
-      "bytes": 227788,
+      "sha256": "8b3cedef74d31918ef9dbf9b989cfd0785d3b0d3b3200d53181c47b02efb1bdb",
+      "bytes": 204012,
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -133,7 +133,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "revision": "6766ea9f415ae6aa20e81cfe30b4879ba073a7dc",
       "fixture_ids": [
         "D"
       ],
@@ -141,8 +141,8 @@
       "renders_pursuit_snapshot": true,
       "assertion": "Fixture D (sparse MTA CBTC solicitation) still renders identity, agency, and literal source status (\"Current opportunity\") with an explicit unpublished amount and due date -- never a fabricated due date, never hidden merely because it is sparse.",
       "external_filename": "pursuit-snapshot-sparse-1440x900.png",
-      "sha256": "fa0d8ab5aa7704db426493b2d757ac20be802939c8c1e1befe8de19aaa4207cb",
-      "bytes": 282438,
+      "sha256": "daca5f5bec224cafaf68d0fa580ba4146a3d6f8b55a9faa776202b5bc4b71e28",
+      "bytes": 252374,
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -157,7 +157,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "revision": "6766ea9f415ae6aa20e81cfe30b4879ba073a7dc",
       "fixture_ids": [
         "B"
       ],
@@ -181,7 +181,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "revision": "6766ea9f415ae6aa20e81cfe30b4879ba073a7dc",
       "fixture_ids": [
         "B"
       ],
@@ -205,7 +205,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "revision": "6766ea9f415ae6aa20e81cfe30b4879ba073a7dc",
       "fixture_ids": [
         "A"
       ],
@@ -213,8 +213,8 @@
       "renders_pursuit_snapshot": true,
       "assertion": "A materially changed (superseded) round renders only its own current due date; the earlier round's due date never lingers on the page.",
       "external_filename": "pursuit-snapshot-superseded-390x844.png",
-      "sha256": "2eae3d64ed94d6c3ad17b9a69931e4396a639b9bbac54800918afb671213e662",
-      "bytes": 251443,
+      "sha256": "abcc4ea40a1a497e8160e1885d8a3258056dafea132d7347a77d9cacceb35605",
+      "bytes": 227621,
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -229,7 +229,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "revision": "6766ea9f415ae6aa20e81cfe30b4879ba073a7dc",
       "fixture_ids": [
         "A"
       ],
@@ -237,8 +237,8 @@
       "renders_pursuit_snapshot": true,
       "assertion": "A materially changed (superseded) round renders only its own current due date; the earlier round's due date never lingers on the page.",
       "external_filename": "pursuit-snapshot-superseded-1440x900.png",
-      "sha256": "763a7d0a50fd764a30e0cc5de8c1bb7916fa2be5673f4f32356aca456ebcc035",
-      "bytes": 304757,
+      "sha256": "6f2c2f78ae8746514d187dd9945c04e1979c624ccf4a3515dcd934ee8505ec2c",
+      "bytes": 275010,
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -253,7 +253,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "revision": "6766ea9f415ae6aa20e81cfe30b4879ba073a7dc",
       "fixture_ids": [
         "E"
       ],
@@ -261,8 +261,8 @@
       "renders_pursuit_snapshot": false,
       "assertion": "The award control never renders a pursuit snapshot or any response CTA; it remains an award/contract-history page.",
       "external_filename": "pursuit-snapshot-award-control-390x844.png",
-      "sha256": "7316a1afb05dea490e87741be199a5c901f4aa3f651efe8bb3764bbcc8898e6b",
-      "bytes": 124643,
+      "sha256": "dbc17b3e9618318bcf458e5674b8256b312e92c4b92acecf7dd9228082d656c1",
+      "bytes": 125675,
       "axe": {
         "violations_total": 0,
         "failing_violations": [],
@@ -277,7 +277,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "03c5892bda755b23a9e39dd148cb99db778138b3",
+      "revision": "6766ea9f415ae6aa20e81cfe30b4879ba073a7dc",
       "fixture_ids": [
         "E"
       ],
@@ -285,8 +285,8 @@
       "renders_pursuit_snapshot": false,
       "assertion": "The award control never renders a pursuit snapshot or any response CTA; it remains an award/contract-history page.",
       "external_filename": "pursuit-snapshot-award-control-1440x900.png",
-      "sha256": "098d16444b0d7d0bdc9ace67f2389238da71e4cc46a2a7c75c3d973e9ff55d4c",
-      "bytes": 153258,
+      "sha256": "68bf1de17c3a34da2e6aec00643be2da36c50f8668c4bcf46d9c821dbd66a15e",
+      "bytes": 154105,
       "axe": {
         "violations_total": 0,
         "failing_violations": [],

@@ -94,6 +94,9 @@ say what the thing is, why it matters, and what the reader should do — for exa
 “Default: X, because Y; do Z.” Standing provenance walls that restate what a
 per-link marker already shows (City Record awards, Checkbook “live on”,
 timeline-lead search) are a first-class class — keep the marker, drop the wall.
+Headings or lists introduced as absence-caveats (“cannot verify”, “sources do
+not carry”, “this is not a finding that”) are the same class: omit the claim
+rather than narrating what was not found.
 
 The repository wrapper is:
 
