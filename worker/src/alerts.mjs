@@ -2842,9 +2842,21 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
       const meta = [institution, committee, r.event_date ? `event ${String(r.event_date).slice(0, 10)}` : "", venue]
         .filter(Boolean).map(esc).join(" · ");
       const records = materials.length ? `<br><span style="color:#555;font-size:13px">${esc(materials.join(" · "))}</span>` : "";
+      const sourceActions = Array.isArray(r.official_source_actions) && r.official_source_actions.length
+        ? r.official_source_actions
+        : (r.source_url ? [{
+          label: r.source_system === "nyc_legistar_events" || r.source_system === "legistar"
+            ? "NYC Council Legistar"
+            : "Official source",
+          href: r.source_url,
+        }] : []);
+      const sourceLinks = sourceActions
+        .filter((action) => action?.href)
+        .map((action) => ` &nbsp; <a href="${esc(action.href)}">${esc(action.label || "Official source")}</a>`)
+        .join("");
       return `<li data-digest-item="1"${itemClass} style="margin:0 0 14px"><b><a href="${meetingLink}">${esc(r.title || "Meeting")}</a></b><br>
         <span style="color:#555;font-size:13px">${meta}</span>${records}<br>
-        <span style="font-size:13px"><a href="${meetingLink}">↗ View meeting details</a>${r.source_url ? ` &nbsp; <a href="${esc(r.source_url)}">Official source</a>` : ""}</span></li>`;
+        <span style="font-size:13px"><a href="${meetingLink}">↗ View meeting details</a>${sourceLinks}</span></li>`;
     }
     if (itemKind === "exam") {
       const link = `https://cityscroll.org/exams/${encodeURIComponent(r.exam_number)}/`;

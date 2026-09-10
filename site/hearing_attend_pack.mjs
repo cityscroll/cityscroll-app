@@ -126,9 +126,21 @@ export function meetingCalendarICS(record, options = {}) {
     const end = wallTimeValue(suppliedEnd) > wallTimeValue(start) ? suppliedEnd : fallbackEnd;
     lines.push(`DTSTART;TZID=America/New_York:${stamp(start)}`, `DTEND;TZID=America/New_York:${stamp(end)}`);
   }
+  const cancelled = r.status === "cancelled" || r.lifecycle === "cancelled";
+  const sequence = Number(r.sequence);
+  const lastModified = r.last_modified || r.modified_at;
+  const lastModifiedStamp = lastModified && !Number.isNaN(new Date(lastModified).getTime())
+    ? new Date(lastModified).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z")
+    : null;
+  const sourceLabel = r.source_system === "nyc_legistar_events" || r.source_system === "legistar"
+    ? "NYC Council Legistar"
+    : "Official source";
   lines.push(`SUMMARY:${esc(title)}`, ...(calendarLocation ? [`LOCATION:${esc(calendarLocation)}`] : []),
     ...(joinUrl ? [`URL:${esc(joinUrl)}`] : []),
-    `DESCRIPTION:${esc([agency, mode ? `Mode: ${mode}` : null, location ? `Location: ${location}` : null, joinUrl ? `Join online: ${joinUrl}` : null, dialIn.length ? `Dial-in: ${dialIn.join(", ")}` : null, access.passcode ? `Passcode: ${access.passcode}` : null, source ? `Official source: ${source}` : null].filter(Boolean).join("\n"))}`,
+    ...(Number.isSafeInteger(sequence) && sequence >= 0 ? [`SEQUENCE:${sequence}`] : []),
+    ...(lastModifiedStamp ? [`LAST-MODIFIED:${lastModifiedStamp}`] : []),
+    ...(cancelled ? ["STATUS:CANCELLED"] : []),
+    `DESCRIPTION:${esc([agency, mode ? `Mode: ${mode}` : null, location ? `Location: ${location}` : null, joinUrl ? `Join online: ${joinUrl}` : null, dialIn.length ? `Dial-in: ${dialIn.join(", ")}` : null, access.passcode ? `Passcode: ${access.passcode}` : null, source ? `${sourceLabel}: ${source}` : null].filter(Boolean).join("\n"))}`,
     "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY", "DESCRIPTION:Hearing tomorrow", "END:VALARM", "END:VEVENT", "END:VCALENDAR", "");
   return lines.map(fold).join("\r\n");
 }

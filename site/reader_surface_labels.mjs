@@ -30,6 +30,7 @@ export const READER_LABELS = Object.freeze({
   warehouse: "Warehouse records",
   socrata: "NYC Open Data",
   legistar: "NYC Council Legistar",
+  nyc_legistar_events: "NYC Council Legistar",
   passport: "PASSPort Public",
   checkbook: "Checkbook NYC",
   enacted_local_law: "Enacted local law",

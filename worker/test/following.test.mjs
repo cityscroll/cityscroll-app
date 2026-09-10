@@ -1,11 +1,26 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { readFileSync } from "node:fs";
+
 import { handleFollowing } from "../src/following.mjs";
 import { handleSubscribe } from "../src/subscribe.mjs";
 import { handlePrefs } from "../src/prefs.mjs";
+import { subDigestHtml } from "../src/alerts.mjs";
 import { signToken } from "optin-token";
 import { sessionPayload } from "../src/lib/session.mjs";
+import { compileSub } from "../src/lib/compile.mjs";
+import {
+  collapseMeetingDeliveryRows,
+  meetingDeliveryKey,
+  officialMeetingSourceActions,
+  reconcileMeetingDelivery,
+} from "../../site/meeting_delivery_identity.mjs";
+
+const upcomingFixture = JSON.parse(readFileSync(new URL("../../test/fixtures/legistar/upcoming_contracts_22691.json", import.meta.url)));
+const FIXTURE_EVENT_ID = String(upcomingFixture.event.EventId);
+const FIXTURE_MEETING_ID = `meeting:nyc_legistar_events:${FIXTURE_EVENT_ID}`;
+const PINNED_TODAY = "2026-09-09";
 
 const SIGNING_FIXTURE = "example-token-placeholder";
 const TEST_EMAIL = ["reader", "example.com"].join("@");
@@ -335,4 +350,134 @@ test("the Following handler does not claim Stats or API routes", async () => {
     const response = await handleFollowing(new Request(`https://api.cityscroll.org${pathname}`));
     assert.equal(response.status, 404);
   }
+});
+
+test("a meetings watch for M/WBE previews the Council-native fixture from search text", async () => {
+  const filter = encodeURIComponent(JSON.stringify({ keywords: ["M/WBE"] }));
+  const response = await handleFollowing(new Request(
+    `https://cityscroll.org/following?lens=meetings&filter=${filter}&freq=weekly`,
+  ), {}, {}, { todayISO: PINNED_TODAY });
+  const html = await response.text();
+  assert.equal(response.status, 200);
+  assert.match(html, new RegExp(`data-preview-id="${FIXTURE_MEETING_ID}"`));
+  assert.match(html, /Committee on Contracts/);
+  assert.match(html, /name="lens"[^>]+value="meetings"/);
+});
+
+test("a meetings watch for disparity study previews the same Council-native fixture", async () => {
+  const filter = encodeURIComponent(JSON.stringify({ keywords: ["disparity study"] }));
+  const response = await handleFollowing(new Request(
+    `https://cityscroll.org/following?lens=meetings&filter=${filter}`,
+  ), {}, {}, { todayISO: PINNED_TODAY });
+  const html = await response.text();
+  assert.match(html, new RegExp(`data-preview-id="${FIXTURE_MEETING_ID}"`));
+});
+
+test("Council-native digest links the canonical meeting route and names NYC Council Legistar", () => {
+  const row = compileSub({ lens: "meetings", filter: { keywords: ["M/WBE"] } }, PINNED_TODAY).readRows()[0];
+  assert.equal(row.meeting_id, FIXTURE_MEETING_ID);
+  assert.equal(row.request_id, FIXTURE_MEETING_ID);
+  const html = subDigestHtml(
+    "Meetings — about “M/WBE”",
+    "meetings",
+    [row],
+    "https://example.test/unsubscribe",
+    PINNED_TODAY,
+  );
+  assert.match(html, /\/meetings\/meeting%3Anyc_legistar_events%3A22691\//);
+  assert.match(html, /NYC Council Legistar/);
+  assert.match(html, /https:\/\/nyc\.legistar\.com\/MeetingDetail\.aspx\?LEGID=22691/);
+  assert.doesNotMatch(html, /Join online|Dial-in|City Record/);
+});
+
+test("a later exact City Record join does not create a second meeting notification", () => {
+  const legistar = compileSub({ lens: "meetings", filter: { keywords: ["M/WBE"] } }, PINNED_TODAY).readRows()[0];
+  const sameProceeding = {
+    meeting_ids: ["meeting:city_record:20260923001", FIXTURE_MEETING_ID],
+    nyc_legistar_events_meeting_id: FIXTURE_MEETING_ID,
+    city_record_meeting_id: "meeting:city_record:20260923001",
+  };
+  const cluster = [
+    { ...legistar, collection_visibility: "suppressed", same_proceeding: sameProceeding },
+    {
+      meeting_id: "meeting:city_record:20260923001",
+      source_system: "city_record",
+      title: "Committee on Contracts meeting — M/WBE Utilization and the Required Disparity Study",
+      event_date: "2026-09-23T10:00:00",
+      venue: { address: "250 Broadway - 8th Floor - Hearing Room 2" },
+      collection_visibility: "visible",
+      same_proceeding: sameProceeding,
+      source_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260923001",
+    },
+  ];
+  const collapsed = collapseMeetingDeliveryRows(cluster);
+  assert.equal(collapsed.length, 1);
+  assert.equal(meetingDeliveryKey(collapsed[0]), FIXTURE_MEETING_ID);
+  assert.ok(officialMeetingSourceActions(cluster).some((action) => action.label === "NYC Council Legistar"));
+
+  const first = reconcileMeetingDelivery({ rows: collapsed.map((row) => ({ ...row, meeting_id: FIXTURE_MEETING_ID, same_proceeding: null })), seen: new Set() });
+  assert.equal(first.fresh.length, 1);
+  const afterJoin = reconcileMeetingDelivery({ rows: collapsed, seen: new Set(first.markSeenIds) });
+  assert.equal(afterJoin.fresh.length, 0);
+
+  const html = subDigestHtml("Meetings", "meetings", collapsed, "https://example.test/unsubscribe", PINNED_TODAY);
+  assert.match(html, /NYC Council Legistar/);
+  assert.match(html, /https:\/\/nyc\.legistar\.com\/MeetingDetail\.aspx\?LEGID=22691/);
+});
+
+test("meeting watch compilation succeeds without a City Record request_id", () => {
+  const rows = compileSub({ lens: "meetings", filter: { keywords: ["disparity study"] } }, PINNED_TODAY).readRows();
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].meeting_id, FIXTURE_MEETING_ID);
+  assert.equal(rows[0].request_id, FIXTURE_MEETING_ID);
+  assert.equal(rows[0].event_id, FIXTURE_EVENT_ID);
+  assert.equal(rows[0].source_system, "nyc_legistar_events");
+});
+
+test("meeting delivery temporal fixtures cover replay, join, reschedule, cancellation, and an unmatched near-candidate", async () => {
+  const identity = {
+    meeting_id: FIXTURE_MEETING_ID,
+    source_system: "nyc_legistar_events",
+    event_date: "2026-09-23T10:00:00",
+  };
+  const first = reconcileMeetingDelivery({ rows: [identity], seen: new Set() });
+  assert.equal(first.fresh.length, 1);
+  assert.equal(reconcileMeetingDelivery({ rows: [identity], seen: new Set(first.markSeenIds) }).fresh.length, 0);
+
+  const joined = {
+    meeting_id: "meeting:city_record:20260923001",
+    source_system: "city_record",
+    event_date: "2026-09-23T10:00:00",
+    same_proceeding: {
+      meeting_ids: ["meeting:city_record:20260923001", FIXTURE_MEETING_ID],
+      nyc_legistar_events_meeting_id: FIXTURE_MEETING_ID,
+      city_record_meeting_id: "meeting:city_record:20260923001",
+    },
+  };
+  assert.equal(reconcileMeetingDelivery({ rows: [joined], seen: new Set(first.markSeenIds) }).fresh.length, 0);
+  assert.equal(reconcileMeetingDelivery({
+    rows: [{ ...identity, lifecycle: "rescheduled", event_date: "2026-09-24T11:00:00" }],
+    seen: new Set(first.markSeenIds),
+  }).fresh.length, 1);
+  assert.equal(reconcileMeetingDelivery({
+    rows: [{ ...identity, lifecycle: "cancelled" }],
+    seen: new Set(first.markSeenIds),
+  }).fresh.length, 1);
+  assert.deepEqual(
+    reconcileMeetingDelivery({
+      rows: [joined, {
+        meeting_id: "meeting:city_record:20260923002",
+        source_system: "city_record",
+        event_date: "2026-09-23T10:00:00",
+      }],
+      seen: new Set(first.markSeenIds),
+    }).fresh.map((row) => row.meeting_id),
+    ["meeting:city_record:20260923002"],
+  );
+
+  const compiled = compileSub({ lens: "meetings", filter: { keywords: ["M/WBE"] } }, PINNED_TODAY);
+  assert.equal(compiled.idField, "meeting_id");
+  assert.equal(compiled.url, null);
+  const reconciled = reconcileMeetingDelivery({ rows: compiled.readRows(), seen: new Set() });
+  assert.equal(reconciled.fresh[0].meeting_id, FIXTURE_MEETING_ID);
 });

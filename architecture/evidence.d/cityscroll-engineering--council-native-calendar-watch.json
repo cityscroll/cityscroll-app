@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/council-native-calendar-watch",
+  "status": "implemented",
+  "fingerprint": "council-native-calendar-watch.v1",
+  "updated_at": "2026-09-10T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "meeting-delivery-identity",
+      "path": "site/meeting_delivery_identity.mjs"
+    },
+    {
+      "id": "meeting-watch-compile",
+      "path": "worker/src/lib/compile.mjs"
+    },
+    {
+      "id": "meeting-temporal-delivery",
+      "path": "worker/src/lib/alert_temporal.mjs"
+    },
+    {
+      "id": "calendar-subscription-affordance-tests",
+      "path": "test/calendar_subscription_affordance.test.mjs"
+    },
+    {
+      "id": "following-council-native-tests",
+      "path": "worker/test/following.test.mjs"
+    }
+  ]
+}
