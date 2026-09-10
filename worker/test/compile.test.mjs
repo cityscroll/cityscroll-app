@@ -17,6 +17,8 @@ test("money + keywords → City Record solicitation/RFP query with $q", () => {
   assert.match(q.params["$where"], /type_of_notice_description='Solicitation'/);
   assert.match(q.params["$where"], /due_date > '2026-06-30'/);
   assert.equal(q.params["$q"], "construction");
+  assert.equal(q.params["$order"], "due_date ASC");
+  assert.equal(q.recentParams["$order"], "start_date DESC");
 });
 
 test("money + agency → agency_name clause applied to both the award and solicitation branches", () => {

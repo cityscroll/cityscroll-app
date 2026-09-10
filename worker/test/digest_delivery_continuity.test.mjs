@@ -338,7 +338,7 @@ test("deploy continuity: genuinely new items still send under pre-existing seen 
   assert.equal(money.fresh.length, 1, "only the new solicitation is fresh");
   assert.equal(money.fresh[0].request_id, "FIX-CONT-SOL-2");
   assert.ok(money.markSeenIds.includes("FIX-CONT-SOL-2"));
-  assert.ok(money.markSeenIds.includes(SOLICITATION.request_id));
+  assert.equal(money.markSeenIds.includes(SOLICITATION.request_id), false);
 
   // New rules notice (never delivered) fires even when a sibling action is already seen.
   const newRulesId = "FIX-CONT-RULE-2";
