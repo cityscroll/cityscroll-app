@@ -181,7 +181,7 @@ async function readSearchUsageLineage(env, now) {
   const usage = read.ok
     ? foldSearchUsage(read.observations, { now, measuredSince, scan: read.scan })
     : unavailableSearchUsage(read.reason, now);
-  const series = await readSearchUsageDailySeries(env, { now });
+  const series = await readSearchUsageDailySeries(env, { now, measuredSince });
   const observed = read.ok ? foldSearchUsageDays(read.observations, { now, measuredSince }) : { days: {} };
   return {
     usage,

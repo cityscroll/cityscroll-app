@@ -100,6 +100,57 @@ export function dayCutoff(day) {
 }
 
 /**
+ * Whether a UTC day ended before measurement began. That day can never be stored,
+ * so it is not a missing promised day: it is not measured.
+ */
+export function searchUsageDayBeforeMeasurement(day, measuredSince) {
+  const measuredSinceMs = measurementStartMs(measuredSince);
+  if (measuredSinceMs === null || !DAY_PATTERN.test(String(day || ""))) return false;
+  return dayStartMs(day) + DAY_MS <= measuredSinceMs;
+}
+
+/**
+ * Split absent days in a requested window: days before measurement, missing
+ * promised days, and missing days older than the receipt horizon.
+ *
+ * `missing_days` keeps its existing name and holds only the promised-but-absent
+ * half of the split. `before_measurement` is the other half.
+ */
+export function classifySearchUsageAbsentDays({
+  wantedDays = [],
+  heldDays = [],
+  now = new Date(),
+  measuredSince = null,
+  receiptRetentionDays = SEARCH_ACTIVITY_RETENTION_DAYS,
+} = {}) {
+  const held = heldDays instanceof Set
+    ? heldDays
+    : heldDays instanceof Map
+      ? new Set(heldDays.keys())
+      : new Set(heldDays);
+  const nowMs = new Date(now).getTime();
+  const todayStart = Math.floor(nowMs / DAY_MS) * DAY_MS;
+  const recoverableFrom = utcDay(todayStart - receiptRetentionDays * DAY_MS);
+  const missing = [];
+  const beforeMeasurement = [];
+  const unrecoverable = [];
+  for (const day of wantedDays) {
+    if (held.has(day)) continue;
+    if (searchUsageDayBeforeMeasurement(day, measuredSince)) {
+      beforeMeasurement.push(day);
+      continue;
+    }
+    missing.push(day);
+    if (day < recoverableFrom) unrecoverable.push(day);
+  }
+  return {
+    missing_days: missing,
+    before_measurement: beforeMeasurement,
+    unrecoverable_days: unrecoverable,
+  };
+}
+
+/**
  * Fold observations into per-day counts.
  *
  * Bucketed by the instant the store received the execution, never by the clock the fold runs
@@ -178,12 +229,12 @@ export function searchUsageDailyContentHash(aggregate) {
 export function publishableSearchUsageDays({ now = new Date(), horizonDays = SEARCH_ACTIVITY_RETENTION_DAYS, measuredSince = null } = {}) {
   const nowMs = new Date(now).getTime();
   const todayStart = Math.floor(nowMs / DAY_MS) * DAY_MS;
-  const measuredSinceMs = measurementStartMs(measuredSince);
   const days = [];
   for (let back = 1; back <= horizonDays; back += 1) {
     const startMs = todayStart - back * DAY_MS;
-    if (measuredSinceMs !== null && startMs + DAY_MS <= measuredSinceMs) continue;
-    days.push(utcDay(startMs));
+    const day = utcDay(startMs);
+    if (searchUsageDayBeforeMeasurement(day, measuredSince)) continue;
+    days.push(day);
   }
   return days.sort();
 }
@@ -256,15 +307,21 @@ export async function publishSearchUsageDailyAggregates(env, {
  * A day the store does not hold is reported missing, never as zero. A missing day inside the
  * receipt retention horizon could still be recovered by a rerun; one older than it could not,
  * and saying so is the difference between a fixable gap and a permanent hole in the trend.
+ * Days that ended before measurement began are `before_measurement`, not missing: they
+ * can never be stored.
  */
-export async function readSearchUsageDailySeries(env, { now = new Date(), days = 90 } = {}) {
+export async function readSearchUsageDailySeries(env, { now = new Date(), days = 90, measuredSince = null } = {}) {
+  const measuredSinceMs = measurementStartMs(measuredSince);
+  const measuredSinceIso = measuredSinceMs === null ? null : new Date(measuredSinceMs).toISOString();
   const empty = {
     schema: SEARCH_USAGE_DAILY_SCHEMA,
     available: false,
     unavailable_reason: "no_store",
     requested_days: days,
+    measured_since: measuredSinceIso,
     series: [],
     missing_days: [],
+    before_measurement: [],
     unrecoverable_days: [],
     newest_day: null,
     oldest_day: null,
@@ -294,26 +351,25 @@ export async function readSearchUsageDailySeries(env, { now = new Date(), days =
     return { ...empty, unavailable_reason: "read_failed" };
   }
 
-  const recoverableFrom = utcDay(todayStart - SEARCH_ACTIVITY_RETENTION_DAYS * DAY_MS);
   const series = [];
-  const missing = [];
-  const unrecoverable = [];
   for (const day of wanted) {
     const stored = held.get(day);
-    if (stored) {
-      series.push({
-        day,
-        cutoff: stored.cutoff,
-        coverage: stored.coverage,
-        metrics: stored.metrics,
-        content_hash: stored.content_hash,
-        digest_verified: searchUsageDailyContentHash(stored) === stored.content_hash,
-      });
-      continue;
-    }
-    missing.push(day);
-    if (day < recoverableFrom) unrecoverable.push(day);
+    if (!stored) continue;
+    series.push({
+      day,
+      cutoff: stored.cutoff,
+      coverage: stored.coverage,
+      metrics: stored.metrics,
+      content_hash: stored.content_hash,
+      digest_verified: searchUsageDailyContentHash(stored) === stored.content_hash,
+    });
   }
+  const gaps = classifySearchUsageAbsentDays({
+    wantedDays: wanted,
+    heldDays: held,
+    now,
+    measuredSince,
+  });
 
   const heldDays = [...held.keys()].sort();
   return {
@@ -321,11 +377,13 @@ export async function readSearchUsageDailySeries(env, { now = new Date(), days =
     available: true,
     unavailable_reason: null,
     requested_days: days,
+    measured_since: measuredSinceIso,
     retention_days: SEARCH_USAGE_DAILY_RETENTION_DAYS,
     receipt_retention_days: SEARCH_ACTIVITY_RETENTION_DAYS,
     series,
-    missing_days: missing,
-    unrecoverable_days: unrecoverable,
+    missing_days: gaps.missing_days,
+    before_measurement: gaps.before_measurement,
+    unrecoverable_days: gaps.unrecoverable_days,
     newest_day: heldDays.length ? heldDays[heldDays.length - 1] : null,
     oldest_day: heldDays.length ? heldDays[0] : null,
   };
@@ -368,7 +426,9 @@ export function reconcileSearchUsageDaily({ storedSeries, observedDays = {}, now
     rows,
     counts,
     // A missing day is never reconciled into agreement. It stays a gap in both directions.
+    // Days before measurement are not missing: they were never in the promised set.
     missing_days: storedSeries?.missing_days || [],
+    before_measurement: storedSeries?.before_measurement || [],
     unrecoverable_days: storedSeries?.unrecoverable_days || [],
     ok: (counts.divergent || 0) === 0 && (storedSeries?.missing_days?.length || 0) === 0,
   };

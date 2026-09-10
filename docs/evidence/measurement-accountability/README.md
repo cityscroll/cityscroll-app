@@ -153,7 +153,8 @@ computes the day that should have been published from its own clock, then asks t
 the publisher cannot answer for itself: is that day in the stored series, and has the newest
 stored day advanced. A fresh verification standing beside a newest day that has not moved is
 named `frozen-publisher`, which is precisely the failure a self-report is structurally unable
-to see.
+to see. The promised day set starts at `max(measured_since, retention_start)`: a day that
+ended before measurement began is reported as not measured, not as a missed snapshot.
 
 It rides the existing scheduled monitoring path and its outbox — one more job in
 `tools/external_schedule_jobs.json`, resolving its credential exactly the way every other call

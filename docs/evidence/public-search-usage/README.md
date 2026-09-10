@@ -154,6 +154,8 @@ retroactive measurement start, so no backfill or production state edit is requir
 
 Read back `GET /stats` for the two counts and their verified instant, then compare
 the authenticated daily series and reconciliation before accepting production
-publication. The independent publication monitor must name that first stored day;
-it can continue reporting gaps that precede the newly established measurement.
-Local fixture success alone is not evidence that a production day has been stored.
+publication. The independent publication monitor must name that first stored day.
+Days that ended before measurement began are not measured, not missing: they can
+never be stored, and they must not reopen the publication card. A gap after
+measurement began is still a missed snapshot. Local fixture success alone is not
+evidence that a production day has been stored.

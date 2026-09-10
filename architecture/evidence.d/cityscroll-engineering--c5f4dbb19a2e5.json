@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c5f4dbb19a2e5",
+  "status": "implemented",
+  "fingerprint": "search-usage-measurement-horizon.v1",
+  "updated_at": "2026-09-10T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "search-usage-dated-aggregates",
+      "path": "worker/src/lib/search_usage_daily.mjs"
+    },
+    {
+      "id": "daily-snapshot-publication-monitor",
+      "path": "tools/stats_publication_monitor.mjs"
+    },
+    {
+      "id": "external-scheduler-heartbeat",
+      "path": "tools/external_schedule_runner.mjs"
+    },
+    {
+      "id": "private-stats-read-model",
+      "path": "worker/src/stats.mjs"
+    },
+    {
+      "id": "publication-monitor-tests",
+      "path": "test/stats_publication_monitor.test.mjs"
+    },
+    {
+      "id": "dated-aggregate-tests",
+      "path": "worker/test/search_usage_daily.test.mjs"
+    }
+  ]
+}

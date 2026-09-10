@@ -16,9 +16,11 @@ duplicate. The ordinary recovery path closes it once publication satisfies the d
 
 Once a stored day or verified instant exists, an absent promised day remains
 `missing-daily-aggregate` (or `frozen-publisher` when a recent verification claims success).
-The existing grace period, dated gaps, and receipt-retention arithmetic apply in this state,
-and actual failures continue through the repair classification. A verification alone cannot
-prove that the promised dated aggregate exists.
+The promised set is the closed days from `max(measured_since, retention_start)` through the
+last closed UTC day. Days before measurement began are not measured, not missing, and do not
+open a repair item. The existing grace period, dated gaps, and receipt-retention arithmetic
+apply to days inside that set, and actual failures continue through the repair classification.
+A verification alone cannot prove that the promised dated aggregate exists.
 
 Verification:
 
