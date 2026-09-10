@@ -1,0 +1,103 @@
+{
+  "schema": "cityscroll.meeting_peer_join_fixture.v1",
+  "description": "Before-and-after exact same-proceeding join for the pinned Committee on Contracts hearing. The Events feed publisher key is EventId 22691. The public InSite calendar identifies the same proceeding as meeting 1439673; that calendar number is a measured cross-reference, not the Events publisher key.",
+  "pinned_clock": "2026-09-09T12:00:00.000Z",
+  "source_contract": "nyc-council-legistar",
+  "publisher_identity": {
+    "source_system": "nyc_legistar_events",
+    "key_type": "event_id",
+    "event_id": "22691",
+    "meeting_id": "meeting:nyc_legistar_events:22691",
+    "insite_calendar": {
+      "meeting_id": "1439673",
+      "meeting_guid": "3EE38827-576A-47C0-90DF-175CC5333154",
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?ID=1439673&GUID=3EE38827-576A-47C0-90DF-175CC5333154",
+      "note": "Measured public InSite calendar identity for the same proceeding. The Events API identity is EventId 22691."
+    }
+  },
+  "before": {
+    "city_record_notices": [],
+    "expect": {
+      "visible_meeting_ids": ["meeting:nyc_legistar_events:22691"],
+      "collection_meeting_ids": ["meeting:nyc_legistar_events:22691"],
+      "city_record_relation": null,
+      "join_status": "unknown"
+    }
+  },
+  "after_exact_join": {
+    "city_record_notices": [
+      {
+        "request_id": "20260923001",
+        "agency_name": "City Council",
+        "short_title": "Committee on Contracts meeting — M/WBE Utilization and the Required Disparity Study",
+        "event_date": "2026-09-23T10:00:00.000",
+        "type_of_notice_description": "Public Hearings",
+        "section_name": "Public Hearings and Meetings"
+      }
+    ],
+    "expect": {
+      "method": "exact_date_body_tokens",
+      "meeting_ids": [
+        "meeting:city_record:20260923001",
+        "meeting:nyc_legistar_events:22691"
+      ],
+      "collection_meeting_ids": ["meeting:city_record:20260923001"],
+      "representative": "meeting:city_record:20260923001",
+      "suppressed": ["meeting:nyc_legistar_events:22691"]
+    }
+  },
+  "rejected": {
+    "date_only": {
+      "city_record_notices": [
+        {
+          "request_id": "20260923002",
+          "agency_name": "City Council",
+          "short_title": "Committee on Finance meeting",
+          "event_date": "2026-09-23T10:00:00.000"
+        }
+      ],
+      "expect_method": "date_only"
+    },
+    "title_only": {
+      "city_record_notices": [
+        {
+          "request_id": "20260924001",
+          "agency_name": "City Council",
+          "short_title": "Committee on Contracts meeting",
+          "event_date": "2026-09-24T10:00:00.000"
+        }
+      ],
+      "expect_method": "title_only"
+    },
+    "ambiguous": {
+      "extra_legistar_events": [
+        {
+          "EventId": 22692,
+          "EventBodyName": "Committee on Contracts",
+          "EventDate": "2026-09-23T00:00:00",
+          "EventTime": "1:00 PM",
+          "EventLocation": "250 Broadway - 8th Floor - Hearing Room 2"
+        }
+      ],
+      "city_record_notices": [
+        {
+          "request_id": "20260923003",
+          "agency_name": "City Council",
+          "short_title": "Committee on Contracts meeting",
+          "event_date": "2026-09-23T10:00:00.000"
+        }
+      ],
+      "expect_method": "multi_match_ambiguous"
+    },
+    "failed": {
+      "city_record_notices": [
+        {
+          "request_id": "20260923004",
+          "agency_name": "City Council",
+          "short_title": "Unrelated agency briefing"
+        }
+      ],
+      "expect_method": null
+    }
+  }
+}

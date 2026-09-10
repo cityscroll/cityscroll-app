@@ -5,22 +5,30 @@
  * Source records remain source-qualified objects. This module combines them
  * without using title/date similarity as identity and carries source
  * freshness alongside the rows so a missing or old board snapshot cannot look
- * like an empty, complete feed.
+ * like an empty, complete feed. Exact same-proceeding joins never overwrite a
+ * publisher identity; collection visibility is a separate flag.
  */
 
 import {
   normalizeCityRecordMeeting,
   normalizeCommunityBoardMeeting,
+  normalizeNycLegistarEventsMeeting,
 } from "./meeting_object_contract.mjs";
 import {
   attachMeetingDocuments,
   normalizeMeetingDocument,
 } from "./meeting_document.mjs";
+import {
+  applySameProceedingJoins,
+  collectionVisibilityOf,
+  MEETING_COLLECTION_SUPPRESSED,
+} from "./meeting_same_proceeding.mjs";
 
 export const SHARED_MEETING_READ_MODEL_SCHEMA = "cityscroll.shared_meeting_read_model.v1";
 export const MEETING_READ_MODEL_SCHEMA = SHARED_MEETING_READ_MODEL_SCHEMA;
 export const SHARED_MEETING_READ_MODEL_VERSION = 1;
 export const COMMUNITY_BOARD_MAX_AGE_MS = 36 * 60 * 60 * 1000;
+export const NYC_LEGISTAR_EVENTS_MAX_AGE_MS = 36 * 60 * 60 * 1000;
 
 const CITY_RECORD_SOURCE_URL = "https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx";
 
@@ -73,7 +81,8 @@ function freshnessStatus(generatedAt, now, maxAgeMs) {
 }
 
 function sourceEnvelope({ source, generatedAt, now, maxAgeMs, rows, index, reason }) {
-  const status = source === "community_board"
+  const timed = source === "community_board" || source === "nyc_legistar_events";
+  const status = timed
     ? (!index ? "unavailable" : freshnessStatus(generatedAt, now, maxAgeMs))
     : (rows.length ? "available" : "available");
   return {
@@ -81,9 +90,9 @@ function sourceEnvelope({ source, generatedAt, now, maxAgeMs, rows, index, reaso
     status,
     available: status === "available",
     generated_at: generatedAt || null,
-    max_age_ms: source === "community_board" ? maxAgeMs : null,
+    max_age_ms: timed ? maxAgeMs : null,
     row_count: rows.length,
-    reason: reason || (!index && source === "community_board" ? "snapshot_missing" : null),
+    reason: reason || (!index && timed ? "snapshot_missing" : null),
     coverage: index?.coverage || null,
     // Per-board coverage travels with the envelope so a reader asking about one
     // board can be told whether that board's source was read, read and empty,
@@ -109,10 +118,14 @@ function meetingOutcomeFor(row, source, meetingOutcomes) {
   };
 }
 
+function normalizeProducer(row, source) {
+  if (source === "city_record") return normalizeCityRecordMeeting(row);
+  if (source === "nyc_legistar_events") return normalizeNycLegistarEventsMeeting(row);
+  return normalizeCommunityBoardMeeting(row);
+}
+
 function normalizeRecord(row, source, observedAt, meetingOutcomes) {
-  const normalized = source === "city_record"
-    ? normalizeCityRecordMeeting(row)
-    : normalizeCommunityBoardMeeting(row);
+  const normalized = normalizeProducer(row, source);
   const receipt = sourceReceipt({ ...row, ...normalized }, source, observedAt);
   const record = {
     ...row,
@@ -219,22 +232,36 @@ function materializeMeetingDetails(row, checkedAt) {
 }
 
 /**
- * Normalize and combine both meeting producers into one bounded read model.
+ * Normalize and combine admitted meeting producers into one bounded read model.
  * `communityBoardIndex` is deliberately optional: absence becomes an
  * explicit unavailable source state and never causes a broad fallback query.
+ * `nycLegistarEventsIndex` is omitted from production snapshots until a later
+ * publication rung; tests pass it to prove identity, join, and freshness.
  */
 export function buildSharedMeetingReadModel({
   cityRecordRows = [],
   communityBoardIndex = null,
+  nycLegistarEventsIndex = undefined,
   meetingOutcomes = null,
   generatedAt = null,
   now = generatedAt || new Date().toISOString(),
   communityBoardMaxAgeMs = COMMUNITY_BOARD_MAX_AGE_MS,
+  nycLegistarEventsMaxAgeMs = NYC_LEGISTAR_EVENTS_MAX_AGE_MS,
 } = {}) {
   const cityRows = dedupeRows(asRows(cityRecordRows).map((row) => normalizeRecord(row, "city_record", generatedAt || now, meetingOutcomes)));
   const boardRows = dedupeRows(asRows(communityBoardIndex?.rows)
     .filter((row) => row.source_system === "community_board" || !row.source_system)
     .map((row) => normalizeRecord(row, "community_board", communityBoardIndex?.generated_at || generatedAt || now)));
+  const includeLegistar = nycLegistarEventsIndex !== undefined;
+  const rawLegistarRows = includeLegistar
+    ? dedupeRows(asRows(nycLegistarEventsIndex?.rows || nycLegistarEventsIndex?.meetings)
+      .map((row) => normalizeRecord(row, "nyc_legistar_events", nycLegistarEventsIndex?.generated_at || generatedAt || now)))
+    : [];
+  const joined = includeLegistar
+    ? applySameProceedingJoins(cityRows, rawLegistarRows)
+    : { cityRows, legistarRows: rawLegistarRows, relations: [] };
+  const joinedCityRows = joined.cityRows;
+  const legistarRows = joined.legistarRows;
   const boardGeneratedAt = communityBoardIndex?.generated_at || null;
   const boardStatus = sourceEnvelope({
     source: "community_board",
@@ -249,18 +276,54 @@ export function buildSharedMeetingReadModel({
     generatedAt,
     now,
     maxAgeMs: null,
-    rows: cityRows,
+    rows: joinedCityRows,
     index: null,
   });
+  const legistarGeneratedAt = includeLegistar ? (nycLegistarEventsIndex?.generated_at || null) : null;
+  const legistarStatus = includeLegistar
+    ? sourceEnvelope({
+      source: "nyc_legistar_events",
+      generatedAt: legistarGeneratedAt,
+      now,
+      maxAgeMs: nycLegistarEventsMaxAgeMs,
+      rows: legistarRows,
+      index: nycLegistarEventsIndex,
+    })
+    : null;
+  const catalogRows = [...joinedCityRows, ...boardRows, ...legistarRows];
   const suppliedDocuments = [
-    ...cityRows.flatMap((row) => row.meeting_documents || []),
+    ...joinedCityRows.flatMap((row) => row.meeting_documents || []),
     ...(Array.isArray(communityBoardIndex?.meeting_documents)
       ? communityBoardIndex.meeting_documents
       : boardRows.flatMap((row) => row.meeting_documents || [])),
+    ...legistarRows.flatMap((row) => row.meeting_documents || []),
   ];
-  const documentJoin = attachMeetingDocuments([...cityRows, ...boardRows], suppliedDocuments, { asOf: now });
+  const documentJoin = attachMeetingDocuments(catalogRows, suppliedDocuments, { asOf: now });
   const rows = documentJoin.meetings.map((row) => materializeMeetingDetails(row, now)).sort(dateSort);
-  const generated = generatedAt || boardGeneratedAt || null;
+  const generated = generatedAt || boardGeneratedAt || legistarGeneratedAt || null;
+  const freshnessSources = {
+    city_record: cityStatus.status,
+    community_board: boardStatus.status,
+    ...(legistarStatus ? { nyc_legistar_events: legistarStatus.status } : {}),
+  };
+  const sources = {
+    city_record: cityStatus,
+    community_board: boardStatus,
+    ...(legistarStatus ? { nyc_legistar_events: legistarStatus } : {}),
+  };
+  const counts = {
+    total: rows.length,
+    city_record: joinedCityRows.length,
+    community_board: boardRows.length,
+    meeting_documents: documentJoin.documents.length,
+    attached_meeting_documents: documentJoin.attached_documents.length,
+    ...(includeLegistar ? {
+      nyc_legistar_events: legistarRows.length,
+      collection: rows.filter((row) => collectionVisibilityOf(row) !== MEETING_COLLECTION_SUPPRESSED).length,
+      suppressed: rows.filter((row) => collectionVisibilityOf(row) === MEETING_COLLECTION_SUPPRESSED).length,
+      same_proceeding: joined.relations.length,
+    } : {}),
+  };
   return {
     schema: SHARED_MEETING_READ_MODEL_SCHEMA,
     version: SHARED_MEETING_READ_MODEL_VERSION,
@@ -268,22 +331,11 @@ export function buildSharedMeetingReadModel({
     freshness: {
       generated_at: generated,
       checked_at: now,
-      sources: {
-        city_record: cityStatus.status,
-        community_board: boardStatus.status,
-      },
+      sources: freshnessSources,
     },
-    sources: {
-      city_record: cityStatus,
-      community_board: boardStatus,
-    },
-    counts: {
-      total: rows.length,
-      city_record: cityRows.length,
-      community_board: boardRows.length,
-      meeting_documents: documentJoin.documents.length,
-      attached_meeting_documents: documentJoin.attached_documents.length,
-    },
+    sources,
+    counts,
+    ...(includeLegistar ? { same_proceeding: joined.relations } : {}),
     rows,
     // `hearings` keeps the existing Worker/feed payload vocabulary while the
     // canonical rows and source envelope remain the shared contract.
@@ -301,6 +353,15 @@ export function meetingReadModelSourceStatus(value, source = "community_board") 
 
 export function isMeetingReadModelFresh(value, source = "community_board") {
   return meetingReadModelSourceStatus(value, source) === "available";
+}
+
+/**
+ * Collection projection: one representative per exact same-proceeding join.
+ * Every source-qualified meeting_id remains in `rows` for permalinks.
+ */
+export function meetingCollectionRows(value) {
+  return meetingReadModelRows(value)
+    .filter((row) => collectionVisibilityOf(row) !== MEETING_COLLECTION_SUPPRESSED);
 }
 
 export { CITY_RECORD_SOURCE_URL };

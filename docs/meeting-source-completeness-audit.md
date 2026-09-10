@@ -7,19 +7,23 @@ source seam, materialized representation, meeting-document use, search use,
 alert use, and final disposition. The focused contract test fails when a row is
 missing any of those decisions.
 
-This audit distinguishes two source-qualified meeting producers from one joined
-enrichment source:
+This audit distinguishes three source-qualified meeting producers. Agenda
+items, votes, and attachments still enrich a City Record meeting in
+`meeting-outcomes` after the measured date-and-body join; the Events feed
+EventId is also a standalone meeting identity in the shared contract:
 
 | Producer | Role | Identity boundary | Public source |
 | --- | --- | --- | --- |
 | `city_record` | Meeting producer | Exact City Record `request_id` | [City Record Online](https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx) |
 | `community_board` | Meeting producer | Exact board publisher event identifier | [NYC community boards](https://www.nyc.gov/site/communityboards/index.page) and the per-board URLs recorded in [`board_source_inventory.json`](../site/data/non_council_outcome_sources/board_source_inventory.json) |
-| `legistar` | Council outcome enrichment | Exact event identity only after the measured date-and-body join to a City Record notice | [NYC Council Legistar calendar](https://nyc.legistar.com/Calendar.aspx) and the authenticated [Legistar API](https://webapi.legistar.com/v1/nyc) |
+| `legistar` | Meeting producer | Exact Events feed `EventId` (`meeting:nyc_legistar_events:<EventId>`). An exact date-and-body City Record join records a same-proceeding relation without replacing either identifier. | [NYC Council Legistar calendar](https://nyc.legistar.com/Calendar.aspx) and the authenticated [Legistar API](https://webapi.legistar.com/v1/nyc) |
 
-Legistar is deliberately not a third standalone `meeting_id` namespace. Its
-events, agenda items, votes, and attachments enrich a strictly joined City
-Record meeting in `meeting-outcomes`; unmatched events remain explicit and do
-not supply cross-source values to the shared meeting object.
+A later City Record notice that satisfies the existing exact date-and-body join
+does not overwrite either meeting identifier. Collections show one
+representative and prefer the City Record object when that join exists; both
+permalinks stay resolvable. Date-only, title-only, ambiguous, or failed
+candidates remain separate. Search, alert, calendar, and resident-surface
+publication of unmatched Legistar meetings remain later work.
 
 ## Source-to-surface summary
 

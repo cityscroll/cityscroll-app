@@ -9,8 +9,16 @@ import {
   meetingRouteLinks,
   normalizeCityRecordMeeting,
   normalizeCommunityBoardMeeting,
+  normalizeNycLegistarEventsMeeting,
   resolveMeetingRoute,
 } from "../site/meeting_object_contract.mjs";
+
+const upcomingFixture = JSON.parse(
+  readFileSync(new URL("./fixtures/legistar/upcoming_contracts_22691.json", import.meta.url), "utf8"),
+);
+const peerIdentityFixture = JSON.parse(
+  readFileSync(new URL("./fixtures/legistar/peer_meeting_identity.json", import.meta.url), "utf8"),
+);
 import {
   auditMeetingSourceCompleteness,
   MEETING_SOURCE_COMPLETENESS,
@@ -53,7 +61,36 @@ test("meeting is a registered source-qualified semantic object", () => {
   assert.deepEqual(meeting?.identity_contract?.source_keys, [
     "city_record:request_id",
     "community_board:publisher_event_id",
+    "nyc_legistar_events:event_id",
   ]);
+});
+
+test("Events feed EventId is the Legistar publisher key and InSite calendar id is a cross-reference", () => {
+  const eventId = String(upcomingFixture.event.EventId);
+  const record = normalizeNycLegistarEventsMeeting({
+    ...upcomingFixture.event,
+    insite_calendar: upcomingFixture.insite_calendar,
+    description: upcomingFixture.event_items[0].EventItemTitle,
+  });
+  assert.equal(eventId, peerIdentityFixture.publisher_identity.event_id);
+  assert.equal(record.meeting_id, `meeting:nyc_legistar_events:${eventId}`);
+  assert.equal(record.meeting_id, peerIdentityFixture.publisher_identity.meeting_id);
+  assert.equal(record.source_system, "nyc_legistar_events");
+  assert.equal(record.source_keys[0].key_type, "event_id");
+  assert.equal(record.source_keys[0].value, eventId);
+  assert.equal(record.event_id, eventId);
+  assert.equal(record.meeting_origin, "nyc_legistar_events_observed");
+  assert.equal(record.join_status, "unknown");
+  assert.notEqual(record.meeting_id, "meeting:nyc_legistar_events:1439673");
+  assert.equal(String(upcomingFixture.insite_calendar.meeting_id), "1439673");
+  assert.equal(record.publisher_cross_references[0].kind, "insite_calendar");
+  assert.equal(record.publisher_cross_references[0].meeting_id, "1439673");
+  assert.equal(
+    record.publisher_cross_references[0].meeting_guid,
+    upcomingFixture.insite_calendar.meeting_guid,
+  );
+  assert.equal(meetingCanonicalHref(record), "/meetings/meeting%3Anyc_legistar_events%3A22691");
+  assert.equal(resolveMeetingRoute(record.source_url, [record]).meeting_id, record.meeting_id);
 });
 
 test("both producers preserve their exact source key in one shared object shape", () => {
@@ -96,8 +133,27 @@ test("both producers preserve their exact source key in one shared object shape"
   assert.equal(board.institution_refs.agency_ref, null);
   assert.equal(board.institution_refs.board_ref, "community-board:brooklyn-cb-06");
   assert.equal(board.join_status, "unknown");
+  const legistar = normalizeNycLegistarEventsMeeting({
+    EventId: 22691,
+    EventBodyName: "Committee on Contracts",
+    EventDate: "2026-09-23T00:00:00",
+    EventTime: "10:00 AM",
+    EventLocation: "250 Broadway - 8th Floor - Hearing Room 2",
+  });
+  for (const record of [cityRecord, board, legistar]) {
+    assert.equal(record.object_type, "meeting");
+    assert.equal(record.schema, MEETING_OBJECT_SCHEMA);
+    assert.ok(record.meeting_id.startsWith("meeting:"));
+    assert.ok(record.source_keys.length === 1);
+    assert.ok(record.publisher_identifier);
+  }
+  assert.equal(legistar.meeting_id, meetingIdForSource("nyc_legistar_events", "22691"));
+  assert.equal(legistar.source_keys[0].key_type, "event_id");
+  assert.equal(legistar.event_date, "2026-09-23T10:00:00");
+  assert.equal(legistar.committee.name, "Committee on Contracts");
   assert.equal(cityRecord.meeting_family, "descriptive_meeting_v0");
   assert.equal(board.meeting_family, "community_board_meeting_v0");
+  assert.equal(legistar.meeting_family, "descriptive_meeting_v0");
 });
 
 test("explicit rulemaking family survives canonical meeting normalization", () => {
@@ -128,6 +184,7 @@ test("City Record notice fields stay on the normalized materialized meeting", ()
 
 test("identity never falls back to title/date and missing institutions stay honest", () => {
   assert.throws(() => meetingIdForSource("community_board", ""), /publisher_event_id is required/);
+  assert.throws(() => meetingIdForSource("nyc_legistar_events", ""), /event_id is required/);
   const missingKey = normalizeCommunityBoardMeeting({ title: "Same title", event_date: "2026-08-20" });
   assert.equal(missingKey.meeting_id, null);
   assert.deepEqual(missingKey.source_keys, []);
@@ -135,6 +192,17 @@ test("identity never falls back to title/date and missing institutions stay hone
   const second = normalizeCommunityBoardMeeting({ source_record_id: "event-2", title: "Same title", event_date: "2026-08-20" });
   assert.notEqual(first.meeting_id, second.meeting_id);
   assert.deepEqual(first.institution_refs, { agency_ref: null, board_ref: null });
+  const left = normalizeNycLegistarEventsMeeting({
+    EventId: 22691,
+    EventBodyName: "Committee on Contracts",
+    EventDate: "2026-09-23T00:00:00",
+  });
+  const right = normalizeNycLegistarEventsMeeting({
+    EventId: 22692,
+    EventBodyName: "Committee on Contracts",
+    EventDate: "2026-09-23T00:00:00",
+  });
+  assert.notEqual(left.meeting_id, right.meeting_id);
 });
 
 test("canonical route retains notice aliases and publisher provenance", () => {

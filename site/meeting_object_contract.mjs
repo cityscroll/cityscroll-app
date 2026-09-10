@@ -1,10 +1,10 @@
 /**
  * Shared first-class meeting object contract.
  *
- * City Record and community-board publishers have different source keys. The
- * source-qualified meeting id is deliberately not a dedupe key: an exact
- * publisher join may relate two objects later, but title/date similarity never
- * creates one.
+ * City Record, community-board, and NYC Council Legistar Events publishers have
+ * different source keys. The source-qualified meeting id is deliberately not a
+ * dedupe key: an exact publisher join may relate two objects later, but
+ * title/date similarity never creates one.
  */
 
 import { resolveMeetingFamily } from "./meeting_process_profile.mjs";
@@ -14,6 +14,7 @@ export const MEETING_OBJECT_SCHEMA = "cityscroll.meeting_object.v1";
 export const MEETING_SOURCE_SYSTEMS = Object.freeze([
   "city_record",
   "community_board",
+  "nyc_legistar_events",
 ]);
 
 export const MEETING_JOIN_STATUSES = Object.freeze([
@@ -27,6 +28,7 @@ export const MEETING_JOIN_STATUSES = Object.freeze([
 const SOURCE_KEY_TYPES = Object.freeze({
   city_record: "request_id",
   community_board: "publisher_event_id",
+  nyc_legistar_events: "event_id",
 });
 
 function requiredText(value, label) {
@@ -70,6 +72,38 @@ function joinStatus(row, source) {
     throw new TypeError(`unsupported meeting join status: ${value}`);
   }
   return value;
+}
+
+function publisherIdFor(source, row) {
+  if (source === "city_record") return row.request_id;
+  if (source === "nyc_legistar_events") {
+    return row.event_id
+      || row.EventId
+      || row.identity?.event_id
+      || row.source_record_id
+      || row.record_id;
+  }
+  return row.source_record_id || row.record_id;
+}
+
+function publisherCrossReferences(row) {
+  if (Array.isArray(row.publisher_cross_references) && row.publisher_cross_references.length) {
+    return row.publisher_cross_references;
+  }
+  const insite = row.insite_calendar;
+  if (!insite || typeof insite !== "object") return null;
+  const meetingId = optionalText(insite.meeting_id);
+  const meetingGuid = optionalText(insite.meeting_guid);
+  const url = safeHttps(insite.url);
+  if (!meetingId && !meetingGuid && !url) return null;
+  return [{
+    kind: "insite_calendar",
+    meeting_id: meetingId,
+    meeting_guid: meetingGuid,
+    url,
+    note: optionalText(insite.note)
+      || "Measured public InSite calendar identity; the Events feed EventId remains the publisher key.",
+  }];
 }
 
 function institutionRefs(row, source) {
@@ -169,7 +203,7 @@ export function normalizeMeetingObject(row = {}) {
   const source = sourceSystem(row.source_system);
   const sourceId = row.publisher_identifier
     || row.source_id
-    || (source === "city_record" ? row.request_id : row.source_record_id || row.record_id);
+    || publisherIdFor(source, row);
   const key = optionalText(sourceId) ? sourceKey(source, sourceId) : null;
   const meetingId = key ? meetingIdForSource(source, key.value) : null;
   const sourceHref = sourceUrl(row);
@@ -219,9 +253,19 @@ export function normalizeMeetingObject(row = {}) {
     // These aliases keep the existing hearing lens readable while migration
     // to meeting_id proceeds. They are not identity fields.
     request_id: requestId,
-    source_record_id: source === "community_board"
+    source_record_id: source === "community_board" || source === "nyc_legistar_events"
       ? optionalText(row.source_record_id || row.record_id || key?.value) : null,
     board_id: boardId,
+    ...(source === "nyc_legistar_events" ? { event_id: key?.value || null } : {}),
+    ...(source === "nyc_legistar_events"
+      ? { publisher_cross_references: publisherCrossReferences(row) }
+      : {}),
+    ...(row.same_proceeding && typeof row.same_proceeding === "object"
+      ? { same_proceeding: row.same_proceeding }
+      : {}),
+    ...(optionalText(row.collection_visibility)
+      ? { collection_visibility: optionalText(row.collection_visibility) }
+      : {}),
   };
 }
 
@@ -242,6 +286,70 @@ export function normalizeCommunityBoardMeeting(row = {}) {
     source_system: "community_board",
     publisher_identifier: row.publisher_identifier || row.source_record_id || row.record_id,
     source_url: row.source_url || row.record_url,
+  });
+}
+
+function legistarPublisherDate(row) {
+  const explicit = optionalText(row.event_date || row.wall_time);
+  if (explicit) return explicit;
+  const day = String(row.EventDate || row.date || "").slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) return null;
+  const timeValue = optionalText(row.EventTime);
+  if (!timeValue) return day;
+  const clock = timeValue.match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)?$/i);
+  if (!clock) return day;
+  let hour = Number(clock[1]);
+  const suffix = String(clock[4] || "").toUpperCase();
+  if (suffix === "AM" && hour === 12) hour = 0;
+  if (suffix === "PM" && hour < 12) hour += 12;
+  if (hour > 23) return day;
+  return `${day}T${String(hour).padStart(2, "0")}:${clock[2]}:${clock[3] || "00"}`;
+}
+
+function legistarTitle(row) {
+  return optionalText(row.title)
+    || optionalText(row.EventBodyName)
+    || optionalText(row.governing_body?.name)
+    || optionalText(row.committee?.name)
+    || "Meeting";
+}
+
+/**
+ * Normalize one NYC Council Legistar Events record into the shared meeting
+ * object. The publisher key is the authenticated Events feed EventId, never a
+ * public InSite calendar meeting number recorded as a cross-reference.
+ */
+export function normalizeNycLegistarEventsMeeting(row = {}) {
+  const eventId = row.publisher_identifier
+    || row.event_id
+    || row.EventId
+    || row.identity?.event_id
+    || row.source_id
+    || row.source_record_id
+    || row.record_id;
+  const sourceUrl = row.source_url
+    || row.url
+    || row.EventInSiteURL
+    || (optionalText(eventId)
+      ? `https://nyc.legistar.com/MeetingDetail.aspx?LEGID=${encodeURIComponent(String(eventId).trim())}`
+      : null);
+  const venue = row.venue && typeof row.venue === "object"
+    ? row.venue
+    : (optionalText(row.EventLocation) ? { address: optionalText(row.EventLocation) } : null);
+  const committee = row.committee
+    || row.governing_body
+    || (optionalText(row.EventBodyName) ? { name: optionalText(row.EventBodyName) } : null);
+  return normalizeMeetingObject({
+    ...row,
+    source_system: "nyc_legistar_events",
+    publisher_identifier: eventId,
+    source_url: sourceUrl,
+    title: legistarTitle(row),
+    event_date: legistarPublisherDate(row),
+    venue,
+    committee,
+    description: row.description || row.agenda?.search_text || row.EventComment,
+    meeting_origin: row.meeting_origin || "nyc_legistar_events_observed",
   });
 }
 
