@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import test from "node:test";
 
@@ -16,24 +16,32 @@ import {
   CONTRACT_PATH,
   FAILING_STAGES,
   PUBLICATION_CYCLE_EXTENSION_VERSION,
+  PUBLICATION_RECEIPT_SCHEMA,
   classifyPublicationEvent,
+  consecutiveUnattendedPublicationCycles,
   evaluatePublicationCycle,
   independentWatchdogFinding,
+  isQualifyingUnattendedPublicationReceipt,
   loadPublicationCycleContract,
+  publicationReceiptQualificationFindings,
   retainLastSuccess,
   cycleClock,
 } from "../tools/desk_health_publication_cycle.mjs";
 import {
   EVIDENCE_DIR_RELATIVE,
   HISTORICAL_ENVELOPE_NAME,
+  PUBLICATION_RECEIPT_ZIP_PATH,
   SCHEMA as PRODUCTION_OBSERVATION_SCHEMA,
   captureDeskPublicationProductionRead,
   checkRetainedProductionObservations,
+  datedEnvelopeName,
   evaluateProductionObservationCurrency,
   evidenceDir,
   loadNewestDatedProductionObservation,
+  publicationReceiptArtifactName,
   scheduledCyclesFromObservation,
 } from "../tools/capture_desk_publication_production_read.mjs";
+import { zipJsonFiles } from "../tools/lib/zip_json.mjs";
 
 const NOW = "2026-09-06T12:00:00.000Z";
 const contract = loadPublicationCycleContract();
@@ -337,6 +345,20 @@ test("production watchdog evidence is a live read and isolated fixtures stay lab
   assert.equal(production.isolated, false);
   assert.equal(production.consecutive_unattended_observer_cycles.length, 2);
   assert.ok(production.consecutive_unattended_observer_cycles.every((row) => row.event === "schedule"));
+  assert.ok(Array.isArray(production.consecutive_unattended_publication_cycles));
+  if (production.consecutive_unattended_publication_cycles.length) {
+    assert.deepEqual(
+      production.consecutive_unattended_publication_cycles,
+      consecutiveUnattendedPublicationCycles(production.consecutive_unattended_publication_cycles),
+    );
+    assert.ok(production.consecutive_unattended_publication_cycles.every(isQualifyingUnattendedPublicationReceipt));
+  } else {
+    assert.match(production.publication_receipt_retention.empty_reason, /retain|receipt|clock|event/i);
+  }
+  assert.equal(
+    existsSync(join(ROOT, EVIDENCE_DIR_RELATIVE, "production-watchdog-read-2026-09-10.json")),
+    true,
+  );
   const lastSuccess = production.publication_dependency_and_backlog.scheduled_pages_publication.last_successful_scheduled_run;
   assert.equal(lastSuccess.event, "schedule");
   assert.equal(lastSuccess.conclusion, "success");
@@ -378,6 +400,7 @@ function stubProductionFetch({
   pages,
   watchdogs,
   refresh = [],
+  artifactZips = {},
   scheduler = { status: 200, body: { ok: true, scheduler_ok: true, publication_ok: true, failing_stage: null, alert: null, publication_heartbeat: { workflow: "Deploy Cloudflare Pages", run_id: "1003", result: "succeeded" } } },
   destination = { status: 302, location: "https://cityscroll-desk.cloudflareaccess.com/cdn-cgi/access/login/desk.cityscroll.org?meta=secret" },
   adminKey = "specimen-admin-key",
@@ -395,6 +418,28 @@ function stubProductionFetch({
     if (parsed.pathname.includes("first-class-refresh.yml/runs")) {
       return jsonResponse({ workflow_runs: refresh });
     }
+    const runArtifacts = parsed.pathname.match(/\/actions\/runs\/([^/]+)\/artifacts$/);
+    if (runArtifacts) {
+      const runId = runArtifacts[1];
+      const zip = artifactZips[runId];
+      return jsonResponse({
+        artifacts: zip
+          ? [{ id: Number(runId), name: publicationReceiptArtifactName(runId), expired: false }]
+          : [],
+      });
+    }
+    const artifactZip = parsed.pathname.match(/\/actions\/artifacts\/([^/]+)\/zip$/);
+    if (artifactZip) {
+      const zip = artifactZips[artifactZip[1]];
+      if (!zip) return jsonResponse({ message: "Not Found" }, 404);
+      return {
+        ok: true,
+        status: 200,
+        headers: { get() { return ""; } },
+        async json() { return {}; },
+        async arrayBuffer() { return zip; },
+      };
+    }
     if (parsed.pathname === "/admin/reliability/scheduler") {
       assert.equal(options.headers?.Authorization, `Bearer ${adminKey}`);
       return jsonResponse(scheduler.body, scheduler.status);
@@ -405,6 +450,59 @@ function stubProductionFetch({
     throw new Error(`unexpected fetch ${url}`);
   };
   return { fetchImpl, calls };
+}
+
+function qualifyingPublicationReceipt(id, {
+  monitor,
+  observation,
+  publication,
+  event = "schedule",
+  isolated = false,
+  failingStage = null,
+  extras = {},
+} = {}) {
+  return {
+    schema: PUBLICATION_RECEIPT_SCHEMA,
+    isolated,
+    event,
+    run_identity: String(id),
+    destination: "https://desk.cityscroll.org/data-sources",
+    evidence_revision: `rev-${id}`,
+    failing_stage: failingStage,
+    clocks: {
+      last_monitor_attempt: { at: monitor, state: "KNOWN", basis: "monitor-attempt" },
+      last_successful_observation: { at: observation, state: "KNOWN", basis: "successful-observation" },
+      evidence_revision: `rev-${id}`,
+      last_successful_desk_publication: { at: publication, state: "KNOWN", basis: "successful-desk-publication" },
+    },
+    ...extras,
+  };
+}
+
+function collapsedPublicationReceipt(id, at) {
+  return {
+    schema: PUBLICATION_RECEIPT_SCHEMA,
+    isolated: false,
+    run_identity: String(id),
+    destination: {
+      operator_visible: "https://desk.cityscroll.org/data-sources",
+      artifact: "docs/data-source-graph.json",
+    },
+    evidence_revision: `rev-${id}`,
+    failing_stage: null,
+    clocks: {
+      last_monitor_attempt: { at, state: "KNOWN", basis: "pages-build-monitor-attempt" },
+      last_successful_observation: { at, state: "KNOWN", basis: "successful-observation" },
+      evidence_revision: `rev-${id}`,
+      last_successful_desk_publication: { at, state: "KNOWN", basis: "successful-desk-publication" },
+    },
+    workflow: "Deploy Cloudflare Pages",
+    result: "succeeded",
+  };
+}
+
+function artifactZipFor(receipt) {
+  return zipJsonFiles([{ name: PUBLICATION_RECEIPT_ZIP_PATH, json: receipt }]);
 }
 
 test("production observation capture is deterministic given injected inputs and never records credentials", async () => {
@@ -429,6 +527,9 @@ test("production observation capture is deterministic given injected inputs and 
   assert.deepEqual(first, second);
   assert.equal(first.publication_dependency_and_backlog.scheduled_pages_publication.last_successful_scheduled_run.run_id, "1003");
   assert.equal(first.publication_dependency_and_backlog.scheduled_pages_publication.consecutive_successful_scheduled_runs.length, 3);
+  assert.deepEqual(first.consecutive_unattended_publication_cycles, []);
+  assert.equal(first.publication_receipt_retention.retrieved_count, 0);
+  assert.match(first.publication_receipt_retention.empty_reason, /No per-run/);
   assert.equal(first.watchdog_read.publication_ok, true);
   assert.equal(first.publication_dependency_and_backlog.private_destination_check.access_protected, true);
   const serialized = JSON.stringify(first);
@@ -461,4 +562,163 @@ test("a stale envelope older than the two most recent scheduled cycles is report
   });
   assert.equal(againstNewest.status, "stale");
   assert.notEqual(againstNewest.status, "zero-successes");
+});
+
+test("the publication-cycle reader accepts only retained receipts with ordered clocks, a two-hour window, 26-hour consecutiveness, unique run identity, and schedule events", () => {
+  const first = qualifyingPublicationReceipt("1001", {
+    monitor: "2026-09-07T10:00:00.000Z",
+    observation: "2026-09-07T10:10:00.000Z",
+    publication: "2026-09-07T10:25:00.000Z",
+  });
+  const second = qualifyingPublicationReceipt("1002", {
+    monitor: "2026-09-08T10:00:00.000Z",
+    observation: "2026-09-08T10:10:00.000Z",
+    publication: "2026-09-08T10:25:00.000Z",
+  });
+  const third = qualifyingPublicationReceipt("1003", {
+    monitor: "2026-09-09T10:00:00.000Z",
+    observation: "2026-09-09T10:10:00.000Z",
+    publication: "2026-09-09T10:25:00.000Z",
+  });
+  const accepted = consecutiveUnattendedPublicationCycles([third, first, second]);
+  assert.deepEqual(accepted, [first, second, third]);
+  assert.ok(accepted.every(isQualifyingUnattendedPublicationReceipt));
+  assert.equal(new Set(accepted.map((row) => row.run_identity)).size, 3);
+  assert.ok(accepted.every((row) => row.event === "schedule"));
+
+  const inverted = qualifyingPublicationReceipt("2001", {
+    monitor: "2026-09-09T10:30:00.000Z",
+    observation: "2026-09-09T10:10:00.000Z",
+    publication: "2026-09-09T10:25:00.000Z",
+  });
+  assert.ok(publicationReceiptQualificationFindings(inverted).some((item) => /ordered/.test(item)));
+
+  const latePublication = qualifyingPublicationReceipt("2002", {
+    monitor: "2026-09-09T10:00:00.000Z",
+    observation: "2026-09-09T10:10:00.000Z",
+    publication: "2026-09-09T13:10:00.000Z",
+  });
+  assert.ok(publicationReceiptQualificationFindings(latePublication).some((item) => /two hours/.test(item)));
+
+  const pushEvent = qualifyingPublicationReceipt("2003", {
+    monitor: "2026-09-09T10:00:00.000Z",
+    observation: "2026-09-09T10:10:00.000Z",
+    publication: "2026-09-09T10:25:00.000Z",
+    event: "push",
+  });
+  assert.ok(publicationReceiptQualificationFindings(pushEvent).some((item) => /event=schedule/.test(item)));
+
+  const collapsed = collapsedPublicationReceipt("2004", "2026-09-09T14:48:21.111Z");
+  const collapsedFindings = publicationReceiptQualificationFindings(collapsed);
+  assert.ok(collapsedFindings.some((item) => /event=schedule/.test(item)));
+  assert.ok(collapsedFindings.some((item) => /collapses collection and publication/.test(item)));
+  assert.equal(isQualifyingUnattendedPublicationReceipt(collapsed), false);
+
+  const gapAfterSecond = qualifyingPublicationReceipt("1004", {
+    monitor: "2026-09-11T12:00:00.000Z",
+    observation: "2026-09-11T12:10:00.000Z",
+    publication: "2026-09-11T12:25:00.000Z",
+  });
+  assert.deepEqual(
+    consecutiveUnattendedPublicationCycles([first, second, gapAfterSecond]),
+    [gapAfterSecond],
+  );
+
+  const duplicate = qualifyingPublicationReceipt("1003", {
+    monitor: "2026-09-09T11:00:00.000Z",
+    observation: "2026-09-09T11:10:00.000Z",
+    publication: "2026-09-09T11:25:00.000Z",
+  });
+  const unique = consecutiveUnattendedPublicationCycles([first, second, third, duplicate]);
+  assert.equal(unique.filter((row) => row.run_identity === "1003").length, 1);
+});
+
+test("production observation capture emits retained publication receipts verbatim and leaves the array empty when clocks are collapsed", async () => {
+  const pages = [
+    githubRun(1003, { created_at: "2026-09-09T14:31:29Z", head_sha: "bdd8f02b7a7352a45ca66cbb523c8240f7c68fb2" }),
+    githubRun(1002, { created_at: "2026-09-08T14:30:10Z", head_sha: "67adff8bb8331df0cdfd3be1ee380815206f0b0e" }),
+    githubRun(1001, { created_at: "2026-09-07T15:48:33Z", head_sha: "1113e0eeb6cee1b79145c9c4cee07e267e03e076" }),
+  ];
+  const watchdogs = [
+    githubRun(2002, { created_at: "2026-09-10T01:29:04Z" }),
+    githubRun(2001, { created_at: "2026-09-09T23:31:02Z" }),
+  ];
+  const qualifying = [
+    qualifyingPublicationReceipt("1001", {
+      monitor: "2026-09-07T15:50:00.000Z",
+      observation: "2026-09-07T16:00:00.000Z",
+      publication: "2026-09-07T16:05:00.000Z",
+      extras: { workflow: "Deploy Cloudflare Pages" },
+    }),
+    qualifyingPublicationReceipt("1002", {
+      monitor: "2026-09-08T14:40:00.000Z",
+      observation: "2026-09-08T15:00:00.000Z",
+      publication: "2026-09-08T15:10:00.000Z",
+      extras: { workflow: "Deploy Cloudflare Pages" },
+    }),
+    qualifyingPublicationReceipt("1003", {
+      monitor: "2026-09-09T14:40:00.000Z",
+      observation: "2026-09-09T14:50:00.000Z",
+      publication: "2026-09-09T14:55:00.000Z",
+      extras: { workflow: "Deploy Cloudflare Pages" },
+    }),
+  ];
+  const { fetchImpl } = stubProductionFetch({
+    pages,
+    watchdogs,
+    artifactZips: {
+      1001: artifactZipFor(qualifying[0]),
+      1002: artifactZipFor(qualifying[1]),
+      1003: artifactZipFor(qualifying[2]),
+    },
+  });
+  const envelope = await captureDeskPublicationProductionRead({
+    now: "2026-09-10T12:00:00.000Z",
+    fetchImpl,
+    adminKey: "specimen-admin-key",
+    githubToken: "specimen-github-token",
+  });
+  assert.equal(envelope.consecutive_unattended_publication_cycles.length, 3);
+  assert.deepEqual(envelope.consecutive_unattended_publication_cycles, qualifying);
+  assert.equal(envelope.publication_receipt_retention.retrieved_count, 3);
+  assert.equal(envelope.publication_receipt_retention.qualifying_count, 3);
+  assert.equal(envelope.publication_receipt_retention.empty_reason, undefined);
+
+  const collapsed = [
+    collapsedPublicationReceipt("1001", "2026-09-07T16:00:57.097Z"),
+    collapsedPublicationReceipt("1002", "2026-09-08T15:39:08.830Z"),
+    collapsedPublicationReceipt("1003", "2026-09-09T14:48:21.111Z"),
+  ];
+  const collapsedFetch = stubProductionFetch({
+    pages,
+    watchdogs,
+    artifactZips: {
+      1001: artifactZipFor(collapsed[0]),
+      1002: artifactZipFor(collapsed[1]),
+      1003: artifactZipFor(collapsed[2]),
+    },
+  }).fetchImpl;
+  const empty = await captureDeskPublicationProductionRead({
+    now: "2026-09-10T12:00:00.000Z",
+    fetchImpl: collapsedFetch,
+    adminKey: "specimen-admin-key",
+    githubToken: "specimen-github-token",
+  });
+  assert.deepEqual(empty.consecutive_unattended_publication_cycles, []);
+  assert.equal(empty.publication_receipt_retention.retrieved_count, 3);
+  assert.equal(empty.publication_receipt_retention.qualifying_count, 0);
+  assert.match(empty.publication_receipt_retention.empty_reason, /event=schedule/);
+  assert.match(empty.publication_receipt_retention.empty_reason, /collapses collection and publication/);
+  assert.doesNotMatch(JSON.stringify(empty), /specimen-admin-key|specimen-github-token|cloudflareaccess/i);
+});
+
+test("a same-day capture keeps the earlier dated envelope as history", () => {
+  assert.equal(
+    datedEnvelopeName("2026-09-10T05:14:00.000Z", ["production-watchdog-read-2026-09-10.json"]),
+    "production-watchdog-read-2026-09-10T0514.json",
+  );
+  assert.equal(
+    datedEnvelopeName("2026-09-11T00:00:00.000Z", ["production-watchdog-read-2026-09-10.json"]),
+    "production-watchdog-read-2026-09-11.json",
+  );
 });

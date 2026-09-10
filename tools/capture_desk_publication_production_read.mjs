@@ -5,8 +5,11 @@
  *
  * Live capture reads scheduled Deploy Cloudflare Pages runs, Reliability
  * watchdog observer cycles, the scheduler heartbeat, and the private Desk
- * destination. Observer cycles are not publication. Only a scheduled or
- * dispatched Pages run may produce a publication heartbeat.
+ * destination. For each consecutive successful scheduled Pages run it retrieves
+ * the retained per-run publication receipt from the workflow artifact and
+ * emits qualifying receipts under consecutive_unattended_publication_cycles.
+ * Observer cycles are not publication. Receipts are never synthesized from
+ * GitHub run metadata.
  *
  *   CITYSCROLL_ADMIN_KEY_FILE=/path/to/key node tools/capture_desk_publication_production_read.mjs
  *   node tools/capture_desk_publication_production_read.mjs --check
@@ -20,13 +23,22 @@ import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import {
+  consecutiveUnattendedPublicationCycles,
+  isQualifyingUnattendedPublicationReceipt,
+  publicationReceiptRetentionGap,
+} from "./desk_health_publication_cycle.mjs";
 import { resolveCredentialSource } from "./lib/credential_files.mjs";
+import { extractNamedJsonFromZip } from "./lib/zip_json.mjs";
 
 export const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 export const SCHEMA = "cityscroll.desk_publication_production_observation.v1";
 export const EVIDENCE_DIR_RELATIVE = "docs/evidence/desk-health-publication-liveness";
 export const HISTORICAL_ENVELOPE_NAME = "production-watchdog-read.json";
-export const DATED_ENVELOPE_PATTERN = /^production-watchdog-read-(\d{4}-\d{2}-\d{2})\.json$/;
+export const DATED_ENVELOPE_PATTERN = /^production-watchdog-read-(\d{4}-\d{2}-\d{2})(?:T\d{4})?\.json$/;
+export const PUBLICATION_RECEIPT_ARTIFACT_PREFIX = "data-source-graph-";
+export const PUBLICATION_RECEIPT_ZIP_PATH = ".artifacts/desk-health-publication-cycle.json";
+export const PUBLICATION_RECEIPT_RETENTION_SOURCE = "scheduled Pages workflow artifact data-source-graph-<run_id>";
 export const PAGES_WORKFLOW_FILE = "deploy-cloudflare-pages.yml";
 export const PAGES_WORKFLOW_NAME = "Deploy Cloudflare Pages";
 export const WATCHDOG_WORKFLOW_FILE = "reliability-watchdogs.yml";
@@ -79,10 +91,15 @@ function utcDay(value) {
   return instant ? instant.slice(0, 10) : null;
 }
 
-export function datedEnvelopeName(now) {
+export function datedEnvelopeName(now, existingNames = []) {
   const day = utcDay(now);
   if (!day) throw new Error("dated envelope name requires a valid now timestamp");
-  return `production-watchdog-read-${day}.json`;
+  const daily = `production-watchdog-read-${day}.json`;
+  const names = new Set(existingNames);
+  if (!names.has(daily)) return daily;
+  const instant = validInstant(now);
+  const hhmm = instant.slice(11, 16).replace(":", "");
+  return `production-watchdog-read-${day}T${hhmm}.json`;
 }
 
 function headerGet(headers, name) {
@@ -225,6 +242,27 @@ export function validateProductionObservation(envelope) {
   if (destination !== DEFAULT_DESTINATION_URL) {
     throw new Error("private destination must be the operator-visible Desk graph");
   }
+  const publicationCycles = envelope.consecutive_unattended_publication_cycles;
+  if (!Array.isArray(publicationCycles)) {
+    throw new Error("envelope must record consecutive_unattended_publication_cycles as an array");
+  }
+  if (publicationCycles.some((row) => !isQualifyingUnattendedPublicationReceipt(row))) {
+    throw new Error("consecutive_unattended_publication_cycles must contain only retained qualifying publication receipts");
+  }
+  const expectedCycles = consecutiveUnattendedPublicationCycles(publicationCycles);
+  if (JSON.stringify(publicationCycles) !== JSON.stringify(expectedCycles)) {
+    throw new Error("consecutive_unattended_publication_cycles must be the reader-qualified streak in chronological order");
+  }
+  const retention = envelope.publication_receipt_retention;
+  if (!retention || typeof retention !== "object") {
+    throw new Error("envelope must record publication_receipt_retention");
+  }
+  if (retention.source !== PUBLICATION_RECEIPT_RETENTION_SOURCE) {
+    throw new Error("publication receipt retention source must name the per-run Pages artifact");
+  }
+  if (publicationCycles.length === 0 && !retention.empty_reason) {
+    throw new Error("empty consecutive_unattended_publication_cycles must explain the retention gap");
+  }
   const serialized = JSON.stringify(envelope);
   if (/cloudflareaccess\.com/i.test(serialized)) {
     throw new Error("envelope must not record private access-challenge URLs");
@@ -248,6 +286,69 @@ async function githubJson(fetchImpl, url, token) {
     throw new Error(`GitHub API ${response.status} GET ${new URL(url).pathname}`);
   }
   return response.json();
+}
+
+async function githubBytes(fetchImpl, url, token) {
+  const response = await fetchImpl(url, {
+    headers: githubHeaders(token),
+    redirect: "follow",
+  });
+  if (!response.ok) {
+    throw new Error(`GitHub API ${response.status} GET ${new URL(url).pathname}`);
+  }
+  if (typeof response.arrayBuffer === "function") {
+    return Buffer.from(await response.arrayBuffer());
+  }
+  if (typeof response.bytes === "function") {
+    return Buffer.from(await response.bytes());
+  }
+  throw new Error("artifact download requires an arrayBuffer response");
+}
+
+export function publicationReceiptArtifactName(runId) {
+  return `${PUBLICATION_RECEIPT_ARTIFACT_PREFIX}${runId}`;
+}
+
+export function buildPublicationReceiptRetention({ retrieved = [], qualifying = [] } = {}) {
+  const retrievedCount = retrieved.length;
+  const qualifyingCount = qualifying.length;
+  const retention = {
+    source: PUBLICATION_RECEIPT_RETENTION_SOURCE,
+    retrieved_count: retrievedCount,
+    qualifying_count: qualifyingCount,
+  };
+  if (qualifyingCount === 0) {
+    retention.empty_reason = publicationReceiptRetentionGap(retrieved);
+  }
+  return retention;
+}
+
+export async function loadPublicationReceiptFromArtifact(fetchImpl, {
+  apiBase = DEFAULT_API_BASE,
+  owner = DEFAULT_OWNER,
+  repo = DEFAULT_REPO,
+  runId,
+  token = null,
+} = {}) {
+  if (!runId) return null;
+  const listUrl = `${apiBase.replace(/\/$/, "")}/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/actions/runs/${encodeURIComponent(runId)}/artifacts?per_page=20`;
+  let body;
+  try {
+    body = await githubJson(fetchImpl, listUrl, token);
+  } catch {
+    return null;
+  }
+  const artifacts = Array.isArray(body?.artifacts) ? body.artifacts : [];
+  const wanted = publicationReceiptArtifactName(runId);
+  const artifact = artifacts.find((row) => row?.name === wanted && row?.expired !== true);
+  if (!artifact?.id) return null;
+  const zipUrl = `${apiBase.replace(/\/$/, "")}/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/actions/artifacts/${encodeURIComponent(artifact.id)}/zip`;
+  try {
+    const zip = await githubBytes(fetchImpl, zipUrl, token);
+    return extractNamedJsonFromZip(zip, PUBLICATION_RECEIPT_ZIP_PATH);
+  } catch {
+    return null;
+  }
 }
 
 async function listWorkflowRuns(fetchImpl, {
@@ -295,7 +396,7 @@ function sanitizeSchedulerRead(status, body) {
   };
 }
 
-function watchdogNote({ observerCycles, lastSuccess, scheduler }) {
+function watchdogNote({ observerCycles, lastSuccess, scheduler, publicationCycles, receiptRetention }) {
   const observerCount = observerCycles.length;
   const observer = observerCount
     ? `The independent observer completed ${observerCount} consecutive unattended scheduled cycle(s).`
@@ -303,10 +404,14 @@ function watchdogNote({ observerCycles, lastSuccess, scheduler }) {
   const publication = lastSuccess
     ? `A scheduled ${PAGES_WORKFLOW_NAME} run succeeded at ${lastSuccess.created_at} (${lastSuccess.url}). Observer cycles do not count as publication.`
     : `No successful scheduled ${PAGES_WORKFLOW_NAME} run was observed. Observer cycles do not count as publication.`;
+  const retained = publicationCycles.length
+    ? `The envelope carries ${publicationCycles.length} retained unattended publication receipt(s).`
+    : (receiptRetention?.empty_reason
+      || "No consecutive unattended publication receipts met the liveness reader constraints.");
   const heartbeat = scheduler.publication_ok
     ? "The scheduler heartbeat reports Desk publication as healthy."
     : "The scheduler heartbeat does not yet show a healthy Desk publication cycle.";
-  return `${observer} ${publication} ${heartbeat}`;
+  return `${observer} ${publication} ${retained} ${heartbeat}`;
 }
 
 function destinationCheck(status, location) {
@@ -333,6 +438,7 @@ export function buildProductionObservation({
   scheduler,
   destination,
   observerRunId = null,
+  retrievedPublicationReceipts = [],
 }) {
   const lastAttemptRun = (pagesRuns || []).find(isScheduled) || null;
   const lastSuccessRun = (pagesRuns || []).find(isScheduledSuccess) || null;
@@ -349,6 +455,12 @@ export function buildProductionObservation({
     created_at: run.created_at || null,
     url: run.html_url || run.url || null,
   }));
+  const retrieved = Array.isArray(retrievedPublicationReceipts) ? retrievedPublicationReceipts : [];
+  const publicationCycles = consecutiveUnattendedPublicationCycles(retrieved);
+  const receiptRetention = buildPublicationReceiptRetention({
+    retrieved,
+    qualifying: publicationCycles,
+  });
   const envelope = {
     schema: SCHEMA,
     evidence_class: "live-production-read",
@@ -360,6 +472,8 @@ export function buildProductionObservation({
       endpoint: DEFAULT_SCHEDULER_URL,
     },
     consecutive_unattended_observer_cycles: observerCycles,
+    consecutive_unattended_publication_cycles: publicationCycles,
+    publication_receipt_retention: receiptRetention,
     publication_dependency_and_backlog: {
       scheduled_pages_publication: {
         workflow: PAGES_WORKFLOW_NAME,
@@ -383,7 +497,9 @@ export function buildProductionObservation({
       alert: scheduler.alert,
       publication_ok: scheduler.publication_ok === true,
       publication_heartbeat_run_id: scheduler.publication_heartbeat?.run_id || null,
-      note: watchdogNote({ observerCycles, lastSuccess, scheduler }),
+      note: watchdogNote({
+        observerCycles, lastSuccess, scheduler, publicationCycles, receiptRetention,
+      }),
     },
   };
   return validateProductionObservation(envelope);
@@ -454,6 +570,15 @@ export async function captureDeskPublicationProductionRead({
     headerGet(destinationResponse.headers, "location"),
   );
 
+  const successfulStreak = consecutiveScheduledSuccesses(pagesRuns);
+  const retrievedPublicationReceipts = [];
+  for (const run of successfulStreak) {
+    const receipt = await loadPublicationReceiptFromArtifact(fetchImpl, {
+      apiBase, owner, repo, runId: run.id ?? run.run_id, token: githubToken,
+    });
+    if (receipt) retrievedPublicationReceipts.push(receipt);
+  }
+
   return buildProductionObservation({
     now: observedAt,
     pagesRuns,
@@ -462,6 +587,7 @@ export async function captureDeskPublicationProductionRead({
     lastAttemptExtra,
     scheduler,
     destination,
+    retrievedPublicationReceipts,
   });
 }
 
@@ -546,7 +672,7 @@ async function main(argv = process.argv.slice(2), env = process.env) {
     githubToken,
     adminKey,
   });
-  const output = args.write || join(dir, datedEnvelopeName(now));
+  const output = args.write || join(dir, datedEnvelopeName(now, listedDatedProductionObservationNames(dir)));
   // determinism-lint: allow write dated envelope is written only outside --check
   writeFileSync(output, serialized(envelope));
   console.log(`wrote ${output}`);
