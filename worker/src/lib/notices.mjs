@@ -119,6 +119,8 @@ export function buildNoticesQuery(opts = {}) {
   const explicit = opts.orderBy;
   if (explicit === "start_date") {
     orderBy = opts.stablePaging ? "start_date DESC, request_id ASC" : "start_date DESC";
+  } else if (explicit === "due_date") {
+    orderBy = "due_date ASC, start_date DESC, request_id ASC";
   } else if (explicit === "contract_amount") orderBy = "contract_amount DESC, start_date DESC";
   else if (explicit === "score" && allTerms.length) orderBy = "_score DESC, start_date DESC";
   else if (hasAmount) orderBy = "contract_amount DESC, start_date DESC";

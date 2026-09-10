@@ -34,6 +34,12 @@ import {
 } from "../../../site/institution_follow_scope.mjs";
 import { examNumbersForAgency } from "../../../site/staffing_agency_scope.mjs";
 import { textQueryEvaluationSupported } from "../../../site/watch_text_query.mjs";
+import {
+  SOLICITATION_COVERAGE_CAP,
+  SOLICITATION_PAGE_LIMIT,
+  mergeSolicitationCoverageRows,
+  solicitationRecentParams,
+} from "./solicitation_coverage.mjs";
 import examCertification from "../../../site/data/exam_certification_constellation.json" with { type: "json" };
 import { loadStaffingExams } from "./staffing_exams_kv.mjs";
 import { loadLandUpcomingHearingsSnapshot } from "./land_upcoming_hearings_kv.mjs";
@@ -257,6 +263,18 @@ export async function rowsForCompiledQuery(q, env, fetchImpl = fetch) {
     if (!r.ok) throw new Error(`open-data ${r.status}`);
     const payload = await r.json();
     rows = typeof q.transformRows === "function" ? q.transformRows(payload) : payload;
+    if (q.recentParams) {
+      const recentRes = await fetchImpl(`${q.url}?${new URLSearchParams(q.recentParams).toString()}`);
+      if (!recentRes.ok) throw new Error(`open-data ${recentRes.status}`);
+      const recentPayload = await recentRes.json();
+      const recentRows = typeof q.transformRows === "function"
+        ? q.transformRows(recentPayload)
+        : recentPayload;
+      rows = mergeSolicitationCoverageRows(rows, recentRows, {
+        idField: q.idField,
+        cap: Number(q.coverageCap) || SOLICITATION_COVERAGE_CAP,
+      });
+    }
   }
   return mergeCompiledRows(q, rows);
 }
@@ -521,10 +539,18 @@ export function compileSub(sub, todayISO) {
     const params = {
       "$select": CR_SELECT,
       "$where": where + catClause + agencyClause,
-      "$order": "due_date ASC", "$limit": "25",
+      "$order": "due_date ASC", "$limit": String(SOLICITATION_PAGE_LIMIT),
     };
     if (kws.length) params["$q"] = kws.join(" ");
-    return { url: SODA, idField: "digest_id", kind: "rfp", params, mergeRows };
+    return {
+      url: SODA,
+      idField: "digest_id",
+      kind: "rfp",
+      params,
+      recentParams: solicitationRecentParams(params),
+      coverageCap: SOLICITATION_COVERAGE_CAP,
+      mergeRows,
+    };
   }
 
   if (sub.lens === "entity") {

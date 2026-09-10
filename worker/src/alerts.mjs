@@ -20,6 +20,7 @@ import { capDecision } from "@jimdc/sendcap";
 import { signToken, listUnsubscribe } from "optin-token";
 import { issueEmailSessionToken } from "./session.mjs";
 import { compileSub, getProcurementDigestSnapshot, mergeCompiledRows, rowsForCompiledQuery, vendorStem } from "./lib/compile.mjs";
+import { mergeSolicitationCoverageRows, SOLICITATION_COVERAGE_CAP } from "./lib/solicitation_coverage.mjs";
 import { evaluateMoneyTextQueryWatch, TEXT_QUERY_EVAL_STATUS } from "./lib/watch_text_query_procurement.mjs";
 import { textQueryEvaluationSupported } from "../../site/watch_text_query.mjs";
 import { compileSub_d1, toDigestRow, OFF_MIRROR_LENSES } from "./lib/compile_d1.mjs";
@@ -84,7 +85,7 @@ import { prefsLink } from "./prefs.mjs";
 import { CUTOVER_COPY, UNSUB_IMMEDIATE_COPY } from "./lib/prefs.mjs";
 import { RULES_KV_KEY } from "./rules.mjs";
 import { buildHearingView, HEARINGS_KV_KEY } from "./hearings.mjs";
-import { reconcileTemporalCandidates } from "./lib/alert_temporal.mjs";
+import { reconcileTemporalCandidates, seenIdsForDeliveredRows } from "./lib/alert_temporal.mjs";
 import { evaluateProcurementProcessWatch } from "../../site/procurement_process_watch.mjs";
 import { renderCivicOutcomeTransition } from "../../site/civic_outcome_transition.mjs";
 import {
@@ -915,6 +916,16 @@ async function loadWatchRows(env, s, ctx, q, { sodaLimit = null, warnLabel = "al
           const res = await env.DB.prepare(sql).bind(...params).all();
           let mapped = (res.results ?? []).map(toDigestRow);
           if (d1.postFilter) mapped = mapped.filter(d1.postFilter);
+          if (d1.coverageOpts) {
+            const coverage = buildNoticesQuery(d1.coverageOpts);
+            const coverageRes = await env.DB.prepare(coverage.sql).bind(...coverage.params).all();
+            let recent = (coverageRes.results ?? []).map(toDigestRow);
+            if (d1.postFilter) recent = recent.filter(d1.postFilter);
+            mapped = mergeSolicitationCoverageRows(mapped, recent, {
+              idField: q.idField,
+              cap: Number(sodaLimit) > 0 ? Number(sodaLimit) * 2 : SOLICITATION_COVERAGE_CAP,
+            });
+          }
           rows = mergeCompiledRows(q, mapped);
           usedD1 = true;
         }
@@ -924,7 +935,12 @@ async function loadWatchRows(env, s, ctx, q, { sodaLimit = null, warnLabel = "al
     }
   }
   if (!usedD1) {
-    const compiled = sodaLimit != null ? { ...q, params: { ...q.params, "$limit": String(sodaLimit) } } : q;
+    const compiled = sodaLimit != null ? {
+      ...q,
+      params: { ...q.params, "$limit": String(sodaLimit) },
+      recentParams: q.recentParams ? { ...q.recentParams, "$limit": String(sodaLimit) } : q.recentParams,
+      coverageCap: Number(sodaLimit) * 2,
+    } : q;
     rows = await rowsForCompiledQuery(compiled, env);
     if (q.postFilter && s.lens !== "property") rows = rows.filter(q.postFilter);
   }
@@ -1167,7 +1183,12 @@ export async function processOneSub(env, s, ctx) {
               key: s.key,
               day: ctx.today,
               seenId: s.key,
-              seenIds: reconciled.markSeenIds,
+              seenIds: seenIdsForDeliveredRows({
+                fresh,
+                idField: q.idField,
+                extraIds: [...propertyStageSeenIds, ...procurementProcessSeenIds],
+                reconciledIds: reconciled.markSeenIds,
+              }),
             });
           }
           if (ctx.injectCrash === "before-receipt") {
@@ -1614,7 +1635,12 @@ async function evaluateSubSection(env, s, ctx) {
       w,
       healthNote,
       label: base.queryLabel,
-      markSeenIds: reconciled.markSeenIds,
+      markSeenIds: seenIdsForDeliveredRows({
+        fresh,
+        idField: q.idField,
+        extraIds: [...propertyStageSeenIds, ...procurementProcessSeenIds],
+        reconciledIds: reconciled.markSeenIds,
+      }),
       seenId: s.key,
       funnel,
     };

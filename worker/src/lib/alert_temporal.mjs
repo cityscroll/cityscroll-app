@@ -72,11 +72,35 @@ function withRuleAction(row, match, view) {
  * The returned markSeenIds include both notice ids and semantic action ids. Callers
  * persist them only after a successful send, preserving the existing delivery watermark.
  */
+export function seenIdsForDeliveredRows({
+  fresh = [],
+  idField = "request_id",
+  extraIds = [],
+  reconciledIds = [],
+} = {}) {
+  const delivered = [];
+  const seen = new Set();
+  const push = (id) => {
+    if (!id || seen.has(id)) return;
+    seen.add(id);
+    delivered.push(id);
+  };
+  for (const row of fresh) push(row?.[idField]);
+  for (const id of extraIds) push(id);
+  const deliveredNoticeIds = [...seen];
+  for (const id of reconciledIds) {
+    if (typeof id !== "string" || !id.startsWith("temporal:")) continue;
+    if (deliveredNoticeIds.some((noticeId) => id.includes(`:${noticeId}:`))) push(id);
+  }
+  return delivered;
+}
+
 export function reconcileTemporalCandidates({ lens, rows = [], seen = new Set(), rulesView = null, idField = "request_id" } = {}) {
   if (lens !== "rules") {
+    const fresh = rows.filter((row) => row?.[idField] && !seen.has(row[idField]));
     return {
-      fresh: rows.filter((row) => row?.[idField] && !seen.has(row[idField])),
-      markSeenIds: rows.map((row) => row?.[idField]).filter(Boolean),
+      fresh,
+      markSeenIds: fresh.map((row) => row[idField]),
     };
   }
 

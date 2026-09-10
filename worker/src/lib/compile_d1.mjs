@@ -100,7 +100,8 @@ export function subToD1Opts(sub, todayISO) {
       opts.openOnly = true;
       opts.today = todayISO;
       if (f.months) opts.dueBefore = monthsFromISO(todayISO, Number(f.months));
-      opts.orderBy = "start_date";
+      opts.orderBy = "due_date";
+      opts.coverageOrderBy = "start_date";
     }
     return opts;
   }
@@ -149,8 +150,12 @@ export function compileSub_d1(sub, todayISO) {
     }
   }
 
+  const coverageOpts = opts.coverageOrderBy
+    ? { ...opts, orderBy: opts.coverageOrderBy }
+    : null;
   return {
     opts,
+    coverageOpts,
     postFilter,
     ...(f.text_query != null && textQueryEvaluationSupported(sub?.lens)
       ? { textQuery: f.text_query }

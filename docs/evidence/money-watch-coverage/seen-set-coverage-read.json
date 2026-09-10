@@ -1,0 +1,30 @@
+{
+  "schema": "cityscroll.money_watch_coverage_observation.v1",
+  "grounded_at": "a66672273d7325c5d5f3e85b0bd50036f2516e57",
+  "taken_at": "2026-09-10T14:09:59Z",
+  "query_today": "2026-09-10",
+  "verdict": "gap",
+  "watches": [
+    {
+      "internal_reference": "01131e054e4c724d74ece88b",
+      "seen_set_size": 48,
+      "eligible_unseen_count": 52,
+      "published_since_last_delivery_outside_window_count": 0,
+      "taken_at": "2026-09-10T14:09:59Z"
+    },
+    {
+      "internal_reference": "3aec7b8a2b2579e8f3628b3e",
+      "seen_set_size": 23,
+      "eligible_unseen_count": 191,
+      "published_since_last_delivery_outside_window_count": 34,
+      "taken_at": "2026-09-10T14:09:59Z"
+    },
+    {
+      "internal_reference": "a2efc3db0071310ea8dddaff",
+      "seen_set_size": 23,
+      "eligible_unseen_count": 191,
+      "published_since_last_delivery_outside_window_count": 34,
+      "taken_at": "2026-09-10T14:09:59Z"
+    }
+  ]
+}
