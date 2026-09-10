@@ -23,6 +23,17 @@ import {
   retainLastSuccess,
   cycleClock,
 } from "../tools/desk_health_publication_cycle.mjs";
+import {
+  EVIDENCE_DIR_RELATIVE,
+  HISTORICAL_ENVELOPE_NAME,
+  SCHEMA as PRODUCTION_OBSERVATION_SCHEMA,
+  captureDeskPublicationProductionRead,
+  checkRetainedProductionObservations,
+  evaluateProductionObservationCurrency,
+  evidenceDir,
+  loadNewestDatedProductionObservation,
+  scheduledCyclesFromObservation,
+} from "../tools/capture_desk_publication_production_read.mjs";
 
 const NOW = "2026-09-06T12:00:00.000Z";
 const contract = loadPublicationCycleContract();
@@ -318,13 +329,136 @@ test("keyboard-reachable publication status keeps last-good copy and a 44px reco
 });
 
 test("production watchdog evidence is a live read and isolated fixtures stay labeled isolated", () => {
-  const production = JSON.parse(readFileSync(join(ROOT, "docs/evidence/desk-health-publication-liveness/production-watchdog-read.json"), "utf8"));
+  const { envelope: production } = loadNewestDatedProductionObservation(evidenceDir(ROOT));
   const manifest = JSON.parse(readFileSync(join(ROOT, "docs/evidence/desk-health-publication-liveness/capture-manifest.json"), "utf8"));
+  const checked = checkRetainedProductionObservations(evidenceDir(ROOT));
+  assert.equal(production.schema, PRODUCTION_OBSERVATION_SCHEMA);
   assert.equal(production.evidence_class, "live-production-read");
   assert.equal(production.isolated, false);
   assert.equal(production.consecutive_unattended_observer_cycles.length, 2);
   assert.ok(production.consecutive_unattended_observer_cycles.every((row) => row.event === "schedule"));
+  const lastSuccess = production.publication_dependency_and_backlog.scheduled_pages_publication.last_successful_scheduled_run;
+  assert.equal(lastSuccess.event, "schedule");
+  assert.equal(lastSuccess.conclusion, "success");
+  assert.equal(typeof lastSuccess.head_sha, "string");
+  assert.match(lastSuccess.url, /^https:\/\/github\.com\/cityscroll\/cityscroll-app\/actions\/runs\//);
+  assert.equal(checked.envelope.observed_at, production.observed_at);
   assert.equal(manifest.evidence_class, "isolated-consumer-render");
   assert.ok(manifest.captures.some((row) => row.isolated === true));
   assert.ok(manifest.captures.every((row) => typeof row.render_content_sha256 === "string"));
+});
+
+function githubRun(id, { event = "schedule", conclusion = "success", created_at, head_sha = "abc123def456" } = {}) {
+  return {
+    id,
+    event,
+    conclusion,
+    created_at,
+    head_sha,
+    html_url: `https://github.com/cityscroll/cityscroll-app/actions/runs/${id}`,
+  };
+}
+
+function jsonResponse(body, status = 200, headers = {}) {
+  return {
+    ok: status >= 200 && status < 300,
+    status,
+    headers: {
+      get(name) {
+        return headers[String(name).toLowerCase()] || "";
+      },
+    },
+    async json() {
+      return body;
+    },
+  };
+}
+
+function stubProductionFetch({
+  pages,
+  watchdogs,
+  refresh = [],
+  scheduler = { status: 200, body: { ok: true, scheduler_ok: true, publication_ok: true, failing_stage: null, alert: null, publication_heartbeat: { workflow: "Deploy Cloudflare Pages", run_id: "1003", result: "succeeded" } } },
+  destination = { status: 302, location: "https://cityscroll-desk.cloudflareaccess.com/cdn-cgi/access/login/desk.cityscroll.org?meta=secret" },
+  adminKey = "specimen-admin-key",
+} = {}) {
+  const calls = [];
+  const fetchImpl = async (url, options = {}) => {
+    calls.push({ url, method: options.method || "GET", authorization: options.headers?.Authorization || null });
+    const parsed = new URL(url);
+    if (parsed.pathname.includes("deploy-cloudflare-pages.yml/runs")) {
+      return jsonResponse({ workflow_runs: pages });
+    }
+    if (parsed.pathname.includes("reliability-watchdogs.yml/runs")) {
+      return jsonResponse({ workflow_runs: watchdogs });
+    }
+    if (parsed.pathname.includes("first-class-refresh.yml/runs")) {
+      return jsonResponse({ workflow_runs: refresh });
+    }
+    if (parsed.pathname === "/admin/reliability/scheduler") {
+      assert.equal(options.headers?.Authorization, `Bearer ${adminKey}`);
+      return jsonResponse(scheduler.body, scheduler.status);
+    }
+    if (parsed.hostname === "desk.cityscroll.org") {
+      return jsonResponse({}, destination.status, { location: destination.location });
+    }
+    throw new Error(`unexpected fetch ${url}`);
+  };
+  return { fetchImpl, calls };
+}
+
+test("production observation capture is deterministic given injected inputs and never records credentials", async () => {
+  const pages = [
+    githubRun(1003, { created_at: "2026-09-09T14:31:29Z", head_sha: "bdd8f02b7a7352a45ca66cbb523c8240f7c68fb2" }),
+    githubRun(1002, { created_at: "2026-09-08T14:30:10Z", head_sha: "67adff8bb8331df0cdfd3be1ee380815206f0b0e" }),
+    githubRun(1001, { created_at: "2026-09-07T15:48:33Z", head_sha: "1113e0eeb6cee1b79145c9c4cee07e267e03e076" }),
+  ];
+  const watchdogs = [
+    githubRun(2002, { created_at: "2026-09-10T01:29:04Z" }),
+    githubRun(2001, { created_at: "2026-09-09T23:31:02Z" }),
+  ];
+  const { fetchImpl } = stubProductionFetch({ pages, watchdogs });
+  const input = {
+    now: "2026-09-10T12:00:00.000Z",
+    fetchImpl,
+    adminKey: "specimen-admin-key",
+    githubToken: "specimen-github-token",
+  };
+  const first = await captureDeskPublicationProductionRead(input);
+  const second = await captureDeskPublicationProductionRead(input);
+  assert.deepEqual(first, second);
+  assert.equal(first.publication_dependency_and_backlog.scheduled_pages_publication.last_successful_scheduled_run.run_id, "1003");
+  assert.equal(first.publication_dependency_and_backlog.scheduled_pages_publication.consecutive_successful_scheduled_runs.length, 3);
+  assert.equal(first.watchdog_read.publication_ok, true);
+  assert.equal(first.publication_dependency_and_backlog.private_destination_check.access_protected, true);
+  const serialized = JSON.stringify(first);
+  assert.doesNotMatch(serialized, /specimen-admin-key|specimen-github-token|cloudflareaccess/i);
+  assert.match(first.watchdog_read.note, /Observer cycles do not count as publication/);
+});
+
+test("a stale envelope older than the two most recent scheduled cycles is reported as stale rather than as zero successes", () => {
+  const historical = JSON.parse(readFileSync(join(ROOT, EVIDENCE_DIR_RELATIVE, HISTORICAL_ENVELOPE_NAME), "utf8"));
+  const twoRecent = [
+    githubRun(34364169860, { created_at: "2026-09-09T14:31:29Z" }),
+    githubRun(34238662276, { created_at: "2026-09-08T14:30:10Z" }),
+  ];
+  const stale = evaluateProductionObservationCurrency(historical, { scheduledCycles: twoRecent });
+  assert.equal(stale.status, "stale");
+  assert.notEqual(stale.status, "zero-successes");
+  assert.match(stale.reason, /predates the two most recent scheduled publication cycles/);
+
+  const zero = evaluateProductionObservationCurrency({
+    observed_at: "2026-09-10T12:00:00.000Z",
+    publication_dependency_and_backlog: {
+      scheduled_pages_publication: { last_successful_scheduled_run: null, consecutive_successful_scheduled_runs: [] },
+    },
+  }, { scheduledCycles: twoRecent });
+  assert.equal(zero.status, "zero-successes");
+
+  const { envelope: newest } = loadNewestDatedProductionObservation(evidenceDir(ROOT));
+  const againstNewest = evaluateProductionObservationCurrency(historical, {
+    scheduledCycles: scheduledCyclesFromObservation(newest),
+  });
+  assert.equal(againstNewest.status, "stale");
+  assert.notEqual(againstNewest.status, "zero-successes");
 });

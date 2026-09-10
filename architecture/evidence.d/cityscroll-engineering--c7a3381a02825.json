@@ -3,7 +3,7 @@
   "id": "cityscroll-engineering/c7a3381a02825",
   "status": "implemented",
   "fingerprint": "desk-health-publication-liveness.v1",
-  "updated_at": "2026-09-06T00:00:00.000Z",
+  "updated_at": "2026-09-10T00:00:00.000Z",
   "projections": [
     {
       "id": "publication-cycle-contract",
@@ -30,7 +30,15 @@
       "path": "test/desk-health-publication-cycle.test.mjs"
     },
     {
+      "id": "production-observation-capture",
+      "path": "tools/capture_desk_publication_production_read.mjs"
+    },
+    {
       "id": "production-watchdog-read",
+      "path": "docs/evidence/desk-health-publication-liveness/production-watchdog-read-2026-09-10.json"
+    },
+    {
+      "id": "production-watchdog-read-history-2026-09-06",
       "path": "docs/evidence/desk-health-publication-liveness/production-watchdog-read.json"
     },
     {
