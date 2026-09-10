@@ -8,10 +8,10 @@ server-rendered document lives here or in the Pages edge handler described below
 Cloudflare Pages remains the origin for the canonical `cityscroll.org` / `www.cityscroll.org`
 site hostnames. Bounded Worker zone routes serve the dynamic `/near-you*`, `/following*`,
 and `/prefs*` documents on `cityscroll.org`; every other site path reaches the Pages project
-first. The Worker is already dual-homed on `api.cityscroll.org` and the compatibility
-alias `api.crol-list.org`. CORS allowlists retain old browser origins for
-compatibility, including `crol-list.jimdc.com` (a GitHub Pages CNAME to
-`jimdc.github.io`, not a Worker route).
+first. The Worker is already dual-homed on `api.cityscroll.org` and a compatibility
+alias on the retired product domain (declared in `worker/wrangler.toml`). CORS
+allowlists retain old browser origins for compatibility, including a GitHub
+Pages CNAME to `jimdc.github.io` that is not a Worker route.
 
 > Maintenance rule: this README is updated with every significant feature change — if a
 > route, cron behavior, or defense changes, its description lands here in the same session.
@@ -137,7 +137,7 @@ Reader-facing HTML uses canonical `cityscroll.org` paths. Existing API-host link
 |---|---|---|---|
 | `/nl` | POST | Claude Haiku decodes English → lens filters | `ANTHROPIC_API_KEY`; degrades to `{degraded:true}` |
 | `/checkbook` | POST | CORS proxy to checkbooknyc.com/api | none |
-| `/feed.xml` `/feed.json` `/feed.ics` | GET | **Any saved search as a standing feed** — Atom / JSON Feed 1.1 / subscribable calendar. Params: `lens=money\|land\|property\|rules\|meetings`, `q=`, `agency=`, `min=`. Same `compileSub()` queries the cron replays; entry links land on `cityscroll.org/#notice/<id>` permalinks; edge-cached 15 min; no paid key on the path. Calendar UIDs retain the `@crol-list` namespace so existing subscribers do not receive duplicate events | none |
+| `/feed.xml` `/feed.json` `/feed.ics` | GET | **Any saved search as a standing feed** — Atom / JSON Feed 1.1 / subscribable calendar. Params: `lens=money\|land\|property\|rules\|meetings`, `q=`, `agency=`, `min=`. Same `compileSub()` queries the cron replays; entry links land on `cityscroll.org/#notice/<id>` permalinks; edge-cached 15 min; no paid key on the path. Standing-feed calendar UIDs retain the historical product namespace so existing subscribers do not receive duplicate events (see `docs/calendar-contract.md`) | none |
 | `/subscribe` | POST | Single-opt-in signup (per-IP/per-address rate limits; no CAPTCHA on this path); stores the watch immediately and sends a substantive welcome with signed manage and one-click unsubscribe links. Normally requires a previewed lens; the only topicless shape accepted is the disclosed homepage default (`no_topic:true` + `source:"top-of-site"`), which stores or refreshes the one citywide weekly Contracts watch, answers with `created` plus a safe watch projection, and renders an HTML confirmation for form-encoded (no-JS) posts. Any other topicless request is refused `400 bad-intent` | fails closed 503 until `TOKEN_SECRET` + `RESEND_API_KEY` + `SUBS` |
 | `/confirm` | GET | Compatibility path for signed links already in flight; existing immediate enrollments are an idempotent success | `TOKEN_SECRET` + `SUBS` |
 | `/unsubscribe` | GET/POST | Removes one watch (`{k}`) or all watches for an email (`{all:1,e}`); POST = RFC 8058 one-click | `TOKEN_SECRET` + `SUBS` |
@@ -268,8 +268,9 @@ the site's `#notice/<id>` permalinks.
 
 **Email identity:** From is always the app's own (`ALERTS_FROM` =
 `CityScroll <alerts@cityscroll.org>`, domain verified in Resend); Reply-To is
-`ALERTS_REPLY_TO` (`alerts@crol-list.org`) because cityscroll.org has no apex MX and
-replies to the From address would bounce — crol-list.org still has Cloudflare email
+`ALERTS_REPLY_TO` (the compatibility address on the retired product domain; see
+`worker/wrangler.toml`) because cityscroll.org has no apex MX and
+replies to the From address would bounce — that domain still has Cloudflare email
 routing. To is only ever the subscriber's own opted-in address. Never sends as a
 person. The sending domain is managed separately from the public website hostnames.
 
