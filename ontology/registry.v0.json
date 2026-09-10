@@ -673,7 +673,7 @@
       "id": "meeting",
       "status": "registered",
       "layer": "semantic",
-      "reason": "City Record and community-board publishers share a source-qualified meeting object; exact source keys remain available for later joins.",
+      "reason": "City Record, community-board, and NYC Council Legistar Events publishers share a source-qualified meeting object; exact source keys remain available for later joins.",
       "primary_key_pattern": "meeting:{source_system}:{source_key}",
       "families": [
         "civic:meeting"
@@ -681,6 +681,7 @@
       "backing": [
         "city_record",
         "community_board_source_registry",
+        "nyc_legistar_events",
         "source_records"
       ],
       "properties_ref": [
@@ -701,7 +702,8 @@
         "source_qualified": true,
         "source_keys": [
           "city_record:request_id",
-          "community_board:publisher_event_id"
+          "community_board:publisher_event_id",
+          "nyc_legistar_events:event_id"
         ],
         "title_date_identity_forbidden": true
       },

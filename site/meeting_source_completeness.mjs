@@ -269,9 +269,9 @@ const communityBoard = [
 const legistar = [
   ...rows(["EventId"], {
     stream: "events",
-    source_seam: "worker/src/lib/meeting_outcomes.mjs normalizeCouncilEvent",
-    materialized_as: "council_event.event_id and source_records event identity",
-    document_use: "Council meeting outcome link and subject edge after strict City Record join",
+    source_seam: "site/meeting_object_contract.mjs normalizeNycLegistarEventsMeeting",
+    materialized_as: "meeting_id meeting:nyc_legistar_events:<EventId>, source_keys event_id, and council_event.event_id",
+    document_use: "source-qualified meeting identity; Council outcome link remains after an exact City Record join",
     search_use: "not contributed to shared meeting search",
     alert_use: "not contributed to meeting alerts",
     disposition: "materialized_support",
@@ -367,7 +367,7 @@ export const MEETING_SOURCE_COMPLETENESS = Object.freeze({
       fields: Object.freeze(communityBoard),
     }),
     legistar: Object.freeze({
-      role: "strictly joined Council outcome enrichment; never an inferred standalone meeting identity",
+      role: "source-qualified meeting producer; exact date-and-body joins never overwrite identity",
       fields: Object.freeze(legistar),
     }),
   }),

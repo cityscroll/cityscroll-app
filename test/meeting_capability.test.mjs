@@ -12,6 +12,17 @@ import { renderMeetingDocument } from "../site/meeting_document.mjs";
 import { canonicalMeetingsForRender } from "../site/meeting_capability_projection.mjs";
 import { handleHearings, HEARINGS_KV_KEY, workerMeetingGet } from "../worker/src/hearings.mjs";
 import { buildMeetings } from "../tools/build_worker_route_read_models.mjs";
+import {
+  buildSharedMeetingReadModel,
+  meetingCollectionRows,
+} from "../site/shared_meeting_read_model.mjs";
+
+const upcomingFixture = JSON.parse(
+  readFileSync(new URL("./fixtures/legistar/upcoming_contracts_22691.json", import.meta.url), "utf8"),
+);
+const peerIdentityFixture = JSON.parse(
+  readFileSync(new URL("./fixtures/legistar/peer_meeting_identity.json", import.meta.url), "utf8"),
+);
 
 const meeting = {
   object_type: "meeting",
@@ -218,4 +229,52 @@ test("a past community-board meeting in the committed coverage resolves through 
   assert.equal(result.availability, "available");
   assert.equal(result.meeting.meeting_id, earliest.meeting_id);
   assert.equal(result.freshness.as_of, COMMITTED_READ_MODEL.generated_at);
+});
+
+test("meeting.get resolves the Events feed identity before and after an exact join", () => {
+  const generatedAt = peerIdentityFixture.pinned_clock;
+  const eventRow = {
+    ...upcomingFixture.event,
+    insite_calendar: upcomingFixture.insite_calendar,
+    description: upcomingFixture.event_items[0].EventItemTitle,
+  };
+  const before = buildSharedMeetingReadModel({
+    cityRecordRows: [],
+    communityBoardIndex: { generated_at: generatedAt, rows: [] },
+    nycLegistarEventsIndex: { generated_at: generatedAt, rows: [eventRow] },
+    generatedAt,
+    now: generatedAt,
+  });
+  const beforeResult = meetingGetFromModel(before, {
+    meetingId: peerIdentityFixture.publisher_identity.meeting_id,
+  });
+  assert.equal(beforeResult.availability, "available");
+  assert.equal(beforeResult.meeting.meeting_id, peerIdentityFixture.publisher_identity.meeting_id);
+  assert.equal(beforeResult.source.identifier, peerIdentityFixture.publisher_identity.event_id);
+  assert.equal(beforeResult.meeting.same_proceeding, null);
+  assert.deepEqual(
+    meetingCollectionRows(before).map((row) => row.meeting_id),
+    [peerIdentityFixture.publisher_identity.meeting_id],
+  );
+
+  const after = buildSharedMeetingReadModel({
+    cityRecordRows: peerIdentityFixture.after_exact_join.city_record_notices,
+    communityBoardIndex: { generated_at: generatedAt, rows: [] },
+    nycLegistarEventsIndex: { generated_at: generatedAt, rows: [eventRow] },
+    generatedAt,
+    now: generatedAt,
+  });
+  const cityId = peerIdentityFixture.after_exact_join.expect.meeting_ids[0];
+  const legistarId = peerIdentityFixture.after_exact_join.expect.meeting_ids[1];
+  const cityResult = meetingGetFromModel(after, { meetingId: cityId });
+  const legistarResult = meetingGetFromModel(after, { meetingId: legistarId });
+  assert.equal(cityResult.availability, "available");
+  assert.equal(legistarResult.availability, "available");
+  assert.equal(cityResult.meeting.meeting_id, cityId);
+  assert.equal(legistarResult.meeting.meeting_id, legistarId);
+  assert.equal(legistarResult.meeting.collection_visibility, "suppressed");
+  assert.deepEqual(
+    meetingCollectionRows(after).map((row) => row.meeting_id),
+    peerIdentityFixture.after_exact_join.expect.collection_meeting_ids,
+  );
 });

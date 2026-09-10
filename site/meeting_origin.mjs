@@ -10,6 +10,7 @@ export const MEETING_ORIGINS = Object.freeze([
   "official_community_board_calendar",
   "official_minutes_joined",
   "community_board_source_observed",
+  "nyc_legistar_events_observed",
   "unknown",
 ]);
 
@@ -18,6 +19,7 @@ export const MEETING_ORIGIN_LABELS = Object.freeze({
   official_community_board_calendar: "Official community board calendar",
   official_minutes_joined: "Official minutes joined",
   community_board_source_observed: "Community board source observed",
+  nyc_legistar_events_observed: "NYC Council Legistar event",
   unknown: "Meeting source unknown",
 });
 
@@ -37,6 +39,9 @@ export function normalizeMeetingOrigin(row = {}) {
   if (isMeetingOrigin(explicit)) return explicit;
   if (String(row.source_system || row.source?.system || "").trim().toLowerCase() === "city_record") {
     return "city_record_notice";
+  }
+  if (String(row.source_system || row.source?.system || "").trim().toLowerCase() === "nyc_legistar_events") {
+    return "nyc_legistar_events_observed";
   }
   return "unknown";
 }

@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/council-legistar-peer-meeting-identity",
+  "status": "implemented",
+  "fingerprint": "council-legistar-peer-meeting-identity.v1",
+  "updated_at": "2026-09-10T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "meeting-object-contract",
+      "path": "site/meeting_object_contract.mjs"
+    },
+    {
+      "id": "same-proceeding-join",
+      "path": "site/meeting_same_proceeding.mjs"
+    },
+    {
+      "id": "shared-meeting-read-model",
+      "path": "site/shared_meeting_read_model.mjs"
+    },
+    {
+      "id": "peer-identity-fixture",
+      "path": "test/fixtures/legistar/peer_meeting_identity.json"
+    },
+    {
+      "id": "meeting-object-contract-tests",
+      "path": "test/meeting_object_contract.test.mjs"
+    },
+    {
+      "id": "shared-meeting-read-model-tests",
+      "path": "test/shared_meeting_read_model.test.mjs"
+    },
+    {
+      "id": "meeting-capability-tests",
+      "path": "test/meeting_capability.test.mjs"
+    }
+  ]
+}
