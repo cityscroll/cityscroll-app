@@ -316,6 +316,26 @@ test("A6: create-preview-save-edit-feed-return journey and translations/escaping
   }
 });
 
+test("A6: precise-matching summaries have visible names; closed parents hide nested summaries", () => {
+  const html = textQueryControlsHtml({ lens: "money", filter: {} });
+  assert.match(html, /<summary[^>]*aria-label="Match more precisely"[^>]*>\s*<span[^>]*>Match more precisely<\/span>\s*<\/summary>/);
+  assert.match(html, /aria-label="Also require"/);
+  assert.match(html, /aria-label="More alternatives"/);
+  assert.match(html, /aria-label="More exclusions"/);
+  assert.doesNotMatch(html, /<summary[^>]*>\s*<\/summary>/);
+
+  const page = renderFollowingDocument(buildFollowingViewModel({ lens: "money" }, templates));
+  assert.match(page, /<details class="following-refinements">/);
+  assert.match(page, /aria-label="Match more precisely"/);
+
+  const css = readFileSync(new URL("../site/civic-documents.css", import.meta.url), "utf8");
+  assert.match(css, /\.following-refinements:not\(\[open\]\)\s*>\s*:not\(summary\)/);
+  assert.match(css, /\.following-precise:not\(\[open\]\)\s*>\s*:not\(summary\)/);
+  assert.match(css, /\.following-precise-require:not\(\[open\]\)\s*>\s*:not\(summary\)/);
+  const hideRule = css.slice(css.indexOf(".following-refinements:not([open])"));
+  assert.match(hideRule.slice(0, 600), /display:\s*none/);
+});
+
 test("atom and phrase conversion, stale preview, and no-JS params", () => {
   assert.deepEqual(atomFromInput("software"), term("software"));
   assert.deepEqual(atomFromInput("maintenance services"), phrase("maintenance services"));

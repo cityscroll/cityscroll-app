@@ -315,6 +315,12 @@ function modeSelect(name, mode, { anyLabel, allLabel }) {
   </select>`;
 }
 
+/** Named disclosure control. The span is the visible name; aria-label stays when CSS uses flex. */
+function disclosureSummary(i18nKey, label) {
+  const text = esc(label);
+  return `<summary data-i18n-aria="${esc(i18nKey)}" aria-label="${text}"><span data-i18n="${esc(i18nKey)}">${text}</span></summary>`;
+}
+
 /**
  * Progressive matching controls for a supported procurement watch. Hidden for
  * other lenses. Second required group and extra slots stay behind disclosure.
@@ -346,7 +352,7 @@ export function textQueryControlsHtml({
     phraseLabel: "Treat this as an exact phrase",
   })).join("");
   return `<details class="following-precise"${detailsOpen} data-following-precise>
-    <summary data-i18n="following_match_precisely">Match more precisely</summary>
+    ${disclosureSummary("following_match_precisely", "Match more precisely")}
     <div class="following-precise-body">
       <fieldset class="following-precise-include">
         <legend data-i18n="following_include_legend">Include</legend>
@@ -359,12 +365,12 @@ export function textQueryControlsHtml({
         </div>
         ${includeFields}
         <details class="following-precise-more"${state.include.slice(2).some((slot) => slot.value) ? " open" : ""}>
-          <summary data-i18n="following_more_alternatives">More alternatives</summary>
+          ${disclosureSummary("following_more_alternatives", "More alternatives")}
           ${extraInclude}
         </details>
       </fieldset>
       <details class="following-precise-require"${requireOpen}>
-        <summary data-i18n="following_also_require">Also require</summary>
+        ${disclosureSummary("following_also_require", "Also require")}
         <input type="hidden" name="tq_g2" value="${requireOpen ? "1" : "0"}" data-following-precise-require-flag>
         <div class="following-precise-mode-row">
           ${modeSelect("tq_g2_mode", state.requireMode, {
@@ -378,7 +384,7 @@ export function textQueryControlsHtml({
         <legend data-i18n="following_exclude_label">Exclude these words or phrases</legend>
         ${excludeFields}
         <details class="following-precise-more"${state.exclude.slice(2).some((slot) => slot.value) ? " open" : ""}>
-          <summary data-i18n="following_more_exclusions">More exclusions</summary>
+          ${disclosureSummary("following_more_exclusions", "More exclusions")}
           ${extraExclude}
         </details>
       </fieldset>

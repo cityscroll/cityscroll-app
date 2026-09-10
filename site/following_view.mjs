@@ -1049,7 +1049,7 @@ function excludedResultsHtml(view) {
     </li>`;
   }).join("");
   return `<details class="following-excluded" data-following-excluded>
-    <summary data-i18n="following_excluded_results">Left-out records</summary>
+    <summary data-i18n-aria="following_excluded_results" aria-label="Left-out records"><span data-i18n="following_excluded_results">Left-out records</span></summary>
     <p class="following-excluded-note">These records stay out of email. They are shown so you can tighten the exclusion before saving.</p>
     <ol class="following-excluded-list">${items}</ol>
   </details>`;

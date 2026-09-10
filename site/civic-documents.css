@@ -2896,7 +2896,11 @@ select {
   grid-column: 1 / -1;
 }
 
-.following-refinements summary {
+.following-refinements > summary,
+.following-precise > summary,
+.following-precise-more > summary,
+.following-precise-require > summary,
+.following-excluded > summary {
   display: inline-flex;
   min-height: 44px;
   align-items: center;
@@ -2907,6 +2911,16 @@ select {
   background: var(--color-surface);
   color: var(--color-text);
   font: 600 .8125rem/1.3 var(--font-interface);
+}
+
+/* Closed details must take nested summaries out of the tab order. Chromium
+   otherwise keeps them focusable while clipped, which fails focus-not-obscured. */
+.following-refinements:not([open]) > :not(summary),
+.following-precise:not([open]) > :not(summary),
+.following-precise-more:not([open]) > :not(summary),
+.following-precise-require:not([open]) > :not(summary),
+.following-excluded:not([open]) > :not(summary) {
+  display: none;
 }
 
 .following-refinement-grid {
@@ -2919,20 +2933,6 @@ select {
 .following-precise {
   grid-column: 1 / -1;
   margin-top: var(--space-3);
-}
-
-.following-precise summary,
-.following-excluded summary {
-  display: inline-flex;
-  min-height: 44px;
-  align-items: center;
-  width: max-content;
-  padding: 0 var(--space-3);
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-sm);
-  background: var(--color-surface);
-  color: var(--color-text);
-  font: 600 .8125rem/1.3 var(--font-interface);
 }
 
 .following-precise-body,
