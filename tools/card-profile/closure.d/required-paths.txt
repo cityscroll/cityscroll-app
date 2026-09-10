@@ -1972,6 +1972,7 @@ worker/migrations/0026_entity_intelligence_read_model.sql
 worker/migrations/0027_matter_observation_journal.sql
 worker/migrations/0028_matter_exact_refresh.sql
 worker/migrations/0029_matter_watch_baseline.sql
+worker/migrations/0030_digest_outbox_query_revision.sql
 worker/ops-contract.v1.json
 worker/scripts/analytics-dev-token.mjs
 worker/scripts/backfill-history.mjs
@@ -2166,6 +2167,7 @@ worker/src/lib/ocp_awards.mjs
 worker/src/lib/ocp_warehouse_lookup.mjs
 worker/src/lib/ontology_delta_alert.mjs
 worker/src/lib/ops_contract.mjs
+worker/src/lib/owed_attach.mjs
 worker/src/lib/paper_trail_phase.mjs
 worker/src/lib/passport_join.mjs
 worker/src/lib/passport_lifecycle.mjs
@@ -2239,6 +2241,8 @@ worker/src/lib/ulurp_statutory_predictions.mjs
 worker/src/lib/upcoming_council_meetings.mjs
 worker/src/lib/upstream_failure.mjs
 worker/src/lib/usage.mjs
+worker/src/lib/watch_query_revision.mjs
+worker/src/lib/watch_seen_membership.mjs
 worker/src/lib/watch_text_query_procurement.mjs
 worker/src/lib/watchlog.mjs
 worker/src/lib/worker_health.mjs

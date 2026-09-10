@@ -14,7 +14,7 @@ export const OWED_BACKLOG_QUERY = `
     GROUP BY subscriber_id
   ),
   oldest AS (
-    SELECT subscriber_id, lens, item_id,
+    SELECT subscriber_id, lens, item_id, watch_id,
       ROW_NUMBER() OVER (
         PARTITION BY subscriber_id
         ORDER BY first_owed_at ASC, watch_id ASC, item_id ASC
@@ -37,6 +37,7 @@ export const OWED_BACKLOG_QUERY = `
   )
   SELECT owed.subscriber_id, owed.owed_count, owed.oldest_owed_at,
     oldest.lens AS oldest_lens, oldest.item_id AS oldest_item_id,
+    oldest.watch_id AS oldest_watch_id,
     sent_summary.last_sent_at,
     latest_delivery.status AS last_delivery_status
   FROM owed
@@ -147,6 +148,7 @@ export function buildOwedBacklogBody(rows, { now = new Date(), subscriberMetadat
       oldest_age: formatAge(oldestAgeSeconds),
       oldest_lens: row.oldest_lens || null,
       oldest_item_id: row.oldest_item_id || null,
+      oldest_watch_id: row.oldest_watch_id || null,
       last_sent_at: row.last_sent_at || null,
       last_delivery_status: row.last_delivery_status || null,
       next_scheduled_at: timing.nextScheduledAt,

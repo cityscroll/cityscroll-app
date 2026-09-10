@@ -100,6 +100,10 @@ import {
   applyPreparedDigestQueryRevisionCutoff,
   queryRevisionForFilter,
 } from "./lib/watch_query_revision.mjs";
+import {
+  attachOwedRows,
+  isAwardWatchSection,
+} from "./lib/owed_attach.mjs";
 import { evaluatePropertyWatch, propertyWatchStageLabel } from "./lib/property_saved_watch.mjs";
 import { groupDistrictDigestRows } from "../../site/district_weekly_digest.mjs";
 import { landProjectDisplayTitle } from "../../site/display_title.mjs";
@@ -781,68 +785,6 @@ async function owedForSubscriber(env, subscriberId) {
   try { return await listAllOwedItems(env.DB, subscriberId); } catch { return []; }
 }
 
-function payloadRow(item) {
-  try {
-    const parsed = JSON.parse(item.payload_json);
-    return parsed && typeof parsed === "object" ? parsed : null;
-  } catch { return null; }
-}
-
-function sameRenderedItem(a, b) {
-  if (!a || !b) return false;
-  if (a.request_id && b.request_id) return String(a.request_id) === String(b.request_id);
-  if (a.procurement_id && b.procurement_id) return String(a.procurement_id) === String(b.procurement_id);
-  if (a.project_id && b.project_id) return String(a.project_id) === String(b.project_id);
-  if (a.alert_id && b.alert_id) return String(a.alert_id) === String(b.alert_id);
-  if (a.matter_update_key && b.matter_update_key) {
-    return String(a.matter_update_key) === String(b.matter_update_key);
-  }
-  return false;
-}
-
-/**
- * Award-arrival watches (lens "award") carry NYCHA/ABO candidates on
- * awardCandidates. Money awards compile with query kind "award" too — that is
- * a notice-list shape (freshRows + vendor_name), not award-watch candidates.
- * Gate the award-watch outbox path on lens, never on query kind alone.
- */
-function isAwardWatchSection(section) {
-  return section?.lens === "award";
-}
-
-/** Add the durable owed set to the ordinary section renderer, never by source date. */
-function attachOwedRows(sections, owed) {
-  const byWatch = new Map();
-  for (const item of Array.isArray(owed) ? owed : []) {
-    const row = payloadRow(item);
-    if (!row) continue;
-    const list = byWatch.get(item.watch_id) || [];
-    list.push({ item, row });
-    byWatch.set(item.watch_id, list);
-  }
-  for (const section of sections) {
-    if (!section || section.error || section.skipped || section.status !== SECTION_STATUS.SUCCESS) continue;
-    const entries = byWatch.get(section.watchId || section.watch_id) || [];
-    if (!entries.length) continue;
-    section.outboxItems = entries.map(({ item }) => item);
-    const carried = entries.map(({ row }) => row);
-    if (isAwardWatchSection(section)) {
-      const current = Array.isArray(section.awardCandidates) ? section.awardCandidates : [];
-      section.awardCandidates = [...current, ...carried.filter((row) => !current.some((candidate) => sameRenderedItem(candidate, row)))];
-    } else {
-      const current = Array.isArray(section.freshRows) ? section.freshRows : [];
-      section.freshRows = [...current, ...carried.filter((row) => !current.some((candidate) => sameRenderedItem(candidate, row)))];
-    }
-    section.new = (isAwardWatchSection(section) ? section.awardCandidates : section.freshRows).length;
-    section.noticeIds = [...new Set([
-      ...(Array.isArray(section.noticeIds) ? section.noticeIds : []),
-      ...carried.map((row) => row.request_id || row.procurement_id).filter(Boolean),
-    ])].slice(0, 100);
-    section.action = "match";
-  }
-  return sections;
-}
-
 function acceptedOutboxItems(sections) {
   return sections.flatMap((section) => sectionWantsSend(section) && !section.error && !section.skipped
     ? (Array.isArray(section.outboxItems) ? section.outboxItems : [])
@@ -1032,6 +974,7 @@ export async function processOneSub(env, s, ctx) {
       queryLabel: describeFilter(s.lens, s.filter),
       status: SECTION_STATUS.SUCCESS,
       watchId: s.watch_id,
+      filter: s.filter || {},
       kind: q.kind,
       freshRows: fresh,
       new: fresh.length,
@@ -1039,7 +982,7 @@ export async function processOneSub(env, s, ctx) {
     const enqueueRows = (s.lens === "rules" || q.kind === "council-matter") ? fresh : rows;
     outboxSection.outboxEnqueue = await enqueueNormalSection(env, s, outboxSection, enqueueRows, ctx, q.kind);
     if (ctx.injectCrash === "after-enqueue") throw new Error("injected-crash-after-enqueue");
-    attachOwedRows([outboxSection], await owedForSubscriber(env, s.subscriber_id));
+    const owedAttach = attachOwedRows([outboxSection], await owedForSubscriber(env, s.subscriber_id));
     // Provider-submit cutoff: re-read the current expression before composing
     // or submitting. A stale query revision rebuilds membership; after the
     // provider accepts, there is no recall.
@@ -1220,6 +1163,7 @@ export async function processOneSub(env, s, ctx) {
       capped,
       sendUnits: send || (underCap && !ctx.LIVE) ? 1 : 0,
       selection_funnel: normalizeFunnel(funnel),
+      owed_attach: owedAttach,
       ...(preview ? { preview } : {}),
     };
   } catch (e) {
@@ -1268,6 +1212,7 @@ export async function processAccountRollup(env, subs, ctx) {
           subKey: s.key,
           lens: s.lens,
           queryLabel: describeFilter(s.lens, s.filter),
+          filter: s.filter || {},
           skipped: "paused",
           new: 0,
           forecasts: 0,
@@ -1280,9 +1225,11 @@ export async function processAccountRollup(env, subs, ctx) {
 
     const owed = await owedForSubscriber(env, subscriberId);
     for (const section of sections) {
-      section.watchId = subs.find((s) => s.key === section.subKey)?.watch_id || null;
+      const watch = subs.find((s) => s.key === section.subKey);
+      section.watchId = watch?.watch_id || null;
+      section.filter = watch?.filter || section.filter || {};
     }
-    attachOwedRows(sections, owed);
+    const owedAttach = attachOwedRows(sections, owed);
     // Provider-submit cutoff: last current-revision read after evaluation and
     // attach, immediately before composing the provider payload and reserving
     // the occasion. Stale content is rebuilt; accepted messages are not recalled.
@@ -1473,6 +1420,7 @@ export async function processAccountRollup(env, subs, ctx) {
       capped,
       sendUnits: (send || (underCap && decision.wantSend && !ctx.LIVE)) ? 1 : 0,
       selection_funnel: mergeFunnels(sections.map((sec) => sec.funnel).filter(Boolean)),
+      owed_attach: owedAttach,
       sections: sections.map((sec) => ({
         sub: sec.sub,
         ...(sec.previewId ? { previewId: sec.previewId } : {}),
@@ -1506,6 +1454,7 @@ async function evaluateSubSection(env, s, ctx) {
     lens: s.lens,
     freq: s.freq || "daily",
     queryLabel: describeFilter(s.lens, s.filter),
+    filter: s.filter || {},
     lang: s.lang || "en",
     email: s.email,
     new: 0,

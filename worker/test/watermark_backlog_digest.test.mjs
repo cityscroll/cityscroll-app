@@ -404,6 +404,47 @@ test("field case: consecutive mixed-rollup deliveries do not repeat catching-up 
   sqlite.close();
 });
 
+test("district owed rows recorded under a prior watch_id still drain on the current same-lens watch", async () => {
+  const { sqlite, DB } = makeDb();
+  const district = sub("sub:district", "district", { councilDistrict: "3" }, { watch_id: "watch:current-district-key" });
+  const land = sub("sub:land", "land", { status: "all" }, { freq: "weekly", watch_id: "watch:current-land-key" });
+  insertOwed(sqlite, {
+    watchId: "watch:prior-district-key",
+    itemId: "district:land:2019M0059:2023-03-13",
+    lens: "district",
+    itemKind: "district",
+    firstOwedAt: "2026-08-13T10:00:59.502Z",
+    payload: {
+      district_item_id: "land:2019M0059:2023-03-13",
+      district_section: "land",
+      project_id: "2019M0059",
+      project_name: "Held district land action",
+      public_status: "In review",
+      district_kind: "rezone",
+      council_district: "3",
+      watch_filter: { councilDistrict: "3" },
+    },
+  });
+  const state = kv();
+  await state.put(`lastsent:${district.key}`, LAST_SENT);
+  await state.put(`lastsent:${land.key}`, LAST_SENT);
+  await withFetch({ rows: [], fn: async (sent) => {
+    const result = await processAccountRollup(env(DB, state), [district, land], runCtx());
+    assert.equal(result.error, undefined, result.error || "no error");
+    assert.equal(result.owed_attach.attached_by.watch_id, 0);
+    assert.equal(result.owed_attach.attached_by.lens, 1);
+    assert.equal(result.owed_attach.unattached_count, 0);
+    assert.equal(result.sent, true);
+    assert.equal(sent.length, 1);
+    assert.match(sent[0].html, /Held district land action/);
+    assert.equal(
+      sqlite.prepare("SELECT status FROM digest_outbox_items WHERE item_id = ?").get("district:land:2019M0059:2023-03-13").status,
+      "delivered",
+    );
+  }});
+  sqlite.close();
+});
+
 test("provider rejection does not advance lastsent", async () => {
   const { sqlite, DB } = makeDb();
   const watch = sub("sub:fail-send", "land", { status: "all" });

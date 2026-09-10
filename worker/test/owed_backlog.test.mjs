@@ -81,6 +81,7 @@ test("readOwedBacklog returns per-subscriber counts, oldest item, and latest del
     oldest_age: "1d 1h",
     oldest_lens: "rules",
     oldest_item_id: "item:oldest",
+    oldest_watch_id: "watch:1",
     last_sent_at: "2026-08-09T13:01:00Z",
     last_delivery_status: "failed",
     next_scheduled_at: "2026-08-11T13:00:00.000Z",

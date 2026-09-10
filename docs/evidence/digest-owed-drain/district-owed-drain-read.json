@@ -1,0 +1,22 @@
+{
+  "schema": "cityscroll.digest_owed_drain_observation.v1",
+  "subscriber_id": "subscriber:7878af20a7538ed0a03e11f6",
+  "reads": [
+    {
+      "phase": "before",
+      "taken_at": "2026-09-10T11:49:10.479Z",
+      "owed_count": 78,
+      "drained_count": 0,
+      "oldest_owed_row": {
+        "item_id": "district:land:2019M0059:2023-03-13",
+        "lens": "district",
+        "first_owed_at": "2026-08-13T10:00:59.502Z",
+        "watch_id": null
+      },
+      "last_sent_at": "2026-09-07T13:03:01.898Z",
+      "last_delivery_status": "sent",
+      "source": "GET /admin/owed-backlog",
+      "subscriber_id": "subscriber:7878af20a7538ed0a03e11f6"
+    }
+  ]
+}
