@@ -478,7 +478,11 @@ async function runStatsDailySnapshot(job, context) {
     const body = response.ok ? await response.json() : null;
     const lineage = body?.search_usage_lineage || null;
     observation.lineage = lineage?.series
-      ? { ...lineage.series, reconciliation: lineage.reconciliation || null }
+      ? {
+          ...lineage.series,
+          measured_since: lineage.measured_since ?? lineage.series.measured_since ?? null,
+          reconciliation: lineage.reconciliation || null,
+        }
       : null;
   } catch {
     observation.lineage = null;

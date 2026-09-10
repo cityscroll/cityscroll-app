@@ -9,12 +9,14 @@ import {
   SEARCH_USAGE_DAILY_KEY_PREFIX,
   SEARCH_USAGE_DAILY_SCHEMA,
   buildSearchUsageDailyAggregate,
+  classifySearchUsageAbsentDays,
   foldSearchUsageDays,
   publishSearchUsageDailyAggregates,
   publishableSearchUsageDays,
   readSearchUsageDailySeries,
   reconcileSearchUsageDaily,
   searchUsageDailyContentHash,
+  searchUsageDayBeforeMeasurement,
   searchUsageDayKey,
 } from "../src/lib/search_usage_daily.mjs";
 
@@ -189,10 +191,79 @@ test("a missed cycle leaves a gap, and resumed collection fills only what it can
   assert.equal(byDay["2026-09-03"], 0);
   assert.equal(byDay["2026-09-04"], 1);
   assert.equal(byDay["2026-09-05"], 0);
-  // The day before measurement began was never published and is reported as missing, not zero.
+  // Without a measurement start, the day before publication is reported as missing, not zero.
   assert.deepEqual(series.missing_days, ["2026-09-01"]);
   assert.equal(Object.hasOwn(byDay, "2026-09-01"), false);
   assert.equal(series.newest_day, "2026-09-05");
+
+  const bounded = await readSearchUsageDailySeries(env, {
+    now: new Date("2026-09-06T09:00:00Z"),
+    days: 5,
+    measuredSince: "2026-09-02T00:00:00.000Z",
+  });
+  assert.deepEqual(bounded.missing_days, []);
+  assert.deepEqual(bounded.before_measurement, ["2026-09-01"]);
+  assert.equal(bounded.measured_since, "2026-09-02T00:00:00.000Z");
+});
+
+test("measured_since after retention start with one stored day is healthy", async () => {
+  assert.equal(searchUsageDayBeforeMeasurement("2026-09-08", "2026-09-09T00:00:00.000Z"), true);
+  assert.equal(searchUsageDayBeforeMeasurement("2026-09-09", "2026-09-09T00:00:00.000Z"), false);
+  const measuredSince = "2026-09-09T00:00:00.000Z";
+  const kv = fakeKV({
+    [`${SEARCH_USAGE_DAILY_KEY_PREFIX}2026-09-09`]: JSON.stringify(buildSearchUsageDailyAggregate({
+      day: "2026-09-09",
+      counts: { searches_run: 16, searches_returning_records: 15 },
+      measuredSince,
+    })),
+  });
+  const series = await readSearchUsageDailySeries({ ALERT_STATE: kv }, {
+    now: new Date("2026-09-10T11:47:00Z"),
+    days: 90,
+    measuredSince,
+  });
+  assert.equal(series.newest_day, "2026-09-09");
+  assert.deepEqual(series.missing_days, []);
+  assert.ok(series.before_measurement.includes("2026-09-08"));
+  assert.ok(series.before_measurement.includes("2026-08-11"));
+  assert.equal(series.before_measurement.includes("2026-09-09"), false);
+  assert.deepEqual(series.unrecoverable_days, []);
+  const recon = reconcileSearchUsageDaily({
+    storedSeries: series,
+    observedDays: { "2026-09-09": { searches_run: 16, searches_returning_records: 15 } },
+    now: new Date("2026-09-10T11:47:00Z"),
+  });
+  assert.equal(recon.ok, true);
+  assert.deepEqual(recon.missing_days, []);
+  assert.ok(recon.before_measurement.includes("2026-09-08"));
+});
+
+test("a stored gap after measurement began stays missing", async () => {
+  const measuredSince = "2026-09-01T00:00:00.000Z";
+  const seed = {};
+  for (const day of ["2026-09-01", "2026-09-03"]) {
+    seed[`${SEARCH_USAGE_DAILY_KEY_PREFIX}${day}`] = JSON.stringify(buildSearchUsageDailyAggregate({
+      day, counts: { searches_run: 1, searches_returning_records: 1 }, measuredSince,
+    }));
+  }
+  const series = await readSearchUsageDailySeries({ ALERT_STATE: fakeKV(seed) }, {
+    now: new Date("2026-09-04T12:00:00Z"),
+    days: 5,
+    measuredSince,
+  });
+  assert.deepEqual(series.missing_days, ["2026-09-02"]);
+  assert.equal(series.missing_days.includes("2026-08-30"), false);
+  assert.ok(series.before_measurement.includes("2026-08-30"));
+  assert.deepEqual(classifySearchUsageAbsentDays({
+    wantedDays: ["2026-08-31", "2026-09-01", "2026-09-02", "2026-09-03"],
+    heldDays: ["2026-09-01", "2026-09-03"],
+    now: new Date("2026-09-04T12:00:00Z"),
+    measuredSince,
+  }), {
+    missing_days: ["2026-09-02"],
+    before_measurement: ["2026-08-31"],
+    unrecoverable_days: [],
+  });
 });
 
 test("a gap older than the receipts is named as one nothing can recover", async () => {

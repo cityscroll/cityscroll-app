@@ -15,8 +15,11 @@ import {
   STATS_PUBLICATION_ISSUE_MARKER,
   STATS_PUBLICATION_ISSUE_TITLE,
   STATS_PUBLICATION_JOB_ID,
+  dayBeforeMeasurement,
   evaluateStatsPublication,
+  promisedPublicationDays,
   promisedSnapshotDay,
+  publicationHorizonStart,
   statsPublicationIssueBody,
 } from "../tools/stats_publication_monitor.mjs";
 import { applyIssueIntent } from "../tools/external_schedule_outbox.mjs";
@@ -36,6 +39,22 @@ test("the promised day is derived from the clock, never from the publisher", () 
   // Just after midnight the previous day is still inside its grace, so it is not yet promised.
   assert.equal(promisedSnapshotDay("2026-09-06T00:10:00Z"), "2026-09-03");
   assert.equal(promisedSnapshotDay("2026-09-07T08:00:00Z"), "2026-09-05");
+});
+
+test("the promised day set starts at max(measured_since, retention_start)", () => {
+  const now = "2026-09-10T11:47:00Z";
+  assert.equal(publicationHorizonStart({
+    now, measuredSince: "2026-09-09T00:00:00.000Z", receiptRetentionDays: 30,
+  }), "2026-09-09");
+  assert.deepEqual(promisedPublicationDays({
+    now, measuredSince: "2026-09-09T00:00:00.000Z", receiptRetentionDays: 30,
+  }), ["2026-09-09"]);
+  assert.equal(dayBeforeMeasurement("2026-09-08", "2026-09-09T00:00:00.000Z"), true);
+  assert.equal(dayBeforeMeasurement("2026-09-09", "2026-09-09T00:00:00.000Z"), false);
+  // Measurement older than the receipt window still promises from retention start.
+  assert.equal(publicationHorizonStart({
+    now, measuredSince: "2026-07-01T00:00:00.000Z", receiptRetentionDays: 30,
+  }), "2026-08-11");
 });
 
 test("a frozen publisher is named even while it reports a fresh verification", () => {
@@ -98,6 +117,85 @@ test("a plain missing day, a divergent day and a stale verification each name th
     },
   });
   assert.equal(stale.failing_stage, "stale-verification");
+});
+
+test("days before measurement are not_measured, a later gap is missing, and a stall is frozen", () => {
+  const measuredSince = "2026-09-09T00:00:00.000Z";
+  const healthy = evaluateStatsPublication({
+    now: "2026-09-10T11:47:00Z",
+    observation: {
+      published: {
+        measurement: { measured_since: measuredSince },
+        refresh: { state: "fresh", verified_at: "2026-09-10T08:00:26.790Z" },
+      },
+      lineage: {
+        available: true,
+        measured_since: measuredSince,
+        newest_day: "2026-09-09",
+        receipt_retention_days: 30,
+        // Old payload shape: every absent day in the 90-day window listed as missing.
+        missing_days: ["2026-08-11", "2026-09-08"],
+        unrecoverable_days: ["2026-08-11"],
+        reconciliation: { rows: [{ day: "2026-09-09", state: "matched" }] },
+      },
+    },
+  });
+  assert.equal(healthy.ok, true);
+  assert.equal(healthy.failing_stage, null);
+  assert.deepEqual(healthy.evidence.missing_days, []);
+  assert.deepEqual(healthy.evidence.before_measurement, ["2026-08-11", "2026-09-08"]);
+  assert.equal(healthy.evidence.horizon_start, "2026-09-09");
+  const healthyBody = statsPublicationIssueBody(healthy);
+  assert.match(healthyBody, /is published/);
+  assert.match(healthyBody, /Measurement began on 2026-09-09/);
+  assert.match(healthyBody, /not measured/);
+  assert.doesNotMatch(healthyBody, /cannot be recovered/);
+
+  const gap = evaluateStatsPublication({
+    now: NOW,
+    observation: {
+      published: {
+        measurement: { measured_since: "2026-09-01T00:00:00.000Z" },
+        refresh: { state: "failed", verified_at: "2026-09-05T09:00:00.000Z" },
+      },
+      lineage: {
+        available: true,
+        measured_since: "2026-09-01T00:00:00.000Z",
+        newest_day: "2026-09-05",
+        missing_days: ["2026-09-04"],
+        before_measurement: [],
+        unrecoverable_days: [],
+        receipt_retention_days: 30,
+        reconciliation: { rows: [] },
+      },
+    },
+  });
+  assert.equal(gap.ok, false);
+  assert.equal(gap.failing_stage, "missing-daily-aggregate");
+  assert.deepEqual(gap.evidence.missing_days, ["2026-09-04"]);
+
+  const frozen = evaluateStatsPublication({
+    now: NOW,
+    observation: {
+      published: {
+        measurement: { measured_since: "2026-09-01T00:00:00.000Z" },
+        refresh: { state: "fresh", verified_at: "2026-09-06T09:00:00.000Z" },
+      },
+      lineage: {
+        available: true,
+        measured_since: "2026-09-01T00:00:00.000Z",
+        newest_day: "2026-09-02",
+        missing_days: ["2026-09-03", "2026-09-04", "2026-09-05"],
+        before_measurement: [],
+        unrecoverable_days: [],
+        receipt_retention_days: 30,
+        reconciliation: { rows: [] },
+      },
+    },
+  });
+  assert.equal(frozen.ok, false);
+  assert.equal(frozen.failing_stage, "frozen-publisher");
+  assert.match(statsPublicationIssueBody(frozen), /Measurement began on 2026-09-01/);
 });
 
 test("a gap beyond the receipts is a note, not a card reopened every day", () => {
@@ -179,6 +277,54 @@ test("repeated observations update one finding identity through the existing out
   } finally {
     delete process.env.CITYSCROLL_ADMIN_KEY;
   }
+  });
+});
+
+test("the runner carries measured_since so a stored first day is healthy", async () => {
+  await withTempDir("stats-publication-horizon", async (stateDir) => {
+    const measuredSince = "2026-09-09T00:00:00.000Z";
+    process.env.CITYSCROLL_ADMIN_KEY = "specimen-key";
+    try {
+      const output = await runScheduledJob({
+        id: STATS_PUBLICATION_JOB_ID,
+        schedule: ["47 11 * * *"],
+        runner: "stats-daily-snapshot",
+        issue_title: STATS_PUBLICATION_ISSUE_TITLE,
+      }, {
+        stateDir,
+        now: new Date("2026-09-10T11:47:00Z"),
+        runKey: "2026-09-10T11-47",
+        fetchImpl: async (url) => ({
+          ok: true,
+          json: async () => String(url).includes("/admin/stats")
+            ? {
+              search_usage_lineage: {
+                measured_since: measuredSince,
+                series: {
+                  available: true,
+                  newest_day: "2026-09-09",
+                  missing_days: ["2026-09-08"],
+                  unrecoverable_days: [],
+                  receipt_retention_days: 30,
+                },
+                reconciliation: { rows: [{ day: "2026-09-09", state: "matched" }] },
+              },
+            }
+            : {
+              search_usage: {
+                measurement: { measured_since: measuredSince },
+                refresh: { state: "fresh", verified_at: "2026-09-10T08:00:26.790Z" },
+              },
+            },
+        }),
+      });
+      assert.equal(output.result.status, "healthy");
+      assert.equal(output.issue.mode, "close");
+      assert.match(output.result.body, /Measurement began on 2026-09-09/);
+      assert.match(output.result.body, /not measured/);
+    } finally {
+      delete process.env.CITYSCROLL_ADMIN_KEY;
+    }
   });
 });
 
