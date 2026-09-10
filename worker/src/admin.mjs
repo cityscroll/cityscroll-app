@@ -13,6 +13,7 @@ import {
   signupLifecycleFromRecord,
   summarizeSignupLifecycle,
   SIGNUP_LIFECYCLE,
+  ensureSubscriptionIdentity,
 } from "./lib/subscriptions.mjs";
 import { RECOVERY_EXPLANATION, recoverDeprecatedDoubleOptIn } from "./recovered_signups.mjs";
 import {
@@ -447,14 +448,19 @@ export async function handleAdminSubs(req, env) {
             signup_lifecycle: SIGNUP_LIFECYCLE.ENROLLED,
             status: SIGNUP_LIFECYCLE.ENROLLED,
           };
+          // In-memory only: GET /admin/subs never writes SUBS. The attach path
+          // keys on watch_id, so the roster has to show the same identifier.
+          const { record: resolved } = await ensureSubscriptionIdentity(v, k.name);
           const item = {
             key: k.name,
-            email: v.email || null,
+            email: resolved.email || v.email || null,
             lens: v.lens,
             filter: v.filter,
             freq: v.freq,
             paused: !!v.paused,
             createdAt: v.createdAt,
+            subscriber_id: resolved.subscriber_id || null,
+            watch_id: resolved.watch_id || null,
             no_topic: topicless || undefined,
             source: topicless ? v.source : (v.source || null),
             status: lifecycle.status,
@@ -673,8 +679,8 @@ export function renderSignupLifecyclePage(body = {}) {
   const sections = categories.map((category) => {
     const rows = category.rows;
     const table = rows.length
-      ? `<table><thead><tr><th>Address</th><th>Key</th><th>Lifecycle</th><th>Status</th><th>Source</th><th>Original signup</th></tr></thead><tbody>${
-        rows.map((row) => `<tr><th scope="row">${escapeHtml(row.email || "—")}</th><td><code>${escapeHtml(row.key || "—")}</code></td><td>${escapeHtml(row.signup_lifecycle || category.id)}</td><td>${escapeHtml(row.status || "—")}</td><td>${escapeHtml(row.source || "—")}</td><td>${escapeHtml(row.original_signup_at || row.createdAt || "—")}</td></tr>`).join("")
+      ? `<table><thead><tr><th>Address</th><th>Key</th><th>Watch</th><th>Lifecycle</th><th>Status</th><th>Source</th><th>Original signup</th></tr></thead><tbody>${
+        rows.map((row) => `<tr><th scope="row">${escapeHtml(row.email || "—")}</th><td><code>${escapeHtml(row.key || "—")}</code></td><td><code>${escapeHtml(row.watch_id || "—")}</code></td><td>${escapeHtml(row.signup_lifecycle || category.id)}</td><td>${escapeHtml(row.status || "—")}</td><td>${escapeHtml(row.source || "—")}</td><td>${escapeHtml(row.original_signup_at || row.createdAt || "—")}</td></tr>`).join("")
       }</tbody></table>`
       : "";
     return `<article class="panel" data-signup-category="${escapeHtml(category.id)}"><h2>${escapeHtml(category.label)}</h2><p class="count">${deskNumber(category.count)}</p>${table}</article>`;
@@ -1689,7 +1695,7 @@ export function renderAdminStatsPage(stats = {}, owedBacklog = null, owedBacklog
     ? "<p>Owed backlog is unavailable until the D1 read model is configured.</p>"
     : backlogRows.length === 0
       ? "<p>No owed delivery items.</p>"
-      : `<table><thead><tr><th>Subscriber</th><th>Owed</th><th>Oldest</th><th>Last delivery</th><th>Drill-in</th></tr></thead><tbody>${backlogRows.map((row) => `<tr${row.overdue ? ' class="overdue-row"' : ""}><th scope="row">${escapeHtml(row.subscriber_label)}<br><small>${escapeHtml(row.subscriber_id)} · ${row.active_watch_count == null ? "watch count unavailable" : `${deskNumber(row.active_watch_count)} active watch${row.active_watch_count === 1 ? "" : "es"}`}</small></th><td>${deskNumber(row.owed_count)} ${row.overdue ? '<strong class="overdue-badge">OVERDUE</strong>' : ""}</td><td>${escapeHtml(row.oldest_age)}<br><small>${escapeHtml(deskDate(row.oldest_owed_at))}</small></td><td>${escapeHtml(row.last_delivery_status || "Not recorded")}<br><small>${escapeHtml(deskDate(row.last_sent_at))}</small></td><td>${escapeHtml(row.oldest_lens || "Not recorded")} / ${escapeHtml(row.oldest_item_id || "Not recorded")}</td></tr>`).join("")}</tbody></table>`;
+      : `<table><thead><tr><th>Subscriber</th><th>Owed</th><th>Oldest</th><th>Last delivery</th><th>Drill-in</th></tr></thead><tbody>${backlogRows.map((row) => `<tr${row.overdue ? ' class="overdue-row"' : ""}><th scope="row">${escapeHtml(row.subscriber_label)}<br><small>${escapeHtml(row.subscriber_id)} · ${row.active_watch_count == null ? "watch count unavailable" : `${deskNumber(row.active_watch_count)} active watch${row.active_watch_count === 1 ? "" : "es"}`}</small></th><td>${deskNumber(row.owed_count)} ${row.overdue ? '<strong class="overdue-badge">OVERDUE</strong>' : ""}</td><td>${escapeHtml(row.oldest_age)}<br><small>${escapeHtml(deskDate(row.oldest_owed_at))}</small></td><td>${escapeHtml(row.last_delivery_status || "Not recorded")}<br><small>${escapeHtml(deskDate(row.last_sent_at))}</small></td><td>${escapeHtml(row.oldest_lens || "Not recorded")} / ${escapeHtml(row.oldest_item_id || "Not recorded")}${row.oldest_watch_id ? `<br><small>${escapeHtml(row.oldest_watch_id)}</small>` : ""}</td></tr>`).join("")}</tbody></table>`;
   const searchActivityPanel = searchActivity?.model
     ? renderSearchActivityPanel(searchActivity.model, searchActivity)
     : "";

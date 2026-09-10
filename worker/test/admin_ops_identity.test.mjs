@@ -7,6 +7,7 @@ import assert from "node:assert/strict";
 import { handleAdminSubs } from "../src/admin.mjs";
 import { toDayLogEntry } from "../src/lib/digest_ops.mjs";
 import { accountLogId } from "../src/lib/rollup.mjs";
+import { deriveWatchId } from "../src/lib/subscriptions.mjs";
 
 class KV {
   constructor(map = {}) { this.data = new Map(Object.entries(map)); }
@@ -62,6 +63,12 @@ test("admin roster keeps two sub keys that share a 2-hex prefix distinct and sho
   assert.match(html, /sub:36abcdef01234567/);
   assert.match(html, /sub:36fedcba76543210/);
   assert.doesNotMatch(html, /sub:36\*\*\*/);
+  const readerWatchId = await deriveWatchId(reader);
+  const ownerWatchId = await deriveWatchId(owner);
+  assert.equal(body.subs.find((row) => row.key === reader).watch_id, readerWatchId);
+  assert.equal(body.subs.find((row) => row.key === owner).watch_id, ownerWatchId);
+  assert.match(html, new RegExp(readerWatchId));
+  assert.match(html, new RegExp(ownerWatchId));
 });
 
 test("daylog identity uses the full sub key and address, not the 2-hex mask", () => {
