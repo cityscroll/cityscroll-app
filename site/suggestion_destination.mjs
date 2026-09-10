@@ -3,16 +3,11 @@
 // deliberately does not consult the broader publisher corpus.
 
 import { mergeContractSearchRows } from "./contract_search_bridge.mjs";
+import { closingWeekEndISO } from "./closing_this_week.mjs";
 import { filterMoneySnapshot, moneySnapshotRows } from "./resident_snapshot_queries.mjs";
 import { routeHashFromScope, scopeFromLensState } from "./scope_v0.mjs";
 
 export const MONEY_SUGGESTION_DESTINATION_SCHEMA = "cityscroll.money_suggestion_destination.v1";
-
-function addDaysISO(today, days) {
-  const date = new Date(`${String(today).slice(0, 10)}T00:00:00Z`);
-  date.setUTCDate(date.getUTCDate() + days);
-  return date.toISOString().slice(0, 10);
-}
 
 function addMonthsISO(today, months) {
   const date = new Date(`${String(today).slice(0, 10)}T00:00:00Z`);
@@ -50,15 +45,13 @@ function contractSearchAsOf(searchPayload) {
     || null;
 }
 
-/** Certify the final rows produced by the same merge-then-filter sequence as money-list.mjs. */
-export function certifyMoneySuggestionDestination({
+function moneySuggestionFilterRows({
   filter = {},
   snapshot,
   searchPayload = null,
   today,
 } = {}) {
-  const route = moneySuggestionRoute(filter);
-  if (!route || !snapshot || !Array.isArray(snapshot.rows)) return null;
+  if (!snapshot || !Array.isArray(snapshot.rows)) return [];
   const keywords = Array.isArray(filter.keywords) ? filter.keywords.filter(Boolean) : [];
   const keyword = keywords.join(" ");
   const wantsAward = !filter.closingWeek && (
@@ -72,7 +65,7 @@ export function certifyMoneySuggestionDestination({
     ? (Array.isArray(searchPayload?.results) ? searchPayload.results : [])
     : [];
   const mergedRows = mergeContractSearchRows(retainedRows, searchDocuments);
-  const rows = filterMoneySnapshot(mergedRows, {
+  return filterMoneySnapshot(mergedRows, {
     mode,
     agency: filter.agency || "",
     keyword,
@@ -84,10 +77,36 @@ export function certifyMoneySuggestionDestination({
     excludeSpecial: Boolean(filter.excludeSpecial),
     sort: "deadline",
     today,
-    weekEnd: filter.closingWeek ? addDaysISO(today, 7) : null,
+    weekEnd: filter.closingWeek ? closingWeekEndISO(today) : null,
     monthEnd: filter.months ? addMonthsISO(today, filter.months) : null,
     limit: mergedRows.length,
   });
+}
+
+/** The rows the Contracts suggestion destination and the interpreted preview share. */
+export function moneySuggestionDestinationRows(options = {}) {
+  return Object.freeze(moneySuggestionFilterRows(options));
+}
+
+/** Certify the final rows produced by the same merge-then-filter sequence as money-list.mjs. */
+export function certifyMoneySuggestionDestination({
+  filter = {},
+  snapshot,
+  searchPayload = null,
+  today,
+} = {}) {
+  const route = moneySuggestionRoute(filter);
+  if (!route || !snapshot || !Array.isArray(snapshot.rows)) return null;
+  const rows = moneySuggestionFilterRows({ filter, snapshot, searchPayload, today });
+  const keywords = Array.isArray(filter.keywords) ? filter.keywords.filter(Boolean) : [];
+  const keyword = keywords.join(" ");
+  const wantsAward = !filter.closingWeek && (
+    filter.noticeType === "award"
+    || (!filter.noticeType && (filter.minAmount || filter.maxAmount))
+  );
+  const mode = wantsAward ? "award" : "open";
+  const usesKeywordSearch = Boolean(keyword && (mode === "award" || mode === "archive"));
+  const retainedRows = moneySnapshotRows(snapshot);
   return Object.freeze({
     schema: MONEY_SUGGESTION_DESTINATION_SCHEMA,
     route,

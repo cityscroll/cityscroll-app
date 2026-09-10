@@ -30,6 +30,7 @@ import {
   landRowMatchesFilingEvidenceFilter,
   normalizeLandFilingEvidenceFilter,
 } from "./land_filing_evidence_facet.mjs";
+import { dueClosesThisWeek } from "./closing_this_week.mjs";
 
 const residentSnapshotClean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 const residentSnapshotLower = (value) => residentSnapshotClean(value).toLowerCase();
@@ -225,7 +226,7 @@ export function filterMoneySnapshot(rows, {
   processStates = [],
   sort = "deadline",
   today,
-  weekEnd,
+  weekEnd: _weekEnd,
   monthEnd,
   limit = 40,
 } = {}) {
@@ -266,7 +267,7 @@ export function filterMoneySnapshot(rows, {
     }
     const due = String(row?.due_date || "").slice(0, 10);
     if (mode === "open" && (!due || (floor && due <= floor))) return false;
-    if (mode === "open" && closingWeek && weekEnd && due > String(weekEnd).slice(0, 10)) return false;
+    if (mode === "open" && closingWeek && !dueClosesThisWeek(due, floor)) return false;
     if (agency && residentSnapshotClean(row?.agency_name) !== residentSnapshotClean(agency)) return false;
     if (requiredVendorStems.length
       && !requiredVendorStems.every((stem) => vendorStem(row?.vendor_name) === stem)) return false;

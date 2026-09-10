@@ -12,6 +12,7 @@ export const NOTICE_MODULE_PRELOADS = Object.freeze([
   "/following_default_watch_receipt.mjs",
   "/app/core.mjs",
   "/city_record_id.mjs",
+  "/closing_this_week.mjs",
   "/affordance_grammar.mjs",
   "/browse_surface_contracts.mjs",
   "/scope_v0.mjs",

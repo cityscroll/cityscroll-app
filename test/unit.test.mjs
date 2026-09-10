@@ -10,6 +10,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { civicDayISO, daysUntilDue } from "../site/closing_this_week.mjs";
 
 const src = SITE_SOURCE;
 
@@ -84,9 +85,11 @@ const realT = new Function("window", i18nSrc + "\nreturn window.t;")({});
 
 const propEnv = new Function(
   "t",
+  "civicDayISO",
+  "daysUntilDue",
   extractFn("cleanText") + extractFn("daysLeft") + extractFn("classifyAsset") + extractFn("propStage") + extractFn("dollarBadge")
   + "return { classifyAsset, propStage, dollarBadge };"
-)(realT);
+)(realT, civicDayISO, daysUntilDue);
 
 test("classifyAsset: distinctive vocabularies route to persona categories", () => {
   const c = (title, desc="") => propEnv.classifyAsset({ short_title: title, additional_description_1: desc });
@@ -122,12 +125,14 @@ test("dollarBadge: labeled figures only, never a bare number", () => {
 // stub it the same shape as the real one (minus actual CLDR category selection).
 const _spellConst = src.match(/^const _SPELL = \[[^\]]*\];/m)[0];
 const tagEnv = new Function(
+  "civicDayISO",
+  "daysUntilDue",
   "function t(k,v){ return k; }\n" +
   "function tn(base,n){ return base + '_' + (n === 1 ? 'one' : 'other'); }\n" +
   _spellConst + "\n" +
   extractFn("_spellNum") + extractFn("daysLeft") + extractConst("ROLLING_DUE_YEAR") + extractFn("isRollingDeadline") + extractFn("deadlineTag") + extractFn("eventTag") +
   "return { deadlineTag, eventTag };"
-)();
+)(civicDayISO, daysUntilDue);
 const inDays = (n) => new Date(Date.now() + n * 86400000 + 3600000).toISOString();
 
 test("deadlineTag: closed / hot / soon / open ramp", () => {
@@ -389,6 +394,8 @@ test("daysBetween: absolute day gap, null on unparseable dates", () => {
 // (r._ruleStage) joined by request_id. Stubs mirror the real t()/fdt()/escUiHtml()/extSR()
 // shape; daysLeft is the real extraction so the urgency ladder is exercised against live dates.
 const ruleChipEnv = new Function(
+  "civicDayISO",
+  "daysUntilDue",
   "function t(k,v){ if(v){Object.keys(v).forEach(function(x){ k=k.replace(new RegExp('\\\\{'+x+'\\\\}','g'),String(v[x])); });} return k; }\n" +
   "function fdt(s){ return s ? 'D['+s+']' : ''; }\n" +
   "const window={LANG_META:{},LANG:'en'};\n" +
@@ -400,7 +407,7 @@ const ruleChipEnv = new Function(
   extractConst("RULE_STAGE_CFG") +
   extractFn("ruleDisplayStage") + extractFn("ruleDateLabel") + extractFn("ruleStageChip") + extractFn("ruleCommentAction") +
   "return { ruleStageChip, ruleCommentAction, ruleDisplayStage };"
-)();
+)(civicDayISO, daysUntilDue);
 const ruleInDays = (n) => new Date(Date.now() + n * 86400000 + 3600000).toISOString();
 const nr = (o) => Object.assign({ url: "https://rules.example/rule" }, o);
 
