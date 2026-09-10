@@ -1,0 +1,41 @@
+{
+  "schema": "cityscroll.watch-text-query-reader-controls.capture.v1",
+  "note": "Textual capture manifest. No image binaries are committed; local captures stay under the ignored .artifacts/ path.",
+  "route": "/following/?lens=money",
+  "surface": "site/following_view.mjs precise matching controls",
+  "revision": "d4dba5307c4e0d6c5f48411691ced218ddd0f4d4",
+  "runner": "test/watch_text_query_ui.test.mjs",
+  "data_vintage": "Frozen award-title snapshot 2026-09-09 and DDC notice fixture 2026-09-04. Counts are not a live census.",
+  "inputs": [
+    {
+      "path": "test/fixtures/watch_text_query/procurement_titles_snapshot.json",
+      "sha256": "051177816df666c2ab667b0ae5f6695b4daf87a77ae193945c29eb9c7d5c5f18"
+    },
+    {
+      "path": "warehouse/fixtures/procurement-project-context/city-record-ddc-notices.json",
+      "sha256": "a7b8ace8534a1a8ce00c95c5940e26b8dc359eeeb55397813f0e62199ead1c47"
+    }
+  ],
+  "captures": [
+    {
+      "assertion": "Desktop Following preview for software excluding maintenance shows labelled any/all and exclusion controls and the E2 award identities.",
+      "population": "measured",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "route": "/following/?lens=money&tq_i0=software&tq_x0=maintenance&type=award",
+      "sha256": "69520078ae7978957a66d3b2b831adbb0fd3a012796c9889d48031674bc6caae"
+    },
+    {
+      "assertion": "Narrow/touch layout keeps the same labelled controls, 44px summary target, and excluded SolarWinds passage.",
+      "population": "measured",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "route": "/following/?lens=money&tq_i0=software&tq_x0=maintenance&type=award",
+      "sha256": "69520078ae7978957a66d3b2b831adbb0fd3a012796c9889d48031674bc6caae"
+    }
+  ]
+}

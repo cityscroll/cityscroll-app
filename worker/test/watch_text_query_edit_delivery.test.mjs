@@ -306,10 +306,10 @@ test("A1 queued SolarWinds is excluded from the next captured email after a main
     const result = await processOneSub(env, { ...stored, key }, ctx());
     assert.equal(result.sent, true);
     assert.equal(sent.length, 1);
-    assert.doesNotMatch(sent[0].body.html, /SolarWinds Software Maintenance/);
-    assert.match(sent[0].body.html, /Acronis Cyber Protection Software License/);
-    assert.match(sent[0].body.html, /Komprise Multi-Year Software Renewal/);
-    assert.match(sent[0].body.html, /CRO-660 Software/);
+    assert.doesNotMatch(sent[0].body.html, /20260723004/);
+    assert.match(sent[0].body.html, /Acronis Cyber Protection[\s\S]*Software[\s\S]*License/);
+    assert.match(sent[0].body.html, /Komprise Multi-Year[\s\S]*Software[\s\S]*Renewal/);
+    assert.match(sent[0].body.html, /CRO-660[\s\S]*Software/);
     assert.equal(sqlite.prepare("SELECT status FROM digest_outbox_items WHERE item_id = ?").get(`notice:${SOLARWINDS}`).status, "cancelled");
     assert.notEqual(sqlite.prepare("SELECT status FROM digest_outbox_items WHERE item_id = ?").get(`notice:${SOLARWINDS}`).status, "delivered");
     for (const id of E2_IDS) {
@@ -373,7 +373,7 @@ test("A2 two-watch rollup keeps SolarWinds on the unchanged watch and never mark
     ], ctx());
     assert.equal(result.sent, true);
     assert.equal(sent.length, 1);
-    assert.match(sent[0].body.html, /SolarWinds Software Maintenance/);
+    assert.match(sent[0].body.html, /SolarWinds[\s\S]*Software[\s\S]*Maintenance/);
     assert.equal(sqlite.prepare("SELECT status FROM digest_outbox_items WHERE watch_id = ? AND item_id = ?")
       .get(software.watch_id, `notice:${SOLARWINDS}`).status, "cancelled");
     assert.equal(sqlite.prepare("SELECT status FROM digest_outbox_items WHERE watch_id = ? AND item_id = ?")
@@ -442,7 +442,7 @@ test("A3 prefs upgrade and equivalent save keep identity, cadence, and delivered
   await withCapturedProvider(async (sent) => {
     const result = await processOneSub(env, { ...second, key }, sendCtx);
     assert.equal(result.sent, true);
-    assert.doesNotMatch(sent[0].body.html, /Komprise Multi-Year Software Renewal/);
+    assert.doesNotMatch(sent[0].body.html, /Komprise Multi-Year[\s\S]*Software[\s\S]*Renewal/);
     assert.equal(sqlite.prepare("SELECT status, delivered_at FROM digest_outbox_items WHERE item_id = ?")
       .get(`notice:${E2_IDS[0]}`).delivered_at, "2026-08-20T13:00:00.000Z");
   });
@@ -503,8 +503,8 @@ test("A5 edit during preparation is reevaluated at the provider-submit cutoff; a
     assert.equal(result.sent, true);
     assert.equal(sent.length, 1);
     assert.ok(sent[0].idempotencyKey, "unchanged retries keep the reserved delivery id as Idempotency-Key");
-    assert.doesNotMatch(sent[0].body.html, /SolarWinds Software Maintenance/);
-    assert.match(sent[0].body.html, /Acronis Cyber Protection Software License/);
+    assert.doesNotMatch(sent[0].body.html, /20260723004/);
+    assert.match(sent[0].body.html, /Acronis Cyber Protection[\s\S]*Software[\s\S]*License/);
     assert.equal(QUERY_REVISION_CUTOFF, "before-provider-submit");
     assert.equal(sqlite.prepare("SELECT status FROM digest_outbox_items WHERE item_id = ?").get(`notice:${SOLARWINDS}`).status, "cancelled");
   });

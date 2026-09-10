@@ -5,6 +5,7 @@
 import { communityBoardLabel, normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
 import { interpretStoredInstitutionFollow } from "../../../site/institution_follow_scope.mjs";
 import { PLACE_ROLES, PLACE_ROLE_VERB, placeRoleSupportedForDomain } from "../../../site/scope_v0.mjs";
+import { describeTextQuery } from "../../../site/watch_text_query_ui.mjs";
 
 const LENS_LABEL = {
   money: "Contracts and RFPs",
@@ -126,8 +127,10 @@ export function describeFilter(lens, filter) {
   }
   const kws = Array.isArray(f.keywords) ? f.keywords.filter(Boolean) : [];
   const parts = [];
+  const described = describeTextQuery(f.text_query);
   if (f.lookupType === "person") parts.push(kws.length ? `a person named “${kws.join(" ")}”` : "a person");
   else if (f.lookupType === "role") parts.push(kws.length ? `roles matching “${kws.join(" / ")}”` : "roles");
+  else if (described?.summary) parts.push(described.summary);
   else if (kws.length) parts.push(`about “${kws.join(" / ")}”`);
   if (f.noticeType === "award") parts.push("awards only");
   else if (f.noticeType === "solicitation") parts.push("open solicitations only");

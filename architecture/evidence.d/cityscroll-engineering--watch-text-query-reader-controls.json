@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/watch-text-query-reader-controls",
+  "status": "implemented",
+  "fingerprint": "watch-text-query-reader-controls.v1",
+  "updated_at": "2026-09-10T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "watch-text-query-reader-controls",
+      "path": "site/watch_text_query_ui.mjs"
+    },
+    {
+      "id": "watch-text-query-ui-tests",
+      "path": "test/watch_text_query_ui.test.mjs"
+    },
+    {
+      "id": "watch-text-query-preview-tests",
+      "path": "worker/test/watch_text_query_preview.test.mjs"
+    },
+    {
+      "id": "watch-text-query-ui-receipt",
+      "path": "test/fixtures/watch_text_query/ui_acceptance.md"
+    },
+    {
+      "id": "watch-text-query-reader-controls-capture",
+      "path": "docs/evidence/watch-text-query-reader-controls/capture-manifest.json"
+    }
+  ]
+}

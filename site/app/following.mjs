@@ -16,6 +16,12 @@ import {
   followingUrlForTab,
 } from "../following_personal_state.mjs";
 import { communityBoardIdFromSelection } from "../community_board_watch.mjs";
+import {
+  parseTextQueryControlParams,
+  previewGenerationMatches,
+  TEXT_QUERY_UI,
+  watchFilterFromTextQueryControls,
+} from "../watch_text_query_ui.mjs";
 import { runtimeRumSemanticMilestones } from "../rum_static_record_instrumentation.mjs";
 import {
   createFollowingRumInstrumentation,
@@ -155,6 +161,9 @@ function duplicateWarning() {
   host.prepend(note);
 }
 
+let previewSeq = 0;
+let previewTimer = 0;
+
 function readRefineFilter() {
   const form = root?.querySelector("[data-following-preview-form]");
   if (!form) return { lens: root?.dataset.followingLens || "money", filter: {}, frequency: "daily" };
@@ -163,8 +172,19 @@ function readRefineFilter() {
     filter = JSON.parse(form.elements.filter?.value || "{}") || {};
   } catch { filter = {}; }
   const q = String(form.elements.q?.value || "").trim();
-  if (q) filter.keywords = [q];
-  else delete filter.keywords;
+  const lens = form.elements.lens?.value || root?.dataset.followingLens || "money";
+  const built = watchFilterFromTextQueryControls({
+    lens,
+    filter,
+    keyword: q,
+    controls: parseTextQueryControlParams(new URLSearchParams(new FormData(form))),
+    structuredScope: true,
+  });
+  filter = built.filter;
+  if (!built.usedTextQuery) {
+    if (q) filter.keywords = [q];
+    else delete filter.keywords;
+  }
   const agency = String(form.elements.agency?.value || "").trim();
   if (agency) filter.agency = agency;
   else delete filter.agency;
@@ -193,8 +213,10 @@ function readRefineFilter() {
   }
   const freqInput = form.querySelector('input[name="freq"]:checked');
   const frequency = freqInput?.value === "weekly" ? "weekly" : "daily";
+  const hiddenFilter = form.elements.filter;
+  if (hiddenFilter) hiddenFilter.value = JSON.stringify(filter);
   return {
-    lens: form.elements.lens?.value || root?.dataset.followingLens || "money",
+    lens,
     filter,
     frequency,
   };
@@ -239,12 +261,32 @@ function updateRuleLine() {
   }
 }
 
+function scheduleDebouncedPreview() {
+  const form = root?.querySelector("[data-following-preview-form]");
+  if (!form || !form.querySelector("[data-following-precise]")) return;
+  window.clearTimeout(previewTimer);
+  previewTimer = window.setTimeout(() => {
+    if (typeof form.requestSubmit === "function") form.requestSubmit();
+    else form.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }));
+  }, TEXT_QUERY_UI.debounceMs);
+}
+
 function wireRefineLive() {
   const form = root?.querySelector("[data-following-preview-form]");
   if (!form || form.dataset.ruleLive === "true") return;
   form.dataset.ruleLive = "true";
-  form.addEventListener("input", updateRuleLine);
-  form.addEventListener("change", updateRuleLine);
+  form.addEventListener("input", (event) => {
+    updateRuleLine();
+    if (event.target?.closest?.("[data-following-precise], [data-following-refine]")) {
+      scheduleDebouncedPreview();
+    }
+  });
+  form.addEventListener("change", (event) => {
+    updateRuleLine();
+    if (event.target?.closest?.("[data-following-precise], [data-following-refine]")) {
+      scheduleDebouncedPreview();
+    }
+  });
   syncCouncilFieldVisibility(form);
   syncCommunityBoardFieldVisibility(form);
   updateRuleLine();
@@ -592,19 +634,25 @@ function wireLocationSync() {
 async function preview(event) {
   event.preventDefault();
   const form = event.currentTarget;
+  updateRuleLine();
+  const seq = ++previewSeq;
   const status = form.querySelector("[data-following-preview-status]");
   if (status) status.textContent = msg("msgPreviewLoading");
   try {
     const url = new URL(form.action);
     url.search = new URLSearchParams(new FormData(form)).toString();
+    url.searchParams.set("preview_seq", String(seq));
     if (window.LANG && window.LANG !== "en") url.searchParams.set("lang", window.LANG);
     const response = await fetch(url, { headers: { Accept: "text/html" } });
     if (!response.ok) throw new Error("preview");
-    adoptFollowingDocument(await response.text());
+    const html = await response.text();
+    if (!previewGenerationMatches(previewSeq, seq)) return;
+    adoptFollowingDocument(html);
     window.applyStrings?.();
     if (url.origin === location.origin) history.replaceState({}, "", `${url.pathname}${url.search}`);
     root.querySelector("[data-following-preview-status]")?.replaceChildren(msg("msgPreviewReady"));
   } catch {
+    if (previewSeq !== seq) return;
     if (status) status.textContent = msg("msgPreviewError");
   }
 }

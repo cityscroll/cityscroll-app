@@ -801,6 +801,7 @@ site/watch_family_capabilities.mjs
 site/watch_templates.mjs
 site/watch_text_query.mjs
 site/watch_text_query_eval.mjs
+site/watch_text_query_ui.mjs
 site/zap_action_labels.mjs
 site/zoning_hearing_calendar.mjs
 test/abo_award_panel.test.mjs

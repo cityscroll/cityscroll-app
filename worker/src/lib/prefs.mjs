@@ -10,6 +10,7 @@ import { normalizeEmail, FREQS, SUPPORTED_LANGS } from "./subscriptions.mjs";
 import { admitTextQuery, sanitize } from "./filter.mjs";
 import { describeFilter } from "./confirm_email.mjs";
 import { stampWatchQueryRevision } from "./watch_query_revision.mjs";
+import { parseTextQueryControlParams, watchFilterFromTextQueryControls } from "../../../site/watch_text_query_ui.mjs";
 
 export const PREFS_SCOPE = "prefs";
 /** Preference-center link lifetime (~60 days — same order as unsubscribe links). */
@@ -141,6 +142,22 @@ export function parsePrefsAction(body = {}) {
     }
     if (expression && typeof expression === "object") {
       patch.filter = { ...(patch.filter || {}), text_query: expression };
+    }
+  }
+  const tqKeys = Object.keys(body || {}).filter((key) => String(key).startsWith("tq_"));
+  if (tqKeys.length) {
+    const params = new URLSearchParams();
+    for (const key of tqKeys) params.set(key, String(body[key] ?? ""));
+    const built = watchFilterFromTextQueryControls({
+      lens: "money",
+      filter: patch.filter || {},
+      keyword: typeof body.keywords === "string" ? body.keywords.split(/[,/]/)[0] : "",
+      controls: parseTextQueryControlParams(params),
+      structuredScope: true,
+    });
+    if (built.usedTextQuery && built.textQuery) {
+      patch.filter = { ...(patch.filter || {}), ...built.filter };
+      delete patch.keywords;
     }
   }
   if (body.keywords != null) {

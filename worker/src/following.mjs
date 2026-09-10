@@ -8,9 +8,15 @@ import {
   followingWatchScopeLinksHtml,
   watchFromFollowingParams,
 } from "../../site/following_view.mjs";
-import { compileSub, rowsForCompiledQuery } from "./lib/compile.mjs";
+import { compileSub, getProcurementDigestSnapshot, rowsForCompiledQuery } from "./lib/compile.mjs";
 import { feedItems } from "./lib/feed.mjs";
 import { prepareWatchFilter, resolveLens } from "./lib/filter.mjs";
+import {
+  evaluateMoneyTextQueryWatch,
+  TEXT_QUERY_EVAL_STATUS,
+} from "./lib/watch_text_query_procurement.mjs";
+import { textQueryEvaluationSupported } from "../../site/watch_text_query.mjs";
+import { previewQueryRevision } from "../../site/watch_text_query_ui.mjs";
 import { corsHeaders } from "./lib/cors.mjs";
 import { emailFromRequest } from "./session.mjs";
 import { issuePrefsCredential, listWatchesForEmail } from "./prefs.mjs";
@@ -35,16 +41,80 @@ function publicHeaders() {
   };
 }
 
-async function previewFor(watch, fetchImpl, todayISO = new Date().toISOString().slice(0, 10), env = {}) {
+function previewItemFromRow(row) {
+  const evidence = row?.text_query_evidence;
+  const excerpt = evidence?.groups?.find((group) => group?.field && group.field !== "title")?.passage
+    || evidence?.groups?.find((group) => group?.passage)?.passage
+    || null;
+  return { excerpt };
+}
+
+async function previewFor(watch, fetchImpl, todayISO = new Date().toISOString().slice(0, 10), env = {}, options = {}) {
+  if (watch?.filter?.text_query && textQueryEvaluationSupported(watch.lens)) {
+    try {
+      const evaluated = await evaluateMoneyTextQueryWatch({
+        db: env.DB || null,
+        snapshot: getProcurementDigestSnapshot(),
+        sub: watch,
+        todayISO,
+        limit: 5,
+        cursor: options.cursor || null,
+        clock: todayISO,
+      });
+      const revision = previewQueryRevision(watch.filter);
+      if (evaluated.status === TEXT_QUERY_EVAL_STATUS.unavailable) {
+        return {
+          items: [],
+          count: null,
+          error: "The preview is not ready. Your wording is still here.",
+          status: TEXT_QUERY_EVAL_STATUS.unavailable,
+          continuation: null,
+          excludedItems: [],
+          queryRevision: revision,
+        };
+      }
+      const kind = evaluated.rows[0]?.type_of_notice_description === "Award"
+        || (evaluated.rows[0]?.procurement_id && !evaluated.rows[0]?.request_id)
+        ? "award"
+        : "rfp";
+      const items = feedItems(kind, evaluated.rows)
+        .slice(0, 5)
+        .map((item, index) => ({ ...item, ...previewItemFromRow(evaluated.rows[index]) }));
+      return {
+        items,
+        count: items.length,
+        error: null,
+        status: evaluated.status,
+        continuation: evaluated.continuation,
+        excludedItems: (evaluated.excludedRows || []).map((row) => ({
+          id: row.request_id || row.procurement_id,
+          title: row.short_title || row.title || row.request_id,
+          url: row.request_id ? `https://cityscroll.org/notices/${encodeURIComponent(row.request_id)}` : null,
+          excerpt: row.text_query_evidence?.exclusion?.passage || null,
+        })),
+        queryRevision: revision,
+      };
+    } catch {
+      return {
+        items: [],
+        count: null,
+        error: "The preview is not ready. Your wording is still here.",
+        status: TEXT_QUERY_EVAL_STATUS.unavailable,
+        continuation: null,
+        excludedItems: [],
+        queryRevision: previewQueryRevision(watch.filter),
+      };
+    }
+  }
   const query = compileSub(watch, todayISO);
   if (!query) return { items: [], error: "This scope cannot be previewed yet. You can still manage existing watches below." };
   try {
     let rows = await rowsForCompiledQuery(query, env, fetchImpl);
     if (!Array.isArray(rows)) rows = [];
     if (query.postFilter) rows = rows.filter(query.postFilter);
-    return { items: feedItems(query.kind, rows).slice(0, 5), count: rows.length, error: null };
+    return { items: feedItems(query.kind, rows).slice(0, 5), count: rows.length, error: null, status: "complete" };
   } catch {
-    return { items: [], error: "The public data source is unavailable right now. The saved criteria are still shown." };
+    return { items: [], error: "The public data source is unavailable right now. The saved criteria are still shown.", status: "unavailable" };
   }
 }
 
@@ -93,6 +163,7 @@ function personalWatchHtml(watch, credential) {
     </div>
     <div class="following-watch-actions">
       ${context.currentMatchesHref ? `<a class="following-current-matches" href="${esc(context.currentMatchesHref)}">See current matches</a>` : ""}
+      ${watch.lens === "money" ? `<a class="following-change-matching" data-following-change-matching href="${esc(context.followingHref)}">${esc("Change what this matches")}</a>` : ""}
       ${followingWatchScopeLinksHtml(context, { entityClass: "following-watch-entity" })}
     </div>
     ${watchFacts(context)}
@@ -176,15 +247,28 @@ export async function handleFollowing(request, env = {}, ctx = {}, options = {})
     return new Response(request.method === "HEAD" ? null : html, { status: 200, headers: publicHeaders() });
   }
   const watch = { lens: prepared.lens, filter: prepared.filter };
+  let cursor = null;
+  const continueRaw = url.searchParams.get("preview_continue");
+  if (continueRaw) {
+    try {
+      const parsedCursor = JSON.parse(continueRaw);
+      if (parsedCursor && Number.isInteger(parsedCursor.offset)) cursor = parsedCursor;
+    } catch { cursor = null; }
+  }
   const preview = parsed.requested
-    ? await previewFor(watch, options.fetchImpl || fetch, options.todayISO, env)
-    : { items: [], count: null, error: null };
+    ? await previewFor(watch, options.fetchImpl || fetch, options.todayISO, env, { cursor })
+    : { items: [], count: null, error: null, status: null, excludedItems: [] };
   const view = buildFollowingViewModel({
     ...parsed,
     ...watch,
     matchCount: parsed.matchCount ?? preview.count,
     previewItems: preview.items,
     previewError: preview.error,
+    previewStatus: preview.status || null,
+    previewContinuation: preview.continuation || null,
+    previewSeq: url.searchParams.get("preview_seq"),
+    excludedItems: preview.excludedItems || [],
+    editKey: url.searchParams.get("edit"),
   }, suggestedTemplates);
   const html = renderFollowingDocument(view, documentOptions);
   return new Response(request.method === "HEAD" ? null : html, { status: 200, headers: publicHeaders() });

@@ -31,7 +31,7 @@ import {
 import { buildNoticesQuery, searchNotices } from "./lib/notices.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { emailT } from "./lib/i18n.mjs";
-import { digestDecision, digestCoversBacklogWindow, dedupeFreshByContent, shortDate, matchEvidence } from "./lib/digest.mjs";
+import { digestDecision, digestCoversBacklogWindow, dedupeFreshByContent, shortDate, matchEvidence, matchEvidenceFromTextQuery } from "./lib/digest.mjs";
 import { itemAwarenessHtml } from "./lib/digest_item_awareness.mjs";
 import { emptyFunnel, mergeFunnels, normalizeFunnel } from "./lib/digest_funnel.mjs";
 import { TRANSIENT_UPSTREAM_STATUSES, markUpstreamFailure, upstreamResultFields } from "./lib/upstream_failure.mjs";
@@ -2565,7 +2565,9 @@ function digestHtml(w, rows) {
   const items = rows
     .map((r) => {
       const titleText = r.short_title || r.section_name || "Notice";
-      const ev = matchEvidence(titleText, r.additional_description_1, keywords);
+      const ev = r.text_query_evidence
+        ? matchEvidenceFromTextQuery(r)
+        : matchEvidence(titleText, r.additional_description_1, keywords);
       const acts = [];
       if (r.email) acts.push(`<a href="mailto:${esc(r.email)}">✉ Email</a>`);
       if (r.contact_phone) acts.push(`<a href="tel:${esc(String(r.contact_phone).replace(/[^0-9+]/g, ""))}">☎ Call</a>`);
@@ -2925,7 +2927,9 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
         <span style="font-size:13px"><a href="${link}">↗ View contract on CityScroll</a></span></li>`;
     }
     const titleText = r.short_title || "Notice";
-    const ev = matchEvidence(titleText, r.additional_description_1, keywords);
+    const ev = r.text_query_evidence
+      ? matchEvidenceFromTextQuery(r)
+      : matchEvidence(titleText, r.additional_description_1, keywords);
     const acts = [];
     if (r.email) acts.push(`<a href="mailto:${esc(r.email)}">✉ Email</a>`);
     const tel = String(r.contact_phone || "").replace(/[^0-9+]/g, "");
@@ -3207,7 +3211,9 @@ export function rollupDigestHtml({
           <span style="font-size:13px"><a href="${link}">↗ View contract on CityScroll</a></span></li>`;
       }
       const titleText = r.short_title || "Notice";
-      const ev = matchEvidence(titleText, r.additional_description_1, keywords);
+      const ev = r.text_query_evidence
+        ? matchEvidenceFromTextQuery(r)
+        : matchEvidence(titleText, r.additional_description_1, keywords);
       const rowKind = itemKind || "rfp";
       const noticeLink = digestRedirectUrl(base, rowKind, r.request_id, {
         sessionToken: sessionTok,
