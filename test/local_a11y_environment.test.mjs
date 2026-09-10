@@ -30,4 +30,6 @@ test("local accessibility setup uses one persistent pinned environment", () => {
 
   assert.doesNotMatch(preflight, /pip install playwright/);
   assert.match(preflight, /Run 'make setup-a11y' once, then use 'make a11y'/);
+
+  assert.match(makefile, /adding a file under site\/ requires regenerating the card profile/);
 });

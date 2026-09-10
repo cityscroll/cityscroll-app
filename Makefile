@@ -28,6 +28,7 @@ hooks-help:
 	@echo "Run gates:     make prepush (includes reading-level)"
 	@echo "Full browser:  make a11y (after one-time 'make setup-a11y')"
 	@echo "Bypass push:   git push --no-verify"
+	@echo "Site modules:  adding a file under site/ requires regenerating the card profile with node tools/derive_card_profile.mjs; make prepush and the push hook run that check when site/ changed."
 
 # Validate the live module graph and print its check-time fingerprint.
 module-graph-digest:

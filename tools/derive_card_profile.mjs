@@ -29,11 +29,13 @@
 //   node tools/derive_card_profile.mjs --check    # verify the committed profile
 //
 // --check verifies coverage rather than byte-identity. The committed pattern
-// list must match every path the closure requires and must not match a path the
-// profile defers, and the committed manifest must have been generated from the
-// current config. Requiring a byte-identical regeneration instead would make an
-// unrelated change that merely adds a tracked file fail this check, which would
-// turn a development convenience into a tax on every other change.
+// list must match every path the closure requires, every tracked path inside
+// the declared include trees, and must not match a path the profile defers, and
+// the committed manifest must have been generated from the current config.
+// Requiring a byte-identical regeneration of counts and digests would make an
+// unrelated change that merely adds a tracked file rewrite those figures; the
+// declared-coverage check is the remaining tax, because a new include-tree file
+// is otherwise absent from every reduced checkout until the pattern list grows.
 //
 // Outputs (generated, committed, never hand-edited):
 //   tools/card-profile/card-work.sparse        sparse-checkout patterns
@@ -61,7 +63,9 @@ import {
   INVENTORIES,
   closurePath,
   committedPatterns,
+  declaredCoverageFailureMessage,
   inventoryPath,
+  isDeclaredCoveragePath,
   loadClosure,
   materialisedByPatterns,
   sparsePath
@@ -252,15 +256,7 @@ function staticClosure(tracked, seeds, config, notMaterialised) {
 // --- source 3: declared structural trees -----------------------------------
 
 function declaredClosure(config, tracked) {
-  const include = config.include_trees;
-  const exclude = config.exclude_trees;
-  const declared = tracked.filter((file) => {
-    if (config.always_include_paths.includes(file)) return true;
-    if (!file.includes("/")) return true; // repository root documents
-    if (!underAny(file, include)) return false;
-    return !underAny(file, exclude);
-  });
-  return declared.sort();
+  return tracked.filter((file) => isDeclaredCoveragePath(file, config)).sort();
 }
 
 // --- pattern emission -------------------------------------------------------
@@ -597,7 +593,16 @@ function build() {
     ""
   ].join("\n");
 
-  return { sparse, closure: `${renderInventory(closure)}\n`, inventories, measured, patterns, profileSet, requiredPaths };
+  return {
+    sparse,
+    closure: `${renderInventory(closure)}\n`,
+    inventories,
+    measured,
+    patterns,
+    profileSet,
+    requiredPaths,
+    declared
+  };
 }
 
 function writeInventory(field, paths) {
@@ -658,6 +663,18 @@ function check(built) {
       `${uncovered.length} required path(s) are not covered by the committed patterns, ` +
         `starting with ${uncovered.slice(0, 3).join(", ")}`
     );
+  }
+
+  // requiredPaths is the observed / seed-tree / corpus floor. Declared coverage
+  // is the rest of the profile: a new site/*.mjs is in the include trees but not
+  // required until something references it, so a required-only check lets it
+  // land without regenerating the pattern list. That is the gap CI's
+  // test/card_profile.test.mjs already closes; --check must fail the same way.
+  const declaredUncovered = built.declared.filter((path) => !matches(path));
+  if (declaredUncovered.length > 0) {
+    const message = declaredCoverageFailureMessage(declaredUncovered);
+    console.error(message);
+    problems.push(message);
   }
 
   // The committed inventory is checked as well as the freshly derived set. A
