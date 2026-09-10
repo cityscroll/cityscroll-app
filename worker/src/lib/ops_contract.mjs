@@ -33,7 +33,7 @@ import {
   SEARCH_USAGE_WINDOW_DAYS,
 } from "./search_usage.mjs";
 
-export const OPS_CONTRACT_VERSION = "1.18.0";
+export const OPS_CONTRACT_VERSION = "1.19.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -445,6 +445,12 @@ export const ADMIN_ROUTES = Object.freeze([
     methods: ["GET"],
     auth: "ADMIN_KEY",
     description: "Signup roster with full address and sub key; recovered / pending-enrollment / enrolled / confirmed / test lifecycle (JSON or ?view=html).",
+  },
+  {
+    path: "/admin/watch-seen-membership",
+    methods: ["GET", "POST"],
+    auth: "ADMIN_KEY",
+    description: "Read-only per-watch seen-set size and membership for a supplied id list. Does not dump stored ids, subscriber addresses, or watch filters; never writes KV or D1.",
   },
   {
     path: "/admin/watch-log",

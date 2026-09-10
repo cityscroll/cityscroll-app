@@ -56,6 +56,7 @@ test("buildOpsContract: stable id/version and required sections", () => {
   assert.equal(doc.performance.query.arbitrary_sql, false);
   assert.deepEqual(doc.performance.states, PERFORMANCE_CONTRACT.states);
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/next-digest-preview"));
+  assert.ok(doc.admin_routes.some((r) => r.path === "/admin/watch-seen-membership" && r.methods.includes("GET") && r.methods.includes("POST")));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/owed-cancel"));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/digest-shadow"));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/reliability/mail"));
@@ -96,7 +97,7 @@ test("committed fixture matches builder (desk CI pin)", () => {
 
 test("performance discovery advertises the cross-repository Desk consumer handoff", () => {
   const doc = buildOpsContract({ generated_at: "2026-08-01T00:00:00.000Z" });
-  assert.equal(doc.version, "1.18.0");
+  assert.equal(doc.version, "1.19.0");
   assert.equal(doc.signup_lifecycle.contract, "cityscroll.signup_lifecycle.v1");
   assert.equal(doc.signup_lifecycle.endpoint, "/admin/subs");
   assert.deepEqual(doc.signup_lifecycle.states.map((state) => state.id), [

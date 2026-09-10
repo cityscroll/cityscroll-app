@@ -107,6 +107,8 @@ test("SHADOW_STATUS_KEY is rejected by the shared admin gates", () => {
 test("SHADOW_STATUS_KEY gets 401 from every other registered /admin/* route", async () => {
   const routes = [
     ["GET", "/admin/subs"],
+    ["GET", "/admin/watch-seen-membership"],
+    ["POST", "/admin/watch-seen-membership"],
     ["GET", "/admin/watch-log"],
     ["POST", "/admin/watch-log/enrich"],
     ["GET", "/admin/feedback"],
