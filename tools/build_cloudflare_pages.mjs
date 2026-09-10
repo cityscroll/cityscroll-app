@@ -154,12 +154,17 @@ if (existsSync(graphTool)) {
   runNode(sourceDir, "data_source_graph.mjs", ["--check", "--output-dir", docsDir]);
   appendOutput("data-source-graph-dir", docsDir);
   const cycleReceipt = join(sourceDir, ".artifacts", "desk-health-publication-cycle.json");
-  runNode(sourceDir, "desk_health_publication_cycle.mjs", [
+  const observationAt = process.env.DESK_PUBLICATION_OBSERVATION_AT
+    || new Date().toISOString(); // determinism-lint: allow clock pages-build observation stamp only outside check
+  const cycleArgs = [
     "--from-graph", join(docsDir, "data-source-graph.json"),
     "--write", cycleReceipt,
     "--run-id", process.env.GITHUB_RUN_ID || commitSha || "local-build",
     "--result", "succeeded",
-  ]);
+    "--now", observationAt,
+  ];
+  if (process.env.GITHUB_EVENT_NAME) cycleArgs.push("--event", process.env.GITHUB_EVENT_NAME);
+  runNode(sourceDir, "desk_health_publication_cycle.mjs", cycleArgs);
   appendOutput("desk-health-publication-cycle", cycleReceipt);
 }
 

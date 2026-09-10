@@ -221,6 +221,7 @@ export function evaluatePublicationCycle(input = {}, contract = loadPublicationC
     checks_current_with_old_publisher: Boolean(
       input.checks_current === true && input.publisher_vintage_stale === true,
     ),
+    event: input.event || null,
   };
 }
 
@@ -285,13 +286,85 @@ export function independentWatchdogFinding(cycle, options = {}) {
 export function publicationReceiptFromCycle(cycle, extras = {}) {
   return {
     schema: PUBLICATION_RECEIPT_SCHEMA,
+    isolated: cycle.isolated === true,
+    event: extras.event ?? cycle.event ?? null,
     run_identity: cycle.run_identity,
     destination: cycle.destination,
     evidence_revision: cycle.clocks.evidence_revision,
     failing_stage: cycle.failing_stage,
     clocks: cycle.clocks,
-    isolated: cycle.isolated === true,
     ...extras,
+  };
+}
+
+/**
+ * Per-run receipt clocks describe this cycle only. Collection success does not
+ * stamp publication; publication is stamped only after the graph artifact is
+ * staged and the scheduler heartbeat is accepted.
+ */
+export function buildPerRunPublicationCycle(input = {}, contract = loadPublicationCycleContract()) {
+  const collectionSucceeded = input.collectionStatus === "succeeded";
+  const heartbeatRejected = input.heartbeatRejected === true;
+  const heartbeatAccepted = input.heartbeatAccepted === true && !heartbeatRejected;
+  const publicationAt = input.publicationAt || null;
+  const publicationSucceeded = heartbeatAccepted && collectionSucceeded && Boolean(publicationAt);
+  return evaluatePublicationCycle({
+    now: input.now,
+    isolated: input.isolated === true,
+    event: input.event || null,
+    trigger: { installed: true },
+    monitor_attempt: {
+      at: input.monitorAt || input.now,
+      basis: "pages-build-monitor-attempt",
+    },
+    collection: {
+      status: collectionSucceeded ? "succeeded" : "failed",
+      completed_at: input.observationAt || input.now,
+    },
+    publication: publicationSucceeded
+      ? {
+        status: "succeeded",
+        completed_at: publicationAt,
+        destination: input.destination || contract.destination.operator_visible,
+      }
+      : { status: heartbeatRejected ? "failed" : "pending" },
+    heartbeat: heartbeatRejected
+      ? { rejected: true, attempted_at: input.now }
+      : undefined,
+    evidence_revision: input.evidenceRevision || null,
+    run_identity: input.runIdentity || null,
+    destination: input.destination || contract.destination,
+  }, contract);
+}
+
+export function stampDeskPublication(receipt, {
+  publicationAt = null,
+  heartbeatAccepted = false,
+} = {}) {
+  if (!receipt || receipt.schema !== PUBLICATION_RECEIPT_SCHEMA) {
+    throw new Error("publication stamp requires an existing cityscroll.desk_publication_receipt.v1 receipt");
+  }
+  if (heartbeatAccepted !== true) {
+    return {
+      ...receipt,
+      failing_stage: receipt.failing_stage || "rejected-heartbeat",
+      clocks: {
+        ...receipt.clocks,
+        last_successful_desk_publication: cycleClock(null),
+      },
+    };
+  }
+  const at = validAt(publicationAt);
+  if (!at) {
+    throw new Error("publication stamp requires an injected --publication-at clock");
+  }
+  return {
+    ...receipt,
+    failing_stage: null,
+    clocks: {
+      ...receipt.clocks,
+      last_successful_desk_publication: cycleClock(at, "successful-desk-publication"),
+    },
   };
 }
 
@@ -400,13 +473,16 @@ export function publicationReceiptRetentionGap(retrieved) {
   return `Retained per-run receipts do not satisfy the liveness reader: ${reasons.join("; ")}. The envelope leaves consecutive_unattended_publication_cycles empty rather than synthesizing those fields from GitHub run metadata.`;
 }
 
-export function writePublicationCycleReceipt(path, cycle, extras = {}) {
+export function writePublicationReceiptFile(path, receipt) {
   // determinism-lint: allow write non-check graph materialization only
   mkdirSync(dirname(path), { recursive: true });
-  const receipt = publicationReceiptFromCycle(cycle, extras);
   // determinism-lint: allow write non-check graph materialization only
   writeFileSync(path, `${JSON.stringify(receipt, null, 2)}\n`);
   return receipt;
+}
+
+export function writePublicationCycleReceipt(path, cycle, extras = {}) {
+  return writePublicationReceiptFile(path, publicationReceiptFromCycle(cycle, extras));
 }
 
 export function readPublicationCycleReceipt(path) {
@@ -426,6 +502,13 @@ function parseArgs(argv) {
     fromGraph: null,
     runId: null,
     result: "succeeded",
+    event: null,
+    stampPublication: false,
+    publicationAt: null,
+    heartbeatAccepted: false,
+    heartbeatRejected: false,
+    observationAt: null,
+    monitorAt: null,
   };
   for (let index = 0; index < argv.length; index += 1) {
     if (argv[index] === "--check") args.check = true;
@@ -444,34 +527,54 @@ function parseArgs(argv) {
     } else if (argv[index] === "--result") {
       args.result = argv[index + 1];
       index += 1;
+    } else if (argv[index] === "--event") {
+      args.event = argv[index + 1];
+      index += 1;
+    } else if (argv[index] === "--stamp-publication") args.stampPublication = true;
+    else if (argv[index] === "--publication-at") {
+      args.publicationAt = argv[index + 1];
+      index += 1;
+    } else if (argv[index] === "--heartbeat-accepted") args.heartbeatAccepted = true;
+    else if (argv[index] === "--heartbeat-rejected") args.heartbeatRejected = true;
+    else if (argv[index] === "--observation-at") {
+      args.observationAt = argv[index + 1];
+      index += 1;
+    } else if (argv[index] === "--monitor-at") {
+      args.monitorAt = argv[index + 1];
+      index += 1;
     } else throw new Error(`unknown argument: ${argv[index]}`);
   }
   return args;
 }
 
+function receiptEvent(args) {
+  return args.event || process.env.GITHUB_EVENT_NAME || null;
+}
+
+function receiptExtras(args, cycle) {
+  return {
+    event: receiptEvent(args) || cycle.event || null,
+    workflow: process.env.GITHUB_WORKFLOW || "Deploy Cloudflare Pages",
+    source_revision: process.env.GITHUB_SHA || null,
+    result: args.stampPublication && args.heartbeatAccepted ? "succeeded" : args.result,
+  };
+}
+
 function cycleFromGraph(path, args, contract, now) {
   const graph = JSON.parse(readFileSync(path, "utf8"));
-  const prior = graph.publication_cycle || {};
-  const succeeded = args.result === "succeeded";
-  return evaluatePublicationCycle({
+  return buildPerRunPublicationCycle({
     now,
-    trigger: { installed: true },
-    monitor_attempt: { at: now, basis: "pages-build-monitor-attempt" },
-    collection: { status: succeeded ? "succeeded" : "failed", completed_at: now },
-    publication: succeeded
-      ? {
-        status: "succeeded",
-        completed_at: now,
-        destination: contract.destination.operator_visible,
-      }
-      : { status: "failed" },
-    evidence_revision: graph.sources_hash || prior.clocks?.evidence_revision,
-    run_identity: args.runId || process.env.GITHUB_RUN_ID || null,
-    prior: {
-      last_successful_observation: prior.clocks?.last_successful_observation,
-      last_successful_desk_publication: prior.clocks?.last_successful_desk_publication,
-      evidence_revision: prior.clocks?.evidence_revision,
-    },
+    event: receiptEvent(args),
+    isolated: false,
+    monitorAt: args.monitorAt || now,
+    observationAt: args.observationAt || now,
+    publicationAt: args.publicationAt || null,
+    heartbeatAccepted: args.heartbeatAccepted,
+    heartbeatRejected: args.heartbeatRejected,
+    collectionStatus: args.result,
+    evidenceRevision: graph.sources_hash || graph.publication_cycle?.clocks?.evidence_revision || null,
+    runIdentity: args.runId || process.env.GITHUB_RUN_ID || null,
+    destination: contract.destination,
   }, contract);
 }
 
@@ -483,21 +586,51 @@ function main() {
     console.log("desk health publication cycle contract is current");
     return;
   }
-  // determinism-lint: allow clock receipt timestamp only outside --check
-  const now = args.now || new Date().toISOString();
+  if (args.stampPublication && args.write && !args.fromGraph) {
+    const existing = readPublicationCycleReceipt(args.write);
+    const stamped = stampDeskPublication(existing, {
+      publicationAt: args.publicationAt,
+      heartbeatAccepted: args.heartbeatAccepted === true && args.heartbeatRejected !== true,
+    });
+    writePublicationReceiptFile(args.write, {
+      ...stamped,
+      event: receiptEvent(args) || stamped.event || null,
+    });
+    console.log(JSON.stringify({
+      schema: stamped.schema,
+      failing_stage: stamped.failing_stage,
+      run_identity: stamped.run_identity,
+      evidence_revision: stamped.evidence_revision,
+      event: receiptEvent(args) || stamped.event || null,
+    }, null, 2));
+    return;
+  }
+  if (!args.now) {
+    throw new Error("publication cycle write requires an injected --now clock; --check does not read the ambient clock");
+  }
+  const now = args.now;
   const cycle = args.fromGraph
     ? cycleFromGraph(args.fromGraph, args, contract, now)
-    : evaluatePublicationCycle({ now, trigger: { installed: true } }, contract);
-  if (args.write) writePublicationCycleReceipt(args.write, cycle, {
-    workflow: process.env.GITHUB_WORKFLOW || "Deploy Cloudflare Pages",
-    source_revision: process.env.GITHUB_SHA || null,
-    result: args.result,
-  });
+    : buildPerRunPublicationCycle({
+      now,
+      event: receiptEvent(args),
+      isolated: false,
+      monitorAt: args.monitorAt || now,
+      observationAt: args.observationAt || now,
+      publicationAt: args.publicationAt || null,
+      heartbeatAccepted: args.heartbeatAccepted,
+      heartbeatRejected: args.heartbeatRejected,
+      collectionStatus: args.result,
+      runIdentity: args.runId || process.env.GITHUB_RUN_ID || null,
+      destination: contract.destination,
+    }, contract);
+  if (args.write) writePublicationCycleReceipt(args.write, cycle, receiptExtras(args, cycle));
   console.log(JSON.stringify({
     schema: cycle.schema,
     failing_stage: cycle.failing_stage,
     run_identity: cycle.run_identity,
     evidence_revision: cycle.clocks.evidence_revision,
+    event: cycle.event,
   }, null, 2));
 }
 
