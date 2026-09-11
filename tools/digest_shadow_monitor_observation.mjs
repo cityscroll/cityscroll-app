@@ -4,8 +4,15 @@ import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 
+import {
+  assertProductionProvenance,
+  productionProvenance,
+} from "./lib/production_provenance.mjs";
+
 export const DIGEST_SHADOW_MONITOR_OBSERVATION_SCHEMA = "cityscroll.digest_shadow_monitor_observation.v1";
 export const DIGEST_SHADOW_MONITOR_EVIDENCE_RELPATH = "docs/evidence/digest-shadow-monitor/quiet-watermark-cycles-2026-09-14.json";
+export const DIGEST_SHADOW_MONITOR_TOOL = "tools/digest_shadow_monitor.mjs";
+export const DIGEST_SHADOW_MONITOR_API_BASE = "https://api.cityscroll.org";
 export const UNCHANGED_OBSERVATION = "unchanged-observation";
 
 function emptyDocument(now) {
@@ -14,6 +21,37 @@ function emptyDocument(now) {
     updated_at: new Date(now).toISOString(),
     observations: [],
   };
+}
+
+export function digestShadowMonitorProvenance({ observed_at, source_revision } = {}) {
+  return productionProvenance({
+    observed_at,
+    tool: DIGEST_SHADOW_MONITOR_TOOL,
+    source_revision,
+    bases: [DIGEST_SHADOW_MONITOR_API_BASE],
+    methods: ["GET"],
+  });
+}
+
+export function assertDigestShadowMonitorDocument(document, { requireProvenance = true } = {}) {
+  if (!document || document.schema !== DIGEST_SHADOW_MONITOR_OBSERVATION_SCHEMA) {
+    throw new Error(`document is missing ${DIGEST_SHADOW_MONITOR_OBSERVATION_SCHEMA}`);
+  }
+  if (!Array.isArray(document.observations) || document.observations.length === 0) {
+    throw new Error("digest-shadow monitor evidence has no observations");
+  }
+  for (const row of document.observations) {
+    if (!row?.run_key) throw new Error("observation is missing run_key");
+    if (!row?.observed_at) throw new Error(`observation ${row.run_key} is missing observed_at`);
+    if (!row?.finding_severity) throw new Error(`observation ${row.run_key} is missing finding_severity`);
+    if (typeof row.comment_written !== "boolean") {
+      throw new Error(`observation ${row.run_key} is missing comment_written`);
+    }
+  }
+  if (requireProvenance) {
+    assertProductionProvenance(document.provenance, { requireSourceRevision: true });
+  }
+  return document;
 }
 
 export function digestShadowObservationFingerprint(summary = {}, extras = {}) {
@@ -78,7 +116,10 @@ async function readDocument(path) {
 }
 
 /** Append or replace one scheduled-cycle observation. Same run_key is replaced. */
-export async function appendDigestShadowMonitorObservation(path, observation, { now = new Date() } = {}) {
+export async function appendDigestShadowMonitorObservation(path, observation, {
+  now = new Date(),
+  provenance = null,
+} = {}) {
   const existing = await readDocument(path);
   const document = existing?.schema === DIGEST_SHADOW_MONITOR_OBSERVATION_SCHEMA
     ? existing
@@ -88,11 +129,13 @@ export async function appendDigestShadowMonitorObservation(path, observation, { 
   const filtered = observations.filter((row) => row?.run_key !== next.run_key);
   filtered.push(next);
   filtered.sort((a, b) => String(a.run_key || "").localeCompare(String(b.run_key || "")));
+  const nextProvenance = provenance || document.provenance || null;
   const written = {
     schema: DIGEST_SHADOW_MONITOR_OBSERVATION_SCHEMA,
     updated_at: new Date(now).toISOString(),
     observations: filtered,
   };
+  if (nextProvenance) written.provenance = nextProvenance;
   await mkdir(dirname(path), { recursive: true });
   await writeFile(path, `${JSON.stringify(written, null, 2)}\n`, "utf8");
   return written;

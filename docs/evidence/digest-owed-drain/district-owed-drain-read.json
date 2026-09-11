@@ -17,6 +17,52 @@
       "last_delivery_status": "sent",
       "source": "GET /admin/owed-backlog",
       "subscriber_id": "subscriber:7878af20a7538ed0a03e11f6"
+    },
+    {
+      "phase": "after",
+      "taken_at": "2026-09-11T20:47:42.527Z",
+      "owed_count": 78,
+      "drained_count": 0,
+      "oldest_owed_row": {
+        "item_id": "district:land:2019M0059:2023-03-13",
+        "lens": "district",
+        "first_owed_at": "2026-08-13T10:00:59.502Z",
+        "watch_id": "watch:8e67765e3a9423e7e0126c2f"
+      },
+      "last_sent_at": "2026-09-11T13:04:54.799Z",
+      "last_delivery_status": "sent",
+      "source": "GET /admin/owed-backlog",
+      "subscriber_id": "subscriber:7878af20a7538ed0a03e11f6",
+      "backlog_summary": {
+        "subscriber_count": 1,
+        "owed_count": 78,
+        "overdue_subscriber_count": 1
+      },
+      "http_status": 200,
+      "production_commit": "88df5a1a74dced739540763eea0f811cd798d7ee",
+      "production_environment": "production"
     }
-  ]
+  ],
+  "provenance": {
+    "schema": "cityscroll.production_provenance.v1",
+    "evidence_class": "live-production-read",
+    "isolated": false,
+    "observed_at": "2026-09-11T20:47:42.527Z",
+    "observer": {
+      "tool": "tools/digest_owed_drain_observation.mjs",
+      "source_revision": "233a42d95a73c0d10b49ce5e96d59f6ebf386b65"
+    },
+    "methods": [
+      "GET"
+    ],
+    "bases": [
+      "https://api.cityscroll.org"
+    ]
+  },
+  "verification": {
+    "owed_count_fell": false,
+    "owed_drained_nonzero": false,
+    "backlog_did_not_grow": true,
+    "last_sent_advanced": true
+  }
 }
