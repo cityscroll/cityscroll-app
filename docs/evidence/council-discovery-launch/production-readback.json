@@ -19,10 +19,10 @@
     "schema": "cityscroll.production_provenance.v1",
     "evidence_class": "live-production-read",
     "isolated": false,
-    "observed_at": "2026-09-10T16:04:51.264Z",
+    "observed_at": "2026-09-11T20:36:38.137Z",
     "observer": {
       "tool": "tools/council_discovery_launch_readback.mjs",
-      "source_revision": "71df6ffa8a6bc3ef2da14155cf1404355db87ffb"
+      "source_revision": "233a42d95a73c0d10b49ce5e96d59f6ebf386b65"
     },
     "methods": [
       "GET"
@@ -68,15 +68,14 @@
       "url": "https://api.cityscroll.org/hearings",
       "method": "GET",
       "status": 200,
-      "state": "not-yet-observed",
-      "assertion": "Response did not include the Events-feed publisher key EventId 22691",
+      "state": "passed",
+      "assertion": "Events-feed EventId 22691 present; InSite 1439673 is not treated as EventId",
       "evidence": {
-        "missing": [
-          "22691",
-          "Committee on Contracts"
-        ]
+        "publisher_event_id": "22691",
+        "insite_calendar_id": "1439673",
+        "identity_distinction": "publisher key is EventId; InSite calendar number is a cross-reference"
       },
-      "note": "not-yet-observed, never passed.",
+      "note": null,
       "route": "https://cityscroll.org/now/"
     },
     {
@@ -123,8 +122,8 @@
     }
   ],
   "counts": {
-    "passed": 5,
-    "not-yet-observed": 1,
+    "passed": 6,
+    "not-yet-observed": 0,
     "failed": 0,
     "total": 6
   },
