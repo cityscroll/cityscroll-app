@@ -26,6 +26,26 @@ test("the source registry enumerates the official 59-board roster", () => {
   assert.equal(inventory.policy.source_registry_is_url_authority, true);
 });
 
+test("the reviewed resource matrix keeps task destinations board-local and current-content honest", () => {
+  assert.deepEqual(inventory.resource_matrix.tasks, ["calendar", "agenda", "minutes", "committees", "roster", "bylaws", "contact"]);
+  assert.equal(inventory.resource_matrix.destination_status, "reviewed_destination_only");
+  assert.equal(inventory.resource_matrix.content_current_is_not_asserted, true);
+  const byTask = Object.groupBy(inventory.boards.flatMap((board) => board.resource_tasks), (row) => row.task);
+  assert.equal(byTask.calendar.filter((row) => row.url).length, 55);
+  assert.equal(byTask.agenda.filter((row) => row.url).length, 10);
+  assert.equal(byTask.minutes.filter((row) => row.url).length, 48);
+  assert.equal(byTask.committees.filter((row) => row.url).length, 1);
+  assert.equal(byTask.roster.filter((row) => row.url).length, 1);
+  assert.equal(byTask.bylaws.filter((row) => row.url).length, 1);
+  assert.equal(byTask.contact.filter((row) => row.url).length, 59);
+  assert.ok(byTask.contact.every((row) => row.verification.content_current === false));
+  const cb15 = inventory.boards.find((board) => board.id === "brooklyn-cb-15");
+  assert.equal(cb15.resource_tasks.find((row) => row.task === "calendar").url, "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page");
+  assert.equal(cb15.resource_tasks.find((row) => row.task === "minutes").url, "https://www.nyc.gov/site/brooklyncb15/calendar/board-meeting-minutes.page");
+  assert.equal(cb15.resource_tasks.find((row) => row.task === "agenda").url, null);
+  assert.equal(cb15.resource_tasks.find((row) => row.task === "contact").fallback.url, "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page");
+});
+
 test("known dead or unsafe board homepages stay out of the public inventory", () => {
   const byId = new Map(inventory.boards.map((row) => [row.id, row.home]));
   assert.equal(byId.get("brooklyn-cb-05"), "https://www.nyc.gov/site/brooklyncb5/index.page");

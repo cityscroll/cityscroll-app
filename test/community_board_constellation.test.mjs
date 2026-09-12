@@ -58,6 +58,18 @@ test("board source inventory surfaces the image-linked CB6 Airtable minutes arch
   assert.match(html, /Open minutes or records/);
   assert.match(html, /appgK5bKw7rWMRJEh\/shrBzfHDWat4YMTHL\/tblpioBcj0BVp5hBw/);
 });
+
+test("board pages expose reviewed task destinations without asserting current publisher content", () => {
+  const view = buildCommunityBoardConstellationView("brooklyn-cb-15", sources);
+  assert.deepEqual(view.resource_tasks.filter((row) => row.url).map((row) => row.task), ["calendar", "minutes", "contact"]);
+  const html = renderCommunityBoardConstellationDocument(view);
+  assert.match(html, /data-community-board-resources="1"/);
+  assert.match(html, /Open official calendar/);
+  assert.match(html, /Open minutes and records/);
+  assert.match(html, /https:\/\/www\.nyc\.gov\/site\/communityboards\/about\/brooklyn-boards\.page/);
+  assert.match(html, /does not by itself confirm current page content/);
+  assert.doesNotMatch(html, /data-community-board-resource-task="agenda"/);
+});
 test("board constellation uses typed summaries and holds unjoined governance edges", () => {
   const view = buildCommunityBoardConstellationView("bronx-cb-02", sources);
   assert.equal(view.kind, "community-board-constellation");
