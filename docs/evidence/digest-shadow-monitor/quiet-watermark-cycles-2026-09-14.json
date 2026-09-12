@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.digest_shadow_monitor_observation.v1",
-  "updated_at": "2026-09-10T12:00:00.000Z",
+  "updated_at": "2026-09-11T20:47:50.607Z",
   "observations": [
     {
       "run_key": "2026-09-06T10-10",
@@ -102,5 +102,21 @@
       "comment_written": false,
       "comment_suppressed": null
     }
-  ]
+  ],
+  "provenance": {
+    "schema": "cityscroll.production_provenance.v1",
+    "evidence_class": "live-production-read",
+    "isolated": false,
+    "observed_at": "2026-09-11T20:47:50.607Z",
+    "observer": {
+      "tool": "tools/digest_shadow_monitor.mjs",
+      "source_revision": "233a42d95a73c0d10b49ce5e96d59f6ebf386b65"
+    },
+    "methods": [
+      "GET"
+    ],
+    "bases": [
+      "https://api.cityscroll.org"
+    ]
+  }
 }

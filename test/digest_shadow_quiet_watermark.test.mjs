@@ -11,14 +11,20 @@ import {
   buildDigestShadowSummary,
 } from "../worker/src/digest_shadow.mjs";
 import { normalizeFunnel } from "../worker/src/lib/digest_funnel.mjs";
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 import {
   DIGEST_SHADOW_MONITOR_EVIDENCE_RELPATH,
   DIGEST_SHADOW_MONITOR_OBSERVATION_SCHEMA,
+  DIGEST_SHADOW_MONITOR_TOOL,
   UNCHANGED_OBSERVATION,
+  appendDigestShadowMonitorObservation,
+  assertDigestShadowMonitorDocument,
+  digestShadowMonitorProvenance,
   digestShadowObservationFingerprint,
   findingSeverity,
   observationFromCycle,
 } from "../tools/digest_shadow_monitor_observation.mjs";
+import { PRODUCTION_PROVENANCE_SCHEMA } from "../tools/lib/production_provenance.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const RETAINED = JSON.parse(await readFile(join(ROOT, "test/fixtures/digest-shadow-monitor/retained-cycles.json"), "utf8"));
@@ -148,4 +154,33 @@ test("the committed quiet-watermark evidence names each retained cycle", () => {
   const quiet = EVIDENCE.observations.filter((row) => row.run_day === "2026-09-08" || row.run_day === "2026-09-09" || row.run_day === "2026-09-10");
   assert.ok(quiet.length >= 5);
   assert.ok(quiet.every((row) => row.finding_severity === "info" && row.comment_written === false && row.collapse_stage === "watermark_fresh"));
+});
+
+test("the committed quiet-watermark evidence carries production provenance", () => {
+  const document = assertDigestShadowMonitorDocument(EVIDENCE);
+  assert.equal(document.provenance.schema, PRODUCTION_PROVENANCE_SCHEMA);
+  assert.equal(document.provenance.isolated, false);
+  assert.equal(document.provenance.observer.tool, DIGEST_SHADOW_MONITOR_TOOL);
+  assert.ok(document.provenance.observer.source_revision);
+  assert.deepEqual(document.provenance.methods, ["GET"]);
+  assert.ok(document.provenance.bases.includes("https://api.cityscroll.org"));
+});
+
+test("appending a later cycle keeps production provenance", async () => {
+  await withTempDir("digest-shadow-provenance", async (dir) => {
+    const path = join(dir, "quiet-watermark-cycles-2026-09-14.json");
+    const provenance = digestShadowMonitorProvenance({
+      observed_at: "2026-09-11T20:47:50.607Z",
+      source_revision: "233a42d95a73c0d10b49ce5e96d59f6ebf386b65",
+    });
+    await appendDigestShadowMonitorObservation(path, EVIDENCE.observations[0], {
+      now: "2026-09-10T10:10:00.000Z",
+      provenance,
+    });
+    const written = await appendDigestShadowMonitorObservation(path, EVIDENCE.observations.at(-1), {
+      now: "2026-09-11T20:47:50.607Z",
+    });
+    assert.equal(written.observations.length, 2);
+    assert.deepEqual(written.provenance, provenance);
+  });
 });
