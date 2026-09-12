@@ -12,12 +12,14 @@ const BOROUGH_PREFIX = Object.freeze({
   "Staten Island": "R",
 });
 
+import { communityBoardPlaceHref } from "./community_board_links.mjs";
 import { buildLocalConstellation } from "./local_constellation.mjs";
 import {
   bboxToViewBox,
   polygonLabelPoint,
   polygonsToSvgPath,
 } from "./map_exploration.mjs";
+import { nearYouUrlFromScope } from "./scope_v0.mjs";
 
 export const COMMUNITY_BOARD_GEOGRAPHY_SCHEMA = "cityscroll.community_board_geography.v1";
 export const COMMUNITY_BOARD_GEOGRAPHY_VINTAGE = "2026-05-26";
@@ -270,12 +272,18 @@ function boardIdentity(bodyId) {
 
 function placeHref(node) {
   if (node?.type === "community-board") {
-    const communityDistrict = clean(node.properties?.community_district_id);
-    if (!communityDistrict) return "/near-you/";
-    return `/near-you/#map?level=community_district&parent=${encodeURIComponent(clean(node.properties?.borough))}&id=${encodeURIComponent(communityDistrict)}&lens=meetings`;
+    return communityBoardPlaceHref(node.properties?.body_id);
   }
-  if (node?.type === "community-district") return `/near-you/?cd=${encodeURIComponent(String(node.id || "").replace(/^community-district:/, ""))}`;
-  if (node?.type === "council-district") return `/near-you/?council=${encodeURIComponent(String(node.id || "").replace(/^council-district:/, ""))}`;
+  if (node?.type === "community-district") {
+    const id = String(node.id || "").replace(/^community-district:/, "");
+    if (!/^[MXKQR]\d{2}$/.test(id)) return null;
+    return nearYouUrlFromScope({ facets: { domains: ["meetings"] }, place: { community_districts: [id] } });
+  }
+  if (node?.type === "council-district") {
+    const id = String(node.id || "").replace(/^council-district:/, "");
+    if (!/^(?:[1-9]|[1-4]\d|5[01])$/.test(id)) return null;
+    return nearYouUrlFromScope({ facets: { domains: ["meetings"] }, place: { council_districts: [id] } });
+  }
   return null;
 }
 

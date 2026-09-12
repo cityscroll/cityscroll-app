@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "capture_mode": "local_static_route_and_node_render",
+  "repository_revision": "8aca520aad35cb84ee42ef2f74297263c445abdc",
+  "grounded_at": "8aca520aad35cb84ee42ef2f74297263c445abdc",
+  "data_vintage": "Community Board source registry observed 2026-08-11; community-district boundary vintage 2026-05-26; board scorecard as of 2026-09-06.",
+  "viewports": [
+    { "name": "mobile", "width": 390, "height": 844 },
+    { "name": "desktop", "width": 1440, "height": 900 }
+  ],
+  "captures": [
+    {
+      "route": "renderCommunityBoardConstellationDocument(view) — /community-boards/brooklyn-cb-15/",
+      "viewport": { "name": "mobile", "width": 390, "height": 844 },
+      "revision": "8aca520aad35cb84ee42ef2f74297263c445abdc",
+      "data_vintage": "Community Board source registry observed 2026-08-11; community-district boundary vintage 2026-05-26; board scorecard as of 2026-09-06.",
+      "assertion": "The no-script board document contains the canonical Brooklyn Community District 15 destination with Meetings selected and contains no redundant institution self-action.",
+      "sha256": "e83458c96d33c17276ae0f0ca9e6c322b20ecbb788ebb476b8b28d965678fa01",
+      "file": null
+    },
+    {
+      "route": "renderCommunityBoardConstellationDocument(view) — /community-boards/brooklyn-cb-15/",
+      "viewport": { "name": "desktop", "width": 1440, "height": 900 },
+      "revision": "8aca520aad35cb84ee42ef2f74297263c445abdc",
+      "data_vintage": "Community Board source registry observed 2026-08-11; community-district boundary vintage 2026-05-26; board scorecard as of 2026-09-06.",
+      "assertion": "The wide no-script board document contains the same canonical place destination and no redundant institution self-action.",
+      "sha256": "e83458c96d33c17276ae0f0ca9e6c322b20ecbb788ebb476b8b28d965678fa01",
+      "file": null
+    },
+    {
+      "route": "GET /community-boards/brooklyn-cb-15/",
+      "viewport": { "name": "mobile", "width": 390, "height": 844 },
+      "revision": "8aca520aad35cb84ee42ef2f74297263c445abdc",
+      "data_vintage": "Community Board source registry observed 2026-08-11; community-district boundary vintage 2026-05-26; board scorecard as of 2026-09-06.",
+      "assertion": "The generated board route serves HTTP 200 and its body hash matches the rendered no-script document.",
+      "sha256": "e83458c96d33c17276ae0f0ca9e6c322b20ecbb788ebb476b8b28d965678fa01",
+      "file": null
+    },
+    {
+      "route": "GET /community-boards/brooklyn-cb-15/",
+      "viewport": { "name": "desktop", "width": 1440, "height": 900 },
+      "revision": "8aca520aad35cb84ee42ef2f74297263c445abdc",
+      "data_vintage": "Community Board source registry observed 2026-08-11; community-district boundary vintage 2026-05-26; board scorecard as of 2026-09-06.",
+      "assertion": "The generated board route serves HTTP 200 at the wide review viewport.",
+      "sha256": "e83458c96d33c17276ae0f0ca9e6c322b20ecbb788ebb476b8b28d965678fa01",
+      "file": null
+    },
+    {
+      "route": "GET /near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K15&level=community_district&id=K15&parent=Brooklyn",
+      "viewport": { "name": "mobile", "width": 390, "height": 844 },
+      "revision": "8aca520aad35cb84ee42ef2f74297263c445abdc",
+      "data_vintage": "Community Board source registry observed 2026-08-11; community-district boundary vintage 2026-05-26; board scorecard as of 2026-09-06.",
+      "assertion": "The canonical query route serves HTTP 200 without a fragment; the shared parser resolves Brooklyn, K15, and Meetings before client migration.",
+      "sha256": "fbf506e471e35ccdcbd9da6fd7a5a65cc14294d37ec85b5511d2167912ba79b4",
+      "file": null
+    },
+    {
+      "route": "GET /near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K15&level=community_district&id=K15&parent=Brooklyn",
+      "viewport": { "name": "desktop", "width": 1440, "height": 900 },
+      "revision": "8aca520aad35cb84ee42ef2f74297263c445abdc",
+      "data_vintage": "Community Board source registry observed 2026-08-11; community-district boundary vintage 2026-05-26; board scorecard as of 2026-09-06.",
+      "assertion": "The wide canonical query route serves HTTP 200 with the same stable place identity.",
+      "sha256": "fbf506e471e35ccdcbd9da6fd7a5a65cc14294d37ec85b5511d2167912ba79b4",
+      "file": null
+    }
+  ]
+}

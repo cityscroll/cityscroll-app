@@ -83,7 +83,7 @@ test("committee and place adapters use only published exact-key neighbors", () =
     public_edges: [{ type: "intersects", from: "community-district:X01", to: "council-district:8" }],
   }, "community-district:X01");
   assert.equal(place.nodes[0].target_kind, "council-district");
-  assert.equal(place.nodes[0].href, "/near-you/?council=8");
+  assert.equal(place.nodes[0].href, "/near-you/?v=0&lens=meetings&council=8");
   assert.doesNotMatch(renderLocalConstellationHTML(place), /data-local-constellation-preview/);
 
   const held = buildPlaceLocalConstellation({

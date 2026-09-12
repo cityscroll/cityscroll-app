@@ -24,11 +24,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "X01",
-          "target_name": "Bronx Community District X01",
+          "target_name": "Bronx Community District 1",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Bronx&id=X01&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Bronx&id=X01&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X01&level=community_district&id=X01&parent=Bronx",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X01&level=community_district&id=X01&parent=Bronx",
           "scope": {
             "board": "bronx-cb-01"
           },
@@ -305,11 +305,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "X02",
-          "target_name": "Bronx Community District X02",
+          "target_name": "Bronx Community District 2",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Bronx&id=X02&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Bronx&id=X02&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X02&level=community_district&id=X02&parent=Bronx",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X02&level=community_district&id=X02&parent=Bronx",
           "scope": {
             "board": "bronx-cb-02"
           },
@@ -586,11 +586,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "X03",
-          "target_name": "Bronx Community District X03",
+          "target_name": "Bronx Community District 3",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Bronx&id=X03&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Bronx&id=X03&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X03&level=community_district&id=X03&parent=Bronx",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X03&level=community_district&id=X03&parent=Bronx",
           "scope": {
             "board": "bronx-cb-03"
           },
@@ -867,11 +867,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "X04",
-          "target_name": "Bronx Community District X04",
+          "target_name": "Bronx Community District 4",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Bronx&id=X04&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Bronx&id=X04&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X04&level=community_district&id=X04&parent=Bronx",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X04&level=community_district&id=X04&parent=Bronx",
           "scope": {
             "board": "bronx-cb-04"
           },
@@ -1148,11 +1148,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "X05",
-          "target_name": "Bronx Community District X05",
+          "target_name": "Bronx Community District 5",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Bronx&id=X05&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Bronx&id=X05&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X05&level=community_district&id=X05&parent=Bronx",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X05&level=community_district&id=X05&parent=Bronx",
           "scope": {
             "board": "bronx-cb-05"
           },
@@ -1429,11 +1429,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "X06",
-          "target_name": "Bronx Community District X06",
+          "target_name": "Bronx Community District 6",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Bronx&id=X06&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Bronx&id=X06&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X06&level=community_district&id=X06&parent=Bronx",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X06&level=community_district&id=X06&parent=Bronx",
           "scope": {
             "board": "bronx-cb-06"
           },
@@ -1704,11 +1704,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "X07",
-          "target_name": "Bronx Community District X07",
+          "target_name": "Bronx Community District 7",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Bronx&id=X07&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Bronx&id=X07&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X07&level=community_district&id=X07&parent=Bronx",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X07&level=community_district&id=X07&parent=Bronx",
           "scope": {
             "board": "bronx-cb-07"
           },
@@ -1985,11 +1985,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "X08",
-          "target_name": "Bronx Community District X08",
+          "target_name": "Bronx Community District 8",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Bronx&id=X08&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Bronx&id=X08&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X08&level=community_district&id=X08&parent=Bronx",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X08&level=community_district&id=X08&parent=Bronx",
           "scope": {
             "board": "bronx-cb-08"
           },
@@ -2260,11 +2260,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "X09",
-          "target_name": "Bronx Community District X09",
+          "target_name": "Bronx Community District 9",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Bronx&id=X09&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Bronx&id=X09&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X09&level=community_district&id=X09&parent=Bronx",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X09&level=community_district&id=X09&parent=Bronx",
           "scope": {
             "board": "bronx-cb-09"
           },
@@ -2541,11 +2541,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "X10",
-          "target_name": "Bronx Community District X10",
+          "target_name": "Bronx Community District 10",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Bronx&id=X10&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Bronx&id=X10&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X10&level=community_district&id=X10&parent=Bronx",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X10&level=community_district&id=X10&parent=Bronx",
           "scope": {
             "board": "bronx-cb-10"
           },
@@ -2822,11 +2822,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "X11",
-          "target_name": "Bronx Community District X11",
+          "target_name": "Bronx Community District 11",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Bronx&id=X11&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Bronx&id=X11&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X11&level=community_district&id=X11&parent=Bronx",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X11&level=community_district&id=X11&parent=Bronx",
           "scope": {
             "board": "bronx-cb-11"
           },
@@ -3103,11 +3103,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "X12",
-          "target_name": "Bronx Community District X12",
+          "target_name": "Bronx Community District 12",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Bronx&id=X12&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Bronx&id=X12&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X12&level=community_district&id=X12&parent=Bronx",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X12&level=community_district&id=X12&parent=Bronx",
           "scope": {
             "board": "bronx-cb-12"
           },
@@ -3384,11 +3384,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "K01",
-          "target_name": "Brooklyn Community District K01",
+          "target_name": "Brooklyn Community District 1",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K01&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K01&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K01&level=community_district&id=K01&parent=Brooklyn",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K01&level=community_district&id=K01&parent=Brooklyn",
           "scope": {
             "board": "brooklyn-cb-01"
           },
@@ -3665,11 +3665,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "K02",
-          "target_name": "Brooklyn Community District K02",
+          "target_name": "Brooklyn Community District 2",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K02&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K02&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K02&level=community_district&id=K02&parent=Brooklyn",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K02&level=community_district&id=K02&parent=Brooklyn",
           "scope": {
             "board": "brooklyn-cb-02"
           },
@@ -3946,11 +3946,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "K03",
-          "target_name": "Brooklyn Community District K03",
+          "target_name": "Brooklyn Community District 3",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K03&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K03&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K03&level=community_district&id=K03&parent=Brooklyn",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K03&level=community_district&id=K03&parent=Brooklyn",
           "scope": {
             "board": "brooklyn-cb-03"
           },
@@ -4227,11 +4227,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "K04",
-          "target_name": "Brooklyn Community District K04",
+          "target_name": "Brooklyn Community District 4",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K04&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K04&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K04&level=community_district&id=K04&parent=Brooklyn",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K04&level=community_district&id=K04&parent=Brooklyn",
           "scope": {
             "board": "brooklyn-cb-04"
           },
@@ -4508,11 +4508,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "K05",
-          "target_name": "Brooklyn Community District K05",
+          "target_name": "Brooklyn Community District 5",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K05&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K05&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K05&level=community_district&id=K05&parent=Brooklyn",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K05&level=community_district&id=K05&parent=Brooklyn",
           "scope": {
             "board": "brooklyn-cb-05"
           },
@@ -4783,11 +4783,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "K06",
-          "target_name": "Brooklyn Community District K06",
+          "target_name": "Brooklyn Community District 6",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K06&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K06&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K06&level=community_district&id=K06&parent=Brooklyn",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K06&level=community_district&id=K06&parent=Brooklyn",
           "scope": {
             "board": "brooklyn-cb-06"
           },
@@ -5064,11 +5064,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "K07",
-          "target_name": "Brooklyn Community District K07",
+          "target_name": "Brooklyn Community District 7",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K07&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K07&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K07&level=community_district&id=K07&parent=Brooklyn",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K07&level=community_district&id=K07&parent=Brooklyn",
           "scope": {
             "board": "brooklyn-cb-07"
           },
@@ -5339,11 +5339,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "K08",
-          "target_name": "Brooklyn Community District K08",
+          "target_name": "Brooklyn Community District 8",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K08&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K08&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K08&level=community_district&id=K08&parent=Brooklyn",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K08&level=community_district&id=K08&parent=Brooklyn",
           "scope": {
             "board": "brooklyn-cb-08"
           },
@@ -5620,11 +5620,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "K09",
-          "target_name": "Brooklyn Community District K09",
+          "target_name": "Brooklyn Community District 9",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K09&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K09&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K09&level=community_district&id=K09&parent=Brooklyn",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K09&level=community_district&id=K09&parent=Brooklyn",
           "scope": {
             "board": "brooklyn-cb-09"
           },
@@ -5901,11 +5901,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "K10",
-          "target_name": "Brooklyn Community District K10",
+          "target_name": "Brooklyn Community District 10",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K10&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K10&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K10&level=community_district&id=K10&parent=Brooklyn",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K10&level=community_district&id=K10&parent=Brooklyn",
           "scope": {
             "board": "brooklyn-cb-10"
           },
@@ -6176,11 +6176,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "K11",
-          "target_name": "Brooklyn Community District K11",
+          "target_name": "Brooklyn Community District 11",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K11&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K11&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K11&level=community_district&id=K11&parent=Brooklyn",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K11&level=community_district&id=K11&parent=Brooklyn",
           "scope": {
             "board": "brooklyn-cb-11"
           },
@@ -6451,11 +6451,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "K12",
-          "target_name": "Brooklyn Community District K12",
+          "target_name": "Brooklyn Community District 12",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K12&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K12&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K12&level=community_district&id=K12&parent=Brooklyn",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K12&level=community_district&id=K12&parent=Brooklyn",
           "scope": {
             "board": "brooklyn-cb-12"
           },
@@ -6732,11 +6732,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "K13",
-          "target_name": "Brooklyn Community District K13",
+          "target_name": "Brooklyn Community District 13",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K13&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K13&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K13&level=community_district&id=K13&parent=Brooklyn",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K13&level=community_district&id=K13&parent=Brooklyn",
           "scope": {
             "board": "brooklyn-cb-13"
           },
@@ -7013,11 +7013,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "K14",
-          "target_name": "Brooklyn Community District K14",
+          "target_name": "Brooklyn Community District 14",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K14&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K14&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K14&level=community_district&id=K14&parent=Brooklyn",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K14&level=community_district&id=K14&parent=Brooklyn",
           "scope": {
             "board": "brooklyn-cb-14"
           },
@@ -7288,11 +7288,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "K15",
-          "target_name": "Brooklyn Community District K15",
+          "target_name": "Brooklyn Community District 15",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K15&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K15&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K15&level=community_district&id=K15&parent=Brooklyn",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K15&level=community_district&id=K15&parent=Brooklyn",
           "scope": {
             "board": "brooklyn-cb-15"
           },
@@ -7569,11 +7569,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "K16",
-          "target_name": "Brooklyn Community District K16",
+          "target_name": "Brooklyn Community District 16",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K16&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K16&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K16&level=community_district&id=K16&parent=Brooklyn",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K16&level=community_district&id=K16&parent=Brooklyn",
           "scope": {
             "board": "brooklyn-cb-16"
           },
@@ -7850,11 +7850,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "K17",
-          "target_name": "Brooklyn Community District K17",
+          "target_name": "Brooklyn Community District 17",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K17&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K17&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K17&level=community_district&id=K17&parent=Brooklyn",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K17&level=community_district&id=K17&parent=Brooklyn",
           "scope": {
             "board": "brooklyn-cb-17"
           },
@@ -8125,11 +8125,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "K18",
-          "target_name": "Brooklyn Community District K18",
+          "target_name": "Brooklyn Community District 18",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K18&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K18&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K18&level=community_district&id=K18&parent=Brooklyn",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K18&level=community_district&id=K18&parent=Brooklyn",
           "scope": {
             "board": "brooklyn-cb-18"
           },
@@ -8399,11 +8399,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "M01",
-          "target_name": "Manhattan Community District M01",
+          "target_name": "Manhattan Community District 1",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Manhattan&id=M01&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M01&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M01&level=community_district&id=M01&parent=Manhattan",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M01&level=community_district&id=M01&parent=Manhattan",
           "scope": {
             "board": "manhattan-cb-01"
           },
@@ -8674,11 +8674,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "M02",
-          "target_name": "Manhattan Community District M02",
+          "target_name": "Manhattan Community District 2",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Manhattan&id=M02&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M02&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M02&level=community_district&id=M02&parent=Manhattan",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M02&level=community_district&id=M02&parent=Manhattan",
           "scope": {
             "board": "manhattan-cb-02"
           },
@@ -8988,11 +8988,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "M03",
-          "target_name": "Manhattan Community District M03",
+          "target_name": "Manhattan Community District 3",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Manhattan&id=M03&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M03&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M03&level=community_district&id=M03&parent=Manhattan",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M03&level=community_district&id=M03&parent=Manhattan",
           "scope": {
             "board": "manhattan-cb-03"
           },
@@ -9262,11 +9262,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "M04",
-          "target_name": "Manhattan Community District M04",
+          "target_name": "Manhattan Community District 4",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Manhattan&id=M04&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M04&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M04&level=community_district&id=M04&parent=Manhattan",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M04&level=community_district&id=M04&parent=Manhattan",
           "scope": {
             "board": "manhattan-cb-04"
           },
@@ -9537,11 +9537,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "M05",
-          "target_name": "Manhattan Community District M05",
+          "target_name": "Manhattan Community District 5",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Manhattan&id=M05&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M05&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M05&level=community_district&id=M05&parent=Manhattan",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M05&level=community_district&id=M05&parent=Manhattan",
           "scope": {
             "board": "manhattan-cb-05"
           },
@@ -9811,11 +9811,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "M06",
-          "target_name": "Manhattan Community District M06",
+          "target_name": "Manhattan Community District 6",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Manhattan&id=M06&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M06&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M06&level=community_district&id=M06&parent=Manhattan",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M06&level=community_district&id=M06&parent=Manhattan",
           "scope": {
             "board": "manhattan-cb-06"
           },
@@ -10160,11 +10160,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "M07",
-          "target_name": "Manhattan Community District M07",
+          "target_name": "Manhattan Community District 7",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Manhattan&id=M07&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M07&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M07&level=community_district&id=M07&parent=Manhattan",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M07&level=community_district&id=M07&parent=Manhattan",
           "scope": {
             "board": "manhattan-cb-07"
           },
@@ -10435,11 +10435,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "M08",
-          "target_name": "Manhattan Community District M08",
+          "target_name": "Manhattan Community District 8",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Manhattan&id=M08&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M08&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M08&level=community_district&id=M08&parent=Manhattan",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M08&level=community_district&id=M08&parent=Manhattan",
           "scope": {
             "board": "manhattan-cb-08"
           },
@@ -10716,11 +10716,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "M09",
-          "target_name": "Manhattan Community District M09",
+          "target_name": "Manhattan Community District 9",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Manhattan&id=M09&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M09&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M09&level=community_district&id=M09&parent=Manhattan",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M09&level=community_district&id=M09&parent=Manhattan",
           "scope": {
             "board": "manhattan-cb-09"
           },
@@ -10997,11 +10997,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "M10",
-          "target_name": "Manhattan Community District M10",
+          "target_name": "Manhattan Community District 10",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Manhattan&id=M10&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M10&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M10&level=community_district&id=M10&parent=Manhattan",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M10&level=community_district&id=M10&parent=Manhattan",
           "scope": {
             "board": "manhattan-cb-10"
           },
@@ -11272,11 +11272,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "M11",
-          "target_name": "Manhattan Community District M11",
+          "target_name": "Manhattan Community District 11",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Manhattan&id=M11&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M11&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M11&level=community_district&id=M11&parent=Manhattan",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M11&level=community_district&id=M11&parent=Manhattan",
           "scope": {
             "board": "manhattan-cb-11"
           },
@@ -11547,11 +11547,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "M12",
-          "target_name": "Manhattan Community District M12",
+          "target_name": "Manhattan Community District 12",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Manhattan&id=M12&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M12&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M12&level=community_district&id=M12&parent=Manhattan",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M12&level=community_district&id=M12&parent=Manhattan",
           "scope": {
             "board": "manhattan-cb-12"
           },
@@ -11822,11 +11822,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "Q01",
-          "target_name": "Queens Community District Q01",
+          "target_name": "Queens Community District 1",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Queens&id=Q01&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Queens&id=Q01&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q01&level=community_district&id=Q01&parent=Queens",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q01&level=community_district&id=Q01&parent=Queens",
           "scope": {
             "board": "queens-cb-01"
           },
@@ -12096,11 +12096,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "Q02",
-          "target_name": "Queens Community District Q02",
+          "target_name": "Queens Community District 2",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Queens&id=Q02&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Queens&id=Q02&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q02&level=community_district&id=Q02&parent=Queens",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q02&level=community_district&id=Q02&parent=Queens",
           "scope": {
             "board": "queens-cb-02"
           },
@@ -12371,11 +12371,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "Q03",
-          "target_name": "Queens Community District Q03",
+          "target_name": "Queens Community District 3",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Queens&id=Q03&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Queens&id=Q03&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q03&level=community_district&id=Q03&parent=Queens",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q03&level=community_district&id=Q03&parent=Queens",
           "scope": {
             "board": "queens-cb-03"
           },
@@ -12652,11 +12652,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "Q04",
-          "target_name": "Queens Community District Q04",
+          "target_name": "Queens Community District 4",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Queens&id=Q04&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Queens&id=Q04&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q04&level=community_district&id=Q04&parent=Queens",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q04&level=community_district&id=Q04&parent=Queens",
           "scope": {
             "board": "queens-cb-04"
           },
@@ -12933,11 +12933,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "Q05",
-          "target_name": "Queens Community District Q05",
+          "target_name": "Queens Community District 5",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Queens&id=Q05&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Queens&id=Q05&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q05&level=community_district&id=Q05&parent=Queens",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q05&level=community_district&id=Q05&parent=Queens",
           "scope": {
             "board": "queens-cb-05"
           },
@@ -13214,11 +13214,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "Q06",
-          "target_name": "Queens Community District Q06",
+          "target_name": "Queens Community District 6",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Queens&id=Q06&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Queens&id=Q06&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q06&level=community_district&id=Q06&parent=Queens",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q06&level=community_district&id=Q06&parent=Queens",
           "scope": {
             "board": "queens-cb-06"
           },
@@ -13528,11 +13528,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "Q07",
-          "target_name": "Queens Community District Q07",
+          "target_name": "Queens Community District 7",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Queens&id=Q07&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Queens&id=Q07&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q07&level=community_district&id=Q07&parent=Queens",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q07&level=community_district&id=Q07&parent=Queens",
           "scope": {
             "board": "queens-cb-07"
           },
@@ -13802,11 +13802,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "Q08",
-          "target_name": "Queens Community District Q08",
+          "target_name": "Queens Community District 8",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Queens&id=Q08&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Queens&id=Q08&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q08&level=community_district&id=Q08&parent=Queens",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q08&level=community_district&id=Q08&parent=Queens",
           "scope": {
             "board": "queens-cb-08"
           },
@@ -14083,11 +14083,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "Q09",
-          "target_name": "Queens Community District Q09",
+          "target_name": "Queens Community District 9",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Queens&id=Q09&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Queens&id=Q09&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q09&level=community_district&id=Q09&parent=Queens",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q09&level=community_district&id=Q09&parent=Queens",
           "scope": {
             "board": "queens-cb-09"
           },
@@ -14364,11 +14364,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "Q10",
-          "target_name": "Queens Community District Q10",
+          "target_name": "Queens Community District 10",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Queens&id=Q10&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Queens&id=Q10&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q10&level=community_district&id=Q10&parent=Queens",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q10&level=community_district&id=Q10&parent=Queens",
           "scope": {
             "board": "queens-cb-10"
           },
@@ -14645,11 +14645,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "Q11",
-          "target_name": "Queens Community District Q11",
+          "target_name": "Queens Community District 11",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Queens&id=Q11&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Queens&id=Q11&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q11&level=community_district&id=Q11&parent=Queens",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q11&level=community_district&id=Q11&parent=Queens",
           "scope": {
             "board": "queens-cb-11"
           },
@@ -14926,11 +14926,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "Q12",
-          "target_name": "Queens Community District Q12",
+          "target_name": "Queens Community District 12",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Queens&id=Q12&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Queens&id=Q12&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q12&level=community_district&id=Q12&parent=Queens",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q12&level=community_district&id=Q12&parent=Queens",
           "scope": {
             "board": "queens-cb-12"
           },
@@ -15207,11 +15207,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "Q13",
-          "target_name": "Queens Community District Q13",
+          "target_name": "Queens Community District 13",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Queens&id=Q13&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Queens&id=Q13&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q13&level=community_district&id=Q13&parent=Queens",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q13&level=community_district&id=Q13&parent=Queens",
           "scope": {
             "board": "queens-cb-13"
           },
@@ -15488,11 +15488,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "Q14",
-          "target_name": "Queens Community District Q14",
+          "target_name": "Queens Community District 14",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Queens&id=Q14&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Queens&id=Q14&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q14&level=community_district&id=Q14&parent=Queens",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q14&level=community_district&id=Q14&parent=Queens",
           "scope": {
             "board": "queens-cb-14"
           },
@@ -15769,11 +15769,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "R01",
-          "target_name": "Staten Island Community District R01",
+          "target_name": "Staten Island Community District 1",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Staten%20Island&id=R01&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Staten%20Island&id=R01&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Staten+Island&cd=R01&level=community_district&id=R01&parent=Staten+Island",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Staten+Island&cd=R01&level=community_district&id=R01&parent=Staten+Island",
           "scope": {
             "board": "staten-island-cb-01"
           },
@@ -16050,11 +16050,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "R02",
-          "target_name": "Staten Island Community District R02",
+          "target_name": "Staten Island Community District 2",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Staten%20Island&id=R02&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Staten%20Island&id=R02&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Staten+Island&cd=R02&level=community_district&id=R02&parent=Staten+Island",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Staten+Island&cd=R02&level=community_district&id=R02&parent=Staten+Island",
           "scope": {
             "board": "staten-island-cb-02"
           },
@@ -16331,11 +16331,11 @@
           "label": null,
           "target_kind": "community-district",
           "target_id": "R03",
-          "target_name": "Staten Island Community District R03",
+          "target_name": "Staten Island Community District 3",
           "count": 1,
           "state": "matched",
-          "href": "/near-you/#map?level=community_district&parent=Staten%20Island&id=R03&lens=meetings",
-          "canonical_href": "/near-you/#map?level=community_district&parent=Staten%20Island&id=R03&lens=meetings",
+          "href": "/near-you/?v=0&lens=meetings&boro=Staten+Island&cd=R03&level=community_district&id=R03&parent=Staten+Island",
+          "canonical_href": "/near-you/?v=0&lens=meetings&boro=Staten+Island&cd=R03&level=community_district&id=R03&parent=Staten+Island",
           "scope": {
             "board": "staten-island-cb-03"
           },
