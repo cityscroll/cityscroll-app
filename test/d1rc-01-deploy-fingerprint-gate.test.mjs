@@ -131,8 +131,8 @@ test("workflow gates every D1 mutation without gating the Worker deploy", () => 
 
   const d1Steps = [
     "Apply D1 migrations",
-    "Build D1 search, OCP, and entity-intelligence read models",
-    "Publish D1 search, OCP, and entity-intelligence read models",
+    "Verify bounded D1 publication plan",
+    "Publish and verify bounded D1 delta",
     "Record published D1 fingerprint",
   ];
   for (const [index, name] of d1Steps.entries()) {
@@ -141,7 +141,7 @@ test("workflow gates every D1 mutation without gating the Worker deploy", () => 
     const step = workflow.slice(start, next === -1 ? undefined : next);
     assert.ok(start >= 0, `${name} step is missing`);
     assert.match(step, /if: steps\.d1-publication-gate\.outputs\.should-publish == 'true'/, `${name} is not gated`);
-    if (index < 3) assert.match(step, /(?:d1 migrations apply|d1 execute|build_worker_d1_read_models)/);
+    if (index < 3) assert.match(step, /(?:d1 migrations apply|d1_bounded_publisher|d1_production_delta)/);
   }
 
   const deployStart = workflow.indexOf("- name: Deploy");

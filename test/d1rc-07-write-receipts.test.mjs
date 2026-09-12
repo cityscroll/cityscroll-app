@@ -523,7 +523,7 @@ test("the workflow records exactly one D1 publication receipt per run, covering 
   const stepIndex = workflow.indexOf("- name: Record D1 publication receipt");
   const stepText = workflow.slice(stepIndex, workflow.indexOf("\n      - name:", stepIndex + 1));
   assert.match(stepText, /if: always\(\)/);
-  assert.match(stepText, /outcome=skipped_fingerprint_unchanged/);
+  assert.match(stepText, /outcome=skipped\s+reason="fingerprint-unchanged"/);
   assert.match(stepText, /outcome=skipped_fence_busy/);
   assert.match(stepText, /outcome=published/);
   assert.match(stepText, /outcome=failed_permanent/);

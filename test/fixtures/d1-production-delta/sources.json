@@ -1,0 +1,80 @@
+{
+  "prior": {
+    "keyword_search": {
+      "families": {
+        "alpha": {
+          "source": "production-fixture",
+          "as_of": "2026-09-10T00:00:00Z",
+          "source_row_count": 2,
+          "indexed_count": 2,
+          "coverage": [],
+          "documents": [
+            { "title": "Alpha hearing", "summary": "First version", "object_ref": "notice:a1" },
+            { "title": "Unchanged notice", "summary": "Stable", "object_ref": "notice:a2" }
+          ]
+        },
+        "beta": {
+          "source": "production-fixture",
+          "as_of": "2026-09-10T00:00:00Z",
+          "source_row_count": 1,
+          "indexed_count": 1,
+          "coverage": [],
+          "documents": [
+            { "title": "Removed notice", "object_ref": "notice:b1" }
+          ]
+        }
+      }
+    },
+    "ocp_awards": {
+      "materialized_at": "2026-09-10T00:00:00Z",
+      "rows": [
+        { "request_id": "r1", "pin": "p1", "start_date": "2026-01-01", "agency_name": "DOT", "vendor_name": "Vendor A", "contract_amount": 10 },
+        { "request_id": "r2", "pin": "p2", "start_date": "2026-01-02", "agency_name": "DEP", "vendor_name": "Vendor B", "contract_amount": 20 }
+      ]
+    },
+    "entity_intelligence": {
+      "generated_at": "2026-09-10T00:00:00Z",
+      "observation_count": 1,
+      "entity_count": 1,
+      "multi_domain_count": 0,
+      "by_ref": {
+        "vendor:a": { "root": { "kind": "vendor", "display_name": "Vendor A" }, "links": [], "domains": {} }
+      },
+      "by_subject_ref": {}
+    }
+  },
+  "current": {
+    "keyword_search": {
+      "families": {
+        "alpha": {
+          "source": "production-fixture",
+          "as_of": "2026-09-11T00:00:00Z",
+          "source_row_count": 2,
+          "indexed_count": 2,
+          "coverage": [],
+          "documents": [
+            { "title": "Alpha hearing revised", "summary": "Second version", "object_ref": "notice:a1" },
+            { "title": "Unchanged notice", "summary": "Stable", "object_ref": "notice:a2" }
+          ]
+        }
+      }
+    },
+    "ocp_awards": {
+      "materialized_at": "2026-09-11T00:00:00Z",
+      "rows": [
+        { "request_id": "r1", "pin": "p1", "start_date": "2026-01-01", "agency_name": "DOT", "vendor_name": "Vendor A", "contract_amount": 15 },
+        { "request_id": "r3", "pin": "p3", "start_date": "2026-01-03", "agency_name": "DOB", "vendor_name": "Vendor C", "contract_amount": 30 }
+      ]
+    },
+    "entity_intelligence": {
+      "generated_at": "2026-09-11T00:00:00Z",
+      "observation_count": 1,
+      "entity_count": 1,
+      "multi_domain_count": 0,
+      "by_ref": {
+        "vendor:a": { "root": { "kind": "vendor", "display_name": "Vendor A" }, "links": [], "domains": {} }
+      },
+      "by_subject_ref": {}
+    }
+  }
+}

@@ -336,7 +336,7 @@ test("the manifest fingerprint is stable and moves only on contract changes", ()
   assert.notEqual(manifestFingerprint(changedKey), baseline);
 
   const changedMode = clone(manifest);
-  changedMode.models[1].publication_mode = "delta_upsert";
+  changedMode.models[1].publication_mode = "replace_all";
   assert.notEqual(manifestFingerprint(changedMode), baseline);
 
   const changedSnapshotField = clone(manifest);

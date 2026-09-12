@@ -28,8 +28,11 @@ The ordinary path is the fenced, idempotent delta path:
    generation is below the one the fence already holds is stale and is rejected
    before any mutation becomes visible, leaving a receipt that names both the
    stale generation and the current one; the current generation stays
-   publishable. Replaying a completed batch is safe because its keys and
-   operation order are deterministic.
+   publishable. Each batch commits a deterministic checkpoint row in the same
+   D1 import transaction as its application mutations. A retry or later run
+   recovers that marker and does not replay the completed batch. Canary batches
+   use their full-plan identities, so the wide phase does not reapply the
+   canary slice.
 4. Run the bounded canary and stop on any finding, watermark mismatch, or
    failed representative query.
 5. Reconcile the accepted generation before it can serve. A finding or
@@ -41,6 +44,12 @@ The ordinary path is the fenced, idempotent delta path:
 The checked-in policy data in `worker/d1-release-policy.json` owns the canary,
 reconcile, abort, budget, and rollback bounds. The policy check verifies this
 workflow order and refuses a rebuild reference in the ordinary path.
+
+Receipt `estimated_writes` and `observed_writes` fields count application-row
+mutations represented by the delta batches. An observed count means the batch's
+transactional checkpoint proves those mutations committed. The counts exclude
+checkpoint and other control-plane writes, and they are operational counters,
+not Cloudflare billing totals; the provider invoice remains authoritative.
 
 ## Exceptional rebuild and rollback
 
