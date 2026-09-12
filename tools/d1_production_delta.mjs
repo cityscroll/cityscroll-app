@@ -101,6 +101,7 @@ export async function runProductionDelta({
   policy,
   maxOpsPerBatch = DEFAULT_MAX_OPS_PER_BATCH,
   recordedAt = new Date().toISOString(),
+  now = () => Date.now(),
 }) {
   const plan = planDelta({ prior: priorSnapshot, current: currentSnapshot });
   if (plan.operation !== "delta") fail("ordinary publication accepted a non-delta plan");
@@ -114,7 +115,7 @@ export async function runProductionDelta({
     const canaryBatchPlan = planBatches({ plan: canaryPlan, manifest, sourceDocuments, generation, maxOpsPerBatch });
     canaryPublishReceipt = await publishBounded({
       batchPlan: canaryBatchPlan, manifest, fenceStore, fenceLedger, holder, fingerprint,
-      executor: adapter, appliedBatchStore,
+      executor: adapter, appliedBatchStore, now,
     });
     if (canaryPublishReceipt.status === "complete") {
       verification = await verifyPartitionScope({ manifest, sourceDocuments, adapter, selection: scope.selected });
@@ -132,7 +133,7 @@ export async function runProductionDelta({
 
   const publishReceipt = await publishBounded({
     batchPlan, manifest, fenceStore, fenceLedger, holder, fingerprint,
-    executor: adapter, appliedBatchStore,
+    executor: adapter, appliedBatchStore, now,
   });
   if (publishReceipt.status !== "complete") {
     return terminalResult({

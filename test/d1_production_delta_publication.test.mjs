@@ -16,6 +16,8 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const fixture = JSON.parse(readFileSync(join(ROOT, "test/fixtures/d1-production-delta/sources.json"), "utf8"));
 const manifest = loadManifest();
 const fingerprint = "b".repeat(64);
+const CLOCK = Date.parse("2026-09-12T12:00:00Z");
+const clock = () => CLOCK;
 
 let DatabaseSync;
 try {
@@ -74,7 +76,7 @@ function databaseAdapter(db, { loseConfirmationOnce = false, corruptTable = null
 
 async function claimed(snapshot, holder = "production-fixture") {
   const fenceStore = createMemoryStateStore();
-  const claim = await claimGeneration({ fenceStore, store: fenceStore, holder, fingerprint, watermarks: watermarksFromSnapshot(snapshot), leaseMs: 60_000 });
+  const claim = await claimGeneration({ fenceStore, store: fenceStore, holder, fingerprint, watermarks: watermarksFromSnapshot(snapshot), now: clock(), leaseMs: 60_000 });
   return { fenceStore, generation: claim.generation, holder };
 }
 
@@ -97,7 +99,7 @@ test("production delta applies keyed inserts, updates, explicit deletes, and no 
   const result = await runProductionDelta({
     priorSnapshot: snapshotFor(manifest, fixture.prior), currentSnapshot,
     manifest, sourceDocuments: fixture.current, generation, fingerprint, holder,
-    fenceStore, adapter, appliedBatchStore: adapter, policy, maxOpsPerBatch: 2,
+    fenceStore, adapter, appliedBatchStore: adapter, policy, maxOpsPerBatch: 2, now: clock,
   });
 
   assert.equal(result.outcome, "published");
@@ -130,7 +132,7 @@ test("an unchanged snapshot is a zero-write skip", { skip: !DatabaseSync }, asyn
   const adapter = databaseAdapter(openDatabase());
   const result = await runProductionDelta({
     priorSnapshot: snapshot, currentSnapshot: snapshot, manifest, sourceDocuments: fixture.prior,
-    generation, fingerprint, holder, fenceStore, adapter, appliedBatchStore: adapter, policy,
+    generation, fingerprint, holder, fenceStore, adapter, appliedBatchStore: adapter, policy, now: clock,
   });
   assert.equal(result.outcome, "skipped");
   assert.equal(result.batchPlan.summary.total_ops, 0);
@@ -140,12 +142,13 @@ test("an unchanged snapshot is a zero-write skip", { skip: !DatabaseSync }, asyn
 test("a stale generation is rejected before the first mutation", { skip: !DatabaseSync }, async () => {
   const currentSnapshot = snapshotFor(manifest, fixture.current);
   const { fenceStore, generation, holder } = await claimed(currentSnapshot, "stale-holder");
-  await claimGeneration({ store: fenceStore, holder: "new-holder", fingerprint, watermarks: watermarksFromSnapshot(currentSnapshot), now: Date.now() + 120_000, leaseMs: 60_000 });
+  const afterLeaseExpiry = () => CLOCK + 120_000;
+  await claimGeneration({ store: fenceStore, holder: "new-holder", fingerprint, watermarks: watermarksFromSnapshot(currentSnapshot), now: afterLeaseExpiry(), leaseMs: 60_000 });
   const adapter = databaseAdapter(openDatabase());
   const result = await runProductionDelta({
     priorSnapshot: snapshotFor(manifest, fixture.prior), currentSnapshot,
     manifest, sourceDocuments: fixture.current, generation, fingerprint, holder,
-    fenceStore, adapter, appliedBatchStore: adapter, policy,
+    fenceStore, adapter, appliedBatchStore: adapter, policy, now: afterLeaseExpiry,
   });
   assert.equal(result.outcome, "abandoned");
   assert.deepEqual(adapter.executions, []);
@@ -158,7 +161,7 @@ test("an interrupted batch is recovered from its atomic marker without replay", 
   const result = await runProductionDelta({
     priorSnapshot: snapshotFor(manifest, fixture.prior), currentSnapshot,
     manifest, sourceDocuments: fixture.current, generation, fingerprint, holder,
-    fenceStore, adapter, appliedBatchStore: adapter, policy, maxOpsPerBatch: 1,
+    fenceStore, adapter, appliedBatchStore: adapter, policy, maxOpsPerBatch: 1, now: clock,
   });
   assert.equal(result.outcome, "published");
   assert.equal(new Set(adapter.executions).size, adapter.executions.length);
@@ -182,16 +185,16 @@ test("a replacement generation resumes durable batches without replay", { skip: 
   };
   const interrupted = await publishBounded({
     batchPlan: firstPlan, manifest, fenceStore, holder, fingerprint,
-    executor: interruptedExecutor, appliedBatchStore: adapter, maxAttempts: 1,
+    executor: interruptedExecutor, appliedBatchStore: adapter, maxAttempts: 1, now: clock,
   });
   assert.equal(interrupted.status, "stopped_permanent_error");
   assert.equal(adapter.executions.length, 2);
 
-  await abandonGeneration({ store: fenceStore, generation, holder, fingerprint });
+  await abandonGeneration({ store: fenceStore, generation, holder, fingerprint, now: clock() });
   const replacementHolder = "replacement-holder";
   const replacement = await claimGeneration({
     store: fenceStore, holder: replacementHolder, fingerprint,
-    watermarks: watermarksFromSnapshot(currentSnapshot), leaseMs: 60_000,
+    watermarks: watermarksFromSnapshot(currentSnapshot), now: clock(), leaseMs: 60_000,
   });
   const replacementPlan = planBatches({
     plan, manifest, sourceDocuments: fixture.current,
@@ -199,7 +202,7 @@ test("a replacement generation resumes durable batches without replay", { skip: 
   });
   const resumed = await publishBounded({
     batchPlan: replacementPlan, manifest, fenceStore, holder: replacementHolder,
-    fingerprint, executor: adapter, appliedBatchStore: adapter,
+    fingerprint, executor: adapter, appliedBatchStore: adapter, now: clock,
   });
 
   assert.equal(resumed.status, "complete");
@@ -223,7 +226,7 @@ test("canary and reconciliation failures are terminal and block publication", { 
       manifest, sourceDocuments: fixture.current, generation, fingerprint, holder,
       fenceStore, adapter, appliedBatchStore: adapter,
       policy: failure === "reconcile" ? { ...policy, canary: { max_partitions: 1, max_rows: 200 } } : policy,
-      maxOpsPerBatch: 2,
+      maxOpsPerBatch: 2, now: clock,
     });
     assert.notEqual(result.outcome, "published", `${failure} failure cannot publish`);
     if (failure === "canary") assert.equal(result.canaryEvidence.status, "failed");
