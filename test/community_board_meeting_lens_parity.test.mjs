@@ -259,6 +259,6 @@ test("board institution pages and the Meetings lens publish the same canonical m
 test("an exact community-board affected area resolves to the existing district place route", () => {
   assert.equal(
     communityBoardPlaceHref("manhattan-cb-10"),
-    "/near-you/#map?level=community_district&parent=Manhattan&id=M10&lens=meetings",
+    "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M10&level=community_district&id=M10&parent=Manhattan",
   );
 });

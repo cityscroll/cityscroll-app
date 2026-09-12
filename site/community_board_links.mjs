@@ -1,5 +1,7 @@
 /** Canonical community-board identity and institution-page links. */
 
+import { nearYouUrlFromScope } from "./scope_v0.mjs";
+
 const BOROUGH_SLUGS = Object.freeze({
   Bronx: "bronx",
   Brooklyn: "brooklyn",
@@ -84,8 +86,19 @@ export function communityBoardPlaceHref(value) {
   const match = id?.match(/^(.+)-cb-(\d{2})$/);
   const district = match ? COMMUNITY_DISTRICT_CODES[match[1]] : null;
   if (!district) return null;
-  const communityDistrict = `${district.prefix}${match[2]}`;
-  return `/near-you/#map?level=community_district&parent=${encodeURIComponent(district.borough)}&id=${encodeURIComponent(communityDistrict)}&lens=meetings`;
+  const communityDistrict = [district.prefix, match[2]].join("");
+  return nearYouUrlFromScope({
+    facets: { domains: ["meetings"] },
+    place: {
+      boroughs: [district.borough],
+      community_districts: [communityDistrict],
+      viewport: {
+        level: "community_district",
+        id: communityDistrict,
+        parent: district.borough,
+      },
+    },
+  });
 }
 
 /** Human name for an exact community-district key; raw product codes stay out of copy. */

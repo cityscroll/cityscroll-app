@@ -172,7 +172,7 @@ test("Following keeps Community Board selection distinct and names the board", (
   assert.match(html, /Community Board/);
   assert.match(html, /Manhattan Community Board 7/);
   assert.match(html, /Notify me when meetings for Manhattan Community Board 7 are published\./);
-  assert.match(html, /\/near-you\/#map\?level=community_district[^" ]*id=M07/);
+  assert.match(html, /\/near-you\/\?v=0&amp;lens=meetings&amp;boro=Manhattan&amp;cd=M07&amp;level=community_district&amp;id=M07&amp;parent=Manhattan/);
   assert.match(html, /data-following-lens="meetings"/);
 });
 

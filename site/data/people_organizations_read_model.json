@@ -23,7 +23,7 @@
       "body_id": "bronx-cb-01",
       "borough": "Bronx",
       "district": "X01",
-      "place_href": "/near-you/#map?level=community_district&parent=Bronx&id=X01&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X01&level=community_district&id=X01&parent=Bronx",
       "organization_relations": [
         {
           "type": "has_member",
@@ -64,7 +64,7 @@
       "body_id": "bronx-cb-10",
       "borough": "Bronx",
       "district": "X10",
-      "place_href": "/near-you/#map?level=community_district&parent=Bronx&id=X10&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X10&level=community_district&id=X10&parent=Bronx",
       "organization_relations": [
         {
           "type": "has_member",
@@ -105,7 +105,7 @@
       "body_id": "bronx-cb-11",
       "borough": "Bronx",
       "district": "X11",
-      "place_href": "/near-you/#map?level=community_district&parent=Bronx&id=X11&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X11&level=community_district&id=X11&parent=Bronx",
       "organization_relations": [
         {
           "type": "has_member",
@@ -146,7 +146,7 @@
       "body_id": "bronx-cb-12",
       "borough": "Bronx",
       "district": "X12",
-      "place_href": "/near-you/#map?level=community_district&parent=Bronx&id=X12&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X12&level=community_district&id=X12&parent=Bronx",
       "organization_relations": [
         {
           "type": "has_member",
@@ -187,7 +187,7 @@
       "body_id": "bronx-cb-02",
       "borough": "Bronx",
       "district": "X02",
-      "place_href": "/near-you/#map?level=community_district&parent=Bronx&id=X02&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X02&level=community_district&id=X02&parent=Bronx",
       "organization_relations": [
         {
           "type": "has_member",
@@ -228,7 +228,7 @@
       "body_id": "bronx-cb-03",
       "borough": "Bronx",
       "district": "X03",
-      "place_href": "/near-you/#map?level=community_district&parent=Bronx&id=X03&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X03&level=community_district&id=X03&parent=Bronx",
       "organization_relations": [
         {
           "type": "has_member",
@@ -269,7 +269,7 @@
       "body_id": "bronx-cb-04",
       "borough": "Bronx",
       "district": "X04",
-      "place_href": "/near-you/#map?level=community_district&parent=Bronx&id=X04&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X04&level=community_district&id=X04&parent=Bronx",
       "organization_relations": [
         {
           "type": "has_member",
@@ -310,7 +310,7 @@
       "body_id": "bronx-cb-05",
       "borough": "Bronx",
       "district": "X05",
-      "place_href": "/near-you/#map?level=community_district&parent=Bronx&id=X05&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X05&level=community_district&id=X05&parent=Bronx",
       "organization_relations": [
         {
           "type": "has_member",
@@ -351,7 +351,7 @@
       "body_id": "bronx-cb-06",
       "borough": "Bronx",
       "district": "X06",
-      "place_href": "/near-you/#map?level=community_district&parent=Bronx&id=X06&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X06&level=community_district&id=X06&parent=Bronx",
       "organization_relations": [
         {
           "type": "has_member",
@@ -392,7 +392,7 @@
       "body_id": "bronx-cb-07",
       "borough": "Bronx",
       "district": "X07",
-      "place_href": "/near-you/#map?level=community_district&parent=Bronx&id=X07&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X07&level=community_district&id=X07&parent=Bronx",
       "organization_relations": [
         {
           "type": "has_member",
@@ -433,7 +433,7 @@
       "body_id": "bronx-cb-08",
       "borough": "Bronx",
       "district": "X08",
-      "place_href": "/near-you/#map?level=community_district&parent=Bronx&id=X08&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X08&level=community_district&id=X08&parent=Bronx",
       "organization_relations": [
         {
           "type": "has_member",
@@ -474,7 +474,7 @@
       "body_id": "bronx-cb-09",
       "borough": "Bronx",
       "district": "X09",
-      "place_href": "/near-you/#map?level=community_district&parent=Bronx&id=X09&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X09&level=community_district&id=X09&parent=Bronx",
       "organization_relations": [
         {
           "type": "has_member",
@@ -515,7 +515,7 @@
       "body_id": "brooklyn-cb-01",
       "borough": "Brooklyn",
       "district": "K01",
-      "place_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K01&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K01&level=community_district&id=K01&parent=Brooklyn",
       "organization_relations": [
         {
           "type": "has_member",
@@ -556,7 +556,7 @@
       "body_id": "brooklyn-cb-10",
       "borough": "Brooklyn",
       "district": "K10",
-      "place_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K10&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K10&level=community_district&id=K10&parent=Brooklyn",
       "organization_relations": [
         {
           "type": "has_member",
@@ -597,7 +597,7 @@
       "body_id": "brooklyn-cb-11",
       "borough": "Brooklyn",
       "district": "K11",
-      "place_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K11&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K11&level=community_district&id=K11&parent=Brooklyn",
       "organization_relations": [
         {
           "type": "has_member",
@@ -638,7 +638,7 @@
       "body_id": "brooklyn-cb-12",
       "borough": "Brooklyn",
       "district": "K12",
-      "place_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K12&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K12&level=community_district&id=K12&parent=Brooklyn",
       "organization_relations": [
         {
           "type": "has_member",
@@ -679,7 +679,7 @@
       "body_id": "brooklyn-cb-13",
       "borough": "Brooklyn",
       "district": "K13",
-      "place_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K13&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K13&level=community_district&id=K13&parent=Brooklyn",
       "organization_relations": [
         {
           "type": "has_member",
@@ -720,7 +720,7 @@
       "body_id": "brooklyn-cb-14",
       "borough": "Brooklyn",
       "district": "K14",
-      "place_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K14&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K14&level=community_district&id=K14&parent=Brooklyn",
       "organization_relations": [
         {
           "type": "has_member",
@@ -761,7 +761,7 @@
       "body_id": "brooklyn-cb-15",
       "borough": "Brooklyn",
       "district": "K15",
-      "place_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K15&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K15&level=community_district&id=K15&parent=Brooklyn",
       "organization_relations": [
         {
           "type": "has_member",
@@ -802,7 +802,7 @@
       "body_id": "brooklyn-cb-16",
       "borough": "Brooklyn",
       "district": "K16",
-      "place_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K16&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K16&level=community_district&id=K16&parent=Brooklyn",
       "organization_relations": [
         {
           "type": "has_member",
@@ -843,7 +843,7 @@
       "body_id": "brooklyn-cb-17",
       "borough": "Brooklyn",
       "district": "K17",
-      "place_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K17&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K17&level=community_district&id=K17&parent=Brooklyn",
       "organization_relations": [
         {
           "type": "has_member",
@@ -884,7 +884,7 @@
       "body_id": "brooklyn-cb-18",
       "borough": "Brooklyn",
       "district": "K18",
-      "place_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K18&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K18&level=community_district&id=K18&parent=Brooklyn",
       "organization_relations": [
         {
           "type": "has_member",
@@ -925,7 +925,7 @@
       "body_id": "brooklyn-cb-02",
       "borough": "Brooklyn",
       "district": "K02",
-      "place_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K02&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K02&level=community_district&id=K02&parent=Brooklyn",
       "organization_relations": [
         {
           "type": "has_member",
@@ -966,7 +966,7 @@
       "body_id": "brooklyn-cb-03",
       "borough": "Brooklyn",
       "district": "K03",
-      "place_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K03&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K03&level=community_district&id=K03&parent=Brooklyn",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1007,7 +1007,7 @@
       "body_id": "brooklyn-cb-04",
       "borough": "Brooklyn",
       "district": "K04",
-      "place_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K04&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K04&level=community_district&id=K04&parent=Brooklyn",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1048,7 +1048,7 @@
       "body_id": "brooklyn-cb-05",
       "borough": "Brooklyn",
       "district": "K05",
-      "place_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K05&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K05&level=community_district&id=K05&parent=Brooklyn",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1089,7 +1089,7 @@
       "body_id": "brooklyn-cb-06",
       "borough": "Brooklyn",
       "district": "K06",
-      "place_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K06&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K06&level=community_district&id=K06&parent=Brooklyn",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1130,7 +1130,7 @@
       "body_id": "brooklyn-cb-07",
       "borough": "Brooklyn",
       "district": "K07",
-      "place_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K07&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K07&level=community_district&id=K07&parent=Brooklyn",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1171,7 +1171,7 @@
       "body_id": "brooklyn-cb-08",
       "borough": "Brooklyn",
       "district": "K08",
-      "place_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K08&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K08&level=community_district&id=K08&parent=Brooklyn",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1212,7 +1212,7 @@
       "body_id": "brooklyn-cb-09",
       "borough": "Brooklyn",
       "district": "K09",
-      "place_href": "/near-you/#map?level=community_district&parent=Brooklyn&id=K09&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K09&level=community_district&id=K09&parent=Brooklyn",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1253,7 +1253,7 @@
       "body_id": "manhattan-cb-01",
       "borough": "Manhattan",
       "district": "M01",
-      "place_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M01&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M01&level=community_district&id=M01&parent=Manhattan",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1294,7 +1294,7 @@
       "body_id": "manhattan-cb-10",
       "borough": "Manhattan",
       "district": "M10",
-      "place_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M10&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M10&level=community_district&id=M10&parent=Manhattan",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1335,7 +1335,7 @@
       "body_id": "manhattan-cb-11",
       "borough": "Manhattan",
       "district": "M11",
-      "place_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M11&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M11&level=community_district&id=M11&parent=Manhattan",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1376,7 +1376,7 @@
       "body_id": "manhattan-cb-12",
       "borough": "Manhattan",
       "district": "M12",
-      "place_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M12&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M12&level=community_district&id=M12&parent=Manhattan",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1417,7 +1417,7 @@
       "body_id": "manhattan-cb-02",
       "borough": "Manhattan",
       "district": "M02",
-      "place_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M02&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M02&level=community_district&id=M02&parent=Manhattan",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1458,7 +1458,7 @@
       "body_id": "manhattan-cb-03",
       "borough": "Manhattan",
       "district": "M03",
-      "place_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M03&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M03&level=community_district&id=M03&parent=Manhattan",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1499,7 +1499,7 @@
       "body_id": "manhattan-cb-04",
       "borough": "Manhattan",
       "district": "M04",
-      "place_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M04&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M04&level=community_district&id=M04&parent=Manhattan",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1540,7 +1540,7 @@
       "body_id": "manhattan-cb-05",
       "borough": "Manhattan",
       "district": "M05",
-      "place_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M05&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M05&level=community_district&id=M05&parent=Manhattan",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1581,7 +1581,7 @@
       "body_id": "manhattan-cb-06",
       "borough": "Manhattan",
       "district": "M06",
-      "place_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M06&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M06&level=community_district&id=M06&parent=Manhattan",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1622,7 +1622,7 @@
       "body_id": "manhattan-cb-07",
       "borough": "Manhattan",
       "district": "M07",
-      "place_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M07&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M07&level=community_district&id=M07&parent=Manhattan",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1663,7 +1663,7 @@
       "body_id": "manhattan-cb-08",
       "borough": "Manhattan",
       "district": "M08",
-      "place_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M08&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M08&level=community_district&id=M08&parent=Manhattan",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1704,7 +1704,7 @@
       "body_id": "manhattan-cb-09",
       "borough": "Manhattan",
       "district": "M09",
-      "place_href": "/near-you/#map?level=community_district&parent=Manhattan&id=M09&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Manhattan&cd=M09&level=community_district&id=M09&parent=Manhattan",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1745,7 +1745,7 @@
       "body_id": "queens-cb-01",
       "borough": "Queens",
       "district": "Q01",
-      "place_href": "/near-you/#map?level=community_district&parent=Queens&id=Q01&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q01&level=community_district&id=Q01&parent=Queens",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1786,7 +1786,7 @@
       "body_id": "queens-cb-10",
       "borough": "Queens",
       "district": "Q10",
-      "place_href": "/near-you/#map?level=community_district&parent=Queens&id=Q10&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q10&level=community_district&id=Q10&parent=Queens",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1827,7 +1827,7 @@
       "body_id": "queens-cb-11",
       "borough": "Queens",
       "district": "Q11",
-      "place_href": "/near-you/#map?level=community_district&parent=Queens&id=Q11&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q11&level=community_district&id=Q11&parent=Queens",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1868,7 +1868,7 @@
       "body_id": "queens-cb-12",
       "borough": "Queens",
       "district": "Q12",
-      "place_href": "/near-you/#map?level=community_district&parent=Queens&id=Q12&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q12&level=community_district&id=Q12&parent=Queens",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1909,7 +1909,7 @@
       "body_id": "queens-cb-13",
       "borough": "Queens",
       "district": "Q13",
-      "place_href": "/near-you/#map?level=community_district&parent=Queens&id=Q13&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q13&level=community_district&id=Q13&parent=Queens",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1950,7 +1950,7 @@
       "body_id": "queens-cb-14",
       "borough": "Queens",
       "district": "Q14",
-      "place_href": "/near-you/#map?level=community_district&parent=Queens&id=Q14&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q14&level=community_district&id=Q14&parent=Queens",
       "organization_relations": [
         {
           "type": "has_member",
@@ -1991,7 +1991,7 @@
       "body_id": "queens-cb-02",
       "borough": "Queens",
       "district": "Q02",
-      "place_href": "/near-you/#map?level=community_district&parent=Queens&id=Q02&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q02&level=community_district&id=Q02&parent=Queens",
       "organization_relations": [
         {
           "type": "has_member",
@@ -2032,7 +2032,7 @@
       "body_id": "queens-cb-03",
       "borough": "Queens",
       "district": "Q03",
-      "place_href": "/near-you/#map?level=community_district&parent=Queens&id=Q03&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q03&level=community_district&id=Q03&parent=Queens",
       "organization_relations": [
         {
           "type": "has_member",
@@ -2073,7 +2073,7 @@
       "body_id": "queens-cb-04",
       "borough": "Queens",
       "district": "Q04",
-      "place_href": "/near-you/#map?level=community_district&parent=Queens&id=Q04&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q04&level=community_district&id=Q04&parent=Queens",
       "organization_relations": [
         {
           "type": "has_member",
@@ -2114,7 +2114,7 @@
       "body_id": "queens-cb-05",
       "borough": "Queens",
       "district": "Q05",
-      "place_href": "/near-you/#map?level=community_district&parent=Queens&id=Q05&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q05&level=community_district&id=Q05&parent=Queens",
       "organization_relations": [
         {
           "type": "has_member",
@@ -2155,7 +2155,7 @@
       "body_id": "queens-cb-06",
       "borough": "Queens",
       "district": "Q06",
-      "place_href": "/near-you/#map?level=community_district&parent=Queens&id=Q06&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q06&level=community_district&id=Q06&parent=Queens",
       "organization_relations": [
         {
           "type": "has_member",
@@ -2196,7 +2196,7 @@
       "body_id": "queens-cb-07",
       "borough": "Queens",
       "district": "Q07",
-      "place_href": "/near-you/#map?level=community_district&parent=Queens&id=Q07&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q07&level=community_district&id=Q07&parent=Queens",
       "organization_relations": [
         {
           "type": "has_member",
@@ -2237,7 +2237,7 @@
       "body_id": "queens-cb-08",
       "borough": "Queens",
       "district": "Q08",
-      "place_href": "/near-you/#map?level=community_district&parent=Queens&id=Q08&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q08&level=community_district&id=Q08&parent=Queens",
       "organization_relations": [
         {
           "type": "has_member",
@@ -2278,7 +2278,7 @@
       "body_id": "queens-cb-09",
       "borough": "Queens",
       "district": "Q09",
-      "place_href": "/near-you/#map?level=community_district&parent=Queens&id=Q09&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Queens&cd=Q09&level=community_district&id=Q09&parent=Queens",
       "organization_relations": [
         {
           "type": "has_member",
@@ -2319,7 +2319,7 @@
       "body_id": "staten-island-cb-01",
       "borough": "Staten Island",
       "district": "R01",
-      "place_href": "/near-you/#map?level=community_district&parent=Staten%20Island&id=R01&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Staten+Island&cd=R01&level=community_district&id=R01&parent=Staten+Island",
       "organization_relations": [
         {
           "type": "has_member",
@@ -2360,7 +2360,7 @@
       "body_id": "staten-island-cb-02",
       "borough": "Staten Island",
       "district": "R02",
-      "place_href": "/near-you/#map?level=community_district&parent=Staten%20Island&id=R02&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Staten+Island&cd=R02&level=community_district&id=R02&parent=Staten+Island",
       "organization_relations": [
         {
           "type": "has_member",
@@ -2401,7 +2401,7 @@
       "body_id": "staten-island-cb-03",
       "borough": "Staten Island",
       "district": "R03",
-      "place_href": "/near-you/#map?level=community_district&parent=Staten%20Island&id=R03&lens=meetings",
+      "place_href": "/near-you/?v=0&lens=meetings&boro=Staten+Island&cd=R03&level=community_district&id=R03&parent=Staten+Island",
       "organization_relations": [
         {
           "type": "has_member",

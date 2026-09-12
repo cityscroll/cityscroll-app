@@ -89,8 +89,10 @@ test("community-board place neighbors route through the scoped Near you view", (
   const board = place.nodes.find((node) => node.target_id === "community-board:bronx-cb-01");
   assert.equal(
     board?.href,
-    "/near-you/#map?level=community_district&parent=Bronx&id=X01&lens=meetings",
+    "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X01&level=community_district&id=X01&parent=Bronx",
   );
+  const council = place.nodes.find((node) => node.target_id === "council-district:8");
+  assert.equal(council?.href, "/near-you/?v=0&lens=meetings&council=8");
 });
 
 test("polygon overlay detects containment and boundary crossing without a centroid", () => {

@@ -28,9 +28,26 @@ const sources = { sourceRegistry, sourceInventory, scorecard, geography };
 
 test("board routes preserve the separate place, governance, and output projections", () => {
   assert.equal(communityBoardPath("bronx-cb-02"), "/community-boards/bronx-cb-02/");
-  assert.equal(communityBoardPlaceHref({ borough: "Bronx", community_district_id: "X02" }), "/near-you/#map?level=community_district&parent=Bronx&id=X02&lens=meetings");
+  assert.equal(communityBoardPlaceHref({ borough: "Bronx", community_district_id: "X02" }), "/near-you/?v=0&lens=meetings&boro=Bronx&cd=X02&level=community_district&id=X02&parent=Bronx");
   assert.equal(communityBoardInstitutionHref("bronx-cb-02"), "/community-boards/bronx-cb-02/");
   assert.equal(communityBoardOutputHref("bronx-cb-02"), "/community-boards/#board-bronx-cb-02");
+});
+
+test("board place evidence stays bounded when district identity is absent or invalid", () => {
+  assert.equal(communityBoardPlaceHref({ borough: "Bronx" }), null);
+  assert.equal(communityBoardPlaceHref({ borough: "Bronx", community_district_id: "X99" }), null);
+  assert.equal(communityBoardPlaceHref({ borough: "Unknown", community_district_id: "X02" }), null);
+});
+
+test("board document exposes one canonical place destination without an institution self-link", () => {
+  const view = buildCommunityBoardConstellationView("brooklyn-cb-15", sources);
+  const html = renderCommunityBoardConstellationDocument(view);
+  const canonical = "/near-you/?v=0&amp;lens=meetings&amp;boro=Brooklyn&amp;cd=K15&amp;level=community_district&amp;id=K15&amp;parent=Brooklyn";
+  assert.ok(html.includes(canonical));
+  assert.match(html, /Brooklyn Community District 15/);
+  assert.doesNotMatch(html, /Open this board institution/);
+  const noScript = html.replace(/<script[\s\S]*?<\/script>/gi, "");
+  assert.ok(noScript.includes(canonical));
 });
 test("board source inventory surfaces the image-linked CB6 Airtable minutes archive", () => {
   const view = buildCommunityBoardConstellationView("manhattan-cb-06", sources);

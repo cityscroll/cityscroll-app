@@ -31,7 +31,13 @@ import {
   communityBoardRelationAvailability,
   promotedCommunityBoardRelationEdges,
 } from "./community_board_relations.mjs";
-import { communityBoardCommitteePageHref, communityBoardPageHref } from "./community_board_links.mjs";
+import {
+  communityBoardCommitteePageHref,
+  communityBoardIdFromEvidence,
+  communityBoardPageHref,
+  communityBoardPlaceHref as canonicalCommunityBoardPlaceHref,
+  communityDistrictDisplayName,
+} from "./community_board_links.mjs";
 import { communityBoardMeetingEdgeAccepted } from "./community_board_institution_edges.mjs";
 import {
   answerCommunityBoardGovernanceQuestion,
@@ -118,9 +124,16 @@ export function communityBoardPath(value) {
 }
 
 export function communityBoardPlaceHref(board = {}) {
-  const district = clean(board.community_district_id || board.communityDistrict, 20);
-  if (!district) return "/near-you/";
-  return `/near-you/#map?level=community_district&parent=${encodeURIComponent(clean(board.borough, 80))}&id=${encodeURIComponent(district)}&lens=meetings`;
+  const body = bodyId(board.body_id || board.id);
+  if (body) return canonicalCommunityBoardPlaceHref(body);
+  const district = clean(board.community_district_id || board.communityDistrict, 20).toUpperCase();
+  const districtNumber = district.match(/^[XKMQR](\d{2})$/)?.[1];
+  if (!districtNumber || !clean(board.borough, 80)) return null;
+  const inferredBody = communityBoardIdFromEvidence(
+    `Community Board ${districtNumber}`,
+    { borough: board.borough },
+  );
+  return inferredBody ? canonicalCommunityBoardPlaceHref(inferredBody) : null;
 }
 
 export function communityBoardInstitutionHref(value) {
@@ -336,15 +349,18 @@ function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, re
     const districtId = clean(districtEdge?.to || "").replace(/^community-district:/, "");
     const target = districtId || board.community_district_id;
     const href = target ? communityBoardPlaceHref({ ...board, community_district_id: target }) : null;
+    const label = target
+      ? communityDistrictDisplayName({ borough: board.borough, district: board.district, id: target })
+      : null;
     return {
       ...spec,
-      status: target && href ? "matched" : "unknown",
-      count: target && href ? 1 : null,
-      target_name: target ? `${board.borough} Community District ${target}` : "Community district",
+      status: label && href ? "matched" : "unknown",
+      count: label && href ? 1 : null,
+      target_name: label || "Community district",
       view_all_href: href,
       source: sourceHref,
       provenance: districtEdge?.provenance || null,
-      items: target && href ? [{ label: `${board.borough} Community District ${target}`, href, target_id: target, source: sourceHref }] : [],
+      items: label && href ? [{ label, href, target_id: target, source: sourceHref }] : [],
     };
   }
   if (spec.id === "sources") {
@@ -1011,7 +1027,6 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
   const title = view.display_name;
   const payload = JSON.stringify(embeddablePayload(view)).replace(/<\/script/gi, "<\\/script");
   const place = view.categories.find((category) => category.id === "place");
-  const institution = communityBoardInstitutionHref(view.body_id);
   const output = communityBoardOutputHref(view.body_id);
   const edgeRail = renderEdgeSummaryRail(view.edge_summary, {
     heading: "Connected civic objects",
@@ -1028,7 +1043,6 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
   });
   const actions = renderNodeActions([
     { kind: "link", label: "Open the place view", href: place?.view_all_href || "/near-you/", primary: true, className: "civic-object-action" },
-    { kind: "link", label: "Open the board institution", href: institution, className: "civic-object-action" },
     { kind: "link", label: "Open the source directory", href: output, className: "civic-object-action" },
     { kind: "button", label: "Copy link", attrs: { "data-object-copy": true }, className: "civic-object-action" },
     { kind: "button", label: "Print / save PDF", attrs: { "data-object-print": true }, className: "civic-object-action" },
@@ -1052,7 +1066,7 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
 <a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: "browse", surfaceClass: "civic-object-mast" })}
 <main id="main" class="node-document civic-object-document" data-civic-object-kind="community-board-constellation" data-subject-ref="${esc(view.subject_ref)}" data-node-document="1">
 ${renderNodeBack({ href: "/community-boards/", label: "Back to community board sources", extraClass: "civic-object-back" })}
-<header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">Community board</p><h1>${esc(title)}</h1><p class="node-lede">A local advisory body, its district, committees, proceedings, people, and official source coverage.</p><p class="node-pivot civic-object-pivot"><a href="${esc(place?.view_all_href || "/near-you/")}">Open this board’s place view</a> · <a href="${esc(institution)}">Open this board institution</a> · <a href="${esc(output)}">Open the source directory</a></p></header>
+<header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">Community board</p><h1>${esc(title)}</h1><p class="node-lede">A local advisory body, its district, committees, proceedings, people, and official source coverage.</p><p class="node-pivot civic-object-pivot"><a href="${esc(place?.view_all_href || "/near-you/")}">Open this board’s place view</a> · <a href="${esc(output)}">Open the source directory</a></p></header>
 ${renderRelatedPublicBodiesFor(view.body_id)}
   ${renderAboutBoardSection(view)}${renderCommunityBoardHearingContextSection(view.hearing_context, { lang: options.lang })}${renderCommunityBoardDecisionsSection(view.board_decisions, { lang: options.lang })}${renderCommunityBoardLandPositionsSection(view.land_positions, { lang: options.lang })}${renderCommunityBoardBudgetRequestsSection(view.budget_requests, { lang: options.lang })}${renderCommunityBoardDistrictProjectsSection(view.district_projects, { lang: options.lang })}${renderCommunityBoardParticipationSection(view)}${renderCommunityBoardMoneyCard(view.money)}${renderCommunityBoardPayrollContext(view.payroll)}${renderCommunityBoardBylawPanel(view.governance)}${renderBoroughOfficeAppointmentSection(view.appointment_authority)}${renderEmptyCoverageNote(emptyCoverageCategories)}${renderedCategories.map((category) => renderCategory(category, view)).join("")}${edgeRail}${local}${actions}${renderUnjoinedSourceSection(view.source_records)}
 </main>${renderNodeFooter({ extraClass: "civic-object-footer" })}
