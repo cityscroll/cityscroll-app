@@ -14,7 +14,7 @@
         "column": "family_id",
         "kind": "family"
       },
-      "publication_mode": "replace_all",
+      "publication_mode": "delta_upsert",
       "source": {
         "kind": "keyword_search_index_shards",
         "path": "worker/src/data/keyword_search_index_shards",
@@ -76,7 +76,7 @@
       "partition": {
         "kind": "none"
       },
-      "publication_mode": "replace_all",
+      "publication_mode": "delta_upsert",
       "source": {
         "kind": "ocp_awards_warehouse_lookup",
         "path": "site/data/ocp_awards_warehouse_lookup.json",
@@ -117,7 +117,7 @@
       "partition": {
         "kind": "none"
       },
-      "publication_mode": "replace_all",
+      "publication_mode": "delta_upsert",
       "source": {
         "kind": "entity_intelligence_lookup",
         "path": "worker/src/data/entity_intelligence_lookup.json",

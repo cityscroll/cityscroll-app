@@ -137,10 +137,12 @@ export function validateWorkflowWiring(workflow) {
     "- name: Validate D1 release policy",
     "- name: Compute D1 deploy fingerprint",
     "- name: Gate D1 publication",
-    "- name: Snapshot D1 publication watermarks",
+    "- name: Snapshot current D1 publication rows",
+    "- name: Read prior published D1 snapshot",
+    "- name: Plan D1 publication delta",
     "- name: Claim D1 publication generation",
-    "- name: Build D1 search, OCP, and entity-intelligence read models",
-    "- name: Publish D1 search, OCP, and entity-intelligence read models",
+    "- name: Verify bounded D1 publication plan",
+    "- name: Publish and verify bounded D1 delta",
     "- name: Record D1 publication receipt",
   ].map((marker) => stepIndex(workflow, marker));
   if (order.some((value, index) => index > 0 && value <= order[index - 1])) {
@@ -155,9 +157,12 @@ export function validateWorkflowWiring(workflow) {
   if (!/if:\s+steps\.d1-publication-gate\.outputs\.should-publish\s*==\s*'true'/.test(workflow)) {
     fail("workflow D1 write steps are not gated by the fingerprint decision");
   }
-  const ordinaryPath = workflow.slice(stepIndex(workflow, "- name: Build D1 search"), stepIndex(workflow, "- name: Record D1 publication receipt"));
-  if (/d1_explicit_rebuild\.mjs|--mode\s+rebuild/.test(ordinaryPath)) {
+  const ordinaryPath = workflow.slice(stepIndex(workflow, "- name: Plan D1 publication delta"), stepIndex(workflow, "- name: Record D1 publication receipt"));
+  if (/d1_explicit_rebuild\.mjs|--mode\s+rebuild|build_worker_d1_read_models\.mjs/.test(ordinaryPath)) {
     fail("ordinary D1 publication path references an explicit rebuild");
+  }
+  for (const command of ["d1_delta_plan.mjs plan", "d1_bounded_publisher.mjs dry-run", "d1_production_delta.mjs execute", "d1_canary.mjs check", "d1_reconcile.mjs check"]) {
+    if (!ordinaryPath.includes(command)) fail(`ordinary D1 publication path is missing ${command}`);
   }
   if (!workflow.includes("disable_incremental_publication")) fail("workflow is missing the rollback feature-flag input");
   return { paths, order };

@@ -133,10 +133,27 @@ jobs:
           if grep -q '"reason": "fingerprint_unchanged"' .artifacts/d1-publication-receipt.json; then
             echo "D1 publication skipped: fingerprint_unchanged"
           fi
-      - name: Snapshot D1 publication watermarks
-        id: d1-partition-snapshot
+      - name: Snapshot current D1 publication rows
+        id: d1-current-snapshot
         if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true'
-        run: node tools/d1_delta_plan.mjs snapshot --out .d1-publication-state/partition-snapshot.json
+        run: node tools/d1_delta_plan.mjs snapshot --out .d1-publication-state/current-snapshot.json
+      - name: Read prior published D1 snapshot
+        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          snapshot_key=$(node tools/d1_production_delta.mjs prior-snapshot-key --state .d1-publication-state/published.json)
+          npx wrangler@4.126.0 kv key get "$snapshot_key" \
+            --binding ALERT_STATE --remote --text --config worker/wrangler.toml \
+            > .d1-publication-state/prior-snapshot.json
+      - name: Plan D1 publication delta
+        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true'
+        run: |
+          node tools/d1_delta_plan.mjs plan \
+            --prior .d1-publication-state/prior-snapshot.json \
+            --current .d1-publication-state/current-snapshot.json \
+            --out .artifacts/d1-delta-plan.json
       - name: Claim D1 publication generation
         id: d1-generation-claim
         if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true'
@@ -147,7 +164,7 @@ jobs:
           set -euo pipefail
           node tools/d1_generation_fence.mjs claim \
             --fingerprint "${{ steps.d1-deploy-fingerprint.outputs.fingerprint }}" \
-            --snapshot .d1-publication-state/partition-snapshot.json \
+            --snapshot .d1-publication-state/current-snapshot.json \
             --holder "$D1_FENCE_HOLDER" \
             --key d1-publication:state:v1 \
             --binding ALERT_STATE --remote --config worker/wrangler.toml \
@@ -172,10 +189,14 @@ jobs:
       # stale or tampered shard set must stop deployment before any D1 writes.
       - name: Verify keyword index source projection and shards
         run: node tools/build_keyword_search_index.mjs --check
-      - name: Build D1 search, OCP, and entity-intelligence read models
+      - name: Verify bounded D1 publication plan
         if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-generation-claim.outputs.claimed == 'true'
-        run: node tools/build_worker_d1_read_models.mjs --mode upsert --output-dir worker/.d1-read-models
-      - name: Publish D1 search, OCP, and entity-intelligence read models
+        run: |
+          node tools/d1_bounded_publisher.mjs dry-run \
+            --plan .artifacts/d1-delta-plan.json \
+            --generation "${{ steps.d1-generation-claim.outputs.generation }}" \
+            --out .artifacts/d1-bounded-publish-dry-run.json
+      - name: Publish and verify bounded D1 delta
         id: d1-publication-sql
         if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-generation-claim.outputs.claimed == 'true'
         working-directory: worker
@@ -196,35 +217,19 @@ jobs:
               --receipt ../.artifacts/d1-generation-abandon.json || true
           }
           trap abandon_fence ERR
-          node ../tools/d1_generation_fence.mjs commit-check \
+          echo "sql-started=true" >> "$GITHUB_OUTPUT"
+          node ../tools/d1_production_delta.mjs execute \
+            --prior ../.d1-publication-state/prior-snapshot.json \
+            --current ../.d1-publication-state/current-snapshot.json \
             --generation "$D1_FENCE_GENERATION" \
             --holder "$D1_FENCE_HOLDER" \
             --fingerprint "${{ steps.d1-deploy-fingerprint.outputs.fingerprint }}" \
-            --key d1-publication:state:v1 \
-            --binding ALERT_STATE --remote --config wrangler.toml \
+            --database crol-notices \
+            --config wrangler.toml \
             --ledger ../.artifacts/d1-generation-ledger.json \
-            --receipt ../.artifacts/d1-generation-commit.json \
-            --github-output "$GITHUB_OUTPUT"
-          if grep -q '"fenced": true' ../.artifacts/d1-generation-commit.json; then
-            trap - ERR
-            echo "D1 generation fence rejected this SQL boundary; no D1 writes started."
-            echo "sql-started=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          echo "sql-started=true" >> "$GITHUB_OUTPUT"
-          npx wrangler@4.126.0 d1 execute crol-notices --remote --yes --file .d1-read-models/keyword_search_read_model.sql
-          node ../tools/d1_generation_fence.mjs renew \
-            --generation "$D1_FENCE_GENERATION" --holder "$D1_FENCE_HOLDER" \
-            --fingerprint "${{ steps.d1-deploy-fingerprint.outputs.fingerprint }}" \
-            --key d1-publication:state:v1 --binding ALERT_STATE --remote --config wrangler.toml \
-            --ledger ../.artifacts/d1-generation-ledger.json
-          npx wrangler@4.126.0 d1 execute crol-notices --remote --yes --file .d1-read-models/ocp_awards_read_model.sql
-          node ../tools/d1_generation_fence.mjs renew \
-            --generation "$D1_FENCE_GENERATION" --holder "$D1_FENCE_HOLDER" \
-            --fingerprint "${{ steps.d1-deploy-fingerprint.outputs.fingerprint }}" \
-            --key d1-publication:state:v1 --binding ALERT_STATE --remote --config wrangler.toml \
-            --ledger ../.artifacts/d1-generation-ledger.json
-          npx wrangler@4.126.0 d1 execute crol-notices --remote --yes --file .d1-read-models/entity_intelligence_read_model.sql
+            --out-dir ../.artifacts/d1-production-delta
+          node ../tools/d1_canary.mjs check --evidence ../.artifacts/d1-production-delta/canary-evidence.json
+          node ../tools/d1_reconcile.mjs check --report ../.artifacts/d1-production-delta/reconcile-report.json
           trap - ERR
       - name: Record published D1 fingerprint
         id: d1-record-published
@@ -235,12 +240,14 @@ jobs:
           D1_FENCE_HOLDER: ${{ github.workflow }}:${{ github.run_id }}:${{ github.run_attempt }}
           D1_FENCE_GENERATION: ${{ steps.d1-generation-claim.outputs.generation }}
         run: |
-          node tools/d1_deploy_fingerprint.mjs mark-published \
-            --fingerprint "${{ steps.d1-deploy-fingerprint.outputs.fingerprint }}" \
-            --state .d1-publication-state/published.json \
-            --receipt .artifacts/d1-publication-receipt.json \
-            --force "$FORCE_D1_PUBLICATION" \
-            --commands 4
+          set -euo pipefail
+          snapshot_key=$(node tools/d1_production_delta.mjs snapshot-key --generation "$D1_FENCE_GENERATION")
+          # Generation-qualified snapshots may be staged before completion. A
+          # failed completion leaves only an unreachable orphan; readers choose
+          # a baseline exclusively through the published fence generation.
+          npx wrangler@4.126.0 kv key put "$snapshot_key" \
+            --path .d1-publication-state/current-snapshot.json \
+            --binding ALERT_STATE --remote --config worker/wrangler.toml
           # The generation adapter performs the compare-and-set equivalent of
           # `wrangler kv key put d1-publication:state:v1` without overwriting a newer claim.
           node tools/d1_generation_fence.mjs complete \
@@ -276,26 +283,30 @@ jobs:
           SHOULD_PUBLISH: ${{ steps.d1-publication-gate.outputs.should-publish }}
           INCREMENTAL_ENABLED: ${{ steps.d1-publication-gate.outputs.incremental-enabled }}
           CLAIMED: ${{ steps.d1-generation-claim.outputs.claimed }}
+          CLAIM_OUTCOME: ${{ steps.d1-generation-claim.outcome }}
           SQL_OUTCOME: ${{ steps.d1-publication-sql.outcome }}
           SQL_STARTED: ${{ steps.d1-publication-sql.outputs.sql-started }}
           RECORD_OUTCOME: ${{ steps.d1-record-published.outcome }}
         run: |
           set -euo pipefail
-          # Retained d1-07 receipts may use outcome=skipped_fingerprint_unchanged.
           if [ "$SHOULD_PUBLISH" != "true" ]; then
-            # D1-10: the final receipt uses the short skipped outcome and exact
-            # reason so zero writes are visible rather than inferred.
             outcome=skipped
             reason="fingerprint-unchanged"
           elif [ "$INCREMENTAL_ENABLED" != "true" ]; then
             outcome=skipped
             reason="incremental-publication-disabled"
+          elif [ "$CLAIM_OUTCOME" != "success" ]; then
+            outcome=failed_permanent
+            reason="delta publication prerequisites failed before a generation was claimed"
           elif [ "$CLAIMED" != "true" ]; then
             outcome=skipped_fence_busy
             reason="another publication run holds a live generation fence"
+          elif [ -f .artifacts/d1-production-delta/result.json ]; then
+            outcome=$(node -p "require('./.artifacts/d1-production-delta/result.json').outcome")
+            reason=$(node -p "require('./.artifacts/d1-production-delta/result.json').reason")
           elif [ "$SQL_OUTCOME" = "failure" ]; then
             outcome=failed_permanent
-            reason="the publication SQL step failed; its generation fence claim was abandoned"
+            reason="the bounded delta publication step failed; its generation fence claim was abandoned"
           elif [ "$SQL_STARTED" != "true" ]; then
             outcome=abandoned
             reason="the generation fence was superseded before SQL execution started"
@@ -304,7 +315,7 @@ jobs:
             reason="the generation fence was superseded before publication could complete"
           else
             outcome=published
-            reason="D1 read models were published for this deploy fingerprint"
+            reason="bounded D1 delta published and reconciled"
           fi
           mkdir -p .artifacts
           generation_flag=()
@@ -312,14 +323,27 @@ jobs:
             generation_flag=(--generation "$D1_GENERATION")
           fi
           snapshot_flag=()
-          if [ -f .d1-publication-state/partition-snapshot.json ]; then
-            snapshot_flag=(--snapshot .d1-publication-state/partition-snapshot.json)
+          if [ -f .d1-publication-state/current-snapshot.json ]; then
+            snapshot_flag=(--snapshot .d1-publication-state/current-snapshot.json)
+          fi
+          publication_flags=()
+          if [ -f .artifacts/d1-production-delta/batch-plan.json ]; then
+            publication_flags+=(--batch-plan .artifacts/d1-production-delta/batch-plan.json)
+          fi
+          if [ -f .artifacts/d1-production-delta/publish-receipt.json ]; then
+            publication_flags+=(--publish-receipt .artifacts/d1-production-delta/publish-receipt.json)
+          fi
+          if [ -f .artifacts/d1-production-delta/canary-evidence.json ]; then
+            publication_flags+=(--canary-evidence .artifacts/d1-production-delta/canary-evidence.json)
+          fi
+          if [ -f .artifacts/d1-production-delta/reconcile-report.json ]; then
+            publication_flags+=(--reconcile-report .artifacts/d1-production-delta/reconcile-report.json)
           fi
           node tools/d1_publication_receipt.mjs record \
             --workflow "$D1_RUN_WORKFLOW" --run-id "$D1_RUN_ID" --attempt "$D1_RUN_ATTEMPT" \
             --deploy-fingerprint "$D1_FINGERPRINT" \
             --outcome "$outcome" --reason "$reason" \
-            "${generation_flag[@]}" "${snapshot_flag[@]}" \
+            "${generation_flag[@]}" "${snapshot_flag[@]}" "${publication_flags[@]}" \
             --local .artifacts/d1-publication-receipts.jsonl \
             --binding ALERT_STATE --remote true --config worker/wrangler.toml \
             --out .artifacts/d1-publication-receipt-final.json
@@ -406,7 +430,14 @@ jobs:
             .artifacts/release-surface-receipt.json
             .artifacts/worker-trigger-coverage.json
             .artifacts/d1-publication-receipt.json
+            .artifacts/d1-publication-receipt-final.json
             .artifacts/d1-publication-receipts.jsonl
+            .artifacts/d1-delta-plan.json
+            .artifacts/d1-bounded-publish-dry-run.json
+            .artifacts/d1-generation-claim.json
+            .artifacts/d1-generation-complete.json
+            .artifacts/d1-generation-abandon.json
+            .artifacts/d1-production-delta/
             .artifacts/deployment-health/cloudflare-worker.json
           if-no-files-found: warn
 

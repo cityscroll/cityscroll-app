@@ -110,16 +110,16 @@ test("failure abandons a live claim without deleting fence state", async () => {
 test("the workflow keeps every fence mutation behind the existing publication gate", () => {
   const workflow = readFileSync(join(ROOT, ".github/workflows/deploy-worker.yml"), "utf8");
   const claim = workflow.indexOf("d1_generation_fence.mjs claim");
-  const commit = workflow.indexOf("d1_generation_fence.mjs commit-check");
-  const sql = workflow.indexOf("d1 execute crol-notices");
-  assert.ok(claim >= 0 && commit > claim && commit < sql, "claim and boundary check precede D1 SQL");
+  const publish = workflow.indexOf("d1_production_delta.mjs execute");
+  assert.ok(claim >= 0 && publish > claim, "the generation claim precedes the fenced delta runner");
   assert.match(workflow, /d1_delta_plan\.mjs snapshot/);
-  assert.match(workflow, /d1_generation_fence\.mjs commit-check/);
-  assert.match(workflow, /d1_generation_fence\.mjs renew/);
+  const publisher = readFileSync(join(ROOT, "tools/d1_bounded_publisher.mjs"), "utf8");
+  assert.match(publisher, /checkGenerationCommit/);
+  assert.match(publisher, /renewGeneration/);
   assert.match(workflow, /d1_generation_fence\.mjs complete/);
   assert.match(workflow, /if: steps\.d1-publication-gate\.outputs\.should-publish == 'true'/);
   assert.match(workflow, /D1 publication rollback is a separate, workflow_dispatch-only operation/);
-  assert.match(workflow, /node tools\/build_worker_d1_read_models\.mjs --mode upsert/);
+  assert.match(workflow, /node \.\.\/tools\/d1_production_delta\.mjs execute/);
   const rebuildWorkflow = readFileSync(join(ROOT, ".github/workflows/d1-rebuild.yml"), "utf8");
   assert.match(rebuildWorkflow, /node tools\/d1_explicit_rebuild\.mjs/);
   assert.match(workflow, /d1-publication:state:v1/);
@@ -195,7 +195,7 @@ test("a real positional argument is still rejected with the same clear error", (
 test("every fence command in the deploy workflow parses under the CLI parser", () => {
   const workflow = readFileSync(join(ROOT, ".github/workflows/deploy-worker.yml"), "utf8");
   const commands = extractFenceCommands(workflow);
-  assert.ok(commands.length >= 6, `expected the workflow fence commands, found ${commands.length}`);
+  assert.ok(commands.length >= 3, `expected the workflow fence commands, found ${commands.length}`);
   const parsedCommands = new Set();
   for (const command of commands) {
     const argv = tokenizeCommand(command);
@@ -213,5 +213,5 @@ test("every fence command in the deploy workflow parses under the CLI parser", (
     assert.match(args.ledger ?? "", /\.artifacts\/d1-generation-ledger\.json$/, `--ledger must be passed in: ${command}`);
     parsedCommands.add(args.command);
   }
-  assert.deepEqual([...parsedCommands].sort(), ["abandon", "claim", "commit-check", "complete", "renew"]);
+  assert.deepEqual([...parsedCommands].sort(), ["abandon", "claim", "complete"]);
 });

@@ -64,7 +64,7 @@ import { fileURLToPath } from "node:url";
 
 import { deleteOrder, deleteStatement, insertStatement, readSourceDocument, upsertStatements } from "./build_worker_d1_read_models.mjs";
 import { PLAN_SCHEMA } from "./d1_delta_plan.mjs";
-import { checkGenerationCommit, createWranglerKvStore, fileStore } from "./d1_generation_fence.mjs";
+import { checkGenerationCommit, createWranglerKvStore, fileStore, renewGeneration } from "./d1_generation_fence.mjs";
 import { loadManifest, modelEntry } from "./d1_manifest.mjs";
 import { VIRTUAL_TABLES, tableRows } from "./d1_stable_keys.mjs";
 
@@ -87,7 +87,7 @@ function compareText(left, right) {
   return left < right ? -1 : left > right ? 1 : 0;
 }
 
-/** Whether the bounded publisher is allowed to run. Default off; the rebuild/upsert SQL path is the fallback. */
+/** Whether the direct CLI is allowed to run. The ordinary workflow uses the composed production runner. */
 export function boundedPublisherEnabled(env = process.env) {
   return env[FEATURE_FLAG_ENV] === "true";
 }
@@ -302,6 +302,17 @@ function sleep(ms) {
   return new Promise((resolvePromise) => setTimeout(resolvePromise, ms));
 }
 
+async function renewBeforeNextBatch({ batchPlan, index, fenceStore, fenceLedger, holder, fingerprint, now }) {
+  if (index + 1 >= batchPlan.batches.length) return;
+  await renewGeneration({
+    store: fenceStore, ledger: fenceLedger, generation: batchPlan.generation,
+    holder, fingerprint, now: now(),
+  });
+  // A lost race or expired lease is deliberately handled by the next batch's
+  // mandatory commit check, which records the full stale/current fence outcome
+  // before returning without a mutation.
+}
+
 /**
  * Apply every batch of a bounded plan, one D1 transaction at a time, resuming
  * from an existing checkpoint at `checkpointPath` when one names this same
@@ -323,9 +334,11 @@ export async function publishBounded({
   batchPlan,
   manifest,
   fenceStore,
+  fenceLedger = null,
   holder,
   fingerprint,
   executor,
+  appliedBatchStore = null,
   checkpointPath = null,
   maxAttempts = DEFAULT_MAX_ATTEMPTS,
   backoffMs = DEFAULT_BACKOFF_MS,
@@ -334,6 +347,9 @@ export async function publishBounded({
 }) {
   if (!Number.isInteger(maxAttempts) || maxAttempts < 1) fail("maxAttempts must be a positive integer");
   if (!Number.isInteger(backoffMs) || backoffMs < 0) fail("backoffMs must be a non-negative integer");
+  if (appliedBatchStore && typeof appliedBatchStore.has !== "function") {
+    fail("appliedBatchStore must provide has(batchId)");
+  }
 
   let receipt = loadCheckpoint(checkpointPath);
   if (receipt) {
@@ -351,7 +367,7 @@ export async function publishBounded({
   // The fence is settled once before any batch is rendered or executed, so a
   // stale generation is rejected without a single visible mutation — including
   // when its plan is empty or its checkpoint would otherwise resume mid-way.
-  const gate = await checkGenerationCommit({ store: fenceStore, generation: batchPlan.generation, holder, fingerprint, now: now() });
+  const gate = await checkGenerationCommit({ store: fenceStore, ledger: fenceLedger, generation: batchPlan.generation, holder, fingerprint, now: now() });
   if (gate.fenced) {
     recordFenceRejection(receipt, gate, batchPlan.batches[resumeIndex(batchPlan.batches, receipt)] || null);
     writeCheckpoint(checkpointPath, receipt);
@@ -364,9 +380,25 @@ export async function publishBounded({
   for (let index = startIndex; index < batchPlan.batches.length; index += 1) {
     const batch = batchPlan.batches[index];
 
+    // Production executors persist this deterministic batch id in the same D1
+    // transaction as the application mutations. It is therefore authoritative
+    // after a lost response or a new workflow attempt, unlike a runner-local
+    // checkpoint file. Recover the completed batch without executing it again.
+    if (appliedBatchStore && await appliedBatchStore.has(batch.batch_id, batch)) {
+      const recoveredAt = new Date(now()).toISOString();
+      receipt.completed_batches.push({
+        batch_id: batch.batch_id, model_id: batch.model_id, partition: batch.partition, ordinal: batch.ordinal,
+        ops_applied: batch.op_count, attempt: 0, recovered: true, started_at: recoveredAt, finished_at: recoveredAt,
+      });
+      receipt.next_batch_id = index + 1 < batchPlan.batches.length ? batchPlan.batches[index + 1].batch_id : null;
+      writeCheckpoint(checkpointPath, receipt);
+      await renewBeforeNextBatch({ batchPlan, index, fenceStore, fenceLedger, holder, fingerprint, now });
+      continue;
+    }
+
     // A long publication re-checks the fence between batches: a generation that
     // is superseded partway through stops here rather than continuing to write.
-    const boundary = await checkGenerationCommit({ store: fenceStore, generation: batchPlan.generation, holder, fingerprint, now: now() });
+    const boundary = await checkGenerationCommit({ store: fenceStore, ledger: fenceLedger, generation: batchPlan.generation, holder, fingerprint, now: now() });
     if (boundary.fenced) {
       recordFenceRejection(receipt, boundary, batch);
       writeCheckpoint(checkpointPath, receipt);
@@ -380,12 +412,20 @@ export async function publishBounded({
     const startedAt = new Date(now()).toISOString();
     let attempt = 0;
     let applied = false;
+    let recovered = false;
     while (!applied) {
       attempt += 1;
       try {
         await executor.execute(sql, batch);
         applied = true;
       } catch (error) {
+        // A timeout can arrive after D1 committed. The atomic marker resolves
+        // that ambiguity without replaying an already-applied batch.
+        if (appliedBatchStore && await appliedBatchStore.has(batch.batch_id, batch)) {
+          applied = true;
+          recovered = true;
+          break;
+        }
         const classification = classifyFailure(error);
         if (classification === "permanent" || attempt >= maxAttempts) {
           receipt.status = "stopped_permanent_error";
@@ -398,12 +438,21 @@ export async function publishBounded({
       }
     }
 
+    if (appliedBatchStore && !await appliedBatchStore.has(batch.batch_id, batch)) {
+      receipt.status = "stopped_permanent_error";
+      receipt.stopped_reason = `permanent error on attempt ${attempt} of batch ${batch.batch_id}: atomic D1 checkpoint marker missing after execution`;
+      receipt.next_batch_id = batch.batch_id;
+      writeCheckpoint(checkpointPath, receipt);
+      return receipt;
+    }
+
     receipt.completed_batches.push({
       batch_id: batch.batch_id, model_id: batch.model_id, partition: batch.partition, ordinal: batch.ordinal,
-      ops_applied: batch.op_count, attempt, started_at: startedAt, finished_at: new Date(now()).toISOString(),
+      ops_applied: batch.op_count, attempt, recovered, started_at: startedAt, finished_at: new Date(now()).toISOString(),
     });
     receipt.next_batch_id = index + 1 < batchPlan.batches.length ? batchPlan.batches[index + 1].batch_id : null;
     writeCheckpoint(checkpointPath, receipt);
+    await renewBeforeNextBatch({ batchPlan, index, fenceStore, fenceLedger, holder, fingerprint, now });
   }
 
   receipt.status = "complete";
@@ -500,7 +549,7 @@ async function main(argv) {
   }
   if (args.command === "execute") {
     if (!boundedPublisherEnabled()) {
-      console.error(`d1 bounded publisher: refused, ${FEATURE_FLAG_ENV} is not "true"; use the rebuild/upsert SQL path instead`);
+      console.error(`d1 bounded publisher: refused, ${FEATURE_FLAG_ENV} is not "true"; use the explicit rebuild workflow for recovery`);
       return 1;
     }
     const plan = JSON.parse(readFileSync(required(args, "plan"), "utf8"));

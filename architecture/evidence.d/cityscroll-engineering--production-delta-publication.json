@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/production-delta-publication",
+  "status": "implemented",
+  "fingerprint": "production-delta-publication.v1",
+  "updated_at": "2026-09-12T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "production-delta-runner",
+      "path": "tools/d1_production_delta.mjs"
+    },
+    {
+      "id": "transactional-batch-checkpoints",
+      "path": "worker/migrations/0031_d1_publication_batches.sql"
+    },
+    {
+      "id": "production-shaped-regression-fixture",
+      "path": "test/fixtures/d1-production-delta/sources.json"
+    },
+    {
+      "id": "production-delta-contract-tests",
+      "path": "test/d1_production_delta_publication.test.mjs"
+    }
+  ]
+}
