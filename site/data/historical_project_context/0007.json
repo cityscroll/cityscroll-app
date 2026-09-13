@@ -1,0 +1,2264 @@
+{
+  "schema_version": "cityscroll.historical_project_context.v1",
+  "shard": "0007",
+  "rows": [
+    {
+      "project_id": "P1977R0161",
+      "project_name": "97 VALDEMAR AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-01-24T00:00:00.000",
+      "ulurp_numbers": "N760189RCR",
+      "primary_applicant": "ODDO, PETER"
+    },
+    {
+      "project_id": "P1977R0164",
+      "project_name": "410 & 416 EDGEGROVE AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-06-08T00:00:00.000",
+      "ulurp_numbers": "N760191ZAR",
+      "primary_applicant": "GRUSHKIN, J FOR N. MADONIA"
+    },
+    {
+      "project_id": "P1977R0170",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "1979-03-20T00:00:00.000",
+      "primary_applicant": "NASSAU RECYCLE CORP"
+    },
+    {
+      "project_id": "P1977R0176",
+      "project_name": "169 HALPIN AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-06-08T00:00:00.000",
+      "ulurp_numbers": "N760197ZAR",
+      "primary_applicant": "ODDO, P FOR R JEFFERS"
+    },
+    {
+      "project_id": "P1977R0184",
+      "project_name": "254 & 260 SHERLEY AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-04-27T00:00:00.000",
+      "ulurp_numbers": "N760213RCR",
+      "primary_applicant": "CALVANICO ASSOC FOR H LIEBERMAN"
+    },
+    {
+      "project_id": "P1977R0211",
+      "project_name": "334 OCEAN TERRACE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-05-09T00:00:00.000",
+      "ulurp_numbers": "N770018ZAR",
+      "primary_applicant": "VACCARO, A"
+    },
+    {
+      "project_id": "P1977R0212",
+      "project_name": "2 MEEKER ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-05-24T00:00:00.000",
+      "ulurp_numbers": "N770019ZAR",
+      "primary_applicant": "VACCARO, F"
+    },
+    {
+      "project_id": "P1977R0219",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-07-21T00:00:00.000",
+      "ulurp_numbers": "C770026PER; C770027PER",
+      "primary_applicant": "REALTY ENTERPRISES"
+    },
+    {
+      "project_id": "P1977R0249",
+      "project_name": "68 & 74 COLON ST,BILLIOU ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-06-08T00:00:00.000",
+      "ulurp_numbers": "N770087RCR",
+      "primary_applicant": "CALVANICO ASSOC."
+    },
+    {
+      "project_id": "P1977R0251",
+      "project_name": "169,171,175,177,181,183,185,187,191,193 CROSSFIELD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-04-27T00:00:00.000",
+      "ulurp_numbers": "N770089RCR",
+      "primary_applicant": "DORVAL HOMES, INC"
+    },
+    {
+      "project_id": "P1977X0010",
+      "project_name": "5235 INDEPENDENCE AVE,W252TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-05-09T00:00:00.000",
+      "ulurp_numbers": "N760007ZAX",
+      "primary_applicant": "SMERTZ, H L"
+    },
+    {
+      "project_id": "P1977X0036",
+      "project_name": "CITY ISLAND AVE BET BEACH & BOWNE STS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-12-06T00:00:00.000",
+      "ulurp_numbers": "A760041ZMX",
+      "primary_applicant": "KRETZER BOAT WORKS, INC"
+    },
+    {
+      "project_id": "P1977X0060",
+      "project_name": "SCHLEY AVE,EASTCHESTER BAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-02-03T00:00:00.000",
+      "ulurp_numbers": "C760069MLX",
+      "primary_applicant": "CORRADO, ANTHONY"
+    },
+    {
+      "project_id": "P1977X0080",
+      "project_name": "176 SCHOFIELD ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1976-09-17T00:00:00.000",
+      "primary_applicant": "RICE, F G"
+    },
+    {
+      "project_id": "P1977X0092",
+      "project_name": "BAYCHESTER & DEREIMER AVES,TILLOTSON & GIVAN AVES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-07-05T00:00:00.000",
+      "ulurp_numbers": "S760106ZMX",
+      "primary_applicant": "CORBO, JOHN"
+    },
+    {
+      "project_id": "P1977X0106",
+      "project_name": "1160 OGDEN AVE,W167TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-03-23T00:00:00.000",
+      "ulurp_numbers": "C760123ZSX",
+      "primary_applicant": "DPW"
+    },
+    {
+      "project_id": "P1977X0107",
+      "project_name": "435 E144TH ST,WILLIS & BROOK AVES",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1977-01-18T00:00:00.000",
+      "primary_applicant": "DPW"
+    },
+    {
+      "project_id": "P1977X0139",
+      "project_name": "ELEC'L SUBSTATION",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1977-04-11T00:00:00.000",
+      "primary_applicant": "NYCTA"
+    },
+    {
+      "project_id": "P1977X0155",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-12-13T00:00:00.000",
+      "ulurp_numbers": "N760179PAX",
+      "primary_applicant": "DPR"
+    },
+    {
+      "project_id": "P1977X0160",
+      "project_name": "DELAFIELD AVE BET W246TH ST & ISELIN AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-06-24T00:00:00.000",
+      "ulurp_numbers": "C760188ZSX",
+      "primary_applicant": "CLAPS, V A"
+    },
+    {
+      "project_id": "P1977X0179",
+      "project_name": "4617 DELAFIELD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-02-09T00:00:00.000",
+      "ulurp_numbers": "N760203ZAX",
+      "primary_applicant": "FANTINO, F/APPLEBAUM, R"
+    },
+    {
+      "project_id": "P1977X0473",
+      "project_name": "ANGELO'S RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-07-21T00:00:00.000",
+      "ulurp_numbers": "C760077TCX",
+      "primary_applicant": "ANGELO'S PIZZERIA, INC"
+    },
+    {
+      "project_id": "P1977Y0023",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-08-11T00:00:00.000",
+      "ulurp_numbers": "N760022HKY",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1977Y0095",
+      "project_name": "153-157 5TH AVE,560 GRAND CONCOURSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-12-16T00:00:00.000",
+      "ulurp_numbers": "N760111HKY",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1977Y0152",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-12-16T00:00:00.000",
+      "ulurp_numbers": "N760176HKY",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1978K0366",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-09-28T00:00:00.000",
+      "ulurp_numbers": "C780141PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1978K0368",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-09-28T00:00:00.000",
+      "ulurp_numbers": "C780143PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1978K0374",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-09-28T00:00:00.000",
+      "ulurp_numbers": "C780149PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1978K0377",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-09-28T00:00:00.000",
+      "ulurp_numbers": "C780152PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1978R0388",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-10-19T00:00:00.000",
+      "ulurp_numbers": "C780163PPR",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979K0029",
+      "project_name": "MERMAID AVE,W37TH ST & SEAGATE AVE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1979-10-10T00:00:00.000",
+      "primary_applicant": "SEAGATE ASSOC"
+    },
+    {
+      "project_id": "P1979K0107",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-02-08T00:00:00.000",
+      "ulurp_numbers": "C780435PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979K0110",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-02-08T00:00:00.000",
+      "ulurp_numbers": "C780438PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979K0120",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-02-08T00:00:00.000",
+      "ulurp_numbers": "C780448PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979K0282",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-07-19T00:00:00.000",
+      "ulurp_numbers": "C780637PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979K0283",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-07-19T00:00:00.000",
+      "ulurp_numbers": "C780638PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979K0284",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-07-19T00:00:00.000",
+      "ulurp_numbers": "C780639PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979K0285",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-07-19T00:00:00.000",
+      "ulurp_numbers": "C780640PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979K0289",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-07-19T00:00:00.000",
+      "ulurp_numbers": "C780644PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979K0294",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-07-19T00:00:00.000",
+      "ulurp_numbers": "C780649PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979K0544",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-12-06T00:00:00.000",
+      "ulurp_numbers": "C790245PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979K0545",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-12-06T00:00:00.000",
+      "ulurp_numbers": "C790246PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979M0075",
+      "project_name": "PHILIP MORRIS BLDG",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-04-06T00:00:00.000",
+      "ulurp_numbers": "C780404ZSM",
+      "primary_applicant": "PHILIP MORRIS, INC/COLIN, ROSENMAN ET AL"
+    },
+    {
+      "project_id": "P1979M0095",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-02-22T00:00:00.000",
+      "ulurp_numbers": "C780423PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979M0096",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-02-22T00:00:00.000",
+      "ulurp_numbers": "C780424PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979M0303",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-06-21T00:00:00.000",
+      "ulurp_numbers": "C780658PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979M0307",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-06-21T00:00:00.000",
+      "ulurp_numbers": "C780662PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979Q0125",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-03-08T00:00:00.000",
+      "ulurp_numbers": "C780453PPQ",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979Q0134",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-03-08T00:00:00.000",
+      "ulurp_numbers": "C780462PPQ",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979Q0314",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-07-19T00:00:00.000",
+      "ulurp_numbers": "C780669PPQ",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979Q0738",
+      "project_name": "PEKING HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-11-15T00:00:00.000",
+      "ulurp_numbers": "C790301TCQ",
+      "primary_applicant": "WAN LEE RESTAURANT CORP"
+    },
+    {
+      "project_id": "P1979R0322",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-06-21T00:00:00.000",
+      "ulurp_numbers": "C780677PPR",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979X0232",
+      "project_name": "J.C. PROPERTIES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-07-12T00:00:00.000",
+      "ulurp_numbers": "I780581MLX",
+      "ceqr_number": "79-028X",
+      "primary_applicant": "J.C. PROPERTIES, INC"
+    },
+    {
+      "project_id": "P1979X0537",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-12-06T00:00:00.000",
+      "ulurp_numbers": "C790238PPX",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1979Y0357",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-05-01T00:00:00.000",
+      "ulurp_numbers": "I790001ZRY",
+      "primary_applicant": "DCP-ZONING DIVISION"
+    },
+    {
+      "project_id": "P1980K0295",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-06-17T00:00:00.000",
+      "ulurp_numbers": "C790667PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980K0297",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-06-17T00:00:00.000",
+      "ulurp_numbers": "C790669PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980K0300",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-06-17T00:00:00.000",
+      "ulurp_numbers": "C790672PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980K0302",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-06-17T00:00:00.000",
+      "ulurp_numbers": "C790674PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980K0547",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-23T00:00:00.000",
+      "ulurp_numbers": "C800269PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980K0548",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-23T00:00:00.000",
+      "ulurp_numbers": "C800270PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980K0549",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-23T00:00:00.000",
+      "ulurp_numbers": "C800271PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980K0550",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-23T00:00:00.000",
+      "ulurp_numbers": "C800272PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980K0551",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-23T00:00:00.000",
+      "ulurp_numbers": "C800273PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980K0554",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-23T00:00:00.000",
+      "ulurp_numbers": "C800276PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980K0561",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-23T00:00:00.000",
+      "ulurp_numbers": "C800283PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980K0562",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-23T00:00:00.000",
+      "ulurp_numbers": "C800284PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980K0712",
+      "project_name": "SHIP PROGRAM",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1980-06-04T00:00:00.000",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980K0754",
+      "project_name": "SUNSET PK NSA I",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-09T00:00:00.000",
+      "ulurp_numbers": "C800191HPK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980K0755",
+      "project_name": "SUNSET PARK NSA II",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-09T00:00:00.000",
+      "ulurp_numbers": "C800192HPK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980K0756",
+      "project_name": "SUNSET PK URA III",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-09T00:00:00.000",
+      "ulurp_numbers": "C800193HPK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980K0757",
+      "project_name": "SUNSET PARK NSA IV",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-09T00:00:00.000",
+      "ulurp_numbers": "C800194HPK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980K0766",
+      "project_name": "NOBLE ST BET WEST ST & U.S. BULKHEAD LINE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-08-07T00:00:00.000",
+      "ulurp_numbers": "I800244MMK",
+      "primary_applicant": "CALICHE REALTY ESTATES, INC"
+    },
+    {
+      "project_id": "P1980K0813",
+      "project_name": "Sunset Park NSA IV",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-05-12T00:00:00.000",
+      "ulurp_numbers": "I800194EEUK",
+      "ceqr_number": "80-028K",
+      "primary_applicant": "HARBRO DEVELOPMENT CORP"
+    },
+    {
+      "project_id": "P1980K0847",
+      "project_name": "HOME FOR THE AGING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-05-15T00:00:00.000",
+      "ulurp_numbers": "I800138EMK",
+      "ceqr_number": "80-033K",
+      "primary_applicant": "W. LUTHERAN HOME FOR AGING"
+    },
+    {
+      "project_id": "P1980K0912",
+      "project_name": "SUTTER HOUSE REHAB",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-09-18T00:00:00.000",
+      "ulurp_numbers": "C800396HPK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980K0922",
+      "project_name": "ALBERT METAL STAMPING CORP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-05-13T00:00:00.000",
+      "ulurp_numbers": "I800150EMK",
+      "ceqr_number": "80-040K",
+      "primary_applicant": "ALBERT STAMPING CORP"
+    },
+    {
+      "project_id": "P1980K0930",
+      "project_name": "MONTROSE SMOKED FISH CO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-05-18T00:00:00.000",
+      "ulurp_numbers": "I800439EMK",
+      "ceqr_number": "80-045K",
+      "primary_applicant": "MONTROSE SMOKED FISH CO"
+    },
+    {
+      "project_id": "P1980K0938",
+      "project_name": "1590,1610 ATLANTIC AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-09T00:00:00.000",
+      "ulurp_numbers": "C800395PPK",
+      "primary_applicant": "PDC"
+    },
+    {
+      "project_id": "P1980K0941",
+      "project_name": "VILLA STORICA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-23T00:00:00.000",
+      "ulurp_numbers": "C800399PPK",
+      "primary_applicant": "PDC"
+    },
+    {
+      "project_id": "P1980K0949",
+      "project_name": "315 LIBERTY AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-09T00:00:00.000",
+      "ulurp_numbers": "C800407PPK",
+      "primary_applicant": "PDC"
+    },
+    {
+      "project_id": "P1980K0968",
+      "project_name": "736 PARKSIDE AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-11-13T00:00:00.000",
+      "ulurp_numbers": "C800433PLK",
+      "primary_applicant": "DSNY"
+    },
+    {
+      "project_id": "P1980K0980",
+      "project_name": "209 WARREN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-08-10T00:00:00.000",
+      "ulurp_numbers": "C800447ZSK",
+      "primary_applicant": "COBBLE & WARREN INC/LANDMK PRESERV COMM"
+    },
+    {
+      "project_id": "P1980M0031",
+      "project_name": "135 W 106TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-12-26T00:00:00.000",
+      "ulurp_numbers": "I800429EEUM",
+      "primary_applicant": "W. SIDE FED SR HSG INC"
+    },
+    {
+      "project_id": "P1980M0167",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-03-20T00:00:00.000",
+      "ulurp_numbers": "C790599PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980M0173",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-03-20T00:00:00.000",
+      "ulurp_numbers": "C790605PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980M0174",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-03-20T00:00:00.000",
+      "ulurp_numbers": "C790606PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980M0308",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-06-17T00:00:00.000",
+      "ulurp_numbers": "C790680PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980M0330",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-06-17T00:00:00.000",
+      "ulurp_numbers": "C790717PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980M0536",
+      "project_name": "MCENNA SQ HSES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-09-18T00:00:00.000",
+      "ulurp_numbers": "C800001HPM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980M0573",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-23T00:00:00.000",
+      "ulurp_numbers": "C800295PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980M0574",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-23T00:00:00.000",
+      "ulurp_numbers": "C800296PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980M0598",
+      "project_name": "146-150 W26TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-05-18T00:00:00.000",
+      "ulurp_numbers": "I800109EBM",
+      "ceqr_number": "80-002M",
+      "primary_applicant": "GUTTMAN, ARTHUR"
+    },
+    {
+      "project_id": "P1980M0609",
+      "project_name": "1 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-04-01T00:00:00.000",
+      "ulurp_numbers": "I800119EMM",
+      "ceqr_number": "80-006M",
+      "primary_applicant": "MUNA REALTY & DEV CORP"
+    },
+    {
+      "project_id": "P1980M0610",
+      "project_name": "521-11 W25TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-05-01T00:00:00.000",
+      "ulurp_numbers": "I800120EMM",
+      "ceqr_number": "80-007M",
+      "primary_applicant": "JOMA PRINTING CO"
+    },
+    {
+      "project_id": "P1980M0614",
+      "project_name": "533-543 MADISON AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-03-10T00:00:00.000",
+      "ulurp_numbers": "I800111EBM",
+      "ceqr_number": "80-007M",
+      "primary_applicant": "KLEIN, GEORGE"
+    },
+    {
+      "project_id": "P1980M0629",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-09-18T00:00:00.000",
+      "ulurp_numbers": "C800170PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980M0632",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-09-18T00:00:00.000",
+      "ulurp_numbers": "C800173PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980M0633",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-09-18T00:00:00.000",
+      "ulurp_numbers": "C800174PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980M0659",
+      "project_name": "525-533 E80TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-03-04T00:00:00.000",
+      "ulurp_numbers": "I800110EBM",
+      "ceqr_number": "80-005M",
+      "primary_applicant": "DERF DEVELOPMENT CORP"
+    },
+    {
+      "project_id": "P1980M0670",
+      "project_name": "59 WOOSTER ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-05-18T00:00:00.000",
+      "ulurp_numbers": "I800125ENM",
+      "ceqr_number": "80-006M",
+      "primary_applicant": "SHAPIRO LAWN ASSOC"
+    },
+    {
+      "project_id": "P1980M0678",
+      "project_name": "35-37 W23RD ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-07-07T00:00:00.000",
+      "ulurp_numbers": "I800113EBM",
+      "ceqr_number": "80-010M",
+      "primary_applicant": "THE 35-37 W23 ST PARTNERSHIP"
+    },
+    {
+      "project_id": "P1980M0705",
+      "project_name": "149-51 E67ST, 154 E67 ST, 157-59 E67 ST, 163 E67 S",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-06-12T00:00:00.000",
+      "ulurp_numbers": "N800107HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1980M0711",
+      "project_name": "551-553 W22ND ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-05-16T00:00:00.000",
+      "ulurp_numbers": "I800114EBM",
+      "ceqr_number": "80-016M",
+      "primary_applicant": "SEANDEL, SILAS"
+    },
+    {
+      "project_id": "P1980M0717",
+      "project_name": "3 RIVINGTON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-07-17T00:00:00.000",
+      "ulurp_numbers": "C800153PPM",
+      "primary_applicant": "PDC"
+    },
+    {
+      "project_id": "P1980M0718",
+      "project_name": "REPUBLIC NATIONAL BANK",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-05-01T00:00:00.000",
+      "ulurp_numbers": "N800157ZAM",
+      "primary_applicant": "REPUBLIC NATIONAL BANK"
+    },
+    {
+      "project_id": "P1980M0724",
+      "project_name": "445 FIFTH AV",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-11-17T00:00:00.000",
+      "ulurp_numbers": "I800157EENM",
+      "ceqr_number": "80-014M",
+      "primary_applicant": "REPUBLIC NATIONAL BANK"
+    },
+    {
+      "project_id": "P1980M0728",
+      "project_name": "MANDATORY SIDEWALK IMPRVMNTS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-07-24T00:00:00.000",
+      "ulurp_numbers": "N800161ZAM",
+      "primary_applicant": "BERZAK, NEIL R.,RA"
+    },
+    {
+      "project_id": "P1980M0729",
+      "project_name": "143-145 W13TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-03-14T00:00:00.000",
+      "ulurp_numbers": "C800162ZSM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1980M0733",
+      "project_name": "20 W27TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-05-18T00:00:00.000",
+      "ulurp_numbers": "I800126EBM",
+      "ceqr_number": "80-020M",
+      "primary_applicant": "BARTON, ROBERT J"
+    },
+    {
+      "project_id": "P1980M0736",
+      "project_name": "84 CHRISTOPHER ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-11-24T00:00:00.000",
+      "ulurp_numbers": "C800184ZSM",
+      "primary_applicant": "84 CHRISTOPHER ST CORP"
+    },
+    {
+      "project_id": "P1980M0752",
+      "project_name": "MARVIN HAMMERMAN,INC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-08-21T00:00:00.000",
+      "ulurp_numbers": "C800189PPM",
+      "primary_applicant": "PDC"
+    },
+    {
+      "project_id": "P1980M0760",
+      "project_name": "ISAAC L RICE MANSION",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-06-26T00:00:00.000",
+      "ulurp_numbers": "M800198HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1980M0773",
+      "project_name": "615-629 AVE OF THE AMERICAS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-07-22T00:00:00.000",
+      "ulurp_numbers": "I800139EBM",
+      "ceqr_number": "80-025M",
+      "primary_applicant": "GLASS, MILTON"
+    },
+    {
+      "project_id": "P1980M0802",
+      "project_name": "SINCLAIR HSES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-09-18T00:00:00.000",
+      "ulurp_numbers": "C800224HPM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980M0803",
+      "project_name": "HUDSON PIERS II",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-09-18T00:00:00.000",
+      "ulurp_numbers": "C800225HPM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980M0804",
+      "project_name": "G B HARDING APTS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-11-13T00:00:00.000",
+      "ulurp_numbers": "C800226HPM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980M0805",
+      "project_name": "NO. PARK",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-23T00:00:00.000",
+      "ulurp_numbers": "C800227HPM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980M0806",
+      "project_name": "R CLEMENTE HSES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-09-18T00:00:00.000",
+      "ulurp_numbers": "C800228HPM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980M0807",
+      "project_name": "SOJOURNER TRUTH HSES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-06-30T00:00:00.000",
+      "ulurp_numbers": "I800229HPM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980M0808",
+      "project_name": "W107TH ST, 14-20 W107TH ST & 149 MANHATTAN AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-09-18T00:00:00.000",
+      "ulurp_numbers": "C800230HPM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980M0811",
+      "project_name": "1 DOMINICK ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-07-22T00:00:00.000",
+      "ulurp_numbers": "I800140EBM",
+      "ceqr_number": "80-028M",
+      "primary_applicant": "STENAC CONSTRUCTION CORP"
+    },
+    {
+      "project_id": "P1980M0830",
+      "project_name": "NEW W111TH ST PHASE II REHAB",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-08-21T00:00:00.000",
+      "ulurp_numbers": "C800237HPM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980M0844",
+      "project_name": "120 W20TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-07-22T00:00:00.000",
+      "ulurp_numbers": "I800130EBM",
+      "ceqr_number": "80-034M",
+      "primary_applicant": "120-122 W20 ST LTD PARTNERSHIP"
+    },
+    {
+      "project_id": "P1980M0851",
+      "project_name": "230 BROOME ST, PROP LUDLOW-DELANCEY ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1981-03-10T00:00:00.000",
+      "primary_applicant": "TRANSIT AUTHORITY"
+    },
+    {
+      "project_id": "P1980M0865",
+      "project_name": "53-55 W21ST ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-05-18T00:00:00.000",
+      "ulurp_numbers": "I800131EBM",
+      "ceqr_number": "80-036M",
+      "primary_applicant": "GUTTMAN, ARTHUR"
+    },
+    {
+      "project_id": "P1980M0866",
+      "project_name": "84 CHRISTOPHER ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-05-12T00:00:00.000",
+      "ulurp_numbers": "I800184EEUM",
+      "ceqr_number": "80-036M",
+      "primary_applicant": "ROBOLINO, DAVID"
+    },
+    {
+      "project_id": "P1980M0880",
+      "project_name": "512-524 MADISON AVE, 53RD ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-05-05T00:00:00.000",
+      "ulurp_numbers": "N800355ZCM",
+      "primary_applicant": "TSM ASSOC"
+    },
+    {
+      "project_id": "P1980M0881",
+      "project_name": "767 3RD AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-05-07T00:00:00.000",
+      "ulurp_numbers": "N800356ZCM",
+      "primary_applicant": "KAUFMAN, WILLIAM"
+    },
+    {
+      "project_id": "P1980M0883",
+      "project_name": "342-346 W23RD ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-05-18T00:00:00.000",
+      "ulurp_numbers": "I800141EBM",
+      "ceqr_number": "80-038M",
+      "primary_applicant": "LOBEL, SHELDON"
+    },
+    {
+      "project_id": "P1980M0884",
+      "project_name": "133-137 MULBERRY ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-04-02T00:00:00.000",
+      "ulurp_numbers": "I800369GFM",
+      "primary_applicant": "REGINA EQUITY FUNDING CORP"
+    },
+    {
+      "project_id": "P1980M0885",
+      "project_name": "56-58 WARREN ST IN THE LMM DIST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-09-13T00:00:00.000",
+      "ulurp_numbers": "N800397ZCM",
+      "primary_applicant": "RAPPE, GEORGE"
+    },
+    {
+      "project_id": "P1980M0903",
+      "project_name": "316-322 E 46TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-05-18T00:00:00.000",
+      "ulurp_numbers": "I800146EMM",
+      "ceqr_number": "80-045M",
+      "primary_applicant": "46TH ST REALTY"
+    },
+    {
+      "project_id": "P1980M0913",
+      "project_name": "31 GREENE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-06-17T00:00:00.000",
+      "ulurp_numbers": "N800398ZCM",
+      "primary_applicant": "GRAFF, MALCOM"
+    },
+    {
+      "project_id": "P1980M0914",
+      "project_name": "40 W17TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-09-08T00:00:00.000",
+      "ulurp_numbers": "I800147EBM",
+      "ceqr_number": "80-046M",
+      "primary_applicant": "40 W17TH ST ASSOC"
+    },
+    {
+      "project_id": "P1980M0926",
+      "project_name": "CRAFTON GRAPHICS CO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-05-13T00:00:00.000",
+      "ulurp_numbers": "I800435EMM",
+      "ceqr_number": "80-041M",
+      "primary_applicant": "CRAFTON GRAPHICS CO"
+    },
+    {
+      "project_id": "P1980M0927",
+      "project_name": "333 W34TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-05-18T00:00:00.000",
+      "ulurp_numbers": "I800436EMM",
+      "ceqr_number": "80-042M",
+      "primary_applicant": "K & M JEWELRY, INC"
+    },
+    {
+      "project_id": "P1980M0928",
+      "project_name": "IPCO HOSPITAL SUPPLY CORP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-05-14T00:00:00.000",
+      "ulurp_numbers": "I800437EMM",
+      "ceqr_number": "80-043M",
+      "primary_applicant": "IPCO HOSPITAL SUPPLY CORP"
+    },
+    {
+      "project_id": "P1980M0936",
+      "project_name": "19 W100 ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-05-02T00:00:00.000",
+      "ulurp_numbers": "I800605EUM",
+      "ceqr_number": "80-056M",
+      "primary_applicant": "RICHMOND FELLOWSHIP HSES CO, INC"
+    },
+    {
+      "project_id": "P1980M0960",
+      "project_name": "168 E68TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-06-09T00:00:00.000",
+      "ulurp_numbers": "I800606EBM",
+      "ceqr_number": "80-058M",
+      "primary_applicant": "EARNE, THEODORE R."
+    },
+    {
+      "project_id": "P1980M1039",
+      "project_name": "38 W26TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-05-18T00:00:00.000",
+      "ulurp_numbers": "I800600EBM",
+      "ceqr_number": "80-067M",
+      "primary_applicant": "DUARTE, ALFONSO"
+    },
+    {
+      "project_id": "P1980M1077",
+      "project_name": "161 PERRY ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-05-18T00:00:00.000",
+      "ulurp_numbers": "I800603EBM",
+      "ceqr_number": "80-073M",
+      "primary_applicant": "MONAGHAN, WILLIAM"
+    },
+    {
+      "project_id": "P1980M1095",
+      "project_name": "15 E11TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-06-30T00:00:00.000",
+      "ulurp_numbers": "I800608EBM",
+      "ceqr_number": "80-068M",
+      "primary_applicant": "LANDMARK RESTORATION CO"
+    },
+    {
+      "project_id": "P1980M1101",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-12-18T00:00:00.000",
+      "ulurp_numbers": "C800555PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980M1105",
+      "project_name": "681 GREENWICH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-05-18T00:00:00.000",
+      "ulurp_numbers": "I800602EUM",
+      "ceqr_number": "80-074M",
+      "primary_applicant": "TELLER, PHILLIP"
+    },
+    {
+      "project_id": "P1980M1106",
+      "project_name": "1-5 BOND ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-05-18T00:00:00.000",
+      "ulurp_numbers": "I800604EBM",
+      "ceqr_number": "80-075M",
+      "primary_applicant": "ROTHKRUG, LEONARD"
+    },
+    {
+      "project_id": "P1980M1140",
+      "project_name": "FRIDAY'S",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1981-03-10T00:00:00.000",
+      "primary_applicant": "FRIDAY'S NICKELODEON, INC."
+    },
+    {
+      "project_id": "P1980M1142",
+      "project_name": "RUSTY'S REST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-04-09T00:00:00.000",
+      "ulurp_numbers": "C800375TCM",
+      "primary_applicant": "SBJ REST, INC."
+    },
+    {
+      "project_id": "P1980M1144",
+      "project_name": "ANITA'S CHILI PARLOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-03-26T00:00:00.000",
+      "ulurp_numbers": "C800257TCM",
+      "primary_applicant": "ANITA'S"
+    },
+    {
+      "project_id": "P1980M1145",
+      "project_name": "LA BIBLIOTHEQUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-03-12T00:00:00.000",
+      "ulurp_numbers": "C800258TCM",
+      "primary_applicant": "343 E43RD ST HOLDING CORP"
+    },
+    {
+      "project_id": "P1980M1146",
+      "project_name": "DE MARCHELIER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-04-09T00:00:00.000",
+      "ulurp_numbers": "C800259TCM",
+      "primary_applicant": "DE MARCHELIER"
+    },
+    {
+      "project_id": "P1980M1148",
+      "project_name": "DA SILVANO REST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-03-12T00:00:00.000",
+      "ulurp_numbers": "C800261TCM",
+      "primary_applicant": "DA SILVAO CORP"
+    },
+    {
+      "project_id": "P1980M1149",
+      "project_name": "BUCHBINDERS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-03-12T00:00:00.000",
+      "ulurp_numbers": "C800262TCM",
+      "primary_applicant": "BUCHBINDERS REST, INC"
+    },
+    {
+      "project_id": "P1980M1150",
+      "project_name": "GREEN KITCHEN",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-06-25T00:00:00.000",
+      "ulurp_numbers": "C800263TCM",
+      "primary_applicant": "1475 1 AVE REST, INC"
+    },
+    {
+      "project_id": "P1980M1155",
+      "project_name": "WHO'S ON FIRST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-04-09T00:00:00.000",
+      "ulurp_numbers": "C800376TCM",
+      "primary_applicant": "1205 1ST REST CORP"
+    },
+    {
+      "project_id": "P1980M1156",
+      "project_name": "BEACH CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-09-24T00:00:00.000",
+      "ulurp_numbers": "C800378TCM",
+      "primary_applicant": "THE BEACH CAFE, INC."
+    },
+    {
+      "project_id": "P1980M1157",
+      "project_name": "LENGE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-03-26T00:00:00.000",
+      "ulurp_numbers": "C800379TCM",
+      "primary_applicant": "LENGE SAIMIN, LTD"
+    },
+    {
+      "project_id": "P1980M1159",
+      "project_name": "CAFE DU PARK (STANHOPE HOTEL)",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-04-30T00:00:00.000",
+      "ulurp_numbers": "C800382TCM",
+      "primary_applicant": "PARKHOPE CORP"
+    },
+    {
+      "project_id": "P1980M1160",
+      "project_name": "ROCKING HORSE CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-07-17T00:00:00.000",
+      "ulurp_numbers": "C800383TCM",
+      "primary_applicant": "LE YOUGART ENTERPRISES, INC"
+    },
+    {
+      "project_id": "P1980M1161",
+      "project_name": "CIRCLE WEST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-02-26T00:00:00.000",
+      "ulurp_numbers": "C800384TCM",
+      "primary_applicant": "X10 RESTAURANT, INC"
+    },
+    {
+      "project_id": "P1980M1163",
+      "project_name": "NAPOLI RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-06-25T00:00:00.000",
+      "ulurp_numbers": "C800386TCM",
+      "primary_applicant": "LATALARDO, INC"
+    },
+    {
+      "project_id": "P1980M1164",
+      "project_name": "SAZERAC HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-04-09T00:00:00.000",
+      "ulurp_numbers": "C800387TCM",
+      "primary_applicant": "BEEF & OYSTER BAR, CO"
+    },
+    {
+      "project_id": "P1980M1165",
+      "project_name": "BEEF BURGER FAIR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-03-26T00:00:00.000",
+      "ulurp_numbers": "C800404TCM",
+      "primary_applicant": "AKIAVIA"
+    },
+    {
+      "project_id": "P1980M1166",
+      "project_name": "MUSEUM CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-03-26T00:00:00.000",
+      "ulurp_numbers": "C800405TCM",
+      "primary_applicant": "DPK REST, INC."
+    },
+    {
+      "project_id": "P1980M1167",
+      "project_name": "ROGER'S RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-03-12T00:00:00.000",
+      "ulurp_numbers": "C800406TCM",
+      "primary_applicant": "TOR REST, INC."
+    },
+    {
+      "project_id": "P1980M1168",
+      "project_name": "STRAUSS PARK CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-03-26T00:00:00.000",
+      "ulurp_numbers": "C800445TCM",
+      "primary_applicant": "CATHEDRAL CONSORTIUM, INC"
+    },
+    {
+      "project_id": "P1980M1169",
+      "project_name": "SHARMA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-06-22T00:00:00.000",
+      "ulurp_numbers": "I800446TCM",
+      "primary_applicant": "SHARMA REST, INC."
+    },
+    {
+      "project_id": "P1980M1186",
+      "project_name": "COPPER LANTERN",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-04-09T00:00:00.000",
+      "ulurp_numbers": "C800377TCM",
+      "primary_applicant": "JACOBINA & GORDON, INC."
+    },
+    {
+      "project_id": "P1980M1190",
+      "project_name": "THE FRONT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-09-10T00:00:00.000",
+      "ulurp_numbers": "C800614TCM",
+      "primary_applicant": "MDB CAFE, INC"
+    },
+    {
+      "project_id": "P1980M1192",
+      "project_name": "P.J. REYNOLDS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-03-12T00:00:00.000",
+      "ulurp_numbers": "C800616TCM",
+      "primary_applicant": "NARROW BACKS, INC"
+    },
+    {
+      "project_id": "P1980Q0324",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-06-17T00:00:00.000",
+      "ulurp_numbers": "C790696PPQ",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980Q0326",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-06-17T00:00:00.000",
+      "ulurp_numbers": "C790698PPQ",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980Q0583",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-11-13T00:00:00.000",
+      "ulurp_numbers": "C800305PPQ",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980Q0592",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-11-13T00:00:00.000",
+      "ulurp_numbers": "C800314PPQ",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980Q0605",
+      "project_name": "47-29 & 47-51 AUSTELL PL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-05-18T00:00:00.000",
+      "ulurp_numbers": "I800115EMQ",
+      "ceqr_number": "80-001Q",
+      "primary_applicant": "CONFORT & CO"
+    },
+    {
+      "project_id": "P1980Q0606",
+      "project_name": "173-45 110TH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-05-18T00:00:00.000",
+      "ulurp_numbers": "I800116EMQ",
+      "ceqr_number": "80-002Q",
+      "primary_applicant": "KING WIRE & CABLE CORP"
+    },
+    {
+      "project_id": "P1980Q0607",
+      "project_name": "134-20 JAMAICA AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-05-18T00:00:00.000",
+      "ulurp_numbers": "I800117EMQ",
+      "ceqr_number": "80-003Q",
+      "primary_applicant": "AXEL ELECTRONICS"
+    },
+    {
+      "project_id": "P1980Q0608",
+      "project_name": "1851 STARR ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-05-18T00:00:00.000",
+      "ulurp_numbers": "I800118EMQ",
+      "ceqr_number": "80-004Q",
+      "primary_applicant": "LION PRODUCTS"
+    },
+    {
+      "project_id": "P1980Q0661",
+      "project_name": "21-10 MENAHAN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-05-05T00:00:00.000",
+      "ulurp_numbers": "I800121EBQ",
+      "ceqr_number": "80-011Q",
+      "primary_applicant": "Sheldon Lobel"
+    },
+    {
+      "project_id": "P1980Q0741",
+      "project_name": "93-03 ASTORIA BLVD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-02-27T00:00:00.000",
+      "ulurp_numbers": "I800135EBQ",
+      "ceqr_number": "80-026Q",
+      "primary_applicant": "NAGER, GEORGE"
+    },
+    {
+      "project_id": "P1980Q0782",
+      "project_name": "43-06 63RD ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-05-20T00:00:00.000",
+      "ulurp_numbers": "I800134EBQ",
+      "ceqr_number": "80-025Q",
+      "primary_applicant": "NHE REALTY CO"
+    },
+    {
+      "project_id": "P1980Q0797",
+      "project_name": "60-70 WOODHAVEN BLVD,W/S WOODHAVEN BLVD BET 60 DR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-12-18T00:00:00.000",
+      "ulurp_numbers": "C800207ZMQ",
+      "primary_applicant": "ALDINI, MATHEW"
+    },
+    {
+      "project_id": "P1980Q0810",
+      "project_name": "ELAINE POWERS FIGURE SALONS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-05-14T00:00:00.000",
+      "ulurp_numbers": "I800136EBQ",
+      "ceqr_number": "80-027Q",
+      "primary_applicant": "LOBEL, SHELDON"
+    },
+    {
+      "project_id": "P1980Q0815",
+      "project_name": "QUEENSBORO INSTITUTE OF MUSIC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-05-16T00:00:00.000",
+      "ulurp_numbers": "I800207EEUQ",
+      "ceqr_number": "80-030Q",
+      "primary_applicant": "SALVATOR, CANDONNA JR"
+    },
+    {
+      "project_id": "P1980Q0845",
+      "project_name": "AUTO REPAIR SHOP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-04-28T00:00:00.000",
+      "ulurp_numbers": "I800137EBQ",
+      "ceqr_number": "80-032Q",
+      "primary_applicant": "LACKNER, HERBERT"
+    },
+    {
+      "project_id": "P1980Q0889",
+      "project_name": "69-15 LITTLENECK PKWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-04-14T00:00:00.000",
+      "ulurp_numbers": "I800148EMQ",
+      "ceqr_number": "80-034Q",
+      "primary_applicant": "FALKER, LEO D"
+    },
+    {
+      "project_id": "P1980Q0898",
+      "project_name": "NICK'S SERVICE STATION",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-05-02T00:00:00.000",
+      "ulurp_numbers": "I800155EEUQ",
+      "ceqr_number": "80-038Q",
+      "primary_applicant": "GRAMMARINO, NICHOLAS"
+    },
+    {
+      "project_id": "P1980Q0931",
+      "project_name": "DESIGN TEX FABRIC PROJECT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-05-18T00:00:00.000",
+      "ulurp_numbers": "I800440EMQ",
+      "ceqr_number": "80-046Q",
+      "primary_applicant": "HARALPH REALTY CO"
+    },
+    {
+      "project_id": "P1980Q0932",
+      "project_name": "OCEAN-WIDE FOOD IND",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-05-12T00:00:00.000",
+      "ulurp_numbers": "I800441EMQ",
+      "ceqr_number": "80-047Q",
+      "primary_applicant": "OCEAN-WIDE FOOD"
+    },
+    {
+      "project_id": "P1980Q0935",
+      "project_name": "BURNHAM PRODUCTS CORP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-05-18T00:00:00.000",
+      "ulurp_numbers": "I800444EMQ",
+      "ceqr_number": "80-051Q",
+      "primary_applicant": "BURNHAM PRODUCTS CORP"
+    },
+    {
+      "project_id": "P1980Q0963",
+      "project_name": "88-15 55TH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-02-26T00:00:00.000",
+      "ulurp_numbers": "N800429ZDQ",
+      "primary_applicant": "JA GREEN CONST CO & KEYSTONE FUND CORP"
+    },
+    {
+      "project_id": "P1980R0364",
+      "project_name": "246 FLAGG PLACE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-06-12T00:00:00.000",
+      "ulurp_numbers": "N790862ZAR",
+      "primary_applicant": "RAFFONE, IRENE"
+    },
+    {
+      "project_id": "P1980R0637",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-08-21T00:00:00.000",
+      "ulurp_numbers": "C800178PPR",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980R0855",
+      "project_name": "43 BUTTERWORTH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-10-05T00:00:00.000",
+      "ulurp_numbers": "N800731ZAR",
+      "primary_applicant": "ADINALFI, BENJAMIN"
+    },
+    {
+      "project_id": "P1980R0891",
+      "project_name": "7 SMYRNA AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-06-12T00:00:00.000",
+      "ulurp_numbers": "I800142EBR",
+      "ceqr_number": "80-040R",
+      "primary_applicant": "Calvanico Associates"
+    },
+    {
+      "project_id": "P1980R0899",
+      "project_name": "650 & 644 EDGEGROVE AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-08-20T00:00:00.000",
+      "ulurp_numbers": "N800213RCR",
+      "primary_applicant": "GRUSHKIN, JEROME"
+    },
+    {
+      "project_id": "P1980R0901",
+      "project_name": "S.I. ACADEMY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-04-05T00:00:00.000",
+      "ulurp_numbers": "N800732ZAR",
+      "primary_applicant": "S.I. ACADEMY"
+    },
+    {
+      "project_id": "P1980R0939",
+      "project_name": "W/S JOLINE AV BET HYLAN BLVD & TRUMAN ST (SPEC S.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-02-02T00:00:00.000",
+      "ulurp_numbers": "N800402ZAR",
+      "primary_applicant": "BUTLER, JOAN"
+    },
+    {
+      "project_id": "P1980R0940",
+      "project_name": "434 RATHBUN AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-08-20T00:00:00.000",
+      "ulurp_numbers": "N800216RCR",
+      "primary_applicant": "ODDO, PETER"
+    },
+    {
+      "project_id": "P1980R0947",
+      "project_name": "70 BEEBE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-30T00:00:00.000",
+      "ulurp_numbers": "N800736ZAR",
+      "primary_applicant": "LUWISCH, AARON"
+    },
+    {
+      "project_id": "P1980R0950",
+      "project_name": "60,70,80 MILDEN AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-10-21T00:00:00.000",
+      "ulurp_numbers": "I800427ZMR",
+      "primary_applicant": "DIMISA, FRANK"
+    },
+    {
+      "project_id": "P1980R0955",
+      "project_name": "252 ASHLAND AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-08-14T00:00:00.000",
+      "ulurp_numbers": "N800220RCR",
+      "primary_applicant": "GRUSHKIN, JEROME"
+    },
+    {
+      "project_id": "P1980R0990",
+      "project_name": "31 HERRICK AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-08-18T00:00:00.000",
+      "ulurp_numbers": "N800415RCR",
+      "primary_applicant": "Calvanico Associates"
+    },
+    {
+      "project_id": "P1980R1059",
+      "project_name": "249 & 259 ASHLAND AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-08-13T00:00:00.000",
+      "ulurp_numbers": "N800420RCR",
+      "primary_applicant": "Calvanico Associates"
+    },
+    {
+      "project_id": "P1980R1067",
+      "project_name": "201 SWAIM AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-08-14T00:00:00.000",
+      "ulurp_numbers": "N800423RCR",
+      "primary_applicant": "MAGRINO, CHARLES"
+    },
+    {
+      "project_id": "P1980R1068",
+      "project_name": "961 BLOOMINGDALE RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-11-19T00:00:00.000",
+      "ulurp_numbers": "N800424RAR",
+      "primary_applicant": "RAIA, JOSEPH"
+    },
+    {
+      "project_id": "P1980X0292",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-06-17T00:00:00.000",
+      "ulurp_numbers": "C790664PPX",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980X0539",
+      "project_name": "930 SOUNDVIEW AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-04-28T00:00:00.000",
+      "ulurp_numbers": "I800132EBX",
+      "ceqr_number": "80-008X",
+      "primary_applicant": "SCOLNIK, WILLARD"
+    },
+    {
+      "project_id": "P1980X0566",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-23T00:00:00.000",
+      "ulurp_numbers": "C800288PPX",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980X0569",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-11-13T00:00:00.000",
+      "ulurp_numbers": "C800291PPX",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980X0571",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-23T00:00:00.000",
+      "ulurp_numbers": "C800293PPX",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980X0706",
+      "project_name": "4214A WHITE PLAINS RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-06-09T00:00:00.000",
+      "ulurp_numbers": "I800123EBX",
+      "ceqr_number": "80-019X",
+      "primary_applicant": "MARINA, JOSEPH"
+    },
+    {
+      "project_id": "P1980X0710",
+      "project_name": "SO BX URA,ALDUS III",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-07-17T00:00:00.000",
+      "ulurp_numbers": "C800108HPX",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980X0727",
+      "project_name": "ESPERANDA VILLAGE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-07-17T00:00:00.000",
+      "ulurp_numbers": "C800158HPX",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980X0734",
+      "project_name": "937-949 HOE AVE BET 163RD ST & ALDUS ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-08-21T00:00:00.000",
+      "ulurp_numbers": "C800183ZMX",
+      "primary_applicant": "BRONX CPD 2"
+    },
+    {
+      "project_id": "P1980X0751",
+      "project_name": "1680 CARTER AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-08-21T00:00:00.000",
+      "ulurp_numbers": "C800188PPX",
+      "primary_applicant": "PDC"
+    },
+    {
+      "project_id": "P1980X0758",
+      "project_name": "MORRISANIA IV",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-09-18T00:00:00.000",
+      "ulurp_numbers": "C800195HPX",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980X0759",
+      "project_name": "2 SIGMA PL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-05-19T00:00:00.000",
+      "ulurp_numbers": "N800197ZAX",
+      "primary_applicant": "BONO, LUDWIG P."
+    },
+    {
+      "project_id": "P1980X0794",
+      "project_name": "BROOK AVE REHAB",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-01-29T00:00:00.000",
+      "ulurp_numbers": "C800204HPX",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980X0795",
+      "project_name": "BECK ST REHAB",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-09-18T00:00:00.000",
+      "ulurp_numbers": "C800205HPX",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980X0809",
+      "project_name": "KINGSBRIDGE-DECATUR I",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-09T00:00:00.000",
+      "ulurp_numbers": "C800231HPX",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980X0820",
+      "project_name": "J.C. PROPERTIES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-07-12T00:00:00.000",
+      "ulurp_numbers": "I800250ZMX",
+      "ceqr_number": "79-028X",
+      "primary_applicant": "J.C. PROPERTIES INC"
+    },
+    {
+      "project_id": "P1980X0896",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-09T00:00:00.000",
+      "ulurp_numbers": "C800390PPX",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1980X0942",
+      "project_name": "4401 THIRD AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-11-13T00:00:00.000",
+      "ulurp_numbers": "C800400PLX",
+      "primary_applicant": "DSNY"
+    },
+    {
+      "project_id": "P1980X0966",
+      "project_name": "SO BLVD PHASE IV",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-11-13T00:00:00.000",
+      "ulurp_numbers": "C800430HPX",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980X0977",
+      "project_name": "JEROME TERRACE APTS REHAB",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-09T00:00:00.000",
+      "ulurp_numbers": "C800448HPX",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1980X1141",
+      "project_name": "VILLAGGIO II",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-03-12T00:00:00.000",
+      "ulurp_numbers": "C800374TCX",
+      "primary_applicant": "CMVG REST CORP"
+    },
+    {
+      "project_id": "P1981K0003",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-01-29T00:00:00.000",
+      "ulurp_numbers": "C800617PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1981K0017",
+      "project_name": "SUPRISE PLASTICS INC.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-01-29T00:00:00.000",
+      "ulurp_numbers": "C800624PPK",
+      "primary_applicant": "SURPRISE PLASTIC INC"
+    },
+    {
+      "project_id": "P1981K0018",
+      "project_name": "ALL CITY PAPER FIBERS CORP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-01-29T00:00:00.000",
+      "ulurp_numbers": "C800625PPK",
+      "primary_applicant": "ALL CITY PAPER FIBERS, CORP"
+    },
+    {
+      "project_id": "P1981K0032",
+      "project_name": "1901 OCEAN PKY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-31T00:00:00.000",
+      "ulurp_numbers": "N800650ZCK",
+      "primary_applicant": "MIRRER YESHIVA CENTRAL INST"
+    },
+    {
+      "project_id": "P1981K0041",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-01-29T00:00:00.000",
+      "ulurp_numbers": "C800658PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1981K0042",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-01-29T00:00:00.000",
+      "ulurp_numbers": "C800659PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1981K0043",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-01-29T00:00:00.000",
+      "ulurp_numbers": "C800660PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1981K0045",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-01-29T00:00:00.000",
+      "ulurp_numbers": "C800662PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1981K0046",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-01-29T00:00:00.000",
+      "ulurp_numbers": "C800663PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1981K0048",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-01-29T00:00:00.000",
+      "ulurp_numbers": "C800665PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1981K0055",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-01-29T00:00:00.000",
+      "ulurp_numbers": "C800672PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1981K0091",
+      "project_name": "6300 8TH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-05-18T00:00:00.000",
+      "ulurp_numbers": "I801124EBK",
+      "ceqr_number": "80-080K",
+      "primary_applicant": "DUARTE, ALPHONSO"
+    },
+    {
+      "project_id": "P1981K0094",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-02-26T00:00:00.000",
+      "ulurp_numbers": "C800707PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1981K0124",
+      "project_name": "673 & 638 HOWARD AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-01-29T00:00:00.000",
+      "ulurp_numbers": "C800761HDK; N800762HCK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1981K0144",
+      "project_name": "ALBEE SQ MALL",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1982-10-13T00:00:00.000",
+      "primary_applicant": "MARSHAM AMUSEMENT CORP & ALBEE MALL ASSOC"
+    },
+    {
+      "project_id": "P1981K0173",
+      "project_name": "25 53ND ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-09-10T00:00:00.000",
+      "ulurp_numbers": "C800801PLK",
+      "primary_applicant": "PORTS"
+    },
+    {
+      "project_id": "P1981K0175",
+      "project_name": "55 N9TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-01-29T00:00:00.000",
+      "ulurp_numbers": "C800823PPK",
+      "primary_applicant": "PDC"
+    },
+    {
+      "project_id": "P1981K0206",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-03-26T00:00:00.000",
+      "ulurp_numbers": "C800840PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1981K0276",
+      "project_name": "DISPOSITION OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-03-26T00:00:00.000",
+      "ulurp_numbers": "C800949PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1981K0278",
+      "project_name": "9011 3RD AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1982-05-18T00:00:00.000",
+      "ulurp_numbers": "I801129EBK",
+      "ceqr_number": "80-106K",
+      "primary_applicant": "TSARSIS, ANDREW"
+    },
+    {
+      "project_id": "P1981K0295",
+      "project_name": "360 SUYDAM ST BET WYCKOFF & IRVING AVES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-04-09T00:00:00.000",
+      "ulurp_numbers": "C800933HAK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1981K0296",
+      "project_name": "579-605 HERKIMER ST, 12-30 SCHENECTADY AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-04-09T00:00:00.000",
+      "ulurp_numbers": "C800934HAK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1981K0313",
+      "project_name": "DISPOSITION OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1981-03-26T00:00:00.000",
+      "ulurp_numbers": "C800975PPK",
+      "primary_applicant": "DRP"
+    }
+  ]
+}

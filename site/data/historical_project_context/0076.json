@@ -1,0 +1,2285 @@
+{
+  "schema_version": "cityscroll.historical_project_context.v1",
+  "shard": "0076",
+  "rows": [
+    {
+      "project_id": "P2004M0045",
+      "project_name": "476 BROADWAY A/K/A 36 CROSBY ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-02-02T00:00:00.000",
+      "ulurp_numbers": "N040061ZAM; N040062ZCM",
+      "primary_applicant": "476 BROADWAY CONDOMINIUM/DECAMPO, DIAMOND & ASCH"
+    },
+    {
+      "project_id": "P2004M0046",
+      "project_name": "HUDSON SQUARE BUILDING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-09-15T00:00:00.000",
+      "ulurp_numbers": "M990488AZSM",
+      "ceqr_number": "99DCP035M",
+      "primary_applicant": "145 HUDSON STREET ASSOC"
+    },
+    {
+      "project_id": "P2004M0053",
+      "project_name": "245 E53RD STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-11-05T00:00:00.000",
+      "ulurp_numbers": "N040069ZCM",
+      "primary_applicant": "GOULD E54TH ST, LLC/HERICK, FEINSTEIN"
+    },
+    {
+      "project_id": "P2004M0061",
+      "project_name": "182 FIFTH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-10-24T00:00:00.000",
+      "ulurp_numbers": "N040077ZCM",
+      "primary_applicant": "123 5TH AVE CORP/TOBIN & PARNES DESIGN"
+    },
+    {
+      "project_id": "P2004M0083",
+      "project_name": "505 W47TH STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-07-08T00:00:00.000",
+      "ulurp_numbers": "C040116ZSM",
+      "ceqr_number": "03DCP071M",
+      "primary_applicant": "WEST 47TH STREET ASSOCIATES, LLC/HOWARD GOLDMAN"
+    },
+    {
+      "project_id": "P2004M0085",
+      "project_name": "55 WATER ST ELEVATED PLAZA RENOVATN",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-01-07T00:00:00.000",
+      "ulurp_numbers": "N040118ZAM; M040119ZSM",
+      "primary_applicant": "NEW WATER ST CORP/FRIED FRANK HARRIS SHRIVER & JACOBSON"
+    },
+    {
+      "project_id": "P2004M0086",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-05-10T00:00:00.000",
+      "ulurp_numbers": "C040121PPM",
+      "primary_applicant": "DCAS - Department of Citywide Administrative Services (NYC)"
+    },
+    {
+      "project_id": "P2004M0089",
+      "project_name": "AVRA OPEN AIR CAFE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2005-01-20T00:00:00.000",
+      "primary_applicant": "48 RESTAURANT ASSOC, LLC/DECAMPO DIAMOND & ASH"
+    },
+    {
+      "project_id": "P2004M0096",
+      "project_name": "CITY TUNNEL NO.3, STAGE2, SHAFT30B",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-05-10T00:00:00.000",
+      "ulurp_numbers": "C040135PCM",
+      "ceqr_number": "04DEP014M",
+      "primary_applicant": "DEP/CAS"
+    },
+    {
+      "project_id": "P2004M0107",
+      "project_name": "45 LISPENARD ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-05-05T00:00:00.000",
+      "ulurp_numbers": "C040163ZSM",
+      "ceqr_number": "03DCP059M",
+      "primary_applicant": "LISPENARD STUDIOS CORP"
+    },
+    {
+      "project_id": "P2004M0108",
+      "project_name": "BRADHURST DCC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-28T00:00:00.000",
+      "ulurp_numbers": "C040164HAM",
+      "ceqr_number": "02HPD028M",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P2004M0118",
+      "project_name": "CAFE TEXT/ROSA MEXICANO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-12-06T00:00:00.000",
+      "ulurp_numbers": "N040154ZRM",
+      "ceqr_number": "04DCP017M",
+      "primary_applicant": "ROSA MEXICANO/FREDRICK BECKER"
+    },
+    {
+      "project_id": "P2004M0135",
+      "project_name": "421-23 7TH AVE. A/K/A 157-61 W33RD ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-06-03T00:00:00.000",
+      "ulurp_numbers": "N040196ZCM",
+      "primary_applicant": "421 7TH AVE LLC/H & H BUILDING CONSULTANTS"
+    },
+    {
+      "project_id": "P2004M0144",
+      "project_name": "96 SPRING ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2005-05-04T00:00:00.000",
+      "ceqr_number": "02DCP027M",
+      "primary_applicant": "MIDWOOD MANAGEMENT CORP/BRYAN CAVE, LLP"
+    },
+    {
+      "project_id": "P2004M0147",
+      "project_name": "PIER 79",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-06-23T00:00:00.000",
+      "ulurp_numbers": "C040204PPM",
+      "ceqr_number": "01DME014M",
+      "primary_applicant": "DSB (DEPT OF SMALL BUSINESS SERVICES)"
+    },
+    {
+      "project_id": "P2004M0160",
+      "project_name": "48-52 FRANKLIN ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2012-11-26T00:00:00.000",
+      "ceqr_number": "01DCP009M",
+      "primary_applicant": "SLL FRANKLIN ST PARKING LOT, INC/STADTMAUER BAILKIN, LLP"
+    },
+    {
+      "project_id": "P2004M0162",
+      "project_name": "THE HELENA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-07-13T00:00:00.000",
+      "ulurp_numbers": "M010151AZSM",
+      "ceqr_number": "00DCP041M",
+      "primary_applicant": "THE DURST ORGANIZATION/FRIED FRANK HARRIS SHIVER & JACOBSON"
+    },
+    {
+      "project_id": "P2004M0165",
+      "project_name": "151 W17TH ST PKG GARAGE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2005-09-09T00:00:00.000",
+      "ceqr_number": "04DCP028M",
+      "primary_applicant": "EL-AD SKYVIEW LLC"
+    },
+    {
+      "project_id": "P2004M0168",
+      "project_name": "QUIK PARK 38TH ST LOT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-11-23T00:00:00.000",
+      "ulurp_numbers": "N040237ZAM",
+      "ceqr_number": "04DCP030M",
+      "primary_applicant": "MUTUAL LLC/KAYE SCHOLER, LLP"
+    },
+    {
+      "project_id": "P2004M0169",
+      "project_name": "THE EASTGATE TOWER HOTEL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-07-26T00:00:00.000",
+      "ulurp_numbers": "N040226ZCM; N040227ZCM",
+      "primary_applicant": "222 E39TH ST CO, LLC/ANDERSON KILL & OLICK, PC"
+    },
+    {
+      "project_id": "P2004M0176",
+      "project_name": "EAST HARLEM TUTORIAL PROJECT, INC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "ulurp_numbers": "N040234ZCM",
+      "primary_applicant": "EDC"
+    },
+    {
+      "project_id": "P2004M0190",
+      "project_name": "VERIZON W43RD ST REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-11-17T00:00:00.000",
+      "ulurp_numbers": "C040249ZMM",
+      "ceqr_number": "04DCP014M",
+      "primary_applicant": "VERIZON NEW YORK, INC/FRIED FRANK HARRIS SHIVER & JACOBSON"
+    },
+    {
+      "project_id": "P2004M0191",
+      "project_name": "VERIZON W47TH-W48TH STS REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-11-17T00:00:00.000",
+      "ulurp_numbers": "C040250ZMM",
+      "ceqr_number": "04DCP029M",
+      "primary_applicant": "VERIZON NEW YORK, INC/FRIED FRANK HARRIS SHRIVER & JACOBSON"
+    },
+    {
+      "project_id": "P2004M0196",
+      "project_name": "200 CHAMBERS ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-09-14T00:00:00.000",
+      "ulurp_numbers": "C040255HAM",
+      "ceqr_number": "02DME003M",
+      "primary_applicant": "WEST CHAMBER ST ASSOC, LLC/KRAMER LEVIN JAFTALIS & FRANKEL"
+    },
+    {
+      "project_id": "P2004M0198",
+      "project_name": "40 E20TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-12-23T00:00:00.000",
+      "ulurp_numbers": "N040260ZAM",
+      "ceqr_number": "04DCP033M",
+      "primary_applicant": "DP II LLC/GREENBERG TRAURIG"
+    },
+    {
+      "project_id": "P2004M0202",
+      "project_name": "145TH ST CORNERSTONE PROJECT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-07-26T00:00:00.000",
+      "ulurp_numbers": "C040269HUM; C040270ZMM; C040271HAM",
+      "ceqr_number": "04HPD007M",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P2004M0203",
+      "project_name": "LA PREMIERE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-04-15T00:00:00.000",
+      "ulurp_numbers": "N040268ZCM",
+      "primary_applicant": "GOLDSTEIN-HOFFMAN CO, LLC/ELLIOTT VILKAS"
+    },
+    {
+      "project_id": "P2004M0220",
+      "project_name": "DIVERSITY HOUSES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-08-17T00:00:00.000",
+      "ulurp_numbers": "C040293HAM",
+      "ceqr_number": "03HPD025M",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P2004M0241",
+      "project_name": "E4TH ST CULTURAL DIST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-10-06T00:00:00.000",
+      "ulurp_numbers": "C040314HAM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P2004M0243",
+      "project_name": "780 THIRD AVE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2005-04-13T00:00:00.000",
+      "primary_applicant": "780 THIRD AVE ASSOC/METROPOLIS GROUP, INC"
+    },
+    {
+      "project_id": "P2004M0257",
+      "project_name": "LADIES MILE REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-08-17T00:00:00.000",
+      "ulurp_numbers": "C040331ZMM; N040332ZRM; C040333ZSM; C040334ZSM",
+      "ceqr_number": "04DCP038M",
+      "primary_applicant": "DCP/RICHARD CHAPMAN & ASSOC"
+    },
+    {
+      "project_id": "P2004M0262",
+      "project_name": "541 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-07-06T00:00:00.000",
+      "ulurp_numbers": "C040351ZSM",
+      "ceqr_number": "02DCP018M",
+      "primary_applicant": "NOH REALTY CORP/MARTYN & DON WESTON"
+    },
+    {
+      "project_id": "P2004M0271",
+      "project_name": "HUDSON RIVER PARK SEGMENT 6",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-05-21T00:00:00.000",
+      "ulurp_numbers": "N040366ZCM",
+      "primary_applicant": "HRPT"
+    },
+    {
+      "project_id": "P2004M0272",
+      "project_name": "LITTLE SINGER BLDG",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-04-29T00:00:00.000",
+      "ulurp_numbers": "N040370ZAM; N040371ZCM",
+      "ceqr_number": "04DCP043M",
+      "primary_applicant": "SINGER STUDIO CORP/DECAMPO DIAMOND & ASH"
+    },
+    {
+      "project_id": "P2004M0276",
+      "project_name": "LINCOLN PARKING GARAGE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-06-02T00:00:00.000",
+      "ulurp_numbers": "C040375ZSM",
+      "primary_applicant": "323 W34TH ST LLC C/O MEYERS PARKING/FREDERICK BECKER, ESQ"
+    },
+    {
+      "project_id": "P2004M0283",
+      "project_name": "88 CROSBY STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-08-23T00:00:00.000",
+      "ulurp_numbers": "C040382ZSM",
+      "ceqr_number": "04DCP035M",
+      "primary_applicant": "SALVE REALTY/DECAMKPO, DIAMOND & ASH"
+    },
+    {
+      "project_id": "P2004M0286",
+      "project_name": "17 E17TH ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2006-02-16T00:00:00.000",
+      "ceqr_number": "05DCP006M",
+      "primary_applicant": "17 EAST, LLC/PETRARO & JONES, LLP"
+    },
+    {
+      "project_id": "P2004M0292",
+      "project_name": "30 OLD SLIP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2006-10-12T00:00:00.000",
+      "ulurp_numbers": "M841070AZSM",
+      "primary_applicant": "PARAMOUNT GROUP, INC/DPR"
+    },
+    {
+      "project_id": "P2004M0300",
+      "project_name": "THE NEW YORK SOCIETY LIBRARY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2006-02-22T00:00:00.000",
+      "ulurp_numbers": "C040399ZSM",
+      "primary_applicant": "THE NEW YORK SOCIETY LIBRARY/FREDRICK BECKER"
+    },
+    {
+      "project_id": "P2004M0301",
+      "project_name": "106 MOTT ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-04-01T00:00:00.000",
+      "ulurp_numbers": "N040403ZAM",
+      "primary_applicant": "WELL COME HOLDING LLC/SHELDON LOBEL, P.C."
+    },
+    {
+      "project_id": "P2004M0310",
+      "project_name": "655 6TH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-02-28T00:00:00.000",
+      "ulurp_numbers": "C040412ZSM",
+      "ceqr_number": "04DCP049M",
+      "primary_applicant": "LADIES MILE,INC:THE EL AD GROUP/JAY SEGAL:GREENBERG TRAURIG"
+    },
+    {
+      "project_id": "P2004M0330",
+      "project_name": "ODYSSEY HOUSE/UPPER PARK AVE URA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-10-18T00:00:00.000",
+      "ulurp_numbers": "C040438HAM",
+      "ceqr_number": "03HPD002M",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P2004M0331",
+      "project_name": "BD OF ELECT/NYPD FACILITY",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2005-08-16T00:00:00.000",
+      "ceqr_number": "04BOE001M",
+      "primary_applicant": "BOE/NYP (BD OF ELECTIONS & NYPD)"
+    },
+    {
+      "project_id": "P2004M0338",
+      "project_name": "HARLEM PARK/MARRIOTT COURTYARD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-11-17T00:00:00.000",
+      "ulurp_numbers": "C040443ZMM; C040444ZSM; C040445ZSM",
+      "ceqr_number": "04DCP053M",
+      "primary_applicant": "1800 PARK AVE LLC/WASHINGTON SQ PARTNERS"
+    },
+    {
+      "project_id": "P2004M0346",
+      "project_name": "137 WOOSTER ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2006-03-22T00:00:00.000",
+      "ulurp_numbers": "C040454ZSM",
+      "ceqr_number": "04DCP064M",
+      "primary_applicant": "137 WOOSTER ST/FRIED,FRANK,HARRIS,SHRIVER & JACOBDON, LLP"
+    },
+    {
+      "project_id": "P2004M0347",
+      "project_name": "46-48 LISPENARD ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2010-01-06T00:00:00.000",
+      "ulurp_numbers": "C040455ZSM",
+      "ceqr_number": "09DCP079M",
+      "primary_applicant": "LISPENARD GROUP, LLC"
+    },
+    {
+      "project_id": "P2004M0350",
+      "project_name": "RANDALL'S ISLAND AQUATIC CENTER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-10-06T00:00:00.000",
+      "ulurp_numbers": "C040459MCM",
+      "ceqr_number": "02DPR010M",
+      "primary_applicant": "AQUATIC DEVELOPMENT GROUP, INC.,/J. DUNN"
+    },
+    {
+      "project_id": "P2004M0352",
+      "project_name": "2 GOLD ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-01-28T00:00:00.000",
+      "ulurp_numbers": "N040462ZCM",
+      "primary_applicant": "2 GOLD, LLC/ROCKROSE DEV"
+    },
+    {
+      "project_id": "P2004M0354",
+      "project_name": "KEHILA KEDOSHA JANINA SYNAGOGUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-07-26T00:00:00.000",
+      "ulurp_numbers": "N040464HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2004M0356",
+      "project_name": "200 CHAMBERS ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-12-07T00:00:00.000",
+      "ulurp_numbers": "C040257AZSM",
+      "ceqr_number": "02DME003M",
+      "primary_applicant": "WEST CHAMBER ST ASSOC, LLC/KRAMER LEVIN NAFTALIS & FRANKEL"
+    },
+    {
+      "project_id": "P2004M0362",
+      "project_name": "500 7TH AVE BETWEEN W37TH & W38TH ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2007-02-28T00:00:00.000",
+      "primary_applicant": "NEWMARK & CO REAL ESTATE C/O STARKMAN/STADTMAUER BAILKIN,LLP"
+    },
+    {
+      "project_id": "P2004M0366",
+      "project_name": "SONY PUBLIC ARCADE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-10-14T00:00:00.000",
+      "ulurp_numbers": "M841023FZSM",
+      "primary_applicant": "SONY CORP OF AMERICA/KRAMER LEVIN NAFTALIS & FRANKEL,LLP"
+    },
+    {
+      "project_id": "P2004M0367",
+      "project_name": "155 W21ST ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2006-01-13T00:00:00.000",
+      "ulurp_numbers": "C040473ZSM",
+      "ceqr_number": "05DCP001M",
+      "primary_applicant": "155 W21ST ST LLC/SHELDON LOBEL, PC"
+    },
+    {
+      "project_id": "P2004M0370",
+      "project_name": "CASSIOPEIA APARTMENTS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-10-06T00:00:00.000",
+      "ulurp_numbers": "C040476HAM",
+      "primary_applicant": "NYCHPD/MIRIAM GONZALEZ"
+    },
+    {
+      "project_id": "P2004M0374",
+      "project_name": "1129-33 YORK AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-10-03T00:00:00.000",
+      "ulurp_numbers": "C040488ZMM",
+      "ceqr_number": "04DCP056M",
+      "primary_applicant": "WITKOFF YORK/THE WITKOFF GRP/FISHBEIN BADILLO WAGNER HARDING"
+    },
+    {
+      "project_id": "P2004M0378",
+      "project_name": "EAST RIVER PLAZA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2006-07-14T00:00:00.000",
+      "ulurp_numbers": "N040493CMM; N040494CMM",
+      "primary_applicant": "TIAGO HOLDINGS, LLC/WACHTEL & MASYR, LLP"
+    },
+    {
+      "project_id": "P2004M0379",
+      "project_name": "400 PARK AVE SO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-12-21T00:00:00.000",
+      "ulurp_numbers": "C040495ZSM; C040496ZMM; N040497ZRY",
+      "ceqr_number": "04DCP058M",
+      "primary_applicant": "400 PARK AVENUE SOUTH LLC/TRAURIG, LLP"
+    },
+    {
+      "project_id": "P2004M0401",
+      "project_name": "127 MACDOUGAL ST HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-10-06T00:00:00.000",
+      "ulurp_numbers": "N040532HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2004M0402",
+      "project_name": "129 MACDOUGAL HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-10-06T00:00:00.000",
+      "ulurp_numbers": "N040533HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2004M0403",
+      "project_name": "131 MACDOUGAL ST HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-10-06T00:00:00.000",
+      "ulurp_numbers": "N040534HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2004M0404",
+      "project_name": "THE WILBRAHAM",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-09-14T00:00:00.000",
+      "ulurp_numbers": "N040535HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2004M0407",
+      "project_name": "415 GREENWICH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2006-08-22T00:00:00.000",
+      "ulurp_numbers": "C040538ZSM; N040539ZAM",
+      "ceqr_number": "04DCP063M",
+      "primary_applicant": "415 GREENWICH FREE OWNERS/FISCHBEIN BADILLO WAGNER HARDING"
+    },
+    {
+      "project_id": "P2004M0410",
+      "project_name": "TRIBECA NORTH REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2006-09-18T00:00:00.000",
+      "ulurp_numbers": "C040543ZMM; N040544ZRM; C040545ZSM",
+      "ceqr_number": "06DCP067M",
+      "primary_applicant": "TRUFFLES LLC"
+    },
+    {
+      "project_id": "P2004M0414",
+      "project_name": "1800 SECOND AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-10-18T00:00:00.000",
+      "ulurp_numbers": "N040553ZCM",
+      "primary_applicant": "301 E93RD ST, LLC/CHESTER, ESQ OF EINBINDER & DUNN, LLP"
+    },
+    {
+      "project_id": "P2004M0416",
+      "project_name": "RIZZOLI-COTY BLDGS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-08-16T00:00:00.000",
+      "ulurp_numbers": "M860200CZSM",
+      "ceqr_number": "85-276M",
+      "primary_applicant": "712 5TH AVE, LP/KRAMER LEVIN NAFTALIS & FRANKEL LLP"
+    },
+    {
+      "project_id": "P2004M0422",
+      "project_name": "THIRD PARTY TRANSFER",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "04HPD001M",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P2004M0424",
+      "project_name": "THE BRIDGE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "04HPD003M",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P2004M0439",
+      "project_name": "MART 125",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "04SBS009M",
+      "primary_applicant": "DSBS"
+    },
+    {
+      "project_id": "P2004M0440",
+      "project_name": "137 WOOSTER ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "04DCP042M",
+      "primary_applicant": "137 WOOSTER ST/FRIED,FRANK,HARRIS,SHRIVER & JACOBDON, LLP"
+    },
+    {
+      "project_id": "P2004M0445",
+      "project_name": "46-50 LISPENARD ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "04DCP054M",
+      "primary_applicant": "LISPENARD GROUP, LLC/FREDRICK BECKER ESQ"
+    },
+    {
+      "project_id": "P2004M0449",
+      "project_name": "CHELSEA SQUARE RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-09-25T00:00:00.000",
+      "ulurp_numbers": "N040002ECM",
+      "primary_applicant": "23RD & 9TH RESTAURANT"
+    },
+    {
+      "project_id": "P2004M0450",
+      "project_name": "GREENHILL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-21T00:00:00.000",
+      "ulurp_numbers": "N040003ECM",
+      "primary_applicant": "THE GREENHILL GROUP"
+    },
+    {
+      "project_id": "P2004M0451",
+      "project_name": "CAFE FRIDA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-07-28T00:00:00.000",
+      "ulurp_numbers": "N040004ECM",
+      "primary_applicant": "IXHEL Corp."
+    },
+    {
+      "project_id": "P2004M0453",
+      "project_name": "MIMI'S RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-08-04T00:00:00.000",
+      "ulurp_numbers": "N040020ECM",
+      "primary_applicant": "MIMI'S RESTAURANT, INC"
+    },
+    {
+      "project_id": "P2004M0454",
+      "project_name": "CHEF T RESTAURANT & BAR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-02-25T00:00:00.000",
+      "ulurp_numbers": "N040033ECM",
+      "primary_applicant": "TDC RESTAURANT, INC"
+    },
+    {
+      "project_id": "P2004M0457",
+      "project_name": "BIG CITY BAR & GRILL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-10-08T00:00:00.000",
+      "ulurp_numbers": "N040058ECM",
+      "primary_applicant": "1600 THIRD PUB, INC"
+    },
+    {
+      "project_id": "P2004M0458",
+      "project_name": "BALUCHI'S",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-10-31T00:00:00.000",
+      "ulurp_numbers": "N040102ECM",
+      "primary_applicant": "ROHAN FOODS, INC"
+    },
+    {
+      "project_id": "P2004M0459",
+      "project_name": "BROTHER JIMMY'S BBQ",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-05-06T00:00:00.000",
+      "ulurp_numbers": "N040103ECM",
+      "primary_applicant": "FIRST AVE BROTHERS JIMMY'S LCC"
+    },
+    {
+      "project_id": "P2004M0460",
+      "project_name": "JAVIER & DAVID RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-10-02T00:00:00.000",
+      "ulurp_numbers": "N040104ECM",
+      "primary_applicant": "JAVIER & DAVID REST, CORP"
+    },
+    {
+      "project_id": "P2004M0461",
+      "project_name": "STARBUCKS 1559",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-07-23T00:00:00.000",
+      "ulurp_numbers": "N040105ECM",
+      "primary_applicant": "STARBUCKS CORP"
+    },
+    {
+      "project_id": "P2004M0462",
+      "project_name": "STARBUCKS LAFAYETTE-ASTOR PL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-12-10T00:00:00.000",
+      "ulurp_numbers": "N040106ECM",
+      "primary_applicant": "STARBUCKS COFFEE CO"
+    },
+    {
+      "project_id": "P2004M0463",
+      "project_name": "107 WEST RESTAURANT & BAR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-09T00:00:00.000",
+      "ulurp_numbers": "N040107ECM",
+      "primary_applicant": "107 WEST RESTAURANT & BAR"
+    },
+    {
+      "project_id": "P2004M0464",
+      "project_name": "CELESTE RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-02-17T00:00:00.000",
+      "ulurp_numbers": "N040108ECM",
+      "primary_applicant": "ROMAGICA CORP"
+    },
+    {
+      "project_id": "P2004M0466",
+      "project_name": "AEGEAN GREEK",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-03-24T00:00:00.000",
+      "ulurp_numbers": "N040110ECM",
+      "primary_applicant": "BASTA REST CORP"
+    },
+    {
+      "project_id": "P2004M0467",
+      "project_name": "1501 2ND AVE REST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-10-20T00:00:00.000",
+      "ulurp_numbers": "N040111ECM",
+      "primary_applicant": "1501 2ND AVE CORP"
+    },
+    {
+      "project_id": "P2004M0472",
+      "project_name": "EW HW BG",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-08-26T00:00:00.000",
+      "ulurp_numbers": "N040265ECM",
+      "primary_applicant": "EWHW BG, LLC"
+    },
+    {
+      "project_id": "P2004M0473",
+      "project_name": "1701 RESTAURANT ON SECOND",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-09-22T00:00:00.000",
+      "ulurp_numbers": "N040266ECM",
+      "primary_applicant": "1701 2ND RESTAURANT ON SECOND AVE, INC"
+    },
+    {
+      "project_id": "P2004M0474",
+      "project_name": "IL VIOLINO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-05-21T00:00:00.000",
+      "ulurp_numbers": "N040321ECM",
+      "primary_applicant": "MAFRA RESTAURANT"
+    },
+    {
+      "project_id": "P2004M0475",
+      "project_name": "XENIA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-06T00:00:00.000",
+      "ulurp_numbers": "N040322ECM",
+      "primary_applicant": "XENIA ENTERPRISES CORP"
+    },
+    {
+      "project_id": "P2004M0479",
+      "project_name": "JAPONICA RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-02-08T00:00:00.000",
+      "ulurp_numbers": "N040345ECM",
+      "primary_applicant": "JAPONICA USA, INC"
+    },
+    {
+      "project_id": "P2004M0480",
+      "project_name": "BAR COASTAL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-11-29T00:00:00.000",
+      "ulurp_numbers": "N040339ECM",
+      "primary_applicant": "C & C FIRST AVE CORP"
+    },
+    {
+      "project_id": "P2004M0482",
+      "project_name": "CLEOPATRAS NEEDLE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-02-22T00:00:00.000",
+      "ulurp_numbers": "N040341ECM",
+      "primary_applicant": "HUSSIEN ENVIRONMENT INC"
+    },
+    {
+      "project_id": "P2004M0483",
+      "project_name": "PETER'S ON 67TH",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-16T00:00:00.000",
+      "ulurp_numbers": "N040342ECM",
+      "primary_applicant": "PA-SPAK ENTERPRISES, INC"
+    },
+    {
+      "project_id": "P2004M0484",
+      "project_name": "P.S. CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-02-22T00:00:00.000",
+      "ulurp_numbers": "N040343ECM",
+      "primary_applicant": "P.S. CAFE, INC"
+    },
+    {
+      "project_id": "P2004M0485",
+      "project_name": "HUNAN PARK",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-05-10T00:00:00.000",
+      "ulurp_numbers": "N040346ECM",
+      "primary_applicant": "WAH FUNG RESTAURANT"
+    },
+    {
+      "project_id": "P2004M0486",
+      "project_name": "NEW KO-SUSHI JAPANESE RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-08-27T00:00:00.000",
+      "ulurp_numbers": "N040347ECM",
+      "primary_applicant": "NEW KO-SUSHI JAPANESE REST, ING"
+    },
+    {
+      "project_id": "P2004M0487",
+      "project_name": "RODEO BAR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-05-24T00:00:00.000",
+      "ulurp_numbers": "N040353ECM",
+      "primary_applicant": "MEXICALL ENTERPRISES"
+    },
+    {
+      "project_id": "P2004M0488",
+      "project_name": "VIVOLA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2006-01-17T00:00:00.000",
+      "ulurp_numbers": "N040354ECM",
+      "primary_applicant": "ANGELO VIVOLA REST ASSOC"
+    },
+    {
+      "project_id": "P2004M0489",
+      "project_name": "CENTRAL PARK CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-16T00:00:00.000",
+      "ulurp_numbers": "N040355ECM",
+      "primary_applicant": "V ROULIDIA REST CORP"
+    },
+    {
+      "project_id": "P2004M0490",
+      "project_name": "INDIAN CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-09-22T00:00:00.000",
+      "ulurp_numbers": "N040360ECM",
+      "primary_applicant": "INDIA FOODS INTERNATIONAL INC"
+    },
+    {
+      "project_id": "P2004M0491",
+      "project_name": "HIGHLANDS CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-23T00:00:00.000",
+      "ulurp_numbers": "N040361ECM",
+      "primary_applicant": "KENDROS LTD"
+    },
+    {
+      "project_id": "P2004M0492",
+      "project_name": "N.N.M. RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-23T00:00:00.000",
+      "ulurp_numbers": "N040362ECM",
+      "primary_applicant": "N.N.M. CORP"
+    },
+    {
+      "project_id": "P2004M0495",
+      "project_name": "TRISTAN COMPANY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-05-13T00:00:00.000",
+      "ulurp_numbers": "N040386ECM",
+      "primary_applicant": "TRISTAN COMPANY LTD"
+    },
+    {
+      "project_id": "P2004M0496",
+      "project_name": "HI-LIFE RESTAURANT & LOUNGE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-07-23T00:00:00.000",
+      "ulurp_numbers": "N040518ECM",
+      "primary_applicant": "HI-LIFE EAST CORP"
+    },
+    {
+      "project_id": "P2004M0497",
+      "project_name": "HI-LIFE BAR & GRILL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-06-29T00:00:00.000",
+      "ulurp_numbers": "N040522ECM",
+      "primary_applicant": "83RD AMSTERDAM REST, CORP"
+    },
+    {
+      "project_id": "P2004M0499",
+      "project_name": "CRU",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-11-19T00:00:00.000",
+      "ulurp_numbers": "N040546ECM",
+      "primary_applicant": "CHRISWILL VENTURES"
+    },
+    {
+      "project_id": "P2004M0501",
+      "project_name": "GREEN CHICKEN",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-11-03T00:00:00.000",
+      "ulurp_numbers": "N040548ECM",
+      "primary_applicant": "GREEN KITCHEN REST, CORP"
+    },
+    {
+      "project_id": "P2004M0503",
+      "project_name": "DRESNER'S RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-08-24T00:00:00.000",
+      "ulurp_numbers": "N040550ECM",
+      "primary_applicant": "GWN RESTAURANT, INC"
+    },
+    {
+      "project_id": "P2004M0504",
+      "project_name": "2836 ASIA FOOD CORP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-07-13T00:00:00.000",
+      "ulurp_numbers": "N040558ECM",
+      "primary_applicant": "2836 ASIA FOOD CORP"
+    },
+    {
+      "project_id": "P2004M0505",
+      "project_name": "DELIZIA 92ND ST RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-02-09T00:00:00.000",
+      "ulurp_numbers": "N040559ECM",
+      "primary_applicant": "DELIZIA 92ND ST RESTAURANT"
+    },
+    {
+      "project_id": "P2004M0506",
+      "project_name": "NESSA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-04-22T00:00:00.000",
+      "ulurp_numbers": "N040560ECM",
+      "primary_applicant": "BEND-COR LLC"
+    },
+    {
+      "project_id": "P2004Q0006",
+      "project_name": "NEWTOWN H.S.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-10-06T00:00:00.000",
+      "ulurp_numbers": "N040010HKQ",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2004Q0011",
+      "project_name": "155TH ST, 180TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-01-27T00:00:00.000",
+      "ulurp_numbers": "C040018PPQ",
+      "primary_applicant": "DCAS - Department of Citywide Administrative Services (NYC)"
+    },
+    {
+      "project_id": "P2004Q0012",
+      "project_name": "C-O-P/TRAMMEL CROW CO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-03-23T00:00:00.000",
+      "ulurp_numbers": "C040019PPQ",
+      "primary_applicant": "DBS/EDC"
+    },
+    {
+      "project_id": "P2004Q0031",
+      "project_name": "FLUSHING SAVINGS BANK",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-06-15T00:00:00.000",
+      "ulurp_numbers": "C040043ZMQ",
+      "ceqr_number": "04DCP004Q",
+      "primary_applicant": "FLUSHING SAVINGS BANK/THE AGUSTA GROUP"
+    },
+    {
+      "project_id": "P2004Q0037",
+      "project_name": "HORIZON CARE CENTER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-12-08T00:00:00.000",
+      "ulurp_numbers": "I040050ZSQ",
+      "ceqr_number": "03DCP077Q",
+      "primary_applicant": "HORIZON CARE CENTER/WACHTEL & MASYR, LLP"
+    },
+    {
+      "project_id": "P2004Q0038",
+      "project_name": "NORTHERN BOULEVARD",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2012-09-18T00:00:00.000",
+      "ceqr_number": "04DCP006Q",
+      "primary_applicant": "29-76 REALTY/GREENBERG TRAURIG, LLP"
+    },
+    {
+      "project_id": "P2004Q0044",
+      "project_name": "38-06 28TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-05-04T00:00:00.000",
+      "ulurp_numbers": "N040059ZAQ",
+      "primary_applicant": "MEGAN & JACK FRIEDMAN/CORSINI ARCHITECTS & JM ARCHITECTURE"
+    },
+    {
+      "project_id": "P2004Q0074",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-07-07T00:00:00.000",
+      "ulurp_numbers": "C040097PPQ",
+      "primary_applicant": "DCAS - Department of Citywide Administrative Services (NYC)"
+    },
+    {
+      "project_id": "P2004Q0075",
+      "project_name": "COMMISSION OF HUMAN RIGHTS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-10-29T00:00:00.000",
+      "ulurp_numbers": "N040089PXQ",
+      "primary_applicant": "DCAS - Department of Citywide Administrative Services (NYC)"
+    },
+    {
+      "project_id": "P2004Q0081",
+      "project_name": "ROYAL RANCH REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-07-26T00:00:00.000",
+      "ulurp_numbers": "C040115ZMQ",
+      "ceqr_number": "04DCP016Q",
+      "primary_applicant": "CB13/ROYAL RANCH CIVIC ASSOC"
+    },
+    {
+      "project_id": "P2004Q0090",
+      "project_name": "ENGINE CO 306 PARKING LOT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-06-20T00:00:00.000",
+      "ulurp_numbers": "C040127PCQ",
+      "ceqr_number": "03CFD001Q",
+      "primary_applicant": "CFD"
+    },
+    {
+      "project_id": "P2004Q0105",
+      "project_name": "OZANAM HALL QUEENS NURSING HOME",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-09-07T00:00:00.000",
+      "ulurp_numbers": "N040145ZCQ",
+      "primary_applicant": "OZANAM HALL OF QUEENS NURSING HOME,INC/ANDERSON KILL & OLICK"
+    },
+    {
+      "project_id": "P2004Q0114",
+      "project_name": "THE OCEAN GRANDE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-11-26T00:00:00.000",
+      "ulurp_numbers": "N040170ZCQ",
+      "primary_applicant": "EBM BELLE HARBOR LLC/SLATER & BECKERMAN LLP"
+    },
+    {
+      "project_id": "P2004Q0177",
+      "project_name": "ELMHURST MULTIPLEX",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-27T00:00:00.000",
+      "ulurp_numbers": "N040267CMQ",
+      "primary_applicant": "MATTONE GROUP LTD/PAUL HASTINGS HANOFSKY & WALKER, LLP"
+    },
+    {
+      "project_id": "P2004Q0179",
+      "project_name": "ELMHURST MULTIPLEX",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-27T00:00:00.000",
+      "ulurp_numbers": "N040236CMQ",
+      "primary_applicant": "MATTONE GARAGE, LTD/PAUL HASTINGS JANOFSKY & WALKER, LLP"
+    },
+    {
+      "project_id": "P2004Q0193",
+      "project_name": "ACS AGENCY OPERATED BOARDING HOME",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-09-14T00:00:00.000",
+      "ulurp_numbers": "C040252PQQ",
+      "primary_applicant": "ACS/CAS"
+    },
+    {
+      "project_id": "P2004Q0232",
+      "project_name": "NYPD AUTO CRIME MIS DIV",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2004-03-12T00:00:00.000",
+      "primary_applicant": "DCAS - Department of Citywide Administrative Services (NYC)"
+    },
+    {
+      "project_id": "P2004Q0233",
+      "project_name": "NYPC NARCOTICS & WARRANT SQ DIV",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2004-03-12T00:00:00.000",
+      "primary_applicant": "DCAS - Department of Citywide Administrative Services (NYC)"
+    },
+    {
+      "project_id": "P2004Q0235",
+      "project_name": "LOGAN BUS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-10-05T00:00:00.000",
+      "ulurp_numbers": "C040309PPQ",
+      "ceqr_number": "02DME011Q",
+      "primary_applicant": "DBS/EDC"
+    },
+    {
+      "project_id": "P2004Q0236",
+      "project_name": "QUICK INTERNATIONAL COURIER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-10-05T00:00:00.000",
+      "ulurp_numbers": "C040310PPQ",
+      "ceqr_number": "02DME012Q",
+      "primary_applicant": "DBS/EDC"
+    },
+    {
+      "project_id": "P2004Q0247",
+      "project_name": "135-157 BEACH 26TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-09T00:00:00.000",
+      "ulurp_numbers": "N040320ZCQ",
+      "primary_applicant": "ADAMS DEV, INC/STADTMAUER BAILKIN LLP"
+    },
+    {
+      "project_id": "P2004Q0264",
+      "project_name": "QUEENS HOSPITAL/SKYLINE COMMONS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-04-01T00:00:00.000",
+      "ulurp_numbers": "N040358ZAQ",
+      "ceqr_number": "03HHC001Q",
+      "primary_applicant": "HHC/MARGARET TEITZ NURSING & REHAB CENTER"
+    },
+    {
+      "project_id": "P2004Q0265",
+      "project_name": "QUEENS HOSPITAL/SKYLINE COMMONS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-10-20T00:00:00.000",
+      "ulurp_numbers": "C040357ZSQ; C040356PPQ",
+      "ceqr_number": "03HHC001Q",
+      "primary_applicant": "HHC/MARGARET TIETZ NURSING & REHAB CENTER"
+    },
+    {
+      "project_id": "P2004Q0277",
+      "project_name": "135-127 BEACH 26TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-09T00:00:00.000",
+      "ulurp_numbers": "N040380ZCQ",
+      "primary_applicant": "ADAM DEV.INC,/STADTMAUER BAIKKIN"
+    },
+    {
+      "project_id": "P2004Q0324",
+      "project_name": "C-O-P/STONERIDGE HOMES/ROSEDALE PKG",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-12-15T00:00:00.000",
+      "ulurp_numbers": "C040437PPQ",
+      "primary_applicant": "DCAS - Department of Citywide Administrative Services (NYC)"
+    },
+    {
+      "project_id": "P2004Q0333",
+      "project_name": "Q14 DIST GARAGE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2006-03-01T00:00:00.000",
+      "ulurp_numbers": "C040439PQQ",
+      "primary_applicant": "DOS/CAS"
+    },
+    {
+      "project_id": "P2004Q0343",
+      "project_name": "QUEENS CD 11A GARAGE & CLEANING LOT",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2005-08-05T00:00:00.000",
+      "primary_applicant": "DOS/CAS"
+    },
+    {
+      "project_id": "P2004Q0351",
+      "project_name": "144, 148, 150 BEACH 9TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-10-05T00:00:00.000",
+      "ulurp_numbers": "N040460ZCQ; N040461ZCQ",
+      "primary_applicant": "BEACH 9TH REALTY, LLC/KARL FISCHER"
+    },
+    {
+      "project_id": "P2004Q0371",
+      "project_name": "E/S OF BEACH 5TH ST BETWEEN SEAGIRT AVE & WATER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-06-04T00:00:00.000",
+      "ulurp_numbers": "N040477ZCQ; N040478ZCQ",
+      "primary_applicant": "A.I. BOYMELGREEN, LLC/STADTMAUER BAILKIN-STEVEN SINACORI"
+    },
+    {
+      "project_id": "P2004Q0396",
+      "project_name": "JAMAICA NAACP DCC, INC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-03-10T00:00:00.000",
+      "ulurp_numbers": "C040528PQQ",
+      "primary_applicant": "ACS/CAS"
+    },
+    {
+      "project_id": "P2004Q0409",
+      "project_name": "REGO PARK MALL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-11-07T00:00:00.000",
+      "ulurp_numbers": "C040542ZSQ; M860562AZSQ; N040541ZRQ",
+      "ceqr_number": "04DCP040Q",
+      "primary_applicant": "ALEXANDER'S REGO PK II, INC"
+    },
+    {
+      "project_id": "P2004Q0432",
+      "project_name": "NYC SIGN AND INLAND PAPER PRODUCTS",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "04DME010Q",
+      "primary_applicant": "HPD/HUDSON DEVELOPMENT"
+    },
+    {
+      "project_id": "P2004Q0437",
+      "project_name": "ARES PRINTING AND PACKAGING",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "03DME009Q",
+      "primary_applicant": "ARES PRINTING AND PACKAGING/G. FILIPPIDIS"
+    },
+    {
+      "project_id": "P2004Q0443",
+      "project_name": "130TH AVENUE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "04DOT011Q",
+      "primary_applicant": "NYC-DDC"
+    },
+    {
+      "project_id": "P2004Q0447",
+      "project_name": "CARLOS LILLO TRIANGLE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "04DPR002Q",
+      "primary_applicant": "NYC-DEPT. OF PARKS AND RECREATION"
+    },
+    {
+      "project_id": "P2004Q0456",
+      "project_name": "PIZZA PALACE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-10-08T00:00:00.000",
+      "ulurp_numbers": "N040038ECQ",
+      "primary_applicant": "31 ST PIZZA PALACE"
+    },
+    {
+      "project_id": "P2004Q0465",
+      "project_name": "63-20 WOODHAVEN BLVD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-10-31T00:00:00.000",
+      "ulurp_numbers": "N040109ECQ",
+      "primary_applicant": "LARGO RESTAURANT, CORP"
+    },
+    {
+      "project_id": "P2004Q0468",
+      "project_name": "V.T. & CC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-05-10T00:00:00.000",
+      "ulurp_numbers": "N040113ECQ",
+      "primary_applicant": "V.T. & CC CORP"
+    },
+    {
+      "project_id": "P2004Q0476",
+      "project_name": "SAC'S PLACE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-06T00:00:00.000",
+      "ulurp_numbers": "N040323ECQ",
+      "primary_applicant": "SAC'S PIZZA PLACE, INC"
+    },
+    {
+      "project_id": "P2004Q0477",
+      "project_name": "SEBA SEBA BAKERY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-09-17T00:00:00.000",
+      "ulurp_numbers": "N040324ECQ",
+      "primary_applicant": "LUCA BAKERY CORP"
+    },
+    {
+      "project_id": "P2004Q0494",
+      "project_name": "ATHENS CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-12-08T00:00:00.000",
+      "ulurp_numbers": "N040364ECQ",
+      "primary_applicant": "EMEL SOAN CORP"
+    },
+    {
+      "project_id": "P2004R0001",
+      "project_name": "BROOKSIDE LOOP DEVELOPMENT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2006-11-03T00:00:00.000",
+      "ulurp_numbers": "N040001ZAR",
+      "ceqr_number": "03DCP076R",
+      "primary_applicant": "FSK CONSTRUCTION CO."
+    },
+    {
+      "project_id": "P2004R0002",
+      "project_name": "374 WILSON AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-12-16T00:00:00.000",
+      "ulurp_numbers": "N040006RCR",
+      "primary_applicant": "STEPHEN NAGEL"
+    },
+    {
+      "project_id": "P2004R0007",
+      "project_name": "16,18,20,22,24 SANFORD ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-09-23T00:00:00.000",
+      "ulurp_numbers": "N040015RCR",
+      "primary_applicant": "ANTHONY SANTO/MICHAEL BIAGIOLI"
+    },
+    {
+      "project_id": "P2004R0009",
+      "project_name": "SRSD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-08-12T00:00:00.000",
+      "ulurp_numbers": "N040017RCR",
+      "primary_applicant": "MICHAEL DIMAGGIO/LAWRENCE MANDARINO"
+    },
+    {
+      "project_id": "P2004R0014",
+      "project_name": "LINDENWOOD PL BETWEEN WITT AVE & LINDENWOOD RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-09-23T00:00:00.000",
+      "ulurp_numbers": "N040022RCR",
+      "primary_applicant": "POST HOLDING CORP/YEVGENITY RYBACK"
+    },
+    {
+      "project_id": "P2004R0016",
+      "project_name": "ROBINSON AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-08-12T00:00:00.000",
+      "ulurp_numbers": "N040024RCR",
+      "primary_applicant": "NAT AMOS/LAWRENCE MANDARINO"
+    },
+    {
+      "project_id": "P2004R0017",
+      "project_name": "483 WILSON AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-08-12T00:00:00.000",
+      "ulurp_numbers": "N040025RCR",
+      "primary_applicant": "NAT AMOS/LAWRENCE MANDARINO"
+    },
+    {
+      "project_id": "P2004R0022",
+      "project_name": "34 ZEPHYR AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-05-18T00:00:00.000",
+      "ulurp_numbers": "N040026RCR",
+      "primary_applicant": "NANCY PIMPINELLA/CHARLES MAGRINO"
+    },
+    {
+      "project_id": "P2004R0024",
+      "project_name": "131, 133 PLEASENT PLAINS AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-12-16T00:00:00.000",
+      "ulurp_numbers": "N040034RCR",
+      "primary_applicant": "CIRO ASPERTI/JOHN MASSAMILLO"
+    },
+    {
+      "project_id": "P2004R0025",
+      "project_name": "NATIONAL LIGHTHOUSE MUSEUM",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-08-08T00:00:00.000",
+      "ulurp_numbers": "N040035ZCR",
+      "primary_applicant": "EDC"
+    },
+    {
+      "project_id": "P2004R0027",
+      "project_name": "243 BAYVIEW AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-09-23T00:00:00.000",
+      "ulurp_numbers": "N040039RCR",
+      "primary_applicant": "ANTHONY SORENTINO/CALVANICO ASSOC, INC"
+    },
+    {
+      "project_id": "P2004R0028",
+      "project_name": "35, 39, 45, 49 WEINER ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-09-23T00:00:00.000",
+      "ulurp_numbers": "M040040RCR",
+      "primary_applicant": "JOHN GRILLO/CALVANICO ASSOC"
+    },
+    {
+      "project_id": "P2004R0029",
+      "project_name": "DURANT AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-09-23T00:00:00.000",
+      "ulurp_numbers": "N040041RCR",
+      "primary_applicant": "FRANK ROTGER/CALVANICO ASSOC"
+    },
+    {
+      "project_id": "P2004R0030",
+      "project_name": "108, 112, 122 HANOVER AVE, 14, 19, 25 IVAN COURT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-09-23T00:00:00.000",
+      "ulurp_numbers": "N040042RCR",
+      "primary_applicant": "JOSEPH NOCE/CALVANICO ASSOC, INC"
+    },
+    {
+      "project_id": "P2004R0032",
+      "project_name": "228 CROWN AVE, 195, 199 VINELAND AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-10-30T00:00:00.000",
+      "ulurp_numbers": "N040044RCR",
+      "primary_applicant": "A. BEN DIGIOVANNI"
+    },
+    {
+      "project_id": "P2004R0033",
+      "project_name": "299, 303 ASHLAND AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-03-01T00:00:00.000",
+      "ulurp_numbers": "N040045RCR",
+      "primary_applicant": "ALDO SCAVUZZO/DAVID DARCY"
+    },
+    {
+      "project_id": "P2004R0034",
+      "project_name": "WEST SHORE LOWE'S",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-08-24T00:00:00.000",
+      "ulurp_numbers": "N040046RAR",
+      "ceqr_number": "04DCP005R",
+      "primary_applicant": "WEST SHORE ASSOC/LAND PLANNING & ENGINEERING CONSULTANTS"
+    },
+    {
+      "project_id": "P2004R0039",
+      "project_name": "50, 60 CHIPPERFIELD COURT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-11-17T00:00:00.000",
+      "ulurp_numbers": "N040053ZAR",
+      "primary_applicant": "ROBERT CALVALLINO & VICTOR BATTAGLIE/BOYLAND ARCH, PC"
+    },
+    {
+      "project_id": "P2004R0040",
+      "project_name": "SUMMIT AVE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2007-11-20T00:00:00.000",
+      "ceqr_number": "06DCP064R",
+      "primary_applicant": "LMC CUSTOM HOMES"
+    },
+    {
+      "project_id": "P2004R0043",
+      "project_name": "VICTORY BOULEVARD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-02-23T00:00:00.000",
+      "ulurp_numbers": "N040056ZAR",
+      "ceqr_number": "04DCP008R",
+      "primary_applicant": "ASPINWAL BLDG CORP/ENGLERT & NORTON"
+    },
+    {
+      "project_id": "P2004R0048",
+      "project_name": "WAINWRIGHT AVE N/O RYE AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-10-30T00:00:00.000",
+      "ulurp_numbers": "N040063RCR",
+      "primary_applicant": "ANTHONY MATRONE/STANLEY KREBUSHEVSKI"
+    },
+    {
+      "project_id": "P2004R0049",
+      "project_name": "JEANNETTE AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-10-30T00:00:00.000",
+      "ulurp_numbers": "N040064RCR",
+      "primary_applicant": "ROBERT ARMINANTE/STANLEY KREBUSHEVSKI"
+    },
+    {
+      "project_id": "P2004R0051",
+      "project_name": "71 WINTER AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-09-04T00:00:00.000",
+      "ulurp_numbers": "N040067ZCR",
+      "primary_applicant": "CARMINE MASULLO/ANDRE BOROWCZAK"
+    },
+    {
+      "project_id": "P2004R0052",
+      "project_name": "800 ANNADALE RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-09-23T00:00:00.000",
+      "ulurp_numbers": "N040068RCR",
+      "primary_applicant": "JDP CONSTRUCTION CORP/LOBUE & VALENZIANO"
+    },
+    {
+      "project_id": "P2004R0054",
+      "project_name": "7167, 7175 AMBOY RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-09-23T00:00:00.000",
+      "ulurp_numbers": "N040070RCR",
+      "primary_applicant": "TOTTENVILLE PROPERTY ASSOC, LLC/RUDOLF BENEDA"
+    },
+    {
+      "project_id": "P2004R0055",
+      "project_name": "7, 11 LENHART ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-09-23T00:00:00.000",
+      "ulurp_numbers": "N040071RCR",
+      "primary_applicant": "TOTTENVILLE PROPERTY ASSOC, LLC/RUDOLF BENEDA"
+    },
+    {
+      "project_id": "P2004R0057",
+      "project_name": "106 STECHER ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-03-16T00:00:00.000",
+      "ulurp_numbers": "N040073RCR",
+      "primary_applicant": "DOMINICK FILICOMO/RAMPULLA ASSOC"
+    },
+    {
+      "project_id": "P2004R0058",
+      "project_name": "JOHN DESILVA HALL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-10-22T00:00:00.000",
+      "ulurp_numbers": "N040074ZAR",
+      "ceqr_number": "04DCP012R",
+      "primary_applicant": "ST JOHN'S UNIVERSITY/PERKINS EASTMAN ARCH P.C./MARK LIPTON"
+    },
+    {
+      "project_id": "P2004R0059",
+      "project_name": "580 WOODROW RD A/K/A CROWN AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-06-02T00:00:00.000",
+      "ulurp_numbers": "N040075RCR",
+      "primary_applicant": "DOMINICK RENNA/ALFRED SAULO"
+    },
+    {
+      "project_id": "P2004R0060",
+      "project_name": "10 AVIVA COURT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-09-23T00:00:00.000",
+      "ulurp_numbers": "N040076RCR",
+      "primary_applicant": "MELVIN KING/CALVANICO ASSOC"
+    },
+    {
+      "project_id": "P2004R0062",
+      "project_name": "52 WHITLOCK AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-05-20T00:00:00.000",
+      "ulurp_numbers": "N040080ZAR; N040081ZAR; N040082ZAR; N040083ZAR; N040084ZAR; N040078ZCR; N040079ZAR",
+      "primary_applicant": "MICHAEL PUGLIESE/JOSEPH LOCCISANO"
+    },
+    {
+      "project_id": "P2004R0063",
+      "project_name": "THE TIDES AT CHARLESTON",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-10-19T00:00:00.000",
+      "ulurp_numbers": "N040085ZCR",
+      "ceqr_number": "95DCP058R",
+      "primary_applicant": "PC GROUP, LLC/RAMPULLA ASSOC"
+    },
+    {
+      "project_id": "P2004R0064",
+      "project_name": "15 FOURTH COURT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-09-23T00:00:00.000",
+      "ulurp_numbers": "N040086RCR",
+      "primary_applicant": "FARMAN, INC/RAMPULLA ASSOC"
+    },
+    {
+      "project_id": "P2004R0066",
+      "project_name": "78 JOHANNA LANE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-11-20T00:00:00.000",
+      "ulurp_numbers": "N040090RCR",
+      "primary_applicant": "ROBERT DELUCA/CALVANICO ASSOC, INC"
+    },
+    {
+      "project_id": "P2004R0067",
+      "project_name": "OCEANVIEW PL, ARMSTRONG AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-12-16T00:00:00.000",
+      "ulurp_numbers": "N040091RCR",
+      "primary_applicant": "ALDO PULETTI/CALVANICO ASSOC, INC"
+    },
+    {
+      "project_id": "P2004R0068",
+      "project_name": "267, 269 GIFFORDS LANE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-12-16T00:00:00.000",
+      "ulurp_numbers": "N040092RCR",
+      "primary_applicant": "RUDY SAMANDAROV/CALVANICO ASSOC, INC"
+    },
+    {
+      "project_id": "P2004R0069",
+      "project_name": "93 ROMER RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2006-11-02T00:00:00.000",
+      "ulurp_numbers": "N040093ZAR",
+      "primary_applicant": "GAR BENEDETTO"
+    },
+    {
+      "project_id": "P2004R0070",
+      "project_name": "ROSSVILLE AVE & VETERANS ROAD EAST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-09-23T00:00:00.000",
+      "ulurp_numbers": "N040088RCR",
+      "primary_applicant": "MANA, INC/ANTHONY SCAGLIONE"
+    },
+    {
+      "project_id": "P2004R0076",
+      "project_name": "WINANT AVE, MARISA CIRCLE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-09-16T00:00:00.000",
+      "ulurp_numbers": "N040098RCR",
+      "primary_applicant": "FSK CONSTRUCTION CORP/JOSEPH NELSON"
+    },
+    {
+      "project_id": "P2004R0077",
+      "project_name": "84 WHITLOCK AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-01-06T00:00:00.000",
+      "ulurp_numbers": "N040099ZAR; N040100RCR",
+      "primary_applicant": "JOSEPH NOCE/LAND PLANNING & ENGINEERING CONSULTANTS, PC"
+    },
+    {
+      "project_id": "P2004R0078",
+      "project_name": "E/S/O BREHAUT AVE N/O TRUMAN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-12-16T00:00:00.000",
+      "ulurp_numbers": "N040101RCR",
+      "primary_applicant": "BREHAUT ASSOC, LLC/ROBERT CANECO"
+    },
+    {
+      "project_id": "P2004R0079",
+      "project_name": "73 CUNARD AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-05-30T00:00:00.000",
+      "ulurp_numbers": "N040112ZAR",
+      "primary_applicant": "CUNARD S.I. ASSOC,LLC/PAUL LOMBARDI"
+    },
+    {
+      "project_id": "P2004R0084",
+      "project_name": "85-87 TARLEE PLACE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-10-16T00:00:00.000",
+      "ulurp_numbers": "N040117RCR",
+      "primary_applicant": "RONALD PURPORA/RAMPULLA ASSOC"
+    },
+    {
+      "project_id": "P2004R0092",
+      "project_name": "LIGHTHOUSE AVE W/O WINDSOR AVE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2005-04-21T00:00:00.000",
+      "primary_applicant": "JACK MADONIA/BUDAY & SCHUSTER ARCH, LLP"
+    },
+    {
+      "project_id": "P2004R0093",
+      "project_name": "25 VALLEY RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-02-04T00:00:00.000",
+      "ulurp_numbers": "N040131ZAR; N040132ZCR",
+      "primary_applicant": "LANCE MEANEY/JOSEPH MORACE"
+    },
+    {
+      "project_id": "P2004R0094",
+      "project_name": "3211 RICHMOND RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-10-15T00:00:00.000",
+      "ulurp_numbers": "N040133ZCR",
+      "primary_applicant": "PAT ROCCHIO/JOSEPH MORACE"
+    },
+    {
+      "project_id": "P2004R0095",
+      "project_name": "470, 474 WILSON AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-01-27T00:00:00.000",
+      "ulurp_numbers": "N040134RCR",
+      "primary_applicant": "RICHARD DECKER/JOSEPH MORACE"
+    },
+    {
+      "project_id": "P2004R0099",
+      "project_name": "475-483 WINCHESTER AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040138RCR",
+      "primary_applicant": "DOMENICK PUGLIESE & SONS INC/LO BUE & VALENZIANO"
+    },
+    {
+      "project_id": "P2004R0100",
+      "project_name": "BAYVIEW AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040139RCR",
+      "primary_applicant": "GAMIL EMSAK/CALVANICO ASSOC, INC"
+    },
+    {
+      "project_id": "P2004R0101",
+      "project_name": "BAYVIEW AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040140RCR",
+      "primary_applicant": "JERRY SMITH/CALVANICO ASSOC, INC"
+    },
+    {
+      "project_id": "P2004R0102",
+      "project_name": "DOWNES AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040141RCR",
+      "primary_applicant": "MARIA SAPONARO/CALVANICO ASSOC, INC"
+    },
+    {
+      "project_id": "P2004R0103",
+      "project_name": "BEDELL AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040142RCR",
+      "primary_applicant": "FRANK ESPOSITO/CALVANICO ASSOC, INC"
+    },
+    {
+      "project_id": "P2004R0104",
+      "project_name": "JOLINE AVE N/O GIEGERICH PLACE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-10-30T00:00:00.000",
+      "ulurp_numbers": "N040144RCR",
+      "primary_applicant": "ROBERT MARTINELLI/MOSS & SAYAD"
+    },
+    {
+      "project_id": "P2004R0110",
+      "project_name": "VERNON AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040166RCR",
+      "primary_applicant": "MICHAEL PICCIALLO ASHLAND BUILD CO/CALVANICO ASSOC"
+    },
+    {
+      "project_id": "P2004R0111",
+      "project_name": "5186, 5190 AMBOY RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040167RCR",
+      "primary_applicant": "MAS BLDG CORP/LO BUE & VALENZIANO"
+    },
+    {
+      "project_id": "P2004R0112",
+      "project_name": "IONIA & EDGEGROVE AVES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040168RCR",
+      "primary_applicant": "FRANK LAROCCA/CALVANICO ASSOC"
+    },
+    {
+      "project_id": "P2004R0113",
+      "project_name": "VINELAND & BELFIELD AVES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040169RCR",
+      "primary_applicant": "PETER & VIVIAN ZUMMO/CALVANICO ASSOC"
+    },
+    {
+      "project_id": "P2004R0115",
+      "project_name": "BRUNO LANE W/O JOLINE AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040151RCR",
+      "primary_applicant": "BRUNO SAVO/RAMPULLA ASSOC"
+    },
+    {
+      "project_id": "P2004R0116",
+      "project_name": "VINELAND AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-12-23T00:00:00.000",
+      "ulurp_numbers": "N040149RCR",
+      "primary_applicant": "CIRETTA IZZO/LAWRENCE MANDARINO"
+    },
+    {
+      "project_id": "P2004R0117",
+      "project_name": "274, 280 ASHLAND AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-01-27T00:00:00.000",
+      "ulurp_numbers": "N040150RCR",
+      "primary_applicant": "ISLANDWIDE HOMES, INC/RUDOLF BENEDA"
+    },
+    {
+      "project_id": "P2004R0124",
+      "project_name": "303, 305, 307 DEWEY AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-28T00:00:00.000",
+      "ulurp_numbers": "N040158RCR",
+      "primary_applicant": "JOSEPH GALANTE/DAVID DARCY"
+    },
+    {
+      "project_id": "P2004R0125",
+      "project_name": "7448 AMBOY RD, 15 BRIGHTON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-01-27T00:00:00.000",
+      "ulurp_numbers": "N040159RCR",
+      "primary_applicant": "MARGARET CARATOLA/DAVID DARCY"
+    },
+    {
+      "project_id": "P2004R0126",
+      "project_name": "GARY STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-06-07T00:00:00.000",
+      "ulurp_numbers": "N040160RCR",
+      "primary_applicant": "JOSEPH PUMA/CLAVANICO ASSOC, INC"
+    },
+    {
+      "project_id": "P2004R0129",
+      "project_name": "5880, 5882, 5584, 5886 AMBOY RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040188RCR",
+      "primary_applicant": "BARNARD DEV INC/LO BUE & VALENZIANO"
+    },
+    {
+      "project_id": "P2004R0133",
+      "project_name": "20-92 & 75-105 BERKSHIRE LANE, 15-51 & 34-60 WILTS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-06-03T00:00:00.000",
+      "ulurp_numbers": "N040192RCR",
+      "primary_applicant": "LARRY BRESNICK/MOSS & SAYAD"
+    },
+    {
+      "project_id": "P2004R0134",
+      "project_name": "20 CUNARD AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-06-23T00:00:00.000",
+      "ulurp_numbers": "N040193ZAR",
+      "primary_applicant": "NORTH SHORE HOME CO./LO BUE & VALENZIANO"
+    },
+    {
+      "project_id": "P2004R0141",
+      "project_name": "36, 40, 44 & 48 JUSTIN AVE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2003-12-19T00:00:00.000",
+      "primary_applicant": "AMERICAN STREAMLINE CINST CORP/RUDOLF J. BENEDA"
+    },
+    {
+      "project_id": "P2004R0145",
+      "project_name": "BREHAUT AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040187RCR",
+      "primary_applicant": "GREG HANSEN/CALVANICO ASSOC, INC"
+    },
+    {
+      "project_id": "P2004R0151",
+      "project_name": "91 WAKEFIELD RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-11-10T00:00:00.000",
+      "ulurp_numbers": "N040208RCR",
+      "primary_applicant": "KEVIN KANE/CALVANICO ASSOC, INC"
+    },
+    {
+      "project_id": "P2004R0152",
+      "project_name": "DALEHAM ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-05-06T00:00:00.000",
+      "ulurp_numbers": "N040209RCR",
+      "primary_applicant": "HENRY LIEBERMAN/CALVANICO ASSOC, INC"
+    },
+    {
+      "project_id": "P2004R0153",
+      "project_name": "221 RATHBURN AVE & 270 RENSSELAER AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-01-06T00:00:00.000",
+      "ulurp_numbers": "N040210RCR",
+      "primary_applicant": "JOSEPH GALANTE/DAVID DARCY"
+    },
+    {
+      "project_id": "P2004R0154",
+      "project_name": "365 COLE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040211RCR",
+      "primary_applicant": "JOHN GRILLO/CALVANICO ASSOC, INC"
+    },
+    {
+      "project_id": "P2004R0155",
+      "project_name": "ARBUTUS AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040212RCR",
+      "primary_applicant": "EDWARD DOBBYN/CALVANICO ASSOC, INC"
+    },
+    {
+      "project_id": "P2004R0156",
+      "project_name": "203 MAIN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040213RCR",
+      "primary_applicant": "PHILESE BLACKLER/CALVANICO ASSOC, INC"
+    },
+    {
+      "project_id": "P2004R0157",
+      "project_name": "ORCHARD LANE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040214RCR",
+      "primary_applicant": "PHILESE BLACKLER/CALVANICO ASSOC, INC"
+    },
+    {
+      "project_id": "P2004R0164",
+      "project_name": "335 YETMAN AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040221RCR",
+      "primary_applicant": "THOMAS LORIA/JOSEPH RAIA"
+    },
+    {
+      "project_id": "P2004R0172",
+      "project_name": "GLEN AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-09-08T00:00:00.000",
+      "ulurp_numbers": "N040231ZAR",
+      "primary_applicant": "ASPINWAL BLDG CORP/ENGLERT & NORTON"
+    },
+    {
+      "project_id": "P2004R0173",
+      "project_name": "864, 868 MARCY AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-05-06T00:00:00.000",
+      "ulurp_numbers": "N040232RCR",
+      "primary_applicant": "CHRISTINA NOTARO/BOYLAND ARCHITECTURE, P.C."
+    },
+    {
+      "project_id": "P2004R0174",
+      "project_name": "36 & 40 ALLEN PLACE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040233RCR",
+      "primary_applicant": "CAL HOMES, INC/BOYLAND ARCHITECTS, P.C."
+    },
+    {
+      "project_id": "P2004R0175",
+      "project_name": "ARTHUR KILL RD, BENSON ST, KENILWORTH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040240RCR",
+      "primary_applicant": "MICHAEL FAZIO/MOSS & SAYAD"
+    },
+    {
+      "project_id": "P2004R0178",
+      "project_name": "5775 AMBOY RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-20T00:00:00.000",
+      "ulurp_numbers": "N040235RCR",
+      "primary_applicant": "NORTHFIELD SAVINGS BANK/LIPTON ASSOC"
+    },
+    {
+      "project_id": "P2004R0180",
+      "project_name": "58 WAKEFIELD RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-07-27T00:00:00.000",
+      "ulurp_numbers": "N040238RCR",
+      "primary_applicant": "PATRICIA CUCINELLI/MICHAEL BIAGIOLI"
+    },
+    {
+      "project_id": "P2004R0181",
+      "project_name": "CHATHAM ST, KENILWORTH AVE, BILLINGS ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040241RCR",
+      "primary_applicant": "MICHAEL FAZIO/MOSS & SYAD"
+    },
+    {
+      "project_id": "P2004R0182",
+      "project_name": "DOWNES AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-03-16T00:00:00.000",
+      "ulurp_numbers": "N040242RCR",
+      "primary_applicant": "DOWNES ESTATES/MOSS & SAYAD"
+    },
+    {
+      "project_id": "P2004R0183",
+      "project_name": "MACON AVE, BRANDIS AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-20T00:00:00.000",
+      "ulurp_numbers": "N040243RCR",
+      "primary_applicant": "ROD MORATA/MOSS & SAYAD"
+    },
+    {
+      "project_id": "P2004R0184",
+      "project_name": "ARDEN AVE, RALPH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040247RCR",
+      "primary_applicant": "PETER RENDEL/STANLEY KREBUSHEVSKI"
+    },
+    {
+      "project_id": "P2004R0185",
+      "project_name": "217 ASPINWALL ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040239RCR",
+      "primary_applicant": "CRISPI CONSTRUCTION CORP/SCAGLIONE ARCHITECTS"
+    },
+    {
+      "project_id": "P2004R0186",
+      "project_name": "3902, 3906 AMBOY RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040244RCR",
+      "primary_applicant": "NIRO, INC/SCAGLIONE ARCHITECTS"
+    },
+    {
+      "project_id": "P2004R0187",
+      "project_name": "15 MURRAY ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040245RCR",
+      "primary_applicant": "6937 AMBOY REALTY CORP/SCAGLIONE ARCH"
+    },
+    {
+      "project_id": "P2004R0188",
+      "project_name": "5475A, 5475B, 5475C ARTHUR KILL RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040246RCR",
+      "primary_applicant": "STEPHEN THOMAS/ANTHONY SCAGLIONE ARCH"
+    },
+    {
+      "project_id": "P2004R0189",
+      "project_name": "SLEIGHT AVE, GEORGE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-05-18T00:00:00.000",
+      "ulurp_numbers": "N040248RCR",
+      "primary_applicant": "JOE RICE, MARIANNE PASSALACQA, VITO & STEPHANIE DORME/DERUVO"
+    },
+    {
+      "project_id": "P2004R0194",
+      "project_name": "ST JAMES PL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-10-06T00:00:00.000",
+      "ulurp_numbers": "N040253ZAR",
+      "primary_applicant": "CEASAR & MARIAN RODRIGUEZ/RAMPULLA ASSOC"
+    },
+    {
+      "project_id": "P2004R0195",
+      "project_name": "THE LIGHTHOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-08-18T00:00:00.000",
+      "ulurp_numbers": "N040254ZCR",
+      "primary_applicant": "PINNACLE TOWERS/RAMPULLA ASSOC"
+    },
+    {
+      "project_id": "P2004R0197",
+      "project_name": "JOLINE AVE N/O TRUMAN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040259RCR",
+      "primary_applicant": "MICHAEL DERUVO"
+    },
+    {
+      "project_id": "P2004R0199",
+      "project_name": "STATION AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040261RCR",
+      "primary_applicant": "JOHN TALVY/CALVANICO ASSOC, INC"
+    },
+    {
+      "project_id": "P2004R0200",
+      "project_name": "COURTELYOU AVE, RIDGEWOOD AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040262RCR",
+      "primary_applicant": "HENRY LIEBERMAN/CALVANICO ASSOC, INC"
+    },
+    {
+      "project_id": "P2004R0201",
+      "project_name": "1043 WOODROW ROAD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-04-22T00:00:00.000",
+      "ulurp_numbers": "N040263RCR",
+      "primary_applicant": "MICHAEL CANNIZZO/CALVANICO ASSOC, INC"
+    },
+    {
+      "project_id": "P2004R0206",
+      "project_name": "SEAVIEW SENIOR HOUSING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-08-09T00:00:00.000",
+      "ulurp_numbers": "N040275ZAR; N040276ZCR; N040277ZAR; C040278PPR",
+      "ceqr_number": "02DME006R",
+      "primary_applicant": "COUNCIL ON JEWISH PRVTY/ST FRANCIS DESALES/HERRICK FEINSTEIN"
+    }
+  ]
+}

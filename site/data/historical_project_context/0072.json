@@ -1,0 +1,2262 @@
+{
+  "schema_version": "cityscroll.historical_project_context.v1",
+  "shard": "0072",
+  "rows": [
+    {
+      "project_id": "P2002M0372",
+      "project_name": "E28TH ST PKG GARAGE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-09-19T00:00:00.000",
+      "ulurp_numbers": "C020696ZSM",
+      "ceqr_number": "03DCP003M",
+      "primary_applicant": "119-125 E28TH ST REALTY CORP"
+    },
+    {
+      "project_id": "P2002M0380",
+      "project_name": "443-445 BROADWAY AKA 22 MERCER ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "02DCP014M",
+      "primary_applicant": "HOBE LLC/FREDRICK BECKER"
+    },
+    {
+      "project_id": "P2002M0390",
+      "project_name": "MCNY AT TWEED COURTHOUSE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "02DME001M",
+      "primary_applicant": "DME"
+    },
+    {
+      "project_id": "P2002M0391",
+      "project_name": "ALICE KORNEGAY SENIOR HOUSES",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "02HPD013M",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P2002M0393",
+      "project_name": "270 GREENWICH STREET",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "01DME016M",
+      "primary_applicant": "DME"
+    },
+    {
+      "project_id": "P2002M0399",
+      "project_name": "E. 103RD ST. CHURCH RELOCATION",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "02HPD018M",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P2002M0408",
+      "project_name": "953 ASSOCIATES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-08-31T00:00:00.000",
+      "ulurp_numbers": "N020019UCM",
+      "primary_applicant": "953 ASSOCIATES, LLC"
+    },
+    {
+      "project_id": "P2002M0409",
+      "project_name": "CAFE ROCCCHETTA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-08-21T00:00:00.000",
+      "ulurp_numbers": "N020004UCM",
+      "primary_applicant": "WILSON & PAUL RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0410",
+      "project_name": "BAGEL EXPRESS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-11-13T00:00:00.000",
+      "ulurp_numbers": "N020036UCM",
+      "primary_applicant": "BAGEL EXPRESS OF 2ND AVE, INC"
+    },
+    {
+      "project_id": "P2002M0414",
+      "project_name": "KINNY CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-10-29T00:00:00.000",
+      "ulurp_numbers": "N020088UCM",
+      "primary_applicant": "POY LAUNG THAI REST, INC"
+    },
+    {
+      "project_id": "P2002M0417",
+      "project_name": "NIKO MEDITERRANEAN GRILL & BISTRO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-01-24T00:00:00.000",
+      "ulurp_numbers": "N020091ECM",
+      "primary_applicant": "BROADWAY 76 LTD"
+    },
+    {
+      "project_id": "P2002M0418",
+      "project_name": "NIKO'S MEDITERREAN GRILL & BISTRO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-10-29T00:00:00.000",
+      "ulurp_numbers": "N020092UCM",
+      "primary_applicant": "BROADWAY 76"
+    },
+    {
+      "project_id": "P2002M0419",
+      "project_name": "TIO PEPE RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-01-24T00:00:00.000",
+      "ulurp_numbers": "N020093ECM",
+      "primary_applicant": "SANGE RESTAURANT"
+    },
+    {
+      "project_id": "P2002M0420",
+      "project_name": "HUDSON BAR & BOOKS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-11-02T00:00:00.000",
+      "ulurp_numbers": "N020094UCM",
+      "primary_applicant": "RAJAMAR HOLDINGS, INC"
+    },
+    {
+      "project_id": "P2002M0421",
+      "project_name": "JACKSON HOLE WYOMING BURGERS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-10-29T00:00:00.000",
+      "ulurp_numbers": "N020105UCM",
+      "primary_applicant": "PJFM RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0422",
+      "project_name": "BAR PITTI",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-10-29T00:00:00.000",
+      "ulurp_numbers": "N020106UCM",
+      "primary_applicant": "BAR GIACOSA CORP"
+    },
+    {
+      "project_id": "P2002M0423",
+      "project_name": "NOHO STAR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-10-29T00:00:00.000",
+      "ulurp_numbers": "N020107UCM",
+      "primary_applicant": "THE NOHO STAR, INC"
+    },
+    {
+      "project_id": "P2002M0424",
+      "project_name": "THE CITY GRILL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-07-05T00:00:00.000",
+      "ulurp_numbers": "N020113ECM",
+      "primary_applicant": "269 COLUMBUS RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0425",
+      "project_name": "CLASSIC FOOD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-06T00:00:00.000",
+      "ulurp_numbers": "N020114UCM",
+      "primary_applicant": "CLASSIC FOOD, INC"
+    },
+    {
+      "project_id": "P2002M0429",
+      "project_name": "KOBMA THAI RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-12-04T00:00:00.000",
+      "ulurp_numbers": "N020118ECM",
+      "primary_applicant": "611 HUDSON ST CORP"
+    },
+    {
+      "project_id": "P2002M0430",
+      "project_name": "LA BICYCLETTE RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-06T00:00:00.000",
+      "ulurp_numbers": "N020119UCM",
+      "primary_applicant": "519 COLUMBUS RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0431",
+      "project_name": "HUDSON PLACE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-07T00:00:00.000",
+      "ulurp_numbers": "N020120UCM",
+      "primary_applicant": "J.P. 538 THIRD CORP"
+    },
+    {
+      "project_id": "P2002M0432",
+      "project_name": "GREENWICH VILLAGE BISTRO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-07T00:00:00.000",
+      "ulurp_numbers": "N020121UCM",
+      "primary_applicant": "GREENWICH VILLAGE BISTRO LTD"
+    },
+    {
+      "project_id": "P2002M0433",
+      "project_name": "MARSIELLE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-10-31T00:00:00.000",
+      "ulurp_numbers": "N020132UCM",
+      "primary_applicant": "DANA'S LLC"
+    },
+    {
+      "project_id": "P2002M0435",
+      "project_name": "BANDITO DITTO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-07T00:00:00.000",
+      "ulurp_numbers": "N020135UCM",
+      "primary_applicant": "BANDITO DITO, INC"
+    },
+    {
+      "project_id": "P2002M0436",
+      "project_name": "SAPORE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-07T00:00:00.000",
+      "ulurp_numbers": "N020136UCM",
+      "primary_applicant": "RIZZICONI, INC"
+    },
+    {
+      "project_id": "P2002M0437",
+      "project_name": "WILLOW",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-07T00:00:00.000",
+      "ulurp_numbers": "N020137UCM",
+      "primary_applicant": "BANDHU GIBSON ENTERPRISES, LLC"
+    },
+    {
+      "project_id": "P2002M0438",
+      "project_name": "BARKING DOG LUNCHEONETTE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-07T00:00:00.000",
+      "ulurp_numbers": "N020148UCM",
+      "primary_applicant": "WOLINS RESTAURANT, INC"
+    },
+    {
+      "project_id": "P2002M0439",
+      "project_name": "TONY'S DINAPOLI",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-07T00:00:00.000",
+      "ulurp_numbers": "N020149UCM",
+      "primary_applicant": "83RD & 2ND GOURMET, LTD"
+    },
+    {
+      "project_id": "P2002M0440",
+      "project_name": "SILVER STAR RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-11-23T00:00:00.000",
+      "ulurp_numbers": "N020150ECM",
+      "primary_applicant": "1236 2ND AVE RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0442",
+      "project_name": "CAFE AURORA PIZZERIA RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-02-15T00:00:00.000",
+      "ulurp_numbers": "N020158UCM",
+      "primary_applicant": "CAFE AURORA PIZZERIA RESTAURANT, INC"
+    },
+    {
+      "project_id": "P2002M0443",
+      "project_name": "INDIA VILLAGE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-02-15T00:00:00.000",
+      "ulurp_numbers": "N020159UCM",
+      "primary_applicant": "R.A.S. FOOD INC"
+    },
+    {
+      "project_id": "P2002M0444",
+      "project_name": "MAD RIVER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-02-15T00:00:00.000",
+      "ulurp_numbers": "N020160UCM",
+      "primary_applicant": "RIVER LOUNGE, INC"
+    },
+    {
+      "project_id": "P2002M0445",
+      "project_name": "YORKVILLE INN",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-11-23T00:00:00.000",
+      "ulurp_numbers": "N020161ECM",
+      "primary_applicant": "P&D KAUFHOLD, INC"
+    },
+    {
+      "project_id": "P2002M0446",
+      "project_name": "MILL KOREAN RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-07T00:00:00.000",
+      "ulurp_numbers": "N020162UCM",
+      "primary_applicant": "MILL KOREAN RESTAURANT"
+    },
+    {
+      "project_id": "P2002M0447",
+      "project_name": "CHINA FUN",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-01-24T00:00:00.000",
+      "ulurp_numbers": "N020163ECM",
+      "primary_applicant": "DFA CORP"
+    },
+    {
+      "project_id": "P2002M0448",
+      "project_name": "CAMAJE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-10T00:00:00.000",
+      "ulurp_numbers": "N020164UCM",
+      "primary_applicant": "FRANK ET ARNAUD CORP"
+    },
+    {
+      "project_id": "P2002M0449",
+      "project_name": "ZEN PALATE RESTAURANT AT 46TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-07T00:00:00.000",
+      "ulurp_numbers": "N020165UCM",
+      "primary_applicant": "ZENY, INC"
+    },
+    {
+      "project_id": "P2002M0450",
+      "project_name": "RAY'S PIZZA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-07T00:00:00.000",
+      "ulurp_numbers": "N020166UCM",
+      "primary_applicant": "RALPH CUOMO"
+    },
+    {
+      "project_id": "P2002M0451",
+      "project_name": "SENOR SWANKY'S",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-10T00:00:00.000",
+      "ulurp_numbers": "N020167UCM",
+      "primary_applicant": "B1-LA CORNER ASSOC, LTD"
+    },
+    {
+      "project_id": "P2002M0452",
+      "project_name": "RANCHO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-10T00:00:00.000",
+      "ulurp_numbers": "N020133UCM",
+      "primary_applicant": "RANCHO WEST CORP"
+    },
+    {
+      "project_id": "P2002M0454",
+      "project_name": "CILANTRO CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-02-15T00:00:00.000",
+      "ulurp_numbers": "N020179UCM",
+      "primary_applicant": "LIVING BREAD LLC"
+    },
+    {
+      "project_id": "P2002M0455",
+      "project_name": "V & T RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-20T00:00:00.000",
+      "ulurp_numbers": "N020211UCM",
+      "primary_applicant": "V & T RESTAURANT, INC"
+    },
+    {
+      "project_id": "P2002M0456",
+      "project_name": "STAGE DELICATESSEN & RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-17T00:00:00.000",
+      "ulurp_numbers": "N020212ECM",
+      "primary_applicant": "STAGE DELICATESSEN RESTAURENT, INC"
+    },
+    {
+      "project_id": "P2002M0457",
+      "project_name": "JAKES' DILEMMA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-02-15T00:00:00.000",
+      "ulurp_numbers": "N020197UCM",
+      "primary_applicant": "THIRD AVE RESTAURANT, INC"
+    },
+    {
+      "project_id": "P2002M0458",
+      "project_name": "ESPERANTO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-18T00:00:00.000",
+      "ulurp_numbers": "N020198UCM",
+      "primary_applicant": "177 CHRYSTIE, INC"
+    },
+    {
+      "project_id": "P2002M0460",
+      "project_name": "KINGSHINE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-08-27T00:00:00.000",
+      "ulurp_numbers": "N020200ECM",
+      "primary_applicant": "KINGSHINE CORP"
+    },
+    {
+      "project_id": "P2002M0461",
+      "project_name": "MASSIMO ALPONTE VECCHIO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-18T00:00:00.000",
+      "ulurp_numbers": "N020201UCM",
+      "primary_applicant": "CLAUDISAL RESTAURANT, CORP"
+    },
+    {
+      "project_id": "P2002M0462",
+      "project_name": "PORTO BELLO RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-18T00:00:00.000",
+      "ulurp_numbers": "N020202UCM",
+      "primary_applicant": "BLL RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0463",
+      "project_name": "VILLAGE FARMERS MARKET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-02-15T00:00:00.000",
+      "ulurp_numbers": "N020204UCM",
+      "primary_applicant": "VILLAGE FARMERS MARKET, INC"
+    },
+    {
+      "project_id": "P2002M0464",
+      "project_name": "LENTINI",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-09-20T00:00:00.000",
+      "ulurp_numbers": "N020205ECM",
+      "primary_applicant": "LENTINI, LLC"
+    },
+    {
+      "project_id": "P2002M0465",
+      "project_name": "DA ANDREA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-02-15T00:00:00.000",
+      "ulurp_numbers": "N020206UCM",
+      "primary_applicant": "BIASSANOT CORP"
+    },
+    {
+      "project_id": "P2002M0466",
+      "project_name": "CREMCAFFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-18T00:00:00.000",
+      "ulurp_numbers": "N020207UCM",
+      "primary_applicant": "CREM CAFFE, INC"
+    },
+    {
+      "project_id": "P2002M0467",
+      "project_name": "JOE'S PUBLIC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-19T00:00:00.000",
+      "ulurp_numbers": "N020208UCM",
+      "primary_applicant": "JOE'S PUBLIC, LLC"
+    },
+    {
+      "project_id": "P2002M0468",
+      "project_name": "FERRIER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-19T00:00:00.000",
+      "ulurp_numbers": "N020209UCM",
+      "primary_applicant": "FERRIER, INC"
+    },
+    {
+      "project_id": "P2002M0469",
+      "project_name": "LA MANGEOIRE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-20T00:00:00.000",
+      "ulurp_numbers": "N020210UCM",
+      "primary_applicant": "LES BRASSEURS, INC"
+    },
+    {
+      "project_id": "P2002M0470",
+      "project_name": "TRISTAN HOLDINGS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-02-22T00:00:00.000",
+      "ulurp_numbers": "N020230UCM",
+      "primary_applicant": "TRISTAN HOLDINGS, LTD"
+    },
+    {
+      "project_id": "P2002M0471",
+      "project_name": "BAR GIACOSA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-02-22T00:00:00.000",
+      "ulurp_numbers": "N020231UCM",
+      "primary_applicant": "BAR GIACOSA CORP"
+    },
+    {
+      "project_id": "P2002M0472",
+      "project_name": "RAGU BOY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-02-15T00:00:00.000",
+      "ulurp_numbers": "N020232UCM",
+      "primary_applicant": "RAGU BOY CORP"
+    },
+    {
+      "project_id": "P2002M0473",
+      "project_name": "DORRIAN'S RED HAND",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-02-22T00:00:00.000",
+      "ulurp_numbers": "N020233ECM",
+      "primary_applicant": "1616 2ND AVE RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0474",
+      "project_name": "JUST AN OVEN",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-02-15T00:00:00.000",
+      "ulurp_numbers": "N020251UCM",
+      "primary_applicant": "JUST AN OVEN CORP"
+    },
+    {
+      "project_id": "P2002M0475",
+      "project_name": "OLD HOMESTEAD RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-02-15T00:00:00.000",
+      "ulurp_numbers": "N020252UCM",
+      "primary_applicant": "THE ORIGINAL HOMESTEAD RESTAURANT, INC"
+    },
+    {
+      "project_id": "P2002M0476",
+      "project_name": "MONTIEN 2000",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-02-05T00:00:00.000",
+      "ulurp_numbers": "N020253UCM",
+      "primary_applicant": "MONTIEN 2000 CORP"
+    },
+    {
+      "project_id": "P2002M0477",
+      "project_name": "TRISTAN GROUP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-02-15T00:00:00.000",
+      "ulurp_numbers": "N020254UCM",
+      "primary_applicant": "TRISTAN GROUP, LLC"
+    },
+    {
+      "project_id": "P2002M0479",
+      "project_name": "FUEL (PHEBE'S)",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-07-08T00:00:00.000",
+      "ulurp_numbers": "N020256ECM",
+      "primary_applicant": "359 BOWERY LLC"
+    },
+    {
+      "project_id": "P2002M0481",
+      "project_name": "AL DENTE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-02-22T00:00:00.000",
+      "ulurp_numbers": "N020258UCM",
+      "primary_applicant": "GILLI, INC"
+    },
+    {
+      "project_id": "P2002M0482",
+      "project_name": "LITTLE SAIGON KITCHEN",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-11-12T00:00:00.000",
+      "ulurp_numbers": "N020259ECM",
+      "primary_applicant": "LITTLE SAIGON KITCHEN"
+    },
+    {
+      "project_id": "P2002M0483",
+      "project_name": "CORNELIA STREET CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-02-22T00:00:00.000",
+      "ulurp_numbers": "N020260UCM",
+      "primary_applicant": "CORNELIA ST CAFE, INC"
+    },
+    {
+      "project_id": "P2002M0484",
+      "project_name": "CARNEGIE HILL BREWING CO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-07-10T00:00:00.000",
+      "ulurp_numbers": "N020261ECM",
+      "primary_applicant": "1600 3RD PUB, INC"
+    },
+    {
+      "project_id": "P2002M0486",
+      "project_name": "IVY'S BISTRO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-02-15T00:00:00.000",
+      "ulurp_numbers": "N020268UCM",
+      "primary_applicant": "ALIKI ENTERPRISES, INC"
+    },
+    {
+      "project_id": "P2002M0487",
+      "project_name": "IL COVO DELL EST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-02-22T00:00:00.000",
+      "ulurp_numbers": "N020269UCM",
+      "primary_applicant": "S&R RESTAURANT, LLC"
+    },
+    {
+      "project_id": "P2002M0488",
+      "project_name": "CITY BITES PIZZA & DELI",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-02-22T00:00:00.000",
+      "ulurp_numbers": "N020270ECM",
+      "primary_applicant": "CITY BITES LLC CORP"
+    },
+    {
+      "project_id": "P2002M0489",
+      "project_name": "S.Q.C. FOOD PRODUCTS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-03-13T00:00:00.000",
+      "ulurp_numbers": "N020293ECM",
+      "primary_applicant": "S.Q.C. FOOD PRODUCTIONS, LLC"
+    },
+    {
+      "project_id": "P2002M0490",
+      "project_name": "CHEZ JOSEPHINE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-06-05T00:00:00.000",
+      "ulurp_numbers": "N020296ECM",
+      "primary_applicant": "CHEZ JOSEPHINE LTD"
+    },
+    {
+      "project_id": "P2002M0491",
+      "project_name": "LOUIE'S WESTSIDE CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-07-19T00:00:00.000",
+      "ulurp_numbers": "N020299ECM",
+      "primary_applicant": "AMSTERDAM SLOVES"
+    },
+    {
+      "project_id": "P2002M0492",
+      "project_name": "STROKOS GOURMET DELI",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-07-19T00:00:00.000",
+      "ulurp_numbers": "N020300ECM",
+      "primary_applicant": "STROKOS GOURMET DELI, INC"
+    },
+    {
+      "project_id": "P2002M0493",
+      "project_name": "YAFFA'S TEA ROOM",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020301UCM",
+      "primary_applicant": "APRE SCOTT'S INC"
+    },
+    {
+      "project_id": "P2002M0494",
+      "project_name": "STROKOS GOURMET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-04-26T00:00:00.000",
+      "ulurp_numbers": "N020302UCM",
+      "primary_applicant": "STROKOS GOURMET DELI, INC"
+    },
+    {
+      "project_id": "P2002M0495",
+      "project_name": "LUXUS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-04-05T00:00:00.000",
+      "ulurp_numbers": "N020303UCM",
+      "primary_applicant": "FILMHALL.COM, INC"
+    },
+    {
+      "project_id": "P2002M0496",
+      "project_name": "BURRITO WORKS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-04-05T00:00:00.000",
+      "ulurp_numbers": "N020304UCM",
+      "primary_applicant": "BURRITO WORK, INC"
+    },
+    {
+      "project_id": "P2002M0497",
+      "project_name": "99 THIRD AVENUE RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-04-05T00:00:00.000",
+      "ulurp_numbers": "N020305UCM",
+      "primary_applicant": "99 THIRD AVENUE RESTAURANT"
+    },
+    {
+      "project_id": "P2002M0498",
+      "project_name": "LOUIE'S WESTSIDE CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-04-26T00:00:00.000",
+      "ulurp_numbers": "N020306UCM",
+      "primary_applicant": "AMSTERDAM SLOVES, INC"
+    },
+    {
+      "project_id": "P2002M0499",
+      "project_name": "PAPPARDELLA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020308UCM",
+      "primary_applicant": "316 RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0500",
+      "project_name": "ISABELLA'S",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020309UCM",
+      "primary_applicant": "R.S.V.H. INC"
+    },
+    {
+      "project_id": "P2002M0501",
+      "project_name": "GALLO NERO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-04-19T00:00:00.000",
+      "ulurp_numbers": "N020315UCM",
+      "primary_applicant": "GALLO NERO, INC"
+    },
+    {
+      "project_id": "P2002M0502",
+      "project_name": "NATIONS CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020316UCM",
+      "primary_applicant": "K.M.S. RESTAURANT"
+    },
+    {
+      "project_id": "P2002M0503",
+      "project_name": "ACQUA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-04-05T00:00:00.000",
+      "ulurp_numbers": "N020322UCM",
+      "primary_applicant": "IANO, CORP"
+    },
+    {
+      "project_id": "P2002M0504",
+      "project_name": "STYLE CLUB MANAGEMENT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020323UCM",
+      "primary_applicant": "STYLE CLUB MANAGEMENT, LLC"
+    },
+    {
+      "project_id": "P2002M0505",
+      "project_name": "BENNY'S BURRITOS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020324UCM",
+      "primary_applicant": "BENNY'S BURRITOS, INC"
+    },
+    {
+      "project_id": "P2002M0506",
+      "project_name": "OGGI RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020325UCM",
+      "primary_applicant": "OGGI RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0509",
+      "project_name": "THE WEST END",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-04-12T00:00:00.000",
+      "ulurp_numbers": "N020337UCM",
+      "primary_applicant": "GATEWAY PRODUCTIONS, INC"
+    },
+    {
+      "project_id": "P2002M0511",
+      "project_name": "ZANZIBAR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-04-05T00:00:00.000",
+      "ulurp_numbers": "N020339UCM",
+      "primary_applicant": "ZANZIBAR, LLC"
+    },
+    {
+      "project_id": "P2002M0512",
+      "project_name": "CASCINA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-04-05T00:00:00.000",
+      "ulurp_numbers": "N020340UCM",
+      "primary_applicant": "LUNA ROSSA RESTAURANT"
+    },
+    {
+      "project_id": "P2002M0514",
+      "project_name": "DUE AMICI PIZZERIA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-04-08T00:00:00.000",
+      "ulurp_numbers": "N020342UCM",
+      "primary_applicant": "304 W14TH PIZZA CORP"
+    },
+    {
+      "project_id": "P2002M0515",
+      "project_name": "PO RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020343UCM",
+      "primary_applicant": "RASU REALTY CORP"
+    },
+    {
+      "project_id": "P2002M0516",
+      "project_name": "MACELLERIA RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-04-19T00:00:00.000",
+      "ulurp_numbers": "N020344UCM",
+      "primary_applicant": "MACELLERIA RESTAURANT, INC"
+    },
+    {
+      "project_id": "P2002M0517",
+      "project_name": "COWGIRL HALL OF FAME",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020345UCM",
+      "primary_applicant": "COWGIRL, INC"
+    },
+    {
+      "project_id": "P2002M0518",
+      "project_name": "WASHINGTON SQUARE NORTH",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-02-12T00:00:00.000",
+      "ulurp_numbers": "N020353ECM",
+      "primary_applicant": "WASHINGTON SQUARE NORTH, LLC"
+    },
+    {
+      "project_id": "P2002M0519",
+      "project_name": "JNR GOURMET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-05-29T00:00:00.000",
+      "ulurp_numbers": "N020354UCM",
+      "primary_applicant": "JNR GOURMET CORP"
+    },
+    {
+      "project_id": "P2002M0520",
+      "project_name": "AQUILONI",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-05-29T00:00:00.000",
+      "ulurp_numbers": "N020355UCM",
+      "primary_applicant": "GET, INC"
+    },
+    {
+      "project_id": "P2002M0521",
+      "project_name": "LA DOLCE VITA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020356UCM",
+      "primary_applicant": "195 SPRING ST RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0523",
+      "project_name": "MIRCHI",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020358UCM",
+      "primary_applicant": "MIRCHI, INC"
+    },
+    {
+      "project_id": "P2002M0524",
+      "project_name": "879 TACO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020359UCM",
+      "primary_applicant": "PAAOS INC"
+    },
+    {
+      "project_id": "P2002M0525",
+      "project_name": "THE ODEON",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020360UCM",
+      "primary_applicant": "THE ODEON, INC"
+    },
+    {
+      "project_id": "P2002M0526",
+      "project_name": "1274 AMSTERDAM TRATTORIA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020361UCM",
+      "primary_applicant": "1274 AMSTERDAM TRATTORIA, INC"
+    },
+    {
+      "project_id": "P2002M0527",
+      "project_name": "PAPERS & NEWS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-05-30T00:00:00.000",
+      "ulurp_numbers": "N020366UCM",
+      "primary_applicant": "PAPERS & NEWS, INC"
+    },
+    {
+      "project_id": "P2002M0530",
+      "project_name": "659 RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-05-30T00:00:00.000",
+      "ulurp_numbers": "N020369UCM",
+      "primary_applicant": "659 RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0531",
+      "project_name": "JOAN-LUC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-05-31T00:00:00.000",
+      "ulurp_numbers": "N020370UCM",
+      "primary_applicant": "WAZOO, LLC"
+    },
+    {
+      "project_id": "P2002M0532",
+      "project_name": "WESTSIDE RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-02-05T00:00:00.000",
+      "ulurp_numbers": "N020371ECM",
+      "primary_applicant": "FIRST 69TH ST REALTY CORP"
+    },
+    {
+      "project_id": "P2002M0533",
+      "project_name": "AMSTERDAM AVE BROTHER JIMMY'S LLC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020372UCM",
+      "primary_applicant": "AMSTERDAM AVE BROTHER JIMMY'S LLC"
+    },
+    {
+      "project_id": "P2002M0534",
+      "project_name": "XANDO COSI",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020373UCM",
+      "primary_applicant": "XANDO COSI, INC"
+    },
+    {
+      "project_id": "P2002M0535",
+      "project_name": "LUNELLA RISTORANTE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020374UCM",
+      "primary_applicant": "LUNELLA RISTORANTE, INC"
+    },
+    {
+      "project_id": "P2002M0536",
+      "project_name": "STAGE DELI OF NEW YORK",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-12-05T00:00:00.000",
+      "ulurp_numbers": "N020382ECM",
+      "primary_applicant": "EAST SIDE DELI CORP"
+    },
+    {
+      "project_id": "P2002M0538",
+      "project_name": "JOHNNY ROCKETS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-03-29T00:00:00.000",
+      "ulurp_numbers": "N020384ECM",
+      "primary_applicant": "SDB ROCKETS NEW YORK, INC"
+    },
+    {
+      "project_id": "P2002M0539",
+      "project_name": "ISOLITIGNOTI",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-05-31T00:00:00.000",
+      "ulurp_numbers": "N020385UCM",
+      "primary_applicant": "ISOLITGNOTI, INC"
+    },
+    {
+      "project_id": "P2002M0540",
+      "project_name": "LITTLE BASIL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020386UCM",
+      "primary_applicant": "NEW IMAGE 2000 CORP"
+    },
+    {
+      "project_id": "P2002M0542",
+      "project_name": "BRUCULINO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020388UCM",
+      "primary_applicant": "MARE MARE, INC"
+    },
+    {
+      "project_id": "P2002M0543",
+      "project_name": "M.G.T. ENTERPRISES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-05-31T00:00:00.000",
+      "ulurp_numbers": "N020389UCM",
+      "primary_applicant": "M.G.T. ENTERPRISES, LLC"
+    },
+    {
+      "project_id": "P2002M0544",
+      "project_name": "WENDY'S",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-05-31T00:00:00.000",
+      "ulurp_numbers": "N020390UCM",
+      "primary_applicant": "WEN-KEV, INC"
+    },
+    {
+      "project_id": "P2002M0545",
+      "project_name": "BISTRO LES AMIS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-05-31T00:00:00.000",
+      "ulurp_numbers": "N020391UCM",
+      "primary_applicant": "RDK RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0546",
+      "project_name": "MARTELL'S GRILL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020392UCM",
+      "primary_applicant": "948 JJT CORP"
+    },
+    {
+      "project_id": "P2002M0547",
+      "project_name": "CAFE DE PARIS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020393UCM",
+      "primary_applicant": "CAFE DE PARIS, INC"
+    },
+    {
+      "project_id": "P2002M0548",
+      "project_name": "CARNEGIE HILL BREWING CO.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020394UCM",
+      "primary_applicant": "1600 3RD AVE PUB, INC"
+    },
+    {
+      "project_id": "P2002M0549",
+      "project_name": "DIWAN'S CURRY HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-05T00:00:00.000",
+      "ulurp_numbers": "N020408UCM",
+      "primary_applicant": "JANINE'S PLACE, INC"
+    },
+    {
+      "project_id": "P2002M0550",
+      "project_name": "LIME LOAF",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-07T00:00:00.000",
+      "ulurp_numbers": "N020409UCM",
+      "primary_applicant": "S & P 66, INC"
+    },
+    {
+      "project_id": "P2002M0551",
+      "project_name": "RIVOLI PIZZA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020410UCM",
+      "primary_applicant": "176 7TH AVE PIZZA, LTD"
+    },
+    {
+      "project_id": "P2002M0552",
+      "project_name": "PENANG",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-03-18T00:00:00.000",
+      "ulurp_numbers": "N020411ECM",
+      "primary_applicant": "PENANG CORP"
+    },
+    {
+      "project_id": "P2002M0553",
+      "project_name": "RESTO LEON",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020412UCM",
+      "primary_applicant": "RESTO LEON, INC"
+    },
+    {
+      "project_id": "P2002M0555",
+      "project_name": "PASTIS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020414UCM",
+      "primary_applicant": "SMITHFIELD ASSOC, LLC"
+    },
+    {
+      "project_id": "P2002M0556",
+      "project_name": "COVE DINER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020415UCM",
+      "primary_applicant": "CHINA COVE, INC"
+    },
+    {
+      "project_id": "P2002M0557",
+      "project_name": "OLIVES NY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-05T00:00:00.000",
+      "ulurp_numbers": "N020421UCM",
+      "primary_applicant": "OLIVES NY LLC"
+    },
+    {
+      "project_id": "P2002M0558",
+      "project_name": "STAGE DELI OF NEW YORK",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-05T00:00:00.000",
+      "ulurp_numbers": "N020422UCM",
+      "primary_applicant": "EAST SIDE DELI CORP"
+    },
+    {
+      "project_id": "P2002M0559",
+      "project_name": "COSMIC CANTINA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020423UCM",
+      "primary_applicant": "COSMIC CANTINA, INC"
+    },
+    {
+      "project_id": "P2002M0560",
+      "project_name": "DEUX AMIS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020424UCM",
+      "primary_applicant": "THAFATH, INC"
+    },
+    {
+      "project_id": "P2002M0561",
+      "project_name": "TAVARY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020425UCM",
+      "primary_applicant": "192 BLACK PEARL INC"
+    },
+    {
+      "project_id": "P2002M0562",
+      "project_name": "TAJA (CAPITAL)",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-25T00:00:00.000",
+      "ulurp_numbers": "N020426UCM",
+      "primary_applicant": "T'AMO ENTERPRISES, INC"
+    },
+    {
+      "project_id": "P2002M0564",
+      "project_name": "STS RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-03T00:00:00.000",
+      "ulurp_numbers": "N020428UCM",
+      "primary_applicant": "STS RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0565",
+      "project_name": "CAFE ROMA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020429UCM",
+      "primary_applicant": "ELI-LILLA, INC"
+    },
+    {
+      "project_id": "P2002M0566",
+      "project_name": "HUDSON CORNER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020430UCM",
+      "primary_applicant": "BCD RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0567",
+      "project_name": "JACKSON HOLE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020431UCM",
+      "primary_applicant": "RE SPEC. CORP"
+    },
+    {
+      "project_id": "P2002M0570",
+      "project_name": "STARBUCKS COFFEE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-01-28T00:00:00.000",
+      "ulurp_numbers": "N020434ECM",
+      "primary_applicant": "STARBUCKS CORP"
+    },
+    {
+      "project_id": "P2002M0572",
+      "project_name": "CINEMA DRIVER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020436UCM",
+      "primary_applicant": "SPARTIS POWER, INC"
+    },
+    {
+      "project_id": "P2002M0574",
+      "project_name": "TIVOLI RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020449UCM",
+      "primary_applicant": "GROUBEN FOOD CORP"
+    },
+    {
+      "project_id": "P2002M0575",
+      "project_name": "ZUM SCHNEIDER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-06T00:00:00.000",
+      "ulurp_numbers": "N020450UCM",
+      "primary_applicant": "ZUM SCHNEIDER CORP"
+    },
+    {
+      "project_id": "P2002M0576",
+      "project_name": "BROD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020451UCM",
+      "primary_applicant": "BROD CORP"
+    },
+    {
+      "project_id": "P2002M0577",
+      "project_name": "MARY ANN'S",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020452UCM",
+      "primary_applicant": "300 EAST 5TH ST CORP"
+    },
+    {
+      "project_id": "P2002M0578",
+      "project_name": "73 JJT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020453UCM",
+      "primary_applicant": "73 JJT CORP"
+    },
+    {
+      "project_id": "P2002M0579",
+      "project_name": "CAFFE BIANCO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020454UCM",
+      "primary_applicant": "COFFEE CARLO BIANCO, INC"
+    },
+    {
+      "project_id": "P2002M0580",
+      "project_name": "FRANK RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020455UCM",
+      "primary_applicant": "KITCHEN TABLE, INC"
+    },
+    {
+      "project_id": "P2002M0581",
+      "project_name": "BURRITOVILLE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020456UCM",
+      "primary_applicant": "WEST BURRITOVILLE, INC"
+    },
+    {
+      "project_id": "P2002M0582",
+      "project_name": "WILLY'S BAR & GRILL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020457UCM",
+      "primary_applicant": "CUFU, INC"
+    },
+    {
+      "project_id": "P2002M0583",
+      "project_name": "OROLOGIO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020458UCM",
+      "primary_applicant": "ITALIAN MOTHER CORP"
+    },
+    {
+      "project_id": "P2002M0584",
+      "project_name": "FIVE POINTS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020459UCM",
+      "primary_applicant": "31 GREAT JONES RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0585",
+      "project_name": "FRANKIE'S RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020460UCM",
+      "primary_applicant": "SOJOTA RESTAURANT, INC"
+    },
+    {
+      "project_id": "P2002M0586",
+      "project_name": "MANNAGGIA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-07T00:00:00.000",
+      "ulurp_numbers": "N020470UCM",
+      "primary_applicant": "MANNAGGIA, INC"
+    },
+    {
+      "project_id": "P2002M0587",
+      "project_name": "ARKADY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-07T00:00:00.000",
+      "ulurp_numbers": "N020471UCM",
+      "primary_applicant": "ARKADY, INC"
+    },
+    {
+      "project_id": "P2002M0590",
+      "project_name": "AUTOMATIC SLIM'S",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020474UCM",
+      "primary_applicant": "AUTOMATIC SLIM'S, INC"
+    },
+    {
+      "project_id": "P2002M0592",
+      "project_name": "JOSHUA TREE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020476UCM",
+      "primary_applicant": "513 THIRD RESTAURANT LTD"
+    },
+    {
+      "project_id": "P2002M0593",
+      "project_name": "PUERTO ARGENTINO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-11T00:00:00.000",
+      "ulurp_numbers": "N020477UCM",
+      "primary_applicant": "CMR CORP"
+    },
+    {
+      "project_id": "P2002M0594",
+      "project_name": "466 AMSTERDAM AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-11T00:00:00.000",
+      "ulurp_numbers": "N020478UCM",
+      "primary_applicant": "466 AMSTERDAM AVE, LLC"
+    },
+    {
+      "project_id": "P2002M0595",
+      "project_name": "CAFE SHA SHA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020479UCM",
+      "primary_applicant": "TODA CAFE, INC"
+    },
+    {
+      "project_id": "P2002M0596",
+      "project_name": "CAFFE ISLE OF CAPRI",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-12-13T00:00:00.000",
+      "ulurp_numbers": "N020480ECM",
+      "primary_applicant": "CAFFE ISLE OF CAPRI, INC"
+    },
+    {
+      "project_id": "P2002M0601",
+      "project_name": "SETTEPANI BAKERY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-11T00:00:00.000",
+      "ulurp_numbers": "N020492UCM",
+      "primary_applicant": "BRUNO IN HARLEM"
+    },
+    {
+      "project_id": "P2002M0603",
+      "project_name": "CORSO RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-11T00:00:00.000",
+      "ulurp_numbers": "N020494UCM",
+      "primary_applicant": "CORSO RESTAURANT, INC"
+    },
+    {
+      "project_id": "P2002M0604",
+      "project_name": "MUGHLAI INDIAN CUISINE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-12-05T00:00:00.000",
+      "ulurp_numbers": "N020495ECM",
+      "primary_applicant": "320 COLUMBUS AVE, INC"
+    },
+    {
+      "project_id": "P2002M0605",
+      "project_name": "SILVER MOON BAKERY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020496UCM",
+      "primary_applicant": "SILVER MOON BAKERY, INC"
+    },
+    {
+      "project_id": "P2002M0606",
+      "project_name": "TUTTA PASTA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020507UCM",
+      "primary_applicant": "CAPELITINI PASTA CORP"
+    },
+    {
+      "project_id": "P2002M0607",
+      "project_name": "787 EIGHT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-13T00:00:00.000",
+      "ulurp_numbers": "N020508UCM",
+      "primary_applicant": "787 EIGHT CORP"
+    },
+    {
+      "project_id": "P2002M0608",
+      "project_name": "1621 RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-13T00:00:00.000",
+      "ulurp_numbers": "N020509UCM",
+      "primary_applicant": "1621 RESTAURANT, INC"
+    },
+    {
+      "project_id": "P2002M0609",
+      "project_name": "5 STAR RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-04-17T00:00:00.000",
+      "ulurp_numbers": "N020510UCM",
+      "primary_applicant": "5 STAR RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0610",
+      "project_name": "160 BISTRO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-13T00:00:00.000",
+      "ulurp_numbers": "N020511UCM",
+      "primary_applicant": "160 BISTRO, INC"
+    },
+    {
+      "project_id": "P2002M0611",
+      "project_name": "S.M.J. CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-25T00:00:00.000",
+      "ulurp_numbers": "N020512UCM",
+      "primary_applicant": "S.M.J. CAFE INCORPORATED"
+    },
+    {
+      "project_id": "P2002M0612",
+      "project_name": "BURRITOVILLE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-13T00:00:00.000",
+      "ulurp_numbers": "N020513UCM",
+      "primary_applicant": "EAST BURRITOVILLE, INC"
+    },
+    {
+      "project_id": "P2002M0613",
+      "project_name": "VERO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-13T00:00:00.000",
+      "ulurp_numbers": "N020514UCM",
+      "primary_applicant": "VERO, INC"
+    },
+    {
+      "project_id": "P2002M0614",
+      "project_name": "YUKI JAPANESE RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-25T00:00:00.000",
+      "ulurp_numbers": "N020515UCM",
+      "primary_applicant": "WING LI LONG, INC"
+    },
+    {
+      "project_id": "P2002M0617",
+      "project_name": "BARFLY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020531UCM",
+      "primary_applicant": "BARFLY, INC"
+    },
+    {
+      "project_id": "P2002M0619",
+      "project_name": "52 RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-19T00:00:00.000",
+      "ulurp_numbers": "N020533UCM",
+      "primary_applicant": "52 RESTAURANT GROUP CORP"
+    },
+    {
+      "project_id": "P2002M0621",
+      "project_name": "THE BAGEL RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020536UCM",
+      "primary_applicant": "FILOMENA-VITRANO"
+    },
+    {
+      "project_id": "P2002M0622",
+      "project_name": "GABRIELA'S",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-13T00:00:00.000",
+      "ulurp_numbers": "N020540UCM",
+      "primary_applicant": "685 AMSTERDAM AVE FOOD CORP"
+    },
+    {
+      "project_id": "P2002M0623",
+      "project_name": "DA SILVANO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-14T00:00:00.000",
+      "ulurp_numbers": "N020541UCM",
+      "primary_applicant": "DA SILVANO CORP"
+    },
+    {
+      "project_id": "P2002M0624",
+      "project_name": "A ROZZANO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-14T00:00:00.000",
+      "ulurp_numbers": "N020542UCM",
+      "primary_applicant": "A ROZZANO, INC"
+    },
+    {
+      "project_id": "P2002M0625",
+      "project_name": "219 9TH AVE PUB",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-13T00:00:00.000",
+      "ulurp_numbers": "N020543UCM",
+      "primary_applicant": "219 9TH AVE PUB CO, LLC"
+    },
+    {
+      "project_id": "P2002M0626",
+      "project_name": "TACI",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-13T00:00:00.000",
+      "ulurp_numbers": "N020544UCM",
+      "primary_applicant": "LARK RESTAURANT"
+    },
+    {
+      "project_id": "P2002M0627",
+      "project_name": "DAMON",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-20T00:00:00.000",
+      "ulurp_numbers": "N020545UCM",
+      "primary_applicant": "DAMON CORP OF NY"
+    },
+    {
+      "project_id": "P2002M0628",
+      "project_name": "NOVITA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020546UCM",
+      "primary_applicant": "M.E.G. RESTAURANT ENTERPRISES"
+    },
+    {
+      "project_id": "P2002M0629",
+      "project_name": "WALL'S COFFEE SHOP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-19T00:00:00.000",
+      "ulurp_numbers": "N020556UCM",
+      "primary_applicant": "WALL'S COFFEE SHOP, INC"
+    },
+    {
+      "project_id": "P2002M0630",
+      "project_name": "DAILY CHOW",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-19T00:00:00.000",
+      "ulurp_numbers": "N020557UCM",
+      "primary_applicant": "RADLEY REALTY CORP"
+    },
+    {
+      "project_id": "P2002M0632",
+      "project_name": "EL TEDDY'S",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020559UCM",
+      "primary_applicant": "TEDDY'S INTERNATIONAL, INC"
+    },
+    {
+      "project_id": "P2002M0633",
+      "project_name": "WORLD CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020563UCM",
+      "primary_applicant": "WORLD ON COLUMBUS, INC"
+    },
+    {
+      "project_id": "P2002M0634",
+      "project_name": "YELLOW FINGERS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-02-11T00:00:00.000",
+      "ulurp_numbers": "N020564ECM",
+      "primary_applicant": "N.N.M. RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0635",
+      "project_name": "KRC RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-19T00:00:00.000",
+      "ulurp_numbers": "N020565UCM",
+      "primary_applicant": "KRC RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0636",
+      "project_name": "HARU SAKE BAR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-19T00:00:00.000",
+      "ulurp_numbers": "N020566UCM",
+      "primary_applicant": "HARU TOO, INC"
+    },
+    {
+      "project_id": "P2002M0639",
+      "project_name": "JUST ACROSS THE STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-19T00:00:00.000",
+      "ulurp_numbers": "N020575UCM",
+      "primary_applicant": "JUST ACROSS THE ST, LTD"
+    },
+    {
+      "project_id": "P2002M0640",
+      "project_name": "N.Y.C.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-18T00:00:00.000",
+      "ulurp_numbers": "N020576UCM",
+      "primary_applicant": "TWO THOUSAND DAISY'S LLC"
+    },
+    {
+      "project_id": "P2002M0641",
+      "project_name": "RHONE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-12T00:00:00.000",
+      "ulurp_numbers": "N020577UCM",
+      "primary_applicant": "MORALES ASSOC FOR ORCAA REALTY CORP"
+    },
+    {
+      "project_id": "P2002M0642",
+      "project_name": "7TH AVE HOSPITALITY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-05-01T00:00:00.000",
+      "ulurp_numbers": "N020579ECM",
+      "primary_applicant": "7TH HOSPITALITY GROUP, LLC"
+    },
+    {
+      "project_id": "P2002M0643",
+      "project_name": "PATSY'S",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-13T00:00:00.000",
+      "ulurp_numbers": "N020580UCM",
+      "primary_applicant": "60TH ST RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0645",
+      "project_name": "DOJO WEST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-03T00:00:00.000",
+      "ulurp_numbers": "N020582UCM",
+      "primary_applicant": "DOJO RESTAURANT, INC"
+    },
+    {
+      "project_id": "P2002M0646",
+      "project_name": "ROY'S",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020583UCM",
+      "primary_applicant": "MARRIOTT HOTEL SERVICES, INC"
+    },
+    {
+      "project_id": "P2002M0647",
+      "project_name": "YOKO JAPANESE RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020584UCM",
+      "primary_applicant": "YOKO JAPANESE REST CORP"
+    },
+    {
+      "project_id": "P2002M0648",
+      "project_name": "LE BASKET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-19T00:00:00.000",
+      "ulurp_numbers": "N020602UCM",
+      "primary_applicant": "LE BASKET, INC"
+    },
+    {
+      "project_id": "P2002M0649",
+      "project_name": "BEEKMAN 1239",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-20T00:00:00.000",
+      "ulurp_numbers": "N020603UCM",
+      "primary_applicant": "BEEKMAN 1239, INC"
+    },
+    {
+      "project_id": "P2002M0650",
+      "project_name": "SAIGON GRILL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-13T00:00:00.000",
+      "ulurp_numbers": "N020604UCM",
+      "primary_applicant": "SAIGON GOURMET, INC"
+    },
+    {
+      "project_id": "P2002M0651",
+      "project_name": "NESSA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-01-15T00:00:00.000",
+      "ulurp_numbers": "N020605ECM",
+      "primary_applicant": "BEND-COR, LLC"
+    },
+    {
+      "project_id": "P2002M0652",
+      "project_name": "CAFFE BUON GUSTO DUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-30T00:00:00.000",
+      "ulurp_numbers": "N020606UCM",
+      "primary_applicant": "CAFFE BUON GUSTO DUE CORP"
+    },
+    {
+      "project_id": "P2002M0653",
+      "project_name": "HALLO BERLIN",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-03T00:00:00.000",
+      "ulurp_numbers": "N020607UCM",
+      "primary_applicant": "UNCLE ROLF, INC"
+    },
+    {
+      "project_id": "P2002M0654",
+      "project_name": "LES DEUX GAMINS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020608UCM",
+      "primary_applicant": "RTAD, INC"
+    },
+    {
+      "project_id": "P2002M0655",
+      "project_name": "THE TOMATO RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-03T00:00:00.000",
+      "ulurp_numbers": "N020609UCM",
+      "primary_applicant": "THE TOMATO RESTAURANT, INC"
+    },
+    {
+      "project_id": "P2002M0657",
+      "project_name": "THE FLAMINGO ROOM",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-07-30T00:00:00.000",
+      "ulurp_numbers": "N020621ECM",
+      "primary_applicant": "JOHNNY VEUVE, LLC"
+    },
+    {
+      "project_id": "P2002M0658",
+      "project_name": "MOM RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-21T00:00:00.000",
+      "ulurp_numbers": "N020622UCM",
+      "primary_applicant": "MOM RESTAURANT, INC"
+    },
+    {
+      "project_id": "P2002M0659",
+      "project_name": "THE HALF KING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-13T00:00:00.000",
+      "ulurp_numbers": "N020623UCM",
+      "primary_applicant": "505-23 BAR, INC"
+    },
+    {
+      "project_id": "P2002M0660",
+      "project_name": "IL BUCO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-19T00:00:00.000",
+      "ulurp_numbers": "N020624UCM",
+      "primary_applicant": "IL BUCO CORP"
+    },
+    {
+      "project_id": "P2002M0661",
+      "project_name": "MONSTER SUSHI HUDSON",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-20T00:00:00.000",
+      "ulurp_numbers": "N020625UCM",
+      "primary_applicant": "MONSTER SUSHI HUDSON"
+    },
+    {
+      "project_id": "P2002M0662",
+      "project_name": "BIG SUR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020626UCM",
+      "primary_applicant": "LUPO, INC"
+    },
+    {
+      "project_id": "P2002M0663",
+      "project_name": "SHINING STAR RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-03T00:00:00.000",
+      "ulurp_numbers": "N020627UCM",
+      "primary_applicant": "MRIDULA RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0664",
+      "project_name": "VILLAGE DEN",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020628UCM",
+      "primary_applicant": "12TH ST CORP"
+    },
+    {
+      "project_id": "P2002M0666",
+      "project_name": "ANOTHEROOM",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-13T00:00:00.000",
+      "ulurp_numbers": "N020639UCM",
+      "primary_applicant": "ANOTHEROOM, INC"
+    },
+    {
+      "project_id": "P2002M0667",
+      "project_name": "BAR COASTAL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-02-06T00:00:00.000",
+      "ulurp_numbers": "N020640ECM",
+      "primary_applicant": "C&C 1ST AVE CORP"
+    },
+    {
+      "project_id": "P2002M0668",
+      "project_name": "THE WESTSIDE OF BROADWAY RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-18T00:00:00.000",
+      "ulurp_numbers": "N020641UCM",
+      "primary_applicant": "THE WESTSIDE OF BROADWAY RESTAURANT GROUP INC"
+    },
+    {
+      "project_id": "P2002M0670",
+      "project_name": "THE OTHEROOM",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-12T00:00:00.000",
+      "ulurp_numbers": "N020643UCM",
+      "primary_applicant": "THE OTHEROOM, INC"
+    },
+    {
+      "project_id": "P2002M0671",
+      "project_name": "PENNYFEATHERS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-07-15T00:00:00.000",
+      "ulurp_numbers": "N020644ECM",
+      "primary_applicant": "ARBEE RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0672",
+      "project_name": "STARBUCKS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020645UCM",
+      "primary_applicant": "STARBUCKS CORP NO.7407"
+    },
+    {
+      "project_id": "P2002M0673",
+      "project_name": "EL CONDE RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-01-07T00:00:00.000",
+      "ulurp_numbers": "N020655ECM",
+      "primary_applicant": "EL CONDE RESTAURANT CORP"
+    },
+    {
+      "project_id": "P2002M0674",
+      "project_name": "PGGS GOURMET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-13T00:00:00.000",
+      "ulurp_numbers": "N020656UCM",
+      "primary_applicant": "PGGS GOURMET, INC"
+    },
+    {
+      "project_id": "P2002M0675",
+      "project_name": "LAVAGNA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-20T00:00:00.000",
+      "ulurp_numbers": "N020657UCM",
+      "primary_applicant": "ZIZOU CORP"
+    },
+    {
+      "project_id": "P2002M0676",
+      "project_name": "MONA LISA CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-20T00:00:00.000",
+      "ulurp_numbers": "N020658UCM",
+      "primary_applicant": "SERRA & MOUNA CORP"
+    },
+    {
+      "project_id": "P2002M0677",
+      "project_name": "PORTERS RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-19T00:00:00.000",
+      "ulurp_numbers": "N020659UCM",
+      "primary_applicant": "ML RESTAURANT GROUP"
+    },
+    {
+      "project_id": "P2002M0678",
+      "project_name": "MONA LISA CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-19T00:00:00.000",
+      "ulurp_numbers": "N020660UCM",
+      "primary_applicant": "HAYET & SKANDER CAFE, CORP"
+    },
+    {
+      "project_id": "P2002M0679",
+      "project_name": "PIREAUS MY LOVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-20T00:00:00.000",
+      "ulurp_numbers": "N020661UCM",
+      "primary_applicant": "PIREAUS MY LOVE, INC"
+    },
+    {
+      "project_id": "P2002M0681",
+      "project_name": "NEW BABY BUDDA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-10T00:00:00.000",
+      "ulurp_numbers": "N020663UCM",
+      "primary_applicant": "NEW BABY BUDDA, INC"
+    },
+    {
+      "project_id": "P2002M0682",
+      "project_name": "DRAGO FRATELUS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-06-20T00:00:00.000",
+      "ulurp_numbers": "N020667UCM",
+      "primary_applicant": "DRAGO FRATELUS, INC"
+    },
+    {
+      "project_id": "P2002Q0022",
+      "project_name": "DIST 14 GARAGE & LOT CLEANING UNIT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-02-03T00:00:00.000",
+      "ulurp_numbers": "C020033MMQ; C020034ZMQ; C020035PSQ",
+      "ceqr_number": "99DOS004Q",
+      "primary_applicant": "DOS/CAS"
+    },
+    {
+      "project_id": "P2002Q0029",
+      "project_name": "U-HAUL CENTER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-04-02T00:00:00.000",
+      "ulurp_numbers": "N020041ZCQ",
+      "primary_applicant": "U-HAUL INT./LAURIA ASSOCIATES"
+    },
+    {
+      "project_id": "P2002Q0036",
+      "project_name": "C-O-P/PS #1 CONTEMPORARY ARTS CNTR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-03-20T00:00:00.000",
+      "ulurp_numbers": "C020054PPQ",
+      "primary_applicant": "CAS/EDC"
+    },
+    {
+      "project_id": "P2002Q0044",
+      "project_name": "163RD AVE DEMAPPING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-12-30T00:00:00.000",
+      "ulurp_numbers": "I020061MMQ",
+      "ceqr_number": "02DCP009Q",
+      "primary_applicant": "MARIO PAPA/SHAPIRO ENGINEERING, PC"
+    },
+    {
+      "project_id": "P2002Q0046",
+      "project_name": "NEW FRANKLIN NURSING HOME",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-11-21T00:00:00.000",
+      "ulurp_numbers": "N020067CMQ",
+      "ceqr_number": "92-035AQ",
+      "primary_applicant": "91 DMR OF QUEENS LLC/DAVID MARX"
+    },
+    {
+      "project_id": "P2002Q0049",
+      "project_name": "PLAYLAND CENTER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-08-09T00:00:00.000",
+      "ulurp_numbers": "M800849BZMQ",
+      "primary_applicant": "CAUSEWAY AMUSEMENT/JOEL MIELE & JEFFREY PERSILY"
+    },
+    {
+      "project_id": "P2002Q0050",
+      "project_name": "MAGNOLIA PLAZA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-09-23T00:00:00.000",
+      "ulurp_numbers": "C020071ZMQ",
+      "ceqr_number": "01DME012Q",
+      "primary_applicant": "SAM DEVELOPMENT, LLC/THE AGUSTA GROUP"
+    },
+    {
+      "project_id": "P2002Q0054",
+      "project_name": "ROCKAWAY FIRE/EMS STATION",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-05-26T00:00:00.000",
+      "ulurp_numbers": "C020078ZSQ; C020079PSQ",
+      "ceqr_number": "01CFD007Q",
+      "primary_applicant": "CFD/CAS"
+    },
+    {
+      "project_id": "P2002Q0055",
+      "project_name": "B&P ORDER OF ELKS LODGE NO.878",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-17T00:00:00.000",
+      "ulurp_numbers": "N020080HKQ",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2002Q0062",
+      "project_name": "VERNON BLVD REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2006-07-24T00:00:00.000",
+      "ulurp_numbers": "C020087ZMQ",
+      "ceqr_number": "02DCP020Q",
+      "primary_applicant": "ALMA REALTY CO"
+    },
+    {
+      "project_id": "P2002Q0066",
+      "project_name": "METLIFE PLAZA EXPANSION",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-24T00:00:00.000",
+      "ulurp_numbers": "C020100ZMQ; N020101ZRQ",
+      "ceqr_number": "02DCP016Q",
+      "primary_applicant": "METROPOLITAN LIFE INS/BRAUSE PLAZA/WASHINGTON SQ PARTNERS"
+    },
+    {
+      "project_id": "P2002Q0067",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-04-16T00:00:00.000",
+      "ulurp_numbers": "C020099PPQ",
+      "primary_applicant": "DCAS - Department of Citywide Administrative Services (NYC)"
+    },
+    {
+      "project_id": "P2002Q0071",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2002-08-20T00:00:00.000",
+      "ulurp_numbers": "C020110PPQ",
+      "primary_applicant": "DCAS - Department of Citywide Administrative Services (NYC)"
+    },
+    {
+      "project_id": "P2002Q0073",
+      "project_name": "THE JAMAICA YACHT CLUB",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2001-12-05T00:00:00.000",
+      "ulurp_numbers": "N020112ZCQ",
+      "primary_applicant": "JAMAICA YACHT CLUB INC/M. FORD MCNEILL"
+    },
+    {
+      "project_id": "P2002Q0074",
+      "project_name": "MAGNOLIA PLAZA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-03-30T00:00:00.000",
+      "ulurp_numbers": "C020070MMQ",
+      "ceqr_number": "01DME012Q",
+      "primary_applicant": "SAM DEVELOPMENT, LLC/THE AGUSTA GROUP"
+    },
+    {
+      "project_id": "P2002Q0077",
+      "project_name": "EXECUTIVE MOTOR INN",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2003-08-05T00:00:00.000",
+      "ulurp_numbers": "C020124ZMQ",
+      "ceqr_number": "02DCP019Q",
+      "primary_applicant": "EXECUTIVE MOTOR INN/SHELDON LOBEL, PC"
+    },
+    {
+      "project_id": "P2002Q0079",
+      "project_name": "WOODSIDE REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2007-05-31T00:00:00.000",
+      "ulurp_numbers": "I020126ZMQ",
+      "primary_applicant": "QUEENS CB2"
+    },
+    {
+      "project_id": "P2002Q0080",
+      "project_name": "45TH AVENUE/ELMHURST REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2006-11-20T00:00:00.000",
+      "ulurp_numbers": "C020127ZMQ",
+      "ceqr_number": "02DCP044Q",
+      "primary_applicant": "H.K. DEVELOPMENT GROUP, LTD/JOSEPH MORSELINO"
+    },
+    {
+      "project_id": "P2002Q0089",
+      "project_name": "WATERSIDE ESTATES AT CRESTHAVEN",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2005-11-22T00:00:00.000",
+      "ceqr_number": "03DCP039Q",
+      "primary_applicant": "WATERSIDE ESTATES AT CRESTHAVEN LLC/JOSEPH MORSELLINO"
+    }
+  ]
+}

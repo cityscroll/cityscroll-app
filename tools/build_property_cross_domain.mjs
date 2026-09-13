@@ -11,7 +11,7 @@
  *   node tools/build_property_cross_domain.mjs --check
  */
 
-import { writeFileSync, readFileSync, existsSync, mkdirSync } from "node:fs";
+import { writeFileSync, readFileSync, existsSync, mkdirSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -29,10 +29,15 @@ import {
   publicPayloadFindings,
   publicRecords,
 } from "./lib/public_payload_integrity.mjs";
+import { selectHistoricalProjectContext } from "../site/historical_project_context.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_SITE = join(ROOT, "site/data/property_cross_domain_lookup.json");
 const OUT_WORKER = join(ROOT, "worker/src/data/property_cross_domain_lookup.json");
+const BBL_LOOKUP_PATH = existsSync(join(ROOT, "site/data/zap_bbl_warehouse_lookup.json"))
+  ? join(ROOT, "site/data/zap_bbl_warehouse_lookup.json")
+  : join(ROOT, "worker/src/data/zap_bbl_warehouse_lookup.json");
+const HISTORICAL_CONTEXT_DIR = join(ROOT, "site/data/historical_project_context");
 const LL48_PATH = join(ROOT, "site/data/property_ll48_lookup.json");
 const PROPERTY_OBS_PATH = join(ROOT, "site/data/property_domain_observations.json");
 const DEFAULT_LIVE_URL =
@@ -232,7 +237,7 @@ function collectCorpus(root, propertyObsDoc) {
   }
 
   // Committed WH-06 lookup (fixture-scale until Mini bulk) — exact BBL only
-  const bblLookup = loadJsonIfExists(join(root, "site/data/zap_bbl_warehouse_lookup.json"));
+  const bblLookup = loadJsonIfExists(BBL_LOOKUP_PATH);
   for (const row of flattenZapBblLookup(bblLookup)) zapBblRows.push(row);
 
   for (const p of [join(root, "warehouse/fixtures/ocp-recent-contract-awards/product_seed.csv")]) {
@@ -251,7 +256,18 @@ function collectCorpus(root, propertyObsDoc) {
   }
   const zapLookup = loadJsonIfExists(join(root, "site/data/zap_projects_warehouse_lookup.json"));
   if (zapLookup?.rows) {
-    for (const row of zapLookup.rows.slice(0, 300)) zapProjects.push(row);
+    const mihLookup = loadJsonIfExists(join(root, "site/data/mih_project_lookup.json"));
+    const historicalRows = existsSync(HISTORICAL_CONTEXT_DIR)
+      ? readdirSync(HISTORICAL_CONTEXT_DIR).filter((name) => /^\d{4}\.json$/.test(name))
+        .sort().flatMap((name) => loadJsonIfExists(join(HISTORICAL_CONTEXT_DIR, name))?.rows || [])
+      : [];
+    const selected = selectHistoricalProjectContext({
+      currentRows: zapLookup.rows,
+      zapBblRows,
+      mihRows: mihLookup?.rows || [],
+      publisherRows: [...zapLookup.rows, ...historicalRows],
+    });
+    for (const row of selected.retained_rows) zapProjects.push(row);
   }
 
   return {

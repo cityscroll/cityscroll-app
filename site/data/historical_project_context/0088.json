@@ -1,0 +1,2391 @@
+{
+  "schema_version": "cityscroll.historical_project_context.v1",
+  "shard": "0088",
+  "rows": [
+    {
+      "project_id": "P2011R0085",
+      "project_name": "5854 AMBOY ROAD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2010-12-30T00:00:00.000",
+      "ulurp_numbers": "N110153RCR",
+      "ceqr_number": "11DCP054R",
+      "primary_applicant": "CROWN JEWEL, INC."
+    },
+    {
+      "project_id": "P2011R0089",
+      "project_name": "7146 AMBOY ROAD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-02-09T00:00:00.000",
+      "ulurp_numbers": "N110157RCR",
+      "ceqr_number": "11DCP057R",
+      "primary_applicant": "CMPG CUSTOM HOME BUILDERS LLC"
+    },
+    {
+      "project_id": "P2011R0090",
+      "project_name": "351 DETROIT AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-12-28T00:00:00.000",
+      "ulurp_numbers": "N110158RCR",
+      "ceqr_number": "11DCP058R",
+      "primary_applicant": "SAM MELISI"
+    },
+    {
+      "project_id": "P2011R0099",
+      "project_name": "901 MANOR ROAD",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "11DCP062R",
+      "primary_applicant": "CLARA FIZZINO"
+    },
+    {
+      "project_id": "P2011R0100",
+      "project_name": "994 CARLTON BLVD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-02-09T00:00:00.000",
+      "ulurp_numbers": "N110171RCR",
+      "ceqr_number": "11DCP063R",
+      "primary_applicant": "MADONIA DEVELOPERS"
+    },
+    {
+      "project_id": "P2011R0103",
+      "project_name": "RETAIL DEV. @ 450 NEW DORP LANE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-01-05T00:00:00.000",
+      "ulurp_numbers": "N110173ZAR",
+      "ceqr_number": "11DCP008R",
+      "primary_applicant": "FNC REALTY CORP. D/B/A FNC REAL ESTATE DEVELOPMENT"
+    },
+    {
+      "project_id": "P2011R0104",
+      "project_name": "211 DARLINGTON AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-02-10T00:00:00.000",
+      "ulurp_numbers": "N110175RCR",
+      "ceqr_number": "11DCP067R",
+      "primary_applicant": "Unknown"
+    },
+    {
+      "project_id": "P2011R0107",
+      "project_name": "17 CHRISTINE COURT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-01-20T00:00:00.000",
+      "ulurp_numbers": "N110180RCR",
+      "ceqr_number": "11DCP070R",
+      "primary_applicant": "CITY BUILDING NY, INC."
+    },
+    {
+      "project_id": "P2011R0112",
+      "project_name": "500 BUTLER BLVD.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-02-23T00:00:00.000",
+      "ulurp_numbers": "N110185RCR",
+      "ceqr_number": "11DCP071R",
+      "primary_applicant": "7336 AMBOY ROAD, LLC"
+    },
+    {
+      "project_id": "P2011R0118",
+      "project_name": "AMBOY ROAD & SERENA COURT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-02-23T00:00:00.000",
+      "ulurp_numbers": "N110197RCR",
+      "ceqr_number": "11DCP077R",
+      "primary_applicant": "OVAS BUILDING CORP"
+    },
+    {
+      "project_id": "P2011R0119",
+      "project_name": "CHATHAM ST AND KENILWORTH AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-02-23T00:00:00.000",
+      "ulurp_numbers": "N110198RCR",
+      "ceqr_number": "11DCP078R",
+      "primary_applicant": "MICHAEL FAZIO"
+    },
+    {
+      "project_id": "P2011R0123",
+      "project_name": "135 WOODVALE AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-02-23T00:00:00.000",
+      "ulurp_numbers": "N110200RCR",
+      "ceqr_number": "11DCP082R",
+      "primary_applicant": "Rampulla Associates"
+    },
+    {
+      "project_id": "P2011R0124",
+      "project_name": "136 MAYBERRY PROMENADE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-02-23T00:00:00.000",
+      "ulurp_numbers": "N110201RCR",
+      "ceqr_number": "11DCP083R",
+      "primary_applicant": "Rampulla Associates"
+    },
+    {
+      "project_id": "P2011R0126",
+      "project_name": "REV I.& R. GRAY COLEMAN  HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-05-16T00:00:00.000",
+      "ulurp_numbers": "N110210HKR",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2011R0127",
+      "project_name": "ROSSVILLE A.M.E. ZION CHURCH",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-05-16T00:00:00.000",
+      "ulurp_numbers": "N110211HKR",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2011R0128",
+      "project_name": "565 & 569 BLOOMINGDALE ROAD HOUSES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-05-16T00:00:00.000",
+      "ulurp_numbers": "N110212HKR",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2011R0130",
+      "project_name": "161 STATION AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-03-11T00:00:00.000",
+      "ulurp_numbers": "N110215RCR",
+      "ceqr_number": "11DCP088R",
+      "primary_applicant": "CALVANICO ASSOC."
+    },
+    {
+      "project_id": "P2011R0131",
+      "project_name": "85 POUGHKEEPSIE COURT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-06-23T00:00:00.000",
+      "ulurp_numbers": "N110217RCR",
+      "ceqr_number": "11DCP089R",
+      "primary_applicant": "THINK DESIGN ARCHIECTURE"
+    },
+    {
+      "project_id": "P2011R0134",
+      "project_name": "738 ANNADALE ROAD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-08-31T00:00:00.000",
+      "ulurp_numbers": "N110227RCR",
+      "ceqr_number": "11DCP091R",
+      "primary_applicant": "FRED LAROCCA"
+    },
+    {
+      "project_id": "P2011R0136",
+      "project_name": "18 GARDEN COURT",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2011-06-10T00:00:00.000",
+      "primary_applicant": "FRANK SAVINO"
+    },
+    {
+      "project_id": "P2011R0139",
+      "project_name": "EDGEGROVE AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-03-28T00:00:00.000",
+      "ulurp_numbers": "N110230RCR",
+      "ceqr_number": "11DCP092R",
+      "primary_applicant": "LEONARD KINSMAN/DANIELLE KINSMAN"
+    },
+    {
+      "project_id": "P2011R0140",
+      "project_name": "112 PETRUS AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-03-28T00:00:00.000",
+      "ulurp_numbers": "N110231RCR",
+      "ceqr_number": "11DCP093R",
+      "primary_applicant": "ANDREA LELLA"
+    },
+    {
+      "project_id": "P2011R0146",
+      "project_name": "MARKHAM GARDENS SENIOR HOUSING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-06-08T00:00:00.000",
+      "ulurp_numbers": "N110238ZAR",
+      "ceqr_number": "06CHA001R",
+      "primary_applicant": "NYCHA"
+    },
+    {
+      "project_id": "P2011R0148",
+      "project_name": "81 CROMWELL CIRCLE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-05-12T00:00:00.000",
+      "ulurp_numbers": "N110240ZCR",
+      "ceqr_number": "11DCP098R",
+      "primary_applicant": "SALVATORE GALOFARO"
+    },
+    {
+      "project_id": "P2011R0149",
+      "project_name": "1002 IONIA AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-04-20T00:00:00.000",
+      "ulurp_numbers": "I110241RCR",
+      "ceqr_number": "11DCP099R",
+      "primary_applicant": "HI-LINE HOMES"
+    },
+    {
+      "project_id": "P2011R0150",
+      "project_name": "7339 AMBOY ROAD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-04-20T00:00:00.000",
+      "ulurp_numbers": "N110242RCR",
+      "ceqr_number": "11DCP100R",
+      "primary_applicant": "WOOD AVENUE 235 LLC"
+    },
+    {
+      "project_id": "P2011R0152",
+      "project_name": "30, 32, 34, 36 IDAHO AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-05-05T00:00:00.000",
+      "ulurp_numbers": "N110244RCR",
+      "ceqr_number": "11DCP103R",
+      "primary_applicant": "CULSMITH CONSTRUCTION"
+    },
+    {
+      "project_id": "P2011R0157",
+      "project_name": "BELVEDERE COURT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-04-20T00:00:00.000",
+      "ulurp_numbers": "N110251RCR",
+      "ceqr_number": "11DCP109R",
+      "primary_applicant": "Page, LLC"
+    },
+    {
+      "project_id": "P2011R0164",
+      "project_name": "287-327 ELLIS STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-04-20T00:00:00.000",
+      "ulurp_numbers": "N110263RCR",
+      "ceqr_number": "11DCP112R",
+      "primary_applicant": "CRANS , INC."
+    },
+    {
+      "project_id": "P2011R0165",
+      "project_name": "1870 DRUMGOOLE ROAD EAST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-05-05T00:00:00.000",
+      "ulurp_numbers": "N110266RCR",
+      "ceqr_number": "11DCP114R",
+      "primary_applicant": "MESIVTA TIFERETH OF AMERICA"
+    },
+    {
+      "project_id": "P2011R0166",
+      "project_name": "HYLAN BOULEVARD & GREENCROFT AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-05-05T00:00:00.000",
+      "ulurp_numbers": "N110271RCR",
+      "ceqr_number": "11DCP115R",
+      "primary_applicant": "BLAIR RIDGE DEVELOPMENT CORP./NARROWS INDUSTRIES CORP. SI"
+    },
+    {
+      "project_id": "P2011R0175",
+      "project_name": "EDGEGROVE AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-06-23T00:00:00.000",
+      "ulurp_numbers": "N110288RCR",
+      "ceqr_number": "11DCP124R",
+      "primary_applicant": "JOHN GRILLO"
+    },
+    {
+      "project_id": "P2011R0176",
+      "project_name": "191-197 NORTH RAILROAD STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-06-23T00:00:00.000",
+      "ulurp_numbers": "N110289RCR",
+      "ceqr_number": "11DCP122R",
+      "primary_applicant": "CASTLE ESTATES OF S.I., INC."
+    },
+    {
+      "project_id": "P2011R0177",
+      "project_name": "193 MCBAINE AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-06-23T00:00:00.000",
+      "ulurp_numbers": "N110292RCR",
+      "ceqr_number": "11DCP125R",
+      "primary_applicant": "MC MASON PARTNERS, LLC"
+    },
+    {
+      "project_id": "P2011R0178",
+      "project_name": "103 BEDELL AVENUE & 7-9 TUCCI COURT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-07-07T00:00:00.000",
+      "ulurp_numbers": "N110293RCR",
+      "ceqr_number": "11DCP126R",
+      "primary_applicant": "GINO TUCCI"
+    },
+    {
+      "project_id": "P2011R0179",
+      "project_name": "215-227 SHARROTT AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-07-22T00:00:00.000",
+      "ulurp_numbers": "N110295RCR",
+      "ceqr_number": "11DCP128R",
+      "primary_applicant": "MALINDA QUINLAN"
+    },
+    {
+      "project_id": "P2011R0182",
+      "project_name": "170 EDGEGROVE AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-07-11T00:00:00.000",
+      "ulurp_numbers": "N110302RCR",
+      "ceqr_number": "11DCP129R",
+      "primary_applicant": "THOMAS KANE"
+    },
+    {
+      "project_id": "P2011R0183",
+      "project_name": "170 EDGEGROVE AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-07-11T00:00:00.000",
+      "ulurp_numbers": "N110303RCR",
+      "ceqr_number": "11DCP129R",
+      "primary_applicant": "THOMAS KANE"
+    },
+    {
+      "project_id": "P2011R0184",
+      "project_name": "756 CRAIG AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-07-07T00:00:00.000",
+      "ulurp_numbers": "N110304RCR",
+      "ceqr_number": "11DCP131R",
+      "primary_applicant": "JOHN KLING"
+    },
+    {
+      "project_id": "P2011R0187",
+      "project_name": "1281 ARTHUR KILL RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-12-02T00:00:00.000",
+      "ulurp_numbers": "N110313ZCR; N110314ZCR",
+      "ceqr_number": "08DCP062R",
+      "primary_applicant": "SHAHAR SPITZER"
+    },
+    {
+      "project_id": "P2011R0188",
+      "project_name": "SEAVIEW SENIOR HOUSING PROJECT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-06-20T00:00:00.000",
+      "ulurp_numbers": "N110329ZCR",
+      "ceqr_number": "11DCP134R",
+      "primary_applicant": "SEAVIEW SR.LIVING CORP/MET COUNCIL"
+    },
+    {
+      "project_id": "P2011R0196",
+      "project_name": "200 WOODVALE AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-07-21T00:00:00.000",
+      "ulurp_numbers": "N110362RCR",
+      "ceqr_number": "11DCP140R",
+      "primary_applicant": "RICHARD PASQUALE"
+    },
+    {
+      "project_id": "P2011R0201",
+      "project_name": "S.I.MUSEUM GEOTHERMAL PROJECT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-07-14T00:00:00.000",
+      "ulurp_numbers": "N110367ZAR",
+      "primary_applicant": "DDC"
+    },
+    {
+      "project_id": "P2011R0202",
+      "project_name": "208 LAMOKA AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-07-07T00:00:00.000",
+      "ulurp_numbers": "N110371RCR",
+      "ceqr_number": "11DCP144R",
+      "primary_applicant": "ROCCO POMPA"
+    },
+    {
+      "project_id": "P2011R0203",
+      "project_name": "1002 ANNADALE ROAD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-09-28T00:00:00.000",
+      "ulurp_numbers": "N110372RCR",
+      "ceqr_number": "11DCP145R",
+      "primary_applicant": "RAYMOND MASUCCI"
+    },
+    {
+      "project_id": "P2011R0204",
+      "project_name": "382 VERNON AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-07-22T00:00:00.000",
+      "ulurp_numbers": "N110373RCR",
+      "ceqr_number": "11DCP146R",
+      "primary_applicant": "MICHAEL RAPCAVAGE"
+    },
+    {
+      "project_id": "P2011R0210",
+      "project_name": "80 SEGUINE AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-11-09T00:00:00.000",
+      "ulurp_numbers": "N110391RCR",
+      "ceqr_number": "11DCP151R",
+      "primary_applicant": "JOHN BOZZA"
+    },
+    {
+      "project_id": "P2011R0211",
+      "project_name": "489, 493, 497 COLON AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-08-03T00:00:00.000",
+      "ulurp_numbers": "N110392RCR",
+      "ceqr_number": "11DCP152R",
+      "primary_applicant": "COLON DEV."
+    },
+    {
+      "project_id": "P2011R0213",
+      "project_name": "355 BRIGHTON STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-08-31T00:00:00.000",
+      "ulurp_numbers": "N110396RCR",
+      "ceqr_number": "11DCP155R",
+      "primary_applicant": "KDC of Staten Island, Inc."
+    },
+    {
+      "project_id": "P2011R0214",
+      "project_name": "30 ADRIENNE PLACE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-08-03T00:00:00.000",
+      "ulurp_numbers": "N110397RCR",
+      "ceqr_number": "11DCP156R",
+      "primary_applicant": "DEP"
+    },
+    {
+      "project_id": "P2011X0021",
+      "project_name": "5247 ARLINGTON AVE N/O 252ND ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2010-11-17T00:00:00.000",
+      "ulurp_numbers": "N110055ZCX",
+      "ceqr_number": "11DCP019X",
+      "primary_applicant": "ALAN LONGHNAN"
+    },
+    {
+      "project_id": "P2011X0043",
+      "project_name": "2311 TIEBOUT AVE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "2011-03-28T00:00:00.000",
+      "ceqr_number": "11HPD003X",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P2011X0049",
+      "project_name": "EAST TREMONT APARTMENTS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-04-11T00:00:00.000",
+      "ulurp_numbers": "C110100ZSX; C110101HAX; C110103ZSX",
+      "ceqr_number": "10HPD001X",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P2011X0056",
+      "project_name": "COURTLANDT CRESCENT/MELROSE COMMONS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-03-28T00:00:00.000",
+      "ulurp_numbers": "C110115ZMX",
+      "ceqr_number": "06HPD008X",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P2011X0057",
+      "project_name": "COURTLANDT CRESCENT/MELROSE COMMONS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-03-28T00:00:00.000",
+      "ulurp_numbers": "C110116HAX",
+      "ceqr_number": "06HPD008X",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P2011X0081",
+      "project_name": "UNION REFORMED CHURCH OF HIGHBRIDGE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-02-08T00:00:00.000",
+      "ulurp_numbers": "N110149HKX",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2011X0093",
+      "project_name": "EAST CLARKE PLACE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-04-11T00:00:00.000",
+      "ulurp_numbers": "N110162HAX",
+      "ceqr_number": "10HPD020X",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P2011X0097",
+      "project_name": "4686 WALDO AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-06-06T00:00:00.000",
+      "ulurp_numbers": "N110168ZCX",
+      "ceqr_number": "11DCP061X",
+      "primary_applicant": "MARIO SORRENTI"
+    },
+    {
+      "project_id": "P2011X0102",
+      "project_name": "LA CASA DE LUNA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-01-13T00:00:00.000",
+      "ulurp_numbers": "N110172ZCX",
+      "ceqr_number": "11DCP066X",
+      "primary_applicant": "3462 THIRD AVENUE REALTY"
+    },
+    {
+      "project_id": "P2011X0109",
+      "project_name": "ALDERBROOK HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-04-11T00:00:00.000",
+      "ulurp_numbers": "N110182HKX",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2011X0122",
+      "project_name": "NYPD BRONX PARKING ENFORCEMENT DIST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-03-04T00:00:00.000",
+      "ulurp_numbers": "N110204PXX",
+      "primary_applicant": "DCAS/NYPD"
+    },
+    {
+      "project_id": "P2011X0142",
+      "project_name": "CROTONA PARK - WEST FARMS ROAD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-10-11T00:00:00.000",
+      "ulurp_numbers": "C110234HAX",
+      "ceqr_number": "10DCP017X",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P2011X0162",
+      "project_name": "PHILIP H. MICHAELS CHILD CARE CTR.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-10-10T00:00:00.000",
+      "ulurp_numbers": "C110260PQX",
+      "primary_applicant": "ACS/DCAS"
+    },
+    {
+      "project_id": "P2011X0172",
+      "project_name": "GREYSTON GATEHOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-06-19T00:00:00.000",
+      "ulurp_numbers": "N110279HKX",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2011X0173",
+      "project_name": "620 WEST 252 STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-06-06T00:00:00.000",
+      "ulurp_numbers": "N110275ZCX",
+      "ceqr_number": "11DCP117X",
+      "primary_applicant": "BENJAMIN COHEN"
+    },
+    {
+      "project_id": "P2011X0180",
+      "project_name": "CROTONA PARK EAST/WEST FARMS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-10-10T00:00:00.000",
+      "ulurp_numbers": "C110297ZSX",
+      "ceqr_number": "10DCP017X",
+      "primary_applicant": "INDUSTICO HOLDINGS, LLC"
+    },
+    {
+      "project_id": "P2011X0199",
+      "project_name": "EL RIO RESIDENCE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-12-04T00:00:00.000",
+      "ulurp_numbers": "C110365HAX",
+      "ceqr_number": "11HPD012X",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P2011X0243",
+      "project_name": "COURT DELI.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-06-07T00:00:00.000",
+      "ulurp_numbers": "N110284ECX",
+      "primary_applicant": "NPK DONUTS, INC."
+    },
+    {
+      "project_id": "P2011X0255",
+      "project_name": "GEORGE'S RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-07-25T00:00:00.000",
+      "ulurp_numbers": "N110319ECX",
+      "primary_applicant": "George's SCC, Inc."
+    },
+    {
+      "project_id": "P2012K0002",
+      "project_name": "MONTGOMERY ST BRIDGE De Minimus",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "2015-05-23T00:00:00.000",
+      "primary_applicant": "DOT - NYC Dept of Transportation"
+    },
+    {
+      "project_id": "P2012K0003",
+      "project_name": "PRESIDENT STREET BRIDGE De Minimus",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "2015-05-23T00:00:00.000",
+      "primary_applicant": "DOT - NYC Dept of Transportation"
+    },
+    {
+      "project_id": "P2012K0004",
+      "project_name": "UNION STREET BRIDGE De Minimus",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "2015-05-23T00:00:00.000",
+      "primary_applicant": "DOT - NYC Dept of Transportation"
+    },
+    {
+      "project_id": "P2012K0005",
+      "project_name": "ST JOHN'S PLACE BRIDGE De Minimus",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "2015-05-30T00:00:00.000",
+      "primary_applicant": "DOT - NYC Dept of Transportation"
+    },
+    {
+      "project_id": "P2012K0006",
+      "project_name": "EMPIRE Blvd- Flatbush Ave. Bridge De Minimus",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "2015-05-30T00:00:00.000",
+      "ceqr_number": "02DOT001K",
+      "primary_applicant": "Ristina Nessel"
+    },
+    {
+      "project_id": "P2012K0012",
+      "project_name": "WALLABOUT HISTORIC DISTRICT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-09-27T00:00:00.000",
+      "ulurp_numbers": "N120022HKK",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2012K0014",
+      "project_name": "BAY RIDGE MIXED USE DEV",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-10-21T00:00:00.000",
+      "ulurp_numbers": "N120034CMK",
+      "ceqr_number": "06DCP082K",
+      "primary_applicant": "MSK PROPERTIES LLC"
+    },
+    {
+      "project_id": "P2012K0028",
+      "project_name": "LIBERTY WAREHOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-10-31T00:00:00.000",
+      "ulurp_numbers": "N120054ZCK",
+      "ceqr_number": "12DCP030K",
+      "primary_applicant": "LIBERTY EVENTS, LLC"
+    },
+    {
+      "project_id": "P2012K0032",
+      "project_name": "2368, 2402, 2460 EAST 69TH ST",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "2012-05-08T00:00:00.000",
+      "ceqr_number": "09DCP001K",
+      "primary_applicant": "CORAL HEADQUARTERS LLC"
+    },
+    {
+      "project_id": "P2012K0036",
+      "project_name": "6015 16TH AVE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "2012-07-18T00:00:00.000",
+      "primary_applicant": "6015 16TH AVE REALTY LLC"
+    },
+    {
+      "project_id": "P2012K0037",
+      "project_name": "BOROUGH HALL SKYSCRAPER HISTORIC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-02-06T00:00:00.000",
+      "ulurp_numbers": "N120069HKK",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2012K0038",
+      "project_name": "18TH AVE REZONING",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "2012-04-25T00:00:00.000",
+      "primary_applicant": "ZEIDY REALTY CORP"
+    },
+    {
+      "project_id": "P2012K0041",
+      "project_name": "RHEINGOLD REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-12-16T00:00:00.000",
+      "ulurp_numbers": "C070250MMK; C080322ZMK; N110179ZRK",
+      "ceqr_number": "09DCP002K",
+      "primary_applicant": "READ PROPERTY GROUP LLC"
+    },
+    {
+      "project_id": "P2012K0046",
+      "project_name": "HAYM SALOMON HOME FOR THE AGED",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-01-03T00:00:00.000",
+      "ulurp_numbers": "N120087ZCK",
+      "ceqr_number": "12DCP054K",
+      "primary_applicant": "HAYM SALOMON HOME FOR THE AGED"
+    },
+    {
+      "project_id": "P2012K0047",
+      "project_name": "MAPLE LANE VIEWS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-03-04T00:00:00.000",
+      "ulurp_numbers": "C090154ZMK",
+      "ceqr_number": "11DCP022K",
+      "primary_applicant": "Fairmont Lanes LLC"
+    },
+    {
+      "project_id": "P2012K0049",
+      "project_name": "EAST 99TH ST DEMAPPING",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P2012K0052",
+      "project_name": "ST. CASIMIR'S ROMAN CATHOLIC CHURCH",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-02-06T00:00:00.000",
+      "ulurp_numbers": "N120099HKK",
+      "primary_applicant": "LP-2476"
+    },
+    {
+      "project_id": "P2012K0057",
+      "project_name": "EAST 29TH ST DEMAPPING",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "09DCP071K",
+      "primary_applicant": "MICHAEL TREBINSKI/ALEKSANDR KARPLSHIN"
+    },
+    {
+      "project_id": "P2012K0069",
+      "project_name": "59 Walton Street",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-09-18T00:00:00.000",
+      "ulurp_numbers": "C100041ZMK; N100042ZRK",
+      "ceqr_number": "10DCP001K",
+      "primary_applicant": "Walton Realty Assoc"
+    },
+    {
+      "project_id": "P2012K0079",
+      "project_name": "COIGNET STONE BUILDING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-04-23T00:00:00.000",
+      "ulurp_numbers": "N070006AHKK",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2012K0083",
+      "project_name": "SEWERAGE DIST D.P. #CI-126C",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-02-06T00:00:00.000",
+      "ulurp_numbers": "N100182MDK",
+      "primary_applicant": "Prakashchandra Shah"
+    },
+    {
+      "project_id": "P2012K0085",
+      "project_name": "EMPIRE BOULEVARD REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2014-07-01T00:00:00.000",
+      "ulurp_numbers": "C100202ZMK",
+      "ceqr_number": "10DCP020K",
+      "primary_applicant": "529 EMPIRE REALTY CORP"
+    },
+    {
+      "project_id": "P2012K0086",
+      "project_name": "BUSH TERMINAL PIERS",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "2017-10-31T00:00:00.000",
+      "primary_applicant": "EDC"
+    },
+    {
+      "project_id": "P2012K0087",
+      "project_name": "209-231 McGuinness Blvd",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-12-17T00:00:00.000",
+      "ulurp_numbers": "C100218ZMK; N100219ZRK",
+      "ceqr_number": "10DCP024K",
+      "primary_applicant": "Paul Pullo"
+    },
+    {
+      "project_id": "P2012K0090",
+      "project_name": "SEWERAGE DIST DP#CI1-126E",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-02-06T00:00:00.000",
+      "ulurp_numbers": "N100245MDK",
+      "primary_applicant": "Prakashchandra Shah"
+    },
+    {
+      "project_id": "P2012K0091",
+      "project_name": "SEWERAGE DIST DP #CI-126F",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-12-05T00:00:00.000",
+      "ulurp_numbers": "N100246MDK",
+      "primary_applicant": "Prakashchandra Shah"
+    },
+    {
+      "project_id": "P2012K0103",
+      "project_name": "KEDEM WINERY SPECIAL PERMIT RENEWAL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2014-08-04T00:00:00.000",
+      "ulurp_numbers": "N100442CMK; N130373CMK",
+      "ceqr_number": "13DCP144K",
+      "primary_applicant": "RECTOR HYLAN CORP."
+    },
+    {
+      "project_id": "P2012K0106",
+      "project_name": "INDIA STREET PIER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-01-24T00:00:00.000",
+      "ulurp_numbers": "N100473ZCK",
+      "primary_applicant": "STILES PORPERTIES LLC"
+    },
+    {
+      "project_id": "P2012K0142",
+      "project_name": "UNION AVE MCCARREN PARK MAP CHANGE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2016-06-08T00:00:00.000",
+      "ulurp_numbers": "C110254MMK",
+      "ceqr_number": "11DPR014K",
+      "primary_applicant": "DRP & OPEN SPACE ALLIANCE FOR NORTH BROOKLYN"
+    },
+    {
+      "project_id": "P2012K0153",
+      "project_name": "74 WALLABOUT STREET REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-09-18T00:00:00.000",
+      "ulurp_numbers": "C110390ZMK",
+      "ceqr_number": "11DCP150K",
+      "primary_applicant": "Simon Dushinsky"
+    },
+    {
+      "project_id": "P2012K0182",
+      "project_name": "DIKEMAN ST DEMAPPING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2015-07-23T00:00:00.000",
+      "ulurp_numbers": "C120093MMK",
+      "ceqr_number": "12DCP026K",
+      "primary_applicant": "DIKEMAN REALTY CORP."
+    },
+    {
+      "project_id": "P2012K0184",
+      "project_name": "MILL BASIN,  KRISTAL AUTO & TOYS  ''R'' US",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-01-02T00:00:00.000",
+      "ulurp_numbers": "C070512MMK; C120108ZMK; N120109ZAK; N120110ZCK; C120111PPK",
+      "ceqr_number": "12DME002K",
+      "primary_applicant": "Andrew Schwartz"
+    },
+    {
+      "project_id": "P2012K0187",
+      "project_name": "2078 -2094 E. 68TH STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-12-09T00:00:00.000",
+      "ulurp_numbers": "N120116ZCK",
+      "ceqr_number": "12DCP067K",
+      "primary_applicant": "ANDA PROPERTIES CO., LLC"
+    },
+    {
+      "project_id": "P2012K0214",
+      "project_name": "LIU SOCCER FIELD EXPANSION",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "2021-04-05T00:00:00.000",
+      "ceqr_number": "13DCP018K",
+      "primary_applicant": "KENNETH FISHER"
+    },
+    {
+      "project_id": "P2012K0231",
+      "project_name": "GREENPOINT LANDING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-12-16T00:00:00.000",
+      "ulurp_numbers": "C140019HAK; N140020ZAK; N140021ZAK; N140022ZAK; N140023ZAK; N140024ZCK; N140025ZCK; N140026ZCK; N140027ZCK; N140028ZRK",
+      "ceqr_number": "14DCP004K",
+      "primary_applicant": "NYCHPD"
+    },
+    {
+      "project_id": "P2012K0232",
+      "project_name": "NEWTOWN CREEK NATURE WALK PHASE 3",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2016-12-22T00:00:00.000",
+      "ulurp_numbers": "C120120MMK; C160243PSK",
+      "ceqr_number": "11DEP036K",
+      "primary_applicant": "DEP - Department of Environmental Protection (NYC)"
+    },
+    {
+      "project_id": "P2012K0233",
+      "project_name": "ROSE PLAZA WATERFRONT (Chair Cert)",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "13DCP040K",
+      "primary_applicant": "WATERFRONT REALTY II,LLC"
+    },
+    {
+      "project_id": "P2012K0236",
+      "project_name": "DOWNTOWN BROOKLYN PARKING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-12-17T00:00:00.000",
+      "ulurp_numbers": "N120384AZRK",
+      "ceqr_number": "12DCP175K",
+      "primary_applicant": "DCP"
+    },
+    {
+      "project_id": "P2012K0240",
+      "project_name": "WHOLE FOODS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-05-15T00:00:00.000",
+      "ulurp_numbers": "N120287ZCK",
+      "ceqr_number": "12DCP151K",
+      "primary_applicant": "WHOLE FOODS MARKET GROUP, INC."
+    },
+    {
+      "project_id": "P2012K0242",
+      "project_name": "Brooklyn College Nostrand Avenue Development",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-10-16T00:00:00.000",
+      "ulurp_numbers": "C130306ZMK; C120326MMK",
+      "ceqr_number": "13DAS002K",
+      "primary_applicant": "NEW YORK STATE DORMITORY AUTHORITY"
+    },
+    {
+      "project_id": "P2012K0243",
+      "project_name": "5402 FORT HAMILTON PARKWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2015-03-04T00:00:00.000",
+      "ulurp_numbers": "C140288ZMK",
+      "ceqr_number": "14DCP135K",
+      "primary_applicant": "FORT HAMILTON LLC"
+    },
+    {
+      "project_id": "P2012K0244",
+      "project_name": "DITMAS PARK CARE CENTER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-05-24T00:00:00.000",
+      "ulurp_numbers": "N120203ZCK",
+      "ceqr_number": "12DCP112K",
+      "primary_applicant": "DITMAS PARK CARE CENTER"
+    },
+    {
+      "project_id": "P2012K0245",
+      "project_name": "OCEANVIEW MANOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-06-18T00:00:00.000",
+      "ulurp_numbers": "C130107ZSK; C130108ZSK; C130109ZSK; N130110ZCK",
+      "ceqr_number": "11DCP137K",
+      "primary_applicant": "Eric Palatnik"
+    },
+    {
+      "project_id": "P2012K0247",
+      "project_name": "1901 Emmons Ave., Cherry Hill Gourmet Legalization",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2015-06-02T00:00:00.000",
+      "ulurp_numbers": "N150109ZRK",
+      "ceqr_number": "15DCP058K",
+      "primary_applicant": "CHERRY HILL GOURMET RESTAURANT"
+    },
+    {
+      "project_id": "P2012K0248",
+      "project_name": "KNAPP STREET STORAGE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "12DCP160K",
+      "primary_applicant": "METRO STORAGE NY, LLC"
+    },
+    {
+      "project_id": "P2012K0249",
+      "project_name": "Cypress Hills Senior Housing",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2014-12-18T00:00:00.000",
+      "ulurp_numbers": "N140160ZAK",
+      "ceqr_number": "13HPD048K",
+      "primary_applicant": "NYC HPD"
+    },
+    {
+      "project_id": "P2012K0250",
+      "project_name": "Pitkin-Berriman Rezoning",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-07-30T00:00:00.000",
+      "ulurp_numbers": "C130161ZMK",
+      "ceqr_number": "13DCP067K",
+      "primary_applicant": "PITKIN-BERRIMAN HOUSING DEVELOPMENT FUND CORPORATION"
+    },
+    {
+      "project_id": "P2012K0251",
+      "project_name": "Ultra Flex Packaging Corp.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-01-11T00:00:00.000",
+      "ulurp_numbers": "N130128ZCK",
+      "ceqr_number": "13DCP049K",
+      "primary_applicant": "ULTRA FLEX PACKAGING, CORP."
+    },
+    {
+      "project_id": "P2012K0364",
+      "project_name": "363-365 Bond Street",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-03-18T00:00:00.000",
+      "ulurp_numbers": "N130044CMK; N130226CMK",
+      "ceqr_number": "08DCP033K",
+      "primary_applicant": "TOLL BROOKLYN LP"
+    },
+    {
+      "project_id": "P2012K0389",
+      "project_name": "3133-3135 Emmons Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2016-03-27T00:00:00.000",
+      "ulurp_numbers": "N150342ZRK; C150343ZSK",
+      "ceqr_number": "15DCP156K",
+      "primary_applicant": "STGG REALTY, LLC"
+    },
+    {
+      "project_id": "P2012K0421",
+      "project_name": "JIN JIN HONG HONG CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-12-07T00:00:00.000",
+      "ulurp_numbers": "N110187ECK",
+      "primary_applicant": "M STAR HONG KONG CAFE, INC."
+    },
+    {
+      "project_id": "P2012K0464",
+      "project_name": "GOLD COAST DELI",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "2013-03-29T00:00:00.000",
+      "primary_applicant": "8530 3RD AVENUE RESTURANT GROUP"
+    },
+    {
+      "project_id": "P2012K0468",
+      "project_name": "UNDERHILL CAFE & GRILL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-06-05T00:00:00.000",
+      "ulurp_numbers": "N120091ECK",
+      "primary_applicant": "UNDERHILL CAFE & GRILL LLC"
+    },
+    {
+      "project_id": "P2012K0482",
+      "project_name": "11th Ave Bridge Grade Changes De Minimus",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "primary_applicant": "Ristina Nessel"
+    },
+    {
+      "project_id": "P2012K0483",
+      "project_name": "Bay Ridge Methodist Church",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-05-07T00:00:00.000",
+      "ulurp_numbers": "N120261ZCK",
+      "ceqr_number": "12DCP142K",
+      "primary_applicant": "BAY RIDGEMETHODIST CHURCH"
+    },
+    {
+      "project_id": "P2012K0488",
+      "project_name": "BAM South",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-11-08T00:00:00.000",
+      "ulurp_numbers": "C130116ZMK; N130117ZRK; C130118ZSK",
+      "ceqr_number": "03DME016K",
+      "primary_applicant": "22 LAFAYETTE LLC"
+    },
+    {
+      "project_id": "P2012K0518",
+      "project_name": "Gravesend Public Library Acquisition",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-09-04T00:00:00.000",
+      "ulurp_numbers": "C120271PQK",
+      "ceqr_number": "12BPL001K",
+      "primary_applicant": "BROOKLYN PUBLIC LIBRARY/DCAS"
+    },
+    {
+      "project_id": "P2012K0577",
+      "project_name": "Williamsburg Branch, Public National Bank of Amerc",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-04-23T00:00:00.000",
+      "ulurp_numbers": "N120185HKK",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2012K0578",
+      "project_name": "77 Commercial Street",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2015-11-13T00:00:00.000",
+      "ulurp_numbers": "N140048ZAK; N140049ZAK; N140050ZCK; N140046ZRK; C140047ZSK",
+      "ceqr_number": "14DCP010K",
+      "primary_applicant": "David Bistricer"
+    },
+    {
+      "project_id": "P2012K0591",
+      "project_name": "265 Front Street",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2021-02-09T00:00:00.000",
+      "ceqr_number": "15DCP207K",
+      "primary_applicant": "MICHAEL SPINARD"
+    },
+    {
+      "project_id": "P2012K0592",
+      "project_name": "IHOP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2015-10-28T00:00:00.000",
+      "ulurp_numbers": "N140232ZCK; M770445DZMK",
+      "ceqr_number": "14DCP103K",
+      "primary_applicant": "MIKES HOP, INC."
+    },
+    {
+      "project_id": "P2012K0596",
+      "project_name": "2713-2755 Knapp Street - Metro Storage",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-06-17T00:00:00.000",
+      "ulurp_numbers": "M840631BZMK",
+      "ceqr_number": "12DCP160K",
+      "primary_applicant": "METRO STORAGE NY, LLC"
+    },
+    {
+      "project_id": "P2012K0653",
+      "project_name": "Clarke's Restaurant",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-10-23T00:00:00.000",
+      "ulurp_numbers": "N120275ECK",
+      "primary_applicant": "P.J. COFFEE SHOP, INC."
+    },
+    {
+      "project_id": "P2012K0654",
+      "project_name": "Roll-n-Roaster",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-12-20T00:00:00.000",
+      "ulurp_numbers": "N120276ECK",
+      "primary_applicant": "Nicholas Lamonica, President"
+    },
+    {
+      "project_id": "P2012K0655",
+      "project_name": "The Smoke Joint",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-10-30T00:00:00.000",
+      "ulurp_numbers": "N120277ECK",
+      "primary_applicant": "THE SMOKE JOINT, LLC"
+    },
+    {
+      "project_id": "P2012K0660",
+      "project_name": "Starbucks Coffee Company",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-12-11T00:00:00.000",
+      "ulurp_numbers": "N120286ECK",
+      "primary_applicant": "Andrew Alfano"
+    },
+    {
+      "project_id": "P2012K0665",
+      "project_name": "14-18 Carroll Street Rezoning",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2016-12-21T00:00:00.000",
+      "ceqr_number": "16DCP100K",
+      "primary_applicant": "Debbie Tsabari"
+    },
+    {
+      "project_id": "P2012K0670",
+      "project_name": "27 Albany Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-05-14T00:00:00.000",
+      "ulurp_numbers": "N130149ZCK",
+      "ceqr_number": "13HPD015K",
+      "primary_applicant": "BEDFORD STUYVESANT SOUTH ONE, LLC"
+    },
+    {
+      "project_id": "P2012K0688",
+      "project_name": "Toras Moshe Synagogue  - 81 Spencer Street",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-09-04T00:00:00.000",
+      "ulurp_numbers": "N120407ZCK",
+      "ceqr_number": "12DCP192K",
+      "primary_applicant": "TORAS MOSHE"
+    },
+    {
+      "project_id": "P2012K0697",
+      "project_name": "CROWN HEIGHTS NORTH II HISTORIC DIS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-09-27T00:00:00.000",
+      "ulurp_numbers": "N120007HKK",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2012K0698",
+      "project_name": "KHIM'S CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-11-02T00:00:00.000",
+      "ulurp_numbers": "N120038ECK",
+      "primary_applicant": "Unknown"
+    },
+    {
+      "project_id": "P2012M0002",
+      "project_name": "154 WEST 14TH STREET BLDG.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-08-31T00:00:00.000",
+      "ulurp_numbers": "N120004HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2012M0003",
+      "project_name": "HARDENBROOK SOMARINDYCK HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-08-31T00:00:00.000",
+      "ulurp_numbers": "N120005HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2012M0004",
+      "project_name": "FISK-HARKNESS HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-09-27T00:00:00.000",
+      "ulurp_numbers": "N120006HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2012M0007",
+      "project_name": "53 WEST 53RD STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-09-13T00:00:00.000",
+      "ulurp_numbers": "N120013CMM",
+      "ceqr_number": "12DCP008M",
+      "primary_applicant": "W2005/HINES WEST 53RD REALTY, LLC"
+    },
+    {
+      "project_id": "P2012M0009",
+      "project_name": "180-184 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-07-25T00:00:00.000",
+      "ulurp_numbers": "N120015ZCM",
+      "ceqr_number": "12DCP009M",
+      "primary_applicant": "180 BROADWAY, LLC"
+    },
+    {
+      "project_id": "P2012M0011",
+      "project_name": "50 UN PLAZA GARAGE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-05-15T00:00:00.000",
+      "ulurp_numbers": "C120017ZSM",
+      "ceqr_number": "09DCP003M",
+      "primary_applicant": "G-Z/ 10 UN REALTY, LLC"
+    },
+    {
+      "project_id": "P2012M0012",
+      "project_name": "283-299 7TH AVE, 166 W27TH ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "06DCP023M",
+      "primary_applicant": "177 W126TH ST ASSOC"
+    },
+    {
+      "project_id": "P2012M0013",
+      "project_name": "75 WALL STREET ARCADE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-08-23T00:00:00.000",
+      "ulurp_numbers": "N120024ZCM",
+      "ceqr_number": "12DCP015M",
+      "primary_applicant": "75 WALL STREET ASSOCIATES, LLC"
+    },
+    {
+      "project_id": "P2012M0017",
+      "project_name": "RUDIN W VILLAGE PROJ/FORM. SVMC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-08-27T00:00:00.000",
+      "ulurp_numbers": "C120030ZSM; C120031ZSM; N120032ZRM; C120033ZMM",
+      "ceqr_number": "10DCP003M",
+      "primary_applicant": "ST. VINCENT'S CATHOLIC MEDICAL CENTER OF NY"
+    },
+    {
+      "project_id": "P2012M0018",
+      "project_name": "70 GREENE STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-08-06T00:00:00.000",
+      "ulurp_numbers": "C120039ZSM",
+      "ceqr_number": "12DCP017M",
+      "primary_applicant": "MORABITO PROPERTIES"
+    },
+    {
+      "project_id": "P2012M0020",
+      "project_name": "CITIZENS SAVINGS BANK",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-11-08T00:00:00.000",
+      "ulurp_numbers": "N120042HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2012M0027",
+      "project_name": "110 GREENE ST (Application Withdrawn)",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2013-01-31T00:00:00.000",
+      "ceqr_number": "07DCP033M",
+      "primary_applicant": "BIG GREENE LLC"
+    },
+    {
+      "project_id": "P2012M0030",
+      "project_name": "325 WEST BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2008-02-26T00:00:00.000",
+      "ulurp_numbers": "C070247ZSM",
+      "ceqr_number": "07DCP027M",
+      "primary_applicant": "ADG SOHO LLC"
+    },
+    {
+      "project_id": "P2012M0031",
+      "project_name": "1057 SECOND AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-10-17T00:00:00.000",
+      "ulurp_numbers": "N120058ZCM",
+      "ceqr_number": "12DCP033M",
+      "primary_applicant": "TAI PROPERTIES LLC"
+    },
+    {
+      "project_id": "P2012M0032",
+      "project_name": "BOOTH THEATER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-03-09T00:00:00.000",
+      "ulurp_numbers": "N120059ZCM",
+      "ceqr_number": "12DCP035M",
+      "primary_applicant": "237 WEST 54 STREET, OWNER, LLC"
+    },
+    {
+      "project_id": "P2012M0034",
+      "project_name": "64-68 WOOSTER STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-04-25T00:00:00.000",
+      "ulurp_numbers": "C120062ZSM",
+      "ceqr_number": "12DCP038M",
+      "primary_applicant": "64-68 WOOSTER LLC"
+    },
+    {
+      "project_id": "P2012M0035",
+      "project_name": "165 East 89th Street",
+      "public_status": "Completed",
+      "project_status": "Terminated-Applicant Unresponsive",
+      "primary_applicant": "538 EMMUT PROPERTIES LLC"
+    },
+    {
+      "project_id": "P2012M0038",
+      "project_name": "NYU CORE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2015-07-26T00:00:00.000",
+      "ulurp_numbers": "C120077MMM",
+      "ceqr_number": "11DCP121M",
+      "primary_applicant": "New York University"
+    },
+    {
+      "project_id": "P2012M0040",
+      "project_name": "231-235 SECOND AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-11-18T00:00:00.000",
+      "ulurp_numbers": "N120079ZCM",
+      "ceqr_number": "12DCP050M",
+      "primary_applicant": "EAST 14 REALTY LLC"
+    },
+    {
+      "project_id": "P2012M0041",
+      "project_name": "MADISON-BELMONT BUILDING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-12-13T00:00:00.000",
+      "ulurp_numbers": "N120080HKM",
+      "primary_applicant": "LP-2425"
+    },
+    {
+      "project_id": "P2012M0042",
+      "project_name": "MADISON-BELMONT BUILDING, 1 FL.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-12-13T00:00:00.000",
+      "ulurp_numbers": "N120081HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2012M0044",
+      "project_name": "POST OFFICE GARAGE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-07-17T00:00:00.000",
+      "ulurp_numbers": "C120085ZSM",
+      "ceqr_number": "10DCP033M",
+      "primary_applicant": "POST OFFICE GARAGE LLC"
+    },
+    {
+      "project_id": "P2012M0045",
+      "project_name": "54 GREENE RESTORATION",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-01-02T00:00:00.000",
+      "ulurp_numbers": "C090002ZSM",
+      "ceqr_number": "09DCP030M",
+      "primary_applicant": "54 Greene Street Realty Corp"
+    },
+    {
+      "project_id": "P2012M0048",
+      "project_name": "95 WEST 95TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2015-02-20T00:00:00.000",
+      "ulurp_numbers": "N120092CMM",
+      "ceqr_number": "12DCP059M",
+      "primary_applicant": "COULUMBUS 95TH STREET, LLC"
+    },
+    {
+      "project_id": "P2012M0051",
+      "project_name": "BELL TELEPHONE LABORATORIES COMPLEX",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-02-06T00:00:00.000",
+      "ulurp_numbers": "N120098HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2012M0054",
+      "project_name": "UNION LEAGUE CLUB",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-02-06T00:00:00.000",
+      "ulurp_numbers": "N120101HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2012M0055",
+      "project_name": "Upper East Side Midblock Text",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "77DCP031M",
+      "primary_applicant": "CB8 (COMMUNITY BD 8)"
+    },
+    {
+      "project_id": "P2012M0056",
+      "project_name": "510-512 W23rd St Text Amendment",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2015-06-15T00:00:00.000",
+      "ulurp_numbers": "N090311ZRM",
+      "ceqr_number": "10DCP048M",
+      "primary_applicant": "22-23 Corp c/o Park II Management"
+    },
+    {
+      "project_id": "P2012M0058",
+      "project_name": "ESCA RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "primary_applicant": "PULPO LLC D/B/A ESCA RESTAURANT"
+    },
+    {
+      "project_id": "P2012M0059",
+      "project_name": "NYU CORE, MERCER ST., BLEECKER ST.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-07-31T00:00:00.000",
+      "ulurp_numbers": "C120122ZMM; N120123ZRM; C120124ZSM",
+      "ceqr_number": "11DCP121M",
+      "primary_applicant": "New York University"
+    },
+    {
+      "project_id": "P2012M0065",
+      "project_name": "WOLCOTT HOTEL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-04-03T00:00:00.000",
+      "ulurp_numbers": "N120151HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P2012M0066",
+      "project_name": "MUTUAL RESERVE BUILDING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-04-03T00:00:00.000",
+      "ulurp_numbers": "N120152HKM",
+      "primary_applicant": "LP-2431"
+    },
+    {
+      "project_id": "P2012M0067",
+      "project_name": "R.H. MACY & CO., STORE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-04-03T00:00:00.000",
+      "ulurp_numbers": "N120153HKM",
+      "primary_applicant": "LPS-2474"
+    },
+    {
+      "project_id": "P2012M0068",
+      "project_name": "1350 AVENUE OF THE AMERICAS POPS",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "2016-05-31T00:00:00.000",
+      "primary_applicant": "RUGFRIT, 1350 LLC, WILLIAM FIGDOR, ART & ARCHITECTURE LLC"
+    },
+    {
+      "project_id": "P2012M0072",
+      "project_name": "194-202 LAFAYETTE ST.",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "12DCP089M",
+      "primary_applicant": "420 BROOME STREET OWNER, LLC"
+    },
+    {
+      "project_id": "P2012M0075",
+      "project_name": "EASTERN RAIL YARDS TEXT REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-06-06T00:00:00.000",
+      "ulurp_numbers": "N120176ZRM",
+      "ceqr_number": "12DCP095M",
+      "primary_applicant": "ERY Tenant LLC"
+    },
+    {
+      "project_id": "P2012M0076",
+      "project_name": "EAST RIVER ESPLANADES & PIERS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-02-03T00:00:00.000",
+      "ulurp_numbers": "N120180ZCM; N120181ZCM",
+      "ceqr_number": "07LMD001M",
+      "primary_applicant": "SBS/CAS/EDC"
+    },
+    {
+      "project_id": "P2012M0081",
+      "project_name": "83 WALKER ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-07-25T00:00:00.000",
+      "ulurp_numbers": "C100149ZSM",
+      "ceqr_number": "12DCP102M",
+      "primary_applicant": "83 WALKER LLC"
+    },
+    {
+      "project_id": "P2012M0082",
+      "project_name": "BAILEY HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-12-21T00:00:00.000",
+      "ulurp_numbers": "C100179ZSM",
+      "ceqr_number": "10DCP021M",
+      "primary_applicant": "PARK 121 REALTY LLC/BAILEY HOUSE, INC"
+    },
+    {
+      "project_id": "P2012M0093",
+      "project_name": "180 Orchard Street Public Parking Garage",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2015-04-28T00:00:00.000",
+      "ulurp_numbers": "C130321ZSM",
+      "ceqr_number": "12DCP191M",
+      "primary_applicant": "180 ORCHARD STREET OWNER,LLC"
+    },
+    {
+      "project_id": "P2012M0107",
+      "project_name": "153 ELIZABETH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-01-29T00:00:00.000",
+      "ulurp_numbers": "N110022ZAM",
+      "ceqr_number": "11DCP005M",
+      "primary_applicant": "153 ELIZABETH ST LLC"
+    },
+    {
+      "project_id": "P2012M0131",
+      "project_name": "35-41 WEST 23 ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-09-19T00:00:00.000",
+      "ulurp_numbers": "N110196CMM",
+      "ceqr_number": "11DCP076M",
+      "primary_applicant": "US BANK NATIONAL ASSOCIATION"
+    },
+    {
+      "project_id": "P2012M0149",
+      "project_name": "AUDUBON IV",
+      "public_status": "Completed",
+      "project_status": "Terminated-Applicant Unresponsive",
+      "ceqr_number": "11DCP132M",
+      "primary_applicant": "COLUMBIA UNIVERSITY"
+    },
+    {
+      "project_id": "P2012M0163",
+      "project_name": "839 SIXTH AVENUE POPS",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "12DCP011M",
+      "primary_applicant": "John Lagratta"
+    },
+    {
+      "project_id": "P2012M0167",
+      "project_name": "7-13 WEST 21ST STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-02-22T00:00:00.000",
+      "ulurp_numbers": "N120035CMM",
+      "ceqr_number": "12DCP018M",
+      "primary_applicant": "RICHARD CHAPMAN & ASSOCIATES"
+    },
+    {
+      "project_id": "P2012M0168",
+      "project_name": "6 Wooster Street 349 Canal Street",
+      "public_status": "Completed",
+      "project_status": "Terminated-Applicant Unresponsive",
+      "ceqr_number": "12DCP019M",
+      "primary_applicant": "WOOSTER PARKING CORP."
+    },
+    {
+      "project_id": "P2012M0169",
+      "project_name": "JEWISH HOME LIFECARE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-04-03T00:00:00.000",
+      "ulurp_numbers": "N120043ZCM",
+      "ceqr_number": "12DCP022M",
+      "primary_applicant": "JEWISH HOME LIFECARE"
+    },
+    {
+      "project_id": "P2012M0173",
+      "project_name": "96-98 Greene Street",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2021-12-28T00:00:00.000",
+      "ceqr_number": "77DCP292M",
+      "primary_applicant": "GREENE ST. PROPERTIES, LLC/96 GREEN ST. LLC"
+    },
+    {
+      "project_id": "P2012M0177",
+      "project_name": "400 PARK AVENUE SOUTH",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-11-18T00:00:00.000",
+      "ulurp_numbers": "N120072CMM",
+      "ceqr_number": "12DCP047M",
+      "primary_applicant": "400 PARK AVENUE SOUTH LLC"
+    },
+    {
+      "project_id": "P2012M0178",
+      "project_name": "47-50 WEST STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-04-18T00:00:00.000",
+      "ulurp_numbers": "N120073CMM; N120074CMM; N120075CMM",
+      "ceqr_number": "12DCP048M",
+      "primary_applicant": "WEST STREET EQUITIES GROUP L.P."
+    },
+    {
+      "project_id": "P2012M0186",
+      "project_name": "Allen Pavilion Enlargement",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-02-06T00:00:00.000",
+      "ulurp_numbers": "N120115ZCM",
+      "ceqr_number": "12DCP066M",
+      "primary_applicant": "NEW YORK PRESBYTERIAN HOSPITAL"
+    },
+    {
+      "project_id": "P2012M0224",
+      "project_name": "River Plaza Shopping Center Rezoning",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-09-17T00:00:00.000",
+      "ulurp_numbers": "C130120ZMY",
+      "ceqr_number": "13DCP047X",
+      "primary_applicant": "Paul Travis"
+    },
+    {
+      "project_id": "P2012M0255",
+      "project_name": "HUDSON SQUARE SPECIAL DISTRICT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-03-26T00:00:00.000",
+      "ulurp_numbers": "C120380ZMM",
+      "ceqr_number": "12DCP045M",
+      "primary_applicant": "THE RECTOR, CHURCH WARDENS & VESTRYMAN OF TRINITY CHURCH NYC"
+    },
+    {
+      "project_id": "P2012M0256",
+      "project_name": "150 WOOSTER STREET",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2013-05-08T00:00:00.000",
+      "ceqr_number": "12DCP111M",
+      "primary_applicant": "Bryan Cave LLP"
+    },
+    {
+      "project_id": "P2012M0258",
+      "project_name": "DURST W57",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-06-07T00:00:00.000",
+      "ulurp_numbers": "M010148AZMM; M010151BZSM; C120396ZMM; C120397ZSM; C120398ZSM",
+      "ceqr_number": "12DCP020M",
+      "primary_applicant": "DFR 57 LLC"
+    },
+    {
+      "project_id": "P2012M0259",
+      "project_name": "Chelsea Market",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-11-19T00:00:00.000",
+      "ulurp_numbers": "N120142ZRM; C120143ZMM",
+      "ceqr_number": "11DCP120M",
+      "primary_applicant": "JAMESTOWN CHELSEA MARKET, LP"
+    },
+    {
+      "project_id": "P2012M0260",
+      "project_name": "78-80 LEONARD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-07-18T00:00:00.000",
+      "ulurp_numbers": "N120400ZCM",
+      "ceqr_number": "12DCP185M",
+      "primary_applicant": "SDS Leonard LLC"
+    },
+    {
+      "project_id": "P2012M0261",
+      "project_name": "84 WHITE STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-08-08T00:00:00.000",
+      "ulurp_numbers": "C120179ZSM",
+      "ceqr_number": "12DCP055M",
+      "primary_applicant": "Manuel Glas"
+    },
+    {
+      "project_id": "P2012M0262",
+      "project_name": "NYC RESCUE MISSION",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2013-01-11T00:00:00.000",
+      "ceqr_number": "13DCP044M",
+      "primary_applicant": "NYC RESCUE MISSION"
+    },
+    {
+      "project_id": "P2012M0263",
+      "project_name": "200 WATER PLAZA DESIGN CHANGE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-07-12T00:00:00.000",
+      "ulurp_numbers": "N120389ZCM",
+      "ceqr_number": "12DCP181M",
+      "primary_applicant": "200 WALL STREET SPE, LLC"
+    },
+    {
+      "project_id": "P2012M0264",
+      "project_name": "Text Amendment to Special TMU",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-06-06T00:00:00.000",
+      "ulurp_numbers": "N120166ZRM",
+      "ceqr_number": "10DCP039M",
+      "primary_applicant": "LAIGHT STREET PROJECT, OWNER"
+    },
+    {
+      "project_id": "P2012M0266",
+      "project_name": "1633 BROADWAY POPS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-08-22T00:00:00.000",
+      "ulurp_numbers": "M890860AZSM",
+      "ceqr_number": "12DCP179M",
+      "primary_applicant": "PGREF 1 1633 BROADWAY TOWER"
+    },
+    {
+      "project_id": "P2012M0267",
+      "project_name": "OLYMPIC TOWER CPS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-12-10T00:00:00.000",
+      "ulurp_numbers": "M870431DZAM",
+      "ceqr_number": "14DCP026M",
+      "primary_applicant": "OLYMPIC TOWER LLC"
+    },
+    {
+      "project_id": "P2012M0268",
+      "project_name": "PARK AVENUE PLAZA POPS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2014-04-09T00:00:00.000",
+      "ulurp_numbers": "M780544AZSM",
+      "ceqr_number": "14DCP082M",
+      "primary_applicant": "PARK AVENUE PLAZA OWNER"
+    },
+    {
+      "project_id": "P2012M0270",
+      "project_name": "1330 SIXTH AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-12-18T00:00:00.000",
+      "ulurp_numbers": "N130042ZCM",
+      "ceqr_number": "13DCP019M",
+      "primary_applicant": "MELANIE MYERS, ESQ"
+    },
+    {
+      "project_id": "P2012M0273",
+      "project_name": "MADISON SQUARE GARDEN (MSG)",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2014-01-17T00:00:00.000",
+      "ulurp_numbers": "N130137ZRM; N130138ZCM; C130139ZSM; C130140ZSM",
+      "ceqr_number": "13DCP053M",
+      "primary_applicant": "MSG HOLDINGS, L.P."
+    },
+    {
+      "project_id": "P2012M0275",
+      "project_name": "EASTERN RAIL YARD HIGH LINE TEXT AMENDMENT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-06-06T00:00:00.000",
+      "ulurp_numbers": "N120171ZRM",
+      "ceqr_number": "12DCP095M",
+      "primary_applicant": "DCP"
+    },
+    {
+      "project_id": "P2012M0276",
+      "project_name": "5 EAST 20TH STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-06-14T00:00:00.000",
+      "ulurp_numbers": "N120170ZCM",
+      "ceqr_number": "12DCP092M",
+      "primary_applicant": "LAKE DISTRICT LLC"
+    },
+    {
+      "project_id": "P2012M0277",
+      "project_name": "HARLEM DOWLING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-11-20T00:00:00.000",
+      "ulurp_numbers": "C130271ZMM; C130272HAM",
+      "ceqr_number": "07HPD027M",
+      "primary_applicant": "NYC HPD"
+    },
+    {
+      "project_id": "P2012M0278",
+      "project_name": "Lenox Terrace",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2020-02-26T00:00:00.000",
+      "ceqr_number": "18DCP084M",
+      "primary_applicant": "Bruce Simon"
+    },
+    {
+      "project_id": "P2012M0280",
+      "project_name": "PIER 57",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-10-29T00:00:00.000",
+      "ulurp_numbers": "C130100ZMM; C130101ZSM; C130102ZSM; C130103ZSM; N130104ZCM",
+      "ceqr_number": "11HRP001M",
+      "primary_applicant": "ROSS F. MOSKOWITZ, ESQ"
+    },
+    {
+      "project_id": "P2012M0281",
+      "project_name": "PROMESA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2015-07-29T00:00:00.000",
+      "ulurp_numbers": "C150211ZMM; C150212HAM",
+      "ceqr_number": "09HPD026M",
+      "primary_applicant": "NYCHPD"
+    },
+    {
+      "project_id": "P2012M0284",
+      "project_name": "ST. NICHOLAS FRESH PROGRAM",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2015-12-08T00:00:00.000",
+      "ulurp_numbers": "N130112ZAM; N130113ZCM",
+      "ceqr_number": "12BSA098M",
+      "primary_applicant": "Ladera, LLC"
+    },
+    {
+      "project_id": "P2012M0285",
+      "project_name": "West 106th street rezoning",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2014-07-01T00:00:00.000",
+      "ulurp_numbers": "C130208ZMM",
+      "ceqr_number": "14DCP084M",
+      "primary_applicant": "PWV"
+    },
+    {
+      "project_id": "P2012M0288",
+      "project_name": "The Axton Modification",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-05-21T00:00:00.000",
+      "ulurp_numbers": "M920493FZAM",
+      "ceqr_number": "09DCP005M",
+      "primary_applicant": "AXTON LLC"
+    },
+    {
+      "project_id": "P2012M0289",
+      "project_name": "Fordham University Passageway",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-10-25T00:00:00.000",
+      "ulurp_numbers": "M050260BZSM; C120172ZSM",
+      "ceqr_number": "05DCP020M",
+      "primary_applicant": "Deirdre Carson"
+    },
+    {
+      "project_id": "P2012M0290",
+      "project_name": "175 West 90th Street, Heywood Tower",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2014-02-28T00:00:00.000",
+      "ulurp_numbers": "M920493GZAM",
+      "ceqr_number": "14DCP033M",
+      "primary_applicant": "HEYWOOD TOWERS ASSOCIATES"
+    },
+    {
+      "project_id": "P2012M0291",
+      "project_name": "East Houston Street Rezoning",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2016-09-07T00:00:00.000",
+      "ceqr_number": "16DCP077M",
+      "primary_applicant": "SMBRO RIVINGTON LLC"
+    },
+    {
+      "project_id": "P2012M0292",
+      "project_name": "SEWARD PARK MIXED-USE DEVELOPMENT PROJECT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2015-04-09T00:00:00.000",
+      "ulurp_numbers": "C120156MMM; N120230ZAM; C120231ZSM; C120233ZSM; C120234ZSM; C120235ZSM; C120226ZMM; N120227ZRM; C120228ZSM; M120228AZSM; C120229ZSM; M120229AZSM; N120236HAM; C120237PQM; C120245PPM",
+      "ceqr_number": "11DME012M",
+      "primary_applicant": "HPD, DCAS, EDC"
+    },
+    {
+      "project_id": "P2012M0293",
+      "project_name": "62 Wooster Street",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-06-18T00:00:00.000",
+      "ulurp_numbers": "C080104ZSM",
+      "ceqr_number": "12DCP108M",
+      "primary_applicant": "Caroline Harris"
+    },
+    {
+      "project_id": "P2012M0295",
+      "project_name": "125th Street Firehouse Rehabilitation",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-08-27T00:00:00.000",
+      "ulurp_numbers": "N120248HAM",
+      "ceqr_number": "10HPD018M",
+      "primary_applicant": "CARIBBEAN CULTURAL CENTER AFRICAN DIASPORA INSTITUTE"
+    },
+    {
+      "project_id": "P2012M0296",
+      "project_name": "747 THIRD AVENUE POPS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-11-20T00:00:00.000",
+      "ulurp_numbers": "N130090ZCM",
+      "ceqr_number": "13DCP032M",
+      "primary_applicant": "4 THIRD AVENUE LEASEHOLD, LLC"
+    },
+    {
+      "project_id": "P2012M0297",
+      "project_name": "Kips Bay Towers parking special permits",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2019-01-09T00:00:00.000",
+      "ulurp_numbers": "C180025ZSM; C180026ZSM",
+      "ceqr_number": "18DCP068M",
+      "primary_applicant": "THE CONDOMINIUM BOARD OF THE KIPS BAY TOWERS CONDOMINIUM INC"
+    },
+    {
+      "project_id": "P2012M0298",
+      "project_name": "Rivergate",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-12-07T00:00:00.000",
+      "ulurp_numbers": "M790634DZMM; M800623HZSM",
+      "ceqr_number": "13DCP014M",
+      "primary_applicant": "JAY A. SEGAL, ESQ."
+    },
+    {
+      "project_id": "P2012M0299",
+      "project_name": "50 LEXINGTON PLAZA POPS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-05-04T00:00:00.000",
+      "ulurp_numbers": "N120243ZCM",
+      "ceqr_number": "12DCP138M",
+      "primary_applicant": "LEX. TENANT COPR. C/O MATHEEW ADAMS PROPERTIES, INC."
+    },
+    {
+      "project_id": "P2012M0300",
+      "project_name": "245 E 40th St - POPS",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "13DCP124M",
+      "primary_applicant": "ASN MURRAY HILL LLC"
+    },
+    {
+      "project_id": "P2012M0302",
+      "project_name": "200 LAFAYETTE STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2008-01-30T00:00:00.000",
+      "ulurp_numbers": "C070400ZSM",
+      "ceqr_number": "12DCP089M",
+      "primary_applicant": "AS REALTY PARTNERS"
+    },
+    {
+      "project_id": "P2012M0303",
+      "project_name": "111 Mercer Street",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-11-30T00:00:00.000",
+      "ulurp_numbers": "C120360ZSM",
+      "ceqr_number": "12DCP178M",
+      "primary_applicant": "MERCER LLL LLC"
+    },
+    {
+      "project_id": "P2012M0304",
+      "project_name": "IN GOD'S LOVE WE DELIVER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-05-01T00:00:00.000",
+      "ulurp_numbers": "M930086APPM",
+      "ceqr_number": "13CAS001M",
+      "primary_applicant": "Randal Fong"
+    },
+    {
+      "project_id": "P2012M0305",
+      "project_name": "CURA Site 7",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2014-12-31T00:00:00.000",
+      "ulurp_numbers": "N140184ZCM; C140185HAM; C140181ZMM; N140182ZRM; C140183ZSM",
+      "ceqr_number": "13HPD106M",
+      "primary_applicant": "HPD AND 525 WEST 52ND STREET PROPERTY OWNER LLC"
+    },
+    {
+      "project_id": "P2012M0307",
+      "project_name": "415 GREENWICH STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-06-01T00:00:00.000",
+      "ulurp_numbers": "N120314ZCM",
+      "ceqr_number": "12DCP159M",
+      "primary_applicant": "415 Greenwich Fee Owner, LLC"
+    },
+    {
+      "project_id": "P2012M0308",
+      "project_name": "99 CHURCH STREET POPS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-02-05T00:00:00.000",
+      "ulurp_numbers": "N130039ZCM",
+      "ceqr_number": "13DCP017M",
+      "primary_applicant": "ELISE WAGNER, ESQ./MARCIE KESNER AICP"
+    },
+    {
+      "project_id": "P2012M0309",
+      "project_name": "Cornell NYC Tech Campus",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-05-14T00:00:00.000",
+      "ulurp_numbers": "C130078PPM; C130007MMM; C130076ZMM; N130077ZRM",
+      "ceqr_number": "12DME004M",
+      "primary_applicant": "CORNELL UNIVERSITY/EDC"
+    },
+    {
+      "project_id": "P2012M0367",
+      "project_name": "South Street Seaport - Pier 17",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2014-11-13T00:00:00.000",
+      "ulurp_numbers": "C130052ZMM; C130053ZSM; C130054ZSM; C130055ZSM; N130056ZAM; N130057ZAM; N130058ZCM; C130059PPM",
+      "ceqr_number": "12DME007M",
+      "primary_applicant": "SOUTH ST LIMITED PARTNERSHIP"
+    },
+    {
+      "project_id": "P2012M0373",
+      "project_name": "Asser Levy Park",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-01-27T00:00:00.000",
+      "ulurp_numbers": "N130017MMM",
+      "primary_applicant": "Adam Meagher"
+    },
+    {
+      "project_id": "P2012M0387",
+      "project_name": "605 West 42nd Street (HY parking cert)",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2014-01-14T00:00:00.000",
+      "ulurp_numbers": "N120210ZCM",
+      "ceqr_number": "12DCP120M",
+      "primary_applicant": "605 WEST 42ND OWNER, LLC"
+    },
+    {
+      "project_id": "P2012M0388",
+      "project_name": "333 West 38th Street DIB application",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-03-02T00:00:00.000",
+      "ulurp_numbers": "N120160ZCM",
+      "ceqr_number": "12DCP087M",
+      "primary_applicant": "Hakim Boudaa"
+    },
+    {
+      "project_id": "P2012M0391",
+      "project_name": "Civic Center Plan",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-11-27T00:00:00.000",
+      "ulurp_numbers": "C120267PPM; C120267APPM",
+      "ceqr_number": "12DME006M",
+      "primary_applicant": "Randal Fong"
+    },
+    {
+      "project_id": "P2012M0392",
+      "project_name": "945 Second Avenue text amendment",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2014-03-03T00:00:00.000",
+      "ulurp_numbers": "N130232ZRY",
+      "ceqr_number": "13DCP111M",
+      "primary_applicant": "945 REALTY HOLDINGS LLC."
+    },
+    {
+      "project_id": "P2012M0394",
+      "project_name": "59-61 Thompson Street",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2014-05-14T00:00:00.000",
+      "ulurp_numbers": "C140167ZSM",
+      "ceqr_number": "14DCP065M",
+      "primary_applicant": "KISLING REALTY ADVISORS"
+    },
+    {
+      "project_id": "P2012M0396",
+      "project_name": "Midtown West EMS Station (EMS 7)",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-08-28T00:00:00.000",
+      "ulurp_numbers": "C120177PCM",
+      "ceqr_number": "12FDO001M",
+      "primary_applicant": "David Harney"
+    },
+    {
+      "project_id": "P2012M0412",
+      "project_name": "JAN CO CENTRAL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-06-23T00:00:00.000",
+      "ulurp_numbers": "N100430ECM",
+      "primary_applicant": "JAN CO CENTRAL INC"
+    },
+    {
+      "project_id": "P2012M0414",
+      "project_name": "MCDONALD'S",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-09-23T00:00:00.000",
+      "ulurp_numbers": "N110027ECM",
+      "primary_applicant": "L & L FOODS OF FIRST AVE LLC"
+    },
+    {
+      "project_id": "P2012M0415",
+      "project_name": "STARBUCK COFFEE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-09-23T00:00:00.000",
+      "ulurp_numbers": "N110028ECM",
+      "primary_applicant": "STARBUCK CORP"
+    },
+    {
+      "project_id": "P2012M0417",
+      "project_name": "FRESCO BAGEL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-01-25T00:00:00.000",
+      "ulurp_numbers": "N110099ECM",
+      "primary_applicant": "FRESCO BAGEL, LLC"
+    },
+    {
+      "project_id": "P2012M0418",
+      "project_name": "BALIO DELI",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-11-10T00:00:00.000",
+      "ulurp_numbers": "N110104ECM",
+      "primary_applicant": "BALIO DELI, INC"
+    },
+    {
+      "project_id": "P2012M0419",
+      "project_name": "84 7 AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2012-01-26T00:00:00.000",
+      "ulurp_numbers": "N110134ECM",
+      "primary_applicant": "DINNER IS READY, LLC"
+    },
+    {
+      "project_id": "P2012M0420",
+      "project_name": "SOI 30, INC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2013-07-11T00:00:00.000",
+      "ulurp_numbers": "N110144ECM",
+      "primary_applicant": "SOI 30, INC"
+    },
+    {
+      "project_id": "P2012M0422",
+      "project_name": "MY MOST FAVORITE FOOD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2015-04-07T00:00:00.000",
+      "ulurp_numbers": "N110190ECM",
+      "primary_applicant": "MY MOST FAVORITE 72ND STREET CORPORATION"
+    },
+    {
+      "project_id": "P2012M0423",
+      "project_name": "MXCO CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2011-11-18T00:00:00.000",
+      "ulurp_numbers": "N110256ECM",
+      "primary_applicant": "Satyen Shah"
+    }
+  ]
+}

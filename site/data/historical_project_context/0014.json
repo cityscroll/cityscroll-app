@@ -1,0 +1,2239 @@
+{
+  "schema_version": "cityscroll.historical_project_context.v1",
+  "shard": "0014",
+  "rows": [
+    {
+      "project_id": "P1983M1370",
+      "project_name": "450 BROOME ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1984-03-28T00:00:00.000",
+      "primary_applicant": "LOMBARDI, JOSEPH PELL"
+    },
+    {
+      "project_id": "P1983M1371",
+      "project_name": "38 NORTH MOORE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-07-09T00:00:00.000",
+      "ulurp_numbers": "N831612ZJM",
+      "primary_applicant": "LANFRANULI, LAURA/RENO, KAREN"
+    },
+    {
+      "project_id": "P1983M1372",
+      "project_name": "457 WASHINGTON ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1986-11-30T00:00:00.000",
+      "primary_applicant": "WOLTERS, HONEY"
+    },
+    {
+      "project_id": "P1983M1373",
+      "project_name": "97 GREENE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-04-09T00:00:00.000",
+      "ulurp_numbers": "N831614ZJM",
+      "primary_applicant": "BUGGIANI, PAOLO/DIODATO, BALDO"
+    },
+    {
+      "project_id": "P1983M1374",
+      "project_name": "120 WOOSTER ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-01-17T00:00:00.000",
+      "ulurp_numbers": "N831615ZJM",
+      "primary_applicant": "BROWN, FREDERICK J."
+    },
+    {
+      "project_id": "P1983M1375",
+      "project_name": "460 WASHINGTON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-09-02T00:00:00.000",
+      "ulurp_numbers": "N831616ZJM",
+      "primary_applicant": "KAPLAN, PRYNN"
+    },
+    {
+      "project_id": "P1983M1376",
+      "project_name": "15 JAY ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-04-02T00:00:00.000",
+      "ulurp_numbers": "N831618ZJM",
+      "primary_applicant": "BEST, SHERI"
+    },
+    {
+      "project_id": "P1983M1377",
+      "project_name": "38 WEST 26TH ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1985-02-04T00:00:00.000",
+      "primary_applicant": "12 LOFTS REALTY, INC"
+    },
+    {
+      "project_id": "P1983M1378",
+      "project_name": "17 E17TH ST.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-04-24T00:00:00.000",
+      "ulurp_numbers": "N831620ZJM",
+      "primary_applicant": "PATRICK, SHARON LEE"
+    },
+    {
+      "project_id": "P1983M1379",
+      "project_name": "593 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-02-28T00:00:00.000",
+      "ulurp_numbers": "N831621ZJM",
+      "primary_applicant": "BEDLOCK, LEVINE & HOFFMAN"
+    },
+    {
+      "project_id": "P1983M1380",
+      "project_name": "591 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-11-05T00:00:00.000",
+      "ulurp_numbers": "N831622ZJM",
+      "primary_applicant": "BEDLOCK, LEVINE & HOFFMAN"
+    },
+    {
+      "project_id": "P1983M1381",
+      "project_name": "18-20 DESBROSSES ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-01T00:00:00.000",
+      "ulurp_numbers": "N831623ZJM",
+      "primary_applicant": "CHUMLEY, NORRIS J"
+    },
+    {
+      "project_id": "P1983M1382",
+      "project_name": "108-110 WOOSTER ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-27T00:00:00.000",
+      "ulurp_numbers": "N831624ZJM; N831625ZJM",
+      "primary_applicant": "STOLZ, DAVID"
+    },
+    {
+      "project_id": "P1983M1383",
+      "project_name": "111 WEST 28TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-11-12T00:00:00.000",
+      "ulurp_numbers": "N831626ZJM",
+      "primary_applicant": "113 WEST 28 ST CORP"
+    },
+    {
+      "project_id": "P1983M1384",
+      "project_name": "146 WEST 25TH ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1986-11-05T00:00:00.000",
+      "primary_applicant": "BRENNAN, PATRICK"
+    },
+    {
+      "project_id": "P1983M1385",
+      "project_name": "119 5TH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-05-15T00:00:00.000",
+      "ulurp_numbers": "N831628ZJM",
+      "primary_applicant": "TALBOTT, HUDSON/OSENFORT, KURT"
+    },
+    {
+      "project_id": "P1983M1386",
+      "project_name": "22 W30 ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-18T00:00:00.000",
+      "ulurp_numbers": "N831629ZJM",
+      "primary_applicant": "CARUSO, JOHN"
+    },
+    {
+      "project_id": "P1983M1387",
+      "project_name": "111 WEST 17TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-02-15T00:00:00.000",
+      "ulurp_numbers": "N831630ZJM",
+      "primary_applicant": "KLEINBERG, MARVIN/SHLONSKY, GEORGE"
+    },
+    {
+      "project_id": "P1983M1388",
+      "project_name": "21 DESBROSSES ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-02-19T00:00:00.000",
+      "ulurp_numbers": "N831631ZJM",
+      "primary_applicant": "SERRA, PAUL"
+    },
+    {
+      "project_id": "P1983M1389",
+      "project_name": "109 WEST 26TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-05-15T00:00:00.000",
+      "ulurp_numbers": "N831633ZJM",
+      "primary_applicant": "SCHIFF, GERALD H"
+    },
+    {
+      "project_id": "P1983M1390",
+      "project_name": "110 W26TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-04-09T00:00:00.000",
+      "ulurp_numbers": "N831634ZJM",
+      "primary_applicant": "LYNCH, EILEEN"
+    },
+    {
+      "project_id": "P1983M1391",
+      "project_name": "25 W26TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-03-15T00:00:00.000",
+      "ulurp_numbers": "N831637ZJM",
+      "primary_applicant": "KASTNER, JOSEF"
+    },
+    {
+      "project_id": "P1983M1392",
+      "project_name": "151 WEST 21 ST",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "1986-11-05T00:00:00.000",
+      "primary_applicant": "FOSTER, BRUCE M"
+    },
+    {
+      "project_id": "P1983M1393",
+      "project_name": "502 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-11-30T00:00:00.000",
+      "ulurp_numbers": "N831639ZJM",
+      "primary_applicant": "MULLIGAN, JOHN/BORIS, SHELLEY/SHARPE, ZOE"
+    },
+    {
+      "project_id": "P1983M1394",
+      "project_name": "109 WEST 28 ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-05-31T00:00:00.000",
+      "ulurp_numbers": "N831641ZJM",
+      "primary_applicant": "113 WEST 28TH STREET, CORP"
+    },
+    {
+      "project_id": "P1983M1395",
+      "project_name": "36 W21ST ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-02-28T00:00:00.000",
+      "ulurp_numbers": "N831644ZJM",
+      "primary_applicant": "KAPLAN/MALMSTROM/DILL"
+    },
+    {
+      "project_id": "P1983M1396",
+      "project_name": "165 W21ST ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-08T00:00:00.000",
+      "ulurp_numbers": "N831645ZJM",
+      "primary_applicant": "OKOWELL/LILLY, PETER"
+    },
+    {
+      "project_id": "P1983M1397",
+      "project_name": "3 & 5 GREATJONES ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-10-21T00:00:00.000",
+      "ulurp_numbers": "N831646ZJM",
+      "primary_applicant": "LOVIE, KERMIT"
+    },
+    {
+      "project_id": "P1983M1398",
+      "project_name": "149 W21ST ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-02-15T00:00:00.000",
+      "ulurp_numbers": "N831647ZJM",
+      "primary_applicant": "MURY, MARILYN"
+    },
+    {
+      "project_id": "P1983M1399",
+      "project_name": "17 6TH AVE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1985-02-20T00:00:00.000",
+      "primary_applicant": "ZOTLIK, CHARLYN"
+    },
+    {
+      "project_id": "P1983M1400",
+      "project_name": "37 W26TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-31T00:00:00.000",
+      "ulurp_numbers": "N831649ZJM",
+      "primary_applicant": "Unknown"
+    },
+    {
+      "project_id": "P1983M1401",
+      "project_name": "873 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-05-01T00:00:00.000",
+      "ulurp_numbers": "N831650ZJM",
+      "primary_applicant": "SCHRECK, BRUNO R"
+    },
+    {
+      "project_id": "P1983M1402",
+      "project_name": "224 CENTRE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-02-28T00:00:00.000",
+      "ulurp_numbers": "N831651ZJM",
+      "primary_applicant": "NIBLOCK, PHIL/HOLT, CALVIN/BERES, JAMES"
+    },
+    {
+      "project_id": "P1983M1403",
+      "project_name": "145 WEST 27TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-05-19T00:00:00.000",
+      "ulurp_numbers": "N831652ZJM",
+      "primary_applicant": "19 WEST 36 STREET HOLDING CORP"
+    },
+    {
+      "project_id": "P1983M1404",
+      "project_name": "512 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-01T00:00:00.000",
+      "ulurp_numbers": "N831653ZJM",
+      "primary_applicant": "MOUTEALEGNE, MAKELO"
+    },
+    {
+      "project_id": "P1983M1405",
+      "project_name": "34 WEST 37TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-07-09T00:00:00.000",
+      "ulurp_numbers": "N831654ZJM",
+      "primary_applicant": "HOLCOMB, ROBERT"
+    },
+    {
+      "project_id": "P1983M1406",
+      "project_name": "786 6TH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-04-09T00:00:00.000",
+      "ulurp_numbers": "N831655ZJM",
+      "primary_applicant": "KANE, STEVEN"
+    },
+    {
+      "project_id": "P1983M1407",
+      "project_name": "188 DUANE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-20T00:00:00.000",
+      "ulurp_numbers": "N831657ZJM",
+      "primary_applicant": "GINEZRA ASSOC"
+    },
+    {
+      "project_id": "P1983M1408",
+      "project_name": "110 WEST 14TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-11-30T00:00:00.000",
+      "ulurp_numbers": "N831658ZJM",
+      "primary_applicant": "GOODE, SIGMUND"
+    },
+    {
+      "project_id": "P1983M1409",
+      "project_name": "736 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-04-09T00:00:00.000",
+      "ulurp_numbers": "N831659ZJM",
+      "primary_applicant": "HAUSMON, MICHAEL"
+    },
+    {
+      "project_id": "P1983M1410",
+      "project_name": "163 WEST 22ND ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-07-03T00:00:00.000",
+      "ulurp_numbers": "N831660ZJM",
+      "primary_applicant": "TWORKOV, HELEN"
+    },
+    {
+      "project_id": "P1983M1411",
+      "project_name": "1-3 WORTH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-01T00:00:00.000",
+      "ulurp_numbers": "N831662ZJM",
+      "primary_applicant": "SARNATH STUPA CORP & KRIM, DONALD & SUSAN B"
+    },
+    {
+      "project_id": "P1983M1412",
+      "project_name": "547 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-01T00:00:00.000",
+      "ulurp_numbers": "N831663ZJM",
+      "primary_applicant": "547 BROADWAY REALTY INC"
+    },
+    {
+      "project_id": "P1983M1413",
+      "project_name": "489 BROOME ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-11-18T00:00:00.000",
+      "ulurp_numbers": "N831664ZJM",
+      "primary_applicant": "MARINO, FRANK & WESTBAY, JAMES G"
+    },
+    {
+      "project_id": "P1983M1414",
+      "project_name": "134 WEST BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-20T00:00:00.000",
+      "ulurp_numbers": "N831666ZJM",
+      "primary_applicant": "WEBRO ASSOC"
+    },
+    {
+      "project_id": "P1983M1415",
+      "project_name": "110 WEST 26TH ST M1-6 DIST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-06-09T00:00:00.000",
+      "ulurp_numbers": "N831667ZJM",
+      "primary_applicant": "RANDALL COMPANY"
+    },
+    {
+      "project_id": "P1983M1416",
+      "project_name": "140 W24TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1983-10-14T00:00:00.000",
+      "ulurp_numbers": "N831668ZJM",
+      "primary_applicant": "GOMELSKY, GIORGIO"
+    },
+    {
+      "project_id": "P1983M1417",
+      "project_name": "19 WEST 26TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-18T00:00:00.000",
+      "ulurp_numbers": "N831669ZJM",
+      "primary_applicant": "CARJA, JORGE"
+    },
+    {
+      "project_id": "P1983M1418",
+      "project_name": "34 E4TH ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1988-02-05T00:00:00.000",
+      "primary_applicant": "ORTER, JERRY"
+    },
+    {
+      "project_id": "P1983M1419",
+      "project_name": "43-45 E19TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-06-05T00:00:00.000",
+      "ulurp_numbers": "N831671ZJM",
+      "primary_applicant": "E19TH ST ASSOC"
+    },
+    {
+      "project_id": "P1983M1420",
+      "project_name": "208 W30TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-31T00:00:00.000",
+      "ulurp_numbers": "N831672ZJM",
+      "primary_applicant": "NYE, ALBERT"
+    },
+    {
+      "project_id": "P1983M1421",
+      "project_name": "79 WARREN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-03-27T00:00:00.000",
+      "ulurp_numbers": "N831674ZJM",
+      "primary_applicant": "CROSSLEY, PATTON"
+    },
+    {
+      "project_id": "P1983M1422",
+      "project_name": "293 CHURCH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-05-16T00:00:00.000",
+      "ulurp_numbers": "N831675ZJM",
+      "primary_applicant": "WOLF, MIA"
+    },
+    {
+      "project_id": "P1983M1423",
+      "project_name": "40 E21ST.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-05-08T00:00:00.000",
+      "ulurp_numbers": "N831676ZJM",
+      "primary_applicant": "40 E21ST TENANTS"
+    },
+    {
+      "project_id": "P1983M1424",
+      "project_name": "300 CANAL ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-05-19T00:00:00.000",
+      "ulurp_numbers": "N831677ZJM",
+      "primary_applicant": "CAMHE & ROTHENBERG"
+    },
+    {
+      "project_id": "P1983M1425",
+      "project_name": "115-121 WOOSTER ST A/K/A 433 W  BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-07-09T00:00:00.000",
+      "ulurp_numbers": "N831678ZJM",
+      "primary_applicant": "SCHULSON, SUSAN"
+    },
+    {
+      "project_id": "P1983M1426",
+      "project_name": "18 W20TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-02-28T00:00:00.000",
+      "ulurp_numbers": "N831679ZJM",
+      "primary_applicant": "WOOD, BRIAN"
+    },
+    {
+      "project_id": "P1983M1427",
+      "project_name": "104 WEST 14TH ST, C6-2M DIST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1983-11-07T00:00:00.000",
+      "primary_applicant": "NEALY, RICHARD"
+    },
+    {
+      "project_id": "P1983M1428",
+      "project_name": "12 EAST 18TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-18T00:00:00.000",
+      "ulurp_numbers": "N831681ZJM",
+      "primary_applicant": "MILLER & GOROVOY"
+    },
+    {
+      "project_id": "P1983M1429",
+      "project_name": "34 WEST 15TH ST, C6-2M DIST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-01T00:00:00.000",
+      "ulurp_numbers": "N831682ZJM",
+      "primary_applicant": "KIMURA, REISI"
+    },
+    {
+      "project_id": "P1983M1430",
+      "project_name": "26 WEST 20TH ST, M1-6M DIST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-01T00:00:00.000",
+      "ulurp_numbers": "N831683ZJM",
+      "primary_applicant": "SHATTER, SUSAN"
+    },
+    {
+      "project_id": "P1983M1431",
+      "project_name": "469 GREENWICH ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1989-09-11T00:00:00.000",
+      "primary_applicant": "MAEHR, INGA"
+    },
+    {
+      "project_id": "P1983M1432",
+      "project_name": "133 WEST 14TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-01T00:00:00.000",
+      "ulurp_numbers": "N831685ZJM",
+      "primary_applicant": "FEITLEBAUM"
+    },
+    {
+      "project_id": "P1983M1433",
+      "project_name": "180 DUANE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-07-09T00:00:00.000",
+      "ulurp_numbers": "N831686ZJM",
+      "primary_applicant": "TODER, CHARLES JR"
+    },
+    {
+      "project_id": "P1983M1434",
+      "project_name": "1 BOND ST, M1-5D DIST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-06-28T00:00:00.000",
+      "ulurp_numbers": "N831687ZJM",
+      "primary_applicant": "SLAVIS, JOEL"
+    },
+    {
+      "project_id": "P1983M1435",
+      "project_name": "114 W28TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1983-11-18T00:00:00.000",
+      "ulurp_numbers": "N831688ZJM",
+      "primary_applicant": "ABRAHAM, CATHERINE, COYLE, BURTON"
+    },
+    {
+      "project_id": "P1983M1436",
+      "project_name": "146 READE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-20T00:00:00.000",
+      "ulurp_numbers": "N831689ZJM",
+      "primary_applicant": "SEIDEN, MASCHA"
+    },
+    {
+      "project_id": "P1983M1437",
+      "project_name": "438 WASHINGTON ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1986-11-30T00:00:00.000",
+      "primary_applicant": "PONTE, ANGELO J."
+    },
+    {
+      "project_id": "P1983M1438",
+      "project_name": "39 E19TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-02-19T00:00:00.000",
+      "ulurp_numbers": "N831691ZJM",
+      "primary_applicant": "GREGORY, JOHN"
+    },
+    {
+      "project_id": "P1983M1439",
+      "project_name": "322-326 7TH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-07-09T00:00:00.000",
+      "ulurp_numbers": "N831692ZJM",
+      "primary_applicant": "LEPSINGER"
+    },
+    {
+      "project_id": "P1983M1440",
+      "project_name": "100 5TH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1983-12-01T00:00:00.000",
+      "ulurp_numbers": "N831693ZJM",
+      "primary_applicant": "DONEWOOD TRUGILA ESQ"
+    },
+    {
+      "project_id": "P1983M1441",
+      "project_name": "95 5TH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-31T00:00:00.000",
+      "ulurp_numbers": "N831694ZJM",
+      "primary_applicant": "OTA, HISAYOSHI"
+    },
+    {
+      "project_id": "P1983M1442",
+      "project_name": "144 WEST 27TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-04-22T00:00:00.000",
+      "ulurp_numbers": "N831695ZJM",
+      "primary_applicant": "ANDERSON, MARILYN, DENNIS"
+    },
+    {
+      "project_id": "P1983M1443",
+      "project_name": "147 W24TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-07-09T00:00:00.000",
+      "ulurp_numbers": "N831696ZJM",
+      "primary_applicant": "ENGVIK, ARTHUR JOHN"
+    },
+    {
+      "project_id": "P1983M1444",
+      "project_name": "65 GREENE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-27T00:00:00.000",
+      "ulurp_numbers": "N831697ZJM",
+      "primary_applicant": "RICCI, VITO"
+    },
+    {
+      "project_id": "P1983M1445",
+      "project_name": "112 HUDSON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-11-18T00:00:00.000",
+      "ulurp_numbers": "N831698ZJM",
+      "primary_applicant": "PAPP PRODUCTS, INC"
+    },
+    {
+      "project_id": "P1983M1446",
+      "project_name": "98 GREENE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-05-01T00:00:00.000",
+      "ulurp_numbers": "N831699ZJM",
+      "primary_applicant": "COLAVECCHIA, FRANCO"
+    },
+    {
+      "project_id": "P1983M1447",
+      "project_name": "177 WEST 26TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-05-19T00:00:00.000",
+      "ulurp_numbers": "N831700ZJM",
+      "primary_applicant": "SHOLAR, DONNA M/KENESTRICK, EDWARD"
+    },
+    {
+      "project_id": "P1983M1448",
+      "project_name": "17 W20 ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-11-18T00:00:00.000",
+      "ulurp_numbers": "N831701ZJM",
+      "primary_applicant": "FENSTER, HY"
+    },
+    {
+      "project_id": "P1983M1449",
+      "project_name": "149 WOOSTER ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-02-19T00:00:00.000",
+      "ulurp_numbers": "N831702ZJM",
+      "primary_applicant": "KING, TONY"
+    },
+    {
+      "project_id": "P1983M1450",
+      "project_name": "552-556 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-04-30T00:00:00.000",
+      "ulurp_numbers": "N831706ZJM",
+      "primary_applicant": "BREEDING, BOB"
+    },
+    {
+      "project_id": "P1983M1451",
+      "project_name": "603 6TH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-05-01T00:00:00.000",
+      "ulurp_numbers": "N831707ZJM",
+      "primary_applicant": "RUSSO, ROBERT/MILLER, JANET"
+    },
+    {
+      "project_id": "P1983M1452",
+      "project_name": "799 6TH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-04-09T00:00:00.000",
+      "ulurp_numbers": "N831710ZJM",
+      "primary_applicant": "WONG, DENIS"
+    },
+    {
+      "project_id": "P1983M1453",
+      "project_name": "131-135 DUANE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-20T00:00:00.000",
+      "ulurp_numbers": "N831711ZJM",
+      "primary_applicant": "PORTER, BRUCE"
+    },
+    {
+      "project_id": "P1983M1454",
+      "project_name": "469 GREENWICH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-01T00:00:00.000",
+      "ulurp_numbers": "N831712ZJM",
+      "primary_applicant": "MCGILL, KURT"
+    },
+    {
+      "project_id": "P1983M1455",
+      "project_name": "93 MERCER ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-09-10T00:00:00.000",
+      "ulurp_numbers": "N831713ZJM",
+      "primary_applicant": "GIANKOS, CRISTOS"
+    },
+    {
+      "project_id": "P1983M1456",
+      "project_name": "64 WOOSTER ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-01-07T00:00:00.000",
+      "ulurp_numbers": "N831714ZJM",
+      "primary_applicant": "NORFOLK, JEFFREY"
+    },
+    {
+      "project_id": "P1983M1457",
+      "project_name": "800 6TH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-09-05T00:00:00.000",
+      "ulurp_numbers": "N831715ZJM",
+      "primary_applicant": "LUTIN, MICHAEL"
+    },
+    {
+      "project_id": "P1983M1458",
+      "project_name": "177 WEST 26TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-01T00:00:00.000",
+      "ulurp_numbers": "N831716ZJM",
+      "primary_applicant": "KATZ-STRAUSS, CHERYL"
+    },
+    {
+      "project_id": "P1983M1459",
+      "project_name": "43 WEST 39TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-07-09T00:00:00.000",
+      "ulurp_numbers": "N831718ZJM",
+      "primary_applicant": "STRAUSS, STEVE"
+    },
+    {
+      "project_id": "P1983M1460",
+      "project_name": "188 DUANE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-20T00:00:00.000",
+      "ulurp_numbers": "N831721ZJM",
+      "primary_applicant": "PILLSBURY, SUZANNE"
+    },
+    {
+      "project_id": "P1983M1461",
+      "project_name": "225 WEST 28TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-18T00:00:00.000",
+      "ulurp_numbers": "N831723ZJM",
+      "primary_applicant": "CHARD, JAMES R"
+    },
+    {
+      "project_id": "P1983M1462",
+      "project_name": "11 JAY ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-01-07T00:00:00.000",
+      "ulurp_numbers": "N831725ZJM",
+      "primary_applicant": "MCCALL, ANTHONY"
+    },
+    {
+      "project_id": "P1983M1463",
+      "project_name": "177 WEST 26TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-18T00:00:00.000",
+      "ulurp_numbers": "N831726ZJM",
+      "primary_applicant": "O'BRIEN, SARAH D"
+    },
+    {
+      "project_id": "P1983M1464",
+      "project_name": "13-19 HUDSON ST A/K/A 126-132 READE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-05-14T00:00:00.000",
+      "ulurp_numbers": "N831731ZJM",
+      "primary_applicant": "KEVIN & STEPHEN CORP"
+    },
+    {
+      "project_id": "P1983M1465",
+      "project_name": "120 HUDSON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-07-09T00:00:00.000",
+      "ulurp_numbers": "N831733ZJM",
+      "primary_applicant": "KRINOS REALTY INC"
+    },
+    {
+      "project_id": "P1983M1466",
+      "project_name": "482 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1983-11-18T00:00:00.000",
+      "ulurp_numbers": "N831735ZJM",
+      "primary_applicant": "GILLETTE, FRANK"
+    },
+    {
+      "project_id": "P1983M1467",
+      "project_name": "36 W26TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-05-14T00:00:00.000",
+      "ulurp_numbers": "N831738ZJM",
+      "primary_applicant": "CANN, HELENE"
+    },
+    {
+      "project_id": "P1983M1468",
+      "project_name": "177-179 DUANE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-20T00:00:00.000",
+      "ulurp_numbers": "N831740ZJM",
+      "primary_applicant": "NAITO, JIRO"
+    },
+    {
+      "project_id": "P1983M1469",
+      "project_name": "19 MERCER ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-07-09T00:00:00.000",
+      "ulurp_numbers": "N831741ZJM",
+      "primary_applicant": "PROCUNIAR, STEPHEN & CAROLYN"
+    },
+    {
+      "project_id": "P1983M1470",
+      "project_name": "873 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-07-09T00:00:00.000",
+      "ulurp_numbers": "N831746ZJM",
+      "primary_applicant": "MURPHY, JOHN"
+    },
+    {
+      "project_id": "P1983M1471",
+      "project_name": "34 RENWICK ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1983-10-20T00:00:00.000",
+      "ulurp_numbers": "N831750ZJM",
+      "primary_applicant": "PONTE, ANGELO J"
+    },
+    {
+      "project_id": "P1983M1472",
+      "project_name": "52 WHITE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-07-09T00:00:00.000",
+      "ulurp_numbers": "N831753ZJM",
+      "primary_applicant": "CALDERARO, AL"
+    },
+    {
+      "project_id": "P1983M1473",
+      "project_name": "179 DUANE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-07-09T00:00:00.000",
+      "ulurp_numbers": "N831754ZJM",
+      "primary_applicant": "BALKUS, ANDREW&ANDRIUS"
+    },
+    {
+      "project_id": "P1983M1474",
+      "project_name": "177 DUANE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-20T00:00:00.000",
+      "ulurp_numbers": "N831755ZJM",
+      "primary_applicant": "Unknown"
+    },
+    {
+      "project_id": "P1983M1475",
+      "project_name": "73 WARREN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-04-02T00:00:00.000",
+      "ulurp_numbers": "N831902ZCM",
+      "primary_applicant": "BERGER, THOMAS"
+    },
+    {
+      "project_id": "P1983M1476",
+      "project_name": "19 VESTRY ST BET HUDSON & VARICK ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-07-23T00:00:00.000",
+      "ulurp_numbers": "N831907ZCM",
+      "primary_applicant": "JOEL GOLDBERG CHILDRENS TRUST"
+    },
+    {
+      "project_id": "P1983M1477",
+      "project_name": "67 MURRAY ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-18T00:00:00.000",
+      "ulurp_numbers": "N831912ZCM",
+      "primary_applicant": "HINTON, ALAN"
+    },
+    {
+      "project_id": "P1983M1478",
+      "project_name": "106-112 SPRING ST, A/K/A 91-99 MERCER ST",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "1985-10-10T00:00:00.000",
+      "primary_applicant": "SHAPIRO, SHAEL"
+    },
+    {
+      "project_id": "P1983M1479",
+      "project_name": "35 E 19TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-11T00:00:00.000",
+      "ulurp_numbers": "N831914ZCM",
+      "primary_applicant": "GUGLIOTTA, PAUL"
+    },
+    {
+      "project_id": "P1983M1480",
+      "project_name": "33 BOND ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-29T00:00:00.000",
+      "ulurp_numbers": "N831915ZCM",
+      "primary_applicant": "MC CLEARY, DANIEL"
+    },
+    {
+      "project_id": "P1983M1481",
+      "project_name": "37 VESTRY ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-05-22T00:00:00.000",
+      "ulurp_numbers": "N831916ZCM",
+      "primary_applicant": "VESTRY HOLDING CORP"
+    },
+    {
+      "project_id": "P1983M1482",
+      "project_name": "75 HUDSON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-03-18T00:00:00.000",
+      "ulurp_numbers": "N831919ZCM",
+      "primary_applicant": "LIONEL INDUSTRIES FOR JOEL GOLDBERG"
+    },
+    {
+      "project_id": "P1983M1483",
+      "project_name": "471 BROADWAY A/K/A 44 MERCER ST.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-10-25T00:00:00.000",
+      "ulurp_numbers": "C831925ZSM",
+      "primary_applicant": "LIPKIS, MORDY"
+    },
+    {
+      "project_id": "P1983M1484",
+      "project_name": "329 GREENWICH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-20T00:00:00.000",
+      "ulurp_numbers": "N831926ZCM",
+      "primary_applicant": "FISHER, DONALD C - RA"
+    },
+    {
+      "project_id": "P1983M1485",
+      "project_name": "84 WOOSTER ST, A/K/A 134 SPRING ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-05-26T00:00:00.000",
+      "ulurp_numbers": "C831927ZSM",
+      "primary_applicant": "SHAPIOR, SHAEL"
+    },
+    {
+      "project_id": "P1983M1486",
+      "project_name": "93-99 GREENE ST, A/K/A 102-6 WOOSTER ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-01-25T00:00:00.000",
+      "ulurp_numbers": "C831928ZSM",
+      "primary_applicant": "SHAPIRO, SHAEL"
+    },
+    {
+      "project_id": "P1983M1487",
+      "project_name": "513-519 BROADWAY, A/K/A 84-94 MERCER ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-09-21T00:00:00.000",
+      "ulurp_numbers": "C831929ZSM",
+      "primary_applicant": "SHAPIRO, SHAEL"
+    },
+    {
+      "project_id": "P1983M1488",
+      "project_name": "64-68 WOOSTER ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1988-05-02T00:00:00.000",
+      "primary_applicant": "SHAPIRO, SHAEL"
+    },
+    {
+      "project_id": "P1983M1489",
+      "project_name": "139 SPRING ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-01-06T00:00:00.000",
+      "ulurp_numbers": "C831931ZSM",
+      "primary_applicant": "SHAPIRO, SHAEL"
+    },
+    {
+      "project_id": "P1983M1490",
+      "project_name": "30 BOND ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-04-13T00:00:00.000",
+      "ulurp_numbers": "N831932ZCM",
+      "primary_applicant": "SHAPIRO, SHAEL"
+    },
+    {
+      "project_id": "P1983M1491",
+      "project_name": "379-381 W. BROADWAY A/K/A 65-67 WOOSTER ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-05-07T00:00:00.000",
+      "ulurp_numbers": "N831933ZCM",
+      "primary_applicant": "SHAPIRO, SHAEL"
+    },
+    {
+      "project_id": "P1983M1492",
+      "project_name": "93-99 GREENE ST & 102-106 WOOSTER  ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-12-20T00:00:00.000",
+      "ulurp_numbers": "N831934ZCM",
+      "primary_applicant": "SHAPIRO, SHAEL"
+    },
+    {
+      "project_id": "P1983M1493",
+      "project_name": "182 DUANE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-20T00:00:00.000",
+      "ulurp_numbers": "N831935ZCM",
+      "primary_applicant": "FISHER, DONALD R.A."
+    },
+    {
+      "project_id": "P1983M1494",
+      "project_name": "138 W BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-20T00:00:00.000",
+      "ulurp_numbers": "N831937ZCM",
+      "primary_applicant": "FISHER, DONALD D  F.A."
+    },
+    {
+      "project_id": "P1983M1495",
+      "project_name": "46 LAIGHT ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1987-12-03T00:00:00.000",
+      "primary_applicant": "FISHER, DONALD D  R.A."
+    },
+    {
+      "project_id": "P1983M1496",
+      "project_name": "465-469 WASHINGTON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-11-25T00:00:00.000",
+      "ulurp_numbers": "N831939ZCM",
+      "primary_applicant": "FISHER, DONALD D"
+    },
+    {
+      "project_id": "P1983M1497",
+      "project_name": "145 READE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-20T00:00:00.000",
+      "ulurp_numbers": "N831940ZCM",
+      "primary_applicant": "FISHER, DONALD D"
+    },
+    {
+      "project_id": "P1983M1498",
+      "project_name": "70-72 LAIGHT ST.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-28T00:00:00.000",
+      "ulurp_numbers": "N831941ZCM",
+      "primary_applicant": "FISHER, DONALD D"
+    },
+    {
+      "project_id": "P1983M1499",
+      "project_name": "430-432 GREENWICH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-07-13T00:00:00.000",
+      "ulurp_numbers": "N831942ZCM; N831945ZCM",
+      "primary_applicant": "PEACHY, JOHN FURTH, R.A."
+    },
+    {
+      "project_id": "P1983M1500",
+      "project_name": "317-319 GREENWICH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-04-11T00:00:00.000",
+      "ulurp_numbers": "N831943ZCM",
+      "primary_applicant": "FISHER, DONALD D"
+    },
+    {
+      "project_id": "P1983M1501",
+      "project_name": "428 GREENWICH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-29T00:00:00.000",
+      "ulurp_numbers": "N831944ZCM",
+      "primary_applicant": "Unknown"
+    },
+    {
+      "project_id": "P1983M1502",
+      "project_name": "144 CHAMBERS ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-28T00:00:00.000",
+      "ulurp_numbers": "N831946ZCM",
+      "primary_applicant": "HURLEY & FARINELLA"
+    },
+    {
+      "project_id": "P1983M1503",
+      "project_name": "155 CHAMBERS ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-28T00:00:00.000",
+      "ulurp_numbers": "N831947ZCM",
+      "primary_applicant": "HURLEY & FARINELLA"
+    },
+    {
+      "project_id": "P1983M1504",
+      "project_name": "228 WEST BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-01T00:00:00.000",
+      "ulurp_numbers": "N831948ZCM",
+      "primary_applicant": "HURLEY & FARINELLA"
+    },
+    {
+      "project_id": "P1983M1505",
+      "project_name": "156 CHAMBERS ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-02-06T00:00:00.000",
+      "ulurp_numbers": "N831949ZCM",
+      "primary_applicant": "HURLEY & FARINELLA"
+    },
+    {
+      "project_id": "P1983M1506",
+      "project_name": "177 HUDSON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-08T00:00:00.000",
+      "ulurp_numbers": "N831950ZCM",
+      "primary_applicant": "HURLEY & FARINELLA"
+    },
+    {
+      "project_id": "P1983M1507",
+      "project_name": "458 GREENWICH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-28T00:00:00.000",
+      "ulurp_numbers": "N831951ZCM",
+      "primary_applicant": "HURLEY & FARINELLA"
+    },
+    {
+      "project_id": "P1983M1508",
+      "project_name": "460 GREENWICH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-09T00:00:00.000",
+      "ulurp_numbers": "N831952ZCM",
+      "primary_applicant": "HURLEY & FARINELLA"
+    },
+    {
+      "project_id": "P1983M1509",
+      "project_name": "489 BROOME ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-08-30T00:00:00.000",
+      "ulurp_numbers": "C831953ZSM",
+      "primary_applicant": "HURLEY & FARINELLA"
+    },
+    {
+      "project_id": "P1983M1510",
+      "project_name": "500 BROADWAY, SOHO DIST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-07-23T00:00:00.000",
+      "ulurp_numbers": "C831954ZSM",
+      "primary_applicant": "HURLEY & FARINELLA"
+    },
+    {
+      "project_id": "P1983M1511",
+      "project_name": "224 CENTRE, WALKER STS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-03-08T00:00:00.000",
+      "ulurp_numbers": "C831955ZSM",
+      "primary_applicant": "YUN CHUN CO"
+    },
+    {
+      "project_id": "P1983M1512",
+      "project_name": "57-63 GREENE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-06-22T00:00:00.000",
+      "ulurp_numbers": "C831956ZSM",
+      "primary_applicant": "SHAEL, SHAPIRO"
+    },
+    {
+      "project_id": "P1983M1513",
+      "project_name": "12 W17TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-03-27T00:00:00.000",
+      "ulurp_numbers": "N831957ZCM",
+      "primary_applicant": "MASSARIA, DONNA - PRES, 12 W17 ST TENANTS CORP"
+    },
+    {
+      "project_id": "P1983M1514",
+      "project_name": "541 BROADWAY, A/K/A 112 MERCER ST",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "1985-10-10T00:00:00.000",
+      "primary_applicant": "POTOFSKY, RICHARD - AIA"
+    },
+    {
+      "project_id": "P1983M1515",
+      "project_name": "123 CHAMBERS ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-09-09T00:00:00.000",
+      "ulurp_numbers": "N831960ZCM",
+      "primary_applicant": "POTOFSKY, RICHARD - AIA"
+    },
+    {
+      "project_id": "P1983M1516",
+      "project_name": "124 CHAMBERS ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-09-09T00:00:00.000",
+      "ulurp_numbers": "N831961ZCM",
+      "primary_applicant": "POTOFSKY, RICHARD - AIA"
+    },
+    {
+      "project_id": "P1983M1517",
+      "project_name": "85-87 MERCER ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-12-07T00:00:00.000",
+      "ulurp_numbers": "N831962ZCM",
+      "primary_applicant": "POTOFSKY, RICHARD - AIA"
+    },
+    {
+      "project_id": "P1983M1518",
+      "project_name": "109 READE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1983-10-21T00:00:00.000",
+      "ulurp_numbers": "N831963ZCM",
+      "primary_applicant": "STAHL, REBECCA"
+    },
+    {
+      "project_id": "P1983M1519",
+      "project_name": "167-169 W21ST ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-03-03T00:00:00.000",
+      "ulurp_numbers": "N831966ZCM",
+      "primary_applicant": "BERGER, AARON"
+    },
+    {
+      "project_id": "P1983M1522",
+      "project_name": "112 GREENE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-09-24T00:00:00.000",
+      "ulurp_numbers": "N831973ZCM",
+      "primary_applicant": "WRIGHT, WILLIAM"
+    },
+    {
+      "project_id": "P1983M1524",
+      "project_name": "640 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-05-05T00:00:00.000",
+      "ulurp_numbers": "N831530ZJM",
+      "primary_applicant": "LOMBARDI, JOSEPH PELL"
+    },
+    {
+      "project_id": "P1983M1525",
+      "project_name": "543 BROADWAY,A/K/A 114 MERCER ST.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-12-28T00:00:00.000",
+      "ulurp_numbers": "C831971ZSM",
+      "primary_applicant": "SHAPIRO, SHAEL"
+    },
+    {
+      "project_id": "P1983M1526",
+      "project_name": "123 W28TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-13T00:00:00.000",
+      "ulurp_numbers": "N831409ZJM",
+      "primary_applicant": "LOMBARDI, JOSEPH PELL (ARCHITECT)"
+    },
+    {
+      "project_id": "P1983M1527",
+      "project_name": "12 WEST 27TH ST.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-06-07T00:00:00.000",
+      "ulurp_numbers": "N831635ZJM",
+      "primary_applicant": "12 WEST 27TH ST ASSOC"
+    },
+    {
+      "project_id": "P1983M1528",
+      "project_name": "156 FRANKLIN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-01-15T00:00:00.000",
+      "ulurp_numbers": "N831958ZCM",
+      "primary_applicant": "ARTHUR ATLAS FOR 156 FRANKLIN CO-OP CORP"
+    },
+    {
+      "project_id": "P1983M1529",
+      "project_name": "113 WEST 28TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-06-05T00:00:00.000",
+      "ulurp_numbers": "N831640ZJM",
+      "primary_applicant": "113 WEST 28TH ST, CORP"
+    },
+    {
+      "project_id": "P1983M1530",
+      "project_name": "75 HUDSON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-04-04T00:00:00.000",
+      "ulurp_numbers": "N831382ZJM",
+      "primary_applicant": "GOLDBERG, JOEL"
+    },
+    {
+      "project_id": "P1983M1531",
+      "project_name": "92 READE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-05-14T00:00:00.000",
+      "ulurp_numbers": "N830717ZJM",
+      "primary_applicant": "SAUNDERS, THOMAS M"
+    },
+    {
+      "project_id": "P1983M1532",
+      "project_name": "101 W27TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-07-09T00:00:00.000",
+      "ulurp_numbers": "N830718ZJM",
+      "primary_applicant": "101 WEST 27 ST"
+    },
+    {
+      "project_id": "P1983M1534",
+      "project_name": "139 W22ND ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-12-05T00:00:00.000",
+      "ulurp_numbers": "N830720ZJM",
+      "primary_applicant": "BRUCE, CLAUDIA"
+    },
+    {
+      "project_id": "P1983M1535",
+      "project_name": "214 W30TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-08T00:00:00.000",
+      "ulurp_numbers": "N830721ZJM",
+      "primary_applicant": "LATHROM, DONALD M"
+    },
+    {
+      "project_id": "P1983M1536",
+      "project_name": "426 & 428 BROOME STS A/K/A 41 CROSBY ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-03-08T00:00:00.000",
+      "ulurp_numbers": "C831936ZSM",
+      "primary_applicant": "MADSEN, LOREN (SEC)"
+    },
+    {
+      "project_id": "P1983M1537",
+      "project_name": "177 W26TH ST, M1-6 DIST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-06-06T00:00:00.000",
+      "ulurp_numbers": "N831494ZJM",
+      "primary_applicant": "UHR, ALEXANDER"
+    },
+    {
+      "project_id": "P1983M1538",
+      "project_name": "38-40 NORTH MOORE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-05-14T00:00:00.000",
+      "ulurp_numbers": "N830780ZJM",
+      "primary_applicant": "WONG, PAUL K"
+    },
+    {
+      "project_id": "P1983M1539",
+      "project_name": "156 W22ND ST, M1-5M DIST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-03-03T00:00:00.000",
+      "ulurp_numbers": "N830782ZJM; N831513ZJM",
+      "primary_applicant": "CRISTAFARO, CRIS"
+    },
+    {
+      "project_id": "P1983M1540",
+      "project_name": "465 WASHINGTON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-02-15T00:00:00.000",
+      "ulurp_numbers": "N830783ZJM",
+      "primary_applicant": "SOUTHARD, CRAIG"
+    },
+    {
+      "project_id": "P1983M1541",
+      "project_name": "150-152 CHAMBERS ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1983-09-02T00:00:00.000",
+      "ulurp_numbers": "N830784ZJM",
+      "primary_applicant": "MORDANT ASSOC"
+    },
+    {
+      "project_id": "P1983M1542",
+      "project_name": "186 FRANKLIN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-01T00:00:00.000",
+      "ulurp_numbers": "N830785ZJM",
+      "primary_applicant": "FERGUSON, MARK"
+    },
+    {
+      "project_id": "P1983M1543",
+      "project_name": "15 WEST 26TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-01T00:00:00.000",
+      "ulurp_numbers": "N830787ZJM",
+      "primary_applicant": "GOMBAR, EUGENE RICHARD/BOCCHINO, GUY"
+    },
+    {
+      "project_id": "P1983M1544",
+      "project_name": "186-188 FRANKLIN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-08T00:00:00.000",
+      "ulurp_numbers": "N830789ZJM",
+      "primary_applicant": "DALLAS, SUSAN"
+    },
+    {
+      "project_id": "P1983M1545",
+      "project_name": "215 WEST 28TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-09-13T00:00:00.000",
+      "ulurp_numbers": "N830790ZJM",
+      "primary_applicant": "VITALI, ROMANO"
+    },
+    {
+      "project_id": "P1983M1546",
+      "project_name": "145 W22ND ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-11-05T00:00:00.000",
+      "ulurp_numbers": "N830791ZJM",
+      "primary_applicant": "FREEMAN, HOWARD"
+    },
+    {
+      "project_id": "P1983M1547",
+      "project_name": "41 WEST 24TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-05-30T00:00:00.000",
+      "ulurp_numbers": "N830793ZJM",
+      "ceqr_number": "83-280M",
+      "primary_applicant": "PAUL JOHNSON ET AL"
+    },
+    {
+      "project_id": "P1983M1548",
+      "project_name": "471 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-11-30T00:00:00.000",
+      "ulurp_numbers": "N830794ZJM",
+      "primary_applicant": "FINK, WILLIAM R"
+    },
+    {
+      "project_id": "P1983M1549",
+      "project_name": "548 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-01T00:00:00.000",
+      "ulurp_numbers": "N830795ZJM",
+      "primary_applicant": "BISIGNANO, RICHARD"
+    },
+    {
+      "project_id": "P1983M1550",
+      "project_name": "548 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-07-09T00:00:00.000",
+      "ulurp_numbers": "N830796ZJM",
+      "primary_applicant": "DAVIES, PETER"
+    },
+    {
+      "project_id": "P1983M1551",
+      "project_name": "548 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-07-09T00:00:00.000",
+      "ulurp_numbers": "N830797ZJM",
+      "primary_applicant": "HAIN, SUZANNE"
+    },
+    {
+      "project_id": "P1983M1552",
+      "project_name": "151 HUDSON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-06-18T00:00:00.000",
+      "ulurp_numbers": "N830798ZJM",
+      "primary_applicant": "VANHENTENRYCK, KEVIN"
+    },
+    {
+      "project_id": "P1983M1553",
+      "project_name": "462 GREENWICH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-10-28T00:00:00.000",
+      "ulurp_numbers": "N831636ZJM",
+      "primary_applicant": "SHUMAN, MORRIS"
+    },
+    {
+      "project_id": "P1983M1554",
+      "project_name": "60 LISPENARD ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-05-14T00:00:00.000",
+      "ulurp_numbers": "N831316ZJM",
+      "primary_applicant": "MCNEIL, BURTON/PAGE, DONNA"
+    },
+    {
+      "project_id": "P1983M1555",
+      "project_name": "548 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-07-09T00:00:00.000",
+      "ulurp_numbers": "N831317ZJM",
+      "primary_applicant": "HERSCH, FREDERICK S"
+    },
+    {
+      "project_id": "P1983M1556",
+      "project_name": "156 5TH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-31T00:00:00.000",
+      "ulurp_numbers": "N831318ZJM",
+      "primary_applicant": "CANTOR, MARK S"
+    },
+    {
+      "project_id": "P1983M1557",
+      "project_name": "39 WHITE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-21T00:00:00.000",
+      "ulurp_numbers": "N831319ZJM",
+      "primary_applicant": "ALUM, MANUEL"
+    },
+    {
+      "project_id": "P1983M1558",
+      "project_name": "79 WARREN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-06-05T00:00:00.000",
+      "ulurp_numbers": "N831320ZJM; N831964ZCM",
+      "primary_applicant": "STAHL, REBECCA"
+    },
+    {
+      "project_id": "P1983M1559",
+      "project_name": "109 SPRING ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-05-08T00:00:00.000",
+      "ulurp_numbers": "N831321ZJM",
+      "primary_applicant": "109 SPRING ST TENANTS ASSOC"
+    },
+    {
+      "project_id": "P1983M1560",
+      "project_name": "32 W31 ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-01-03T00:00:00.000",
+      "ulurp_numbers": "N831322ZJM",
+      "primary_applicant": "HUNG LAM REALTY CORP"
+    },
+    {
+      "project_id": "P1983M1561",
+      "project_name": "241-245 W29TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-01-24T00:00:00.000",
+      "ulurp_numbers": "N831323ZJM",
+      "primary_applicant": "SPERAKIS, NICHOLAS"
+    },
+    {
+      "project_id": "P1983M1562",
+      "project_name": "655 6TH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-08T00:00:00.000",
+      "ulurp_numbers": "N831324ZJM",
+      "primary_applicant": "KRIFKA, JOHN J"
+    },
+    {
+      "project_id": "P1983M1563",
+      "project_name": "17 W20TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-31T00:00:00.000",
+      "ulurp_numbers": "N831325ZJM",
+      "primary_applicant": "HUESSY, RAYMOND & MARY"
+    },
+    {
+      "project_id": "P1983M1564",
+      "project_name": "54 LEONARD ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-05-01T00:00:00.000",
+      "ulurp_numbers": "N831326ZJM",
+      "primary_applicant": "SHORE, MARGUERITE"
+    },
+    {
+      "project_id": "P1983M1565",
+      "project_name": "177 W26TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-04-09T00:00:00.000",
+      "ulurp_numbers": "N831327ZJM",
+      "primary_applicant": "STIMSON, BETH"
+    },
+    {
+      "project_id": "P1983M1566",
+      "project_name": "144 W BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-05-01T00:00:00.000",
+      "ulurp_numbers": "N831328ZJM",
+      "primary_applicant": "MOY, CECILIA"
+    },
+    {
+      "project_id": "P1983M1567",
+      "project_name": "140 W BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-04-09T00:00:00.000",
+      "ulurp_numbers": "N831329ZJM",
+      "primary_applicant": "HARDING, REGINE & ROBERT"
+    },
+    {
+      "project_id": "P1983M1568",
+      "project_name": "81 WARREN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-05-08T00:00:00.000",
+      "ulurp_numbers": "N831965ZCM",
+      "primary_applicant": "STAHL, REBECCA"
+    },
+    {
+      "project_id": "P1983M1569",
+      "project_name": "150 FRANKLIN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-08T00:00:00.000",
+      "ulurp_numbers": "N831673ZJM",
+      "primary_applicant": "HOWLAND, REBECCA"
+    },
+    {
+      "project_id": "P1983M1570",
+      "project_name": "13-15 LAIGHT ST, M1-5 LMM DIST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-01T00:00:00.000",
+      "ulurp_numbers": "N831365ZJM",
+      "primary_applicant": "CHESELKA, KIM"
+    },
+    {
+      "project_id": "P1983M1571",
+      "project_name": "580 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-11-30T00:00:00.000",
+      "ulurp_numbers": "N831366ZJM",
+      "primary_applicant": "Unknown"
+    },
+    {
+      "project_id": "P1983M1572",
+      "project_name": "117 W26TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-31T00:00:00.000",
+      "ulurp_numbers": "N831367ZJM",
+      "primary_applicant": "TENANTS OF 117 W26 ST"
+    },
+    {
+      "project_id": "P1983M1573",
+      "project_name": "1155 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-31T00:00:00.000",
+      "ulurp_numbers": "N831368ZJM",
+      "primary_applicant": "KUHN, ANN"
+    },
+    {
+      "project_id": "P1983M1574",
+      "project_name": "801 6TH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-05-01T00:00:00.000",
+      "ulurp_numbers": "N831369ZJM",
+      "primary_applicant": "ESTEIN, MICHAEL"
+    },
+    {
+      "project_id": "P1983M1575",
+      "project_name": "550-556 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-05-01T00:00:00.000",
+      "ulurp_numbers": "N831370ZJM",
+      "primary_applicant": "COLEMAN, PATRICIA"
+    },
+    {
+      "project_id": "P1983M1576",
+      "project_name": "456-458 BROOME ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-14T00:00:00.000",
+      "ulurp_numbers": "N831371ZJM",
+      "primary_applicant": "GERITAPER/BRAUNSTEIN, G"
+    },
+    {
+      "project_id": "P1983M1577",
+      "project_name": "474 GREENWICH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-11-30T00:00:00.000",
+      "ulurp_numbers": "N831372ZJM",
+      "primary_applicant": "MANDELBAUM, K. TOMARO, R."
+    },
+    {
+      "project_id": "P1983M1578",
+      "project_name": "873 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-01T00:00:00.000",
+      "ulurp_numbers": "N831373ZJM",
+      "primary_applicant": "BARBER, JAMES B"
+    },
+    {
+      "project_id": "P1983M1579",
+      "project_name": "873 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-31T00:00:00.000",
+      "ulurp_numbers": "N831374ZJM",
+      "primary_applicant": "WALTZER, CARL"
+    },
+    {
+      "project_id": "P1983M1580",
+      "project_name": "429 BROOME ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-11-30T00:00:00.000",
+      "ulurp_numbers": "N831375ZJM",
+      "primary_applicant": "MYNC, BOGDAN"
+    },
+    {
+      "project_id": "P1983M1581",
+      "project_name": "29 E19TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-01-14T00:00:00.000",
+      "ulurp_numbers": "N831376ZJM",
+      "primary_applicant": "DUFFIN, DANIEL"
+    },
+    {
+      "project_id": "P1983M1582",
+      "project_name": "101 W25TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-11-05T00:00:00.000",
+      "ulurp_numbers": "N831377ZJM",
+      "primary_applicant": "CIUPAK, STANLEY/SEABURY, ROBERT/FALK, DAVID"
+    },
+    {
+      "project_id": "P1983M1583",
+      "project_name": "7 HARRISON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-01T00:00:00.000",
+      "ulurp_numbers": "N831378ZJM",
+      "primary_applicant": "WHITE, CHRISTIAN S"
+    },
+    {
+      "project_id": "P1983M1584",
+      "project_name": "143 CHAMBERS ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1985-11-18T00:00:00.000",
+      "primary_applicant": "EHRLICH, JEFFREY W"
+    },
+    {
+      "project_id": "P1983M1585",
+      "project_name": "784 6TH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-07-09T00:00:00.000",
+      "ulurp_numbers": "N831380ZJM",
+      "primary_applicant": "PATRICIA, GALLAGHER"
+    },
+    {
+      "project_id": "P1983M1586",
+      "project_name": "545 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-10-13T00:00:00.000",
+      "ulurp_numbers": "N831381ZJM",
+      "primary_applicant": "MAPAMA CORP"
+    },
+    {
+      "project_id": "P1983M1587",
+      "project_name": "19 VESTRY ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-07-25T00:00:00.000",
+      "ulurp_numbers": "N831383ZJM",
+      "primary_applicant": "JOEL GOLDBERG'S CHILDREN'S TRUST"
+    },
+    {
+      "project_id": "P1983M1588",
+      "project_name": "191 7TH AVE.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-04-30T00:00:00.000",
+      "ulurp_numbers": "N831384ZJM",
+      "primary_applicant": "KONIGSBERG, HARVEY"
+    },
+    {
+      "project_id": "P1983M1589",
+      "project_name": "123 W 20TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-04-26T00:00:00.000",
+      "ulurp_numbers": "N831385ZJM",
+      "primary_applicant": "TRAVAGLIA, CARLO"
+    },
+    {
+      "project_id": "P1983M1590",
+      "project_name": "17 W24 ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-05-14T00:00:00.000",
+      "ulurp_numbers": "N831386ZJM",
+      "primary_applicant": "HUDDLSTON, JOHN G"
+    },
+    {
+      "project_id": "P1983M1591",
+      "project_name": "83 WARREN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-07-09T00:00:00.000",
+      "ulurp_numbers": "N831387ZJM",
+      "primary_applicant": "BILGER, JOSEPH E"
+    },
+    {
+      "project_id": "P1983M1592",
+      "project_name": "149 W24TH ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1986-11-05T00:00:00.000",
+      "primary_applicant": "MURDOCK, RICHARD J"
+    },
+    {
+      "project_id": "P1983M1593",
+      "project_name": "55 W 26TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-04-02T00:00:00.000",
+      "ulurp_numbers": "N831389ZJM",
+      "primary_applicant": "STONE, WENDY"
+    },
+    {
+      "project_id": "P1983M1594",
+      "project_name": "97 CROSBY ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-05-01T00:00:00.000",
+      "ulurp_numbers": "N831390ZJM",
+      "primary_applicant": "DILL LEE, TERRY & DILL, CARLA"
+    },
+    {
+      "project_id": "P1983M1595",
+      "project_name": "231 W29TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-02-19T00:00:00.000",
+      "ulurp_numbers": "N831392ZJM",
+      "primary_applicant": "231 W29TH ST TENANT'S ASSOC"
+    },
+    {
+      "project_id": "P1983M1596",
+      "project_name": "53 W21TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-10-07T00:00:00.000",
+      "ulurp_numbers": "N831393ZJM",
+      "primary_applicant": "LEE, SARA M"
+    },
+    {
+      "project_id": "P1983M1597",
+      "project_name": "211 WEST BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-01T00:00:00.000",
+      "ulurp_numbers": "N831394ZJM",
+      "primary_applicant": "SINDER, BRUCE/SINVIN REALTY CORP"
+    },
+    {
+      "project_id": "P1983M1598",
+      "project_name": "654 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-05-01T00:00:00.000",
+      "ulurp_numbers": "N831395ZJM",
+      "primary_applicant": "GROSSFELD, VICKI"
+    },
+    {
+      "project_id": "P1983M1599",
+      "project_name": "654 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-04-02T00:00:00.000",
+      "ulurp_numbers": "N831396ZJM",
+      "primary_applicant": "PHILLIPS, TIMOTHY J"
+    },
+    {
+      "project_id": "P1983M1600",
+      "project_name": "37 WEST 19TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-12-18T00:00:00.000",
+      "ulurp_numbers": "N831397ZJM",
+      "primary_applicant": "DINOWITZ, ARNOLD & ELIZABETH"
+    },
+    {
+      "project_id": "P1983M1601",
+      "project_name": "16 E18TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-06-01T00:00:00.000",
+      "ulurp_numbers": "N831398ZJM",
+      "primary_applicant": "MAURER, HARRY"
+    },
+    {
+      "project_id": "P1983M1602",
+      "project_name": "732 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-07-28T00:00:00.000",
+      "ulurp_numbers": "N831399ZJM",
+      "primary_applicant": "HARMONY REALTY CORP"
+    },
+    {
+      "project_id": "P1983M1603",
+      "project_name": "444 BROOME ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-03-13T00:00:00.000",
+      "ulurp_numbers": "N831400ZJM",
+      "primary_applicant": "SCOTT, MARK W."
+    },
+    {
+      "project_id": "P1983M1604",
+      "project_name": "53 CROSBY ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-05-01T00:00:00.000",
+      "ulurp_numbers": "N831401ZJM",
+      "primary_applicant": "SCOTT, MARK W"
+    },
+    {
+      "project_id": "P1983M1605",
+      "project_name": "118 W 27TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-12-05T00:00:00.000",
+      "ulurp_numbers": "N831402ZJM",
+      "primary_applicant": "RODIN, ROBERT"
+    },
+    {
+      "project_id": "P1983M1606",
+      "project_name": "151 SPRING ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1984-03-28T00:00:00.000",
+      "primary_applicant": "LOMBARDI, JOSEPH PELL (ARCHITECT)"
+    },
+    {
+      "project_id": "P1983M1607",
+      "project_name": "684 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1984-03-28T00:00:00.000",
+      "primary_applicant": "LOMBARDI, JOSEPH PELL (ARCHITECT)"
+    },
+    {
+      "project_id": "P1983M1608",
+      "project_name": "9 E16TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-05-10T00:00:00.000",
+      "ulurp_numbers": "N831405ZJM",
+      "primary_applicant": "LOMBARDI, JOSEPH PELL (ARCHITECT)"
+    },
+    {
+      "project_id": "P1983M1609",
+      "project_name": "2-6 VARICK ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-02-09T00:00:00.000",
+      "ulurp_numbers": "N831406ZJM",
+      "primary_applicant": "LOMBARDI, JOSEPH PELL (ARCHITECT)"
+    },
+    {
+      "project_id": "P1983M1610",
+      "project_name": "565 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-06-05T00:00:00.000",
+      "ulurp_numbers": "N831407ZJM",
+      "primary_applicant": "LOMBARDI, JOSEPH PELL (ARCHITECT)"
+    },
+    {
+      "project_id": "P1983M1611",
+      "project_name": "17 W20TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-12-18T00:00:00.000",
+      "ulurp_numbers": "N831408ZJM",
+      "primary_applicant": "LOMBARDI, JOSEPH PELL (ARCHITECT)"
+    },
+    {
+      "project_id": "P1983M1612",
+      "project_name": "32 E22TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-08T00:00:00.000",
+      "ulurp_numbers": "N831410ZJM; N831717ZJM",
+      "primary_applicant": "GRADMAN, MAURICE J"
+    },
+    {
+      "project_id": "P1983M1613",
+      "project_name": "54 GREENE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1985-01-07T00:00:00.000",
+      "ulurp_numbers": "N831411ZJM; N831505ZJM",
+      "primary_applicant": "GARRET, JAMES"
+    },
+    {
+      "project_id": "P1983M1614",
+      "project_name": "124 CHAMBERS ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-05-14T00:00:00.000",
+      "ulurp_numbers": "N831412ZJM",
+      "primary_applicant": "BURNHAM, CORA/CORREALE, TONY"
+    },
+    {
+      "project_id": "P1983M1615",
+      "project_name": "144 FRANKLYN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-08-08T00:00:00.000",
+      "ulurp_numbers": "N831414ZJM",
+      "primary_applicant": "SHRIVER, CHRISTOPHER J"
+    },
+    {
+      "project_id": "P1983M1616",
+      "project_name": "160 FRANKLIN ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1986-11-30T00:00:00.000",
+      "primary_applicant": "SCHEFMAN, ROBERT B"
+    },
+    {
+      "project_id": "P1983M1620",
+      "project_name": "115 W68TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-03-01T00:00:00.000",
+      "ulurp_numbers": "C831430ZMM; C831432ZSM",
+      "ceqr_number": "82-312M",
+      "primary_applicant": "ZECKENDORF - 68 ASSOC"
+    },
+    {
+      "project_id": "P1983M1621",
+      "project_name": "175 FRANKLIN ST, TRIBECA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-05-14T00:00:00.000",
+      "ulurp_numbers": "N831435ZCM",
+      "primary_applicant": "MARCUS, MARTIN J"
+    },
+    {
+      "project_id": "P1983M1622",
+      "project_name": "44 LISPENARD ST TRIBECA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1984-03-09T00:00:00.000",
+      "ulurp_numbers": "N831436ZCM",
+      "primary_applicant": "GUTTMAN, ARTHUR"
+    },
+    {
+      "project_id": "P1983M1623",
+      "project_name": "537 BROADWAY A/K/A 110 MERCER ST M1-5B SOHO DIST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-02-18T00:00:00.000",
+      "ulurp_numbers": "C831437ZSM",
+      "primary_applicant": "SHAPIRO LAWN ASSOC"
+    },
+    {
+      "project_id": "P1983M1624",
+      "project_name": "128 W23 ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-05-14T00:00:00.000",
+      "ulurp_numbers": "N831442ZCM",
+      "primary_applicant": "MARCUS, MARTIN"
+    },
+    {
+      "project_id": "P1983M1625",
+      "project_name": "162 WEST 21 ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-07-28T00:00:00.000",
+      "ulurp_numbers": "N831443ZCM",
+      "primary_applicant": "MARCUS, MARTIN"
+    },
+    {
+      "project_id": "P1983M1626",
+      "project_name": "126 WEST 23 ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-03-06T00:00:00.000",
+      "ulurp_numbers": "N831444ZCM",
+      "primary_applicant": "MARCUS, MARTIN"
+    }
+  ]
+}

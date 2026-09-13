@@ -1,0 +1,2214 @@
+{
+  "schema_version": "cityscroll.historical_project_context.v1",
+  "shard": "0043",
+  "rows": [
+    {
+      "project_id": "P1990X0810",
+      "project_name": "MCDONALD'S RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "90-143X",
+      "primary_applicant": "DAVIDOFF & MALITO"
+    },
+    {
+      "project_id": "P1990X0821",
+      "project_name": "1470 BRUCKNER BLVD",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "90-168X",
+      "primary_applicant": "WILCOX CONSTR CO, INC/SALVATI ARCHITECTS"
+    },
+    {
+      "project_id": "P1990X0830",
+      "project_name": "482 COLLEGE AVENUE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "90-182X",
+      "primary_applicant": "ADOLPH A. BUONAMICI/PETER RUFFALO"
+    },
+    {
+      "project_id": "P1990X0836",
+      "project_name": "BURGER KING",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "90-196X",
+      "primary_applicant": "4-D BURGERS, LTD"
+    },
+    {
+      "project_id": "P1990X0845",
+      "project_name": "335 CONCORD AVENUE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "90-215X",
+      "primary_applicant": "COGEN, MICHAEL"
+    },
+    {
+      "project_id": "P1990X0852",
+      "project_name": "779-781 BURKE AVE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "90-239X",
+      "primary_applicant": "BONO, LUDWIG"
+    },
+    {
+      "project_id": "P1990X0856",
+      "project_name": "3030 JEROME AVENUE, A/K/A 3103 VILLA AVE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "90-252X",
+      "primary_applicant": "BONO, LUDWIG"
+    },
+    {
+      "project_id": "P1990X0857",
+      "project_name": "3928 HARPER AVENUE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "90-255X",
+      "primary_applicant": "GALLEGO, MARIA"
+    },
+    {
+      "project_id": "P1990X0858",
+      "project_name": "1470 BRUCKNER BLVD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "ceqr_number": "90DCP168XA",
+      "primary_applicant": "WILCOX CONSTRUCTION CORP/SALVATI ARCHITECTS"
+    },
+    {
+      "project_id": "P1990X0867",
+      "project_name": "HORIZON RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-01-31T00:00:00.000",
+      "ulurp_numbers": "N900012TCX",
+      "primary_applicant": "RAHI RESTAURANT, INC"
+    },
+    {
+      "project_id": "P1990X0919",
+      "project_name": "189 W231 ST RESTAURANT, INC (DALE)",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-12-27T00:00:00.000",
+      "ulurp_numbers": "N900235TCX",
+      "primary_applicant": "189 W231ST ST RESTAURANT, INC"
+    },
+    {
+      "project_id": "P1990X0986",
+      "project_name": "HORIZONS RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "1990-12-18T00:00:00.000",
+      "primary_applicant": "RAHI RESTAURANT"
+    },
+    {
+      "project_id": "P1990Y0261",
+      "project_name": "BUS SYSTEMS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2004-10-14T00:00:00.000",
+      "ulurp_numbers": "I900336BFY",
+      "ceqr_number": "90-064Y",
+      "primary_applicant": "BUS SYSTEMS, INC"
+    },
+    {
+      "project_id": "P1991K0003",
+      "project_name": "BISHOP MUGAVERO CNTR FOR GERIATRIC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-12-09T00:00:00.000",
+      "ulurp_numbers": "C910003ZSK",
+      "ceqr_number": "90-223K",
+      "primary_applicant": "ALBERT SCHUNKEWITZ & PARTNERS/ST JEROME HEALTH SERVICES CORP"
+    },
+    {
+      "project_id": "P1991K0019",
+      "project_name": "WAREHOUSE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1990-12-06T00:00:00.000",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1991K0020",
+      "project_name": "ABE STARK SR CENTER/JOHN F. KENNEDY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1993-09-13T00:00:00.000",
+      "ulurp_numbers": "C910030PQK",
+      "primary_applicant": "HRA/DGS"
+    },
+    {
+      "project_id": "P1991K0023",
+      "project_name": "BROWNSVILLE SERVICE CENTER",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-08-05T00:00:00.000",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1991K0037",
+      "project_name": "BROADWAY INDUSTRIAL DEV",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-10-28T00:00:00.000",
+      "ulurp_numbers": "C910052ZMK",
+      "ceqr_number": "91-031K",
+      "primary_applicant": "BROADWAY INDUSTRIAL DEVELOPMENT CORP/PROSTIN, JOSEPH"
+    },
+    {
+      "project_id": "P1991K0101",
+      "project_name": "1ST AMENDMENT EAST NEW YORK I URP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-05-03T00:00:00.000",
+      "ulurp_numbers": "C910119HUK",
+      "ceqr_number": "90-121K",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1991K0113",
+      "project_name": "EAST 43RD ST DEMAPPING",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1996-12-24T00:00:00.000",
+      "ceqr_number": "86-032K",
+      "primary_applicant": "TROY REALTY"
+    },
+    {
+      "project_id": "P1991K0129",
+      "project_name": "AUGUSTANA LUTHERAN HOME",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-05-16T00:00:00.000",
+      "ulurp_numbers": "N910154ZCK",
+      "ceqr_number": "89-262K",
+      "primary_applicant": "LUTHERAN MEDICAL CENTER/AUGUSTANA LUTHERAN HOME"
+    },
+    {
+      "project_id": "P1991K0137",
+      "project_name": "RIDGE PLAZA SHOPPING CENTER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-07-01T00:00:00.000",
+      "ulurp_numbers": "C910159ZMK",
+      "ceqr_number": "91-085K",
+      "primary_applicant": "WYCOFF SUPERMARKET ASSOC/STADTMAUER BAILKIN LEVINE & MASYR"
+    },
+    {
+      "project_id": "P1991K0141",
+      "project_name": "1ST AMENDMENT BROWNSVILLE II URA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-06-10T00:00:00.000",
+      "ulurp_numbers": "C910156HUK; C910157HDK",
+      "ceqr_number": "90-097K",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1991K0150",
+      "project_name": "BROWNSVILLE I 5TH AMEND URP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1993-10-01T00:00:00.000",
+      "ulurp_numbers": "C910170HUK; C910171HDK",
+      "ceqr_number": "88-270K",
+      "primary_applicant": "CHARLES PUMILIA/KENNETH SEVITSKY/HPD"
+    },
+    {
+      "project_id": "P1991K0160",
+      "project_name": "ANTIOCH",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-02-26T00:00:00.000",
+      "ulurp_numbers": "N910185HKK",
+      "primary_applicant": "LANDMARKS"
+    },
+    {
+      "project_id": "P1991K0166",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1992-07-20T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991K0171",
+      "project_name": "FERRY LANDING",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1993-02-18T00:00:00.000",
+      "ceqr_number": "91-093K",
+      "primary_applicant": "PORTS & TRADE"
+    },
+    {
+      "project_id": "P1991K0178",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-11-13T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991K0179",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-11-13T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991K0180",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-11-13T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991K0183",
+      "project_name": "LINROC NURSING HOME",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-01-09T00:00:00.000",
+      "ulurp_numbers": "N910208ZCK",
+      "primary_applicant": "LINROC COMMUNITY SVC CORP/KALKINES, ARKY, ZALL & BERNSTEIN"
+    },
+    {
+      "project_id": "P1991K0188",
+      "project_name": "LIVINGSTON PLAZA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-02-01T00:00:00.000",
+      "ulurp_numbers": "N910215CMK",
+      "primary_applicant": "LIVINGSTON PLAZA ASSOC/PDC"
+    },
+    {
+      "project_id": "P1991K0199",
+      "project_name": "BROWNSVILLE I URP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1993-10-01T00:00:00.000",
+      "ulurp_numbers": "C910237MMK; C910238ZMK",
+      "ceqr_number": "88-270K",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1991K0201",
+      "project_name": "111 29TH ST A/K/A 820 3RD AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1993-04-17T00:00:00.000",
+      "ulurp_numbers": "C910229PCK",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1991K0208",
+      "project_name": "UNIT A, BUSH TERMINAL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1993-08-24T00:00:00.000",
+      "ulurp_numbers": "I910236PNK",
+      "primary_applicant": "DPT"
+    },
+    {
+      "project_id": "P1991K0209",
+      "project_name": "WILLIAMSBURG URA PARK",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2000-10-23T00:00:00.000",
+      "ceqr_number": "91-101K",
+      "primary_applicant": "DPR"
+    },
+    {
+      "project_id": "P1991K0220",
+      "project_name": "R2X REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-10-08T00:00:00.000",
+      "ulurp_numbers": "C910255ZMK",
+      "ceqr_number": "91-098K",
+      "primary_applicant": "DCP"
+    },
+    {
+      "project_id": "P1991K0221",
+      "project_name": "SARATOGA SQUARE URP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-05-04T00:00:00.000",
+      "ulurp_numbers": "N910242HGK; C910243HUK; C910244HMK",
+      "ceqr_number": "89-232K",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1991K0226",
+      "project_name": "BROOKLYN BOROUGH REPAIR SHOP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-09-15T00:00:00.000",
+      "ulurp_numbers": "C910261PQK",
+      "ceqr_number": "90-235K",
+      "primary_applicant": "DSNY"
+    },
+    {
+      "project_id": "P1991K0238",
+      "project_name": "64TH ST REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-11-18T00:00:00.000",
+      "ulurp_numbers": "C910272ZMK",
+      "ceqr_number": "91-121K",
+      "primary_applicant": "KOHEN, ANDREW/STROOCK,STROOCK&LAVAN/BAY RIDGE CRSTN CNTR/MTA"
+    },
+    {
+      "project_id": "P1991K0255",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-11-13T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991K0256",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-11-13T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991K0257",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-11-13T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991K0260",
+      "project_name": "WASHINGTON AVE REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-10-28T00:00:00.000",
+      "ulurp_numbers": "C910293ZMK",
+      "ceqr_number": "91-124K",
+      "primary_applicant": "DCP"
+    },
+    {
+      "project_id": "P1991K0268",
+      "project_name": "BKLYN NORTH 2 GARAGE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-07-11T00:00:00.000",
+      "ulurp_numbers": "C910301PQK",
+      "ceqr_number": "90-242K",
+      "primary_applicant": "DSNY"
+    },
+    {
+      "project_id": "P1991K0269",
+      "project_name": "FLATLANDS SHOPPING CENTER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1995-03-01T00:00:00.000",
+      "ulurp_numbers": "I910305ZMK",
+      "ceqr_number": "92DCP615K",
+      "primary_applicant": "J. A. GREEN CONST CORP/STADTMAUER, BIALKIN LEVINE & MASYR"
+    },
+    {
+      "project_id": "P1991K0305",
+      "project_name": "RENAISSANCE PLAZA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-05-07T00:00:00.000",
+      "ulurp_numbers": "N910350PXK",
+      "primary_applicant": "Department of General Services (now part of DCAS)"
+    },
+    {
+      "project_id": "P1991K0306",
+      "project_name": "JOHN WALTER EDWARDS APTS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-12-24T00:00:00.000",
+      "ulurp_numbers": "C910359HDK; C910360ZMK",
+      "ceqr_number": "91-088K",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1991K0310",
+      "project_name": "LINDEN FAMILY RESIDENCE CENTER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-09-28T00:00:00.000",
+      "ulurp_numbers": "C910373PSK",
+      "ceqr_number": "90-133K",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1991K0311",
+      "project_name": "LONG ISLAND COLLEGE HOSP PKG GARAGE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1995-01-12T00:00:00.000",
+      "ulurp_numbers": "C910374MMK; N910375ZAK; C910376ZSK",
+      "ceqr_number": "87-013K",
+      "primary_applicant": "LONG ISLAND COLLEGE HOSPITAL/STROOCK & STROOCK & LAVAN"
+    },
+    {
+      "project_id": "P1991K0320",
+      "project_name": "L.I. COLLEGE HOSP PKING GARAGE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1993-09-13T00:00:00.000",
+      "ulurp_numbers": "C910400ZMK",
+      "primary_applicant": "LONG ISLAND COLLEGE HOSPITAL/STROOCK, STROOCK & LAVAN"
+    },
+    {
+      "project_id": "P1991K0324",
+      "project_name": "PARKVILLE SR HOUSING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-01T00:00:00.000",
+      "ulurp_numbers": "N910403ZAK",
+      "ceqr_number": "91-170K",
+      "primary_applicant": "PARKVILLE HOUSES/HOUSING & DEV FUND INC/BROWN & WOOD"
+    },
+    {
+      "project_id": "P1991K0325",
+      "project_name": "CHASE METROTECH BLDG F SIGN",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-08-23T00:00:00.000",
+      "ceqr_number": "82-248K",
+      "primary_applicant": "NYCIDA/CHASE MANHATTAN BANK/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1991K0335",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-10-26T00:00:00.000",
+      "ulurp_numbers": "C910418PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991K0343",
+      "project_name": "HPD STORAGE SPACE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1993-03-20T00:00:00.000",
+      "ulurp_numbers": "C910438PQK",
+      "primary_applicant": "HPD/DGS"
+    },
+    {
+      "project_id": "P1991K0348",
+      "project_name": "FIVE BLOCK DCC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1994-08-09T00:00:00.000",
+      "ulurp_numbers": "C910443PQK",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1991K0352",
+      "project_name": "SOUTHSIDE URP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-08-03T00:00:00.000",
+      "ulurp_numbers": "C910436HUK",
+      "ceqr_number": "91-113K",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1991K0356",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-11-13T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991K0357",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-11-13T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991K0358",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-11-13T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991K0359",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-10-18T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991K0377",
+      "project_name": "MAIMONIDES MRI FACILITY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-06-10T00:00:00.000",
+      "ulurp_numbers": "M880525AZAK",
+      "primary_applicant": "MAIMONIDES MEDICAL CENTER/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1991K0388",
+      "project_name": "ALBANY DCC & SENIOR CENTER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1994-10-17T00:00:00.000",
+      "ulurp_numbers": "C910482PQK",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1991K0391",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-15T00:00:00.000",
+      "ulurp_numbers": "C910489PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991K0392",
+      "project_name": "PS86/IRVINGTON SCHOOL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-05T00:00:00.000",
+      "ulurp_numbers": "N910507HKK",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991K0395",
+      "project_name": "PAL-MICCIO DCC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1993-07-10T00:00:00.000",
+      "ulurp_numbers": "C910509PQK",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1991K0397",
+      "project_name": "NEW LOTS-SCHENCK DCC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1994-10-17T00:00:00.000",
+      "ulurp_numbers": "C910511PQK",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1991K0409",
+      "project_name": "NON-SECURE DETENTION GROUP HOME",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-01-25T00:00:00.000",
+      "ulurp_numbers": "C910524PCK",
+      "ceqr_number": "91-204K",
+      "primary_applicant": "DJJ"
+    },
+    {
+      "project_id": "P1991K0412",
+      "project_name": "ST ANDREWS DCC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1994-10-17T00:00:00.000",
+      "ulurp_numbers": "C910526PQK",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1991K0415",
+      "project_name": "SARATOGA SQ URA REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-05-04T00:00:00.000",
+      "ulurp_numbers": "C910532ZMK",
+      "ceqr_number": "89-232K",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1991K0422",
+      "project_name": "FLATBUSH ACTION COMMUNITY DCC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-12-22T00:00:00.000",
+      "ulurp_numbers": "C910537PQK",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1991K0423",
+      "project_name": "GEORGE CONLIFFE DCC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1994-10-17T00:00:00.000",
+      "ulurp_numbers": "C910538PQK",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1991K0437",
+      "project_name": "NEVINS DCC & SENIOR CENTER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1994-10-17T00:00:00.000",
+      "ulurp_numbers": "C910559PQK",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1991K0441",
+      "project_name": "LEARNER'S HAVEN DCC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1995-01-24T00:00:00.000",
+      "ulurp_numbers": "C910560PQK",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1991K0446",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-11-13T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991K0447",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-11-13T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991K0448",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-11-13T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991K0449",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-11-13T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991K0450",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-11-13T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991K0456",
+      "project_name": "111-13 SNEDIKER AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-12-10T00:00:00.000",
+      "ulurp_numbers": "C910604PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991K0465",
+      "project_name": "75 STEUBEN STREET",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-003K",
+      "primary_applicant": "WEINBERG, HAROLD"
+    },
+    {
+      "project_id": "P1991K0471",
+      "project_name": "800-834 EMPIRE BLVD.",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-011K",
+      "primary_applicant": "BECKER, FREDERICK"
+    },
+    {
+      "project_id": "P1991K0476",
+      "project_name": "LONG ISLAND UNIVERSITY",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-021K",
+      "primary_applicant": "SIGMAN, MARLENE"
+    },
+    {
+      "project_id": "P1991K0478",
+      "project_name": "1054 43RD STREET",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-024K",
+      "primary_applicant": "BECKER, FREDERICK"
+    },
+    {
+      "project_id": "P1991K0480",
+      "project_name": "UNITED LUBAVITCHER YESHIVOTH",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-032K",
+      "primary_applicant": "UNITED LUBAVITCHER YESHIVOTH DCI ARCHITECTURE & PLANNING"
+    },
+    {
+      "project_id": "P1991K0485",
+      "project_name": "SAHARA RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-037K",
+      "primary_applicant": "SAHARA RESTAURANT DOMINICK SALVATI & SON"
+    },
+    {
+      "project_id": "P1991K0496",
+      "project_name": "1414 SHEEPSHEAD BAY",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-053K",
+      "primary_applicant": "BAY BILLIARDS/SALVATI ARCHITECTS"
+    },
+    {
+      "project_id": "P1991K0500",
+      "project_name": "45 WILLIAMSBURG ST WEST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-061K",
+      "primary_applicant": "FRADEL, KEREN"
+    },
+    {
+      "project_id": "P1991K0505",
+      "project_name": "2228-2250 LINDEN BLVD",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-068K",
+      "primary_applicant": "BECKER, FREDERICK"
+    },
+    {
+      "project_id": "P1991K0506",
+      "project_name": "264 KEAP STREET",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-070K",
+      "primary_applicant": "KLEIN, STEVEN/SHELDON LOBEL & ASSOCIATES"
+    },
+    {
+      "project_id": "P1991K0510",
+      "project_name": "BROWN MEMORIAL BAPTIST CHURCH",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-075K",
+      "primary_applicant": "BROWN MEMORIAL BAPTIST CHURCH/JANUSEY, WILLIAM"
+    },
+    {
+      "project_id": "P1991K0513",
+      "project_name": "SEPHARDIC LEBANESE SYNAGOGUE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-080K",
+      "primary_applicant": "SEPHARDIC LEBANESE CONGREGATION, INC/ROTHKRUG, HIRAM"
+    },
+    {
+      "project_id": "P1991K0515",
+      "project_name": "YESHIVAS AHAVAS ISRAEL",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-086K",
+      "primary_applicant": "YESHIVAS AHAVAS ISRAEL/SOLED, HARRY"
+    },
+    {
+      "project_id": "P1991K0521",
+      "project_name": "CONGREGATION TOLDOS YITZCHOK/SKOLYE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-099K",
+      "primary_applicant": "CONGREGATION TOLDOS YITZCHOK OF SKOLYE/FRIEDMAN, MOSHE"
+    },
+    {
+      "project_id": "P1991K0538",
+      "project_name": "2407-2417 LINDEN BLVD",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-129K",
+      "primary_applicant": "LINDEN AUTO GLASS/CALCAGNILE, JOHN"
+    },
+    {
+      "project_id": "P1991K0543",
+      "project_name": "111 MOORE ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-136K",
+      "primary_applicant": "STRAND, KEITH"
+    },
+    {
+      "project_id": "P1991K0545",
+      "project_name": "1811 86TH ST",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-138K",
+      "primary_applicant": "WEINBERG, HAROLD"
+    },
+    {
+      "project_id": "P1991K0546",
+      "project_name": "5012-5024 AVE N",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-140K",
+      "primary_applicant": "HEALTH & FITNESS CENTER/ROTHKRUG HIRAM"
+    },
+    {
+      "project_id": "P1991K0550",
+      "project_name": "6010 15TH AVE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-144K",
+      "primary_applicant": "SHEL-BERN ASSOC/SALVATI ARCHITECTS"
+    },
+    {
+      "project_id": "P1991K0551",
+      "project_name": "BSA VARIANCE FOR CONVERSION",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-145K",
+      "primary_applicant": "GUIDO, FRANK/SHELDON LOBEL & ASSOC"
+    },
+    {
+      "project_id": "P1991K0555",
+      "project_name": "911-27 KINGS HIGHWAY",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-153K",
+      "primary_applicant": "THE FITNESS PLACE/MEAGHER, CHRISTOPHER"
+    },
+    {
+      "project_id": "P1991K0556",
+      "project_name": "2078 STILLWELL AVE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-154K",
+      "primary_applicant": "NAVISTAR AUTO CENTER, INC/DOMINICK SAVATI & SON"
+    },
+    {
+      "project_id": "P1991K0571",
+      "project_name": "8380944 FULTON ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-184K",
+      "primary_applicant": "SMITH, LEONARD/GITTENS, CHARLES"
+    },
+    {
+      "project_id": "P1991K0574",
+      "project_name": "9011 THIRD AVE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-189K",
+      "primary_applicant": "BRIDGE VIEW DINER/ROTHKRUG, HIRAM"
+    },
+    {
+      "project_id": "P1991K0578",
+      "project_name": "FT HAMILTON PARKWAY",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-197K",
+      "primary_applicant": "JAMES VASSALOTTIASSOC., ARCHITECTS"
+    },
+    {
+      "project_id": "P1991K0579",
+      "project_name": "2723 E27TH ST",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-198K",
+      "primary_applicant": "SHELDON LOBEL & ASSOC"
+    },
+    {
+      "project_id": "P1991K0584",
+      "project_name": "NORTHERN DAYBREAK",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-215K",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1991K0588",
+      "project_name": "8615-17 4TH AVE, 418 86TH ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-223K",
+      "primary_applicant": "FROST PROPERTIES/ROTHKRUG, HIRAM"
+    },
+    {
+      "project_id": "P1991K0591",
+      "project_name": "ELEUTERIO REYES APTS",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-226K",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1991K0593",
+      "project_name": "45 WILLIAMSBURG ST WEST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-228K",
+      "primary_applicant": "FRADEL, KEREN"
+    },
+    {
+      "project_id": "P1991K0611",
+      "project_name": "MARTIN'S RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-04-16T00:00:00.000",
+      "ulurp_numbers": "N910101TCK",
+      "primary_applicant": "FAMILY STYLE FOODS, INC"
+    },
+    {
+      "project_id": "P1991K0658",
+      "project_name": "STELLA'S DINER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-06-05T00:00:00.000",
+      "ulurp_numbers": "N910384ECK",
+      "primary_applicant": "STELLA'S DINER, INC"
+    },
+    {
+      "project_id": "P1991K0682",
+      "project_name": "FITZPATRICKS PUB, INC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-12-05T00:00:00.000",
+      "ulurp_numbers": "N910434ECK",
+      "primary_applicant": "FITZPATRICKS PUB, INC"
+    },
+    {
+      "project_id": "P1991K0683",
+      "project_name": "TERESA'S RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-05-08T00:00:00.000",
+      "ulurp_numbers": "N910435UCK",
+      "primary_applicant": "TBT RESTAURANT CORP"
+    },
+    {
+      "project_id": "P1991K0723",
+      "project_name": "OCEAN AVENUE RESTAURANT, INC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-01-24T00:00:00.000",
+      "ulurp_numbers": "N910595ECK",
+      "primary_applicant": "2812 OCEAN AVE RESTAURANT, INC"
+    },
+    {
+      "project_id": "P1991M0001",
+      "project_name": "GREENE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-12-24T00:00:00.000",
+      "ulurp_numbers": "C910001ZSM",
+      "primary_applicant": "LOMBARDI, JOSEPH PELL"
+    },
+    {
+      "project_id": "P1991M0016",
+      "project_name": "30 LINCOLN PLAZA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1996-02-23T00:00:00.000",
+      "ulurp_numbers": "M910023ZSM; N910024ZAM",
+      "primary_applicant": "S&P ASSOC/MILSTEIN PROPERTIES/BROWN & WOOD"
+    },
+    {
+      "project_id": "P1991M0018",
+      "project_name": "WORLDWIDE PLAZ A/K/A MADISON GARDEN",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-09-10T00:00:00.000",
+      "ulurp_numbers": "N910026CMM",
+      "primary_applicant": "WZ GARDEN CORP/PATTERSON, BELKNAP, WEBB & TYLER"
+    },
+    {
+      "project_id": "P1991M0032",
+      "project_name": "BETH ISRAEL HOSPITAL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-05-01T00:00:00.000",
+      "ulurp_numbers": "N910047ZCM",
+      "primary_applicant": "BETH ISRAEL MEDICAL CENTER/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1991M0043",
+      "project_name": "SOLOMON R. GUGGENHEIM MUSEUM",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-11-13T00:00:00.000",
+      "ulurp_numbers": "N910064HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0044",
+      "project_name": "SOLOMON R. GUGGENHEIM MUSEUM INTER.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-11-13T00:00:00.000",
+      "ulurp_numbers": "N910065HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0046",
+      "project_name": "854 WEST END AVE HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-11-13T00:00:00.000",
+      "ulurp_numbers": "N910067HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0047",
+      "project_name": "856 WEST END AVE HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-11-13T00:00:00.000",
+      "ulurp_numbers": "N910068HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0048",
+      "project_name": "858 WEST END AVE HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-11-13T00:00:00.000",
+      "ulurp_numbers": "N910069HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0049",
+      "project_name": "254 WEST 102ND ST HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-11-13T00:00:00.000",
+      "ulurp_numbers": "N910070HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0050",
+      "project_name": "CLAREMONT STABLES-CLAREMONT RIDING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-11-13T00:00:00.000",
+      "ulurp_numbers": "N910071HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0051",
+      "project_name": "574 6TH AVE BUILDING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-12-25T00:00:00.000",
+      "ulurp_numbers": "N910072HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0052",
+      "project_name": "FORMER ASPCA BLDG",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-12-07T00:00:00.000",
+      "ulurp_numbers": "N910062CMM",
+      "ceqr_number": "86-121M",
+      "primary_applicant": "92ND REALTY CO/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1991M0053",
+      "project_name": "ST MARY'S CENTER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-10-24T00:00:00.000",
+      "ulurp_numbers": "N910063ZCM",
+      "primary_applicant": "ST MARY'S CENTER/HOUSING & SERVICES INC/MCNEIL, GARRISON"
+    },
+    {
+      "project_id": "P1991M0060",
+      "project_name": "613 WEST 46TH STREET",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1990-10-16T00:00:00.000",
+      "ceqr_number": "91-048M",
+      "primary_applicant": "SCHLEGEL, WALTER/WALTON WAREHOUSE & HAULING CORP"
+    },
+    {
+      "project_id": "P1991M0063",
+      "project_name": "CENTRAL SYNAGOGUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-10-11T00:00:00.000",
+      "ulurp_numbers": "I910080GFM",
+      "primary_applicant": "CENTRAL SYNAGOGUE/STROOCK & STROOCK & LAVAN"
+    },
+    {
+      "project_id": "P1991M0065",
+      "project_name": "REVLON/FLEMING SCHL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-03-12T00:00:00.000",
+      "ulurp_numbers": "C910082ZSM",
+      "ceqr_number": "90-190M",
+      "primary_applicant": "THIRTY FIVE EAST CORP/LPC/BROWN & WOOD"
+    },
+    {
+      "project_id": "P1991M0068",
+      "project_name": "104-110 GREENE STREET",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-02-08T00:00:00.000",
+      "primary_applicant": "LOMBARDI, JOSEPH"
+    },
+    {
+      "project_id": "P1991M0070",
+      "project_name": "TANYA TOWERS II",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-15T00:00:00.000",
+      "ulurp_numbers": "C910084HDM",
+      "ceqr_number": "90-229M",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1991M0072",
+      "project_name": "277 W117TH ST, 2178-2182 8TH AVE (FREDERICK DOUGLA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-05-28T00:00:00.000",
+      "ulurp_numbers": "C910089DMM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991M0075",
+      "project_name": "114 W17TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1993-06-30T00:00:00.000",
+      "ulurp_numbers": "N910092ZCM",
+      "primary_applicant": "LEONARDI INTERNATIONAL CORP/ASCIONE, ROBERT"
+    },
+    {
+      "project_id": "P1991M0076",
+      "project_name": "LIVING WORD CHRISTIAN CHURCH",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-10-09T00:00:00.000",
+      "ulurp_numbers": "C910093ZSM",
+      "ceqr_number": "91-076M",
+      "primary_applicant": "LIVING WORD CHRISTIAN CENTER/CABATO, RAUL"
+    },
+    {
+      "project_id": "P1991M0081",
+      "project_name": "1285 AVENUE OF THE AMERICAS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-02-25T00:00:00.000",
+      "ulurp_numbers": "I910099GFM",
+      "primary_applicant": "EQUITABLE REAL ESTATE INVESTMENT MANAGEMENT/BROWN & WOOD"
+    },
+    {
+      "project_id": "P1991M0084",
+      "project_name": "HARKNESS PLAZA ATRIUM",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-04-27T00:00:00.000",
+      "ulurp_numbers": "M861221AZAM",
+      "ceqr_number": "91-133M",
+      "primary_applicant": "TSI LINCOLN, INC."
+    },
+    {
+      "project_id": "P1991M0087",
+      "project_name": "BRIDGE HOUSE NO. 6",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-07-06T00:00:00.000",
+      "ulurp_numbers": "C910108DLM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1991M0092",
+      "project_name": "420 FIFTH AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-01-03T00:00:00.000",
+      "ulurp_numbers": "M890158AZCM",
+      "primary_applicant": "HAMMERSON FIFTH AVE INC/PATTERSON, BELKNAP, WEBB & TYLER"
+    },
+    {
+      "project_id": "P1991M0093",
+      "project_name": "THE MERCER/PRINCE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-04-01T00:00:00.000",
+      "ulurp_numbers": "C910115ZSM",
+      "ceqr_number": "90-098M",
+      "primary_applicant": "LPC/PRINCE ACQUIS ASSOC/STADTMAUER & BIALKIN"
+    },
+    {
+      "project_id": "P1991M0098",
+      "project_name": "FIRE ENGINE COMPANY #65",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-12-25T00:00:00.000",
+      "ulurp_numbers": "N910122HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0099",
+      "project_name": "NY HOUSE AND SCHOOL OF INDUSTRY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-12-25T00:00:00.000",
+      "ulurp_numbers": "N910123HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0100",
+      "project_name": "HOTEL MARSEILLES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-12-25T00:00:00.000",
+      "ulurp_numbers": "N910124HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0102",
+      "project_name": "ROOSEVELT SITE, BRODSKY EAST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-03-06T00:00:00.000",
+      "ulurp_numbers": "N910121CMM",
+      "primary_applicant": "ST LUKE'S/ROOSEVELT HOSPITAL CENTER/BROWN & WOOD"
+    },
+    {
+      "project_id": "P1991M0109",
+      "project_name": "THE HORIZON",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-02-04T00:00:00.000",
+      "ulurp_numbers": "M850371CZSM",
+      "primary_applicant": "GLICK DEVELOPMENT AFFILIATES/MORSELLINO, JOSEPH"
+    },
+    {
+      "project_id": "P1991M0115",
+      "project_name": "530 E73RD ST, 525-541 E72ND ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-01-04T00:00:00.000",
+      "ulurp_numbers": "M841102GZSM",
+      "primary_applicant": "SOLOW EAST RIVER BLDG CO/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1991M0116",
+      "project_name": "THE HORIZON",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-10-30T00:00:00.000",
+      "ulurp_numbers": "N910140CMM",
+      "primary_applicant": "GLICK DEVELOPMENT AFFILIATES/MORSELLINO, JOSEPH"
+    },
+    {
+      "project_id": "P1991M0117",
+      "project_name": "359 BROADWAY BUILDING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-02-26T00:00:00.000",
+      "ulurp_numbers": "N910138HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0120",
+      "project_name": "476 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-01-31T00:00:00.000",
+      "ulurp_numbers": "C910141ZSM",
+      "primary_applicant": "LPC/WESTON, DON"
+    },
+    {
+      "project_id": "P1991M0123",
+      "project_name": "11 WEST 20TH STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-02-05T00:00:00.000",
+      "ulurp_numbers": "N910145ZCM",
+      "primary_applicant": "LOMBARDI, JOSEPH"
+    },
+    {
+      "project_id": "P1991M0125",
+      "project_name": "108-114 WOOSTER STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-12-10T00:00:00.000",
+      "ulurp_numbers": "N910131ZCM",
+      "ceqr_number": "90-081M",
+      "primary_applicant": "LPC/WESTON, DON"
+    },
+    {
+      "project_id": "P1991M0130",
+      "project_name": "W117TH ST, FREDERICK DOUGLAS BLVD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-04-03T00:00:00.000",
+      "ulurp_numbers": "N910147ZCM",
+      "primary_applicant": "Department of General Services (now part of DCAS)"
+    },
+    {
+      "project_id": "P1991M0135",
+      "project_name": "MORGAN GUARANTY TRUST COMPANY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-10-15T00:00:00.000",
+      "ulurp_numbers": "M850321EZSM",
+      "primary_applicant": "MORGAN GUARANTY TRUST CO OF NY/BROWN & WOOD"
+    },
+    {
+      "project_id": "P1991M0142",
+      "project_name": "AMSTERDAM HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-09-09T00:00:00.000",
+      "ulurp_numbers": "C910162ZSM; N920307ZCM",
+      "ceqr_number": "91-059M",
+      "primary_applicant": "AMSTERDAM NURSING HOME CORP"
+    },
+    {
+      "project_id": "P1991M0147",
+      "project_name": "WALDEN HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-06-11T00:00:00.000",
+      "ulurp_numbers": "C910166ZSM",
+      "primary_applicant": "LPC/WALDEN HOUSE, INC"
+    },
+    {
+      "project_id": "P1991M0182",
+      "project_name": "3 GREAT JONES ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-01-09T00:00:00.000",
+      "ulurp_numbers": "C910206ZSM",
+      "primary_applicant": "3 GREAT JONES ST TENANTS CORP/HANLEY, GOBLE & DENNIS"
+    },
+    {
+      "project_id": "P1991M0190",
+      "project_name": "2ND AVE EASEMENT FOR DIST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-03-06T00:00:00.000",
+      "ulurp_numbers": "N910218ZCM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991M0191",
+      "project_name": "126 W18TH STREET STABLE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-03-12T00:00:00.000",
+      "ulurp_numbers": "N910219HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0192",
+      "project_name": "128 W18TH STREET STABLE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-03-12T00:00:00.000",
+      "ulurp_numbers": "N910220HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0193",
+      "project_name": "130-132 W18TH ST STABLES BLDG",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-03-12T00:00:00.000",
+      "ulurp_numbers": "N910221HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0194",
+      "project_name": "136 W18TH ST STABLE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-03-12T00:00:00.000",
+      "ulurp_numbers": "N910222HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0195",
+      "project_name": "W18TH ST STABLE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-03-12T00:00:00.000",
+      "ulurp_numbers": "N910223HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0197",
+      "project_name": "LINCOLN CENTER NEW BLDG",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-01-11T00:00:00.000",
+      "ulurp_numbers": "N910225CMM",
+      "primary_applicant": "LINCOLN CENTER FOR THE PERFORMING ARTS/LORD, DAY & LORD"
+    },
+    {
+      "project_id": "P1991M0204",
+      "project_name": "BARGE RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-04-08T00:00:00.000",
+      "ulurp_numbers": "I910232PNM",
+      "primary_applicant": "DBS"
+    },
+    {
+      "project_id": "P1991M0205",
+      "project_name": "BREARLY SCHOOL PLAYGROUND",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-10-26T00:00:00.000",
+      "ulurp_numbers": "C910233PNM",
+      "primary_applicant": "DPT"
+    },
+    {
+      "project_id": "P1991M0206",
+      "project_name": "1 SUTTON PL SOUTH",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1992-09-01T00:00:00.000",
+      "primary_applicant": "DPT"
+    },
+    {
+      "project_id": "P1991M0210",
+      "project_name": "REGENT HOTEL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-12-03T00:00:00.000",
+      "ulurp_numbers": "C910239PCM",
+      "ceqr_number": "91-111M",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1991M0211",
+      "project_name": "420 5TH AVE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1992-04-06T00:00:00.000",
+      "primary_applicant": "HAMMERSON FIFTH AVE INC/PATTERSON, BELNAP, WEBB & TYLER"
+    },
+    {
+      "project_id": "P1991M0212",
+      "project_name": "55 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-12-15T00:00:00.000",
+      "ulurp_numbers": "N910246ZAM",
+      "primary_applicant": "AETNA LIFE INSURANCE CO"
+    },
+    {
+      "project_id": "P1991M0213",
+      "project_name": "THE ATRIUM",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-12-15T00:00:00.000",
+      "ulurp_numbers": "N910247ZAM",
+      "primary_applicant": "45 BROADWAY ATRIUM PARTNERS/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1991M0214",
+      "project_name": "SOLOW EAST RIVER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-01-04T00:00:00.000",
+      "ulurp_numbers": "N910250CMM",
+      "ceqr_number": "83-189M",
+      "primary_applicant": "SOLOW BLDG CO/ROSENMAN COLIN ET AL"
+    },
+    {
+      "project_id": "P1991M0215",
+      "project_name": "REPUBLIC NATIONAL BANK",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1993-12-30T00:00:00.000",
+      "ceqr_number": "89-052M",
+      "primary_applicant": "LPC/REPUBLIC NATIONAL BANK/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1991M0216",
+      "project_name": "1087 2ND AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-03-06T00:00:00.000",
+      "ulurp_numbers": "N910251ZCM",
+      "primary_applicant": "HEE NAM BAE/VANDEBERG & LASKY"
+    },
+    {
+      "project_id": "P1991M0217",
+      "project_name": "2ND AVE TRANSIT EASEMENT",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991M0218",
+      "project_name": "2ND AVE TRANSIT AUTHORITY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-03-06T00:00:00.000",
+      "ulurp_numbers": "N910253ZCM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991M0222",
+      "project_name": "EAST HARLEM TRIANGLE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1994-03-10T00:00:00.000",
+      "ceqr_number": "89-106M",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1991M0225",
+      "project_name": "EAST HARLEM TRIANGLE LSRD",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1994-03-08T00:00:00.000",
+      "ceqr_number": "89-106M",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1991M0229",
+      "project_name": "THE PRENTISS RESIDENCE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-04-30T00:00:00.000",
+      "ulurp_numbers": "N910264HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0230",
+      "project_name": "THE KLEEBERG RESIDENCE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-04-30T00:00:00.000",
+      "ulurp_numbers": "N910265HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0231",
+      "project_name": "THE DILLER RESIDENCE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-04-30T00:00:00.000",
+      "ulurp_numbers": "N910266HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0232",
+      "project_name": "THE SUTPHEN RESIDENCE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-04-30T00:00:00.000",
+      "ulurp_numbers": "N910267HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0234",
+      "project_name": "E HARLEM PRPTY ACQ UNT OFFICE SPACE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-03-12T00:00:00.000",
+      "ulurp_numbers": "N920296PXM",
+      "primary_applicant": "Department of General Services (now part of DCAS)"
+    },
+    {
+      "project_id": "P1991M0240",
+      "project_name": "66 EAST HOUSTON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-10-09T00:00:00.000",
+      "ulurp_numbers": "N910292ZAM",
+      "ceqr_number": "87-311M",
+      "primary_applicant": "GARVIN, ALEXANDER"
+    },
+    {
+      "project_id": "P1991M0242",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-11-13T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991M0243",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-11-13T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991M0262",
+      "project_name": "PARKER MERIDIEN HOTEL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1994-11-04T00:00:00.000",
+      "ulurp_numbers": "M790095CZSM",
+      "ceqr_number": "79-010M",
+      "primary_applicant": "PARLIEB, INC/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1991M0285",
+      "project_name": "CITY HALL SENIOR CENTER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-10-29T00:00:00.000",
+      "ulurp_numbers": "C910321PCM",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1991M0289",
+      "project_name": "ACTORS STUDIO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-06-10T00:00:00.000",
+      "ulurp_numbers": "N910326HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0290",
+      "project_name": "294 RIVERSIDE DR HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-06-10T00:00:00.000",
+      "ulurp_numbers": "N910327HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0291",
+      "project_name": "143 W95TH ST HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-05-28T00:00:00.000",
+      "ulurp_numbers": "N910328HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0297",
+      "project_name": "GREAT BEAR AUTO CENTER MINOR CHANGE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-05-08T00:00:00.000",
+      "ulurp_numbers": "N910335HCM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1991M0301",
+      "project_name": "FORMER ASPCA BLDG",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-05-15T00:00:00.000",
+      "ulurp_numbers": "N910340CMM",
+      "ceqr_number": "86-121M",
+      "primary_applicant": "92ND REALTY CO/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1991M0326",
+      "project_name": "NY FOUNDATION FOR SR CITIZENS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-15T00:00:00.000",
+      "ulurp_numbers": "C910405HDM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1991M0337",
+      "project_name": "BOROUGH REPAIR SHOP PARKING LOT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-12-22T00:00:00.000",
+      "ulurp_numbers": "C910420PQM",
+      "ceqr_number": "91-185M",
+      "primary_applicant": "DSNY"
+    },
+    {
+      "project_id": "P1991M0338",
+      "project_name": "BOROUGH REPAIR SHOP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-12-22T00:00:00.000",
+      "ulurp_numbers": "C910421PQM",
+      "ceqr_number": "91-186M",
+      "primary_applicant": "DSNY"
+    },
+    {
+      "project_id": "P1991M0340",
+      "project_name": "EMERGENCY ASSIST UNIT",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "primary_applicant": "HRA/DGS"
+    },
+    {
+      "project_id": "P1991M0355",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1991-11-13T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1991M0361",
+      "project_name": "103 RIVERSIDE DR HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-05T00:00:00.000",
+      "ulurp_numbers": "N910460HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0362",
+      "project_name": "104 RIVERSIDE DR HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-05T00:00:00.000",
+      "ulurp_numbers": "N910461HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0363",
+      "project_name": "105 RIVERSIDE DR HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-05T00:00:00.000",
+      "ulurp_numbers": "N910462HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0364",
+      "project_name": "107-109 RIVERSIDE DR HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-05T00:00:00.000",
+      "ulurp_numbers": "N910463HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0365",
+      "project_name": "332 W83RD ST HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-05T00:00:00.000",
+      "ulurp_numbers": "N910464HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0366",
+      "project_name": "316 W85TH ST HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-05T00:00:00.000",
+      "ulurp_numbers": "N910465HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0367",
+      "project_name": "318 W85TH ST HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-05T00:00:00.000",
+      "ulurp_numbers": "N910466HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0368",
+      "project_name": "320 W85TH ST HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-05T00:00:00.000",
+      "ulurp_numbers": "N910467HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0369",
+      "project_name": "322 W85TH ST HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-05T00:00:00.000",
+      "ulurp_numbers": "N910468HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0370",
+      "project_name": "324 W85TH ST HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-05T00:00:00.000",
+      "ulurp_numbers": "N910469HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0371",
+      "project_name": "326 W85TH ST HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-05T00:00:00.000",
+      "ulurp_numbers": "N910470HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0372",
+      "project_name": "329 W85TH ST HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-05T00:00:00.000",
+      "ulurp_numbers": "N910471HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0373",
+      "project_name": "331 W85TH ST HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-05T00:00:00.000",
+      "ulurp_numbers": "N910472HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0374",
+      "project_name": "333 W85TH ST HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-05T00:00:00.000",
+      "ulurp_numbers": "N910473HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0375",
+      "project_name": "335 W85TH ST HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-05T00:00:00.000",
+      "ulurp_numbers": "N910474HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0376",
+      "project_name": "337 W85TH ST HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-05T00:00:00.000",
+      "ulurp_numbers": "N910475HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0380",
+      "project_name": "GALERIES LAFAYETTE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-07-24T00:00:00.000",
+      "ulurp_numbers": "M790143DZSM",
+      "primary_applicant": "TRUMP-EQUITABLE FIFTH AVE CO. SUPERSTRUCTURES"
+    },
+    {
+      "project_id": "P1991M0386",
+      "project_name": "HOSPITAL FOR SPECIAL SURGERY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1993-04-12T00:00:00.000",
+      "ulurp_numbers": "N910614CMM",
+      "primary_applicant": "HOSPITAL FOR SPECIAL SURGERY/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1991M0387",
+      "project_name": "HOSPITAL FOR SPECIAL SURGERY EXPNSN",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1993-03-15T00:00:00.000",
+      "ulurp_numbers": "N910486CMM; C910484MMM; C910485ZSM",
+      "ceqr_number": "90-015M",
+      "primary_applicant": "HOSPITAL FOR SPECIAL SURGERY/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1991M0402",
+      "project_name": "875 3RD AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-05-22T00:00:00.000",
+      "ulurp_numbers": "N910517CMM",
+      "primary_applicant": "KENVIC ASSOC/BERLE, KASS & CASE"
+    },
+    {
+      "project_id": "P1991M0406",
+      "project_name": "SPRING ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-12-20T00:00:00.000",
+      "ulurp_numbers": "C910520ZSM",
+      "primary_applicant": "MARCUS, NORMAN/SPRING & WOOSTER CO."
+    },
+    {
+      "project_id": "P1991M0407",
+      "project_name": "COOPER SQUARE URA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-06-24T00:00:00.000",
+      "ulurp_numbers": "N910521HCM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1991M0408",
+      "project_name": "NON-SECURE DETENTION GROUP HOME",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-12-07T00:00:00.000",
+      "ulurp_numbers": "C910523PQM",
+      "primary_applicant": "DJJ"
+    },
+    {
+      "project_id": "P1991M0418",
+      "project_name": "JEFFREY'S HOOK LIGHTHOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-08-20T00:00:00.000",
+      "ulurp_numbers": "N910531HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1991M0419",
+      "project_name": "RIZZOLI-COTY BLDG",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-06-21T00:00:00.000",
+      "ulurp_numbers": "N910533CMM",
+      "primary_applicant": "LPC/712 5TH AVE ASSOC/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1991M0421",
+      "project_name": "JULIA DEBURGOS HISPANIC CENTER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-07-28T00:00:00.000",
+      "ulurp_numbers": "C910535PSM; C910536PPM",
+      "ceqr_number": "91-210M",
+      "primary_applicant": "PDC"
+    },
+    {
+      "project_id": "P1991M0429",
+      "project_name": "306-308 W38TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-11-17T00:00:00.000",
+      "ulurp_numbers": "N910551ZCM",
+      "primary_applicant": "W38TH ST ASSOC/THALER, ALLAN"
+    },
+    {
+      "project_id": "P1991M0435",
+      "project_name": "540 W48TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1993-02-10T00:00:00.000",
+      "ulurp_numbers": "N910557ZAM",
+      "ceqr_number": "92DCP047M",
+      "primary_applicant": "CALDARI, JERRY/540 W48TH ST CORP"
+    },
+    {
+      "project_id": "P1991M0444",
+      "project_name": "19-21 LEONARD ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-01-27T00:00:00.000",
+      "ulurp_numbers": "N910580ZCM",
+      "primary_applicant": "LEVIN, AMY"
+    },
+    {
+      "project_id": "P1991M0466",
+      "project_name": "4 EAST 75TH STREET",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-005M",
+      "primary_applicant": "STROOCK, STROOCK, & LAVAN"
+    },
+    {
+      "project_id": "P1991M0473",
+      "project_name": "222 WEST 14TH STREET",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-013M",
+      "primary_applicant": "SHELDON LOBEL & ASSOCIATES"
+    },
+    {
+      "project_id": "P1991M0492",
+      "project_name": "TASTE BUD GOURMET SHOP",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-049M",
+      "primary_applicant": "TASTE BUD GOURMET SHOP"
+    },
+    {
+      "project_id": "P1991M0497",
+      "project_name": "THE CHILDREN'S STOREFRONT",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-055M",
+      "primary_applicant": "ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1991M0498",
+      "project_name": "EXCELSIOR HOTEL",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-057M",
+      "primary_applicant": "Stroock & Stroock & Lavan"
+    },
+    {
+      "project_id": "P1991M0499",
+      "project_name": "CENTRAL SYNAGOGUE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-058M",
+      "primary_applicant": "CENTRAL SYNAGOGUE/STROOCK & STROOCK & LAVAN"
+    },
+    {
+      "project_id": "P1991M0512",
+      "project_name": "HOTEL KITANO",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-078M",
+      "primary_applicant": "NEW YORK HOTEL/KITANO BROWN & WOOD"
+    },
+    {
+      "project_id": "P1991M0539",
+      "project_name": "167-65 W73RD ST",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-130M",
+      "primary_applicant": "CENTENNIAL RESTORATIONS CO/SHELDON LOBEL & ASSOC"
+    },
+    {
+      "project_id": "P1991M0542",
+      "project_name": "670 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-135M",
+      "primary_applicant": "BECKER, FREDRICK"
+    },
+    {
+      "project_id": "P1991M0547",
+      "project_name": "100 JANE ST",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-141M",
+      "primary_applicant": "ROCKROSE DEVELOPMENT"
+    },
+    {
+      "project_id": "P1991M0548",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-139M",
+      "primary_applicant": "PERLBINDER, MARK/ETHAN ELDON ASSOC, INC"
+    },
+    {
+      "project_id": "P1991M0575",
+      "project_name": "342-346 AMSTERDAM AVE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-190M",
+      "primary_applicant": "EQUINOX FITNESS CLUB/ROTHKRUG, HIRAM"
+    },
+    {
+      "project_id": "P1991M0585",
+      "project_name": "16 E96TH ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "91-216M",
+      "primary_applicant": "SASMORE, JAMES (DR)/SHELDON LOBEL & ASSOC"
+    },
+    {
+      "project_id": "P1991M0592",
+      "project_name": "404 LAFAYETTE ST",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "91-227M",
+      "primary_applicant": "WORLD GYM NEW YORK, INC/ROSENBERG & ESTIS"
+    },
+    {
+      "project_id": "P1991M0596",
+      "project_name": "SAINT CLAIRE'S RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-04-23T00:00:00.000",
+      "ulurp_numbers": "N910015TCM",
+      "primary_applicant": "764 FOOD CORP"
+    },
+    {
+      "project_id": "P1991M0597",
+      "project_name": "SPORTSPAGE CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-06-20T00:00:00.000",
+      "ulurp_numbers": "N910016ECM",
+      "primary_applicant": "DLC ASSOC"
+    },
+    {
+      "project_id": "P1991M0598",
+      "project_name": "ROSE CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-02-25T00:00:00.000",
+      "ulurp_numbers": "N910017TCM",
+      "primary_applicant": "FIFTH CIAOBELLA RESTAURANT, INC"
+    },
+    {
+      "project_id": "P1991M0599",
+      "project_name": "LES POULETS TRIBECA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-10-16T00:00:00.000",
+      "ulurp_numbers": "N910027TCM",
+      "primary_applicant": "ANLEV, INC"
+    },
+    {
+      "project_id": "P1991M0600",
+      "project_name": "COASTAL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-05-07T00:00:00.000",
+      "ulurp_numbers": "N910028ECM",
+      "primary_applicant": "AMERICAN SPECIALTY FOODS INC"
+    },
+    {
+      "project_id": "P1991M0603",
+      "project_name": "MOONSTRUCK EAST RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-06-28T00:00:00.000",
+      "ulurp_numbers": "N910032ECM",
+      "primary_applicant": "449 RESTAURANT, INC"
+    },
+    {
+      "project_id": "P1991M0604",
+      "project_name": "RESTAURANT SATSUKI",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-03-14T00:00:00.000",
+      "ulurp_numbers": "N910033TCM",
+      "primary_applicant": "HILO UNIVERSAL"
+    },
+    {
+      "project_id": "P1991M0605",
+      "project_name": "HOTEL ST. MORITZ",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-10-16T00:00:00.000",
+      "ulurp_numbers": "N910037TCM",
+      "primary_applicant": "BOND ST MORITZ CO"
+    }
+  ]
+}
