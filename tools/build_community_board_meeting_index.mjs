@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
@@ -19,6 +20,7 @@ import { buildCommunityBoardInstitutionEdges } from "../site/community_board_ins
 import { buildCommunityBoardMeetingIndexShardArtifacts } from "../site/community_board_meeting_index_shards.mjs";
 import { readCommunityBoardMeetingIndex } from "./lib/community_board_meeting_index_io.mjs";
 import { readRetainedCommunityBoardSnapshots } from "./acquire_community_board_retained_snapshot.mjs";
+import { classifyCommunityBoardConveningBody } from "../site/community_board_full_board_lens.mjs";
 
 const ROOT = join(import.meta.dirname, "..");
 const INVENTORY = join(ROOT, "site/data/non_council_outcome_sources/board_source_inventory.json");
@@ -42,6 +44,15 @@ export const COMMUNITY_BOARD_SOURCE_STATES = SOURCE_STATES;
 
 function readJson(path) { return JSON.parse(readFileSync(path, "utf8")); }
 function writeJson(path, value) { writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`); }
+function currentCodeRevision() {
+  try {
+    return process.env.CITYSCROLL_CODE_REVISION
+      || execFileSync("git", ["rev-parse", "HEAD"], { cwd: ROOT, encoding: "utf8" }).trim()
+      || "unknown";
+  } catch {
+    return "unknown";
+  }
+}
 function writeIndex(index) {
   const artifacts = buildCommunityBoardMeetingIndexShardArtifacts(index);
   mkdirSync(SHARD_DIR, { recursive: true });
@@ -246,6 +257,47 @@ function assertNoDuplicatePublisherIdentifiers(records) {
   }
 }
 
+function rootCauseReceipts({ allRecords, materializedRows, receipts, codeRevision }) {
+  const roleReceipt = receipts.find((receipt) => (
+    receipt.board_id === "brooklyn-cb-15" && receipt.role === "upcoming_meetings"
+  ));
+  if (!roleReceipt) return [];
+  const candidates = allRecords
+    .filter((record) => record.board_id === "brooklyn-cb-15" && record.source_role === "upcoming_meetings")
+    .sort((left, right) => String(left.date).localeCompare(String(right.date)));
+  const record = candidates.at(-1) || null;
+  const row = record
+    ? materializedRows.find((candidate) => candidate.source_record_id === record.source_record_id) || null
+    : null;
+  const conveningBody = row ? classifyCommunityBoardConveningBody(row) : "unknown";
+  return [{
+    schema: "cityscroll.community_board_meeting_root_cause_receipt.v1",
+    board_id: "brooklyn-cb-15",
+    source_role: "upcoming_meetings",
+    source_url: roleReceipt.source_url,
+    source_hash: roleReceipt.observed_receipt?.content_sha256 || null,
+    code_revision: codeRevision,
+    adapter: roleReceipt.adapter,
+    extracted_row: record ? {
+      source_record_id: record.source_record_id || record.record_id,
+      date: record.date,
+      title: record.title,
+      start_at: record.start_at,
+      address: record.address,
+      mode: record.mode || null,
+      record_url: record.record_url || null,
+    } : null,
+    classification: {
+      source_state: roleReceipt.state,
+      extraction: record ? "indexed" : "empty",
+      convening_body: conveningBody,
+      corpus_answer: conveningBody === "full_board"
+        ? "full_board_meeting"
+        : "no_full_board_meeting_recorded",
+    },
+  }];
+}
+
 export function materializeCommunityBoardMeetingRow(record, board, observedAt, options = {}) {
   const sourceRecordId = record.source_record_id || record.record_id;
   const sourceUrl = record.record_url || record.source_url;
@@ -404,6 +456,7 @@ export async function buildCommunityBoardMeetingIndex({
   committeeRegistry = readJson(COMMITTEE_REGISTRY),
   retainedSnapshots = readRetainedCommunityBoardSnapshots(),
   previousIndex = existsSync(OUTPUT) ? readCommunityBoardMeetingIndex(OUTPUT) : null,
+  codeRevision = currentCodeRevision(),
 } = {}) {
   const boardById = new Map((inventory.boards || []).map((board) => [board.id, board]));
   const descriptors = sourceDescriptors(inventory, registry, retainedSnapshots);
@@ -486,6 +539,7 @@ export async function buildCommunityBoardMeetingIndex({
     fetched,
     eventDetailsFetched,
     observedAt,
+    codeRevision,
   });
 }
 
@@ -506,6 +560,8 @@ export function assembleCommunityBoardMeetingIndex({
   fetched = 0,
   eventDetailsFetched = 0,
   observedAt,
+  codeRevision = currentCodeRevision(),
+  rootCauseReceipts: suppliedRootCauseReceipts = null,
 }) {
   assertNoDuplicatePublisherIdentifiers(allRecords);
   const rows = Object.values(byBoard).flat().sort((left, right) => (
@@ -521,9 +577,16 @@ export function assembleCommunityBoardMeetingIndex({
   const attachedEventDocuments = documentJoin.attached_documents.filter((document) => eventDocumentIds.has(document.document_id));
   const attachedMinutes = documentJoin.attached_documents.filter((document) => !eventDocumentIds.has(document.document_id));
   const institutionEdges = materializedRows.flatMap((row) => row.institution_edges || []);
+  const rootCause = suppliedRootCauseReceipts || rootCauseReceipts({
+    allRecords,
+    materializedRows,
+    receipts,
+    codeRevision,
+  });
   return {
     schema: INDEX_SCHEMA,
     generated_at: observedAt,
+    code_revision: codeRevision,
     source_record_schema: COMMUNITY_BOARD_SOURCE_RECORD_SCHEMA,
     meeting_document_schema: MEETING_DOCUMENT_SCHEMA,
     policy: {
@@ -563,6 +626,7 @@ export function assembleCommunityBoardMeetingIndex({
     board_coverage: boardCoverageRows(inventory, receipts, materializedRows),
     institution_edges: institutionEdges,
     receipts,
+    root_cause_receipts: rootCause,
     source_records_by_board: sourceRecordsByBoard,
     meeting_documents: documentJoin.documents,
     by_board: Object.fromEntries(Object.keys(byBoard).map((boardId) => [
@@ -624,6 +688,8 @@ export function rematerializeCommunityBoardMeetingIndex({
     fetched: committed.coverage?.source_urls_checked || 0,
     eventDetailsFetched: committed.coverage?.event_details_checked || 0,
     observedAt,
+    codeRevision: committed.code_revision || currentCodeRevision(),
+    rootCauseReceipts: committed.root_cause_receipts || null,
   });
 }
 

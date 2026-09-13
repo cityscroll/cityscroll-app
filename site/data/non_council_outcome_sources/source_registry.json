@@ -4197,6 +4197,7 @@
       "source_roles": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
+          "adapter": "nyc_official_calendar_v1",
           "publisher": "NYC Community Boards",
           "publisher_kind": "nyc_official",
           "url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
