@@ -119,6 +119,16 @@ test("the coverage builder accounts for both roles across all 59 boards", async 
       && row.source_url?.startsWith("https://")
       && row.observed_receipt?.status === "ok"
   )));
+  const cb15Receipt = index.root_cause_receipts.find((row) => row.board_id === "brooklyn-cb-15");
+  assert.equal(cb15Receipt.source_role, "upcoming_meetings");
+  assert.match(cb15Receipt.source_hash, /^[a-f0-9]{64}$/);
+  assert.match(cb15Receipt.code_revision, /^[a-f0-9]{40}$/);
+  assert.equal(cb15Receipt.adapter, "nyc_official_calendar_v1");
+  assert.ok(cb15Receipt.extracted_row.source_record_id);
+  assert.ok(cb15Receipt.extracted_row.title);
+  assert.equal(cb15Receipt.classification.extraction, "indexed");
+  assert.ok(["full_board", "committee", "unknown"].includes(cb15Receipt.classification.convening_body));
+  assert.match(cb15Receipt.classification.corpus_answer, /^(full_board_meeting|no_full_board_meeting_recorded)$/);
 });
 
 test("source states remain explicit for unsupported, stale, and absent roles", () => {
