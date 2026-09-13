@@ -198,6 +198,72 @@ test("Near-you time presets constrain the same server-owned result IDs and map c
   assert.equal(view.features.find((feature) => feature.id === "Queens")?.total, 0);
 });
 
+test("Near-you distinguishes supported empty, populated, unsupported, and pending map states", () => {
+  const emptyScope = scopeWithPlace(
+    scopeFromLensState("meetings", { agency: "No matching agency" }),
+    { borough: "Queens" },
+  );
+  const emptyView = buildNearYouViewModel(emptyScope, fixtureActivity(), fixtureBoundaries);
+  assert.equal(emptyView.mapState, "empty");
+  assert.equal(emptyView.results.count, 0);
+  assert.match(renderNearYouDocument(emptyView), /data-near-map-state="empty"/);
+  assert.match(renderNearYouDocument(emptyView), /data-count="0"/);
+
+  const populatedView = buildNearYouViewModel(
+    scopeWithPlace(scopeFromLensState("meetings", { agency: "Transportation" }), { borough: "Queens" }),
+    fixtureActivity(),
+    fixtureBoundaries,
+  );
+  assert.equal(populatedView.mapState, "populated");
+  assert.equal(populatedView.results.count, 1);
+
+  const unsupportedView = buildNearYouViewModel(
+    scopeWithPlace(scopeFromLensState("people"), { borough: "Queens" }),
+    fixtureActivity(),
+    fixtureBoundaries,
+  );
+  const unsupportedHtml = renderNearYouDocument(unsupportedView);
+  assert.equal(unsupportedView.mapState, "unsupported");
+  assert.equal(unsupportedView.results.count, null);
+  assert.match(unsupportedHtml, /data-near-map-state="unsupported"/);
+  assert.match(unsupportedHtml, /not mapped here/);
+  assert.doesNotMatch(unsupportedHtml, /data-map-(?:id|area)="[^"]+"[^>]+data-count="0"/);
+
+  const pendingView = buildNearYouViewModel(
+    emptyScope,
+    fixtureActivity(),
+    fixtureBoundaries,
+    { dataState: "pending" },
+  );
+  const pendingHtml = renderNearYouDocument(pendingView);
+  assert.equal(pendingView.mapState, "pending");
+  assert.equal(pendingView.results.count, null);
+  assert.match(pendingHtml, /data-near-data-state="pending"/);
+  assert.match(pendingHtml, /Map data is loading/);
+  assert.doesNotMatch(pendingHtml, /data-count="0"/);
+});
+
+test("Near-you failed map data has a scope-preserving recovery link", () => {
+  const scope = scopeWithPlace(
+    scopeFromLensState("meetings", { agency: "Transportation", q: "curb" }),
+    { borough: "Queens" },
+  );
+  const view = buildNearYouViewModel(scope, null, fixtureBoundaries, {
+    dataState: "error",
+    canonicalBase: "https://cityscroll.org/near-you",
+  });
+  const html = renderNearYouDocument(view);
+  assert.equal(view.mapState, "error");
+  assert.equal(view.results.count, null);
+  assert.match(html, /data-near-map-state="error"/);
+  assert.match(html, /Map data is temporarily unavailable/);
+  const retryHref = html.match(/<a href="([^"]+)" data-near-recovery="retry">/)?.[1]?.replaceAll("&amp;", "&");
+  assert.ok(retryHref);
+  assert.equal(new URL(retryHref).searchParams.get("agency"), "Transportation");
+  assert.equal(new URL(retryHref).searchParams.get("boro"), "Queens");
+  assert.doesNotMatch(html, /data-count="0"/);
+});
+
 test("the shared renderer emits exact server-owned records, counts, map paths, area links, and special bags", () => {
   const scope = scopeWithPlace(
     scopeFromLensState("meetings", { agency: "Transportation" }),
@@ -211,7 +277,7 @@ test("the shared renderer emits exact server-owned records, counts, map paths, a
   assert.equal(view.results.count, 1);
   assert.deepEqual(view.results.ids, ["m-queens"]);
   assert.match(html, /data-near-you-root/);
-  assert.match(html, /class="near-results near-results-shell"[^>]+data-results-count="0"[^>]+data-near-deferred="results"/);
+  assert.match(html, /class="near-results near-results-shell"[^>]+data-near-deferred="results"/);
   assert.match(html, /class="near-bags near-bags-shell"[^>]+data-near-deferred="bags"/);
   assert.match(html, /class="near-bag" data-bag="(?:citywide|virtual|unlocated)"/);
   assert.match(deferred, /data-results-count="1"/);

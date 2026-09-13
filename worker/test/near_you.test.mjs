@@ -3,6 +3,10 @@ import test from "node:test";
 
 import { handleNearYou } from "../src/near_you.mjs";
 
+function kv(values) {
+  return { async get(key) { return values.get(key) || null; } };
+}
+
 test("the edge renderer returns an inspectable scoped HTML document and public cache policy", async () => {
   const response = await handleNearYou(new Request(
     "https://cityscroll.org/near-you?v=0&lens=meetings&boro=Queens&agency=Transportation",
@@ -64,4 +68,29 @@ test("the Near-you handler does not claim the public Stats routes", async () => 
     const response = await handleNearYou(new Request(`https://api.cityscroll.org${pathname}`));
     assert.equal(response.status, 404);
   }
+});
+
+test("a failed Near You read serves an honest error document and scoped retry", async () => {
+  const requestUrl = "https://cityscroll.org/near-you?v=0&lens=meetings&boro=Queens&agency=Transportation";
+  const response = await handleNearYou(new Request(requestUrl), { ALERT_STATE: kv(new Map()) });
+  const html = await response.text();
+
+  assert.equal(response.status, 503);
+  assert.match(response.headers.get("content-type") || "", /text\/html/);
+  assert.match(html, /data-near-data-state="error"/);
+  assert.match(html, /data-near-map-state="error"/);
+  assert.match(html, /Map data is temporarily unavailable/);
+  const retryHref = html.match(/<a href="([^"]+)" data-near-recovery="retry">/)?.[1]?.replaceAll("&amp;", "&");
+  assert.ok(retryHref);
+  assert.equal(new URL(retryHref).searchParams.get("agency"), "Transportation");
+  assert.equal(new URL(retryHref).searchParams.get("boro"), "Queens");
+  assert.doesNotMatch(html, /data-count="0"/);
+
+  const deferred = await handleNearYou(new Request(
+    `${requestUrl.replace("/near-you?", "/near-you/deferred.json?")}`,
+  ), { ALERT_STATE: kv(new Map()) });
+  const payload = await deferred.json();
+  assert.equal(deferred.status, 503);
+  assert.equal(payload.schema, "cityscroll.near_you_deferred_error.v1");
+  assert.equal(payload.recovery_href, "https://cityscroll.org/near-you?v=0&lens=meetings&boro=Queens&agency=Transportation");
 });

@@ -56,9 +56,31 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
     routeReadModel = await loadNearYouActivity(env, scope);
   } catch (error) {
     if (!(error instanceof RouteReadModelUnavailable)) throw error;
-    return new Response(JSON.stringify({ ok: false, reason: "near-you-read-model-unavailable" }), {
+    const recoveryHref = `${CANONICAL_BASE}${url.search}`;
+    if (deferred) {
+      return new Response(JSON.stringify({
+        ok: false,
+        schema: "cityscroll.near_you_deferred_error.v1",
+        reason: "near-you-read-model-unavailable",
+        recovery_href: recoveryHref,
+      }), {
+        status: 503,
+        headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" },
+      });
+    }
+    const view = buildNearYouViewModel(scope, null, boundaries, {
+      canonicalBase: CANONICAL_BASE,
+      siteBase: SITE_BASE,
+      dataState: "error",
+      recoveryHref,
+    });
+    return new Response(request.method === "HEAD" ? null : renderNearYouDocument(view, {
+      canonicalBase: CANONICAL_BASE,
+      assetPrefix: `${SITE_BASE}/`,
+      deferredDataHref: `${CANONICAL_BASE}/deferred.json${url.search}`,
+    }), {
       status: 503,
-      headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" },
+      headers: { ...responseHeaders(), "Cache-Control": "no-store" },
     });
   }
   const view = buildNearYouViewModel(scope, routeReadModel.activity, boundaries, {
