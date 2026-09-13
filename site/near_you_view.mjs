@@ -57,6 +57,7 @@ const BAG_LABELS = Object.freeze({
   unlocated: "No place signal",
 });
 const BOROUGHS = Object.keys(BOROUGH_META);
+const NEAR_YOU_DATA_STATES = Object.freeze(["ready", "pending", "error"]);
 
 // Placement methods are machine provenance. Keep their stable enum values in
 // the read model, but never expose those identifiers as reader-facing copy.
@@ -103,6 +104,20 @@ function esc(value) {
 
 function first(values) {
   return Array.isArray(values) && values.length ? values[0] : null;
+}
+
+function normalizeNearYouDataState(value) {
+  return NEAR_YOU_DATA_STATES.includes(value) ? value : "ready";
+}
+
+function knownCount(value) {
+  return Number.isFinite(value) ? value : null;
+}
+
+function countMarkup(value) {
+  return knownCount(value) == null
+    ? `<span aria-label="Count unavailable">—</span>`
+    : `<strong>${value}</strong>`;
 }
 
 function effectiveTimeWindow(scope, builtAt) {
@@ -298,6 +313,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
   const scope = scopeWithGeographies(inputScope);
   const requestedLens = first(scope.facets.domains) || "meetings";
   const lens = requestedLens;
+  const dataState = normalizeNearYouDataState(options.dataState ?? (activity ? "ready" : "error"));
   const mapped = MAP_LENSES.includes(lens) && lens !== "all";
   const basis = lens === "money"
     && (scope.place.viewport?.basis || scope.facets.values?.basis) === "contract_action_address"
@@ -313,11 +329,13 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
         built_at: activity?.built_at,
       }
     : activity;
-  const records = activityRoot?.records?.[lens] || {};
+  const records = dataState === "ready" ? activityRoot?.records?.[lens] || {} : {};
   const allowed = new Set(Object.values(records)
     .filter((record) => recordMatches(record, scope, activity?.built_at))
     .map((record) => String(record.id)));
-  const scopedActivity = mapped ? filteredActivity(activityRoot, lens, allowed) : filteredActivity(activityRoot, "meetings", new Set());
+  const scopedActivity = dataState === "ready" && mapped
+    ? filteredActivity(activityRoot, lens, allowed)
+    : null;
   const viewport = scope.place.viewport || {};
   const level = ["borough", "community_district", "council_district"].includes(viewport.level)
     ? viewport.level
@@ -325,7 +343,9 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
   const parent = level === "community_district"
     ? viewport.parent || first(scope.place.boroughs)
     : null;
-  const mappedFeatures = mapFeatures(boundaries, scopedActivity, { level, parent, lens: mapped ? lens : "meetings" });
+  const mappedFeatures = dataState === "ready" && mapped
+    ? mapFeatures(boundaries, scopedActivity, { level, parent, lens })
+    : { features: [], max: 0, lens };
   const canonicalBase = options.canonicalBase || "https://cityscroll.org/near-you";
   const urlForScope = typeof options.urlForScope === "function"
     ? options.urlForScope
@@ -337,7 +357,17 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     ...feature,
     href: urlForScope(scopeForFeature(scope, feature)),
   }));
-  const resultIds = mapped ? intersection(itemIdsForPlace(activityRoot, lens, scope), allowed) : [];
+  const resultIds = dataState === "ready" && mapped
+    ? intersection(itemIdsForPlace(activityRoot, lens, scope), allowed)
+    : [];
+  const resultCount = dataState === "ready" && mapped ? resultIds.length : null;
+  const mapState = dataState === "pending"
+    ? "pending"
+    : dataState === "error"
+      ? "error"
+      : mapped
+        ? resultCount > 0 ? "populated" : "empty"
+        : "unsupported";
   const hasPlace = !!(scope.place.boroughs.length || scope.place.community_districts.length
     || scope.place.council_districts.length || (scope.place.geographies || []).length || scope.place.neighborhood
     || scope.place.location_scope);
@@ -362,12 +392,15 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
   };
   const resultRecords = resultIds.map((id) => records[id]).filter(Boolean).sort(recordSort).map(linkedRecord);
   const bags = Object.fromEntries(["citywide", "virtual", "unlocated"].map((kind) => {
-    const ids = mapped ? intersection(activityRoot?.district_items?.[kind]?.[lens], allowed) : [];
+    const ids = dataState === "ready" && mapped
+      ? intersection(activityRoot?.district_items?.[kind]?.[lens], allowed)
+      : [];
+    const count = dataState === "ready" && mapped ? ids.length : null;
     return [kind, {
       kind,
       label: BAG_LABELS[kind],
       ids,
-      count: ids.length,
+      count,
       records: ids.map((id) => records[id]).filter(Boolean).sort(recordSort)
         .map((record) => linkedRecord(record, { explain: false })),
       href: urlForScope(scopeWithPlace(scope, { locationScope: kind })),
@@ -378,6 +411,8 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     scope,
     lens,
     mapped,
+    dataState,
+    mapState,
     basis,
     basisLabel: basisLayer?.basis_label || "Affected area or place of performance",
     hasPlace,
@@ -387,7 +422,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       .filter((definition) => ["nta2020", "police_precinct"].includes(definition.type))
       .filter((definition) => (activity?.geography_items?.by_key?.[definition.key]?.[lens] || []).length > 0)
       .sort((left, right) => left.type.localeCompare(right.type) || left.label.localeCompare(right.label)),
-    results: { ids: resultIds, count: resultIds.length, records: resultRecords },
+    results: { ids: resultIds, count: resultCount, records: resultRecords },
     features,
     max: mappedFeatures.max,
     level,
@@ -396,10 +431,11 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       ? bboxToViewBox(BOROUGH_HULLS[parent].bbox, 0.08)
       : defaultViewBox(),
     bags,
-    activity: activityRoot,
+    activity: dataState === "ready" ? activityRoot : null,
     browseHref: migratedSiteHref(`/${routeHashFromScope(scope, { surface: lens })}`),
-    watchHref: watchHref(scope, lens, resultIds.length),
+    watchHref: watchHref(scope, lens, resultCount),
     shareHref: nearYouUrlFromScope(scope, { base: canonicalBase }),
+    recoveryHref: options.recoveryHref || nearYouUrlFromScope(scope, { base: canonicalBase }),
     canonicalBase,
     siteBase,
     local_constellation: buildPlaceLocalConstellation(
@@ -562,17 +598,22 @@ function geographyOptions(options, current) {
 /** Render the lower-priority record lists for the deferred Near-you artifact. */
 export function renderNearYouDeferredParts(view) {
   const bags = Object.values(view.bags).map((bag) => `<details class="near-bag" data-bag="${bag.kind}">
-    <summary><span>${esc(bag.label)}</span><strong>${bag.count}</strong></summary>
+    <summary><span>${esc(bag.label)}</span>${countMarkup(bag.count)}</summary>
     <p>${bag.kind === "citywide"
       ? "These records apply citywide, so they do not belong to one district."
       : bag.kind === "virtual"
         ? "These records are online only and have no physical place."
         : "The source does not give enough place detail to map these records."}</p>
-    ${recordList(bag.records, `No ${bag.label.toLowerCase()} records match these filters.`)}
+    ${recordList(bag.records, bag.count == null
+      ? "These records are not available right now."
+      : `No ${bag.label.toLowerCase()} records match these filters.`)}
   </details>`).join("");
-  const resultsHtml = `<section class="near-results" aria-labelledby="near-results-heading" data-results-count="${view.results.count}" data-near-surface-panel="list">
-      <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">${view.results.count} ${esc(view.lensLabel)} records for these filters</h2></div></div>
-      ${recordList(view.results.records)}
+  const resultCount = knownCount(view.results.count);
+  const resultsHtml = `<section class="near-results" aria-labelledby="near-results-heading"${resultCount == null ? "" : ` data-results-count="${resultCount}"`} data-near-surface-panel="list">
+      <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">${resultCount == null ? `Matching ${esc(view.lensLabel)} records` : `${resultCount} ${esc(view.lensLabel)} records for these filters`}</h2></div></div>
+      ${recordList(view.results.records, view.mapState === "unsupported"
+        ? `${esc(view.lensLabel)} records are not mapped here.`
+        : resultCount == null ? "Matching records are not available right now." : undefined)}
     </section>`;
   const bagsHtml = `<section class="near-bags" aria-labelledby="near-bags-heading">
       <p class="near-kicker">Other places</p><h2 id="near-bags-heading">Records outside mapped districts</h2>
@@ -590,13 +631,13 @@ export function renderNearYouDeferredBody(view) {
 
 function renderNearYouDeferredShell(view, part, { includeListPanelMarker = false } = {}) {
   if (part === "results") {
-    return `<section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-results-count="0" data-near-deferred="results" data-near-deferred-state="pending"${includeListPanelMarker ? ` data-near-surface-panel="list"` : ""} aria-busy="true">
+    return `<section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-near-deferred="results" data-near-deferred-state="pending"${includeListPanelMarker ? ` data-near-surface-panel="list"` : ""} aria-busy="true">
       <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">Matching ${esc(view.lensLabel)} records</h2></div></div>
       <p class="near-deferred-status" role="status" aria-live="polite">Loading matching records…</p>
     </section>`;
   }
   const bags = Object.values(view.bags).map((bag) => `<details class="near-bag" data-bag="${bag.kind}">
-    <summary><span>${esc(bag.label)}</span><strong>${bag.count}</strong></summary>
+    <summary><span>${esc(bag.label)}</span>${countMarkup(bag.count)}</summary>
     <p class="near-deferred-status" role="status" aria-live="polite">Loading ${esc(bag.label.toLowerCase())} records…</p>
   </details>`).join("");
   return `<section class="near-bags near-bags-shell" aria-labelledby="near-bags-heading" data-near-deferred="bags" data-near-deferred-state="pending" aria-busy="true">
@@ -606,9 +647,26 @@ function renderNearYouDeferredShell(view, part, { includeListPanelMarker = false
     </section>`;
 }
 
-export function renderNearYouBody(view, { includeListPanelMarker = false } = {}) {
-  const scopeChips = view.scopeSummary
-    .map((chip) => `<li data-scope-axis="${esc(chip.axis)}">${esc(chip.label)}</li>`).join("");
+function renderNearYouMapState(view) {
+  const state = view.mapState;
+  if (state === "unsupported") {
+    return `<div class="near-coverage near-map-state" data-near-map-state="unsupported" role="note">
+      <strong>${esc(view.lensLabel)} records are not mapped here.</strong>
+      <p>This map does not have place data for this lens, so it will not imply that no civic activity exists.</p>
+      <a href="${esc(view.browseHref)}" data-near-recovery="unsupported">Open ${esc(view.lensLabel)} records</a>
+    </div>`;
+  }
+  if (state === "pending") {
+    return `<div class="near-coverage near-map-state" data-near-map-state="pending" role="status" aria-busy="true">
+      <strong>Map data is loading.</strong><p>Area counts will appear when the data is ready.</p>
+    </div>`;
+  }
+  if (state === "error") {
+    return `<div class="near-coverage near-map-state" data-near-map-state="error" role="alert">
+      <strong>Map data is temporarily unavailable.</strong><p>Your filters and place are still selected.</p>
+      <a href="${esc(view.recoveryHref)}" data-near-recovery="retry">Try again</a>
+    </div>`;
+  }
   const paths = view.features.map((feature) => `<path class="map-district"
     data-map-id="${esc(feature.id)}" data-count="${feature.total}" data-map-level="${esc(feature.level)}"
     data-map-href="${esc(feature.href)}" d="${esc(feature.path)}" fill="${esc(feature.fill)}"
@@ -617,10 +675,31 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
       data-map-label="${esc(feature.id)}" data-area-name="${esc(feature.label)}"
       x="${esc(feature.labelPoint?.x)}" y="${esc(feature.labelPoint?.y)}"
       text-anchor="middle" dominant-baseline="central" aria-label="${esc(feature.label)}">${esc(feature.labelText)}</text>`).join("");
-  const areas = [...view.features] // Source: district_boundaries.json build artifact.
+  const areas = [...view.features]
     .sort((a, b) => b.total - a.total || String(a.label).localeCompare(String(b.label)))
     .map((feature) => `<li><a data-map-area="${esc(feature.id)}" data-count="${feature.total}" href="${esc(feature.href)}"><span>${esc(feature.label)}</span><strong>${feature.total}</strong></a></li>`)
     .join("");
+  return `<div class="near-map-grid" data-near-map-state="${esc(state)}">
+        <div class="near-map-wrap">
+          <svg id="nearMapSvg" role="img" aria-labelledby="nearMapTitle nearMapDesc" viewBox="${esc(view.viewBox)}" preserveAspectRatio="xMidYMid meet">
+            <title id="nearMapTitle">New York City ${esc(view.level.replaceAll("_", " "))} map</title>
+            <desc id="nearMapDesc">The area list beside this map contains the same links and ${esc(view.lensLabel)} counts.</desc>
+            <g fill-rule="evenodd">${paths}</g>
+            <g aria-hidden="true">${labels}</g>
+          </svg>
+          <p class="map-legend"><span></span> Fewer to more qualifying records</p>
+          <p class="near-vintage">Map boundaries: ${esc(view.activity?.boundary_vintage || "not published")}</p>
+        </div>
+        <div class="near-area-panel" id="near-area-list">
+          <h3>Equivalent area list</h3>
+          <ol class="near-area-list">${areas || "<li>No areas match these filters.</li>"}</ol>
+        </div>
+      </div>`;
+}
+
+export function renderNearYouBody(view, { includeListPanelMarker = false } = {}) {
+  const scopeChips = view.scopeSummary
+    .map((chip) => `<li data-scope-axis="${esc(chip.axis)}">${esc(chip.label)}</li>`).join("");
   const currentBorough = first(view.scope.place.boroughs);
   const currentGeography = first(view.scope.place.geographies);
   const walkQuery = view.scope.topic?.query || first(view.scope.topic?.keywords);
@@ -662,6 +741,7 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
       : "Choose a place first. A guessed location is not an edge.",
   });
   return `<main id="main" data-near-you-root data-lens="${esc(view.lens)}" data-level="${esc(view.level)}"
+    data-near-data-state="${esc(view.dataState)}" data-near-map-state="${esc(view.mapState)}" data-near-recovery-href="${esc(view.recoveryHref)}"
     data-near-deferred-href="${esc(view.deferredDataHref || "")}" data-near-deferred-state="pending"
     data-message-updating="Updating the map…"
     data-message-updated="Map updated. Map and list counts match."
@@ -718,10 +798,10 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
       ${view.lens === "money" ? `<label>Location basis<select name="basis">${basisOptions(view.basis)}</select></label>` : ""}
       <button type="submit">Apply filters</button>
     </form>
-    ${view.mapped ? "" : `<aside class="near-coverage" role="note"><strong>${esc(view.lensLabel)} place data is not available.</strong> Your other filters stay in place, and the page does not switch to a different set of records.</aside>`}
+    ${view.mapState === "unsupported" ? `<aside class="near-coverage" role="note"><strong>${esc(view.lensLabel)} place data is not available.</strong> Your other filters stay in place; this is not an empty activity result.</aside>` : ""}
     ${view.basis === "contract_action_address" ? `<aside class="near-coverage" role="note"><strong>${esc(view.basisLabel)}.</strong> This shows where to submit a bid, attend a pre-bid event, or pick up a file. It does not say where the contract work will happen.</aside>` : ""}
     <nav class="near-surface-switch" aria-label="Near you view" data-near-surface-switch>
-      <a class="near-surface-link is-active" href="#near-results-heading" data-near-surface="list">Records (${view.results.count})</a>
+      <a class="near-surface-link is-active" href="#near-results-heading" data-near-surface="list">${knownCount(view.results.count) == null ? "Records" : `Records (${view.results.count})`}</a>
       <a class="near-surface-link" href="#near-map-heading" data-near-surface="map">Map</a>
     </nav>
     ${renderNearYouDeferredShell(view, "results", { includeListPanelMarker })}
@@ -737,22 +817,7 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
           <button type="button" data-map-zoom="reset">Reset</button>
         </div>
       </div>
-      <div class="near-map-grid">
-        <div class="near-map-wrap">
-          <svg id="nearMapSvg" role="img" aria-labelledby="nearMapTitle nearMapDesc" viewBox="${esc(view.viewBox)}" preserveAspectRatio="xMidYMid meet">
-            <title id="nearMapTitle">New York City ${esc(view.level.replaceAll("_", " "))} map</title>
-            <desc id="nearMapDesc">The area list beside this map contains the same links and ${esc(view.lensLabel)} counts.</desc>
-            <g fill-rule="evenodd">${paths}</g>
-            <g aria-hidden="true">${labels}</g>
-          </svg>
-          <p class="map-legend"><span></span> Fewer to more qualifying records</p>
-          <p class="near-vintage">Map boundaries: ${esc(view.activity?.boundary_vintage || "not published")}</p>
-        </div>
-        <div class="near-area-panel" id="near-area-list">
-          <h3>Equivalent area list</h3>
-          <ol class="near-area-list">${areas || "<li>No areas match these filters.</li>"}</ol>
-        </div>
-      </div>
+      ${renderNearYouMapState(view)}
     </section>
     ${renderNearYouDeferredShell(view, "bags")}
   </main>`;

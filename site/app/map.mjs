@@ -129,7 +129,12 @@ async function hydrateNearYouDeferredData() {
       statusNode.className = "near-deferred-status";
       statusNode.setAttribute("role", "status");
       statusNode.textContent = message;
-      host.replaceChildren(statusNode);
+      const recovery = document.createElement("a");
+      recovery.className = "near-deferred-recovery";
+      recovery.href = root.dataset.nearRecoveryHref || location.href;
+      recovery.dataset.nearRecovery = "retry";
+      recovery.textContent = globalThis.t("buyer_history_retry");
+      host.replaceChildren(statusNode, recovery);
       host.setAttribute("aria-busy", "false");
       if (host.dataset.nearDeferred === "results") host.removeAttribute("data-results-count");
       host.dataset.nearDeferredState = "error";
@@ -385,6 +390,9 @@ function wireSurfaceSwitch() {
 }
 
 function nearYouMapStateFromRoot(node) {
+  if (["unsupported", "pending", "error", "empty", "populated"].includes(node.dataset.nearMapState)) {
+    return node.dataset.nearMapState;
+  }
   const mapped = MAP_LENSES.includes(node.dataset.lens) && node.dataset.lens !== "all";
   const count = Number(node.querySelector("[data-results-count]")?.dataset.resultsCount);
   const placeDataMissing = [...node.querySelectorAll(".near-coverage")].some((el) =>
