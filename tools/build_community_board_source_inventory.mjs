@@ -1,19 +1,27 @@
 #!/usr/bin/env node
-import { readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const ROOT = join(import.meta.dirname, "..");
 const REGISTRY_PATH = join(ROOT, "site/data/non_council_outcome_sources/source_registry.json");
 const INVENTORY_PATH = join(ROOT, "site/data/non_council_outcome_sources/board_source_inventory.json");
 const RECEIPT_PATH = join(ROOT, "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json");
+const RESOURCE_MATRIX_PATH = join(ROOT, "docs/evidence/community-board-resources/resource-matrix-2026-08-13.json");
+const CB15_EVIDENCE_PATH = join(ROOT, "docs/evidence/community-board-resources/cb15-destination-evidence-2026-08-13.json");
 const INVENTORY_SCHEMA = "cityscroll.community_board_source_inventory.v1";
 const RECEIPT_SCHEMA = "cityscroll.community_board_source_receipt.v1";
+const RESOURCE_MATRIX_SCHEMA = "cityscroll.community_board_resource_matrix.v1";
+const CB15_EVIDENCE_SCHEMA = "cityscroll.community_board_destination_evidence.v1";
 const OBSERVED_ON = "2026-08-13";
 const RECEIPT_REF = "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json";
 const ROLES = ["upcoming_meetings", "minutes", "committees", "roster", "bylaws"];
+const RESOURCE_TASKS = ["calendar", "agenda", "minutes", "committees", "roster", "bylaws", "contact"];
 
 function readJson(path) { return JSON.parse(readFileSync(path, "utf8")); }
-function writeJson(path, value) { writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`); }
+function writeJson(path, value) {
+  mkdirSync(join(path, ".."), { recursive: true });
+  writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`);
+}
 function unknownArchiveDepth() { return { status: "unknown", earliest_year: null, latest_year: null }; }
 function isUrl(value) { return typeof value === "string" && /^https:\/\//.test(value); }
 
@@ -94,6 +102,83 @@ function sourceRolesFromRegistry(registryRow, oldRow) {
   )]));
 }
 
+function resourceDestination(task, source, { fallback = null, sourceRole = null, reason = null } = {}) {
+  const url = isUrl(source?.url) ? source.url : null;
+  return {
+    task,
+    url,
+    source_role: sourceRole,
+    publisher: source?.publisher || null,
+    publisher_kind: source?.publisher_kind || null,
+    format: source?.format || null,
+    observed_on: source?.seen_on || OBSERVED_ON,
+    status: url ? "verified_destination" : "not_observed",
+    verification: {
+      status: url ? "observed_url" : "not_observed",
+      content_current: false,
+      receipt_ref: url ? (source?.verification?.receipt_ref || RECEIPT_REF) : RECEIPT_REF,
+      reason: url ? null : (reason || "no_explicit_destination_in_reviewed_pass"),
+    },
+    ...(fallback ? { fallback } : {}),
+  };
+}
+
+function agendaSource(upcoming, minutes) {
+  const candidates = [upcoming, minutes].filter((source) => isUrl(source?.url));
+  return candidates.find((source) => /agenda/i.test(`${source.url} ${source.format || ""}`)) || null;
+}
+
+function contactDestination(registryRow) {
+  const homepage = isUrl(registryRow.homepage_url)
+    ? resourceDestination("contact", {
+      url: registryRow.homepage_url,
+      publisher: publisherFor(registryRow, sourceOrigin(registryRow.homepage_url)),
+      publisher_kind: sourceOrigin(registryRow.homepage_url),
+      format: "official board homepage",
+      seen_on: OBSERVED_ON,
+      verification: { receipt_ref: RECEIPT_REF },
+    }, { sourceRole: "homepage_url" })
+    : null;
+  const directory = isUrl(registryRow.directory_url)
+    ? {
+      task: "contact_fallback",
+      url: registryRow.directory_url,
+      source_role: "directory_url",
+      publisher: "NYC Community Boards",
+      publisher_kind: "nyc_official",
+      format: "official city directory entry",
+      observed_on: OBSERVED_ON,
+      status: "verified_destination",
+      verification: {
+        status: "observed_url",
+        content_current: false,
+        receipt_ref: RECEIPT_REF,
+        reason: null,
+      },
+    }
+    : null;
+  if (homepage) return { ...homepage, fallback: directory };
+  return directory ? resourceDestination("contact", directory, { sourceRole: "directory_url" }) : resourceDestination("contact", null, { sourceRole: null });
+}
+
+function resourceTasksForBoard(registryRow, sourceRoles) {
+  const upcoming = sourceRoles.upcoming_meetings;
+  const minutes = sourceRoles.minutes;
+  const agenda = agendaSource(upcoming, minutes);
+  return [
+    resourceDestination("calendar", upcoming, { sourceRole: "upcoming_meetings" }),
+    resourceDestination("agenda", agenda, {
+      sourceRole: agenda === upcoming ? "upcoming_meetings" : agenda === minutes ? "minutes" : null,
+      reason: "no_explicit_agenda_destination_in_reviewed_pass",
+    }),
+    resourceDestination("minutes", minutes, { sourceRole: "minutes" }),
+    resourceDestination("committees", sourceRoles.committees, { sourceRole: "committees" }),
+    resourceDestination("roster", sourceRoles.roster, { sourceRole: "roster" }),
+    resourceDestination("bylaws", sourceRoles.bylaws, { sourceRole: "bylaws" }),
+    contactDestination(registryRow),
+  ];
+}
+
 function assertRoster(registry) {
   const boards = registry.sources.filter((row) => row.body_type === "community_board");
   if (boards.length !== 59) throw new Error(`expected 59 roster boards, found ${boards.length}`);
@@ -125,6 +210,7 @@ function build(registry, existing) {
       committees: sources.committees,
       roster: sources.roster,
       bylaws: sources.bylaws,
+      resource_tasks: resourceTasksForBoard(registryRow, sources),
     };
   });
   return {
@@ -139,8 +225,58 @@ function build(registry, existing) {
       source_registry_is_url_authority: true,
       publisher_kinds: ["nyc_official", "board_owned_official", "city_record", "third_party_storage"],
     },
+    resource_matrix: {
+      schema: RESOURCE_MATRIX_SCHEMA,
+      observed_on: OBSERVED_ON,
+      tasks: RESOURCE_TASKS,
+      destination_status: "reviewed_destination_only",
+      content_current_is_not_asserted: true,
+      identity: "board_id is the exact source-registry body_id; tasks never cross board identities",
+    },
     coverage: { boards: 59, source_roles: ROLES },
     boards,
+  };
+}
+
+function resourceMatrix(inventory) {
+  return {
+    schema: RESOURCE_MATRIX_SCHEMA,
+    observed_on: inventory.observed_on,
+    source_vintage: RECEIPT_REF,
+    scope: { board_count: inventory.boards.length, board_identity: "source_registry.body_id" },
+    tasks: RESOURCE_TASKS,
+    policy: {
+      status_means_reviewed_destination: true,
+      link_does_not_prove_current_content: true,
+      missing_task_is_not_publication_absence: true,
+    },
+    boards: inventory.boards.map((board) => ({
+      board_id: board.id,
+      name: board.name,
+      borough: board.borough,
+      district: board.district,
+      destinations: board.resource_tasks,
+    })),
+  };
+}
+
+function cb15Evidence(inventory) {
+  const board = inventory.boards.find((row) => row.id === "brooklyn-cb-15");
+  return {
+    schema: CB15_EVIDENCE_SCHEMA,
+    observed_on: inventory.observed_on,
+    source_vintage: RECEIPT_REF,
+    board_id: board.id,
+    route: "/community-boards/brooklyn-cb-15/",
+    assertion: "The board page receives every reviewed official destination for this exact board identity; a destination link does not assert that its publisher has current content.",
+    destinations: board.resource_tasks.filter((task) => task.url).map((task) => ({
+      task: task.task,
+      url: task.url,
+      source_role: task.source_role,
+      publisher: task.publisher,
+      observed_on: task.observed_on,
+      fallback: task.fallback?.url || null,
+    })),
   };
 }
 
@@ -195,6 +331,8 @@ const existing = readJson(INVENTORY_PATH);
 const inventory = build(registry, existing);
 const registryWithRoles = withRegistryRoles(registry, inventory);
 const receipt = buildReceipt(inventory);
+const matrix = resourceMatrix(inventory);
+const cb15 = cb15Evidence(inventory);
 
 if (check) {
   if (JSON.stringify(existing) !== JSON.stringify(inventory)) throw new Error("board source inventory is stale; run without --check");
@@ -202,10 +340,16 @@ if (check) {
   if (JSON.stringify(committedRegistry) !== JSON.stringify(registryWithRoles)) throw new Error("source registry board roles are stale; run without --check");
   const committedReceipt = readJson(RECEIPT_PATH);
   if (JSON.stringify(committedReceipt) !== JSON.stringify(receipt)) throw new Error("community board source receipt is stale; run without --check");
+  const committedMatrix = readJson(RESOURCE_MATRIX_PATH);
+  if (JSON.stringify(committedMatrix) !== JSON.stringify(matrix)) throw new Error("community board resource matrix is stale; run without --check");
+  const committedCb15 = readJson(CB15_EVIDENCE_PATH);
+  if (JSON.stringify(committedCb15) !== JSON.stringify(cb15)) throw new Error("CB15 destination evidence is stale; run without --check");
   console.log(`checked ${inventory.boards.length} boards and ${receipt.sources.length} role receipts`);
 } else {
   writeJson(REGISTRY_PATH, registryWithRoles);
   writeJson(INVENTORY_PATH, inventory);
   writeJson(RECEIPT_PATH, receipt);
+  writeJson(RESOURCE_MATRIX_PATH, matrix);
+  writeJson(CB15_EVIDENCE_PATH, cb15);
   console.log(`wrote ${inventory.boards.length} boards and ${receipt.sources.length} role receipts`);
 }

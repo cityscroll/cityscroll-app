@@ -104,6 +104,16 @@ const SOURCE_ROLE_LABELS = Object.freeze({
   bylaws: "Bylaws",
 });
 
+const RESOURCE_TASK_LABELS = Object.freeze({
+  calendar: "Calendar",
+  agenda: "Agenda",
+  minutes: "Minutes and records",
+  committees: "Committee directory",
+  roster: "Board roster",
+  bylaws: "Bylaws",
+  contact: "Contact this board",
+});
+
 const clean = (value, max = 500) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
   .replace(/\s+/g, " ")
@@ -538,6 +548,8 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
   };
   const scorecardRow = (sources.scorecard?.rows || []).find((row) => row?.body_id === requested);
   const inventoryRow = (sources.sourceInventory?.boards || []).find((row) => row?.id === requested || row?.body_id === requested);
+  const resourceTasks = Array.isArray(inventoryRow?.resource_tasks) ? inventoryRow.resource_tasks : [];
+  normalizedBoard.resource_tasks = resourceTasks;
   const boardReceipts = (sources.sourceReceipts || []).filter((row) => row?.board_id === requested);
   const bylawGraph = buildCommunityBoardBylawGraph(sources.communityBoardBylaws || sources.bylaws || []);
   const boardBylawSource = communityBoardBylawSourceDescriptor(bylawGraph, requested);
@@ -662,6 +674,7 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     money,
     payroll,
     participation,
+    resource_tasks: resourceTasks,
     // Optional enrichment: absent for a board whose district has no retained
     // project, so the document carries no empty section for it.
     ...(districtProjects ? { district_projects: districtProjects } : {}),
@@ -954,6 +967,35 @@ function renderMinutesFreshnessMarkup(view) {
   return `<div class="board-minutes-freshness" data-community-board-minutes="1" data-minutes-freshness="${esc(freshness.state)}"><p>${esc(freshness.label)}</p>${sourceLink ? `<p>${sourceLink}</p>` : ""}</div>`;
 }
 
+function resourceTaskMarkup(task) {
+  const label = RESOURCE_TASK_LABELS[task.task] || task.task;
+  const href = task.url || null;
+  const link = href
+    ? officialSourceLink({ href, label: task.task === "calendar" ? "Open official calendar" : `Open ${label.toLowerCase()}`, className: "board-source-link", escape: esc })
+    : "";
+  const fallback = task.fallback?.url
+    ? `<span class="board-resource-fallback">Fallback: ${officialSourceLink({ href: task.fallback.url, label: task.fallback.task === "contact_fallback" ? "City directory entry" : "Open fallback", className: "board-source-link", escape: esc })}</span>`
+    : "";
+  const attribution = [task.publisher, task.observed_on ? `destination observed ${task.observed_on}` : ""]
+    .filter(Boolean)
+    .join(" · ");
+  return `<li class="node-record board-resource-task" data-community-board-resource-task="${esc(task.task)}" data-resource-status="${esc(task.status || "unknown")}"><div class="node-record-main"><strong>${esc(label)}</strong> ${link}</div>${fallback ? `<span class="muted node-muted">${fallback}</span>` : ""}${attribution ? `<span class="muted node-muted">${esc(attribution)}</span>` : ""}</li>`;
+}
+
+function renderCommunityBoardResourceSection(tasks = []) {
+  const observed = (Array.isArray(tasks) ? tasks : []).filter((task) => task?.url);
+  if (!observed.length) return "";
+  return renderNodeSection({
+    heading: "Official resources",
+    extraClass: "node-card civic-object-section community-board-resources",
+    attrs: {
+      id: "official-resources",
+      "data-community-board-resources": "1",
+    },
+    body: `<p class="node-lede">Reviewed destinations for common board tasks. A link identifies the publisher destination observed in the source pass; it does not by itself confirm current page content.</p><ul class="node-record-list">${observed.map(resourceTaskMarkup).join("")}</ul>`,
+  });
+}
+
 function renderAboutBoardSection(view) {
   const board = view.board || {};
   const place = view.categories.find((category) => category.id === "place");
@@ -1068,7 +1110,7 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
 ${renderNodeBack({ href: "/community-boards/", label: "Back to community board sources", extraClass: "civic-object-back" })}
 <header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">Community board</p><h1>${esc(title)}</h1><p class="node-lede">A local advisory body, its district, committees, proceedings, people, and official source coverage.</p><p class="node-pivot civic-object-pivot"><a href="${esc(place?.view_all_href || "/near-you/")}">Open this board’s place view</a> · <a href="${esc(output)}">Open the source directory</a></p></header>
 ${renderRelatedPublicBodiesFor(view.body_id)}
-  ${renderAboutBoardSection(view)}${renderCommunityBoardHearingContextSection(view.hearing_context, { lang: options.lang })}${renderCommunityBoardDecisionsSection(view.board_decisions, { lang: options.lang })}${renderCommunityBoardLandPositionsSection(view.land_positions, { lang: options.lang })}${renderCommunityBoardBudgetRequestsSection(view.budget_requests, { lang: options.lang })}${renderCommunityBoardDistrictProjectsSection(view.district_projects, { lang: options.lang })}${renderCommunityBoardParticipationSection(view)}${renderCommunityBoardMoneyCard(view.money)}${renderCommunityBoardPayrollContext(view.payroll)}${renderCommunityBoardBylawPanel(view.governance)}${renderBoroughOfficeAppointmentSection(view.appointment_authority)}${renderEmptyCoverageNote(emptyCoverageCategories)}${renderedCategories.map((category) => renderCategory(category, view)).join("")}${edgeRail}${local}${actions}${renderUnjoinedSourceSection(view.source_records)}
+  ${renderAboutBoardSection(view)}${renderCommunityBoardResourceSection(view.resource_tasks)}${renderCommunityBoardHearingContextSection(view.hearing_context, { lang: options.lang })}${renderCommunityBoardDecisionsSection(view.board_decisions, { lang: options.lang })}${renderCommunityBoardLandPositionsSection(view.land_positions, { lang: options.lang })}${renderCommunityBoardBudgetRequestsSection(view.budget_requests, { lang: options.lang })}${renderCommunityBoardDistrictProjectsSection(view.district_projects, { lang: options.lang })}${renderCommunityBoardParticipationSection(view)}${renderCommunityBoardMoneyCard(view.money)}${renderCommunityBoardPayrollContext(view.payroll)}${renderCommunityBoardBylawPanel(view.governance)}${renderBoroughOfficeAppointmentSection(view.appointment_authority)}${renderEmptyCoverageNote(emptyCoverageCategories)}${renderedCategories.map((category) => renderCategory(category, view)).join("")}${edgeRail}${local}${actions}${renderUnjoinedSourceSection(view.source_records)}
 </main>${renderNodeFooter({ extraClass: "civic-object-footer" })}
 <script id="civic-object-payload" type="application/json">${payload}</script><script defer src="${esc(`${prefix}export_workflows.js`)}"></script>${renderCalendarEventPreviewScript(assetPrefix)}<script type="module" src="${esc(`${prefix}community_board_land_positions_boot.mjs`)}"></script><script type="module" src="${esc(`${prefix}community_board_budget_requests_boot.mjs`)}"></script>
 </body></html>`;

@@ -244,6 +244,26 @@ test("Manhattan CB2 ways-to-participate keeps board-local verbs, closed applicat
   }
 });
 
+test("contact paths retain the reviewed homepage and city-directory fallback", () => {
+  const paths = communityBoardParticipationPaths({
+    board_id: "brooklyn-cb-15",
+    board: {
+      body_id: "brooklyn-cb-15",
+      resource_tasks: [{
+        task: "contact",
+        url: "https://www.nyc.gov/site/brooklyncb15/index.page",
+        fallback: {
+          task: "contact_fallback",
+          url: "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
+        },
+      }],
+    },
+  });
+  const byKind = Object.fromEntries(paths.map((path) => [path.kind, path]));
+  assert.equal(byKind.contact_board.href, "https://www.nyc.gov/site/brooklyncb15/index.page");
+  assert.equal(byKind.contact_board.fallback_href, "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page");
+});
+
 test("a board without equivalent evidence omits service and application opportunities", () => {
   const participation = projectCommunityBoardParticipation({
     board_id: "bronx-cb-02",

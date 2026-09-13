@@ -561,6 +561,8 @@ function pathRecord({
   destination_kind = "internal",
   reason = null,
   evidence = null,
+  fallback_href = null,
+  fallback_verb = null,
 }) {
   return Object.freeze({
     kind,
@@ -571,8 +573,19 @@ function pathRecord({
     destination_kind,
     reason: clean(reason, 2_000) || null,
     evidence: evidence ? Object.freeze({ ...evidence }) : null,
+    fallback_href: httpsUrl(fallback_href),
+    fallback_verb: clean(fallback_verb, 500) || null,
     cross_board_inference: false,
   });
+}
+
+function contactDestinations(board = {}) {
+  const reviewed = Array.isArray(board.resource_tasks)
+    ? board.resource_tasks.find((task) => task?.task === "contact")
+    : null;
+  const primary = httpsUrl(reviewed?.url || board.homepage_url || board.directory_url);
+  const fallback = httpsUrl(reviewed?.fallback?.url || (primary && primary !== httpsUrl(board.directory_url) ? board.directory_url : null));
+  return { primary, fallback };
 }
 
 /**
@@ -674,19 +687,21 @@ export function communityBoardParticipationPaths({
     }));
   }
 
-  const contactHref = httpsUrl(board.homepage_url) || httpsUrl(board.directory_url);
-  if (contactHref) {
+  const contact = contactDestinations(board);
+  if (contact.primary) {
     paths.push(pathRecord({
       kind: "contact_board",
       verb: "Contact this board",
-      href: contactHref,
+      href: contact.primary,
       cta: true,
       destination_kind: "official",
-      reason: board.homepage_url ? "Board homepage" : "City directory entry",
+      reason: contact.primary === httpsUrl(board.homepage_url) ? "Board homepage" : "City directory entry",
+      fallback_href: contact.fallback,
+      fallback_verb: "Use the City directory entry if the homepage is unavailable",
       evidence: evidenceFrom({
-        source_url: contactHref,
+        source_url: contact.primary,
         document_id: requested,
-        statement: "Contact uses this board’s published homepage or directory listing.",
+        statement: "Contact uses this board’s reviewed homepage or city directory listing.",
       }),
     }));
   }
@@ -815,7 +830,10 @@ export function renderCommunityBoardParticipationSection(viewOrPaths) {
       path.evidence?.source_id ? `data-source-id="${esc(path.evidence.source_id)}"` : "",
       path.evidence?.document_id ? `data-document-id="${esc(path.evidence.document_id)}"` : "",
     ].filter(Boolean).join(" ");
-    return `<li class="node-record board-participation-path" ${attrs}><div class="node-record-main">${pathLink(path, esc)}</div>${path.reason ? `<span class="muted node-muted">${esc(path.reason)}</span>` : ""}${pathEvidenceMarkup(path, esc)}</li>`;
+    const fallback = path.fallback_href
+      ? `<p class="board-participation-fallback">${officialSourceLink({ href: path.fallback_href, label: path.fallback_verb || "Open fallback", className: "board-participation-link", escape: esc })}</p>`
+      : "";
+    return `<li class="node-record board-participation-path" ${attrs}><div class="node-record-main">${pathLink(path, esc)}</div>${path.reason ? `<span class="muted node-muted">${esc(path.reason)}</span>` : ""}${fallback}${pathEvidenceMarkup(path, esc)}</li>`;
   }).join("");
   return renderNodeSection({
     heading: "Ways to participate",
@@ -828,4 +846,3 @@ export function renderCommunityBoardParticipationSection(viewOrPaths) {
     body: `<p class="node-lede">Current ways to enter this board’s public work, shown only when this board’s sources support them.</p><ul class="node-record-list board-participation-list">${items}</ul>`,
   });
 }
-

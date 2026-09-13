@@ -1,0 +1,34 @@
+{
+  "schema": "cityscroll.community_board_destination_evidence.v1",
+  "observed_on": "2026-08-13",
+  "source_vintage": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+  "board_id": "brooklyn-cb-15",
+  "route": "/community-boards/brooklyn-cb-15/",
+  "assertion": "The board page receives every reviewed official destination for this exact board identity; a destination link does not assert that its publisher has current content.",
+  "destinations": [
+    {
+      "task": "calendar",
+      "url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      "source_role": "upcoming_meetings",
+      "publisher": "NYC Community Boards",
+      "observed_on": "2026-08-13",
+      "fallback": null
+    },
+    {
+      "task": "minutes",
+      "url": "https://www.nyc.gov/site/brooklyncb15/calendar/board-meeting-minutes.page",
+      "source_role": "minutes",
+      "publisher": "NYC Community Boards",
+      "observed_on": "2026-08-13",
+      "fallback": null
+    },
+    {
+      "task": "contact",
+      "url": "https://www.nyc.gov/site/brooklyncb15/index.page",
+      "source_role": "homepage_url",
+      "publisher": "NYC Community Boards",
+      "observed_on": "2026-08-13",
+      "fallback": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page"
+    }
+  ]
+}
