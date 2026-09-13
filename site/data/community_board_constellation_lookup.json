@@ -9,7 +9,7 @@
       "display_name": "Bronx Community Board 1",
       "path": "/community-boards/bronx-cb-01/",
       "summary": {
-        "matched_categories": 2,
+        "matched_categories": 3,
         "category_count": 6,
         "generated_at": "2026-09-06",
         "method": "community_board_constellation_v1"
@@ -156,12 +156,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": null,
+          "target_id": "meeting:community_board:pdf-calendar:bronx-cb-01:2026-09-24:board-meeting",
           "target_name": "Upcoming & recent proceedings",
-          "count": null,
-          "state": "unknown",
-          "href": null,
-          "canonical_href": null,
+          "count": 1,
+          "state": "matched",
+          "href": "/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Abronx-cb-01%3A2026-09-24%3Aboard-meeting",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Abronx-cb-01%3A2026-09-24%3Aboard-meeting",
           "scope": {
             "board": "bronx-cb-01"
           },
@@ -174,17 +174,11 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": null,
-            "source_fields": [
-              "body_id",
-              "borough",
-              "district",
-              "name",
-              "directory_url",
-              "observed_on"
-            ],
+            "source_record_id": "pdf-calendar:bronx-cb-01:2026-09-24:board-meeting",
+            "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-12T00:00:00.000Z",
+            "source_href": "https://www.nyc.gov/site/bronxcb1/calendar/calendar.page",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -1561,12 +1555,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-09-08/",
+          "target_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-09-14/",
           "target_name": "Upcoming & recent proceedings",
           "count": 12,
           "state": "matched",
-          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Fhousing-land-use-youth-education-committees%2F2026-09-08%2F",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Fhousing-land-use-youth-education-committees%2F2026-09-08%2F",
+          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Fdisciplinary-committee-7%2F2026-09-14%2F",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Fdisciplinary-committee-7%2F2026-09-14%2F",
           "scope": {
             "board": "bronx-cb-06"
           },
@@ -1579,7 +1573,7 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": "https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-09-08/",
+            "source_record_id": "https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-09-14/",
             "source_fields": null,
             "join_method": null,
             "source_href": "https://cbbronx.cityofnewyork.us/cb6/calendar/",
@@ -2117,12 +2111,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/full-board/2026-09-08/",
+          "target_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/aging/2026-09-14/",
           "target_name": "Upcoming & recent proceedings",
-          "count": 8,
+          "count": 6,
           "state": "matched",
-          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb8%2Fevent%2Ffull-board%2F2026-09-08%2F",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb8%2Fevent%2Ffull-board%2F2026-09-08%2F",
+          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb8%2Fevent%2Faging%2F2026-09-14%2F",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb8%2Fevent%2Faging%2F2026-09-14%2F",
           "scope": {
             "board": "bronx-cb-08"
           },
@@ -2135,7 +2129,7 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": "https://cbbronx.cityofnewyork.us/cb8/event/full-board/2026-09-08/",
+            "source_record_id": "https://cbbronx.cityofnewyork.us/cb8/event/aging/2026-09-14/",
             "source_fields": null,
             "join_method": null,
             "source_href": "https://cbbronx.cityofnewyork.us/cb8/events/list/",
@@ -2526,7 +2520,7 @@
       "display_name": "Bronx Community Board 10",
       "path": "/community-boards/bronx-cb-10/",
       "summary": {
-        "matched_categories": 2,
+        "matched_categories": 3,
         "category_count": 6,
         "generated_at": "2026-09-06",
         "method": "community_board_constellation_v1"
@@ -2673,12 +2667,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": null,
+          "target_id": "meeting:community_board:pdf-calendar:bronx-cb-10:2026-09-14:executive-board",
           "target_name": "Upcoming & recent proceedings",
-          "count": null,
-          "state": "unknown",
-          "href": null,
-          "canonical_href": null,
+          "count": 6,
+          "state": "matched",
+          "href": "/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Abronx-cb-10%3A2026-09-14%3Aexecutive-board",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Abronx-cb-10%3A2026-09-14%3Aexecutive-board",
           "scope": {
             "board": "bronx-cb-10"
           },
@@ -2691,17 +2685,11 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": null,
-            "source_fields": [
-              "body_id",
-              "borough",
-              "district",
-              "name",
-              "directory_url",
-              "observed_on"
-            ],
+            "source_record_id": "pdf-calendar:bronx-cb-10:2026-09-14:executive-board",
+            "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-12T00:00:00.000Z",
+            "source_href": "https://www.nyc.gov/site/bronxcb10/calendar/calendar.page",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -2807,7 +2795,7 @@
       "display_name": "Bronx Community Board 11",
       "path": "/community-boards/bronx-cb-11/",
       "summary": {
-        "matched_categories": 2,
+        "matched_categories": 3,
         "category_count": 6,
         "generated_at": "2026-09-06",
         "method": "community_board_constellation_v1"
@@ -2954,12 +2942,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": null,
+          "target_id": "meeting:community_board:pdf-calendar:bronx-cb-11:2026-09-24:public-hearing-and-full-board",
           "target_name": "Upcoming & recent proceedings",
-          "count": null,
-          "state": "unknown",
-          "href": null,
-          "canonical_href": null,
+          "count": 3,
+          "state": "matched",
+          "href": "/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Abronx-cb-11%3A2026-09-24%3Apublic-hearing-and-full-board",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Abronx-cb-11%3A2026-09-24%3Apublic-hearing-and-full-board",
           "scope": {
             "board": "bronx-cb-11"
           },
@@ -2972,17 +2960,11 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": null,
-            "source_fields": [
-              "body_id",
-              "borough",
-              "district",
-              "name",
-              "directory_url",
-              "observed_on"
-            ],
+            "source_record_id": "pdf-calendar:bronx-cb-11:2026-09-24:public-hearing-and-full-board",
+            "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-12T00:00:00.000Z",
+            "source_href": "https://www.nyc.gov/site/bronxcb11/meetings/calendar.page",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -4640,12 +4622,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": "meeting:community_board:7h17q97cq2fsthjerram67q67h_R20250904T223000@google.com::2026-06-11",
+          "target_id": "meeting:community_board:5vd2bvo36ek1b06euilka2ghmt_R20251008T223000@google.com::2026-06-17",
           "target_name": "Upcoming & recent proceedings",
-          "count": 11,
+          "count": 10,
           "state": "matched",
-          "href": "/meetings/meeting%3Acommunity_board%3A7h17q97cq2fsthjerram67q67h_R20250904T223000%40google.com%3A%3A2026-06-11",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3A7h17q97cq2fsthjerram67q67h_R20250904T223000%40google.com%3A%3A2026-06-11",
+          "href": "/meetings/meeting%3Acommunity_board%3A5vd2bvo36ek1b06euilka2ghmt_R20251008T223000%40google.com%3A%3A2026-06-17",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3A5vd2bvo36ek1b06euilka2ghmt_R20251008T223000%40google.com%3A%3A2026-06-17",
           "scope": {
             "board": "brooklyn-cb-05"
           },
@@ -4658,7 +4640,7 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": "7h17q97cq2fsthjerram67q67h_R20250904T223000@google.com::2026-06-11",
+            "source_record_id": "5vd2bvo36ek1b06euilka2ghmt_R20251008T223000@google.com::2026-06-17",
             "source_fields": null,
             "join_method": null,
             "source_href": "https://calendar.google.com/calendar/ical/bkcb5cc%40gmail.com/public/basic.ics",
@@ -5196,12 +5178,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb7/event/public-hearing-and-land-use-landmarks-committee-meeting-september-9/",
+          "target_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb7/event/cb7-monthly-board-meeting-september-16-2/",
           "target_name": "Upcoming & recent proceedings",
           "count": 4,
           "state": "matched",
-          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb7%2Fevent%2Fpublic-hearing-and-land-use-landmarks-committee-meeting-september-9%2F",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb7%2Fevent%2Fpublic-hearing-and-land-use-landmarks-committee-meeting-september-9%2F",
+          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb7%2Fevent%2Fcb7-monthly-board-meeting-september-16-2%2F",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb7%2Fevent%2Fcb7-monthly-board-meeting-september-16-2%2F",
           "scope": {
             "board": "brooklyn-cb-07"
           },
@@ -5214,7 +5196,7 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": "https://cbbrooklyn.cityofnewyork.us/cb7/event/public-hearing-and-land-use-landmarks-committee-meeting-september-9/",
+            "source_record_id": "https://cbbrooklyn.cityofnewyork.us/cb7/event/cb7-monthly-board-meeting-september-16-2/",
             "source_fields": null,
             "join_method": null,
             "source_href": "https://cbbrooklyn.cityofnewyork.us/cb7/events/list/",
@@ -6033,12 +6015,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/executive-committee-3/",
+          "target_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/police-and-public-safety-committee-23/",
           "target_name": "Upcoming & recent proceedings",
-          "count": 5,
+          "count": 4,
           "state": "matched",
-          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb10%2Fevent%2Fexecutive-committee-3%2F",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb10%2Fevent%2Fexecutive-committee-3%2F",
+          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb10%2Fevent%2Fpolice-and-public-safety-committee-23%2F",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb10%2Fevent%2Fpolice-and-public-safety-committee-23%2F",
           "scope": {
             "board": "brooklyn-cb-10"
           },
@@ -6051,7 +6033,7 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": "https://cbbrooklyn.cityofnewyork.us/cb10/event/executive-committee-3/",
+            "source_record_id": "https://cbbrooklyn.cityofnewyork.us/cb10/event/police-and-public-safety-committee-23/",
             "source_fields": null,
             "join_method": null,
             "source_href": "https://cbbrooklyn.cityofnewyork.us/cb10/events/list/",
@@ -7145,12 +7127,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+          "target_id": "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
           "target_name": "Upcoming & recent proceedings",
-          "count": 3,
+          "count": 2,
           "state": "matched",
-          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F",
+          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
           "scope": {
             "board": "brooklyn-cb-14"
           },
@@ -7163,7 +7145,7 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+            "source_record_id": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
             "source_fields": null,
             "join_method": null,
             "source_href": "https://cb14brooklyn.com/meetings/",
@@ -7273,7 +7255,7 @@
       "display_name": "Brooklyn Community Board 15",
       "path": "/community-boards/brooklyn-cb-15/",
       "summary": {
-        "matched_categories": 2,
+        "matched_categories": 3,
         "category_count": 6,
         "generated_at": "2026-09-06",
         "method": "community_board_constellation_v1"
@@ -7420,12 +7402,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": null,
+          "target_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2023-03-28:general-board-meeting",
           "target_name": "Upcoming & recent proceedings",
-          "count": null,
-          "state": "unknown",
-          "href": null,
-          "canonical_href": null,
+          "count": 35,
+          "state": "matched",
+          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-03-28%3Ageneral-board-meeting",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-03-28%3Ageneral-board-meeting",
           "scope": {
             "board": "brooklyn-cb-15"
           },
@@ -7438,17 +7420,11 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": null,
-            "source_fields": [
-              "body_id",
-              "borough",
-              "district",
-              "name",
-              "directory_url",
-              "observed_on"
-            ],
+            "source_record_id": "nyc-calendar:brooklyn-cb-15:2023-03-28:general-board-meeting",
+            "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-12T00:00:00.000Z",
+            "source_href": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -8110,7 +8086,7 @@
       "display_name": "Brooklyn Community Board 18",
       "path": "/community-boards/brooklyn-cb-18/",
       "summary": {
-        "matched_categories": 2,
+        "matched_categories": 3,
         "category_count": 6,
         "generated_at": "2026-09-06",
         "method": "community_board_constellation_v1"
@@ -8257,12 +8233,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": "meeting:community_board:nyc-calendar:brooklyn-cb-18:2026-06-17:regular-monthly-board-meeting",
+          "target_id": "meeting:community_board:nyc-calendar:brooklyn-cb-18:2026-09-16:regular-monthly-board-meeting",
           "target_name": "Upcoming & recent proceedings",
-          "count": null,
-          "state": "unknown",
-          "href": null,
-          "canonical_href": null,
+          "count": 1,
+          "state": "matched",
+          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-18%3A2026-09-16%3Aregular-monthly-board-meeting",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-18%3A2026-09-16%3Aregular-monthly-board-meeting",
           "scope": {
             "board": "brooklyn-cb-18"
           },
@@ -8275,9 +8251,10 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": null,
+            "source_record_id": "nyc-calendar:brooklyn-cb-18:2026-09-16:regular-monthly-board-meeting",
             "source_fields": null,
             "join_method": null,
+            "source_href": "https://www.nyc.gov/site/brooklyncb18/meetings/calendar.page",
             "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
@@ -8973,7 +8950,7 @@
       "display_name": "Manhattan Community Board 3",
       "path": "/community-boards/manhattan-cb-03/",
       "summary": {
-        "matched_categories": 2,
+        "matched_categories": 3,
         "category_count": 6,
         "generated_at": "2026-09-06",
         "method": "community_board_constellation_v1"
@@ -9122,10 +9099,10 @@
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-10:health-seniors-human-services-youth-education-human-rights-committee",
           "target_name": "Upcoming & recent proceedings",
-          "count": null,
-          "state": "unknown",
-          "href": null,
-          "canonical_href": null,
+          "count": 9,
+          "state": "matched",
+          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-10%3Ahealth-seniors-human-services-youth-education-human-rights-committee",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-10%3Ahealth-seniors-human-services-youth-education-human-rights-committee",
           "scope": {
             "board": "manhattan-cb-03"
           },
@@ -9138,9 +9115,10 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": null,
+            "source_record_id": "nyc-calendar:manhattan-cb-03:2026-09-10:health-seniors-human-services-youth-education-human-rights-committee",
             "source_fields": null,
             "join_method": null,
+            "source_href": "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page",
             "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
@@ -9937,12 +9915,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": "meeting:community_board:598h8thfkslekvsh851uussla8_R20210114T000000@google.com::2026-06-10",
+          "target_id": "meeting:community_board:358gkog981jpblemipdrmldmcs_R20231016T223000@google.com::2026-06-15",
           "target_name": "Upcoming & recent proceedings",
           "count": 70,
           "state": "matched",
-          "href": "/meetings/meeting%3Acommunity_board%3A598h8thfkslekvsh851uussla8_R20210114T000000%40google.com%3A%3A2026-06-10",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3A598h8thfkslekvsh851uussla8_R20210114T000000%40google.com%3A%3A2026-06-10",
+          "href": "/meetings/meeting%3Acommunity_board%3A358gkog981jpblemipdrmldmcs_R20231016T223000%40google.com%3A%3A2026-06-15",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3A358gkog981jpblemipdrmldmcs_R20231016T223000%40google.com%3A%3A2026-06-15",
           "scope": {
             "board": "manhattan-cb-06"
           },
@@ -9955,7 +9933,7 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": "598h8thfkslekvsh851uussla8_R20210114T000000@google.com::2026-06-10",
+            "source_record_id": "358gkog981jpblemipdrmldmcs_R20231016T223000@google.com::2026-06-15",
             "source_fields": null,
             "join_method": null,
             "source_href": "https://cbsix.org/meetings-calendar/",
@@ -10292,12 +10270,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": "meeting:community_board:7kkqoa1hnf1gqgikrepsamh4qg_R20260609T223000@google.com::2026-06-09",
+          "target_id": "meeting:community_board:1iq086dtevpopcoirspbvhqcip_R20260615T223000@google.com::2026-06-15",
           "target_name": "Upcoming & recent proceedings",
-          "count": 23,
+          "count": 22,
           "state": "matched",
-          "href": "/meetings/meeting%3Acommunity_board%3A7kkqoa1hnf1gqgikrepsamh4qg_R20260609T223000%40google.com%3A%3A2026-06-09",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3A7kkqoa1hnf1gqgikrepsamh4qg_R20260609T223000%40google.com%3A%3A2026-06-09",
+          "href": "/meetings/meeting%3Acommunity_board%3A1iq086dtevpopcoirspbvhqcip_R20260615T223000%40google.com%3A%3A2026-06-15",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3A1iq086dtevpopcoirspbvhqcip_R20260615T223000%40google.com%3A%3A2026-06-15",
           "scope": {
             "board": "manhattan-cb-07"
           },
@@ -10310,7 +10288,7 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": "7kkqoa1hnf1gqgikrepsamh4qg_R20260609T223000@google.com::2026-06-09",
+            "source_record_id": "1iq086dtevpopcoirspbvhqcip_R20260615T223000@google.com::2026-06-15",
             "source_fields": null,
             "join_method": null,
             "source_href": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
@@ -11404,12 +11382,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": "meeting:community_board:rec5PnNcHNtj9SIIr",
+          "target_id": "meeting:community_board:recD1pmn0v5IY9mpU",
           "target_name": "Upcoming & recent proceedings",
-          "count": 135,
+          "count": 132,
           "state": "matched",
-          "href": "/meetings/meeting%3Acommunity_board%3Arec5PnNcHNtj9SIIr",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Arec5PnNcHNtj9SIIr",
+          "href": "/meetings/meeting%3Acommunity_board%3ArecD1pmn0v5IY9mpU",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3ArecD1pmn0v5IY9mpU",
           "scope": {
             "board": "manhattan-cb-11"
           },
@@ -11422,7 +11400,7 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": "rec5PnNcHNtj9SIIr",
+            "source_record_id": "recD1pmn0v5IY9mpU",
             "source_fields": null,
             "join_method": null,
             "source_href": "https://www.cb11m.org/calendar/",
@@ -11807,7 +11785,7 @@
       "display_name": "Queens Community Board 1",
       "path": "/community-boards/queens-cb-01/",
       "summary": {
-        "matched_categories": 2,
+        "matched_categories": 3,
         "category_count": 6,
         "generated_at": "2026-09-06",
         "method": "community_board_constellation_v1"
@@ -11956,10 +11934,10 @@
           "target_kind": "meeting",
           "target_id": "meeting:community_board:nyc-calendar:queens-cb-01:2026-09-22:full-board-public-hearing-meetings",
           "target_name": "Upcoming & recent proceedings",
-          "count": null,
-          "state": "unknown",
-          "href": null,
-          "canonical_href": null,
+          "count": 1,
+          "state": "matched",
+          "href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Aqueens-cb-01%3A2026-09-22%3Afull-board-public-hearing-meetings",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Aqueens-cb-01%3A2026-09-22%3Afull-board-public-hearing-meetings",
           "scope": {
             "board": "queens-cb-01"
           },
@@ -11972,9 +11950,10 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": null,
+            "source_record_id": "nyc-calendar:queens-cb-01:2026-09-22:full-board-public-hearing-meetings",
             "source_fields": null,
             "join_method": null,
+            "source_href": "https://www.nyc.gov/site/queenscb1/calendar/calendar.page",
             "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
@@ -12228,12 +12207,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": "meeting:community_board:74s6ehltphp52khfgu6kdo3ame_R20240611T220000@google.com::2026-06-09",
+          "target_id": "meeting:community_board:oglh37k1ij8sqmq9m2jgqnm3ni@google.com::2026-06-17",
           "target_name": "Upcoming & recent proceedings",
-          "count": 32,
+          "count": 30,
           "state": "matched",
-          "href": "/meetings/meeting%3Acommunity_board%3A74s6ehltphp52khfgu6kdo3ame_R20240611T220000%40google.com%3A%3A2026-06-09",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3A74s6ehltphp52khfgu6kdo3ame_R20240611T220000%40google.com%3A%3A2026-06-09",
+          "href": "/meetings/meeting%3Acommunity_board%3Aoglh37k1ij8sqmq9m2jgqnm3ni%40google.com%3A%3A2026-06-17",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Aoglh37k1ij8sqmq9m2jgqnm3ni%40google.com%3A%3A2026-06-17",
           "scope": {
             "board": "queens-cb-02"
           },
@@ -12246,7 +12225,7 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": "74s6ehltphp52khfgu6kdo3ame_R20240611T220000@google.com::2026-06-09",
+            "source_record_id": "oglh37k1ij8sqmq9m2jgqnm3ni@google.com::2026-06-17",
             "source_fields": null,
             "join_method": null,
             "source_href": "https://www.nyc.gov/site/queenscb2/calendar/calendar.page",
@@ -13348,7 +13327,7 @@
           "target_kind": "meeting",
           "target_id": "meeting:community_board:4qiip6rl4cnd8ttrnk27p6fr2f@google.com::2026-06-16",
           "target_name": "Upcoming & recent proceedings",
-          "count": 16,
+          "count": 20,
           "state": "matched",
           "href": "/meetings/meeting%3Acommunity_board%3A4qiip6rl4cnd8ttrnk27p6fr2f%40google.com%3A%3A2026-06-16",
           "canonical_href": "/meetings/meeting%3Acommunity_board%3A4qiip6rl4cnd8ttrnk27p6fr2f%40google.com%3A%3A2026-06-16",
@@ -16035,7 +16014,7 @@
       "display_name": "Staten Island Community Board 2",
       "path": "/community-boards/staten-island-cb-02/",
       "summary": {
-        "matched_categories": 2,
+        "matched_categories": 3,
         "category_count": 6,
         "generated_at": "2026-09-06",
         "method": "community_board_constellation_v1"
@@ -16182,12 +16161,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": null,
+          "target_id": "meeting:community_board:pdf-calendar:staten-island-cb-02:2026-09-15:full-board",
           "target_name": "Upcoming & recent proceedings",
-          "count": null,
-          "state": "unknown",
-          "href": null,
-          "canonical_href": null,
+          "count": 1,
+          "state": "matched",
+          "href": "/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Astaten-island-cb-02%3A2026-09-15%3Afull-board",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Astaten-island-cb-02%3A2026-09-15%3Afull-board",
           "scope": {
             "board": "staten-island-cb-02"
           },
@@ -16200,17 +16179,11 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": null,
-            "source_fields": [
-              "body_id",
-              "borough",
-              "district",
-              "name",
-              "directory_url",
-              "observed_on"
-            ],
+            "source_record_id": "pdf-calendar:staten-island-cb-02:2026-09-15:full-board",
+            "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-12T00:00:00.000Z",
+            "source_href": "https://www.nyc.gov/site/statenislandcb2/meetings/full-board-agendas.page",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },

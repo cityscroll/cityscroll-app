@@ -1,7 +1,12 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { joinCommunityBoardSourceRecord, joinCommunityBoardSourceRecords } from "../site/community_board_source_join.mjs";
+import {
+  joinCommunityBoardSourceRecord,
+  joinCommunityBoardSourceRecords,
+  qualifyCommunityBoardNativeCalendarObservation,
+  promoteCommunityBoardHostsMeetingEdge,
+} from "../site/community_board_source_join.mjs";
 import { buildCommunityBoardInstitutionEdges } from "../site/community_board_source_join.mjs";
 import { readFileSync } from "node:fs";
 
@@ -125,4 +130,70 @@ test("committee evidence cannot bypass a failed board source join", () => {
   assert.equal(edges[0].status, "held");
   assert.equal(edges[0].href, null);
   assert.equal(edges[0].join.method, "exact_board_date_publisher_identifier");
+});
+
+test("official calendar observation publishes a native meeting without changing the held cross-source join", () => {
+  const record = {
+    source_system: "community_board",
+    source_role: "upcoming_meetings",
+    record_kind: "event",
+    board_id: "brooklyn-cb-15",
+    source_record_id: "nyc-calendar:brooklyn-cb-15:2026-09-29:general-board-meeting-in-person",
+    record_id: "nyc-calendar:brooklyn-cb-15:2026-09-29:general-board-meeting-in-person",
+    source_url: "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+    date: "2026-09-29",
+    event_date: "2026-09-29",
+    start_at: "2026-09-29T19:00:00-04:00",
+    title: "General Board Meeting (In Person)",
+    publisher_identifier: null,
+    publisher_identifiers: [],
+    observed_receipt: { status: "ok", observed_at: "2026-09-12T12:00:00Z" },
+    source_entry_evidence: {
+      locator: { type: "calendar_date_title", date: "2026-09-29", title: "General Board Meeting (In Person)" },
+      excerpt: "Tuesday, September 29, 2026 General Board Meeting (In Person) 7:00pm Kingsborough Community College",
+    },
+  };
+  const descriptor = {
+    registered: true,
+    board_id: "brooklyn-cb-15",
+    source_role: "upcoming_meetings",
+    adapter: "nyc_official_calendar_v1",
+    url: record.source_url,
+  };
+  const qualification = qualifyCommunityBoardNativeCalendarObservation(record, descriptor, {
+    asOf: "2026-09-12T20:00:00Z",
+  });
+  assert.equal(qualification.qualified, true);
+  const edge = promoteCommunityBoardHostsMeetingEdge({ meeting: record, source_record: record }, {
+    sourceDescriptor: descriptor,
+    asOf: "2026-09-12T20:00:00Z",
+  });
+  assert.equal(edge.promoted, true);
+  assert.equal(edge.publication_basis, "official_calendar_observation");
+  assert.equal(edge.join.reason, "publisher_identifier_missing");
+  assert.equal(edge.join.matched, false);
+  assert.equal(edge.source_entry_evidence.excerpt.startsWith("Tuesday"), true);
+  assert.equal(edge.provenance.source_entry_evidence.excerpt.startsWith("Tuesday"), true);
+});
+
+test("native calendar qualification rejects unregistered, stale, ambiguous, and evidence-poor observations", () => {
+  const base = {
+    source_role: "upcoming_meetings", record_kind: "event", board_id: "brooklyn-cb-15",
+    record_id: "calendar-event", source_record_id: "calendar-event",
+    source_url: "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+    date: "2026-09-29", event_date: "2026-09-29", start_at: "2026-09-29T19:00:00-04:00", title: "General Board Meeting",
+    publisher_identifier: null, publisher_identifiers: [],
+    observed_receipt: { status: "ok", observed_at: "2026-09-12T12:00:00Z" },
+    source_entry_evidence: { locator: "p[1]", excerpt: "September 29, 2026 General Board Meeting 7:00pm" },
+  };
+  const descriptor = { registered: true, board_id: "brooklyn-cb-15", source_role: "upcoming_meetings", adapter: "nyc_official_calendar_v1", url: base.source_url };
+  for (const [record, options, reason] of [
+    [{ ...base }, { ...descriptor, registered: false }, "source_descriptor_unregistered"],
+    [{ ...base, observed_receipt: { status: "ok", observed_at: "2026-01-01T00:00:00Z" } }, descriptor, "source_stale"],
+    [{ ...base, ambiguous: true }, descriptor, "ambiguous_source_observation"],
+    [{ ...base, source_entry_evidence: null }, descriptor, "retained_entry_evidence_missing"],
+    [{ ...base, title: "September 2026" }, descriptor, "event_identity_incomplete"],
+  ]) {
+    assert.equal(qualifyCommunityBoardNativeCalendarObservation(record, options, { asOf: "2026-09-12T20:00:00Z" }).reason, reason);
+  }
 });

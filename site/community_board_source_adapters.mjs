@@ -298,6 +298,7 @@ function record(source, fields = {}, receipt = {}) {
     publisher_matter_ids: publisherMatterIds,
     record_url: clean(fields.record_url || fields.document_url || fields.video_url || fields.url, 2_000) || null,
     observed_receipt: normalizedReceipt,
+    ...(fields.source_entry_evidence ? { source_entry_evidence: fields.source_entry_evidence } : {}),
   };
   const endAt = clean(fields.end_at, 80);
   const venueName = clean(fields.venue_name || fields.location_name, 300);
@@ -731,6 +732,10 @@ export function parseNycOfficialCalendarSource(html, source = {}, options = {}) 
       participation: { ...participation, emails: [], phones: [], source_url: sourceUrl },
       format: "html",
       record_url: sourceUrl,
+      source_entry_evidence: {
+        locator: { type: "calendar_date_title", date, title: block.title },
+        excerpt: clean(block.logistics, 1000),
+      },
     }, receipt));
   }
   const seen = new Set();

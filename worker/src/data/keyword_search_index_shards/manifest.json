@@ -6,8 +6,8 @@
   "representation": "family-sharded-compressed",
   "shard_schema": "cityscroll.keyword_search_index_shard.v1",
   "logical_index": {
-    "sha256": "ebdea18fd1a1d21e9ebd616f6e7fa2c62a9f0c6f6440508d5c4aef915c183eaf",
-    "bytes": 72574630,
+    "sha256": "06d47dcb2ac50c3cf6c5b605e7695c8cd238315aed69f6a3aafd29b6db6a1b68",
+    "bytes": 72574870,
     "family_count": 11,
     "document_count": 21905
   },
@@ -107,13 +107,13 @@
       "path": "community_boards.json.br",
       "gzip_path": "community_boards.json.gz",
       "document_count": 59,
-      "uncompressed_bytes": 78927,
-      "gzip_bytes": 3539,
-      "brotli_bytes": 2624,
-      "sha256": "906a1b845c448c5aee84ca039c5145faca8e2fd31733e5d5834067bb36749bcc",
-      "gzip_sha256": "d1d263ea0172b2097760d5743963a2e9d928c644e16bcc8658828a0a628de50a",
-      "brotli_sha256": "0efcdefd5eafd07255bdd34679f22b88dfe1c5dec4fc7cf43fe6d4531cd38db1",
-      "receipt_sha256": "69ccc0b4c3428dc2efb83282482eff425ac474c11de4328f1250db4baf93b128"
+      "uncompressed_bytes": 79167,
+      "gzip_bytes": 3556,
+      "brotli_bytes": 2630,
+      "sha256": "5c6a22ae4dcddacc05804d3d0aa5bc647f22a6b3b183e95ff7ed15a1056ea05b",
+      "gzip_sha256": "353e61f2da653241c562e3269372aa6e5ae5f45dc909f7ec83d03ccaf9f703d1",
+      "brotli_sha256": "9638d8e73c6f565a6509742a4364aa50b77ed641227d87f43faaada50b9a16b8",
+      "receipt_sha256": "66784efbc25a60f85d7fd4cd93c8feb7b300cef24ff2e26441a7d00eb8c10d98"
     },
     {
       "family": "land",
@@ -134,12 +134,12 @@
       "gzip_path": "meetings.json.gz",
       "document_count": 570,
       "uncompressed_bytes": 1190921,
-      "gzip_bytes": 84594,
-      "brotli_bytes": 58574,
-      "sha256": "a4e20ef7a77a84ee9fc66d4961e1267d7686e98ec612fb1859fc557399c28222",
-      "gzip_sha256": "1f67381efb5ff035cf2a9bc1262110bcddc6cda55f4c6fbef8d5497ef4a86f9b",
-      "brotli_sha256": "2f621fd96113070179e56f08649d282bb970f6dee833f07622bb6859bbe760b9",
-      "receipt_sha256": "8481355de9a821f67a8bd48a173179e926b6430aa60fe914e80f4558536e00bd"
+      "gzip_bytes": 84596,
+      "brotli_bytes": 58581,
+      "sha256": "d57966604fdd6656968db8e406110a200360113a2bee7a80e77df72e990e860c",
+      "gzip_sha256": "af03ef6f4765ad9fd5026b2f0f7ed082dec54c5471a61fcd69973f750df5acbe",
+      "brotli_sha256": "9e79f99b437164e6f66ab1d18dcba4d00891f17595659780a44a9331726b6749",
+      "receipt_sha256": "824336a30edf4430a7bb839e57e790d6601635cb6c9d83abc68dd32c651bb9ea"
     },
     {
       "family": "exams",

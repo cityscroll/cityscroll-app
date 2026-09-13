@@ -24,6 +24,10 @@ import { buildNearYouViewModel } from "../site/near_you_view.mjs";
 import { buildCommunityBoardConstellationMaterialization } from "../tools/build_community_board_constellation_documents.mjs";
 import { readCommunityBoardMeetingIndex } from "../tools/lib/community_board_meeting_index_io.mjs";
 
+function edgePublicationBasis(row) {
+  return (row.institution_edges || []).find((edge) => edge?.relation === "hosts_meeting")?.publication_basis || null;
+}
+
 const shared = JSON.parse(fs.readFileSync(new URL(
   "../site/data/shared_meeting_read_model.json",
   import.meta.url,
@@ -217,9 +221,8 @@ test("board institution pages and the Meetings lens publish the same canonical m
 
   for (const [boardId, rows] of Object.entries(meetingIndex.by_board)) {
     const expectedIds = rows.map((row) => row.meeting_id).sort();
-    // A publisher identifier is necessary for the board-to-meeting edge, not
-    // sufficient: the join also refuses an observation older than its retention
-    // window, so the accepted edge itself is the expectation.
+    // A publisher identifier is not required for the separately qualified
+    // official-calendar observation basis; the accepted edge is the expectation.
     const promotedRows = rows.filter((row) => (row.institution_edges || [])
       .filter((edge) => edge?.relation === "hosts_meeting")
       .some(communityBoardMeetingEdgeAccepted));
@@ -240,13 +243,13 @@ test("board institution pages and the Meetings lens publish the same canonical m
         sourceRoleState: "indexed",
       });
       const withinRetention = sourceRecordStatus(row, { asOf: meetingIndex.generated_at }).state === "observed";
-      const accepted = Boolean(row.publisher_identifier) && withinRetention;
+      const accepted = (Boolean(row.publisher_identifier) || edgePublicationBasis(row) === "official_calendar_observation") && withinRetention;
       assert.equal(communityBoardMeetingEdgeAccepted(edge), accepted, `${row.meeting_id} edge publication`);
       assert.equal(edge.href, accepted ? `/meetings/${encodeURIComponent(row.meeting_id)}` : null);
       assert.equal(edge.provenance?.observed_receipt?.status, "ok");
-      if (accepted) {
+      if (accepted && edgePublicationBasis(row) !== "official_calendar_observation") {
         assert.deepEqual(edge.join?.evidence, ["exact_board_identity", "exact_date", "publisher_identifier"]);
-      } else {
+      } else if (!accepted) {
         assert.equal(edge.reason, row.publisher_identifier ? "source_stale" : "publisher_identifier_missing");
       }
     }
