@@ -53,7 +53,7 @@
   ],
   "evidence_vintage": {
     "oldest": "2026-05-26T00:00:00.000Z",
-    "newest": "2026-09-13T02:35:18.221Z"
+    "newest": "2026-09-13T21:44:56.142Z"
   },
   "domains": [
     {
@@ -202,7 +202,7 @@
           "source_name": "Community board and borough president minutes",
           "state": "measured",
           "value": 450,
-          "evidence_vintage": "2026-09-13T02:35:18.221Z",
+          "evidence_vintage": "2026-09-13T21:44:56.142Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single"
         },
