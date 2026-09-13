@@ -322,6 +322,8 @@ export function communityBoardFullBoardMeetingAnswer({ readModel = null, query =
     .filter((row) => classifyCommunityBoardConveningBody(row) === "full_board")
     .filter((row) => dayOf(row.event_date))
     .sort((left, right) => String(right.event_date).localeCompare(String(left.event_date)));
+  const boardRows = readModel.rows
+    .filter((row) => row.source_system === "community_board" && row.board_id === board.board_id);
   const held = asOfDay
     ? boardMeetings.find((row) => dayOf(row.event_date) <= asOfDay)
     : boardMeetings[0];
@@ -353,9 +355,13 @@ export function communityBoardFullBoardMeetingAnswer({ readModel = null, query =
     status: "no_full_board_meeting_recorded",
     reason: board.meetings?.state === "checked-empty"
       ? "meeting_source_read_and_publishes_no_meetings"
-      : "meeting_source_read_without_a_full_board_meeting",
+      : boardRows.some((row) => classifyCommunityBoardConveningBody(row) === "unknown")
+        ? "meeting_source_has_unclassified_titles"
+        : "meeting_source_read_without_a_full_board_meeting",
     statement: board.meetings?.state === "checked-empty"
       ? `${board.board_name}'s meeting source was read on ${dayOf(board.meetings.observed_at)} and publishes no meetings, so when it last met in full session is not recorded here.`
+      : boardRows.some((row) => classifyCommunityBoardConveningBody(row) === "unknown")
+        ? `${board.board_name}'s meeting source was read on ${dayOf(board.meetings?.observed_at)} but its published meeting title does not identify a full board session, so when the board last met in full session is not recorded here.`
       : `${board.board_name}'s meeting source was read on ${dayOf(board.meetings?.observed_at)} and the meetings it publishes are committee and task-force meetings, not full board meetings, so when the board last met in full session is not recorded here.`,
   });
 }
