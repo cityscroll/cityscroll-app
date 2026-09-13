@@ -1,0 +1,87 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "capture_mode": "local_node_rendered_output",
+  "repository_revision": "aacd033876279c322484792e25fa27a35c549803",
+  "grounded_at": "aacd033876279c322484792e25fa27a35c549803",
+  "data_vintage": "2026-09-10T08:36:51.430Z",
+  "note": "Deterministic Near You view-model and Worker-route renders. No image binaries are committed; file is null and the digest identifies the rendered output.",
+  "captures": [
+    {
+      "name": "populated-mobile",
+      "route": "/near-you?v=0&lens=meetings&boro=Queens",
+      "viewport": { "width": 390, "height": 844 },
+      "data_vintage": "2026-09-10T08:36:51.430Z",
+      "assertion": "A successful populated result renders matching records and numeric area counts.",
+      "sha256": "028b3f78cc2338a75bf0ab038fa944b65e7b0ae9fd7b20b32014e380e42a2c1d",
+      "file": null
+    },
+    {
+      "name": "populated-desktop",
+      "route": "/near-you?v=0&lens=meetings&boro=Queens",
+      "viewport": { "width": 1440, "height": 900 },
+      "data_vintage": "2026-09-10T08:36:51.430Z",
+      "assertion": "The populated state preserves the same scope and counts at desktop width.",
+      "sha256": "028b3f78cc2338a75bf0ab038fa944b65e7b0ae9fd7b20b32014e380e42a2c1d",
+      "file": null
+    },
+    {
+      "name": "successful-empty-mobile",
+      "route": "/near-you?v=0&lens=meetings&boro=Queens&agency=No%20matching%20agency",
+      "viewport": { "width": 390, "height": 844 },
+      "data_vintage": "2026-09-10T08:36:51.430Z",
+      "assertion": "A successful empty result renders a known zero, rather than an unavailable state.",
+      "sha256": "7a8f7f3aadd788a9620203607a7eb6ac5a79c9ccd44933e854b186b7a4e900ae",
+      "file": null
+    },
+    {
+      "name": "unsupported-mobile",
+      "route": "/near-you?v=0&lens=people&boro=Queens",
+      "viewport": { "width": 390, "height": 844 },
+      "data_vintage": "2026-09-10T08:36:51.430Z",
+      "assertion": "Unsupported mapping is disclosed explicitly, emits no zero map counts, and retains a native records link usable by touch and keyboard.",
+      "sha256": "52f43409e77682a7032d8ac135e711031d84d7e587d834bb550da8f1fcd06ee1",
+      "file": null
+    },
+    {
+      "name": "unsupported-desktop",
+      "route": "/near-you?v=0&lens=people&boro=Queens",
+      "viewport": { "width": 1440, "height": 900 },
+      "data_vintage": "2026-09-10T08:36:51.430Z",
+      "assertion": "Unsupported mapping remains visually distinct from civic inactivity at desktop width.",
+      "sha256": "52f43409e77682a7032d8ac135e711031d84d7e587d834bb550da8f1fcd06ee1",
+      "file": null
+    },
+    {
+      "name": "pending-mobile",
+      "route": "/near-you?v=0&lens=meetings&boro=Queens",
+      "viewport": { "width": 390, "height": 844 },
+      "data_vintage": "unavailable",
+      "assertion": "Pending data renders a loading status without placeholder zero counts.",
+      "sha256": "0fb83c928012aeece062d6535365c65129733e715c1870d66fd230f1b60177e6",
+      "file": null
+    },
+    {
+      "name": "failed-mobile",
+      "route": "/near-you?v=0&lens=meetings&boro=Queens&agency=Transportation",
+      "viewport": { "width": 390, "height": 844 },
+      "data_vintage": "unavailable",
+      "assertion": "Failed retrieval renders an alert and a scope-preserving retry link usable without JavaScript.",
+      "sha256": "89b988412076f83f4125352f8f1666e80067dde5be7f26e2e696036b4f101f48",
+      "file": null
+    },
+    {
+      "name": "served-route-failure",
+      "route": "/near-you?v=0&lens=meetings&boro=Queens&agency=Transportation",
+      "viewport": { "width": 390, "height": 844 },
+      "data_vintage": "unavailable",
+      "assertion": "The Worker-served 503 route preserves the requested scope and offers recovery.",
+      "sha256": "38bf249925ed020226cc6fdabdcd216d809f3de6ccafaea2e99eff9cce984932",
+      "file": null
+    }
+  ],
+  "interaction_checks": {
+    "desktop": "1440x900 rendered output checked for populated, empty, unsupported, pending, and failed states.",
+    "touch": "390x844 rendered output keeps recovery and records actions as native anchors.",
+    "keyboard": "Recovery and unsupported-state paths are native anchors; existing map drill-throughs remain keyboard-native links and Enter/Space handlers."
+  }
+}
