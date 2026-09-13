@@ -790,6 +790,7 @@
 /site/text_clean.mjs
 /site/title_code_family.mjs
 /site/topic_normalization.mjs
+/site/tracked_issue_location.mjs
 /site/traversal.css
 /site/traversal_path.mjs
 /site/ulurp_recommendation_panel.mjs
