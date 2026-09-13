@@ -138,17 +138,32 @@ jobs:
         if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true'
         run: node tools/d1_delta_plan.mjs snapshot --out .d1-publication-state/current-snapshot.json
       - name: Read prior published D1 snapshot
+        id: d1-prior-snapshot
         if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           set -euo pipefail
           snapshot_key=$(node tools/d1_production_delta.mjs prior-snapshot-key --state .d1-publication-state/published.json)
-          npx wrangler@4.126.0 kv key get "$snapshot_key" \
-            --binding ALERT_STATE --remote --text --config worker/wrangler.toml \
-            > .d1-publication-state/prior-snapshot.json
+          snapshot_error="$RUNNER_TEMP/d1-prior-snapshot-error.txt"
+          if npx wrangler@4.126.0 kv key get "$snapshot_key" \
+              --binding ALERT_STATE --remote --text --config worker/wrangler.toml \
+              > .d1-publication-state/prior-snapshot.json 2> "$snapshot_error"; then
+            echo "status=available" >> "$GITHUB_OUTPUT"
+          elif node tools/d1_production_delta.mjs classify-prior-snapshot-failure \
+              --state .d1-publication-state/published.json \
+              --snapshot-key "$snapshot_key" \
+              --error-file "$snapshot_error" \
+              --out .artifacts/d1-publication-recovery.json; then
+            rm -f .d1-publication-state/prior-snapshot.json
+            echo "status=missing" >> "$GITHUB_OUTPUT"
+            echo "Published D1 state references a missing snapshot; incremental publication is withheld and explicit rebuild recovery is recorded."
+          else
+            cat "$snapshot_error" >&2
+            exit 1
+          fi
       - name: Plan D1 publication delta
-        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true'
+        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-prior-snapshot.outputs.status == 'available'
         run: |
           node tools/d1_delta_plan.mjs plan \
             --prior .d1-publication-state/prior-snapshot.json \
@@ -156,7 +171,7 @@ jobs:
             --out .artifacts/d1-delta-plan.json
       - name: Claim D1 publication generation
         id: d1-generation-claim
-        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true'
+        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-prior-snapshot.outputs.status == 'available'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           D1_FENCE_HOLDER: ${{ github.workflow }}:${{ github.run_id }}:${{ github.run_attempt }}
@@ -178,7 +193,7 @@ jobs:
       # are idempotent; skipping this left passport_* tables missing in production and turned
       # every PASSPort lifecycle lookup into lookup_status=error.
       - name: Apply D1 migrations
-        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-generation-claim.outputs.claimed == 'true'
+        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-prior-snapshot.outputs.status == 'available' && steps.d1-generation-claim.outputs.claimed == 'true'
         uses: cloudflare/wrangler-action@v3.14.1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -190,7 +205,7 @@ jobs:
       - name: Verify keyword index source projection and shards
         run: node tools/build_keyword_search_index.mjs --check
       - name: Verify bounded D1 publication plan
-        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-generation-claim.outputs.claimed == 'true'
+        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-prior-snapshot.outputs.status == 'available' && steps.d1-generation-claim.outputs.claimed == 'true'
         run: |
           node tools/d1_bounded_publisher.mjs dry-run \
             --plan .artifacts/d1-delta-plan.json \
@@ -198,7 +213,7 @@ jobs:
             --out .artifacts/d1-bounded-publish-dry-run.json
       - name: Publish and verify bounded D1 delta
         id: d1-publication-sql
-        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-generation-claim.outputs.claimed == 'true'
+        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-prior-snapshot.outputs.status == 'available' && steps.d1-generation-claim.outputs.claimed == 'true'
         working-directory: worker
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -233,7 +248,7 @@ jobs:
           trap - ERR
       - name: Record published D1 fingerprint
         id: d1-record-published
-        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-generation-claim.outputs.claimed == 'true' && steps.d1-publication-sql.outputs.sql-started == 'true'
+        if: steps.d1-publication-gate.outputs.should-publish == 'true' && steps.d1-publication-gate.outputs.incremental-enabled == 'true' && steps.d1-prior-snapshot.outputs.status == 'available' && steps.d1-generation-claim.outputs.claimed == 'true' && steps.d1-publication-sql.outputs.sql-started == 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           FORCE_D1_PUBLICATION: ${{ github.event_name == 'workflow_dispatch' && inputs.force_d1_publication || false }}
@@ -282,6 +297,7 @@ jobs:
           D1_GENERATION: ${{ steps.d1-generation-claim.outputs.generation }}
           SHOULD_PUBLISH: ${{ steps.d1-publication-gate.outputs.should-publish }}
           INCREMENTAL_ENABLED: ${{ steps.d1-publication-gate.outputs.incremental-enabled }}
+          PRIOR_SNAPSHOT_STATUS: ${{ steps.d1-prior-snapshot.outputs.status }}
           CLAIMED: ${{ steps.d1-generation-claim.outputs.claimed }}
           CLAIM_OUTCOME: ${{ steps.d1-generation-claim.outcome }}
           SQL_OUTCOME: ${{ steps.d1-publication-sql.outcome }}
@@ -292,6 +308,9 @@ jobs:
           if [ "$SHOULD_PUBLISH" != "true" ]; then
             outcome=skipped
             reason="fingerprint-unchanged"
+          elif [ "$PRIOR_SNAPSHOT_STATUS" = "missing" ]; then
+            outcome=failed_permanent
+            reason="published D1 state references a missing snapshot; incremental publication withheld; explicit rebuild recovery is required"
           elif [ "$INCREMENTAL_ENABLED" != "true" ]; then
             outcome=skipped
             reason="incremental-publication-disabled"
@@ -432,6 +451,8 @@ jobs:
             .artifacts/d1-publication-receipt.json
             .artifacts/d1-publication-receipt-final.json
             .artifacts/d1-publication-receipts.jsonl
+            .artifacts/d1-publication-recovery.json
+            .d1-publication-state/current-snapshot.json
             .artifacts/d1-delta-plan.json
             .artifacts/d1-bounded-publish-dry-run.json
             .artifacts/d1-generation-claim.json

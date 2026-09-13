@@ -41,6 +41,31 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 export const D1_PRODUCTION_DELTA_RESULT_SCHEMA = "cityscroll.d1-production-delta-result.v1";
 export const D1_PUBLICATION_SNAPSHOT_KEY_PREFIX = "d1-publication:snapshot:v2:";
+export const D1_PUBLICATION_RECOVERY_SCHEMA = "cityscroll.d1-publication-recovery.v1";
+
+/**
+ * Classify only a missing generation-qualified KV object as bootstrap recovery.
+ * An auth, transport, or other Wrangler failure must continue to fail closed.
+ */
+export function buildMissingPriorSnapshotRecovery({ published_state: state, snapshot_key: snapshotKey, kv_error: errorText } = {}) {
+  if (!/\b404\s+Not Found\b/i.test(String(errorText || ""))) return null;
+  if (state?.schema !== D1_GENERATION_FENCE_SCHEMA || state.status !== "published" || !Number.isInteger(state.generation) || state.generation < 1) {
+    fail("missing prior snapshot recovery requires a published generation fence state");
+  }
+  if (typeof snapshotKey !== "string" || snapshotKey !== `${D1_PUBLICATION_SNAPSHOT_KEY_PREFIX}${state.generation}`) {
+    fail("missing prior snapshot recovery key does not match the published generation");
+  }
+  return {
+    schema: D1_PUBLICATION_RECOVERY_SCHEMA,
+    status: "bootstrap_required",
+    action: "explicit_rebuild",
+    reason: "published_snapshot_missing",
+    published_generation: state.generation,
+    snapshot_key: snapshotKey,
+    baseline: { status: "unavailable", source: "missing_kv_snapshot" },
+    d1_writes: { commands: null, rows: null },
+  };
+}
 
 export function applicationCheckpointId(fingerprint, batch) {
   return `${fingerprint}:${batch.model_id}:${batch.partition}:${batch.ordinal}`;
@@ -276,6 +301,17 @@ async function main(argv) {
       fail("published generation has no delta snapshot baseline; use the explicit rebuild workflow");
     }
     process.stdout.write(`${D1_PUBLICATION_SNAPSHOT_KEY_PREFIX}${state.generation}\n`);
+    return 0;
+  }
+  if (args.command === "classify-prior-snapshot-failure") {
+    const recovery = buildMissingPriorSnapshotRecovery({
+      published_state: JSON.parse(readFileSync(required(args, "state"), "utf8")),
+      snapshot_key: required(args, "snapshot-key"),
+      kv_error: readFileSync(required(args, "error-file"), "utf8"),
+    });
+    if (!recovery) return 1;
+    writeJson(required(args, "out"), recovery);
+    process.stdout.write(`${JSON.stringify(recovery)}\n`);
     return 0;
   }
   if (args.command !== "execute") {

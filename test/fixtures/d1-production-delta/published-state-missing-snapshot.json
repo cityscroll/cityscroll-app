@@ -1,0 +1,14 @@
+{
+  "published_state": {
+    "schema": "cityscroll.d1-publication-generation-fence.v1",
+    "generation": 20,
+    "status": "published",
+    "holder": "fixture-holder",
+    "fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "watermarks": {},
+    "lease_until": null,
+    "accepted_at": "2026-09-12T12:00:00.000Z"
+  },
+  "snapshot_key": "d1-publication:snapshot:v2:20",
+  "kv_error": "Error: A request to the Cloudflare API returned 404 Not Found"
+}
