@@ -1,0 +1,91 @@
+{
+  "schema": "cityscroll.procurement_detail_parity_fixture.v1",
+  "metadata": {
+    "origin_commit": "26d11a492ad29d60fecfe7d4136005af6fcb6791",
+    "origin_paths": [
+      "site/data/shared_procurement_read_model/shard-002.json",
+      "site/data/analytics_registered_contracts/shard-001.json"
+    ]
+  },
+  "object": {
+    "object_type": "procurement",
+    "schema": "cityscroll.procurement_object.v1",
+    "procurement_id": "procurement:contract:CT107120258801626",
+    "canonical_id": "procurement:contract:CT107120258801626",
+    "source_observation_refs": [
+      "city_record:20240829105",
+      "passport_public_contracts:contract:07124E0044001:5050251"
+    ],
+    "identity_keys": {
+      "contract_ids": ["CT107120258801626"],
+      "epins": ["07124E0044001"]
+    },
+    "identity_edges": [{
+      "status": "accepted",
+      "source_observation_ref": "passport_public_contracts:contract:07124E0044001:5050251",
+      "basis": "exact_contract_id",
+      "matched_value": "CT107120258801626"
+    }]
+  },
+  "observations": [
+    {
+      "source_observation_ref": "city_record:20240829105",
+      "source_system": "city_record",
+      "source_system_id": "20240829105",
+      "snapshot": {
+        "request_id": "20240829105",
+        "start_date": "2024-09-05",
+        "agency_name": "Homeless Services",
+        "type_of_notice_description": "Award",
+        "short_title": "City Sanctuary Facility for Families with Children, Comfort Inn Sheepsheads Bay",
+        "pin": "07124E0044001",
+        "contract_amount": "10869881",
+        "vendor_name": "BHRAGS HOME CARE CORP"
+      }
+    },
+    {
+      "source_observation_ref": "passport_public_contracts:contract:07124E0044001:5050251",
+      "source_system": "passport_public_contracts",
+      "source_system_id": "contract:07124E0044001:5050251",
+      "snapshot": {
+        "ctr_id": "5050251",
+        "epin": "07124E0044001",
+        "contract_id": "CT1-071-20258801626",
+        "agency": "DEPARTMENT OF HOMELESS SERVICES",
+        "vendor": "BHRAGS HOME CARE CORP",
+        "status": "Registered",
+        "award_amount": 10869881,
+        "start_date": "10/11/2023",
+        "end_date": "06/30/2026",
+        "registration_date": "08/28/2024",
+        "title": "Bhrags Services at FWC Emmons K 2023",
+        "procurement_method": "Emergency",
+        "program": "Special Population Support Services",
+        "industry": "Human/Client Service"
+      }
+    }
+  ],
+  "analytical_evidence": {
+    "source_path": "site/data/analytics_registered_contracts/shard-001.json",
+    "row": {
+      "prime_contract_id": "CT107120258801626",
+      "agency": "Department of Homeless Services",
+      "prime_vendor": "BHRAGS HOME CARE CORP",
+      "pin": "07124E0044001",
+      "registration_date": "2024-08-28",
+      "start_date": "2023-10-11",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "EMERGENCY",
+      "industry": "Human Services",
+      "contract_purpose": "Bhrags Services at FWC Emmons K 2023",
+      "document_code": "CT1",
+      "contract_version": "7",
+      "current_registered_amount": 10869881,
+      "original_registered_amount": 10869881,
+      "source_fiscal_years": ["2025"],
+      "source": "checkbook-contracts",
+      "city_record_match": "none"
+    }
+  }
+}

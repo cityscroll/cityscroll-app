@@ -49,6 +49,7 @@ import {
   renderProjectContextHtml,
 } from "./procurement_project_context.mjs";
 import { buildProcurementHandoffCopy, renderProcurementHandoffCopyHtml } from "./procurement_handoff_copy.mjs";
+import { projectProcurementFacts } from "./procurement_fact_projection.mjs";
 
 const CHECKBOOK_SMART_SEARCH = "https://www.checkbooknyc.com/smart_search/citywide";
 const CHECKBOOK_CONTRACT_SEARCH = "https://www.checkbooknyc.com/contract_search";
@@ -71,39 +72,12 @@ function formatAmount(value) {
 }
 
 function factsFor(object, observations) {
-  const index = new Map((Array.isArray(observations) ? observations : [])
-    .map((entry) => [entry?.source_observation_ref, entry]));
-  const observed = (object?.source_observation_refs || []).map((ref) => index.get(ref)).filter(Boolean);
-  const rows = snapshotsForPublicAmount(object, observed);
-  const vendorRows = observed
-    .filter((entry) => !(entry.source_system === "passport_public_rfx"
-      && String(entry.snapshot?.rfx_status || "").trim().toLowerCase() === "selections made"))
-    .map((entry) => entry.snapshot || {});
-  const firstIn = (sourceRows, ...fields) => {
-    for (const row of sourceRows) for (const field of fields) {
-      const value = clean(row?.[field]);
-      if (value) return value;
-    }
-    return null;
-  };
-  const first = (...fields) => firstIn(rows, ...fields);
-  return {
-    title: first("short_title", "title", "description")
-      || `Contract ${object?.identity_keys?.contract_ids?.[0] || object?.identity_keys?.epins?.[0] || "record"}`,
-    agency: first("agency_name", "agency"),
-    vendor: firstIn(vendorRows, "vendor_name", "vendor", "prime_vendor", "payee_name"),
-    amount: formatAmount(first("contract_amount", "award_amount", "current_amount", "current", "amount", "check_amount")),
-    contractNumber: first("contract_number", "transaction_number", "contract_id"),
-    awardDate: first("award_date"),
-    method: first("selection_method_description", "procurement_method"),
-    program: first("program"),
-    industry: first("industry"),
-    start_date: first("start", "start_date", "contract_start_date"),
-    end_date: first("end", "end_date", "contract_end_date"),
-    startDate: first("start_date", "start", "issue_date", "date"),
-    endDate: first("end_date", "end", "contract_end_date", "due_date", "closing_date", "opening_date"),
-    officialUrl: first("official_url", "official_source_url", "source_url"),
-  };
+  const observed = (Array.isArray(observations) ? observations : []).filter(Boolean);
+  const projected = projectProcurementFacts(object, observed).facts;
+  const officialUrl = observed.map((entry) => entry?.snapshot || {})
+    .map((row) => clean(row.official_url || row.official_source_url || row.source_url))
+    .find(Boolean) || null;
+  return { ...projected, amount: formatAmount(projected.amount), officialUrl };
 }
 
 export function procurementContractWatchHref(procurementId) {
@@ -575,9 +549,10 @@ export function renderProcurementDocument(object = {}, observations = [], {
   const projectContextInspect = projectContext ? projectContextInspectSummary(projectContext) : null;
   const factRows = [
     ["Agency", facts.agency], ["Vendor", facts.vendor], ["Amount", facts.amount], ["Award date", facts.awardDate],
-    ["Contract number", facts.contractNumber], ["Method", facts.method],
+    ["PASSPort contract number", facts.contractNumber], ["Method", facts.method],
     ["Program", facts.program], ["Industry", facts.industry],
-    ["Start date", facts.start_date || facts.startDate], ["End date", facts.end_date || facts.endDate],
+    ["Contract start", facts.start_date || facts.startDate], ["Contract end", facts.end_date || facts.endDate],
+    ["Registration date", facts.registrationDate],
     ["Contract ID", object?.identity_keys?.contract_ids?.[0]], ["PIN / EPIN", object?.identity_keys?.epins?.[0]],
     ["Contract Reporter number", object?.identity_keys?.contract_reporter_numbers?.[0]],
     ["Solicitation", object?.identity_keys?.solicitation_ids?.[0]], ["Event", object?.identity_keys?.event_ids?.[0]],

@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/procurement-fact-projection",
+  "status": "implemented",
+  "fingerprint": "procurement-fact-projection.v1",
+  "updated_at": "2026-09-13T00:00:00.000Z",
+  "projections": [
+    { "id": "procurement-fact-projector", "path": "site/procurement_fact_projection.mjs" },
+    { "id": "procurement-fact-projector-test", "path": "test/procurement_fact_projection.test.mjs" },
+    { "id": "procurement-fact-parity-fixture", "path": "test/fixtures/procurement-detail-parity/ct107120258801626.json" },
+    { "id": "procurement-fact-capture-manifest", "path": "docs/evidence/procurement-fact-projection/capture-manifest.json" }
+  ]
+}
