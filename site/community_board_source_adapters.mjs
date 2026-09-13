@@ -132,6 +132,12 @@ function safeUrl(value, base = null) {
   }
 }
 
+async function sha256Hex(bytes) {
+  if (!globalThis.crypto?.subtle) return null;
+  const digest = await globalThis.crypto.subtle.digest("SHA-256", bytes);
+  return [...new Uint8Array(digest)].map((value) => value.toString(16).padStart(2, "0")).join("");
+}
+
 function plain(value, max = 4_000) {
   return decode(decode(value)).replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
 }
@@ -231,6 +237,8 @@ export function normalizeObservedReceipt(receipt = {}, source = {}, fallback = {
     parser: clean(receipt.parser || fallback.parser || adapterId(source), 80) || null,
     reason: clean(receipt.reason || fallback.reason, 240) || null,
   };
+  const contentSha256 = clean(receipt.content_sha256 || fallback.content_sha256, 80);
+  if (contentSha256) normalized.content_sha256 = contentSha256;
   return normalized;
 }
 
@@ -587,6 +595,40 @@ function officialCalendarTitleFromProse(text) {
   return stripped || null;
 }
 
+const DATE_FIRST_CALENDAR_LINE = /^(?:(?:sun|mon|tue|wed|thu|fri|sat)\w*\.?[,]?\s+)?(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},?\s+20\d{2}\b/i;
+const CALENDAR_CLOCK = /\b\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?)\b/i;
+
+function dateFirstCalendarBlock(fragment, pageYear) {
+  const lines = htmlLines(fragment).slice(0, 12);
+  const dateLine = lines[0] || "";
+  if (!DATE_FIRST_CALENDAR_LINE.test(dateLine)) return null;
+  const date = monthDate(dateLine) || explicitCalendarDate(dateLine, pageYear);
+  const detail = lines[1] || "";
+  const clock = detail.match(CALENDAR_CLOCK);
+  if (!date || !clock) return null;
+  const title = clean(detail.slice(0, clock.index).replace(/[,:–—-]+\s*$/, ""), 500);
+  if (!title) return null;
+
+  const afterClock = detail.slice(clock.index + clock[0].length)
+    .replace(/^\s*[-–—,:]\s*/, "")
+    .trim();
+  const locationLines = [afterClock, ...lines.slice(2)]
+    .map((line) => clean(line, 500))
+    .filter(Boolean)
+    .filter((line) => !/^location\s*:\s*$/i.test(line))
+    .filter((line) => !/^(?:please request|please\s|registration\b|to participate\b|there are no scheduled\b)/i.test(line));
+  const virtual = /\b(?:virtual|online|webex|zoom|video conference)\b/i.test(`${detail} ${locationLines.join(" ")}`);
+  const address = virtual ? null : locationLines.join(", ") || null;
+  return {
+    title,
+    logistics: `${dateLine} ${detail}`,
+    lines,
+    address,
+    mode: virtual ? "virtual" : (address ? "in-person" : "not-stated"),
+    bodyHtml: fragment,
+  };
+}
+
 function officialCalendarBlocks(html, pageYear) {
   const calendarHtml = String(html || "").match(/<div\b[^>]*\babout-description\b[^>]*>([\s\S]*?)<\/div>/i)?.[1]
     || String(html || "");
@@ -610,6 +652,17 @@ function officialCalendarBlocks(html, pageYear) {
   })) {
     return blocks;
   }
+  // CB15's NYC page publishes one meeting per date-first paragraph instead
+  // of Schema.org events or h3 blocks. Keep this parser deliberately narrow:
+  // the first line must be a complete publisher date, the second line must
+  // carry a clock time and a non-empty publisher title, and only the first
+  // twelve lines of that paragraph may contribute venue text. A malformed or
+  // title-less residual is therefore not promoted into a guessed meeting.
+  const dateFirstBlocks = [...calendarHtml.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
+    .slice(0, 120)
+    .map((match) => dateFirstCalendarBlock(match[1], pageYear))
+    .filter(Boolean);
+  if (dateFirstBlocks.length) return dateFirstBlocks;
   // Some NYC-hosted calendars publish one dated meeting in a paragraph
   // rather than an h3. Require a meeting word and a clock time so a
   // next-hearing sentence without publisher event identity stays out.
@@ -673,8 +726,8 @@ export function parseNycOfficialCalendarSource(html, source = {}, options = {}) 
       start_at: startAt,
       category: descriptor.role || descriptor.source_role || "upcoming_meetings",
       title: block.title,
-      address: calendarVenue(block.lines),
-      mode: participation.remote_join_url ? "hybrid" : "not-stated",
+      address: Object.hasOwn(block, "address") ? block.address : calendarVenue(block.lines),
+      mode: participation.remote_join_url ? "hybrid" : (block.mode || "not-stated"),
       participation: { ...participation, emails: [], phones: [], source_url: sourceUrl },
       format: "html",
       record_url: sourceUrl,
@@ -1490,6 +1543,7 @@ export async function fetchCommunityBoardSource(source = {}, { fetchImpl = globa
         : new TextEncoder().encode(await response.text()).buffer;
       const length = bytes.byteLength;
       const text = new TextDecoder().decode(bytes);
+      const contentSha256 = await sha256Hex(bytes);
       const accessDenied = /<h1>\s*Access Denied\s*<\/h1>/i.test(text);
       const receipt = normalizeObservedReceipt({
         ...baseReceipt,
@@ -1497,6 +1551,7 @@ export async function fetchCommunityBoardSource(source = {}, { fetchImpl = globa
         fetch_status: String(response.status || ""),
         content_type: contentType,
         content_length: length,
+        content_sha256: contentSha256,
         reason: !response.ok ? "http_error" : length > limit ? "byte_limit_exceeded" : accessDenied ? "access_denied" : null,
       }, source);
       lastReceipt = receipt;

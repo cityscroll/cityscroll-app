@@ -56,6 +56,9 @@ test("known dead or unsafe board homepages stay out of the public inventory", ()
 
 test("adapter-gap boards keep machine-fetchable upcoming sources on the inventory", () => {
   const byId = new Map(inventory.boards.map((row) => [row.id, row]));
+  const cb15 = byId.get("brooklyn-cb-15").upcoming;
+  assert.equal(cb15.adapter, "nyc_official_calendar_v1");
+  assert.equal(cb15.url, "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page");
   const bk14 = byId.get("brooklyn-cb-14").upcoming;
   assert.equal(bk14.url, "https://cb14brooklyn.com/meetings/");
   assert.match(bk14.format, /html\/event calendar/i);
