@@ -2116,6 +2116,7 @@ worker/src/lib/doing_business_warehouse_lookup.mjs
 worker/src/lib/eligible_list_utilization.mjs
 worker/src/lib/entity_intelligence_read_model.mjs
 worker/src/lib/entity_link.mjs
+worker/src/lib/evaluate_watch_text_query.mjs
 worker/src/lib/exam_process_spine.mjs
 worker/src/lib/external_award.mjs
 worker/src/lib/false_split_evidence.mjs
@@ -2250,6 +2251,7 @@ worker/src/lib/upstream_failure.mjs
 worker/src/lib/usage.mjs
 worker/src/lib/watch_query_revision.mjs
 worker/src/lib/watch_seen_membership.mjs
+worker/src/lib/watch_text_query_meetings.mjs
 worker/src/lib/watch_text_query_procurement.mjs
 worker/src/lib/watchlog.mjs
 worker/src/lib/worker_health.mjs
