@@ -10,10 +10,11 @@ import { planDelta, snapshotFor, watermarksFromSnapshot } from "../tools/d1_delt
 import { abandonGeneration, claimGeneration, createMemoryStateStore } from "../tools/d1_generation_fence.mjs";
 import { loadManifest, modelEntry } from "../tools/d1_manifest.mjs";
 import { buildPublicationReceipt } from "../tools/d1_publication_receipt.mjs";
-import { runProductionDelta } from "../tools/d1_production_delta.mjs";
+import { buildMissingPriorSnapshotRecovery, runProductionDelta } from "../tools/d1_production_delta.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const fixture = JSON.parse(readFileSync(join(ROOT, "test/fixtures/d1-production-delta/sources.json"), "utf8"));
+const missingSnapshotFixture = JSON.parse(readFileSync(join(ROOT, "test/fixtures/d1-production-delta/published-state-missing-snapshot.json"), "utf8"));
 const manifest = loadManifest();
 const fingerprint = "b".repeat(64);
 const CLOCK = Date.parse("2026-09-12T12:00:00Z");
@@ -89,6 +90,24 @@ const policy = {
 
 test("every ordinary production model declares delta-upsert publication", () => {
   assert.ok(manifest.models.every((model) => model.publication_mode === "delta_upsert"));
+});
+
+test("a published pointer with an absent prior KV snapshot records explicit-rebuild recovery", () => {
+  const recovery = buildMissingPriorSnapshotRecovery(missingSnapshotFixture);
+  assert.deepEqual(recovery, {
+    schema: "cityscroll.d1-publication-recovery.v1",
+    status: "bootstrap_required",
+    action: "explicit_rebuild",
+    reason: "published_snapshot_missing",
+    published_generation: 20,
+    snapshot_key: "d1-publication:snapshot:v2:20",
+    baseline: { status: "unavailable", source: "missing_kv_snapshot" },
+    d1_writes: { commands: null, rows: null },
+  });
+  assert.equal(buildMissingPriorSnapshotRecovery({
+    ...missingSnapshotFixture,
+    kv_error: "Error: Cloudflare API unavailable (503)",
+  }), null, "non-404 failures must still fail the deployment");
 });
 
 test("production delta applies keyed inserts, updates, explicit deletes, and no whole-table rebuild", { skip: !DatabaseSync }, async () => {
@@ -237,6 +256,10 @@ test("canary and reconciliation failures are terminal and block publication", { 
 test("the ordinary workflow uses the production delta runner and contains no whole-model SQL fallback", () => {
   const workflow = readFileSync(join(ROOT, ".github/workflows/deploy-worker.yml"), "utf8");
   const ordinary = workflow.slice(workflow.indexOf("- name: Plan D1 publication delta"), workflow.indexOf("- name: Record D1 publication receipt"));
+  assert.match(workflow, /id: d1-prior-snapshot/);
+  assert.match(workflow, /classify-prior-snapshot-failure/);
+  assert.match(workflow, /status=missing/);
+  assert.match(ordinary, /steps\.d1-prior-snapshot\.outputs\.status == 'available'/);
   assert.match(ordinary, /d1_production_delta\.mjs execute/);
   assert.doesNotMatch(ordinary, /build_worker_d1_read_models|keyword_search_read_model\.sql|ocp_awards_read_model\.sql|entity_intelligence_read_model\.sql|--mode\s+rebuild/);
   assert.match(ordinary, /d1_delta_plan\.mjs plan/);

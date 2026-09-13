@@ -65,6 +65,13 @@ rebuild procedure. It does not switch ordinary pushes to a full rebuild. The
 policy field `incremental_publication.enabled` remains true so the default is
 incremental publication when the flag is not set.
 
+If a published generation fence points to a missing generation-qualified KV
+snapshot, the ordinary deploy records `bootstrap_required` recovery evidence,
+retains the newly captured current snapshot, withholds incremental D1 writes,
+and continues the Worker deploy. The retained snapshot is the input to the
+explicit rebuild procedure; the missing baseline is never treated as an empty
+or zero-row baseline.
+
 ## Watermark provenance in a receipt
 
 Each model in a publication receipt carries the lexicographic extremes of its
