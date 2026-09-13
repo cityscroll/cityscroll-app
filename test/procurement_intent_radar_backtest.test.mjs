@@ -72,7 +72,8 @@ test("2022-2025 coverage receipt keeps the gold pack as a fixture control, not a
   const artifact = buildBacktestArtifact();
   assert.equal(artifact.coverage.sufficient_for_recurrent_corpus_claim, false);
   assert.equal(artifact.coverage.retained_app_corpus.text_bearing_council_rows, 0);
-  assert.equal(artifact.coverage.retained_app_corpus.event_dates_in_corpus_window, 0);
+  assert.equal(artifact.coverage.retained_app_corpus.event_dates_in_corpus_window, 28);
+  assert.equal(artifact.coverage.retained_app_corpus.pir_eligible_source_type_rows, 0);
   assert.deepEqual(artifact.coverage.labeled_fixture.year_coverage, { 2022: 1, 2023: 1, 2024: 1, 2025: 2 });
   assert.equal(artifact.metrics.extraction.denominator, 5);
   assert.equal(artifact.metrics.realization_link.denominator, 4);

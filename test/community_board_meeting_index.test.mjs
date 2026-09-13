@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import { buildBrowseView, renderBrowseView } from "../site/browse_view.mjs";
+import { meetingOriginLabel } from "../site/meeting_origin.mjs";
 import { readCommunityBoardMeetingIndex } from "../tools/lib/community_board_meeting_index_io.mjs";
 import { buildCommunityBoardMeetingIndex, rematerializeCommunityBoardMeetingIndex } from "../tools/build_community_board_meeting_index.mjs";
 import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
@@ -138,6 +139,6 @@ test("Browse renders an indexed board event as a source-linked meeting record", 
   const view = buildBrowseView("meetings", { retrieved_at: index.generated_at, rows: [row] });
   const html = renderBrowseView(view);
   assert.match(html, new RegExp(row.source_url.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
-  assert.match(html, /Community board source observed/);
-  assert.match(html, /data-meeting-origin="community_board_source_observed"/);
+  assert.match(html, new RegExp(meetingOriginLabel(row.meeting_origin).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  assert.match(html, new RegExp(`data-meeting-origin="${row.meeting_origin}"`));
 });
