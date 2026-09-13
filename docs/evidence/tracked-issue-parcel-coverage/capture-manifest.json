@@ -1,0 +1,68 @@
+{
+  "schema": "cityscroll.tracked_issue_location_capture.v1",
+  "change": "exact location and bounded parcel coverage for tracked issues",
+  "browser_mode": "static fragment render (no browser, no network); assertions are structural and recorded here instead of as committed images",
+  "route": "tracked-issue location and coverage fragment (not yet mounted on a public route; consumed by the tracked-issue read model)",
+  "fixture": "test/fixtures/geocoder/pad-emmons-parcel.csv (committed PAD snapshot row for 3218 Emmons Avenue, BBL 3088150590)",
+  "viewports": [
+    { "name": "desktop", "width": 1440, "height": 900 },
+    { "name": "mobile-narrow", "width": 390, "height": 844 }
+  ],
+  "revision": "26d11a492ad29d60fecfe7d4136005af6fcb6791",
+  "data_vintage": {
+    "pad_snapshot": "2026-08-17T11:24:50.716Z (PAD version 26b)",
+    "property_feed_through": "2026-09-05 (fixture)",
+    "certificate_of_occupancy_through": "2026-09-01 (fixture)",
+    "now": "2026-09-10T00:00:00.000Z (fixture)"
+  },
+  "captures": [
+    {
+      "state": "complete",
+      "scenario": "default_exact",
+      "route": "fragment: tracked-issue location + coverage, exact PAD match",
+      "viewport": { "name": "desktop-and-narrow (copy is viewport-independent static HTML)", "width": 1440, "height": 900 },
+      "revision": "26d11a492ad29d60fecfe7d4136005af6fcb6791",
+      "file": null,
+      "sha256": "8421e9adcc642153b2c6b90cf06b02e220ba3f853b368a33eb427b2a4398c2d6",
+      "assertion": "address, canonical parcel link, and per-dataset checked-through coverage are present in script-free static HTML; PAD method/version/snapshot date sit behind a details disclosure; coverage copy names each dataset and its through-date with no blanket negative claims",
+      "observations": {
+        "parcel_link_href": "/parcels/3088150590/",
+        "coverage_datasets": ["property_disposition", "certificate_of_occupancy"],
+        "script_free": true,
+        "disclosures": 3
+      }
+    },
+    {
+      "state": "complete",
+      "scenario": "failed_load",
+      "route": "fragment: exact location, both bounded lookups unavailable",
+      "viewport": { "name": "desktop-and-narrow (copy is viewport-independent static HTML)", "width": 1440, "height": 900 },
+      "revision": "26d11a492ad29d60fecfe7d4136005af6fcb6791",
+      "file": null,
+      "sha256": "a21d8b3c35be598d3ff1819a84374224403973ee5ee5db5e780454e45fcf5411",
+      "assertion": "the requested scope (address and exact parcel link) survives the failed lookups; each unavailable dataset names itself, offers a truthful reload-retry, and links its official source; no broad negative claims",
+      "observations": {
+        "parcel_link_href": "/parcels/3088150590/",
+        "retry_copy": "Reload this page to retry",
+        "official_source_links": [
+          "https://a856-cityrecord.nyc.gov/",
+          "https://data.cityofnewyork.us/d/bs8b-p36w"
+        ]
+      }
+    },
+    {
+      "state": "complete",
+      "scenario": "unresolved_ambiguous",
+      "route": "fragment: ambiguous address resolution suppresses the parcel link",
+      "viewport": { "name": "desktop-and-narrow (copy is viewport-independent static HTML)", "width": 1440, "height": 900 },
+      "revision": "26d11a492ad29d60fecfe7d4136005af6fcb6791",
+      "file": null,
+      "sha256": "5f3f73ec7de52932a83719b801ccd4558d2eb86904fc84eca7a2b9058018dc2d",
+      "assertion": "an ambiguous resolution renders the curated address with an honest no-single-parcel line and no /parcels/ link",
+      "observations": {
+        "parcel_link_present": false,
+        "unresolved_copy": "more than one parcel"
+      }
+    }
+  ]
+}
