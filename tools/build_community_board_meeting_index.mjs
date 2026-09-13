@@ -332,6 +332,7 @@ export function materializeCommunityBoardMeetingRow(record, board, observedAt, o
     description: record.description,
     meeting_documents: record.meeting_documents || [],
     search_text: record.search_text,
+    source_entry_evidence: record.source_entry_evidence,
   });
   const institutionEdges = buildCommunityBoardInstitutionEdges([{
     // The join's publisher-identifier evidence must come from an identity the
@@ -344,6 +345,9 @@ export function materializeCommunityBoardMeetingRow(record, board, observedAt, o
   }], {
     asOf: observedAt,
     committeeRegistry: options.committeeRegistry || {},
+    sourceDescriptor: options.sourceDescriptor || {},
+    registered: options.registered,
+    conflictingRecords: options.conflictingRecords || [],
   });
   const committeeHost = institutionEdges.find((edge) => (
     edge?.relation === "hosts_meeting"
@@ -365,6 +369,7 @@ export function materializeCommunityBoardMeetingRow(record, board, observedAt, o
     format: record.format,
     publisher_identifier: record.publisher_identifier,
     publisher_identifiers: record.publisher_identifiers,
+    source_entry_evidence: record.source_entry_evidence || null,
     source_role: record.source_role || "upcoming_meetings",
     observed_receipt: record.observed_receipt,
     source_record_id: sourceRecordId,
@@ -527,7 +532,12 @@ export async function buildCommunityBoardMeetingIndex({
     const meetingRows = records
       .filter((record) => descriptor.source_role === "upcoming_meetings")
       .filter((record) => record.record_kind === "event" && record.record_id && record.date)
-      .map((record) => materializeCommunityBoardMeetingRow(record, board, observedAt, { committeeRegistry }));
+      .map((record) => materializeCommunityBoardMeetingRow(record, board, observedAt, {
+        committeeRegistry,
+        sourceDescriptor: descriptor,
+        registered: true,
+        conflictingRecords: records,
+      }));
     if (meetingRows.length) byBoard[descriptor.board_id] = [...(byBoard[descriptor.board_id] || []), ...meetingRows];
   }
   return assembleCommunityBoardMeetingIndex({
@@ -676,7 +686,13 @@ export function rematerializeCommunityBoardMeetingIndex({
     const meetingRows = records
       .filter((record) => (record.source_role || "upcoming_meetings") === "upcoming_meetings")
       .filter((record) => record.record_kind === "event" && record.record_id && record.date)
-      .map((record) => materializeCommunityBoardMeetingRow(record, board, observedAt, { committeeRegistry }));
+      .map((record) => materializeCommunityBoardMeetingRow(record, board, observedAt, {
+        committeeRegistry,
+        sourceDescriptor: descriptors.find((descriptor) => descriptor.board_id === boardId
+          && descriptor.source_role === (record.source_role || "upcoming_meetings")),
+        registered: true,
+        conflictingRecords: records,
+      }));
     if (meetingRows.length) byBoard[boardId] = meetingRows;
   }
   return assembleCommunityBoardMeetingIndex({

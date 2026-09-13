@@ -225,7 +225,10 @@ export function normalizeMeetingObject(row = {}) {
     schema: MEETING_OBJECT_SCHEMA,
     meeting_id: meetingId,
     source_keys: key ? [key] : [],
-    publisher_identifier: key?.value || null,
+    publisher_identifier: source === "community_board"
+      && row.meeting_origin === "official_community_board_calendar"
+      ? optionalText(row.publisher_identifier)
+      : (key?.value || null),
     title: optionalText(row.title || row.short_title) || "Meeting",
     event_date: optionalText(row.event_date || row.date),
     event_end: optionalText(row.event_end || row.end_at),
@@ -284,7 +287,8 @@ export function normalizeCommunityBoardMeeting(row = {}) {
   return normalizeMeetingObject({
     ...row,
     source_system: "community_board",
-    publisher_identifier: row.publisher_identifier || row.source_record_id || row.record_id,
+    publisher_identifier: row.publisher_identifier
+      || (row.meeting_origin === "official_community_board_calendar" ? null : row.source_record_id || row.record_id),
     source_url: row.source_url || row.record_url,
   });
 }

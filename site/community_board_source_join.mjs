@@ -14,6 +14,7 @@ import {
 
 export const COMMUNITY_BOARD_SOURCE_JOIN_SCHEMA = "cityscroll.community_board_source_join.v1";
 export const COMMUNITY_BOARD_SOURCE_JOIN_METHOD = "exact_board_date_publisher_identifier";
+export const COMMUNITY_BOARD_NATIVE_PUBLICATION_BASIS = "official_calendar_observation";
 
 const clean = (value, max = 500) => String(value ?? "")
   .replace(/\s+/g, " ")
@@ -191,6 +192,68 @@ function sourceUrlFor(record = {}, join = {}) {
   return join.source_url || join.provenance?.source_url || record.source_url || record.record_url || null;
 }
 
+function nativeEntryEvidence(record = {}) {
+  const evidence = record.source_entry_evidence || record.entry_evidence || record.retained_entry_evidence;
+  if (!evidence || typeof evidence !== "object") return null;
+  const locator = typeof evidence.locator === "string"
+    ? evidence.locator.trim()
+    : (evidence.locator && typeof evidence.locator === "object" ? evidence.locator : null);
+  const excerpt = String(evidence.excerpt || "").replace(/\s+/g, " ").trim();
+  return locator && excerpt ? { locator, excerpt } : null;
+}
+
+/**
+ * Qualify a board's own calendar observation without changing the independent
+ * source join. The descriptor is the reviewed registry authority; the entry
+ * evidence is retained proof of the exact published observation.
+ */
+export function qualifyCommunityBoardNativeCalendarObservation(record = {}, descriptor = {}, options = {}) {
+  const boardId = String(record.board_id || record.body_id || "").trim();
+  const descriptorBoard = String(descriptor.board_id || descriptor.body_id || "").trim();
+  if (!boardId || !descriptorBoard || boardId !== descriptorBoard) return { qualified: false, reason: "board_identity_mismatch" };
+  const role = record.source_role || record.role;
+  if (role !== "upcoming_meetings" || (descriptor.source_role || descriptor.role) !== "upcoming_meetings") {
+    return { qualified: false, reason: "source_role_mismatch" };
+  }
+  const recordUrl = sourceUrlFor(record);
+  const descriptorUrl = String(descriptor.url || descriptor.source_url || "").trim();
+  if (!recordUrl || !descriptorUrl || recordUrl !== descriptorUrl) return { qualified: false, reason: "source_descriptor_mismatch" };
+  if (descriptor.registered !== true && options.registered !== true) return { qualified: false, reason: "source_descriptor_unregistered" };
+  if (descriptor.adapter && descriptor.adapter !== "nyc_official_calendar_v1") return { qualified: false, reason: "source_adapter_unapproved" };
+  const status = sourceRecordStatus(record, options);
+  if (status.state !== "observed") return { qualified: false, reason: status.reason };
+  if (record.record_kind !== "event" || !record.record_id || !record.date || !record.title || !record.start_at) {
+    return { qualified: false, reason: "event_identity_incomplete" };
+  }
+  if (/^(?:january|february|march|april|may|june|july|august|september|october|november|december)\s+20\d{2}$/i.test(record.title.trim())) {
+    return { qualified: false, reason: "event_identity_incomplete" };
+  }
+  const evidence = nativeEntryEvidence(record);
+  if (!evidence) return { qualified: false, reason: "retained_entry_evidence_missing" };
+  if (record.publisher_identifier || (Array.isArray(record.publisher_identifiers) && record.publisher_identifiers.length)) {
+    return { qualified: false, reason: "publisher_identifier_not_null" };
+  }
+  if (record.ambiguous === true || record.conflict === true || record.source_conflict === true) {
+    return { qualified: false, reason: "ambiguous_source_observation" };
+  }
+  const sameIdentity = (Array.isArray(options.conflictingRecords) ? options.conflictingRecords : [])
+    .filter((candidate) => candidate !== record
+      && String(candidate?.board_id || candidate?.body_id || "").trim() === boardId
+      && String(candidate?.date || "").trim() === String(record.date).trim()
+      && String(candidate?.title || "").trim().toLowerCase() === record.title.trim().toLowerCase());
+  if (sameIdentity.some((candidate) => String(candidate.start_at || "") !== String(record.start_at || ""))) {
+    return { qualified: false, reason: "ambiguous_source_observation" };
+  }
+  return {
+    qualified: true,
+    basis: COMMUNITY_BOARD_NATIVE_PUBLICATION_BASIS,
+    board_id: boardId,
+    source_url: recordUrl,
+    source_record_id: record.source_record_id || record.record_id,
+    evidence,
+  };
+}
+
 function acceptedJoin(join = {}, record = {}) {
   const receipt = receiptFor(record, join);
   const evidence = new Set(join.join?.evidence || []);
@@ -203,6 +266,10 @@ function acceptedJoin(join = {}, record = {}) {
     && Boolean(sourceUrlFor(record, join))
     && receipt?.status === "ok"
     && Boolean(receipt?.observed_at);
+}
+
+function acceptedNativeObservation(record = {}, descriptor = {}, options = {}) {
+  return qualifyCommunityBoardNativeCalendarObservation(record, descriptor, options).qualified;
 }
 
 function edgeStatus(join, record) {
@@ -225,7 +292,8 @@ export function promoteCommunityBoardHostsMeetingEdge(observation = {}, options 
   const boardId = String(join?.board_id || record?.board_id || record?.body_id || meeting?.board_id || "").trim().toLowerCase() || null;
   const targetId = meetingTarget(meeting, join || {});
   const targetHref = targetId ? meetingCanonicalHref(targetId) : null;
-  const accepted = acceptedJoin(join || {}, record || {}) && Boolean(boardId && targetId && targetHref);
+  const native = acceptedNativeObservation(record || {}, options.sourceDescriptor || {}, options);
+  const accepted = (acceptedJoin(join || {}, record || {}) || native) && Boolean(boardId && targetId && targetHref);
   const sourceUrl = sourceUrlFor(record || {}, join || {});
   const receipt = receiptFor(record || {}, join || {});
   const reason = accepted ? null
@@ -255,14 +323,27 @@ export function promoteCommunityBoardHostsMeetingEdge(observation = {}, options 
     source_url: sourceUrl,
     source_record_id: join?.source_record_id || record?.source_record_id || record?.record_id || null,
     source_receipt: receipt,
-    provenance: join?.provenance || (sourceUrl || receipt ? {
+    source_entry_evidence: native ? nativeEntryEvidence(record) : null,
+    provenance: native ? {
+      ...(join?.provenance || {}),
+      source_url: sourceUrl,
+      source_record_id: record?.source_record_id || record?.record_id || null,
+      observed_receipt: receipt,
+      publication_basis: COMMUNITY_BOARD_NATIVE_PUBLICATION_BASIS,
+      source_entry_evidence: nativeEntryEvidence(record),
+    } : (join?.provenance || (sourceUrl || receipt ? {
       source_url: sourceUrl,
       source_record_id: join?.source_record_id || record?.source_record_id || record?.record_id || null,
       observed_receipt: receipt,
       join_method: COMMUNITY_BOARD_SOURCE_JOIN_METHOD,
-    } : null),
+    } : null)),
     join: join?.join || null,
-    evidence: accepted ? [...COMMUNITY_BOARD_HOSTS_MEETING_CONTRACT.required_evidence] : [],
+    evidence: accepted
+      ? (native
+        ? ["exact_board_identity", "exact_meeting_date", "retained_source_url", "observed_receipt", "retained_entry_evidence", "canonical_meeting_identity"]
+        : [...COMMUNITY_BOARD_HOSTS_MEETING_CONTRACT.required_evidence])
+      : [],
+    publication_basis: native ? COMMUNITY_BOARD_NATIVE_PUBLICATION_BASIS : null,
   };
 }
 
