@@ -76,16 +76,14 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
 
 ## Editing and verification
 
-- Before editing, inspect `git status`, the owning architecture/source contract, nearby tests, and
-  the relevant builder or read model. For bugs, reproduce with a focused failing test or concrete
-  observation when practical; fix the root cause and keep the change scoped.
-- Generated artifacts are changed through their owning builder. Run its `--check` mode when one
-  exists and commit only artifacts that the owning contract marks as tracked.
-- A committed generated artifact must not carry a figure that moves when an unrelated tracked file
-  changes: a repository-wide count, a byte total, a revision, a digest of another growing file.
-  Every change then rewrites the same lines and conflicts with every other open one. Derive those
-  on demand; keep policy in a manifest and derived lists in sorted one-path-per-line files marked
-  `merge=union`, read as sets. See `architecture/evidence.d/`, `tools/card-profile/closure.d/`.
+- Before editing, inspect `git status`, the owning contract, nearby tests, and the relevant builder
+  or read model. For bugs, reproduce when practical; fix the root cause and keep scope tight.
+- Change generated artifacts through their builder, using its `--check` mode when available.
+- After the final addition of any site module, test path, or evidence path, run `node tools/derive_card_profile.mjs`
+  from current `main`; rerun it after every rebase. This deriver is authoritative for the profile.
+- Do not commit generated figures that change when unrelated tracked files grow. Derive them on
+  demand; keep policy in manifests and derived lists in sorted, `merge=union` files. See
+  `architecture/evidence.d/` and `tools/card-profile/closure.d/`.
 - A new shipped `site/` module must be added to the `architecture/site-production-determinism.json`
   inventory (`node tools/determinism_lint.mjs --write-site-inventory`), or the merge queue's
   combined tree fails even when the branch is green on its own head. The merge queue validates a
