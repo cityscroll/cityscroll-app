@@ -85,6 +85,53 @@ test("a committee meeting is never returned in place of a full board one", () =>
   }
 });
 
+test("empty extraction and unknown publisher titles remain corpus-scoped", () => {
+  const board = {
+    board_id: "brooklyn-cb-15",
+    board_name: "Brooklyn Community Board 15",
+    borough: "Brooklyn",
+    community_district: "K15",
+    meetings: {
+      state: "indexed",
+      source_url: "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+      observed_at: "2026-09-12T12:00:00Z",
+    },
+    minutes: { state: "checked-empty", source_url: "https://example.test/minutes", observed_at: "2026-09-12T12:00:00Z" },
+  };
+  const base = {
+    schema: "cityscroll.shared_meeting_read_model.v1",
+    generated_at: "2026-09-12T12:00:00Z",
+    freshness: { checked_at: "2026-09-12T12:00:00Z" },
+    sources: { community_board: { status: "available", board_coverage: [board] } },
+  };
+  const empty = communityBoardFullBoardMeetingAnswer({
+    readModel: { ...base, rows: [], sources: { community_board: { ...base.sources.community_board, board_coverage: [{ ...board, meetings: { ...board.meetings, state: "checked-empty" } }] } } },
+    query: "Brooklyn Community Board 15",
+    asOf: "2026-09-12T12:00:00Z",
+  });
+  assert.equal(empty.status, "no_full_board_meeting_recorded");
+  assert.equal(empty.reason, "meeting_source_read_and_publishes_no_meetings");
+  assert.match(empty.statement, /publishes no meetings/);
+
+  const unknown = communityBoardFullBoardMeetingAnswer({
+    readModel: {
+      ...base,
+      rows: [{
+        source_system: "community_board",
+        board_id: "brooklyn-cb-15",
+        title: "Neighborhood Gathering",
+        event_date: "2026-09-10",
+        source_receipt: { status: "ok", observed_at: "2026-09-12T12:00:00Z" },
+      }],
+    },
+    query: "Brooklyn Community Board 15",
+    asOf: "2026-09-12T12:00:00Z",
+  });
+  assert.equal(unknown.status, "no_full_board_meeting_recorded");
+  assert.equal(unknown.reason, "meeting_source_has_unclassified_titles");
+  assert.match(unknown.statement, /title does not identify a full board session/);
+});
+
 test("every returned full board meeting belongs to the board that was asked about", () => {
   for (const row of coverage) {
     const result = communityBoardFullBoardMeetingAnswer({ readModel, query: row.board_id, asOf: AS_OF });

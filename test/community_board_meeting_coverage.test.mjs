@@ -130,6 +130,37 @@ test("source states remain explicit for unsupported, stale, and absent roles", (
   assert.equal(classifyCommunityBoardSourceRole({ url: null, format: null }, { receipt: { status: "unknown" } }, [], "2026-08-14T00:00:00Z"), "not-yet-checked");
 });
 
+test("CB15 date-first calendar paragraphs preserve publisher logistics and reject malformed residuals", () => {
+  const records = parseNycOfficialCalendarSource(`
+    <div class="span6 about-description">
+      <h1>District Meetings Calendar</h1>
+      <p><strong>Tuesday, September 29, 2026<br /></strong>General Board Meeting (In Person) 7:00pm Kingsborough Community College<br />2001 Oriental Boulevard<br />Room U112 Faculty Dining Room<br />Brooklyn, NY 11235</p>
+      <p><strong>Tuesday, February 24, 2026</strong><br />General Board Meeting 6:00pm (Virtual)<br />Please request the Meeting Link Via Email:<br />BKLCB15@Verizon.net</p>
+      <p><strong>Tuesday, November 24, 2026</strong><br />Neighborhood Gathering 7:00pm Community Center</p>
+      <p><strong>Tuesday, December 29, 2026</strong><br />General Board Meeting</p>
+    </div>
+  `, {
+    adapter: "nyc_official_calendar_v1",
+    role: "upcoming_meetings",
+    board_id: "brooklyn-cb-15",
+    body_name: "Brooklyn Community Board 15",
+    url: "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+  }, { receipt: { status: "ok", observed_at: "2026-09-12T12:00:00Z" } });
+
+  assert.deepEqual(records.map((row) => row.date), ["2026-09-29", "2026-02-24", "2026-11-24"]);
+  assert.equal(records[0].title, "General Board Meeting (In Person)");
+  assert.equal(records[0].start_at, "2026-09-29T19:00:00-04:00");
+  assert.equal(records[0].address, "Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235");
+  assert.equal(records[0].mode, "in-person");
+  assert.equal(records[1].title, "General Board Meeting");
+  assert.equal(records[1].address, null);
+  assert.equal(records[1].mode, "virtual");
+  assert.equal(records[2].title, "Neighborhood Gathering");
+  assert.equal(records[2].start_at, "2026-11-24T19:00:00-05:00");
+  assert.equal(records.some((row) => row.date === "2026-12-29"), false, "a title-less residual is not promoted");
+  assert.ok(records.every((row) => row.observed_receipt.parser === "nyc_official_calendar_v1"));
+});
+
 test("duplicate publisher identifiers within a board fail the build", async () => {
   await assert.rejects(
     buildCommunityBoardMeetingIndex({
