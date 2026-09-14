@@ -468,7 +468,15 @@ function boundedLane(items, limit) {
   if (!Number.isFinite(limit) || ordered.length <= limit) return ordered;
   const selected = new Map();
   for (const item of ordered) {
-    if (![...selected.values()].some((candidate) => candidate.kind === item.kind)) selected.set(item.id, item);
+    // Keep each publishing system visible when a bounded lane contains more
+    // events than the resident card limit. Otherwise a dense community-board
+    // slice can consume the representative slot for a kind and hide a
+    // Council event that is already present in the same feed.
+    const sourceKey = item.source?.system || item.domain || "unknown";
+    const diversityKey = `${item.kind}:${sourceKey}`;
+    if (![...selected.values()].some((candidate) => `${candidate.kind}:${candidate.source?.system || candidate.domain || "unknown"}` === diversityKey)) {
+      selected.set(item.id, item);
+    }
   }
   for (const item of ordered) {
     if (selected.size >= limit) break;

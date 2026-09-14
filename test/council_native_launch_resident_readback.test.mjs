@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
+import { surfaces } from "../tools/council_native_launch_resident_readback.mjs";
 
 const ROOT = join(import.meta.dirname, "..");
 const FILE = join(ROOT, "docs/evidence/council-native-launch/event-22691-resident-surface-readback.json");
@@ -27,4 +28,10 @@ test("retained Council resident-surface read-back covers all six surfaces", asyn
     if (entry.measurement_state === "measured") assert.ok(entry.seen?.excerpt.length <= 600);
     if (entry.measurement_state === "not_measured") assert.ok(entry.not_measured_reason);
   }
+});
+
+test("Now read-back measures the rendered page rather than the source feed", () => {
+  const now = surfaces().find((surface) => surface.id === "now");
+  assert.equal(now.url, "https://cityscroll.org/now/");
+  assert.deepEqual(now.needles, ["22691", "2026-09-23", "Committee on Contracts", "/meetings/meeting%3Anyc_legistar_events%3A22691"]);
 });

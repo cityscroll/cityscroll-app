@@ -170,7 +170,11 @@ export function primaryDocumentOutputs(options = {}) {
     land: { ...json("/data/land_upcoming_hearings.json"), status: "available" },
     rules: { status: "unavailable", reason: "edge_refresh", rules: [] },
     property: { status: "unavailable", reason: "edge_refresh", properties: [] },
-    meetings: { status: "unavailable", reason: "edge_refresh", hearings: [] },
+    // The shared meeting read model is already the bounded resident feed for
+    // Council, City Record, and community-board events. Keep it in the
+    // no-JS Now projection so an eligible event is present before the edge
+    // refresh completes as well as after the browser refreshes it.
+    meetings: { ...sharedMeetings, status: "available", hearings: sharedMeetings.rows },
   };
   const outputs = [output("now", buildNowDocument(shell, nowSources))];
   outputs.push(output("search", buildSearchDocument(shell)));
