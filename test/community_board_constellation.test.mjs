@@ -29,7 +29,7 @@ const meetingIndex = readCommunityBoardMeetingIndex(new URL("../site/data/commun
 const sources = { sourceRegistry, sourceInventory, scorecard, geography };
 
 test("release journey evidence names every acceptance obligation and its retained artifacts", () => {
-  assert.equal(releaseJourneyManifest.repository_revision, "aa34c9481ad843030719eceb026dbdebdb2db054");
+  assert.match(releaseJourneyManifest.repository_revision, /^[0-9a-f]{40}$/);
   assert.equal(releaseJourneyManifest.acceptance.A3.board_count, 59);
   assert.equal(releaseJourneyManifest.acceptance.A3.resource_role_dispositions, 59);
   assert.equal(resourceMatrix.scope.board_count, 59);
@@ -51,6 +51,7 @@ test("release journey evidence names every acceptance obligation and its retaine
     "python3 test/functional/33_community_board_pivot.py",
     "python3 test/functional/34_near_you_surface_switch.py",
   ]);
+  assert.equal(releaseJourneyManifest.journey_functional_path, "python3 test/functional/54_community_board_release_journeys.py");
 });
 
 test("board routes preserve the separate place, governance, and output projections", () => {

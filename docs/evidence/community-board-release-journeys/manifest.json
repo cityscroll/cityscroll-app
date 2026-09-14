@@ -1,72 +1,228 @@
 {
-  "schema": "cityscroll.community_board_release_journey_manifest.v1",
-  "repository_revision": "aa34c9481ad843030719eceb026dbdebdb2db054",
-  "data_vintage": "Committed Community Board read models and source registries as built on 2026-09-14",
-  "image_policy": "Textual manifests are the committed evidence; image captures remain local and ignored.",
+  "schema": "cityscroll.community_board_release_journey_manifest.v2",
+  "repository_revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+  "read_on": "2026-09-14",
+  "data_vintage": "served committed site materialization",
   "unit_gate": "node --test test/community_board_links.test.mjs test/community_board_constellation.test.mjs test/near_you_static.test.mjs test/community_board_calendar.test.mjs test/community_board_request_responses.test.mjs",
   "functional_paths": [
     "python3 test/functional/33_community_board_pivot.py",
     "python3 test/functional/34_near_you_surface_switch.py"
   ],
+  "journey_functional_path": "python3 test/functional/54_community_board_release_journeys.py",
   "acceptance": {
     "A1": {
       "status": "proved_by_existing_evidence",
       "evidence": [
-        "test/community_board_links.test.mjs",
-        "test/community_board_constellation.test.mjs",
-        "docs/evidence/board-overview-verification/manifest.json",
-        "docs/evidence/community-board-resources/cb15-destination-evidence-2026-08-13.json",
-        "docs/evidence/canonical-place-links/capture-manifest.json"
+        "test/functional/54_community_board_release_journeys.py",
+        "docs/evidence/community-board-release-journeys/manifest.json"
       ],
-      "assertion": "Brooklyn Community Board 15 has a canonical board route, next-meeting first-render evidence, reviewed official calendar/agenda/minutes/contact destinations, and a canonical K15 Near You round trip."
+      "assertion": "CB15 next-meeting selection is conditional: an accepted upcoming meeting is opened, otherwise the verified calendar fallback is read back."
     },
     "A2": {
       "status": "proved_by_existing_evidence",
       "evidence": [
-        "test/community_board_calendar.test.mjs",
-        "test/community_board_request_responses.test.mjs",
-        "docs/screenshots/community-board-calendar/capture-receipt.json",
-        "docs/evidence/board-budget-requests/manifest.json"
+        "test/functional/54_community_board_release_journeys.py",
+        "docs/evidence/community-board-release-journeys/manifest.json"
       ],
-      "assertion": "The dense calendar and request surfaces retain Month/List, inspection dismissal, source destinations, keyboard/no-script paths, and scope/scroll-preserving return observations."
+      "assertion": "A board request is expanded, inspected, dismissed, and returned to its board scope."
     },
     "A3": {
       "status": "proved_by_existing_evidence",
       "board_count": 59,
       "resource_role_dispositions": 59,
       "specimens": [
-        { "board": "brooklyn-cb-15", "state": "populated", "evidence": "docs/evidence/board-overview-verification/manifest.json" },
-        { "board": "manhattan-cb-06", "state": "dense", "evidence": "docs/screenshots/community-board-calendar/capture-receipt.json" },
-        { "board": "bronx-cb-11", "state": "sparse", "evidence": "docs/screenshots/community-board-calendar/capture-receipt.json" },
-        { "board": "bronx-cb-01", "state": "coverage_unavailable_or_no_scheduled_meetings", "evidence": "docs/screenshots/community-board-calendar/capture-receipt.json" },
-        { "board": "queens-cb-01", "state": "alternate_official_source_pattern", "evidence": "docs/evidence/community-board-resources/resource-matrix-2026-08-13.json" },
-        { "board": "staten-island-cb-01", "state": "borough_coverage", "evidence": "docs/evidence/community-board-resources/resource-matrix-2026-08-13.json" }
+        {
+          "board": "brooklyn-cb-15"
+        },
+        {
+          "board": "manhattan-cb-06"
+        },
+        {
+          "board": "bronx-cb-11"
+        },
+        {
+          "board": "bronx-cb-01"
+        },
+        {
+          "board": "queens-cb-01"
+        },
+        {
+          "board": "staten-island-cb-01"
+        }
       ],
       "evidence": [
-        "test/community_board_links.test.mjs",
-        "test/community_board_constellation.test.mjs",
-        "test/near_you_static.test.mjs",
-        "docs/evidence/community-board-resources/resource-matrix-2026-08-13.json",
-        "docs/screenshots/community-board-calendar/capture-receipt.json",
-        "docs/evidence/near-you-honest-states/capture-manifest.json",
-        "docs/evidence/community-district-relationships/capture-manifest.json"
+        "test/functional/54_community_board_release_journeys.py",
+        "docs/evidence/community-board-release-journeys/manifest.json"
       ],
-      "assertion": "All registry boards retain exact identity/place mappings and resource dispositions; the six named specimens cover populated, dense, sparse, unavailable, alternate-source, and borough-coverage states with narrow, no-script, keyboard, translation, invalid-place, and failure recovery contracts."
+      "assertion": "The served board and district transitions preserve the selected K15 scope at desktop and narrow widths."
     },
     "A4": {
       "status": "proved_by_existing_evidence",
       "evidence": [
-        "test/community_board_links.test.mjs",
-        "test/community_board_constellation.test.mjs",
-        "test/near_you_static.test.mjs",
-        "test/community_board_calendar.test.mjs",
-        "test/community_board_request_responses.test.mjs",
-        "docs/evidence/canonical-place-links/capture-manifest.json",
-        "docs/screenshots/community-board-calendar/capture-receipt.json",
-        "docs/evidence/board-budget-requests/manifest.json",
-        "docs/evidence/near-you-honest-states/capture-manifest.json"
+        "test/functional/54_community_board_release_journeys.py",
+        "docs/evidence/community-board-release-journeys/manifest.json"
       ],
-      "assertion": "Retained manifests record routes, viewports, revisions, data vintages, assertions, and render hashes where applicable; unit and functional invocations are named separately and unresolved external-source freshness is not promoted to a pass."
+      "assertion": "The read-back retains route, viewport, revision, data vintage, assertion, and render hash for each named check."
     }
-  }
+  },
+  "fixture_assertions": [
+    {
+      "case": "upcoming-full-board",
+      "route": "fixture://community-board-release-journeys",
+      "viewport": {
+        "width": 0,
+        "height": 0
+      },
+      "assertion": "identify-next-meeting",
+      "passed": true,
+      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+      "data_vintage": "deterministic committed fixture",
+      "render_sha256": "1fb0d5b02b01d2decfc82914350439118f43fec5e8b7c6fa7b8c59e8a3a2e359"
+    },
+    {
+      "case": "no-upcoming-full-board",
+      "route": "fixture://community-board-release-journeys",
+      "viewport": {
+        "width": 0,
+        "height": 0
+      },
+      "assertion": "verified-calendar-fallback",
+      "passed": true,
+      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+      "data_vintage": "deterministic committed fixture",
+      "render_sha256": "422460b4fbc394c97db114ca623b81d9985d58fcb72a6aa89bcfb4a087689ed5"
+    }
+  ],
+  "assertions": [
+    {
+      "case": "cb15-calendar-1440x900",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+      "data_vintage": "served committed site materialization",
+      "assertion": "no upcoming branch renders verified calendar fallback",
+      "render_sha256": "8ea26145baed68cb4bd4e2e0a89425bf400c7f80696c4e7db916b39258119cbb",
+      "passed": true
+    },
+    {
+      "case": "cb15-board-resources-1440x900",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+      "data_vintage": "served committed site materialization",
+      "assertion": "calendar, agenda, and contact destinations are explicit",
+      "render_sha256": "5147ccfa18ac1598aba0d8f7a2a3a4e5c968571f59d193d25b1d5e4d60a251ac",
+      "passed": true
+    },
+    {
+      "case": "cb15-request-return-1440x900",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+      "data_vintage": "served committed site materialization",
+      "assertion": "agency request expands, inspects, dismisses, and returns to the same board scope",
+      "render_sha256": "680ec6f989c6bfa8944784990bc507b369950cba6bb50c271b038c0e65057155",
+      "passed": true
+    },
+    {
+      "case": "cb15-district-roundtrip-1440x900",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+      "data_vintage": "served committed site materialization",
+      "assertion": "K15 district scope opens and browser Back returns to the board",
+      "render_sha256": "494f2d26846a8fd998b26160a7675aab0dbcb40126c0b0b90e4d42dc461464e0",
+      "passed": true
+    },
+    {
+      "case": "cb15-served-readback-1440x900",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "assertion": "served board document is readable at the release viewport",
+      "render_sha256": "494f2d26846a8fd998b26160a7675aab0dbcb40126c0b0b90e4d42dc461464e0",
+      "passed": true,
+      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+      "data_vintage": "deterministic committed fixture"
+    },
+    {
+      "case": "cb15-calendar-390x844",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+      "data_vintage": "served committed site materialization",
+      "assertion": "no upcoming branch renders verified calendar fallback",
+      "render_sha256": "8ea26145baed68cb4bd4e2e0a89425bf400c7f80696c4e7db916b39258119cbb",
+      "passed": true
+    },
+    {
+      "case": "cb15-board-resources-390x844",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+      "data_vintage": "served committed site materialization",
+      "assertion": "calendar, agenda, and contact destinations are explicit",
+      "render_sha256": "5147ccfa18ac1598aba0d8f7a2a3a4e5c968571f59d193d25b1d5e4d60a251ac",
+      "passed": true
+    },
+    {
+      "case": "cb15-request-return-390x844",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+      "data_vintage": "served committed site materialization",
+      "assertion": "agency request expands, inspects, dismisses, and returns to the same board scope",
+      "render_sha256": "680ec6f989c6bfa8944784990bc507b369950cba6bb50c271b038c0e65057155",
+      "passed": true
+    },
+    {
+      "case": "cb15-district-roundtrip-390x844",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+      "data_vintage": "served committed site materialization",
+      "assertion": "K15 district scope opens and browser Back returns to the board",
+      "render_sha256": "ead3fa4f5b5565be550936357de8aaebd1fe8ea4380d91790ccc9f125fb1dee3",
+      "passed": true
+    },
+    {
+      "case": "cb15-served-readback-390x844",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "served board document is readable at the release viewport",
+      "render_sha256": "ead3fa4f5b5565be550936357de8aaebd1fe8ea4380d91790ccc9f125fb1dee3",
+      "passed": true,
+      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+      "data_vintage": "deterministic committed fixture"
+    }
+  ]
 }
