@@ -1976,8 +1976,8 @@
       "landing_page": "https://data.cityofnewyork.us/d/i6mn-amj2",
       "required_fields": ["district", "districtcode", "objectid", "multipolygon"],
       "max_stale_days": 730,
-      "publisher_cadence": "Publisher-managed. Socrata metadata declares a monthly automated update, but the rows have not moved since 2024-04-10; sanitation-district geometry changes only when a district is redrawn",
-      "product_freshness": "The 2024-04-10 geometry clock is retained independently from DCP Community Districts and checked as an equivalence/drift canary.",
+      "publisher_cadence": "Publisher-managed. Socrata metadata declares a monthly automated update; sanitation-district geometry changes only when a district is redrawn",
+      "product_freshness": "The 2026-09-13 geometry clock is retained independently from DCP Community Districts and checked as an equivalence/drift canary.",
       "used_for": "Backstage-only sanitation-district ingestion, MapPLUTO QA, and DSNY-to-Community-District congruence drift measurement.",
       "code_references": [
         { "path": "tools/build_civic_geography.mjs", "contains": "i6mn-amj2" },
@@ -1989,12 +1989,12 @@
         "max_stale_days": 730,
         "clock_basis": "publisher_updated",
         "stable_reference": {
-          "publisher_updated_at": "2024-04-10T10:00:05Z",
-          "retained_vintage_at": "2024-04-10T10:00:05Z",
-          "observed_on": "2026-09-07",
+          "publisher_updated_at": "2026-09-13T10:08:47Z",
+          "retained_vintage_at": "2026-09-13T10:08:47Z",
+          "observed_on": "2026-09-13",
           "method": "Pin the publisher's own updated stamp and retain the geometry taken from it, so the gate is whether the publisher has republished rather than how many days have passed",
-          "evidence": "Socrata rowsUpdatedAt for i6mn-amj2 read 1712743205 (2024-04-10T10:00:05Z) on 2026-09-07, unchanged for 880 days, and site/civic_geography_registry.mjs retains sanitation_district at source_updated_at 2024-04-10T10:00:05.000Z. Publisher and retained vintage are the same instant, so no absolute-age number describes a defect here: a 730-day limit only counted the days since the boundaries were last redrawn.",
-          "recheck": "When rowsUpdatedAt moves off this pin the check fails and names the new stamp; re-run tools/build_civic_geography.mjs, then re-pin both fields to the vintage actually retained."
+          "evidence": "Socrata rowsUpdatedAt for i6mn-amj2 read 1789294127 (2026-09-13T10:08:47Z) on 2026-09-13. The re-acquired GeoJSON retained 59 features with the same required fields, canonical IDs, and source-property keys as the prior snapshot; site/civic_geography_registry.mjs continues to consume district, districtcode, objectid, and multipolygon through the existing adapter.",
+          "recheck": "When rowsUpdatedAt moves off this pin the check fails and names the new stamp; re-acquire the GeoJSON, compare its required fields and canonical IDs, then re-run tools/build_civic_geography.mjs and re-pin both fields to the vintage actually retained."
         },
         "serving_max_age_days": 730,
         "serve_contract_id": null

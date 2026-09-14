@@ -517,8 +517,8 @@ test("a stable-reference pin must name a publisher vintage we actually retain", 
   const geography = readFileSync(new URL("../site/civic_geography_registry.mjs", import.meta.url), "utf8");
   assert.ok(geography.includes("dsny-district-boundaries"));
   const retained = readFileSync(new URL("../tools/build_civic_geography.mjs", import.meta.url), "utf8");
-  assert.match(retained, /source_updated_at: "2024-04-10T10:00:05\.000Z"/);
-  assert.equal(Date.parse(pin.publisher_updated_at), Date.parse("2024-04-10T10:00:05.000Z"));
+  assert.match(retained, /source_updated_at: "2026-09-13T10:08:47\.000Z"/);
+  assert.equal(Date.parse(pin.publisher_updated_at), Date.parse("2026-09-13T10:08:47.000Z"));
 
   const drifted = structuredClone(registry);
   const target = drifted.contracts.find((row) => row.id === "dsny-district-boundaries");

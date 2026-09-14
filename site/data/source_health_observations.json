@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.source_health_observations.v1",
-  "generated_at": "2026-09-09T06:54:36.054Z",
+  "generated_at": "2026-09-13T10:08:47.000Z",
   "contract_count": 64,
   "observations": [
     {
@@ -3225,20 +3225,18 @@
     },
     {
       "source_id": "dsny-district-boundaries",
-      "contract_fingerprint": "8cd5b08218d5970bf04aa734d350c1034357cd8741a4c88d8a2eab3506483711",
+      "contract_fingerprint": "ac7ed1eb19aa872ebe4c0cd54c2e028ae45327a174f9f6e31015f80515a008ef",
       "health": {
-        "status": "Delayed",
-        "reason_codes": [
-          "publisher-clock-stale"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
-            "at": "2024-04-10T10:00:05.000Z",
+            "at": "2026-09-13T10:08:47.000Z",
             "state": "KNOWN",
             "basis": "geography_source_receipt"
           },
           "cityscroll_checked_acquired": {
-            "at": "2026-08-18T16:00:00.000Z",
+            "at": "2026-09-13T10:08:47.000Z",
             "state": "KNOWN",
             "basis": "acquired_at"
           },
@@ -3259,6 +3257,12 @@
       "evidence": [
         {
           "kind": "warehouse-acquisition-receipt",
+          "path": "data/geography/receipts/sanitation_district/2026-09-13.json",
+          "at": "2026-09-13T10:08:47.000Z",
+          "status": "succeeded"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
           "path": "data/geography/receipts/sanitation_district/2024-04-10.json",
           "at": "2026-08-18T16:00:00.000Z",
           "status": "succeeded"
@@ -3270,7 +3274,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "dsny-district-boundaries",
-        "observed_at": "2026-09-09T06:54:36.054Z",
+        "observed_at": "2026-09-13T10:08:47.000Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -3279,17 +3283,17 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": "2026-08-18T16:00:00.000Z",
+          "observed_at": "2026-09-13T10:08:47.000Z",
           "cadence_days": null,
-          "age_days": 21.621250625
+          "age_days": 0
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "dsny-district-boundaries",
-            "observed_at": "2026-09-09T06:54:36.054Z",
+            "observed_at": "2026-09-13T10:08:47.000Z",
             "status": "failed",
-            "run_id": "missing:dsny-district-boundaries:2026-09-09T06-54",
+            "run_id": "missing:dsny-district-boundaries:2026-09-13T10-08",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -3299,6 +3303,14 @@
       },
       "operator": {
         "runs": [
+          {
+            "adapter": "civic-geography-acquisition-receipt",
+            "run_id": "sanitation_district:2026-09-13",
+            "at": "2026-09-13T10:08:47.000Z",
+            "status": "succeeded",
+            "receipt_ref": "data/geography/receipts/sanitation_district/2026-09-13.json",
+            "exact_error": null
+          },
           {
             "adapter": "civic-geography-acquisition-receipt",
             "run_id": "sanitation_district:2024-04-10",
@@ -3312,6 +3324,16 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "dsny-district-boundaries",
+            "observed_at": "2026-09-13T10:08:47.000Z",
+            "status": "succeeded",
+            "run_id": "sanitation_district:2026-09-13",
+            "publisher_clock_basis": "geography_source_receipt",
+            "publisher_updated_at": "2026-09-13T10:08:47.000Z",
+            "clock_kind": "acquisition"
+          },
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "dsny-district-boundaries",
             "observed_at": "2026-08-18T16:00:00.000Z",
             "status": "succeeded",
             "run_id": "sanitation_district:2024-04-10",
@@ -3322,12 +3344,12 @@
         ],
         "clocks": {
           "checked": {
-            "at": "2026-08-18T16:00:00.000Z",
+            "at": "2026-09-13T10:08:47.000Z",
             "state": "KNOWN",
             "basis": "checked_at"
           },
           "acquired": {
-            "at": "2026-08-18T16:00:00.000Z",
+            "at": "2026-09-13T10:08:47.000Z",
             "state": "KNOWN",
             "basis": "acquired_at"
           },
