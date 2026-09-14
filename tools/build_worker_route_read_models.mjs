@@ -30,7 +30,12 @@ function readJson(path) {
 
 function hashInputs() {
   const hash = createHash("sha256");
-  for (const path of Object.values(PATHS)) hash.update(readFileSync(path));
+  // The generated projection is absent from source-only test fixtures. Hash
+  // it when materialized while preserving the existing required inputs.
+  for (const path of Object.values(PATHS)) {
+    if (path === PATHS.communityDigest && !existsSync(path)) continue;
+    hash.update(readFileSync(path));
+  }
   return `v1-${hash.digest("hex").slice(0, 16)}`;
 }
 
@@ -161,6 +166,9 @@ function buildNearYou(activity, geography, version) {
 }
 
 function buildCommunityDistrictDigests(digest, version) {
+  if (!digest) {
+    return { entries: [], manifest: { schema_version: 1, kind: "community-district-digest", version, source_schema: null, slices: {} } };
+  }
   const entries = [];
   const slices = {};
   for (const id of Object.keys(digest.by_community_district || {}).sort()) {
@@ -282,7 +290,7 @@ function main() {
   const activity = readJson(PATHS.activity);
   const meetings = readJson(PATHS.meetings);
   const geography = readJson(PATHS.geography);
-  const communityDigest = readJson(PATHS.communityDigest);
+  const communityDigest = existsSync(PATHS.communityDigest) ? readJson(PATHS.communityDigest) : null;
   const near = buildNearYou(activity, geography, version);
   const community = buildCommunityDistrictDigests(communityDigest, version);
   const meeting = buildMeetings(meetings, version);
