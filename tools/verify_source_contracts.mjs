@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
 import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { AWARD_SOURCE_REGISTRY } from "../site/external_awards.js";
 import { checkGeneratedSourceFiles } from "./generate_source_docs.mjs";
+import { contentDigest } from "./lib/source_content_digest.mjs";
 import {
   awardCoverage,
   classifyMocsFieldCase,
@@ -44,6 +46,19 @@ export function parsePublisherInstant(value) {
 
 function isoDay(epochMs) {
   return Number.isFinite(epochMs) ? new Date(epochMs).toISOString().slice(0, 10) : "unknown";
+}
+
+export { contentDigest } from "./lib/source_content_digest.mjs";
+
+function readRetainedContentReceipt(contract, options = {}) {
+  if (options.retainedReceipt) return options.retainedReceipt;
+  const check = contract.freshness_contract?.republish_content_check;
+  if (check?.mode !== "content_digest" || !check.artifact_path) return null;
+  try {
+    return JSON.parse(readFileSync(join(ROOT, check.artifact_path), "utf8"));
+  } catch {
+    return null;
+  }
 }
 
 let registryMemo = null;
@@ -168,7 +183,7 @@ async function mapPool(items, concurrency, fn) {
   return results;
 }
 
-export async function verifySocrata(contract) {
+export async function verifySocrata(contract, options = {}) {
   const metaUrl = `${contract.domain}/api/views/${contract.dataset_id}`;
   const metadataResponse = await labeledFetch(contract.id, "metadata", metaUrl);
   if (!metadataResponse.ok) throw new Error(`${contract.id}: metadata HTTP ${metadataResponse.status}`);
@@ -201,6 +216,26 @@ export async function verifySocrata(contract) {
   if (!pointerClass && pin) {
     const pinned = parsePublisherInstant(pin.publisher_updated_at);
     if (publisherAt !== pinned) {
+      const contentCheck = contract.freshness_contract?.republish_content_check;
+      const retainedReceipt = readRetainedContentReceipt(contract, options);
+      if (contentCheck?.mode === "content_digest" && retainedReceipt?.content_digest?.digest) {
+        const contentUrl = new URL(`${contract.domain}/resource/${contract.dataset_id}.geojson`);
+        contentUrl.searchParams.set("$limit", "50000");
+        const contentResponse = await labeledFetch(contract.id, "content", contentUrl.toString());
+        if (!contentResponse.ok) throw new Error(`${contract.id}: content HTTP ${contentResponse.status}`);
+        const contentRows = await responseJson(contentResponse, contract.id);
+        if (!Array.isArray(contentRows)) throw new Error(`${contract.id}: content response is not tabular rows`);
+        const digest = contentDigest(contentRows, contract.required_fields);
+        if (digest === retainedReceipt.content_digest.digest) {
+          options.onObservation?.({
+            publisher_clock_basis: clockField,
+            publisher_updated_at: new Date(publisherAt).toISOString(),
+            status: "affirmed",
+            content_digest: digest,
+          });
+          return `${contract.dataset_id} · republished, content unchanged at ${isoDay(publisherAt)} (${clockField}; retained pin unchanged)`;
+        }
+      }
       throw new Error(
         `${contract.id}: publisher republished (${clockField} ${isoDay(publisherAt)}; `
         + `pinned stable reference ${isoDay(pinned)}) — re-acquire the retained snapshot and re-pin`,
@@ -630,8 +665,8 @@ async function verifyDisabledMocs(contract) {
   return "disabled field case confirmed";
 }
 
-export async function verifyLiveContract(contract) {
-  if (contract.kind === "socrata") return verifySocrata(contract);
+export async function verifyLiveContract(contract, options = {}) {
+  if (contract.kind === "socrata") return verifySocrata(contract, options);
   if (contract.kind === "checkbook") return verifyCheckbook(contract);
   if (contract.kind === "arcgis") return verifyArcgis(contract);
   if (contract.kind === "geosearch") return verifyGeosearch(contract);
@@ -663,16 +698,24 @@ export async function verifySourceContracts({ live = false } = {}) {
 
   const results = [];
   const findings = [];
+  const observations = [];
   if (live && errors.length === 0) {
     const settled = await mapPool(registry.contracts, LIVE_CONCURRENCY, async (contract) => {
       try {
-        return { status: "fulfilled", value: { id: contract.id, detail: await verifyLiveContract(contract) } };
+        let observation = null;
+        const detail = await verifyLiveContract(contract, {
+          onObservation: (value) => { observation = value; },
+        });
+        return { status: "fulfilled", value: { id: contract.id, detail, observation } };
       } catch (reason) {
         return { status: "rejected", reason };
       }
     });
     for (const result of settled) {
-      if (result.status === "fulfilled") results.push(result.value);
+      if (result.status === "fulfilled") {
+        results.push(result.value);
+        if (result.value.observation) observations.push({ id: result.value.id, ...result.value.observation });
+      }
       else {
         const reason = result.reason;
         const message = reason?.message || String(reason);
@@ -682,13 +725,14 @@ export async function verifySourceContracts({ live = false } = {}) {
       }
     }
   }
-  return { errors, results, findings, contracts: registry.contracts.length };
+  return { errors, results, findings, observations, contracts: registry.contracts.length };
 }
 
 async function main() {
   const live = process.argv.includes("--live");
   const report = await verifySourceContracts({ live });
   for (const result of report.results) console.log(`ok ${result.id}: ${result.detail}`);
+  for (const observation of report.observations) console.log(`observation ${JSON.stringify(observation)}`);
   if (report.errors.length) {
     for (const error of report.errors) console.error(`error ${error}`);
     // Machine-readable companion to each freshness error, so the scheduled
