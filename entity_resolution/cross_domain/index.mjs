@@ -58,6 +58,7 @@ export {
   meetingLandLinksForObservation,
   normalizeBbl,
   resolveParcelSubject,
+  procurementParcelLinksForObservation,
   mergeBblsOntoLandObservations,
   rootsForObservation,
   linkObservation,
@@ -111,6 +112,12 @@ export {
   buildParcelIntelligence,
   buildPropertyCrossDomainDoc,
 } from "./property_links.mjs";
+
+export {
+  PROCUREMENT_PARCEL_RELATION_SCHEMA,
+  buildProcurementParcelRelations,
+  validateProcurementParcelRelations,
+} from "../../warehouse/lib/procurement_parcel_relations.mjs";
 
 export {
   CROSS_SPINE_EDGE_POLICY_SCHEMA,

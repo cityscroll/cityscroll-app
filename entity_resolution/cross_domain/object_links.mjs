@@ -151,6 +151,11 @@ export const CROSS_DOMAIN_LINK_TYPES = Object.freeze({
     domains: Object.freeze(["land"]),
     registry: false,
   },
+  procurement_sited_on_parcel: {
+    description: "Procurement notice or contract has accepted physical-site evidence on an exact parcel",
+    domains: Object.freeze(["money"]),
+    registry: false,
+  },
   decides_land_project: {
     description:
       "Compatibility projection of an exact meeting→land-project join. Canonical semantics are about_project or reviews_project; this id does not mean the meeting decided the project.",
@@ -1984,14 +1989,15 @@ export function linkObservation(obs) {
   const roots = rootsForObservation(obs);
   // Join-key edges may exist without agency/vendor roots (parcel / pin / contract / land).
   const parcelLinks = parcelLinksForObservation(obs);
+  const procurementParcelLinks = procurementParcelLinksForObservation(obs);
   const joinKeyLinks = joinKeyLinksForObservation(obs);
   const meetingLandLinks = meetingLandLinksForObservation(obs);
-  if (!roots.length && !parcelLinks.length && !joinKeyLinks.length && !meetingLandLinks.length) {
+  if (!roots.length && !parcelLinks.length && !procurementParcelLinks.length && !joinKeyLinks.length && !meetingLandLinks.length) {
     return { objects: [], links: [] };
   }
 
   const objects = [];
-  const links = [];
+  const links = [...procurementParcelLinks];
   const objectSubject = obs.subject_ref || null;
   const bbls = Array.isArray(obs.bbls) ? obs.bbls.map(normalizeBbl).filter(Boolean) : [];
 
@@ -2297,6 +2303,72 @@ function parcelLinksForObservation(obs) {
   return edges;
 }
 
+/**
+ * Consume admitted procurement site evidence as parcel sidecars. Extraction,
+ * role screening, and address resolution happen upstream in the materializer.
+ */
+export function procurementParcelLinksForObservation(obs) {
+  if (!obs || obs.domain !== "money" || !obs.subject_ref) return [];
+  const evidence = [
+    ...(Array.isArray(obs.site_evidence) ? obs.site_evidence : []),
+    ...(Array.isArray(obs.accepted_site_evidence) ? obs.accepted_site_evidence : []),
+  ];
+  const edges = [];
+  const seen = new Set();
+  for (const item of evidence) {
+    const accepted = item?.accepted === true
+      || item?.classification === "accepted"
+      || item?.resolution?.status === "resolved";
+    const role = clean(item?.evidence_role || item?.role);
+    if (!accepted || !["facility_service_site", "annex_site", "explicit_bbl"].includes(role)) continue;
+    const bbl = normalizeBbl(item?.resolved_bbl ?? item?.bbl);
+    if (!bbl) continue;
+    const key = `${obs.subject_ref}|${bbl}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const parcel = resolveParcelSubject(bbl);
+    const provenance = makeProvenance({
+      source_system: item?.source_system || obs.source_system,
+      source_record_id: item?.source_record_id || item?.evidence_id || obs.source_record_id,
+      source_fields: [item?.source_field, "resolved_bbl", item?.passage_locator, item?.contract_scope?.section_locator],
+      basis: "accepted_procurement_site_evidence",
+      observed_at: item?.source_date || item?.provenance?.date || obs.when,
+      source_url: item?.source_url || item?.provenance?.source_url,
+      input_value: item?.published_value || bbl,
+    });
+    if (!parcel || !provenance) continue;
+    const edge = makeExactKeyObjectLink({
+      type: "procurement_sited_on_parcel",
+      from: obs.subject_ref,
+      to: parcel.ref,
+      domain: "money",
+      confidence: "strong",
+      method: "accepted_procurement_site_evidence_v1",
+      method_version: "1",
+      provenance: {
+        ...provenance,
+        join_key: "bbl",
+        join_value: bbl,
+        evidence_id: item?.evidence_id || null,
+        address: item?.original_address || item?.published_value || null,
+        contract_scope: item?.contract_scope || null,
+        pad_version: item?.provenance?.resolver?.version || item?.resolution?.version || null,
+      },
+    });
+    if (edge) {
+      edge.provenance = {
+        ...edge.provenance,
+        evidence_id: item?.evidence_id || null,
+        address: item?.original_address || item?.published_value || null,
+        contract_scope: item?.contract_scope || null,
+        pad_version: item?.provenance?.resolver?.version || item?.resolution?.version || null,
+      };
+      edges.push(edge);
+    }
+  }
+  return edges;
+}
+
 function hrefForObject(obs) {
   // Official skim: event-scoped vote summary when person id is known.
   if (obs.domain === "people" && obs.person_id) {
@@ -2324,6 +2396,7 @@ function hrefForObject(obs) {
 /** Link types that are join-key sidecars (not the primary identity edge per object). */
 const SIDE_LINK_TYPES = new Set([
   "sited_on_parcel",
+  "procurement_sited_on_parcel",
   "shares_authority_key",
   "references_contract",
   "payment_on_contract",
@@ -2702,6 +2775,7 @@ export function buildEntityIntelligenceFromBucket(root, bucket, opts = {}) {
   const totalObjects = CROSS_DOMAIN_DOMAINS.reduce((n, d) => n + domains[d].count, 0);
   const joinKeyTypes = [
     "sited_on_parcel",
+    "procurement_sited_on_parcel",
     "shares_authority_key",
     "references_contract",
     "payment_on_contract",
