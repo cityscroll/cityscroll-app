@@ -76,6 +76,20 @@ function batchCandidateFrom(candidate, overrides = {}) {
   };
 }
 
+function fixtureBatchFromArtifact(artifact, fixture = {}) {
+  const candidatesById = new Map(artifact.candidates.map((candidate) => [candidate.id, candidate]));
+  const candidates = fixture.candidate_ids.map((candidateId) => {
+    const candidate = candidatesById.get(candidateId);
+    assert.ok(candidate, `fixture candidate ${candidateId} must exist in the artifact`);
+    return batchCandidateFrom(candidate);
+  });
+  return {
+    batch_id: fixture.batch_id,
+    source_artifact_hash: artifact.content_hash,
+    candidates,
+  };
+}
+
 function groundedBatch(artifact, overrides = {}) {
   const eligible = artifact.candidates.filter((candidate) => candidate.eligible === true);
   return {
@@ -351,23 +365,43 @@ test("A3: an invalid public artifact is refused as a whole and reports validatio
 
 test("A3: the committed fixture batch checks deliverable against the committed public artifact", () => {
   const artifact = JSON.parse(readFileSync(ARTIFACT_PATH, "utf8"));
-  const batch = JSON.parse(readFileSync(FIXTURE_BATCH_PATH, "utf8"));
+  const fixture = JSON.parse(readFileSync(FIXTURE_BATCH_PATH, "utf8"));
+  const batch = fixtureBatchFromArtifact(artifact, fixture);
   const receipt = checkBatchHonesty({ artifact, demoManifest: DEMO_MANIFEST, batch });
   assert.deepEqual(receipt.artifact_errors, []);
   assert.equal(receipt.deliverable, true);
   assert.deepEqual(receipt.excluded_ids, []);
 });
 
-test("the CLI prints a receipt and exits non-zero exactly when the batch is not deliverable", () => {
-  const good = spawnSync(process.execPath, [CLI_PATH, FIXTURE_BATCH_PATH], { cwd: ROOT, encoding: "utf8" });
-  assert.equal(good.status, 0, good.stderr || good.stdout);
-  const goodReceipt = JSON.parse(good.stdout);
-  assert.equal(goodReceipt.deliverable, true);
+test("A3: the fixture template follows a refreshed artifact without a hash or timestamp bump", () => {
+  const fixture = JSON.parse(readFileSync(FIXTURE_BATCH_PATH, "utf8"));
+  const refreshed = buildProductUpdatesArtifact(sources({
+    reconciliation: healthyReconciliation({
+      as_of: "2026-09-14T07:15:00-04:00",
+      generated_at: "2026-09-14T07:15:00-04:00",
+    }),
+  }));
+  const batch = fixtureBatchFromArtifact(refreshed, fixture);
+  const receipt = checkBatchHonesty({ artifact: refreshed, demoManifest: DEMO_MANIFEST, batch });
+  assert.equal(receipt.deliverable, true);
+  assert.deepEqual(receipt.excluded_ids, []);
+});
 
+test("the CLI prints a receipt and exits non-zero exactly when the batch is not deliverable", () => {
   const directory = mkdtempSync(join(tmpdir(), "product-updates-honesty-"));
   try {
-    const brokenBatch = JSON.parse(readFileSync(FIXTURE_BATCH_PATH, "utf8"));
-    brokenBatch.candidates[0].claim = "a claim the public artifact does not record";
+    const fixture = JSON.parse(readFileSync(FIXTURE_BATCH_PATH, "utf8"));
+    const artifact = JSON.parse(readFileSync(ARTIFACT_PATH, "utf8"));
+    const goodBatch = fixtureBatchFromArtifact(artifact, fixture);
+    const goodPath = join(directory, "good-batch.json");
+    writeFileSync(goodPath, JSON.stringify(goodBatch));
+    const good = spawnSync(process.execPath, [CLI_PATH, goodPath], { cwd: ROOT, encoding: "utf8" });
+    assert.equal(good.status, 0, good.stderr || good.stdout);
+    const goodReceipt = JSON.parse(good.stdout);
+    assert.equal(goodReceipt.deliverable, true);
+
+    const brokenBatch = { ...goodBatch, candidates: goodBatch.candidates.map((candidate, index) =>
+      index === 0 ? { ...candidate, claim: "a claim the public artifact does not record" } : candidate) };
     const brokenPath = join(directory, "batch.json");
     writeFileSync(brokenPath, JSON.stringify(brokenBatch));
     const bad = spawnSync(process.execPath, [CLI_PATH, brokenPath], { cwd: ROOT, encoding: "utf8" });
