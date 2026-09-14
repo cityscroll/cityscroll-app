@@ -23,6 +23,9 @@ import {
   usablePin,
   pinBase,
   checkbookSuccess,
+  CHECKBOOK_ACQUISITION_STATES,
+  checkbookAcquisitionState,
+  normalizeCheckbookContractId,
 } from "./lib/checkbook_lifecycle.mjs";
 import { stripOneSuffix, normId } from "./lib/passport_join.mjs";
 import {
@@ -54,6 +57,12 @@ const PAGE_SIZE = 25;
 const MAX_PAGES = 4; // 4 × 25 = 100 records cap per domain per notice
 const PREWARM_MAX = 40;
 const OCP_PIN_LIMIT = 10;
+
+export const EMMONS_CHECKBOOK_ANCHOR = Object.freeze({
+  request_id: "20240829105",
+  contract_id: "CT107120258801626",
+  pin: "07124E0044001",
+});
 
 /** Project observed lifecycle stages from canonical procurement identity. */
 export function procurementLifecycleForObject(object = {}, observations = []) {
@@ -106,6 +115,15 @@ function contractsRequestXml(pin, status, from) {
     + `</search_criteria></request>`;
 }
 
+export function exactContractRequestXml(contractId, status, from) {
+  const exact = normalizeCheckbookContractId(contractId);
+  return `<request><type_of_data>Contracts</type_of_data><records_from>${from}</records_from><max_records>${PAGE_SIZE}</max_records><search_criteria>`
+    + `<criteria><name>status</name><type>value</type><value>${status}</value></criteria>`
+    + `<criteria><name>category</name><type>value</type><value>expense</value></criteria>`
+    + `<criteria><name>contract_id</name><type>value</type><value>${escXml(exact)}</value></criteria>`
+    + `</search_criteria></request>`;
+}
+
 // Spending domain rejects `pin` (Checkbook code 1101). Valid filters include contract_id,
 // payee_name, fiscal_year, … — join payments by the registered/pending contract id.
 function spendingRequestXml(contractId, from) {
@@ -138,6 +156,16 @@ async function fetchCheckbookDomain(requestFn) {
     if (txs.length < PAGE_SIZE) return { records, ok: true };
   }
   return { records, ok: true, capped: true }; // hit the page cap
+}
+
+export async function fetchCheckbookContractsByExactId(contractId, status) {
+  const exact = normalizeCheckbookContractId(contractId);
+  if (!exact) return { records: [], ok: true };
+  const result = await fetchCheckbookDomain((from) => exactContractRequestXml(exact, status, from));
+  return {
+    ...result,
+    records: result.records.filter((row) => normalizeCheckbookContractId(row?.id) === exact),
+  };
 }
 
 // Fetch all spending pages for one contract id (same pattern, different parser).
@@ -648,6 +676,67 @@ export async function computeLifecycle(env, requestId, noticeRow) {
   return { lifecycle, ok: true };
 }
 
+/**
+ * Compute a monitored contract through the exact Checkbook contract key. This
+ * path intentionally never falls back to PIN or PIN-family lookup: a completed
+ * empty result is retained as no exact match, while transport/API failure is
+ * retained as temporarily unavailable.
+ */
+export async function computeExactContractLifecycle(env, contractId, requestId, noticeRow) {
+  const exact = normalizeCheckbookContractId(contractId);
+  const r = noticeRow === undefined ? await fetchNoticeRow(env, requestId) : noticeRow;
+  if (!r || !exact) return { lifecycle: null, ok: false };
+
+  const observedAt = new Date().toISOString();
+  const [pending, registered] = await Promise.all([
+    fetchCheckbookContractsByExactId(exact, "pending"),
+    fetchCheckbookContractsByExactId(exact, "registered"),
+  ]);
+  const exactRows = [...pending.records, ...registered.records];
+  const spending = exactRows.length
+    ? await fetchCheckbookSpendingByContractIds([exact])
+    : { records: [], ok: pending.ok && registered.ok };
+  let lifecycle = assembleLifecycle(r, pending.records, registered.records, spending.records, {
+    pinStrategy: "exact-contract-id",
+    lookupStatus: {
+      pending: pending.ok ? "ok" : "error",
+      registered: registered.ok ? "ok" : "error",
+      spending: spending.ok ? "ok" : "error",
+    },
+  });
+  lifecycle = attachOcpAward(lifecycle, { status: "unmatched", rows: [] });
+  lifecycle = attachMoneyCivicEvents(lifecycle, r, {
+    processed_at: observedAt,
+    run_id: `contract-lifecycle:${requestId}:exact`,
+  });
+  lifecycle = attachAwardPrimeGoal(lifecycle, r);
+  const acquisition = checkbookAcquisitionState({
+    lookupStatus: {
+      pending: pending.ok ? "ok" : "error",
+      registered: registered.ok ? "ok" : "error",
+    },
+    rows: exactRows,
+    observedAt,
+  });
+  return {
+    lifecycle: {
+      ...lifecycle,
+      checkbook_acquisition: {
+        state: acquisition,
+        contract_id: exact,
+        requested_contract_id: String(contractId),
+        pin: r.pin || null,
+        observed_at: observedAt,
+        payment_population: exactRows.length ? "exact contract_id spending rows" : null,
+        payment_as_of: spending.records.length
+          ? spending.records.map((row) => row.date).filter(Boolean).sort().at(-1) || null
+          : null,
+      },
+    },
+    ok: true,
+  };
+}
+
 // ---------------------------------------------------------------------------
 // D1 cache (contract_lifecycle table)
 // ---------------------------------------------------------------------------
@@ -664,7 +753,7 @@ export async function computeLifecycle(env, requestId, noticeRow) {
  */
 // v3: stamp award_prime_goal (award → prime identity → honest M/WBE-goal absence).
 // v4: stamp payment_rows (check-level Checkbook Spending trail on payment stage).
-export const CONTRACT_LIFECYCLE_ASSEMBLY_VERSION = 4;
+export const CONTRACT_LIFECYCLE_ASSEMBLY_VERSION = 5;
 
 /**
  * True when a cached lifecycle was assembled by the current recovery/coherence path.
@@ -691,6 +780,10 @@ async function cacheGet(env, requestId) {
     ).bind(requestId).first();
     if (row && row.lifecycle) {
       const m = JSON.parse(row.lifecycle);
+      if (m.checkbook_acquisition?.observed_at
+        && Date.now() - Date.parse(m.checkbook_acquisition.observed_at) > 36 * 60 * 60 * 1000) {
+        m.checkbook_acquisition = { ...m.checkbook_acquisition, state: CHECKBOOK_ACQUISITION_STATES.STALE };
+      }
       if (contractLifecycleCacheIsCurrent(m)) return m;
     }
   } catch { /* miss */ }
@@ -732,15 +825,22 @@ export async function getOrCompute(env, requestId) {
 // Bounded daily prewarm
 // ---------------------------------------------------------------------------
 
-export async function prewarmContractLifecycle(env, requestIds) {
-  const ids = Array.isArray(requestIds) ? [...new Set(requestIds.filter(Boolean))].slice(0, PREWARM_MAX) : [];
+export async function prewarmContractLifecycle(env, requestIds, monitoredAnchors = []) {
+  const ids = Array.isArray(requestIds) ? [...new Set([
+    ...requestIds.filter(Boolean),
+    ...monitoredAnchors.map((anchor) => anchor?.request_id).filter(Boolean),
+  ])].slice(0, PREWARM_MAX) : monitoredAnchors.map((anchor) => anchor?.request_id).filter(Boolean).slice(0, PREWARM_MAX);
   let computed = 0, skipped = 0, failed = 0;
   for (const id of ids) {
     try {
       if (await cacheGet(env, id)) { skipped++; continue; }
-      const { lifecycle, ok } = await computeLifecycle(env, id);
+      const exactAnchor = monitoredAnchors.find((anchor) => anchor?.request_id === id);
+      const exact = Boolean(exactAnchor);
+      const { lifecycle, ok } = exact
+        ? await computeExactContractLifecycle(env, exactAnchor.contract_id, id)
+        : await computeLifecycle(env, id);
       if (!ok || !lifecycle) { failed++; continue; }
-      if (lifecycle.ok) {
+      if (lifecycle.ok || exact) {
         const row = await fetchNoticeRow(env, id).catch(() => null);
         await cachePut(env, id, row && row.agency_name, lifecycle);
       }

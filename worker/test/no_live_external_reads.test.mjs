@@ -139,7 +139,7 @@ test("snapshot-only handlers make zero publisher requests for fresh, stale, and 
     }
     const lifecycle = {
       ok: true,
-      assembly_version: 4,
+      assembly_version: 5,
       timeline: [],
       ocp_award: { status: "unmatched" },
       civic_events: [],
