@@ -118,6 +118,7 @@ export function buildSharedProcurementReadModel({
     lookupAsOf,
   });
   const lookupByObject = new Map(lookupProjection.rows.map((receipt) => [receipt.procurement_id, receipt]));
+  const hasLookupMaterializations = Object.keys(lookupMaterializations || {}).length > 0;
   for (const object of rows) {
     const processEvents = procurementProcessEvents(object, observations, observationIndex);
     if (processEvents.length) object.process_events = processEvents;
@@ -132,7 +133,7 @@ export function buildSharedProcurementReadModel({
     });
     if (receipt) object.cross_source_evidence_receipt = receipt;
     const lookupReceipt = lookupByObject.get(object.procurement_id);
-    if (lookupReceipt) object.procurement_source_lookup_receipt = lookupReceipt;
+    if (hasLookupMaterializations && lookupReceipt) object.procurement_source_lookup_receipt = lookupReceipt;
   }
   return {
     schema: SHARED_PROCUREMENT_READ_MODEL_SCHEMA,
