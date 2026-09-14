@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -15,6 +15,8 @@ import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 import { entityPivotRouteStatus } from "../site/edge_summary.mjs";
 import { readCommunityBoardMeetingIndex } from "../tools/lib/community_board_meeting_index_io.mjs";
 
+const releaseJourneyManifest = JSON.parse(readFileSync(new URL("../docs/evidence/community-board-release-journeys/manifest.json", import.meta.url)));
+const resourceMatrix = JSON.parse(readFileSync(new URL("../docs/evidence/community-board-resources/resource-matrix-2026-08-13.json", import.meta.url)));
 const sourceRegistry = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/source_registry.json", import.meta.url)));
 const sourceInventory = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/board_source_inventory.json", import.meta.url)));
 const scorecard = JSON.parse(readFileSync(new URL("../site/data/community_board_minutes_scorecard.json", import.meta.url)));
@@ -25,6 +27,31 @@ const communityBoardPayrollContext = JSON.parse(readFileSync(new URL("../site/da
 const meetingIndex = readCommunityBoardMeetingIndex(new URL("../site/data/community_board_meeting_index.json", import.meta.url));
 
 const sources = { sourceRegistry, sourceInventory, scorecard, geography };
+
+test("release journey evidence names every acceptance obligation and its retained artifacts", () => {
+  assert.equal(releaseJourneyManifest.repository_revision, "aa34c9481ad843030719eceb026dbdebdb2db054");
+  assert.equal(releaseJourneyManifest.acceptance.A3.board_count, 59);
+  assert.equal(releaseJourneyManifest.acceptance.A3.resource_role_dispositions, 59);
+  assert.equal(resourceMatrix.scope.board_count, 59);
+  assert.equal(resourceMatrix.boards.length, 59);
+  assert.ok(resourceMatrix.boards.every((board) => board.destinations.every((destination) => destination.disposition)));
+  assert.deepEqual(
+    releaseJourneyManifest.acceptance.A3.specimens.map(({ board }) => board),
+    ["brooklyn-cb-15", "manhattan-cb-06", "bronx-cb-11", "bronx-cb-01", "queens-cb-01", "staten-island-cb-01"],
+  );
+  for (const key of ["A1", "A2", "A3", "A4"]) {
+    assert.equal(releaseJourneyManifest.acceptance[key].status, "proved_by_existing_evidence");
+    assert.ok(releaseJourneyManifest.acceptance[key].evidence.length > 0, `${key} has no retained evidence`);
+    for (const path of releaseJourneyManifest.acceptance[key].evidence) {
+      assert.equal(existsSync(new URL(`../${path}`, import.meta.url)), true, `${key} evidence missing: ${path}`);
+    }
+  }
+  assert.match(releaseJourneyManifest.unit_gate, /community_board_links\.test\.mjs/);
+  assert.deepEqual(releaseJourneyManifest.functional_paths, [
+    "python3 test/functional/33_community_board_pivot.py",
+    "python3 test/functional/34_near_you_surface_switch.py",
+  ]);
+});
 
 test("board routes preserve the separate place, governance, and output projections", () => {
   assert.equal(communityBoardPath("bronx-cb-02"), "/community-boards/bronx-cb-02/");

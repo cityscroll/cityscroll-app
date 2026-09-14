@@ -1,0 +1,72 @@
+{
+  "schema": "cityscroll.community_board_release_journey_manifest.v1",
+  "repository_revision": "aa34c9481ad843030719eceb026dbdebdb2db054",
+  "data_vintage": "Committed Community Board read models and source registries as built on 2026-09-14",
+  "image_policy": "Textual manifests are the committed evidence; image captures remain local and ignored.",
+  "unit_gate": "node --test test/community_board_links.test.mjs test/community_board_constellation.test.mjs test/near_you_static.test.mjs test/community_board_calendar.test.mjs test/community_board_request_responses.test.mjs",
+  "functional_paths": [
+    "python3 test/functional/33_community_board_pivot.py",
+    "python3 test/functional/34_near_you_surface_switch.py"
+  ],
+  "acceptance": {
+    "A1": {
+      "status": "proved_by_existing_evidence",
+      "evidence": [
+        "test/community_board_links.test.mjs",
+        "test/community_board_constellation.test.mjs",
+        "docs/evidence/board-overview-verification/manifest.json",
+        "docs/evidence/community-board-resources/cb15-destination-evidence-2026-08-13.json",
+        "docs/evidence/canonical-place-links/capture-manifest.json"
+      ],
+      "assertion": "Brooklyn Community Board 15 has a canonical board route, next-meeting first-render evidence, reviewed official calendar/agenda/minutes/contact destinations, and a canonical K15 Near You round trip."
+    },
+    "A2": {
+      "status": "proved_by_existing_evidence",
+      "evidence": [
+        "test/community_board_calendar.test.mjs",
+        "test/community_board_request_responses.test.mjs",
+        "docs/screenshots/community-board-calendar/capture-receipt.json",
+        "docs/evidence/board-budget-requests/manifest.json"
+      ],
+      "assertion": "The dense calendar and request surfaces retain Month/List, inspection dismissal, source destinations, keyboard/no-script paths, and scope/scroll-preserving return observations."
+    },
+    "A3": {
+      "status": "proved_by_existing_evidence",
+      "board_count": 59,
+      "resource_role_dispositions": 59,
+      "specimens": [
+        { "board": "brooklyn-cb-15", "state": "populated", "evidence": "docs/evidence/board-overview-verification/manifest.json" },
+        { "board": "manhattan-cb-06", "state": "dense", "evidence": "docs/screenshots/community-board-calendar/capture-receipt.json" },
+        { "board": "bronx-cb-11", "state": "sparse", "evidence": "docs/screenshots/community-board-calendar/capture-receipt.json" },
+        { "board": "bronx-cb-01", "state": "coverage_unavailable_or_no_scheduled_meetings", "evidence": "docs/screenshots/community-board-calendar/capture-receipt.json" },
+        { "board": "queens-cb-01", "state": "alternate_official_source_pattern", "evidence": "docs/evidence/community-board-resources/resource-matrix-2026-08-13.json" },
+        { "board": "staten-island-cb-01", "state": "borough_coverage", "evidence": "docs/evidence/community-board-resources/resource-matrix-2026-08-13.json" }
+      ],
+      "evidence": [
+        "test/community_board_links.test.mjs",
+        "test/community_board_constellation.test.mjs",
+        "test/near_you_static.test.mjs",
+        "docs/evidence/community-board-resources/resource-matrix-2026-08-13.json",
+        "docs/screenshots/community-board-calendar/capture-receipt.json",
+        "docs/evidence/near-you-honest-states/capture-manifest.json",
+        "docs/evidence/community-district-relationships/capture-manifest.json"
+      ],
+      "assertion": "All registry boards retain exact identity/place mappings and resource dispositions; the six named specimens cover populated, dense, sparse, unavailable, alternate-source, and borough-coverage states with narrow, no-script, keyboard, translation, invalid-place, and failure recovery contracts."
+    },
+    "A4": {
+      "status": "proved_by_existing_evidence",
+      "evidence": [
+        "test/community_board_links.test.mjs",
+        "test/community_board_constellation.test.mjs",
+        "test/near_you_static.test.mjs",
+        "test/community_board_calendar.test.mjs",
+        "test/community_board_request_responses.test.mjs",
+        "docs/evidence/canonical-place-links/capture-manifest.json",
+        "docs/screenshots/community-board-calendar/capture-receipt.json",
+        "docs/evidence/board-budget-requests/manifest.json",
+        "docs/evidence/near-you-honest-states/capture-manifest.json"
+      ],
+      "assertion": "Retained manifests record routes, viewports, revisions, data vintages, assertions, and render hashes where applicable; unit and functional invocations are named separately and unresolved external-source freshness is not promoted to a pass."
+    }
+  }
+}
