@@ -3,6 +3,7 @@ import { MEETING_ICS_FLOOR, MEETING_FLOOR_ROWS, NEAR_YOU_FLOOR } from "../data/r
 export const ROUTE_READ_MODEL_SCHEMA_VERSION = 1;
 export const NEAR_YOU_MANIFEST_KEY = "route-read-model:near-you:manifest:v1";
 export const MEETING_MANIFEST_KEY = "route-read-model:meetings:manifest:v1";
+export const COMMUNITY_DISTRICT_DIGEST_MANIFEST_KEY = "route-read-model:community-district-digest:manifest:v1";
 export const ROUTE_READ_MODEL_TIMEOUT_MS = 5_000;
 
 const cacheByKv = new WeakMap();
@@ -51,7 +52,11 @@ async function getJson(kv, key, state, timeoutMs = ROUTE_READ_MODEL_TIMEOUT_MS) 
 async function manifestFor(kv, kind, timeoutMs = ROUTE_READ_MODEL_TIMEOUT_MS) {
   const state = stateFor(kv);
   if (!state.manifests.has(kind)) {
-    const key = kind === "near-you" ? NEAR_YOU_MANIFEST_KEY : MEETING_MANIFEST_KEY;
+    const key = kind === "near-you"
+      ? NEAR_YOU_MANIFEST_KEY
+      : kind === "community-district-digest"
+        ? COMMUNITY_DISTRICT_DIGEST_MANIFEST_KEY
+        : MEETING_MANIFEST_KEY;
     const pending = getJson(kv, key, state, timeoutMs).then((manifest) => {
       if (Number(manifest.schema_version) !== ROUTE_READ_MODEL_SCHEMA_VERSION
         || manifest.kind !== kind || !manifest.version || !manifest.slices) {
@@ -204,6 +209,23 @@ export async function loadMeetingRecord(env, meetingId) {
   if (!key) return null;
   const slice = await getJson(env.ALERT_STATE, key, stateFor(env.ALERT_STATE));
   return (slice.rows || []).find((row) => row?.meeting_id === meetingId) || null;
+}
+
+/**
+ * Load one materialized community-district digest slice by identity. The
+ * request path never receives the full digest corpus: the manifest selects
+ * the keyed slice and the isolate cache reuses it for subsequent reads.
+ */
+export async function loadCommunityDistrictDigest(env, district) {
+  if (missingBinding(env)) return null;
+  const id = String(district || "").toUpperCase();
+  if (!/^[MXKQR](?:0[1-9]|1[0-8])$/.test(id)) return null;
+  const manifest = await manifestFor(env.ALERT_STATE, "community-district-digest");
+  const key = manifest.slices?.[id];
+  if (!key) return null;
+  const slice = await getJson(env.ALERT_STATE, key, stateFor(env.ALERT_STATE));
+  if (slice.kind !== "community-district-digest" || slice.slice_id !== id) return null;
+  return slice.digest?.by_community_district?.[id] || null;
 }
 
 /**
