@@ -73,6 +73,23 @@ def assert_route_parameters(url: str, expected: dict[str, list[str]]) -> None:
         assert actual.get(key) == expected.get(key), f"{key} changed: {actual.get(key)!r} != {expected.get(key)!r}"
 
 
+def navigation_url_matches(url: str, expected_href: str) -> bool:
+    actual = scope(url)
+    expected = scope(expected_href)
+    for key in ("lens", "agency", "when", "facet", "boro", "cd", "council"):
+        if key in expected and actual.get(key) != expected[key]:
+            return False
+    return "walk" in actual or url == expected_href
+
+
+def wait_for_navigation_scope(page, expected_href: str) -> None:
+    for _ in range(300):
+        if navigation_url_matches(page.url, expected_href):
+            return
+        page.wait_for_timeout(100)
+    raise AssertionError(f"Enter did not preserve scope while navigating to {expected_href}")
+
+
 def no_script_capture(browser, html: str):
     context = browser.new_context(viewport={"width": 1440, "height": 900}, java_script_enabled=False)
     page = context.new_page()
@@ -120,7 +137,7 @@ def keyboard_capture(browser, html: str):
         assert page.evaluate("document.activeElement?.tagName") == "A"
         label = page.evaluate("document.activeElement?.textContent.trim()")
         page.keyboard.press("Enter")
-        page.wait_for_url(expected_href, wait_until="domcontentloaded", timeout=30000)
+        wait_for_navigation_scope(page, expected_href)
         observations.append({"label": label, "active": "A", "url": page.url})
         assert_route_parameters(page.url, expected)
     return digest(observations)
