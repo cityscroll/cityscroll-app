@@ -26,6 +26,21 @@ RUM_MIN_SAMPLED_ROWS=30 \
 node tools/read_rum_drift.mjs --out <output-dir>
 ```
 
+The committed snappiness read-backs are refreshed by the read-only producer
+below. It reads the deployed Worker's authenticated `/admin/performance` model
+for the three existing gate identities and writes only local evidence files;
+it does not post to the Worker or alter production data. The credential is
+accepted only through a mode-0600 `CITYSCROLL_ADMIN_KEY_FILE` path. Each output
+carries `production field` provenance, the served route, deployed code revision,
+retained dataset vintage, exact observation window, and the true retained row
+count. Analytics Engine returns aggregates rather than raw rows, so no rows are
+reconstructed or padded.
+
+```bash
+CITYSCROLL_ADMIN_KEY_FILE=<mode-0600-key-file> \
+node tools/capture_field_rum_evidence.mjs
+```
+
 A read-back is retained as evidence only when the window is complete and at
 least 30 observations are retained; otherwise it is recorded as
 `insufficient_sample`, never rounded up to a pass. Measured values are labeled
@@ -139,17 +154,26 @@ and `docs/evidence/notice-context-readiness/read-back.json`.
   delivery; prior windows checked immediately after delivery were below the
   30-observation floor.
 
-Evidence: `docs/evidence/notice-context-readiness/read-back.json`, built from
-`test/fixtures/notice-context-readiness/read-back-input.json` via
-`node tools/build_notice_context_readiness_evidence.mjs`.
+The deterministic fixture comparison remains available through
+`node tools/build_notice_context_readiness_evidence.mjs --fixture`; the committed
+field artifact is refreshed by `tools/capture_field_rum_evidence.mjs`.
 
-### Open read-back: Notice cold module path (pending)
+### 2026-09-14 bounded production field capture
+
+- Window: `2026-09-07T09:14:26Z` – `2026-09-14T09:14:26Z` (complete seven-day window)
+- Retained observations: 127 (≥ the 30-observation floor)
+- p50 / p75 / p95: 430.0 ms / 1,039.1 ms / 3,119.8 ms
+- Result: `pass` for p75 ≤ 2500 ms and p95 ≤ 5000 ms.
+
+Evidence and provenance: `docs/evidence/notice-context-readiness/read-back.json`.
+
+### Read-back status: Notice cold module path
 
 Opened by the change that moved the five lens module groups off the Notice
 route's cold module chain. That change claims no latency improvement; this
 read-back is where the effect on the budget is measured.
 
-- Status: **pending**. Not yet evaluated, and not a pass or a failure.
+- Status: **evaluated** in the bounded 2026-09-14 production field capture above.
 - Delivered for review: `2026-09-06`. The measurement window opens at the
   delivery merge commit, not at this date.
 - Metrics to read, exactly as identified in production:
@@ -169,8 +193,7 @@ read-back is where the effect on the budget is measured.
   `docs/evidence/notice-cold-path/README.md`. They are a static measurement of
   the module graph, not a latency claim.
 
-Due once the change has been live in production for one complete window. The
-evaluation belongs to this read-back rather than to the change that opened it.
+The evaluation belongs to this read-back rather than to the change that opened it.
 
 ## Notice first byte
 
@@ -241,6 +264,25 @@ measurement of the response path, not a latency claim.
 Due once the change has been live in production for one complete window. The
 evaluation belongs to this read-back rather than to the change that opened it.
 
+## Notice primary
+
+Primary metric: `content_ready_ms`, surface `notice`, component `none`. Cited by
+`docs/evidence/notice-primary-readiness/read-back.json`.
+
+### 2026-09-14 bounded production field capture
+
+- Current window: `2026-09-07T09:14:27Z` – `2026-09-14T09:14:27Z`, complete.
+- Retained observations: 127; p50 / p75 / p95: 357.4 / 577.8 / 1,677.9 ms.
+- Previous complete window: 102 retained observations; p50 / p75 / p95:
+  2,403.6 / 3,389.2 / 6,552.1 ms.
+- Result: measured field comparison; the current distribution is within the
+  p75 ≤ 2500 ms and p95 ≤ 5000 ms budgets, with p75/p95 deltas of 2,811.4 /
+  4,874.2 ms (before minus after).
+
+The aggregate read model does not expose per-row release or device dimensions;
+the evidence records that limitation and never reconstructs individual rows.
+Evidence and provenance: `docs/evidence/notice-primary-readiness/read-back.json`.
+
 ## Browse Contracts
 
 Page-level content readiness: `content_ready_ms`, surface `browse-contracts`,
@@ -270,3 +312,14 @@ component `none`. Cited by
   `insufficient_sample`; percentiles withheld.
 
 Evidence: `docs/evidence/browse-contracts-first-page-read-back/read-back.json`.
+
+### 2026-09-14 bounded production field capture
+
+- Window: `2026-09-07T09:14:24Z` – `2026-09-14T09:14:24Z` (complete seven-day window)
+- Retained observations: 29 — one below the 30-row floor, so p50/p75/p95 are
+  withheld and the gate is not evaluable from this window.
+- Result: `insufficient_sample`; the capture records 29, never pads to 30.
+- Read endpoint revision: `4736ae3ed1ff`.
+
+Evidence and its machine-readable provenance are in
+`docs/evidence/browse-contracts-first-page-read-back/read-back.json`.

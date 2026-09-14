@@ -29,6 +29,8 @@ const OUTPUT = join(ROOT, "docs/evidence/notice-edge-response/read-back.json");
 
 const serialized = (value) => `${JSON.stringify(value, null, 2)}\n`;
 const readJson = (path) => JSON.parse(readFileSync(path, "utf8"));
+const isFieldReadBack = (value) => value?.provenance?.source === "production field"
+  && value.provenance.measurement_class === "field";
 
 const round = (value) => (Number.isFinite(value) ? Math.round(value * 10) / 10 : null);
 
@@ -118,6 +120,7 @@ export function build({ terminals }) {
   const latticeNoticeContext = (lattice.readiness_by_surface?.notice?.cells || []).find(
     (cell) => cell.metric_id === "component_ready_ms" && cell.component_id === "notice-context",
   );
+  const fieldReadBack = isFieldReadBack(readiness);
 
   return {
     schema: "cityscroll.notice_edge_response_evidence.v1",
@@ -224,10 +227,11 @@ export function build({ terminals }) {
       artifacts: [
         {
           path: "docs/evidence/notice-context-readiness/read-back.json",
-          selection_rule: "delivery-anchored",
-          selection_rule_detail:
-            "The window opens at the delivery merge and closes at the latest retained"
-            + " observation, so it admits only post-delivery observations.",
+          selection_rule: fieldReadBack ? "fixed-rolling-window" : "delivery-anchored",
+          selection_rule_detail: fieldReadBack
+            ? "The production field read-back uses the fixed 7d bucket ending at query time."
+            : "The window opens at the delivery merge and closes at the latest retained"
+              + " observation, so it admits only post-delivery observations.",
           sampled_count: readiness.primary?.sampled_count ?? null,
           p95_ms: readiness.primary?.p95_ms ?? null,
           carries_budget: true,
@@ -246,7 +250,9 @@ export function build({ terminals }) {
         },
       ],
       difference_sources: [
-        "window composition: the rolling window strictly contains the delivery-anchored one",
+        fieldReadBack
+          ? "window composition: the production field and lattice read-backs use separate query windows"
+          : "window composition: the rolling window strictly contains the delivery-anchored one",
         "per-query adaptive sampling: each query retains its own weighted rows, so two queries"
         + " over overlapping windows differ even where the windows agree",
       ],
@@ -255,8 +261,11 @@ export function build({ terminals }) {
         "Analytics Engine returns the aggregate, never the retained rows, so the two sources of"
         + " difference cannot be apportioned from what is retained.",
       gate:
-        "site/notice_context_readiness.mjs classifies the delivery-anchored artifact against the"
-        + " p75 and p95 budget; the lattice read-back carries no budget and states no SLO.",
+        fieldReadBack
+          ? "site/notice_context_readiness.mjs classifies the production field artifact against"
+            + " the p75 and p95 budget; the lattice read-back carries no budget and states no SLO."
+          : "site/notice_context_readiness.mjs classifies the delivery-anchored artifact against"
+            + " the p75 and p95 budget; the lattice read-back carries no budget and states no SLO.",
     },
   };
 }

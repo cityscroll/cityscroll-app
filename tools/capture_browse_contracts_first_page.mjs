@@ -105,7 +105,9 @@ function buildManifest(observed) {
   return {
     schema: "cityscroll.browse_contracts_evidence_capture.v1",
     change: "cityscroll-engineering/browse-contracts-first-page",
-    capture_kind: "functional network-order trace (no browser, no image capture)",
+    capture_kind: "fixture-only functional network-order trace (no browser, no image capture)",
+    measurement_class: "fixture",
+    field_gate_eligible: false,
     route: ROUTE,
     viewport: { name: "not-applicable", note: "network-order trace; no rendered viewport was captured" },
     revision: null,

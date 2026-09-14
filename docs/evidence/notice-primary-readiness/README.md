@@ -17,12 +17,12 @@ The primary body is the boundary. `content_ready_ms` for the `notice` surface is
 reported when the edge body or its honest unavailable state is present, while
 the optional owners are still in flight. A cold trace confirms that ordering.
 
-The size of the resulting improvement is **not** established. The planning
-projection for this change is a 3,000-7,000 ms reduction on slow devices; that
-remains an estimate.
-A production before/after read-back has been run (`read-back.json`), but both
-sides are below the 30-sample floor — mobile Notice traffic on this metric is
-low-volume — so no percentile comparison is published from it.
+The size of the resulting improvement is **not** established by the lab trace.
+The planning projection for this change is a 3,000-7,000 ms reduction on slow
+devices; that remains an estimate. A separate production before/after read-back
+has been run (`read-back.json`) from the deployed Worker's retained field
+aggregate: the current seven-day window has 127 rows and p75/p95 of
+577.8/1,677.9 ms.
 
 ## Exploring the boundary
 
@@ -55,20 +55,19 @@ the method and is not a measured saving. It corroborates neither the projected
 range nor any production result.
 
 `read-back.json` is the grouped production read-back over `content_ready_ms`
-for the `notice` surface, the page-level `none` component, and mobile devices.
-The before window (2026-08-19 through the deploy) retains 5 rows; the after
-window (the deploy through the read-back run) retains 0 — mobile production
-traffic against this metric has not yet accumulated on either side of the
-boundary. Both groups are below the 30-sample floor, so no percentiles and no
-delta are published. The comparison names that reason rather than leaving the
-gap to be filled by the estimate, and an empty after window is recorded as zero
-retained rows, not skipped or rounded up to a pass.
+for the `notice` surface and page-level `none` component. It carries a root
+`provenance` object naming the served route, deployed code revision, retained
+dataset vintage, observation window, and true retained count. The current and
+previous complete windows contain 127 and 102 retained rows respectively, so
+the measured field comparison reports p75/p95 deltas of 2,811.4/4,874.2 ms.
+The aggregate does not expose per-row device or release dimensions; the
+evidence names that scope rather than reconstructing rows.
 
 The 2026-08-26 field distribution for the Notice page (p50 2,073.8 ms,
 p75 3,798.1 ms, p95 8,615.2 ms over 64 retained rows) is carried as historical
-context. It predates the owner boundary and is not a result. That report also
-found no mobile readiness subgroup clearing the sample floor, so a
-mobile-specific claim is not yet available from the field at all.
+context. It predates the owner boundary and is not a result. The current
+aggregate read does not expose device-specific counts, so this evidence makes
+no device-specific claim.
 
 ## Methodology
 
@@ -86,12 +85,15 @@ observations the collector already reports.
 
 ## Production read-back source
 
-`test/fixtures/notice-primary-readiness/read-back-input.json` carries the raw
-rows the builder groups into `before`/`after`. Its production rows were read
-from the Analytics Engine SQL API (`crol_rum_observations_v1`), scoped to
-`metric_id = content_ready_ms`, `surface_id = notice`, `component_id = none`,
-`device_class = mobile`, `traffic_class = production`, split at the delivery
-merge boundary (2026-09-02T22:10:27Z UTC):
+The deterministic unit builder still reads
+`test/fixtures/notice-primary-readiness/read-back-input.json`; that fixture path
+is not a field gate producer. Production evidence is captured by
+`tools/capture_field_rum_evidence.mjs` through the deployed Worker's bounded
+admin read model, scoped to `metric_id = content_ready_ms`, `surface_id =
+notice`, `component_id = none`, `traffic_class = production`. The current and
+previous complete seven-day windows are `2026-09-07T09:14:27Z` –
+`2026-09-14T09:14:27Z` and `2026-08-31T09:14:27Z` –
+`2026-09-07T09:14:27Z`, with 127 and 102 retained rows.
 
 ```
 SELECT count() AS sampled_count, sum(_sample_interval) AS estimated_count,
@@ -106,21 +108,16 @@ WHERE blob1 = 'cityscroll.performance_observation.v1'
 ```
 
 against `https://api.cloudflare.com/client/v4/accounts/<account>/analytics_engine/sql`.
-Before window `2026-08-19T00:00:00Z/2026-09-02T22:10:27Z`: 5 retained rows.
-After window `2026-09-02T22:10:27Z/2026-09-06T13:40:17Z` (run time): 0 retained
-rows. Both are below the 30-sample floor; no percentiles are computed or
-published for either side, and the zero-row after window is recorded as zero,
-not treated as absent data.
+The committed producer uses the deployed Worker's read model rather than
+exposing this direct provider credential path; the SQL above remains the
+corresponding bounded aggregation grammar. The read model does not return
+per-row `release_id` or device dimensions, so the evidence records the deployed
+read revision and explicitly scopes those dimensions as aggregate-level.
 
-Production `release_id` tags observed in this window do not correspond to any
-commit reachable in this repository's history, so the before/after split uses
-the merge timestamp rather than a `release_id` filter; `revision` is left
-`null` on both groups for that reason.
-
-Rebuild or verify with:
+Rebuild deterministic fixture evidence or refresh production field evidence with:
 
 ```bash
-node tools/build_notice_primary_readiness_evidence.mjs
-node tools/build_notice_primary_readiness_evidence.mjs --check
+node tools/build_notice_primary_readiness_evidence.mjs --fixture
 python3 tools/capture_notice_primary_readiness.py
+CITYSCROLL_ADMIN_KEY_FILE=<mode-0600-key-file> node tools/capture_field_rum_evidence.mjs
 ```

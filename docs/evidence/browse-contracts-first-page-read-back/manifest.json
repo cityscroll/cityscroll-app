@@ -1,7 +1,9 @@
 {
   "schema": "cityscroll.browse_contracts_evidence_capture.v1",
   "change": "cityscroll-engineering/browse-contracts-first-page",
-  "capture_kind": "functional network-order trace (no browser, no image capture)",
+  "capture_kind": "fixture-only functional network-order trace (no browser, no image capture)",
+  "measurement_class": "fixture",
+  "field_gate_eligible": false,
   "route": "/browse/contracts/?mode=award&agency=Youth%20and%20Community%20Development",
   "viewport": {
     "name": "not-applicable",

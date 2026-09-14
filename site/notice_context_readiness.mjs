@@ -9,6 +9,8 @@
  * never become record identifiers.
  */
 
+import { validateFieldPerformanceEvidence } from "./field_performance_evidence.mjs";
+
 export const NOTICE_CONTEXT_READINESS_SCHEMA = "cityscroll.notice_context_readiness.v1";
 export const NOTICE_CONTEXT_READINESS_EVIDENCE_SCHEMA = "cityscroll.notice_context_readiness_evidence.v1";
 
@@ -217,6 +219,7 @@ export function projectNoticeContextReadiness({
   windowComplete = false,
   baseline = null,
   sampleFloor = NOTICE_CONTEXT_SAMPLE_FLOOR,
+  provenance = null,
 } = {}) {
   const primaryRows = dedupeNoticeContextObservations(primaryObservations).filter((row) => (
     row.metric_id === NOTICE_CONTEXT_PRIMARY_METRIC_ID
@@ -284,14 +287,19 @@ export function projectNoticeContextReadiness({
         not_a_pass: true,
       }
       : null,
+    ...(provenance && isRecord(provenance) ? { provenance: structuredClone(provenance) } : {}),
   };
   return evidence;
 }
 
-export function validateNoticeContextReadinessEvidence(evidence) {
+export function validateNoticeContextReadinessEvidence(evidence, { requireFieldProvenance = false } = {}) {
   const errors = [];
   if (!isRecord(evidence) || evidence.schema !== NOTICE_CONTEXT_READINESS_EVIDENCE_SCHEMA) {
     return { ok: false, errors: ["missing notice-context readiness evidence"] };
+  }
+  if (requireFieldProvenance || evidence.provenance != null) {
+    const provenance = validateFieldPerformanceEvidence(evidence);
+    if (!provenance.ok) errors.push(...provenance.errors);
   }
   const serialized = JSON.stringify(evidence);
   for (const key of FORBIDDEN_EVIDENCE_KEYS) {

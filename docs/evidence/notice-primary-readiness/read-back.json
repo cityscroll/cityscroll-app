@@ -27,35 +27,35 @@
     "metric_id": "content_ready_ms",
     "surface_id": "notice",
     "component_id": "none",
-    "sampled_count": 5,
+    "sampled_count": 102,
     "window_complete": true,
     "sample_floor": 30,
-    "sufficiency": "insufficient_sample",
-    "p50_ms": null,
-    "p75_ms": null,
-    "p95_ms": null,
+    "sufficiency": "sufficient",
+    "p50_ms": 2403.6,
+    "p75_ms": 3389.2,
+    "p95_ms": 6552.1,
     "result_states": {
-      "content": 5,
-      "empty": 0,
-      "unavailable": 0,
-      "error": 0
+      "content": null,
+      "empty": null,
+      "unavailable": null,
+      "error": null
     },
     "population": {
       "device_class": [
-        "mobile"
+        "aggregate"
       ],
       "navigation_type": [
-        "unknown"
+        "aggregate"
       ],
       "delivery_class": [
-        "pages_edge"
+        "aggregate"
       ],
       "traffic_class": [
         "production"
       ]
     },
     "measurement_class": "field",
-    "window": "2026-08-19T00:00:00Z/2026-09-02T22:10:27Z",
+    "window": "2026-08-31T09:14:27.000Z/2026-09-07T09:14:27.000Z",
     "revision": null
   },
   "after": {
@@ -63,40 +63,48 @@
     "metric_id": "content_ready_ms",
     "surface_id": "notice",
     "component_id": "none",
-    "sampled_count": 0,
-    "window_complete": false,
+    "sampled_count": 127,
+    "window_complete": true,
     "sample_floor": 30,
-    "sufficiency": "insufficient_sample",
-    "p50_ms": null,
-    "p75_ms": null,
-    "p95_ms": null,
+    "sufficiency": "sufficient",
+    "p50_ms": 357.4,
+    "p75_ms": 577.8,
+    "p95_ms": 1677.9,
     "result_states": {
-      "content": 0,
-      "empty": 0,
-      "unavailable": 0,
-      "error": 0
+      "content": null,
+      "empty": null,
+      "unavailable": null,
+      "error": null
     },
     "population": {
-      "device_class": [],
-      "navigation_type": [],
-      "delivery_class": [],
-      "traffic_class": []
+      "device_class": [
+        "aggregate"
+      ],
+      "navigation_type": [
+        "aggregate"
+      ],
+      "delivery_class": [
+        "aggregate"
+      ],
+      "traffic_class": [
+        "production"
+      ]
     },
-    "measurement_class": "unknown",
-    "window": "2026-09-02T22:10:27Z/2026-09-06T13:40:17Z",
+    "measurement_class": "field",
+    "window": "2026-09-07T09:14:27.000Z/2026-09-14T09:14:27.000Z",
     "revision": null
   },
   "comparison": {
-    "state": "insufficient_sample",
-    "reason": "before/after windows must both be complete and meet the sample floor",
-    "measurement_class": "mixed",
+    "state": "measured",
+    "reason": null,
+    "measurement_class": "field",
     "metric_id": "content_ready_ms",
     "surface_id": "notice",
     "component_id": "none",
-    "population_matched": false,
-    "delta_p50_ms": null,
-    "delta_p75_ms": null,
-    "delta_p95_ms": null
+    "population_matched": true,
+    "delta_p50_ms": 2046.2,
+    "delta_p75_ms": 2811.4,
+    "delta_p95_ms": 4874.2
   },
   "estimate": {
     "low_ms": 3000,
@@ -167,5 +175,24 @@
     "window": "2026-08-20T01:49:06Z/2026-08-26T13:10:50Z",
     "predates_owner_boundary": true,
     "not_a_result": true
+  },
+  "provenance": {
+    "schema": "cityscroll.performance.field_provenance.v1",
+    "source": "production field",
+    "measurement_class": "field",
+    "route": "/notice/",
+    "code_revision": "4736ae3ed1ff",
+    "code_revision_scope": "deployed Worker revision used for the read; retained rows may span releases",
+    "data_vintage": {
+      "dataset": "crol_rum_observations_v1",
+      "first_observation_at": "2026-09-07T09:20:59.000Z",
+      "latest_observation_at": "2026-09-13T18:16:17.000Z"
+    },
+    "observation_window": {
+      "start": "2026-09-07T09:14:27.000Z",
+      "end": "2026-09-14T09:14:27.000Z"
+    },
+    "sample_count": 127,
+    "queried_at": "2026-09-14T09:14:27.000Z"
   }
 }

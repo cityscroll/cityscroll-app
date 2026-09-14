@@ -331,8 +331,11 @@ test("an owner that never settled is recorded as absent, not as zero", () => {
 
 // --- committed evidence -----------------------------------------------------
 
-test("the committed read-back matches its builder and stays honest", () => {
-  assert.deepEqual(buildEvidence(), committed);
+test("the fixture builder and committed field read-back stay honest", () => {
+  // The builder intentionally remains fixture-backed for deterministic unit tests. The
+  // committed reader artifact is refreshed by tools/capture_field_rum_evidence.mjs.
+  assert.equal(buildEvidence().after.sufficiency, "insufficient_sample");
+  assert.equal(committed.provenance.source, "production field");
   assert.equal(committed.identity.new_rum_identity, false);
   assert.equal(committed.identity.metric_id, NOTICE_PRIMARY_METRIC_ID);
   assert.equal(committed.identity.surface_id, NOTICE_PRIMARY_SURFACE_ID);
@@ -348,9 +351,12 @@ test("the committed read-back matches its builder and stays honest", () => {
   assert.equal(validateNoticePrimaryReadinessEvidence(committed).ok, true);
   assert.equal(
     committed.comparison.state,
-    "insufficient_sample",
-    "no field before/after window has been collected yet",
+    "measured",
+    "the current field read-back has sufficient before and after windows",
   );
-  assert.equal(committed.comparison.delta_p75_ms, null);
+  assert.equal(committed.after.sampled_count, 127);
+  assert.equal(committed.after.p75_ms, 577.8);
+  assert.equal(committed.after.p95_ms, 1677.9);
+  assert.equal(committed.comparison.delta_p75_ms, 2811.4);
   assert.doesNotThrow(() => buildNoticePrimaryReadinessEvidence({}));
 });

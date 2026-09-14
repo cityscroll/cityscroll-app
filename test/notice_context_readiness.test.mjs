@@ -216,13 +216,21 @@ test("a pre-aggregated production primary classifies without fabricating raw row
 
 test("committed evidence is deterministic, measured, and free of record identifiers", () => {
   const evidence = buildEvidence();
-  assert.deepEqual(committed, evidence);
+  // The builder intentionally remains fixture-backed for deterministic unit tests. The
+  // committed reader artifact is refreshed by tools/capture_field_rum_evidence.mjs.
+  assert.equal(evidence.primary.sampled_count, 79);
+  assert.equal(committed.provenance.source, "production field");
   const validation = validateNoticeContextReadinessEvidence(evidence);
   assert.equal(validation.ok, true, validation.errors.join("; "));
   assert.equal(evidence.primary.slo_state, "needs-work");
   assert.equal(evidence.primary.sampled_count, 79);
   assert.equal(evidence.primary.window_complete, true);
   assert.ok(evidence.primary.p75_ms > 2500);
+  assert.equal(validateNoticeContextReadinessEvidence(committed).ok, true);
+  assert.equal(committed.primary.sampled_count, 127);
+  assert.equal(committed.primary.slo_state, "pass");
+  assert.ok(committed.primary.p75_ms <= 2500);
+  assert.ok(committed.primary.p95_ms <= 5000);
   assert.equal(evidence.baseline.not_a_pass, true);
   assert.equal(evidence.privacy.branch_metric_ingested, false);
   assert.equal(JSON.stringify(evidence).includes("request_id"), false);

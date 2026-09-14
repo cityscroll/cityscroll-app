@@ -192,11 +192,11 @@ test("a published tail states the sample behind it and names what is not retaine
 
 test("the two committed tails are reconciled by their window rule, and the gate reads one of them", () => {
   const reconciliation = committed.tail_reconciliation;
-  const [anchored, rolling] = reconciliation.artifacts;
+  const [readinessArtifact, rolling] = reconciliation.artifacts;
 
-  assert.equal(anchored.selection_rule, "delivery-anchored");
-  assert.equal(anchored.sampled_count, 79);
-  assert.equal(anchored.p95_ms, 8484.3);
+  assert.equal(readinessArtifact.selection_rule, "fixed-rolling-window");
+  assert.equal(readinessArtifact.sampled_count, 127);
+  assert.equal(readinessArtifact.p95_ms, 3119.8);
   assert.equal(rolling.selection_rule, "fixed-rolling-window");
   assert.equal(rolling.sampled_count, 85);
   assert.equal(rolling.p95_ms, 8001.9);
@@ -206,14 +206,15 @@ test("the two committed tails are reconciled by their window rule, and the gate 
     reconciliation.artifacts.filter((entry) => entry.read_by_the_gate).map((entry) => entry.path),
     ["docs/evidence/notice-context-readiness/read-back.json"],
   );
-  assert.equal(anchored.carries_budget, true);
+  assert.equal(readinessArtifact.carries_budget, true);
   assert.equal(rolling.carries_budget, false);
 
-  // The gate is the readiness classifier, and the artifact it reads is the one
-  // its own builder writes.
+  // The committed readiness artifact is a separately captured production-field
+  // read-back; the lattice remains historical context.
   const readiness = readJson("../docs/evidence/notice-context-readiness/read-back.json");
-  assert.equal(readiness.primary.p95_ms, anchored.p95_ms);
-  assert.equal(readiness.primary.sampled_count, anchored.sampled_count);
+  assert.equal(readiness.provenance.source, "production field");
+  assert.equal(readiness.primary.p95_ms, 3119.8);
+  assert.equal(readiness.primary.sampled_count, 127);
   assert.ok(Number.isFinite(readiness.primary.p95_budget_ms));
   const lattice = readJson("../docs/evidence/field-coverage-lattice-read-back/read-back.json");
   const latticeCell = lattice.readiness_by_surface.notice.cells
@@ -221,15 +222,12 @@ test("the two committed tails are reconciled by their window rule, and the gate 
   assert.equal(Math.round(latticeCell.percentiles.p95 * 10) / 10, rolling.p95_ms);
   assert.equal(latticeCell.slo_state, undefined, "the coverage read-back states no SLO");
 
-  // The rolling window strictly contains the delivery-anchored one, which is why
-  // it can admit observations the anchored window excludes. The anchored window
-  // is read from the readiness builder's own input rather than restated here.
-  const anchoredInput = readJson("../test/fixtures/notice-context-readiness/read-back-input.json");
-  const [anchoredStart, anchoredEnd] = anchoredInput.primaryAggregate.window.split("/");
-  assert.equal(anchoredInput.primaryAggregate.sampledCount, anchored.sampled_count);
-  assert.ok(Date.parse(lattice.window.start) < Date.parse(anchoredStart));
-  assert.ok(Date.parse(lattice.window.end) > Date.parse(anchoredEnd));
-  assert.ok(rolling.sampled_count > anchored.sampled_count);
+  // The two read-backs are separate fixed windows. The readiness artifact is the
+  // current production-field gate input; the lattice remains historical context.
+  const readinessWindow = readiness.provenance.observation_window;
+  assert.ok(Date.parse(readinessWindow.start) > Date.parse(lattice.window.end));
+  assert.ok(Date.parse(readinessWindow.end) > Date.parse(readinessWindow.start));
+  assert.ok(readinessArtifact.sampled_count > rolling.sampled_count);
   assert.equal(reconciliation.separable, false);
   assert.equal(reconciliation.difference_sources.length, 2);
 });
