@@ -5,6 +5,7 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
+import { TEST_CLOCK_PIN_ENV, withPinnedClock } from "./helpers/test_clock.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const MANIFEST_PATH = path.join(ROOT, "warehouse/derived_json_build_manifest.json");
@@ -84,15 +85,25 @@ test("required PR CI catches a stale keyword read model before Worker deployment
   assert.match(workflow, /name: Committed keyword search read-model freshness[\s\S]*?node tools\/build_keyword_search_index\.mjs --check/);
 });
 
-test("the retained source snapshot validation fails closed before generation", () => {
-  const result = spawnSync(process.execPath, [
-    path.join(ROOT, "tools/derived_json_build_boundary.mjs"),
-    "--source-dir",
-    ROOT,
-    "--validate-only",
-  ], { cwd: ROOT, encoding: "utf8" });
-  assert.equal(result.status, 0, result.stderr);
-  assert.match(result.stdout, /Derived JSON build boundary valid/);
+test("the retained source snapshot validation fails closed before generation", async () => {
+  const pinned = "2026-09-14T00:00:00.000Z";
+  await withPinnedClock(pinned, () => {
+    const nodeOptions = [process.env.NODE_OPTIONS, `--import=${path.join(ROOT, "test/helpers/test_clock_preload.mjs")}`]
+      .filter(Boolean)
+      .join(" ");
+    const result = spawnSync(process.execPath, [
+      path.join(ROOT, "tools/derived_json_build_boundary.mjs"),
+      "--source-dir",
+      ROOT,
+      "--validate-only",
+    ], {
+      cwd: ROOT,
+      encoding: "utf8",
+      env: { ...process.env, NODE_OPTIONS: nodeOptions, [TEST_CLOCK_PIN_ENV]: pinned },
+    });
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(result.stdout, /Derived JSON build boundary valid/);
+  });
 });
 
 test("payload integrity can inspect the materialized artifact directory", () => {

@@ -16,6 +16,7 @@ export CROL_BUILD_DAY="${CROL_BUILD_DAY:-$(date -u +%Y-%m-%dT%H:%M:%S.000Z)}"
 RUN_READING_LEVEL=0
 RUN_FULL=0
 RECEIPT_PATH="${PREFLIGHT_RECEIPT:-$PROJECT_ROOT/.artifacts/preflight-required-checks.json}"
+NODE_TEST_CONCURRENCY="${NODE_TEST_CONCURRENCY:-2}"
 
 # The unit families this script claims to cover, in the order CI's `unit-family`
 # matrix declares them (.github/workflows/ci.yml). This list is the preflight's
@@ -91,6 +92,15 @@ run_and_fail() {
     echo "do not open PR yet: failed preflight command: $*"
     exit 1
   fi
+}
+
+run_node_test() {
+  local node_options="${NODE_OPTIONS:-}"
+  local preload="$PROJECT_ROOT/test/helpers/test_clock_preload.mjs"
+  if [[ -n "${CITYSCROLL_TEST_TIME_SHIFT_DAYS:-}" && "$node_options" != *"$preload"* ]]; then
+    node_options="${node_options:+$node_options }--import=$preload"
+  fi
+  NODE_OPTIONS="$node_options" run_and_fail node --test --test-concurrency="$NODE_TEST_CONCURRENCY" "$@"
 }
 
 # Run one CI unit family. The body goes in a subshell so that run_and_fail's
@@ -417,8 +427,8 @@ family_site_node() {
   # deployed production MCP endpoint; CS10_SKIP_LIVE_CANARY tells it to no-op
   # here so this fast local gate stays network-independent (see its own guard
   # and .github/workflows/ci.yml's matching env var).
-  CS10_SKIP_LIVE_CANARY=true run_and_fail node --test test/*.test.mjs
-  run_and_fail node --test test/community_board*.test.mjs \
+  CS10_SKIP_LIVE_CANARY=true run_node_test test/*.test.mjs
+  run_node_test test/community_board*.test.mjs \
     test/people_organizations_community_boards.test.mjs
   run_and_fail node tools/no_live_external_reads.mjs --check
   run_and_fail node tools/build_geocoder_address_index.mjs --check
@@ -437,7 +447,7 @@ family_site_node() {
 family_contract() {
   run_banner "Unit tests (site + worker)" "Site/worker contract tests" \
     "node --test test/contract/*.test.mjs"
-  run_and_fail node --test test/contract/*.test.mjs
+  run_node_test test/contract/*.test.mjs
 }
 
 family_worker() {
@@ -445,7 +455,7 @@ family_worker() {
     "node --test (inside worker/)"
   run_and_fail tools/install_worker_dependencies.sh
   cd worker
-  run_and_fail node --test
+  run_node_test
 }
 
 TEMP_LEAK_UNIT_SNAPSHOT="$PROJECT_ROOT/.artifacts/temp-leak-snapshot-unit.json"

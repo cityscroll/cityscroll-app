@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 import { ingestNotices } from "../src/ingest.mjs";
+import { withPinnedClock } from "../../test/helpers/test_clock.mjs";
 
 function d1FromSqlite(db) {
   return {
@@ -47,13 +48,13 @@ test("production shadow ingest accumulates source and entity rows idempotently",
   };
 
   try {
-    await ingestNotices(env);
+    await withPinnedClock("2026-09-14T00:00:00.000Z", () => ingestNotices(env));
     assert.equal(db.prepare("SELECT COUNT(*) AS n FROM source_records").get().n, 3);
     assert.equal(db.prepare("SELECT COUNT(*) AS n FROM entity_link").get().n, 3);
     assert.equal(db.prepare("SELECT COUNT(*) AS n FROM canonical_entity").get().n, 2);
 
     db.prepare("UPDATE ingest_state SET v = ? WHERE k = ?").run("2026-01-01", "ingest_cursor");
-    await ingestNotices(env);
+    await withPinnedClock("2026-09-14T00:00:00.001Z", () => ingestNotices(env));
     assert.equal(db.prepare("SELECT COUNT(*) AS n FROM source_records").get().n, 3);
     assert.equal(db.prepare("SELECT COUNT(*) AS n FROM entity_link").get().n, 3);
     assert.equal(db.prepare("SELECT COUNT(*) AS n FROM resolution_run").get().n, 2);

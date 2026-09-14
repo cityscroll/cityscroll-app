@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { withPinnedClock } from "./helpers/test_clock.mjs";
 
 import {
   analyzeResidentSources,
@@ -68,6 +69,8 @@ test("debt ratchet requires an exact callsite and rejects stale allowances", () 
   assert.deepEqual(report.stale_debt, [entry]);
 });
 
-test("repository resident-read gate is green", () => {
-  assert.doesNotThrow(() => runNoLiveExternalReads());
+test("repository resident-read gate is green", async () => {
+  await withPinnedClock("2026-09-14T00:00:00.000Z", () => {
+    assert.doesNotThrow(() => runNoLiveExternalReads());
+  });
 });
