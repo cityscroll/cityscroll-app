@@ -502,6 +502,7 @@ function evidenceFrom(source) {
     observed_at: source.observed_at || source.observed_on || null,
     receipt: source.receipt || null,
     source_id: source.source_id || source.id || source.bylaw_version_id || null,
+    ...(source.contact_facts ? { contact_facts: source.contact_facts } : {}),
     statement: source.statement || null,
   };
 }
@@ -585,7 +586,7 @@ function contactDestinations(board = {}) {
     : null;
   const primary = httpsUrl(reviewed?.url || board.homepage_url || board.directory_url);
   const fallback = httpsUrl(reviewed?.fallback?.url || (primary && primary !== httpsUrl(board.directory_url) ? board.directory_url : null));
-  return { primary, fallback };
+  return { primary, fallback, contact_facts: reviewed?.contact_facts || null };
 }
 
 /**
@@ -701,6 +702,7 @@ export function communityBoardParticipationPaths({
       evidence: evidenceFrom({
         source_url: contact.primary,
         document_id: requested,
+        contact_facts: contact.contact_facts,
         statement: "Contact uses this board’s reviewed homepage or city directory listing.",
       }),
     }));

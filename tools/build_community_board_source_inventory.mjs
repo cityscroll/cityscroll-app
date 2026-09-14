@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { RESOURCE_DESTINATION_DISPOSITIONS, rejectCommunityBoardResourceDestination } from "./community_board_resource_destinations.mjs";
 
 const ROOT = join(import.meta.dirname, "..");
 const REGISTRY_PATH = join(ROOT, "site/data/non_council_outcome_sources/source_registry.json");
@@ -16,6 +17,11 @@ const OBSERVED_ON = "2026-08-13";
 const RECEIPT_REF = "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json";
 const ROLES = ["upcoming_meetings", "minutes", "committees", "roster", "bylaws"];
 const RESOURCE_TASKS = ["calendar", "agenda", "minutes", "committees", "roster", "bylaws", "contact"];
+const CB15_RETRIEVED_AT = "2026-09-14T03:17:00Z";
+const CB15_AGENDA_URL = "https://www.nyc.gov/site/brooklyncb15/calendar/monthly-agendas-plans.page";
+const CB15_AGENDA_SHA256 = "932ce4f04d79ab88ed347c9b469865683c601675ec7be6ae452892f6ff49fab8";
+const CB15_HOME_URL = "https://www.nyc.gov/site/brooklyncb15/index.page";
+const CB15_HOME_SHA256 = "50ebafdf577c61e250197a45c3b41fc1ebf31c9c4c8d2da0741be58e63d79dd5";
 
 function readJson(path) { return JSON.parse(readFileSync(path, "utf8")); }
 function writeJson(path, value) {
@@ -102,8 +108,10 @@ function sourceRolesFromRegistry(registryRow, oldRow) {
   )]));
 }
 
-function resourceDestination(task, source, { fallback = null, sourceRole = null, reason = null } = {}) {
+function resourceDestination(task, source, { fallback = null, sourceRole = null, reason = null, evidence = null } = {}) {
   const url = isUrl(source?.url) ? source.url : null;
+  const rejection = rejectCommunityBoardResourceDestination({ url });
+  const disposition = url ? (rejection.accepted ? "observed" : "unreachable") : "not-yet-reviewed";
   return {
     task,
     url,
@@ -113,11 +121,13 @@ function resourceDestination(task, source, { fallback = null, sourceRole = null,
     format: source?.format || null,
     observed_on: source?.seen_on || OBSERVED_ON,
     status: url ? "verified_destination" : "not_observed",
+    disposition,
     verification: {
       status: url ? "observed_url" : "not_observed",
       content_current: false,
       receipt_ref: url ? (source?.verification?.receipt_ref || RECEIPT_REF) : RECEIPT_REF,
       reason: url ? null : (reason || "no_explicit_destination_in_reviewed_pass"),
+      ...(evidence ? { source_evidence: evidence } : {}),
     },
     ...(fallback ? { fallback } : {}),
   };
@@ -129,6 +139,10 @@ function agendaSource(upcoming, minutes) {
 }
 
 function contactDestination(registryRow) {
+  const contactFacts = registryRow.body_id === "brooklyn-cb-15" ? {
+    office_telephone: { value: "718-332-3008", source_url: CB15_HOME_URL, retrieved_at: CB15_RETRIEVED_AT, sha256: CB15_HOME_SHA256 },
+    mailbox: { value: "BKLCB15@verizon.net", source_url: CB15_HOME_URL, retrieved_at: CB15_RETRIEVED_AT, sha256: CB15_HOME_SHA256 },
+  } : null;
   const homepage = isUrl(registryRow.homepage_url)
     ? resourceDestination("contact", {
       url: registryRow.homepage_url,
@@ -157,19 +171,22 @@ function contactDestination(registryRow) {
       },
     }
     : null;
-  if (homepage) return { ...homepage, fallback: directory };
+  if (homepage) return { ...homepage, fallback: directory, ...(contactFacts ? { contact_facts: contactFacts } : {}) };
   return directory ? resourceDestination("contact", directory, { sourceRole: "directory_url" }) : resourceDestination("contact", null, { sourceRole: null });
 }
 
 function resourceTasksForBoard(registryRow, sourceRoles) {
   const upcoming = sourceRoles.upcoming_meetings;
   const minutes = sourceRoles.minutes;
-  const agenda = agendaSource(upcoming, minutes);
+  const agenda = registryRow.body_id === "brooklyn-cb-15"
+    ? { url: CB15_AGENDA_URL, publisher: "NYC Community Boards", publisher_kind: "nyc_official", format: "NYC HTML", seen_on: OBSERVED_ON, verification: { receipt_ref: RECEIPT_REF } }
+    : agendaSource(upcoming, minutes);
   return [
     resourceDestination("calendar", upcoming, { sourceRole: "upcoming_meetings" }),
     resourceDestination("agenda", agenda, {
       sourceRole: agenda === upcoming ? "upcoming_meetings" : agenda === minutes ? "minutes" : null,
       reason: "no_explicit_agenda_destination_in_reviewed_pass",
+      ...(registryRow.body_id === "brooklyn-cb-15" ? { evidence: { source_url: CB15_AGENDA_URL, retrieved_at: CB15_RETRIEVED_AT, sha256: CB15_AGENDA_SHA256 } } : {}),
     }),
     resourceDestination("minutes", minutes, { sourceRole: "minutes" }),
     resourceDestination("committees", sourceRoles.committees, { sourceRole: "committees" }),
@@ -198,6 +215,7 @@ function build(registry, existing) {
   const boards = assertRoster(registry).map((registryRow) => {
     const old = oldById.get(registryRow.body_id) || {};
     const sources = sourceRolesFromRegistry(registryRow, old);
+    const resourceTasks = resourceTasksForBoard(registryRow, sources);
     return {
       id: registryRow.body_id,
       name: registryRow.name,
@@ -210,7 +228,13 @@ function build(registry, existing) {
       committees: sources.committees,
       roster: sources.roster,
       bylaws: sources.bylaws,
-      resource_tasks: resourceTasksForBoard(registryRow, sources),
+      resource_tasks: resourceTasks,
+      ...(registryRow.body_id === "brooklyn-cb-15" ? {
+        contact_facts: {
+          office_telephone: { value: "718-332-3008", source_url: CB15_HOME_URL, retrieved_at: CB15_RETRIEVED_AT, sha256: CB15_HOME_SHA256 },
+          mailbox: { value: "BKLCB15@verizon.net", source_url: CB15_HOME_URL, retrieved_at: CB15_RETRIEVED_AT, sha256: CB15_HOME_SHA256 },
+        },
+      } : {}),
     };
   });
   return {
@@ -230,6 +254,7 @@ function build(registry, existing) {
       observed_on: OBSERVED_ON,
       tasks: RESOURCE_TASKS,
       destination_status: "reviewed_destination_only",
+      dispositions: RESOURCE_DESTINATION_DISPOSITIONS,
       content_current_is_not_asserted: true,
       identity: "board_id is the exact source-registry body_id; tasks never cross board identities",
     },
@@ -249,6 +274,7 @@ function resourceMatrix(inventory) {
       status_means_reviewed_destination: true,
       link_does_not_prove_current_content: true,
       missing_task_is_not_publication_absence: true,
+      dispositions: RESOURCE_DESTINATION_DISPOSITIONS,
     },
     boards: inventory.boards.map((board) => ({
       board_id: board.id,
@@ -276,6 +302,7 @@ function cb15Evidence(inventory) {
       publisher: task.publisher,
       observed_on: task.observed_on,
       fallback: task.fallback?.url || null,
+      ...(task.verification?.source_evidence ? { source_evidence: task.verification.source_evidence } : {}),
     })),
   };
 }

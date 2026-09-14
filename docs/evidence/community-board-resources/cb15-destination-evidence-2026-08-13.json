@@ -15,6 +15,19 @@
       "fallback": null
     },
     {
+      "task": "agenda",
+      "url": "https://www.nyc.gov/site/brooklyncb15/calendar/monthly-agendas-plans.page",
+      "source_role": null,
+      "publisher": "NYC Community Boards",
+      "observed_on": "2026-08-13",
+      "fallback": null,
+      "source_evidence": {
+        "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/monthly-agendas-plans.page",
+        "retrieved_at": "2026-09-14T03:17:00Z",
+        "sha256": "932ce4f04d79ab88ed347c9b469865683c601675ec7be6ae452892f6ff49fab8"
+      }
+    },
+    {
       "task": "minutes",
       "url": "https://www.nyc.gov/site/brooklyncb15/calendar/board-meeting-minutes.page",
       "source_role": "minutes",

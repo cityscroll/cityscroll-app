@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { buildBoardSourceInventory, buildScorecard, renderScorecardPage } from "../site/community-board-scorecard.mjs";
 import { readCommunityBoardMeetingIndex } from "../tools/lib/community_board_meeting_index_io.mjs";
+import { RESOURCE_DESTINATION_DISPOSITIONS, rejectCommunityBoardResourceDestination } from "../tools/community_board_resource_destinations.mjs";
 
 const registry = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/source_registry.json", import.meta.url), "utf8"));
 const inventory = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/board_source_inventory.json", import.meta.url), "utf8"));
@@ -28,11 +29,11 @@ test("the source registry enumerates the official 59-board roster", () => {
 
 test("the reviewed resource matrix keeps task destinations board-local and current-content honest", () => {
   assert.deepEqual(inventory.resource_matrix.tasks, ["calendar", "agenda", "minutes", "committees", "roster", "bylaws", "contact"]);
-  assert.equal(inventory.resource_matrix.destination_status, "reviewed_destination_only");
+  assert.deepEqual(inventory.resource_matrix.dispositions, RESOURCE_DESTINATION_DISPOSITIONS);
   assert.equal(inventory.resource_matrix.content_current_is_not_asserted, true);
   const byTask = Object.groupBy(inventory.boards.flatMap((board) => board.resource_tasks), (row) => row.task);
   assert.equal(byTask.calendar.filter((row) => row.url).length, 55);
-  assert.equal(byTask.agenda.filter((row) => row.url).length, 10);
+  assert.equal(byTask.agenda.filter((row) => row.url).length, 11);
   assert.equal(byTask.minutes.filter((row) => row.url).length, 48);
   assert.equal(byTask.committees.filter((row) => row.url).length, 1);
   assert.equal(byTask.roster.filter((row) => row.url).length, 1);
@@ -42,8 +43,23 @@ test("the reviewed resource matrix keeps task destinations board-local and curre
   const cb15 = inventory.boards.find((board) => board.id === "brooklyn-cb-15");
   assert.equal(cb15.resource_tasks.find((row) => row.task === "calendar").url, "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page");
   assert.equal(cb15.resource_tasks.find((row) => row.task === "minutes").url, "https://www.nyc.gov/site/brooklyncb15/calendar/board-meeting-minutes.page");
-  assert.equal(cb15.resource_tasks.find((row) => row.task === "agenda").url, null);
+  assert.equal(cb15.resource_tasks.find((row) => row.task === "agenda").url, "https://www.nyc.gov/site/brooklyncb15/calendar/monthly-agendas-plans.page");
+  assert.equal(cb15.resource_tasks.find((row) => row.task === "agenda").disposition, "observed");
   assert.equal(cb15.resource_tasks.find((row) => row.task === "contact").fallback.url, "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page");
+  assert.deepEqual(cb15.contact_facts.office_telephone, { value: "718-332-3008", source_url: cb15.home, retrieved_at: "2026-09-14T03:17:00Z", sha256: "50ebafdf577c61e250197a45c3b41fc1ebf31c9c4c8d2da0741be58e63d79dd5" });
+  assert.equal(cb15.contact_facts.mailbox.value, "BKLCB15@verizon.net");
+});
+
+test("every resource cell names an explicit disposition and rejection rules stay conservative", () => {
+  const cells = inventory.boards.flatMap((board) => board.resource_tasks);
+  assert.equal(cells.length, 413);
+  assert.ok(cells.every((cell) => RESOURCE_DESTINATION_DISPOSITIONS.includes(cell.disposition)));
+  assert.equal(cells.filter((cell) => cell.disposition === "not-yet-reviewed").length, 237);
+  assert.deepEqual(rejectCommunityBoardResourceDestination({ url: "javascript:void(0)" }), { accepted: false, reason: "placeholder" });
+  assert.deepEqual(rejectCommunityBoardResourceDestination({ url: "#" }), { accepted: false, reason: "placeholder" });
+  assert.deepEqual(rejectCommunityBoardResourceDestination({ url: "https://example.test", soft_404: true }), { accepted: false, reason: "soft-404" });
+  assert.deepEqual(rejectCommunityBoardResourceDestination({ url: "https://example.test", redirects_to_wrong_board: true }), { accepted: false, reason: "wrong-board-redirect" });
+  assert.deepEqual(rejectCommunityBoardResourceDestination({ url: "https://example.test", generic_landing: true }), { accepted: false, reason: "generic-landing" });
 });
 
 test("known dead or unsafe board homepages stay out of the public inventory", () => {
