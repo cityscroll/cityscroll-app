@@ -42189,7 +42189,27 @@
         "extraction": "indexed",
         "convening_body": "full_board",
         "corpus_answer": "full_board_meeting"
-      }
+      },
+      "diagnostic_assertions": [
+        {
+          "stage": "original",
+          "adapter": "html_pdf_v1",
+          "outcome": "empty",
+          "record_count": 0
+        },
+        {
+          "stage": "adapter_only",
+          "adapter": "nyc_official_calendar_v1",
+          "outcome": "malformed",
+          "record_count": 36
+        },
+        {
+          "stage": "corrected",
+          "adapter": "nyc_official_calendar_v1",
+          "outcome": "valid",
+          "record_count": 35
+        }
+      ]
     }
   ],
   "representation": "sharded",

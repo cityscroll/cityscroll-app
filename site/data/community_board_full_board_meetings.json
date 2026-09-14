@@ -133,8 +133,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Bronx Community Board 2's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Bronx Community Board 2's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -168,8 +168,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Bronx Community Board 3's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Bronx Community Board 3's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -203,8 +203,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Bronx Community Board 4's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Bronx Community Board 4's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -238,8 +238,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Bronx Community Board 5's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Bronx Community Board 5's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -342,8 +342,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Bronx Community Board 7's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Bronx Community Board 7's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -412,8 +412,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Bronx Community Board 9's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Bronx Community Board 9's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -585,8 +585,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Bronx Community Board 12's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Bronx Community Board 12's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -620,8 +620,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Brooklyn Community Board 1's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Brooklyn Community Board 1's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -690,8 +690,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Brooklyn Community Board 3's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Brooklyn Community Board 3's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -725,8 +725,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Brooklyn Community Board 4's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Brooklyn Community Board 4's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -929,8 +929,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Brooklyn Community Board 8's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Brooklyn Community Board 8's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -964,8 +964,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Brooklyn Community Board 9's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Brooklyn Community Board 9's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -1103,8 +1103,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Brooklyn Community Board 12's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Brooklyn Community Board 12's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -1961,8 +1961,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Manhattan Community Board 9's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Manhattan Community Board 9's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -2361,8 +2361,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Queens Community Board 4's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Queens Community Board 4's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -2396,8 +2396,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Queens Community Board 5's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Queens Community Board 5's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -2534,8 +2534,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Queens Community Board 8's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Queens Community Board 8's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -2569,8 +2569,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Queens Community Board 9's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Queens Community Board 9's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -2604,8 +2604,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Queens Community Board 10's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Queens Community Board 10's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -2639,8 +2639,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Queens Community Board 11's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Queens Community Board 11's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -2674,8 +2674,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Queens Community Board 12's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Queens Community Board 12's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -2709,8 +2709,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Queens Community Board 13's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Queens Community Board 13's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -2744,8 +2744,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Queens Community Board 14's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Queens Community Board 14's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -2779,8 +2779,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Staten Island Community Board 1's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Staten Island Community Board 1's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",
@@ -2883,8 +2883,8 @@
         }
       },
       "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_and_publishes_no_meetings",
-      "statement": "Staten Island Community Board 3's meeting source was read on 2026-09-13 and publishes no meetings, so when it last met in full session is not recorded here."
+      "reason": "meeting_source_extracted_no_usable_events",
+      "statement": "Staten Island Community Board 3's meeting source was read on 2026-09-13, but this pass extracted no usable meeting events, so when it last met in full session is not recorded here."
     }
   ]
 }

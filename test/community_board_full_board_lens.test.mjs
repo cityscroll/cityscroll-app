@@ -110,8 +110,9 @@ test("empty extraction and unknown publisher titles remain corpus-scoped", () =>
     asOf: "2026-09-12T12:00:00Z",
   });
   assert.equal(empty.status, "no_full_board_meeting_recorded");
-  assert.equal(empty.reason, "meeting_source_read_and_publishes_no_meetings");
-  assert.match(empty.statement, /publishes no meetings/);
+  assert.equal(empty.reason, "meeting_source_extracted_no_usable_events");
+  assert.match(empty.statement, /extracted no usable meeting events/);
+  assert.doesNotMatch(empty.statement, /publishes no meetings/);
 
   const unknown = communityBoardFullBoardMeetingAnswer({
     readModel: {
@@ -130,6 +131,31 @@ test("empty extraction and unknown publisher titles remain corpus-scoped", () =>
   assert.equal(unknown.status, "no_full_board_meeting_recorded");
   assert.equal(unknown.reason, "meeting_source_has_unclassified_titles");
   assert.match(unknown.statement, /title does not identify a full board session/);
+});
+
+test("stored answers never turn an extraction-empty pass into a publisher claim", () => {
+  const coverage = Array.from({ length: 59 }, (_, index) => ({
+    board_id: `borough-cb-${String(index + 1).padStart(2, "0")}`,
+    board_name: `Board ${index + 1}`,
+    borough: "Brooklyn",
+    meetings: { state: "checked-empty", observed_at: "2026-09-12T12:00:00Z" },
+  }));
+  const readModel = {
+    schema: "cityscroll.shared_meeting_read_model.v1",
+    generated_at: "2026-09-12T12:00:00Z",
+    freshness: { checked_at: "2026-09-12T12:00:00Z" },
+    rows: [],
+    sources: { community_board: { status: "available", board_coverage: coverage } },
+  };
+  for (const board of coverage) {
+    const answer = communityBoardFullBoardMeetingAnswer({
+      readModel,
+      query: board.board_name,
+      asOf: "2026-09-12T12:00:00Z",
+    });
+    assert.doesNotMatch(answer.statement, /publishes no meetings/);
+    assert.match(answer.statement, /extracted no usable meeting events/);
+  }
 });
 
 test("every returned full board meeting belongs to the board that was asked about", () => {

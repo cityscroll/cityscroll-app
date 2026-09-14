@@ -129,6 +129,11 @@ test("the coverage builder accounts for both roles across all 59 boards", async 
   assert.equal(cb15Receipt.classification.extraction, "indexed");
   assert.ok(["full_board", "committee", "unknown"].includes(cb15Receipt.classification.convening_body));
   assert.match(cb15Receipt.classification.corpus_answer, /^(full_board_meeting|no_full_board_meeting_recorded)$/);
+  assert.deepEqual(cb15Receipt.diagnostic_assertions, [
+    { stage: "original", adapter: "html_pdf_v1", outcome: "empty", record_count: 0 },
+    { stage: "adapter_only", adapter: "nyc_official_calendar_v1", outcome: "malformed", record_count: 36 },
+    { stage: "corrected", adapter: "nyc_official_calendar_v1", outcome: "valid", record_count: 1 },
+  ]);
 });
 
 test("source states remain explicit for unsupported, stale, and absent roles", () => {
@@ -169,6 +174,26 @@ test("CB15 date-first calendar paragraphs preserve publisher logistics and rejec
   assert.equal(records[2].start_at, "2026-11-24T19:00:00-05:00");
   assert.equal(records.some((row) => row.date === "2026-12-29"), false, "a title-less residual is not promoted");
   assert.ok(records.every((row) => row.observed_receipt.parser === "nyc_official_calendar_v1"));
+});
+
+test("same-date same-title calendar events remain distinct and carry collision evidence", () => {
+  const records = parseNycOfficialCalendarSource(`
+    <div class="span6 about-description">
+      <p><strong>Tuesday, September 29, 2026</strong><br />General Board Meeting 7:00pm Room A</p>
+      <p><strong>Tuesday, September 29, 2026</strong><br />General Board Meeting 7:00pm Room B</p>
+    </div>
+  `, {
+    adapter: "nyc_official_calendar_v1",
+    role: "upcoming_meetings",
+    board_id: "brooklyn-cb-15",
+    url: "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+  }, { receipt: { status: "ok", observed_at: "2026-09-12T12:00:00Z" } });
+
+  assert.equal(records.length, 2);
+  assert.equal(new Set(records.map((row) => row.record_id)).size, 2);
+  assert.equal(records[0].publisher_identifier, null);
+  assert.equal(records[1].identity_collision.state, "same_date_same_title");
+  assert.equal(records[1].identity_collision.base_record_id, records[0].record_id);
 });
 
 test("duplicate publisher identifiers within a board fail the build", async () => {
