@@ -1,10 +1,14 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFile } from "node:fs/promises";
 import {
   createSiteLifecycleReader,
   materializeSiteLifecycle,
   shardSiteLifecycle,
 } from "../site/site_lifecycle_projection.mjs";
+import { writeSiteLifecycleProjection } from "../tools/build_site_lifecycle_projection.mjs";
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
+import { testClockISOString, withPinnedClock } from "./helpers/test_clock.mjs";
 
 const lots = [{ project_id: "2020K0270", bbls: ["3073670011", "3073670029"] }];
 const land = [{ project_id: "2020K0270", project_name: "2134 Coyle Street Rezoning", approval_date: "2022-02-24", completed_date: "2022-03-18", ulurp_numbers: "C210239ZMK; N210240ZRK" }];
@@ -21,8 +25,8 @@ const procurement = [
 
 function ids(history) { return history.members.map((item) => item.subject_id); }
 
-test("materializes the complete parcel-mediated Coyle history with distinct identities", () => {
-  const document = materializeSiteLifecycle({ landProjects: land, projectLots: lots, councilMatters: council, procurementRecords: procurement, generatedAt: "2026-09-14T00:00:00Z" });
+test("materializes the complete parcel-mediated Coyle history with distinct identities", async () => withPinnedClock("2026-09-14T00:00:00Z", async () => {
+  const document = materializeSiteLifecycle({ landProjects: land, projectLots: lots, councilMatters: council, procurementRecords: procurement, generatedAt: testClockISOString() });
   const first = document.parcels["3073670011"];
   assert.deepEqual(ids(first), [
     "council:matter:coyle-zmk", "council:matter:coyle-zrk", "land:application:C210239ZMK", "land:application:N210240ZRK", "land:project:2020K0270", "procurement:hearing-section:20230911014:coyle",
@@ -35,7 +39,7 @@ test("materializes the complete parcel-mediated Coyle history with distinct iden
   assert.ok(!ids(first).includes("procurement:hearing-section:20230911014:other"));
   assert.equal(document.members["procurement:award:20241104015"].parcel_ids.join(), "3073670011");
   assert.equal(document.members["land:project:2020K0270"].parcel_ids.join(), "3073670011,3073670029");
-});
+}));
 
 test("preserves unknown dates, duplicate lineage, missing evidence, and exact generation checks", () => {
   const document = materializeSiteLifecycle({ landProjects: [{ project_id: "P1", project_name: "Undated" }], projectLots: [{ project_id: "P1", bbls: ["1000000001"] }], procurementRecords: [
@@ -47,8 +51,25 @@ test("preserves unknown dates, duplicate lineage, missing evidence, and exact ge
   assert.equal(shard.generation, document.generation);
   assert.equal(shard.content_hash, document.content_hash);
   assert.throws(() => createSiteLifecycleReader({ generation: "wrong" }, [shard]), /generation mismatch/);
-  const reader = createSiteLifecycleReader({ generation: document.generation }, [shard], document);
+  const reader = createSiteLifecycleReader({ generation: document.generation, content_hash: document.content_hash }, [shard], { generation: document.generation, content_hash: document.content_hash, members: document.members });
   assert.equal(reader.get("1000000001").members.filter((item) => item.subject_id === "procurement:award:same").length, 1);
   assert.equal(reader.get("1000000001").members.find((item) => item.subject_id === "land:project:P1").source_event_date, null);
   assert.deepEqual(reader.memberParcels("procurement:award:removed"), []);
+  assert.throws(() => createSiteLifecycleReader({ generation: document.generation, content_hash: document.content_hash }, [shard], { generation: "stale", content_hash: document.content_hash, members: document.members }), /reverse index generation mismatch/);
+  assert.throws(() => createSiteLifecycleReader({ generation: document.generation, content_hash: document.content_hash }, [shard], { generation: document.generation, content_hash: "stale", members: document.members }), /reverse index content hash mismatch/);
 });
+
+test("writes a receipt and reverse index from the materialized document", async () => withPinnedClock("2026-09-14T00:00:00Z", async () => withTempDir("site-lifecycle", async (outputDir) => {
+  const receiptPath = `${outputDir}/receipt.json`;
+  const document = materializeSiteLifecycle({ landProjects: land, projectLots: lots, councilMatters: council, procurementRecords: procurement, generatedAt: testClockISOString() });
+  const manifest = writeSiteLifecycleProjection(document, { outputDir, receiptPath });
+  const receipt = JSON.parse(await readFile(receiptPath, "utf8"));
+  const reverse = JSON.parse(await readFile(`${outputDir}/reverse.json`, "utf8"));
+  assert.equal(receipt.generation, document.generation);
+  assert.equal(receipt.content_hash, document.content_hash);
+  assert.deepEqual(receipt.counts, document.counts);
+  assert.deepEqual(receipt.shards, manifest.shards);
+  assert.equal(reverse.generation, manifest.generation);
+  assert.equal(reverse.content_hash, manifest.content_hash);
+  assert.deepEqual(reverse.members, document.members);
+})));

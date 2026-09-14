@@ -1,0 +1,61 @@
+{
+  "schema": "cityscroll.site_lifecycle.reverse.v1",
+  "version": 1,
+  "generation": "182c096174874ed6a8bdf5f1b5ca77765d162849625ad1ef01c3237f2787c854",
+  "content_hash": "182c096174874ed6a8bdf5f1b5ca77765d162849625ad1ef01c3237f2787c854",
+  "members": {
+    "council:matter:coyle-zmk": {
+      "subject_id": "council:matter:coyle-zmk",
+      "parcel_ids": [
+        "3073670011",
+        "3073670029"
+      ]
+    },
+    "council:matter:coyle-zrk": {
+      "subject_id": "council:matter:coyle-zrk",
+      "parcel_ids": [
+        "3073670011",
+        "3073670029"
+      ]
+    },
+    "land:application:C210239ZMK": {
+      "subject_id": "land:application:C210239ZMK",
+      "parcel_ids": [
+        "3073670011",
+        "3073670029"
+      ]
+    },
+    "land:application:N210240ZRK": {
+      "subject_id": "land:application:N210240ZRK",
+      "parcel_ids": [
+        "3073670011",
+        "3073670029"
+      ]
+    },
+    "land:project:2020K0270": {
+      "subject_id": "land:project:2020K0270",
+      "parcel_ids": [
+        "3073670011",
+        "3073670029"
+      ]
+    },
+    "procurement:hearing-section:20230911014:coyle": {
+      "subject_id": "procurement:hearing-section:20230911014:coyle",
+      "parcel_ids": [
+        "3073670011"
+      ]
+    },
+    "procurement:contract:CT107120258802303": {
+      "subject_id": "procurement:contract:CT107120258802303",
+      "parcel_ids": [
+        "3073670011"
+      ]
+    },
+    "procurement:award:20241104015": {
+      "subject_id": "procurement:award:20241104015",
+      "parcel_ids": [
+        "3073670011"
+      ]
+    }
+  }
+}

@@ -1,0 +1,281 @@
+{
+  "schema": "cityscroll.site_lifecycle.v1.shard",
+  "version": 1,
+  "generation": "182c096174874ed6a8bdf5f1b5ca77765d162849625ad1ef01c3237f2787c854",
+  "content_hash": "182c096174874ed6a8bdf5f1b5ca77765d162849625ad1ef01c3237f2787c854",
+  "shard": "0000",
+  "rows": [
+    {
+      "parcel_id": "3073670011",
+      "parcel_href": "/parcels/3073670011/",
+      "members": [
+        {
+          "schema": "cityscroll.site_lifecycle_member.v1",
+          "subject_id": "council:matter:coyle-zmk",
+          "subject_href": "/matters/coyle-zmk/",
+          "record_kind": "council_matter",
+          "source_system": "legistar",
+          "source_event_date": "2022-02-24",
+          "source_event_date_precision": "day",
+          "source_events": [],
+          "source_title": "Coyle zoning matter",
+          "evidence_path": "legistar:matter:coyle-zmk",
+          "footprint_scope": [
+            "3073670011",
+            "3073670029"
+          ],
+          "relation_path": [
+            "land:project:2020K0270",
+            "land:application:C210239ZMK"
+          ]
+        },
+        {
+          "schema": "cityscroll.site_lifecycle_member.v1",
+          "subject_id": "council:matter:coyle-zrk",
+          "subject_href": "/matters/coyle-zrk/",
+          "record_kind": "council_matter",
+          "source_system": "legistar",
+          "source_event_date": "2022-02-24",
+          "source_event_date_precision": "day",
+          "source_events": [],
+          "source_title": "Coyle rezoning matter",
+          "evidence_path": "legistar:matter:coyle-zrk",
+          "footprint_scope": [
+            "3073670011",
+            "3073670029"
+          ],
+          "relation_path": [
+            "land:project:2020K0270",
+            "land:application:N210240ZRK"
+          ]
+        },
+        {
+          "schema": "cityscroll.site_lifecycle_member.v1",
+          "subject_id": "land:application:C210239ZMK",
+          "subject_href": "/browse/zoning/#land/2020K0270",
+          "record_kind": "land_application",
+          "source_system": "zap-projects-open-data",
+          "source_event_date": "2022-02-24",
+          "source_event_date_precision": "day",
+          "source_events": [],
+          "source_title": "C210239ZMK",
+          "evidence_path": "zap-projects-open-data:2020K0270#ulurp_numbers",
+          "footprint_scope": [
+            "3073670011",
+            "3073670029"
+          ],
+          "relation_path": [
+            "land:project:2020K0270"
+          ]
+        },
+        {
+          "schema": "cityscroll.site_lifecycle_member.v1",
+          "subject_id": "land:application:N210240ZRK",
+          "subject_href": "/browse/zoning/#land/2020K0270",
+          "record_kind": "land_application",
+          "source_system": "zap-projects-open-data",
+          "source_event_date": "2022-02-24",
+          "source_event_date_precision": "day",
+          "source_events": [],
+          "source_title": "N210240ZRK",
+          "evidence_path": "zap-projects-open-data:2020K0270#ulurp_numbers",
+          "footprint_scope": [
+            "3073670011",
+            "3073670029"
+          ],
+          "relation_path": [
+            "land:project:2020K0270"
+          ]
+        },
+        {
+          "schema": "cityscroll.site_lifecycle_member.v1",
+          "subject_id": "land:project:2020K0270",
+          "subject_href": "/browse/zoning/#land/2020K0270",
+          "record_kind": "land_project",
+          "source_system": "zap-projects-open-data",
+          "source_event_date": "2022-02-24",
+          "source_event_date_precision": "day",
+          "source_events": [
+            {
+              "event": "approval date",
+              "date": "2022-02-24",
+              "date_precision": "day"
+            },
+            {
+              "event": "completed date",
+              "date": "2022-03-18",
+              "date_precision": "day"
+            }
+          ],
+          "source_title": "2134 Coyle Street Rezoning",
+          "evidence_path": "zap-projects-open-data:2020K0270",
+          "footprint_scope": [
+            "3073670011",
+            "3073670029"
+          ],
+          "relation_path": []
+        },
+        {
+          "schema": "cityscroll.site_lifecycle_member.v1",
+          "subject_id": "procurement:hearing-section:20230911014:coyle",
+          "subject_href": "/procurements/20230911014",
+          "record_kind": "procurement_observation",
+          "source_system": "city_record_online",
+          "source_event_date": "2023-09-11",
+          "source_event_date_precision": "day",
+          "source_events": [],
+          "source_title": "Coyle section",
+          "evidence_path": "dg92-zbpx:20230911014#coyle",
+          "footprint_scope": [
+            "3073670011"
+          ],
+          "relation_path": []
+        },
+        {
+          "schema": "cityscroll.site_lifecycle_member.v1",
+          "subject_id": "procurement:contract:CT107120258802303",
+          "subject_href": "/procurements/4965933",
+          "record_kind": "procurement_observation",
+          "source_system": "passport_public_contracts",
+          "source_event_date": "2024-01-01",
+          "source_event_date_precision": "day",
+          "source_events": [],
+          "source_title": "Coyle Family Residence contract",
+          "evidence_path": "passport:4965933#epin",
+          "footprint_scope": [
+            "3073670011"
+          ],
+          "relation_path": []
+        },
+        {
+          "schema": "cityscroll.site_lifecycle_member.v1",
+          "subject_id": "procurement:award:20241104015",
+          "subject_href": "/procurements/20241104015",
+          "record_kind": "procurement_observation",
+          "source_system": "ocp_recent_contract_awards",
+          "source_event_date": "2024-11-04",
+          "source_event_date_precision": "day",
+          "source_events": [],
+          "source_title": "Coyle Family Residence",
+          "evidence_path": "qyyg-4tf5:20241104015#coyle",
+          "footprint_scope": [
+            "3073670011"
+          ],
+          "relation_path": []
+        }
+      ]
+    },
+    {
+      "parcel_id": "3073670029",
+      "parcel_href": "/parcels/3073670029/",
+      "members": [
+        {
+          "schema": "cityscroll.site_lifecycle_member.v1",
+          "subject_id": "council:matter:coyle-zmk",
+          "subject_href": "/matters/coyle-zmk/",
+          "record_kind": "council_matter",
+          "source_system": "legistar",
+          "source_event_date": "2022-02-24",
+          "source_event_date_precision": "day",
+          "source_events": [],
+          "source_title": "Coyle zoning matter",
+          "evidence_path": "legistar:matter:coyle-zmk",
+          "footprint_scope": [
+            "3073670011",
+            "3073670029"
+          ],
+          "relation_path": [
+            "land:project:2020K0270",
+            "land:application:C210239ZMK"
+          ]
+        },
+        {
+          "schema": "cityscroll.site_lifecycle_member.v1",
+          "subject_id": "council:matter:coyle-zrk",
+          "subject_href": "/matters/coyle-zrk/",
+          "record_kind": "council_matter",
+          "source_system": "legistar",
+          "source_event_date": "2022-02-24",
+          "source_event_date_precision": "day",
+          "source_events": [],
+          "source_title": "Coyle rezoning matter",
+          "evidence_path": "legistar:matter:coyle-zrk",
+          "footprint_scope": [
+            "3073670011",
+            "3073670029"
+          ],
+          "relation_path": [
+            "land:project:2020K0270",
+            "land:application:N210240ZRK"
+          ]
+        },
+        {
+          "schema": "cityscroll.site_lifecycle_member.v1",
+          "subject_id": "land:application:C210239ZMK",
+          "subject_href": "/browse/zoning/#land/2020K0270",
+          "record_kind": "land_application",
+          "source_system": "zap-projects-open-data",
+          "source_event_date": "2022-02-24",
+          "source_event_date_precision": "day",
+          "source_events": [],
+          "source_title": "C210239ZMK",
+          "evidence_path": "zap-projects-open-data:2020K0270#ulurp_numbers",
+          "footprint_scope": [
+            "3073670011",
+            "3073670029"
+          ],
+          "relation_path": [
+            "land:project:2020K0270"
+          ]
+        },
+        {
+          "schema": "cityscroll.site_lifecycle_member.v1",
+          "subject_id": "land:application:N210240ZRK",
+          "subject_href": "/browse/zoning/#land/2020K0270",
+          "record_kind": "land_application",
+          "source_system": "zap-projects-open-data",
+          "source_event_date": "2022-02-24",
+          "source_event_date_precision": "day",
+          "source_events": [],
+          "source_title": "N210240ZRK",
+          "evidence_path": "zap-projects-open-data:2020K0270#ulurp_numbers",
+          "footprint_scope": [
+            "3073670011",
+            "3073670029"
+          ],
+          "relation_path": [
+            "land:project:2020K0270"
+          ]
+        },
+        {
+          "schema": "cityscroll.site_lifecycle_member.v1",
+          "subject_id": "land:project:2020K0270",
+          "subject_href": "/browse/zoning/#land/2020K0270",
+          "record_kind": "land_project",
+          "source_system": "zap-projects-open-data",
+          "source_event_date": "2022-02-24",
+          "source_event_date_precision": "day",
+          "source_events": [
+            {
+              "event": "approval date",
+              "date": "2022-02-24",
+              "date_precision": "day"
+            },
+            {
+              "event": "completed date",
+              "date": "2022-03-18",
+              "date_precision": "day"
+            }
+          ],
+          "source_title": "2134 Coyle Street Rezoning",
+          "evidence_path": "zap-projects-open-data:2020K0270",
+          "footprint_scope": [
+            "3073670011",
+            "3073670029"
+          ],
+          "relation_path": []
+        }
+      ]
+    }
+  ]
+}

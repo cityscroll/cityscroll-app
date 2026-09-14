@@ -4,6 +4,10 @@ export const TEST_CLOCK_ENV = "CITYSCROLL_TEST_TIME_SHIFT_DAYS";
 export const TEST_CLOCK_PIN_ENV = "CITYSCROLL_TEST_TIME_PIN";
 export const MILLISECONDS_PER_DAY = 86_400_000;
 
+export function testClockISOString() {
+  return new globalThis.Date().toISOString();
+}
+
 const activeScopes = [];
 
 function epochMilliseconds(value) {
