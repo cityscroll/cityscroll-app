@@ -6,8 +6,20 @@ import {
   procurementIdentifierSearchHref,
   renderProcurementDocument,
 } from "../site/procurement_document.mjs";
+import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
+import {
+  resolveKeywordQuery,
+  searchKeywordDocuments,
+} from "../site/keyword_matcher.mjs";
 
 const fixture = JSON.parse(readFileSync(new URL("./fixtures/procurement-detail-parity/ct107120258801626.json", import.meta.url)));
+const searchReadModel = {
+  schema: "cityscroll.shared_procurement_read_model.v1",
+  generated_at: null,
+  rows: [fixture.object],
+  observations: fixture.observations,
+  sources: {},
+};
 
 test("the procurement facts row continues into the accepted agency and vendor entities", () => {
   const html = renderProcurementDocument(fixture.object, fixture.observations);
@@ -23,6 +35,47 @@ test("retained contract identifiers link to exact search destinations", () => {
   assert.equal(procurementIdentifierSearchHref("CT107120258801626"), "/search/?q=CT107120258801626");
   assert.equal(procurementIdentifierSearchHref(""), null);
   assert.equal(procurementIdentifierSearchHref("<script>alert(1)</script>"), null);
+});
+
+test("A3: an exact Contract ID search returns the procurement specimen", () => {
+  const documents = buildProcurementSearchDocuments(searchReadModel).documents;
+  const matches = searchKeywordDocuments(
+    documents,
+    resolveKeywordQuery("CT107120258801626"),
+    { limit: 10 },
+  );
+  assert.deepEqual(matches.map((document) => document.object_ref), [fixture.object.procurement_id]);
+});
+
+test("A4: an exact PIN / EPIN search returns the procurement specimen", () => {
+  const documents = buildProcurementSearchDocuments(searchReadModel).documents;
+  const matches = searchKeywordDocuments(
+    documents,
+    resolveKeywordQuery("07124E0044001"),
+    { limit: 10 },
+  );
+  assert.deepEqual(matches.map((document) => document.object_ref), [fixture.object.procurement_id]);
+});
+
+test("A6: the document renderer delegates vendor normalization to the typed pivot boundary", () => {
+  const source = readFileSync(new URL("../site/procurement_document.mjs", import.meta.url), "utf8");
+  assert.doesNotMatch(source, /vendorStem|vendor_stem|vendor[_-]stem/);
+});
+
+test("A8: contract-fact links are keyboard-focusable and expose their literal values", () => {
+  const html = renderProcurementDocument(fixture.object, fixture.observations);
+  const facts = html.match(/<dl class="node-facts">[\s\S]*?<\/dl>/)?.[0] || "";
+  for (const [label, value] of [
+    ["Agency", "Homeless Services"],
+    ["Vendor", "BHRAGS HOME CARE CORP"],
+    ["Contract ID", "CT107120258801626"],
+    ["PIN / EPIN", "07124E0044001"],
+  ]) {
+    const cell = facts.match(new RegExp(`<dt>${label.replace("/", "\\/")}<\\/dt><dd>([\\s\\S]*?)<\\/dd>`))?.[1] || "";
+    assert.match(cell, new RegExp(`<a\\b[^>]*href=`), `${label} stays an anchor with native keyboard focus`);
+    assert.doesNotMatch(cell, /tabindex="-1"/i, `${label} is not removed from the keyboard order`);
+    assert.match(cell, new RegExp(value.replace(/[.*+?^${}()|[\\]\\]/g, "\\$&")), `${label} remains the accessible link name`);
+  }
 });
 
 test("unresolved parties and unsafe identifiers remain readable text", () => {
