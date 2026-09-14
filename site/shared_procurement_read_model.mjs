@@ -156,7 +156,6 @@ export function buildSharedProcurementReadModel({
       lifecycle_rows: Array.isArray(lifecycleRows) ? lifecycleRows.length : 0,
       procurement_source_lookup_receipts: lookupProjection.rows.length,
     },
-    procurement_source_lookup_projection: lookupProjection,
     rows,
   };
 }

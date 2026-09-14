@@ -33551,8 +33551,8 @@
             },
             "spans": {
               "valid": {
-                "start": "2017-12-26",
-                "end": "2017-12-26"
+                "start": "2018-06-19",
+                "end": "2018-06-19"
               },
               "observed": {
                 "start": null,
@@ -33575,9 +33575,9 @@
             "freshness": {
               "reference_day": "2026-09-09",
               "snapshot_day": "2026-09-09",
-              "latest_day": "2017-12-26",
+              "latest_day": "2018-06-19",
               "latest_source": "published_record",
-              "age_days": "3179",
+              "age_days": "3004",
               "max_age_days": null,
               "status": "known"
             }
@@ -35950,8 +35950,8 @@
             },
             "spans": {
               "valid": {
-                "start": "2017-12-26",
-                "end": "2017-12-26"
+                "start": "2018-06-19",
+                "end": "2018-06-19"
               },
               "observed": {
                 "start": null,
@@ -35974,9 +35974,9 @@
             "freshness": {
               "reference_day": "2026-09-09",
               "snapshot_day": "2026-09-09",
-              "latest_day": "2017-12-26",
+              "latest_day": "2018-06-19",
               "latest_source": "published_record",
-              "age_days": "3179",
+              "age_days": "3004",
               "max_age_days": null,
               "status": "known"
             }
