@@ -175,6 +175,38 @@ test("An award-shaped object with no PASSPort RFx / City Record observations nev
   assert.equal(window.available, false);
 });
 
+test("A dated City Record award is not a qualifying opportunity observation", () => {
+  const object = procurementObject([CITY_RECORD_REF]);
+  const observations = [cityRecordObservation({
+    type_of_notice_description: "Award",
+    start_date: "2026-07-02",
+    due_date: "2026-08-05",
+  })];
+  const window = procurementOpportunityWindow(object, observations);
+  assert.equal(window.available, false);
+  assert.equal(window.reason, "no_qualifying_observation");
+});
+
+test("A qualifying City Record solicitation wins over a dated post-opportunity observation", () => {
+  const awardRef = "city_record:award:20260701002";
+  const object = procurementObject([awardRef, CITY_RECORD_REF]);
+  const observations = [
+    cityRecordObservation({
+      source_observation_ref: awardRef,
+      source_system_id: "20260701002",
+      type_of_notice_description: "Award",
+      start_date: "2026-06-01",
+      due_date: "2026-06-30",
+    }),
+    cityRecordObservation({ start_date: "2026-07-02", due_date: "2026-08-05" }),
+  ];
+  const window = procurementOpportunityWindow(object, observations);
+  assert.equal(window.available, true);
+  assert.equal(window.source_observation_ref, CITY_RECORD_REF);
+  assert.equal(window.start_date, "2026-07-02");
+  assert.equal(window.due_date, "2026-08-05");
+});
+
 test("Preserved method fixtures pair correctly with the window display line: default 20-day competitive floor", () => {
   const window = deriveProcurementOpportunityWindow({
     passport_release_date: "2026-07-01",
