@@ -30,7 +30,10 @@ import {
   renderCivicDocumentAssets,
   renderCivicDocumentMast,
 } from "./civic_document_chrome.mjs";
-import { buildPlaceLocalConstellation } from "./community_board_geography.mjs";
+import {
+  buildPlaceLocalConstellation,
+  councilDistrictsIntersectingCommunity,
+} from "./community_board_geography.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import { renderLocalConstellationHTML } from "./local_constellation.mjs";
 import { renderWalkEntry, walkEntryHref, walkEntryPlaceLabel } from "./walk_entry.mjs";
@@ -335,10 +338,12 @@ function selectedPlacePresentation(scope, communityGeography = {}) {
     const edge = (communityGeography.public_edges || []).find((candidate) => candidate?.type === "covers"
       && candidate.to === `community-district:${community}`);
     const board = (communityGeography.nodes || []).find((candidate) => candidate?.id === edge?.from);
+    const overlappingCouncilDistricts = councilDistrictsIntersectingCommunity(community, communityGeography);
     return {
       label: formatCommunityDistrict(community),
       boardLabel: board?.name || null,
       boardHref: board?.properties?.body_id ? communityBoardPageHref(board.properties.body_id) : null,
+      overlappingCouncilLabels: overlappingCouncilDistricts.map((id) => formatCouncilDistrict(id)),
     };
   }
   if (council) return { label: formatCouncilDistrict(council) };
@@ -373,8 +378,18 @@ function recordSort(a, b) {
   return dateB - dateA || String(a.title).localeCompare(String(b.title));
 }
 
+function viewBoardCoverage(scope, geography) {
+  const community = first(scope.place.community_districts);
+  if (!community) return "This place is not a Community Board district, so board activity is not applicable here.";
+  const presentation = selectedPlacePresentation(scope, geography);
+  return presentation.boardHref
+    ? "Open the named Community Board to see its published meetings and actions. District membership does not imply board action."
+    : "The Community Board covering this district is not identified in the retained geography sources.";
+}
+
 export function buildNearYouViewModel(inputScope, activity, boundaries, options = {}) {
   const scope = scopeWithGeographies(inputScope);
+  const isOverview = scope.facets.domains.length === 0;
   const requestedLens = first(scope.facets.domains) || "meetings";
   const lens = requestedLens;
   const dataState = normalizeNearYouDataState(options.dataState ?? (activity ? "ready" : "error"));
@@ -454,6 +469,44 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       matched_place_role: requestedPlaceRole,
     };
   };
+  const overviewRecords = (lensName) => {
+    if (dataState !== "ready" || !activityRoot?.records?.[lensName]) return [];
+    const lensScope = normalizeScope({ ...scope, facets: { ...scope.facets, domains: [lensName] } });
+    const ids = intersection(itemIdsForPlace(activityRoot, lensName, lensScope), new Set(
+      Object.values(activityRoot.records[lensName])
+        .filter((record) => recordMatches(record, lensScope, activityRoot.built_at))
+        .map((record) => String(record.id)),
+    ));
+    return ids.map((id) => activityRoot.records[lensName][id]).filter(Boolean).sort(recordSort).map((record) => {
+      const whyHere = selectNearYouExplanationPath(record.why_here_candidates, lensScope);
+      return {
+        ...record,
+        route: migratedSiteHref(record.route),
+        why_here: whyHere ? { ...whyHere, notice_href: siteHref(whyHere.notice_href) } : null,
+        geography_evidence: selectNearYouGeographyEvidence(record, lensScope),
+      };
+    });
+  };
+  const overviewAll = Object.fromEntries(["meetings", "land", "property", "rules", "money"].map((name) => [name, overviewRecords(name)]));
+  const builtTime = Date.parse(activityRoot?.built_at || "");
+  const upcoming = overviewAll.meetings.filter((record) => {
+    const date = Date.parse(record.date || "");
+    return Number.isFinite(date) && (!Number.isFinite(builtTime) || date >= builtTime);
+  });
+  const recent = ["land", "property", "rules"].flatMap((name) => overviewAll[name])
+    .filter((record) => record.date)
+    .sort(recordSort);
+  const projects = overviewAll.land;
+  const overview = {
+    state: isOverview ? dataState : "not_requested",
+    sections: [
+      { key: "upcoming", title: "Upcoming", count: dataState === "ready" ? upcoming.length : null, records: upcoming.slice(0, 3), coverage: upcoming.length ? null : "No upcoming activity is recorded for this district in the retained sources.", lens: "meetings" },
+      { key: "recent-changes", title: "Recent changes", count: dataState === "ready" ? recent.length : null, records: recent.slice(0, 3), coverage: recent.length ? null : "No recent changes are recorded for this district in the retained sources.", lens: "land" },
+      { key: "board-activity", title: "Board activity", count: null, records: [], coverage: viewBoardCoverage(scope, options.communityGeography || {}), lens: "meetings" },
+      { key: "projects", title: "Projects", count: dataState === "ready" ? projects.length : null, records: projects.slice(0, 3), coverage: projects.length ? null : "No district projects are published in this digest.", lens: "land" },
+      { key: "district-priorities", title: "District priorities", count: null, records: [], coverage: "District priorities are not published in this digest.", lens: "meetings" },
+    ],
+  };
   const resultRecords = resultIds.map((id) => records[id]).filter(Boolean).sort(recordSort).map(linkedRecord);
   const bags = Object.fromEntries(["citywide", "virtual", "unlocated"].map((kind) => {
     const ids = dataState === "ready" && mapped
@@ -481,6 +534,8 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     basisLabel: basisLayer?.basis_label || "Affected area or place of performance",
     hasPlace,
     placePresentation: selectedPlacePresentation(scope, options.communityGeography || {}),
+    isOverview,
+    overview,
     lensLabel: LENS_LABELS[lens] || lens,
     scopeSummary: scopeSummary(scope, lens, activity?.geography_items?.definitions),
     geographyOptions: Object.values(activity?.geography_items?.definitions || {})
@@ -713,6 +768,31 @@ function renderNearYouDeferredShell(view, part, { includeListPanelMarker = false
     </section>`;
 }
 
+function renderNearYouOverview(view) {
+  if (!view.isOverview) return "";
+  const lensScopeHref = (lens) => {
+    const scope = normalizeScope({ ...view.scope, facets: { ...view.scope.facets, domains: [lens] } });
+    return nearYouUrlFromScope(scope, { base: view.canonicalBase });
+  };
+  const sections = view.overview.sections.map((section) => {
+    const records = section.records.length ? recordList(section.records) : "";
+    const count = knownCount(section.count) == null ? "" : ` <span class="near-overview-count">${section.count}</span>`;
+    const destination = section.key === "board-activity" && view.placePresentation.boardHref
+      ? view.placePresentation.boardHref
+      : lensScopeHref(section.lens);
+    return `<section class="near-overview-section" id="near-overview-${esc(section.key)}" aria-labelledby="near-overview-${esc(section.key)}-heading">
+      <div class="near-section-heading"><h2 id="near-overview-${esc(section.key)}-heading">${esc(section.title)}${count}</h2><a href="${esc(destination)}">Open ${esc(section.lens === "meetings" ? "meetings" : LENS_LABELS[section.lens] || section.lens)}</a></div>
+      ${records}${section.coverage ? `<p class="near-coverage" role="note">${esc(section.coverage)}</p>` : ""}
+    </section>`;
+  }).join("");
+  const councils = (view.placePresentation.overlappingCouncilLabels || []).join(", ");
+  return `<section class="near-overview" aria-labelledby="near-overview-heading" data-near-overview="true">
+    <p class="near-kicker">District overview</p><h2 id="near-overview-heading">What is happening here</h2>
+    <p class="near-overview-place">${esc(view.placePresentation.label)}${view.placePresentation.boardLabel ? ` · ${esc(view.placePresentation.boardLabel)}` : ""}${councils ? ` · overlaps ${esc(councils)}` : ""}</p>
+    ${sections}
+  </section>`;
+}
+
 function renderNearYouMapState(view) {
   const state = view.mapState;
   if (state === "unsupported") {
@@ -828,7 +908,7 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
       <p class="near-kicker">Place-first civic records</p>
       <h1>${esc(view.placePresentation.label)}</h1>
       ${view.placePresentation.boardHref ? `<p class="near-board-link"><a href="${esc(view.placePresentation.boardHref)}">${esc(view.placePresentation.boardLabel)}</a></p>` : ""}
-      <p>Browse ${esc(view.lensLabel.toLowerCase())} records for this place. Choosing a place narrows the results without removing your other filters.</p>
+      <p>${view.isOverview ? "See a bounded summary of this place, then choose the record family you want to explore." : `Browse ${esc(view.lensLabel.toLowerCase())} records for this place. Choosing a place narrows the results without removing your other filters.`}</p>
       <ul class="near-scope" aria-label="Active filters"><li data-scope-axis="topic"><span>Topic: ${esc(view.lensLabel)}</span></li>${scopeChips}</ul>
       <nav class="near-actions" aria-label="Map actions">
         <a href="${esc(view.browseHref)}">Open as a list</a>
@@ -836,6 +916,7 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
         <a href="${esc(view.shareHref)}">Share this map</a>
       </nav>
     </section>
+      ${renderNearYouOverview(view)}
       <details class="near-explore"><summary>Explore related records</summary>${walkEntry}</details>
       ${renderLocalConstellationHTML(view.local_constellation, { heading: "Nearby place records", id: "place-local-constellation-heading" })}
     <section class="near-place-guide${view.hasPlace ? " is-set" : ""}" aria-labelledby="near-place-heading">
