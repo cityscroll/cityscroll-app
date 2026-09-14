@@ -10,6 +10,8 @@
 import { CROSS_SOURCE_EVIDENCE_SOURCE_LABELS } from "./cross_source_evidence_receipt.mjs";
 import defaultAboResidual from "./data/abo_award_residual_lookup.json" with { type: "json" };
 import defaultSourceCoverage from "../entity_resolution/source_coverage.json" with { type: "json" };
+import { officialSourceLink } from "./affordance_grammar.mjs";
+import { procurementSourceLinkDescriptors } from "./procurement_source_links.mjs";
 
 const MEETING_DECLARED_SOURCES = Object.freeze(["city_record", "community_board"]);
 
@@ -97,20 +99,6 @@ function objectSystems(object = {}, observations = []) {
   }
   if (object.source_system) systems.add(lower(object.source_system));
   return systems;
-}
-
-function asOfFor(system, object, observations, envelope, inventoryRow) {
-  const observation = (Array.isArray(observations) ? observations : []).find((row) =>
-    lower(row?.source_system) === system);
-  return text(
-    observation?.as_of
-      || observation?.ingested_at
-      || observation?.observed_at
-      || envelope?.generated_at
-      || inventoryRow?.live_observation?.latest_ingested_at
-      || inventoryRow?.live_observation?.measured_at
-      || object?.generated_at,
-  );
 }
 
 function inventoryRow(sourceCoverage, system) {
@@ -336,11 +324,12 @@ function ap06Scope(registeredContractCoverage) {
 function sourceRow({
   system,
   classification,
-  asOf,
+  link,
   envelope,
   inventory,
 }) {
-  const vintage = text(classification.vintage) || asOf?.slice(0, 10) || text(inventory?.live_observation?.measured_at)?.slice(0, 10);
+  const lookupAsOf = text(classification.as_of);
+  const vintage = text(classification.vintage) || text(inventory?.live_observation?.measured_at)?.slice(0, 10);
   const denominator = Number.isFinite(Number(classification.denominator))
     ? Number(classification.denominator)
     : (Number.isFinite(Number(inventory?.live_observation?.row_count)) && classification.state === "checked-no-match"
@@ -354,7 +343,7 @@ function sourceRow({
     source_name: sourceName(system),
     state: classification.state,
     state_label: STATE_LABELS[classification.state],
-    as_of: asOf,
+    lookup_as_of: lookupAsOf,
     vintage: vintage || null,
     lookup_basis: text(classification.basis) || null,
     denominator,
@@ -362,6 +351,11 @@ function sourceRow({
     stopped: Boolean(classification.stopped),
     unresolved,
     envelope_status: envelope?.status || null,
+    record_href: link?.record_href || null,
+    official_href: link?.official_href || null,
+    official_label: link?.official_label || null,
+    search_href: link?.search_href || null,
+    search_label: link?.search_label || null,
   });
 }
 
@@ -392,6 +386,7 @@ export function buildCrossSourceCoverageLedger({
     : aboResidual;
   const present = objectSystems(object, observations);
   const corroboration = corroborationState(object);
+  const links = objectKind === "procurement" ? procurementSourceLinkDescriptors(object, observations) : new Map();
   const abo = objectKind === "procurement" ? aboLookup(residual) : null;
   const sources = declaredSources(objectKind, object, observations).map((system) => {
     const envelope = envelopeOf(sourceStatus, system);
@@ -412,7 +407,7 @@ export function buildCrossSourceCoverageLedger({
     return sourceRow({
       system,
       classification,
-      asOf: asOfFor(system, object, observations, envelope, inventory),
+      link: links.get(system),
       envelope,
       inventory,
     });
@@ -446,11 +441,11 @@ function rateHtml(coverage) {
 
 function sourceMeta(source) {
   const parts = [
-    source.as_of ? `as of ${source.as_of}` : null,
+    source.lookup_as_of ? `lookup as of ${source.lookup_as_of}` : null,
     source.lookup_basis ? `lookup: ${source.lookup_basis}` : null,
     source.denominator != null && source.population
       ? `${source.denominator} in ${source.population}`
-      : (source.vintage && source.state === "checked-no-match" ? `vintage ${source.vintage}` : null),
+      : (source.vintage ? ["Source snapshot", source.vintage].join(" ") : null),
     source.stopped ? "stopped lookup" : null,
   ].filter(Boolean);
   return parts.join(" · ");
@@ -459,10 +454,18 @@ function sourceMeta(source) {
 /** Render a compact object-view ledger. Empty or incomplete input paints nothing. */
 export function renderCrossSourceCoverageLedger(ledger) {
   if (!ledger || !Array.isArray(ledger.sources) || !ledger.sources.length) return "";
-  const items = ledger.sources.map((source) => {
+  const items = ledger.sources.filter((source) => source.state !== "not-applicable").map((source) => {
     const meta = sourceMeta(source);
-    return `<li class="cross-source-coverage-source" data-source-system="${esc(source.source_system)}" data-coverage-state="${esc(source.state)}" data-unresolved="${source.unresolved ? "1" : "0"}"><span class="cross-source-coverage-name">${esc(source.source_name)}</span><span class="cross-source-coverage-state">${esc(source.state_label)}</span>${meta ? `<span class="cross-source-coverage-meta">${esc(meta)}</span>` : ""}</li>`;
+    const concrete = source.record_href && officialSourceLink({ href: source.record_href, label: source.source_name, className: "cross-source-coverage-name", escape: esc });
+    const name = concrete || `<span class="cross-source-coverage-name">${esc(source.source_name)}</span>`;
+    const action = source.official_href
+      ? officialSourceLink({ href: source.official_href, label: source.official_label || "Open official record", className: "cross-source-coverage-action", escape: esc })
+      : source.search_href
+        ? officialSourceLink({ href: source.search_href, label: source.search_label || "Search official source", className: "cross-source-coverage-action", escape: esc })
+        : "";
+    return `<li class="cross-source-coverage-source" data-source-system="${esc(source.source_system)}" data-coverage-state="${esc(source.state)}" data-unresolved="${source.unresolved ? "1" : "0"}">${name}<span class="cross-source-coverage-state">${esc(source.state_label)}</span>${action}${meta ? `<span class="cross-source-coverage-meta">${esc(meta)}</span>` : ""}</li>`;
   }).join("");
+  if (!items) return "";
   return `<section class="node-section node-card cross-source-coverage-ledger" data-cross-source-coverage-ledger="1" aria-labelledby="cross-source-coverage-heading"><h2 id="cross-source-coverage-heading">Source coverage</h2><p class="cross-source-coverage-lead">Declared publisher lookup state for this record. No exact match is a snapshot miss, not a conclusion that the publisher never issued the record.</p><ul class="cross-source-coverage-sources">${items}</ul>${rateHtml(ledger.measured_coverage)}</section>`;
 }
 
