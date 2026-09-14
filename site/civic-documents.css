@@ -4824,11 +4824,25 @@ select {
   display: grid;
 }
 
+/* A request deep link is a valid destination too. Its containing agency must
+ * open before the browser scrolls to the request, without requiring script. */
+.board-budget-request-group[data-budget-request-group-collapsed]:has(.board-budget-request:target) > .board-budget-request-list {
+  display: grid;
+}
+
 .board-budget-request-group[data-budget-request-group-collapsed]:target > .board-budget-request-group-close {
   display: inline-block;
 }
 
+.board-budget-request-group[data-budget-request-group-collapsed]:has(.board-budget-request:target) > .board-budget-request-group-close {
+  display: inline-block;
+}
+
 .board-budget-request-group[data-budget-request-group-collapsed]:target > .board-budget-request-group-open {
+  display: none;
+}
+
+.board-budget-request-group[data-budget-request-group-collapsed]:has(.board-budget-request:target) > .board-budget-request-group-open {
   display: none;
 }
 

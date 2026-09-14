@@ -73,7 +73,10 @@ export const BUDGET_REQUEST_TITLE_ID = "budget-request-inspect-title";
  * A reader who follows a request out and comes back returns to the same agency
  * open at the same scroll offset, with no script involved.
  */
-export const BUDGET_REQUEST_VISIBLE_GROUPS = 4;
+// The board overview is a register summary, not the full answer archive.
+// Agency rows remain addressable, while every request and its answers stay in
+// the existing native detail path or behind the explicit group destination.
+export const BUDGET_REQUEST_VISIBLE_GROUPS = 0;
 
 /** How many boards an agency page lists before the rest move behind a disclosure. */
 export const BUDGET_REQUEST_VISIBLE_BOARDS = 8;

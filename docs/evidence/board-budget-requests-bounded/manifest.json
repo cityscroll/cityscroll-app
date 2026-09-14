@@ -1,0 +1,44 @@
+{
+  "schema": "cityscroll.board_budget_requests_bounded_manifest.v1",
+  "grounded_at": "aa34c9481ad843030719eceb026dbdebdb2db054",
+  "source": "site/data/community_board_budget_register/brooklyn-cb-15.json",
+  "fixture": "test/fixtures/community_board_budget_requests/dense-long-title.json",
+  "image_policy": "Textual manifests are committed evidence; no image binary is committed.",
+  "captures": [
+    {
+      "case": "cb15-fy2027-default",
+      "route": "/community-boards/brooklyn-cb-15/#board-budget-requests",
+      "viewport": { "width": 1440, "height": 900 },
+      "assertion": "The frozen FY2027 board reports 54 requests across 12 agencies; all 12 agency groups are collapsed, with exact per-group counts and explicit Show all links before any answer history.",
+      "before": { "requests": 54, "agencies": 12, "default_open_groups": 4, "expanded_answer_histories": 4 },
+      "after": { "requests": 54, "agencies": 12, "default_open_groups": 0, "expanded_answer_histories": 0, "remaining_requests": 54 },
+      "proof": "test/community_board_request_responses.test.mjs :: CB15 opens as a bounded FY2027 agency summary"
+    },
+    {
+      "case": "cb15-request-215202712c",
+      "route": "/community-boards/brooklyn-cb-15/#budget-request-215202712c",
+      "viewport": { "width": 1440, "height": 900 },
+      "assertion": "The original Shore Boulevard request remains addressable inside its collapsed agency group; its support answer remains source text and no funded, rejected, or completed label is introduced.",
+      "proof": "test/community_board_request_responses.test.mjs :: a supported request without funding is neither a rejection nor a completion"
+    },
+    {
+      "case": "dense-long-title-fixture",
+      "route": "/community-boards/brooklyn-cb-15/#budget-request-215202712c",
+      "viewport": { "width": 390, "height": 844 },
+      "assertion": "A second dense-board fixture with an unusually long title preserves the 54-request and 12-agency counts, stable request anchor, and bounded default disclosure.",
+      "before": { "requests": 54, "agencies": 12 },
+      "after": { "requests": 54, "agencies": 12, "default_open_groups": 0 },
+      "proof": "test/fixtures/community_board_budget_requests/dense-long-title.json and test/community_board_request_responses.test.mjs :: the dense long-title fixture keeps exact source text behind the same bounded address"
+    }
+  ],
+  "navigation_proof": {
+    "group_anchor_opens_collapsed_content": true,
+    "request_anchor_opens_containing_group": true,
+    "native_inspect_dismiss_focus_return": true,
+    "no_script_complete_path": true,
+    "print_complete_path": true,
+    "keyboard_and_translation_coverage": true,
+    "failed_detail_recovery": true,
+    "source": "test/community_board_request_responses.test.mjs"
+  }
+}

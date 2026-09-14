@@ -73,6 +73,7 @@ require("../site/i18n.js");
 const SHIPPING_LANGS = globalThis.window.SHIPPING_LANGS;
 
 const read = (path) => JSON.parse(readFileSync(new URL(`../${path}`, import.meta.url), "utf8"));
+const BOUNDED_FIXTURE = read("test/fixtures/community_board_budget_requests/dense-long-title.json");
 
 const REGISTER = read("site/data/community_board_budget_register.json");
 const DOCUMENT_DIR = new URL("../site/data/community_board_budget_register/", import.meta.url);
@@ -204,6 +205,41 @@ test("the board reading reproduces the retained register, board for board", () =
   }
   assert.equal(boards, DOCUMENTS.length);
   assert.ok(boards >= 59, "every community district's document takes part");
+});
+
+test("CB15 opens as a bounded FY2027 agency summary", () => {
+  const view = boardView(BROOKLYN_CB15);
+  assert.equal(view.request_count, 54);
+  assert.equal(view.agency_count, 12);
+  assert.deepEqual(view.fiscal_years, [2027]);
+  assert.equal(view.groups.filter((group) => !group.collapsed).length, 0);
+
+  const rendered = boardSection(BROOKLYN_CB15);
+  assert.equal((rendered.match(/data-budget-request-group-collapsed="1"/g) || []).length, 12);
+  for (const group of view.groups) {
+    assert.match(rendered, new RegExp(`data-request-count="${group.request_count}"`));
+    assert.match(rendered, new RegExp(`href="#${group.anchor}"`));
+  }
+  assert.equal((rendered.match(/board-budget-request-group-open"/g) || []).length, 12);
+  assert.equal((rendered.match(/board-budget-request-group-close"/g) || []).length, 12);
+  assert.ok(CSS.includes(":has(.board-budget-request:target)"));
+});
+
+test("the dense long-title fixture keeps exact source text behind the same bounded address", () => {
+  const source = DOCUMENTS.find((row) => row.board_id === BROOKLYN_CB15);
+  const document = structuredClone(source);
+  const target = document.requests.find((row) => row.tracking_code === BOUNDED_FIXTURE.source_request);
+  assert.ok(target, "the fixture's source request remains in CB15");
+  for (const version of target.versions) {
+    if (version.servable === true) version.request = BOUNDED_FIXTURE.long_title;
+  }
+  const view = boardView(BROOKLYN_CB15, { document });
+  assert.equal(view.request_count, BOUNDED_FIXTURE.request_count);
+  assert.equal(view.agency_count, BOUNDED_FIXTURE.agency_count);
+  assert.equal(view.groups.filter((group) => !group.collapsed).length, 0);
+  const rendered = renderCommunityBoardBudgetRequestsSection(view);
+  assert.ok(textOf(rendered).includes(BOUNDED_FIXTURE.long_title));
+  assert.ok(rendered.includes(`id="budget-request-${BOUNDED_FIXTURE.source_request.toLowerCase()}"`));
 });
 
 test("only the publications a reader is served reach a reader, or a comparison", () => {
