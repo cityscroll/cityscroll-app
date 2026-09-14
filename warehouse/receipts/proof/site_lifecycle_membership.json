@@ -2,26 +2,78 @@
   "schema": "cityscroll.site_lifecycle_membership_receipt.v1",
   "projection_schema": "cityscroll.site_lifecycle.v1",
   "generated_at": "2026-09-14T00:00:00.000Z",
-  "generation": "coyle-retained-membership-v1",
   "source_vintage": "2026-09-09",
+  "generation": "182c096174874ed6a8bdf5f1b5ca77765d162849625ad1ef01c3237f2787c854",
+  "content_hash": "182c096174874ed6a8bdf5f1b5ca77765d162849625ad1ef01c3237f2787c854",
+  "counts": {
+    "parcels": 2,
+    "members": 8
+  },
+  "shards": [
+    "0000.json"
+  ],
+  "reverse_index": {
+    "path": "site/data/site_lifecycle/reverse.json",
+    "generation": "182c096174874ed6a8bdf5f1b5ca77765d162849625ad1ef01c3237f2787c854",
+    "content_hash": "182c096174874ed6a8bdf5f1b5ca77765d162849625ad1ef01c3237f2787c854"
+  },
   "parcels": {
     "3073670011": {
-      "land": ["land:project:2020K0270", "land:application:C210239ZMK", "land:application:N210240ZRK"],
-      "council": ["council:matter:C210239ZMK", "council:matter:N210240ZRK"],
-      "procurement": ["procurement:award:20241104015", "procurement:hearing-section:20230911014:coyle", "procurement:contract:CT107120258802303"]
+      "member_ids": [
+        "council:matter:coyle-zmk",
+        "council:matter:coyle-zrk",
+        "land:application:C210239ZMK",
+        "land:application:N210240ZRK",
+        "land:project:2020K0270",
+        "procurement:hearing-section:20230911014:coyle",
+        "procurement:contract:CT107120258802303",
+        "procurement:award:20241104015"
+      ]
     },
     "3073670029": {
-      "land": ["land:project:2020K0270", "land:application:C210239ZMK", "land:application:N210240ZRK"],
-      "council": ["council:matter:C210239ZMK", "council:matter:N210240ZRK"],
-      "procurement": []
+      "member_ids": [
+        "council:matter:coyle-zmk",
+        "council:matter:coyle-zrk",
+        "land:application:C210239ZMK",
+        "land:application:N210240ZRK",
+        "land:project:2020K0270"
+      ]
     }
   },
   "evidence": [
-    {"source_system": "zap-projects-open-data", "source_record_id": "2020K0270", "source_url": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json?$where=project_id%3D%272020K0270%27"},
-    {"source_system": "zap-bbl", "source_record_id": "2020K0270", "source_url": "https://data.cityofnewyork.us/resource/2iga-a6mk.json?$where=project_id%3D%272020K0270%27"},
-    {"source_system": "ocp_recent_contract_awards", "source_record_id": "20241104015", "source_url": "https://data.cityofnewyork.us/resource/qyyg-4tf5.json?$where=request_id%3D%2720241104015%27", "resolved_bbl": "3073670011"},
-    {"source_system": "city_record_online", "source_record_id": "20230911014", "source_url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json?$where=request_id%3D%2720230911014%27", "section": "Coyle", "resolved_bbl": "3073670011"},
-    {"source_system": "passport_public_contracts", "source_record_id": "4965933", "canonical_subject": "procurement:contract:CT107120258802303", "resolved_bbl": "3073670011"}
+    {
+      "source_system": "zap-projects-open-data",
+      "source_record_id": "2020K0270",
+      "source_url": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json?$where=project_id%3D%272020K0270%27"
+    },
+    {
+      "source_system": "zap-bbl",
+      "source_record_id": "2020K0270",
+      "source_url": "https://data.cityofnewyork.us/resource/2iga-a6mk.json?$where=project_id%3D%272020K0270%27"
+    },
+    {
+      "source_system": "ocp_recent_contract_awards",
+      "source_record_id": "20241104015",
+      "source_url": "https://data.cityofnewyork.us/resource/qyyg-4tf5.json?$where=request_id%3D%2720241104015%27",
+      "resolved_bbl": "3073670011"
+    },
+    {
+      "source_system": "city_record_online",
+      "source_record_id": "20230911014",
+      "source_url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json?$where=request_id%3D%2720230911014%27",
+      "section": "Coyle",
+      "resolved_bbl": "3073670011"
+    },
+    {
+      "source_system": "passport_public_contracts",
+      "source_record_id": "4965933",
+      "canonical_subject": "procurement:contract:CT107120258802303",
+      "resolved_bbl": "3073670011"
+    }
   ],
-  "negative_rules": ["exact parcel membership does not imply causation or one development project", "the award and hearing section do not attach to 3073670029 without evidence", "missing property evidence produces no property member"]
+  "negative_rules": [
+    "exact parcel membership does not imply causation or one development project",
+    "the award and hearing section do not attach to 3073670029 without evidence",
+    "missing property evidence produces no property member"
+  ]
 }

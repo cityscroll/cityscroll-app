@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.site_lifecycle.manifest.v1",
+  "version": 1,
+  "generation": "182c096174874ed6a8bdf5f1b5ca77765d162849625ad1ef01c3237f2787c854",
+  "content_hash": "182c096174874ed6a8bdf5f1b5ca77765d162849625ad1ef01c3237f2787c854",
+  "counts": {
+    "parcels": 2,
+    "members": 8
+  },
+  "shards": [
+    "0000.json"
+  ]
+}
