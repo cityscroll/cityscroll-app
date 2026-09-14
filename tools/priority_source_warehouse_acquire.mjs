@@ -19,6 +19,16 @@ const FORBIDDEN = [/--bulk/, /--ack-large/];
 
 export const BOUNDED_ACQUISITIONS = Object.freeze([
   {
+    family_id: "legistar",
+    source_contract_id: "nyc-council-legistar",
+    command: ["node", "tools/priority_source_observation_producers.mjs", "--bounded", "--source", "nyc-council-legistar"],
+  },
+  {
+    family_id: "rules-rss",
+    source_contract_id: "nyc-rules-rss",
+    command: ["node", "tools/priority_source_observation_producers.mjs", "--bounded", "--source", "nyc-rules-rss"],
+  },
+  {
     family_id: "zap-projects",
     source_contract_id: "zap-projects",
     command: ["warehouse/.venv/bin/python", "warehouse/scripts/ingest.py", "--dataset", "zap-projects", "--limit", "50"],

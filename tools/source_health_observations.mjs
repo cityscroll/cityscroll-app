@@ -109,6 +109,12 @@ function normalizedReceipt(input, sourceId, fallbackPath = null, clockKind = "ac
     publisher_updated_at: notAfter(input?.publisher_updated_at, observedAt),
     clock_kind: clockKind,
   };
+  for (const field of [
+    "attempt_at", "result_at", "input_vintage", "producer", "provenance",
+    "production_provenance", "source_url", "content_hash", "event_kind",
+  ]) {
+    if (Object.hasOwn(input || {}, field)) receipt[field] = input[field];
+  }
   assertAcquisitionReceipt(receipt);
   return receipt;
 }
@@ -412,6 +418,11 @@ function applyAcquisition(target, input, kind) {
     status: input.status || "succeeded",
     receipt_ref: input.path || null,
     exact_error: input.exact_error ? redactCredentialValues(input.exact_error) : null,
+    ...(input.attempt_at ? { attempt_at: validAt(input.attempt_at) } : {}),
+    ...(input.result_at ? { result_at: validAt(input.result_at) } : {}),
+    ...(input.producer ? { producer: input.producer } : {}),
+    ...(input.provenance ? { provenance: input.provenance } : {}),
+    ...(input.production_provenance ? { production_provenance: input.production_provenance } : {}),
   });
 }
 
@@ -602,9 +613,14 @@ export function buildSourceHealthObservations(registry, inputs = {}) {
       source_id: row.source_id || row.source_contract_id,
       evidence_kind: row.adapter || "worker-scheduled-refresh",
     })),
-    ...(inputs.passportIngestMeta ? passportReceiptsFromMeta(inputs.passportIngestMeta, {
-      run_id: inputs.passportIngestMeta.run_id || "passport-d1-ingest-meta",
-    }).map((row) => ({
+    ...(inputs.passportIngestMeta ? (
+      Array.isArray(inputs.passportIngestMeta.receipts)
+        ? inputs.passportIngestMeta.receipts
+        : passportReceiptsFromMeta(inputs.passportIngestMeta, {
+          run_id: inputs.passportIngestMeta.run_id || "passport-d1-ingest-meta",
+          production_provenance: inputs.passportIngestMeta.production_provenance || null,
+        })
+    ).map((row) => ({
       ...row,
       source_id: row.source_contract_id,
       evidence_kind: "worker-d1-passport-ingest-meta",
@@ -741,7 +757,12 @@ function warehouseReceipts(root, registry) {
           adapter: "warehouse-acquisition-receipt",
           run_id: payload?.run_id || payload?.receipt_id || relative(root, path),
           clock_kind: "acquisition",
-          input_vintage: observedAt,
+          attempt_at: validAt(payload?.attempt_at) || observedAt,
+          result_at: validAt(payload?.result_at) || observedAt,
+          input_vintage: validAt(payload?.input_vintage) || observedAt,
+          ...(payload?.producer ? { producer: payload.producer } : {}),
+          ...(payload?.provenance ? { provenance: payload.provenance } : {}),
+          ...(payload?.production_provenance ? { production_provenance: payload.production_provenance } : {}),
           exact_error: failed
             ? redactCredentialValues(payload?.exact_error || payload?.error || payload?.message || "warehouse receipt reported failure")
             : null,
@@ -1158,7 +1179,17 @@ function boardMinutesAcquisitionReceipts(root) {
 function passportIngestMetaFile(root) {
   const path = join(root, "warehouse/receipts/proof/passport_d1_ingest_meta_latest.json");
   if (!existsSync(path)) return null;
-  try { return readJson(path); } catch { return null; }
+  try {
+    const payload = readJson(path);
+    if (payload?.meta && Array.isArray(payload.receipts)) {
+      return {
+        ...payload.meta,
+        receipts: payload.receipts,
+        production_provenance: payload.provenance || null,
+      };
+    }
+    return payload;
+  } catch { return null; }
 }
 
 export function loadSourceHealthInputs(root, registry, options = {}) {

@@ -104,9 +104,13 @@ test("representative source state preserves identity, clocks, health, coverage, 
 
   for (const id of ["passport-public-rfx", "nyc-council-legistar"]) {
     const clocks = graph.sources.find((source) => source.id === id).clocks;
-    for (const clock of Object.values(clocks)) {
-      assert.equal(clock.state, "UNKNOWN");
-      assert.equal(clock.at, null);
+    const expected = {
+      cityscroll_checked_acquired: "KNOWN",
+      cityscroll_serving: id === "passport-public-rfx" ? "KNOWN" : "UNKNOWN",
+    };
+    for (const [name, state] of Object.entries(expected)) {
+      assert.equal(clocks[name].state, state);
+      assert.equal(Boolean(clocks[name].at), state === "KNOWN");
     }
   }
 });

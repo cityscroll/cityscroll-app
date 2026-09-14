@@ -50,9 +50,10 @@ git checkout --quiet -B "$DATA_BRANCH" "$DEFAULT_BRANCH"
 # against data this same run just refreshed.
 tools/install_worker_dependencies.sh
 
-# Bounded underlying acquisition for warehouse-dependent priority sources
-# runs before rematerialization. This refuses undocumented bulk ingest; an
-# unchanged old catalog is not freshness proof.
+# Bounded underlying acquisition for warehouse-dependent priority sources and
+# the two source-health observation producers runs before rematerialization.
+# This refuses undocumented bulk ingest; an unchanged old catalog is not
+# freshness proof.
 node tools/priority_source_warehouse_acquire.mjs --bounded
 
 node tools/first_class_refresh.mjs --run-due

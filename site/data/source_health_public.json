@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.public_source_health.v1",
-  "generated_at": "2026-09-13T10:08:47.000Z",
+  "generated_at": "2026-09-14T03:54:01.554Z",
   "available": true,
   "source_count": 60,
   "sources": [
@@ -2098,10 +2098,8 @@
       "expected_cadence": "Updated as meetings, agenda items, and votes change",
       "mode": "continuous",
       "health": {
-        "status": "UNKNOWN",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -2109,9 +2107,9 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-14T03:54:01.287Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
             "at": null,
@@ -2131,7 +2129,7 @@
           "max_date": null
         },
         "publisher_vintage": null,
-        "retrieved_at": null,
+        "retrieved_at": "2026-09-14T03:54:01.287Z",
         "expected_lag_tolerance_days": 7,
         "current_lag": {
           "value": null,
@@ -2353,10 +2351,8 @@
       "expected_cadence": "Updated as rules are proposed, heard, adopted, or made effective",
       "mode": "continuous",
       "health": {
-        "status": "UNKNOWN",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -2364,9 +2360,9 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-14T03:54:01.554Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
             "at": null,
@@ -2386,7 +2382,7 @@
           "max_date": null
         },
         "publisher_vintage": null,
-        "retrieved_at": null,
+        "retrieved_at": "2026-09-14T03:54:01.554Z",
         "expected_lag_tolerance_days": 45,
         "current_lag": {
           "value": null,
@@ -2655,23 +2651,21 @@
       "expected_cadence": "Portal dataJs dump refreshed about daily (Last-Modified on dataJs/contractData.js)",
       "mode": "continuous",
       "health": {
-        "status": "Degraded",
-        "reason_codes": [
-          "serving-clock-stale"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-13T05:37:25.000Z",
+            "state": "KNOWN",
+            "basis": "publisher_record"
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-13T13:01:59.965Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": "2026-08-06T00:00:00.000Z",
+            "at": "2026-09-13T13:01:59.965Z",
             "state": "KNOWN",
             "basis": "cityscroll_materialization"
           }
@@ -2688,7 +2682,7 @@
           "max_date": null
         },
         "publisher_vintage": null,
-        "retrieved_at": null,
+        "retrieved_at": "2026-09-13T13:01:59.965Z",
         "expected_lag_tolerance_days": 3,
         "current_lag": {
           "value": null,
@@ -2706,25 +2700,23 @@
       "expected_cadence": "Portal dataJs dump refreshed about daily (Last-Modified on dataJs/rfxData.js)",
       "mode": "continuous",
       "health": {
-        "status": "UNKNOWN",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-13T05:37:26.000Z",
+            "state": "KNOWN",
+            "basis": "publisher_record"
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-13T13:01:59.965Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-13T13:01:59.965Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_materialization"
           }
         }
       },
@@ -2739,7 +2731,7 @@
           "max_date": null
         },
         "publisher_vintage": null,
-        "retrieved_at": null,
+        "retrieved_at": "2026-09-13T13:01:59.965Z",
         "expected_lag_tolerance_days": 3,
         "current_lag": {
           "value": null,

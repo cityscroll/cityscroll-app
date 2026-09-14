@@ -1,0 +1,35 @@
+{
+  "schema": "cityscroll.source_acquisition_receipt.v1",
+  "source_contract_id": "nyc-rules-rss",
+  "source_url": "https://rules.cityofnewyork.us/feed/",
+  "attempt_at": "2026-09-14T03:54:00.528Z",
+  "result_at": "2026-09-14T03:54:01.554Z",
+  "observed_at": "2026-09-14T03:54:01.554Z",
+  "status": "succeeded",
+  "run_id": "warehouse-priority-source-observer:nyc-rules-rss:2026-09-14T03:54:01.554Z",
+  "producer": "warehouse-priority-source-observer",
+  "adapter": "warehouse-priority-source-observer",
+  "publisher_clock_basis": null,
+  "publisher_updated_at": null,
+  "clock_kind": "acquisition",
+  "event_kind": "bounded-acquisition",
+  "input_vintage": "2026-09-08T18:32:12.000Z",
+  "content_hash": "sha256:ba7c341bc59dc65e8f20068a9ca06b19a76c3559b20013fd69fa540dbc69e459",
+  "provenance": {
+    "schema": "cityscroll.priority_source_observation_provenance.v1",
+    "evidence_class": "scheduled-rail",
+    "isolated": false,
+    "observed_at": "2026-09-14T03:54:01.554Z",
+    "producer": "warehouse-priority-source-observer",
+    "source": "https://rules.cityofnewyork.us/feed/",
+    "bounds": {
+      "endpoint": "https://rules.cityofnewyork.us/feed/",
+      "max_bytes": 2097152
+    },
+    "response": {
+      "status": 200,
+      "row_count": 50,
+      "content_sha256": "sha256:ba7c341bc59dc65e8f20068a9ca06b19a76c3559b20013fd69fa540dbc69e459"
+    }
+  }
+}
