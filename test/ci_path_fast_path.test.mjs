@@ -124,7 +124,7 @@ test("shared browser artifact starts with path detection while unit remains a re
   ]);
   assert.match(
     accessibility,
-    /needs:\s*\[changes,\s*unit,\s*a11y-pr-shard,\s*a11y-routes-focus-primary,\s*a11y-routes-focus-retry\]/,
+    /needs:\s*\[changes,\s*unit,\s*a11y-pr-shard,\s*a11y-rendered-census-primary,\s*a11y-rendered-census-retry,\s*a11y-routes-focus-primary,\s*a11y-routes-focus-retry\]/,
   );
 
   const requiredChecksPass = (statuses) => policy.required_status_checks.every(

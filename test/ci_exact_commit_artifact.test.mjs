@@ -33,7 +33,7 @@ test("shared browser artifact is exact-input cached and every consumer verifies 
   assert.match(producer, /_site\.identity\.json/);
 
   const consumers = workflow.match(/uses: \.\/\.github\/actions\/use-site-artifact/g) || [];
-  assert.equal(consumers.length, 5);
+  assert.equal(consumers.length, 7);
   const runScopedNames = workflow.match(/artifact-name: browser-pr-site-\$\{\{ github\.run_id \}\}/g) || [];
   assert.equal(runScopedNames.length, consumers.length);
   assert.doesNotMatch(workflow, /artifact-name: browser-pr-site-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/);
