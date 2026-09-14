@@ -1,14 +1,15 @@
 {
   "schema": "cityscroll.capture_manifest.v1",
   "route": "/following/packs/emmons-shelter/",
-  "revision": "4d7abfd0ee83390a16d0c8d28466c48c5f358fec5",
+  "revision": "d01aab62ffc0e0e90e219c7f1bcd882a090872ab",
   "data_vintage": "committed source observations; deterministic fixture",
+  "runner": "node --test test/emmons_shelter_monitor_pack.test.mjs test/tracked_issue_read_model.test.mjs",
   "captures": [
-    { "surface": "desktop", "viewport": "1440x900", "assertion": "identity, timeline, watches, and coverage render", "sha256": "textual-only" },
-    { "surface": "narrow-touch", "viewport": "390x844", "assertion": "navigation and timeline remain readable", "sha256": "textual-only" },
-    { "surface": "keyboard", "viewport": "1440x900", "assertion": "links, disclosure, and watch action are reachable", "sha256": "textual-only" },
-    { "surface": "no-javascript", "viewport": "1440x900", "assertion": "the complete resident document is present", "sha256": "textual-only" },
-    { "surface": "back-navigation", "viewport": "390x844", "assertion": "canonical links preserve the issue route", "sha256": "textual-only" },
-    { "surface": "failed-detail-load", "viewport": "390x844", "assertion": "the issue scope remains available with source links", "sha256": "textual-only" }
+    { "surface": "desktop", "viewport": "1440x900", "assertion": "identity, timeline, watches, and coverage render", "state": "complete", "sha256": "b2d1086a512b420992f92346a20cf43907ed63ac879956dcfa6edb6ccfd5298a", "excerpt": "3218 Emmons shelter tracker; What CityScroll knows; Timeline; What to watch; Not yet covered" },
+    { "surface": "narrow-touch", "viewport": "390x844", "assertion": "navigation and timeline remain readable", "state": "complete", "sha256": "b2d1086a512b420992f92346a20cf43907ed63ac879956dcfa6edb6ccfd5298a", "excerpt": "Issue links, timeline entries, and watch controls are present in the resident document" },
+    { "surface": "keyboard", "viewport": "1440x900", "assertion": "links, disclosure, and watch action are reachable", "state": "complete", "sha256": "b2d1086a512b420992f92346a20cf43907ed63ac879956dcfa6edb6ccfd5298a", "excerpt": "Issue links, Sources disclosure, Source observation disclosures, and Watch all three control" },
+    { "surface": "no-javascript", "viewport": "1440x900", "assertion": "the complete resident document is present", "state": "complete", "sha256": "b2d1086a512b420992f92346a20cf43907ed63ac879956dcfa6edb6ccfd5298a", "excerpt": "Static HTML contains identity, timeline, watches, and bounded coverage without script execution" },
+    { "surface": "back-navigation", "viewport": "390x844", "assertion": "canonical links preserve the issue route", "state": "complete", "sha256": "b2d1086a512b420992f92346a20cf43907ed63ac879956dcfa6edb6ccfd5298a", "excerpt": "Canonical issue link and canonical procurement, board, and parcel routes are retained" },
+    { "surface": "failed-detail-load", "viewport": "390x844", "assertion": "the issue scope remains available with source links", "state": "complete", "sha256": "b2d1086a512b420992f92346a20cf43907ed63ac879956dcfa6edb6ccfd5298a", "excerpt": "Issue identity, source links, and bounded coverage remain available in the retained static render" }
   ]
 }
