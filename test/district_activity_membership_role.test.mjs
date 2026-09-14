@@ -5,6 +5,8 @@ import { buildNearYouExplanationCandidates } from "../site/near_you_explanation_
 import { buildNearYouViewModel } from "../site/near_you_view.mjs";
 import { scopeFromLensState } from "../site/scope_v0.mjs";
 import { scopeWithPlace } from "../site/near_you_scope_runtime.mjs";
+import { handleNearYou } from "../worker/src/near_you.mjs";
+import { NEAR_YOU_MANIFEST_KEY } from "../worker/src/lib/route_read_model_kv.mjs";
 
 const RECORD_ID = "BSA-2026-001";
 const MANHATTAN = "geography:borough:1";
@@ -77,4 +79,39 @@ test("Near You filters and explains from the selected admitting membership", () 
   assert.deepEqual(k15.results.ids, [RECORD_ID]);
   assert.equal(k15.results.records[0].why_here.location.place_role, "affected_area");
   assert.equal(k15.results.records[0].why_here.location.label, "Brooklyn Community District 15");
+});
+
+test("served Near You route renders the explanation from the selected membership", async () => {
+  const sliceKey = "near-you:v1:membership-role-fixture";
+  const values = new Map([
+    [NEAR_YOU_MANIFEST_KEY, JSON.stringify({
+      schema_version: 1,
+      kind: "near-you",
+      version: "membership-role-fixture",
+      slices: Object.fromEntries([
+        "borough:Manhattan", "community-district:K15", "citywide", "virtual", "unlocated",
+      ].flatMap((place) => [[`${place}:meetings`, sliceKey]])),
+    })],
+    [sliceKey, JSON.stringify({ activity, community_geography: {} })],
+  ]);
+  const env = { ALERT_STATE: { async get(key) { return values.get(key) || null; } } };
+
+  async function deferredHtml(query) {
+    const documentResponse = await handleNearYou(new Request(`https://cityscroll.org/near-you/?${query}`), env);
+    assert.equal(documentResponse.status, 200);
+    assert.match(await documentResponse.text(), /data-near-deferred="results"/);
+    const deferredResponse = await handleNearYou(new Request(`https://cityscroll.org/near-you/deferred.json?${query}`), env);
+    assert.equal(deferredResponse.status, 200);
+    return (await deferredResponse.json()).results_html;
+  }
+
+  const manhattanHtml = await deferredHtml("lens=meetings&boro=Manhattan&placeRole=venue");
+  assert.match(manhattanHtml, /data-place-role="venue"/);
+  assert.match(manhattanHtml, /Meeting venue:\s*Manhattan/);
+  assert.doesNotMatch(manhattanHtml, /Affected area:\s*Brooklyn Community District 15/);
+
+  const k15Html = await deferredHtml("lens=meetings&boro=Brooklyn&cd=K15&placeRole=affected_area");
+  assert.match(k15Html, /data-place-role="affected_area"/);
+  assert.match(k15Html, /Affected area:\s*Brooklyn Community District 15/);
+  assert.doesNotMatch(k15Html, /Meeting venue:\s*Manhattan/);
 });
