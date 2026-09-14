@@ -26,10 +26,11 @@ function json(path) {
 }
 
 function commonScopes() {
-  const entries = [];
+  const entries = [scopeFromLensState(null, {})];
   for (const lens of LENSES) {
     const base = scopeFromLensState(lens, {});
-    entries.push(base);
+    // The unqualified root is the additive overview. Keep explicit lens
+    // routes as their own documents when they carry a place.
     for (const borough of BOROUGHS) {
       const placed = scopeWithPlace(base, { borough });
       placed.place.viewport = {
