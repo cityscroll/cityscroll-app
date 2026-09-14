@@ -2,11 +2,11 @@
   "schema": "cityscroll.architecture.watermark-shard.v1",
   "id": "canary:civic-geography-registry",
   "owner": "canary:civic-geography-registry",
-  "updated_at": "2026-08-31T11:57:44Z",
-  "commit": "9a29cbe2ec285d832e95902f3e1015ec81784707",
+  "updated_at": "2026-09-13T20:28:00-04:00",
+  "commit": "6ba390932375515cdb0380c9870b6488f402232f",
   "value": {
     "path": "site/civic_geography_registry.mjs",
     "count": 7,
-    "fingerprint": "6002f498e04f5908cb38376b14896fd1e04958c91b0d5cfdbe2e8fe75561ff06"
+    "fingerprint": "c1fd94a2bc07bc3ac7f436b065bf15573267affc6650bc29632389a811e0280d"
   }
 }
