@@ -79,12 +79,10 @@ def assert_route_parameters(url: str, expected: dict[str, list[str]]) -> None:
 
 
 def navigation_url_matches(url: str, expected_href: str) -> bool:
-    actual = scope(url)
-    expected = scope(expected_href)
-    for key in ("lens", "agency", "when", "facet", "boro", "cd", "council"):
-        if key in expected and actual.get(key) != expected[key]:
-            return False
-    return "walk" in actual or url == expected_href
+    actual = urlsplit(url)
+    actual_query = [(key, value) for key, value in parse_qsl(actual.query, keep_blank_values=True) if key != "walk"]
+    normalized_actual = actual._replace(scheme="", netloc="", query=urlencode(actual_query)).geturl()
+    return normalized_actual == stable_url(expected_href)
 
 
 def wait_for_navigation_scope(page, expected_href: str) -> None:
