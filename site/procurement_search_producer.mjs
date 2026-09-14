@@ -11,10 +11,10 @@ import {
   SEARCH_TEXT_MAX_LENGTH,
   admitSearchDocument,
 } from "./search_document_contract.mjs";
-import { snapshotsForPublicAmount } from "./checkbook_passport_corroboration.mjs";
 import { procurementProcessStates } from "./procurement_process_state_vocabulary.mjs";
 import { agencyRouteAliasTarget, resolveAgencyIdentity } from "./agency_identity.mjs";
 import { procurementOpportunityWindow } from "./procurement_opportunity_window.mjs";
+import { projectProcurementFacts } from "./procurement_fact_projection.mjs";
 
 const MTA_PARENT_AGENCY_ID = "metropolitan-transportation-authority";
 const MTA_FAMILY_AGENCY_IDS = new Set([
@@ -70,13 +70,6 @@ function first(rows, fields, max = 500) {
     }
   }
   return null;
-}
-
-function numeric(rows, fields) {
-  const value = first(rows, fields, 80);
-  if (!value) return null;
-  const number = Number(String(value).replace(/[$,]/g, ""));
-  return Number.isFinite(number) ? number : null;
 }
 
 function observationIndex(readModel) {
@@ -217,31 +210,12 @@ export function materializeProcurementSearchDocument(object = {}, readModel = {}
   if (!Array.isArray(object.source_observation_refs) || !object.source_observation_refs.length) return null;
   const observations = orderedObservations(object, index || observationIndex(readModel));
   if (!observations.length || observations.length !== object.source_observation_refs.length) return null;
-  const rows = observations.map((entry) => entry.snapshot || {});
-  const vendorRows = observations
-    .filter((entry) => !(entry.source_system === "passport_public_rfx"
-      && String(entry.snapshot?.rfx_status || "").trim().toLowerCase() === "selections made"))
-    .map((entry) => entry.snapshot || {});
   const evidence = noticeEvidence(observations);
-  const contractId = object.identity_keys?.contract_ids?.[0] || null;
-  const epin = object.identity_keys?.epins?.[0] || null;
+  const facts = projectProcurementFacts(object, observations).facts;
+  const contractId = facts.canonicalContractId;
+  const epin = facts.pinEpin;
   const stages = stagesFor(object);
   const processStates = procurementProcessStates(object.process_events);
-  const facts = {
-    title: first(rows, ["short_title", "title", "description"], 500)
-      || `Contract ${contractId || epin || object.procurement_id}`,
-    agency: first(rows, ["agency_name", "agency"], 240),
-    vendor: first(vendorRows, ["vendor_name", "vendor", "prime_vendor", "payee_name"], 240),
-    amount: numeric(
-      snapshotsForPublicAmount(object, observations),
-      ["contract_amount", "award_amount", "current_amount", "current", "amount", "check_amount"],
-    ),
-    startDate: first(rows, ["start_date", "award_date", "start", "registered", "registration_date", "issue_date", "date"], 40),
-    endDate: first(rows, ["end_date", "end", "contract_end_date", "due_date", "closing_date", "opening_date"], 40),
-    method: first(rows, ["selection_method_description", "procurement_method"], 240),
-    program: first(rows, ["program"], 240),
-    industry: first(rows, ["industry"], 120),
-  };
   const summary = [facts.agency, facts.vendor, facts.amount == null ? null : `$${facts.amount.toLocaleString("en-US")}`]
     .filter(Boolean).join(" · ") || null;
   const searchText = clean([

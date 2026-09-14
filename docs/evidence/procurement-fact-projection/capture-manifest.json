@@ -1,0 +1,19 @@
+{
+  "schema": "cityscroll.proof_capture_manifest.v1",
+  "revision": "26d11a492ad29d60fecfe7d4136005af6fcb6791",
+  "data_vintage": "2026-09-09T06:33:01.880Z",
+  "captures": [
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
+      "viewport": "desktop",
+      "assertion": "Contract facts expose contract start 2023-10-11, contract end 2026-06-30, registration date 2024-08-28, and award notice date 2024-09-05 with source-owned meanings.",
+      "sha256": "a9c33e207497110783e5baf35014752206d907828e4736987f4a9b19b5d5464d"
+    },
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
+      "viewport": "390px",
+      "assertion": "The same typed fact projection is rendered at the narrow viewport without changing values or provenance.",
+      "sha256": "a9c33e207497110783e5baf35014752206d907828e4736987f4a9b19b5d5464d"
+    }
+  ]
+}
