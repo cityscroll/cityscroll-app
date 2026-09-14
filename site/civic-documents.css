@@ -803,6 +803,36 @@ select {
   border-inline-start: 3px solid var(--color-border);
 }
 
+/* Board task navigation and the next meeting are deliberately compact: the
+   links remain native, wrap on narrow screens, and never widen the document. */
+.board-section-menu,
+.board-task-links {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.board-section-menu {
+  margin-block: var(--space-3);
+  line-height: 1.7;
+}
+
+.board-next-meeting {
+  margin-block-start: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-inline-start: 3px solid var(--color-accent, var(--color-border));
+  background: var(--color-surface-raised, transparent);
+}
+
+.board-next-meeting p,
+.board-next-meeting h3 {
+  overflow-wrap: anywhere;
+}
+
+.board-next-meeting-label {
+  margin: 0;
+  font-weight: 700;
+}
+
 /* Month/List proceedings switch (CBICS-04). Native radios + `:has()` keep
    the switch fully usable with no JavaScript: both panels are real markup,
    and the unselected one is only ever hidden by CSS. */
