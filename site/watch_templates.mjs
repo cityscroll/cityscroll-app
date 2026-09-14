@@ -98,6 +98,10 @@ export function normalizeFilter(filter) {
   if (f.minAmount != null && Number.isFinite(Number(f.minAmount))) {
     out.minAmount = Number(f.minAmount);
   }
+  for (const key of ["procurement_id", "noticeType"]) {
+    const value = clean(f[key]);
+    if (value) out[key] = value;
+  }
   const subjectRefs = Array.isArray(f.subject_refs_all)
     ? f.subject_refs_all.map((ref) => clean(ref)).filter((ref) => ref && !/\s/.test(ref)).slice(0, 20)
     : [];
@@ -107,6 +111,32 @@ export function normalizeFilter(filter) {
     : [];
   if (entityRefs.length) out.entity_refs_all = [...new Set(entityRefs)];
   return out;
+}
+
+/**
+ * Return the exact, validated child payload that a pack subscription endpoint may create.
+ * Keeping this contract in the registry helper prevents the browser from silently dropping
+ * a supported constraint while constructing the one-action request.
+ */
+export function monitorPackChildren(template) {
+  const watches = Array.isArray(template?.watches) ? template.watches : [];
+  return watches.map((watch) => ({
+    label: clean(watch?.label) || clean(watch?.lens) || "watch",
+    lens: clean(watch?.lens),
+    filter: normalizeFilter(watch?.filter),
+  })).filter((watch) => watch.lens);
+}
+
+/** Build the complete request body for one reviewed pack action. */
+export function monitorPackSubscribePayload(template, { email = "", freq = "weekly", lang = "en" } = {}) {
+  const id = clean(template?.id);
+  return {
+    pack_id: id,
+    email: String(email).trim(),
+    freq: freq === "daily" ? "daily" : "weekly",
+    lang: clean(lang) || "en",
+    children: monitorPackChildren(template),
+  };
 }
 
 /**

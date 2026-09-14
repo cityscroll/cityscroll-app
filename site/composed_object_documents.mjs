@@ -152,6 +152,27 @@ export function buildDistrictDigestView(payload, id) {
 
 function actionMarkup(view, watchHref) {
   const noun = view.kind === "monitor-pack" ? "pack" : view.kind === "district-digest" ? "digest" : "parcel";
+  if (view.kind === "monitor-pack") {
+    const children = view.watches.map((watch) => ({ label: watch.label, lens: watch.lens, filter: watch.filter }));
+    return `<section class="civic-object-actions" data-export-class="object_actions" aria-labelledby="pack-subscribe-heading">
+      <h2 id="pack-subscribe-heading">Watch this pack</h2>
+      <p>Review every watch below before one action creates all ${children.length} watches. Delivery is weekly.</p>
+      <form method="post" action="https://api.cityscroll.org/subscribe-pack" data-monitor-pack-subscribe-form>
+        <input type="hidden" name="pack_id" value="${esc(view.id)}">
+        <input type="hidden" name="freq" value="weekly">
+        <input type="hidden" name="children" value="${esc(JSON.stringify(children))}">
+        <label>Email address <input type="email" name="email" required autocomplete="email"></label>
+        <button type="submit" class="civic-object-action">Watch this pack</button>
+      </form>
+      <p class="muted node-muted">Each named watch keeps its own lens and scope. If delivery fails partway through, retry creates only the missing watches.</p>
+      ${renderNodeActions([
+        { kind: "button", label: "Copy link", attrs: { "data-object-copy": true }, className: "civic-object-action" },
+        { kind: "button", label: "Print / save PDF", attrs: { "data-object-print": true }, className: "civic-object-action" },
+        { kind: "button", label: "Download JSON", attrs: { "data-object-export": "json" }, className: "civic-object-action" },
+        { kind: "button", label: "Download XLSX", attrs: { "data-object-export": "xlsx" }, className: "civic-object-action" },
+      ], { ariaLabel: "Document actions", exportClass: "object_actions", extraClass: "civic-object-action-tools" })}
+    </section>`;
+  }
   return renderNodeActions([
     { kind: "link", label: `Watch this ${noun}`, href: watchHref, primary: true, className: "civic-object-action" },
     { kind: "button", label: "Copy link", attrs: { "data-object-copy": true }, className: "civic-object-action" },

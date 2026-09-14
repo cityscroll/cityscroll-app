@@ -955,6 +955,7 @@
 /worker/src/meeting_outcomes.mjs
 /worker/src/mirror.mjs
 /worker/src/mocs_plan.mjs
+/worker/src/monitor_packs.mjs
 /worker/src/near_you.mjs
 /worker/src/nl.mjs
 /worker/src/notice.mjs
