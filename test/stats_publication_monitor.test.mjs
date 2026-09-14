@@ -57,6 +57,54 @@ test("the promised day set starts at max(measured_since, retention_start)", () =
   }), "2026-08-11");
 });
 
+test("a promised day before measurement start is not frozen, while a day at the boundary is", () => {
+  const beforeStart = evaluateStatsPublication({
+    now: "2026-09-10T11:47:00Z",
+    observation: {
+      published: {
+        measurement: { measured_since: "2026-09-09T00:00:00.000Z" },
+        refresh: { state: "fresh", verified_at: "2026-09-10T08:00:26.790Z" },
+      },
+      lineage: {
+        available: true,
+        measured_since: "2026-09-09T00:00:00.000Z",
+        newest_day: "2026-09-07",
+        missing_days: ["2026-09-08"],
+        before_measurement: ["2026-09-08"],
+        unrecoverable_days: [],
+        receipt_retention_days: 30,
+        reconciliation: { rows: [] },
+      },
+    },
+  });
+  assert.equal(beforeStart.ok, true);
+  assert.notEqual(beforeStart.failing_stage, "frozen-publisher");
+  assert.deepEqual(beforeStart.evidence.before_measurement, ["2026-09-08"]);
+  assert.match(beforeStart.notes.join(" "), /2026-09-08.*before measurement start/);
+  assert.match(statsPublicationIssueBody(beforeStart), /2026-09-08.*before measurement start/);
+
+  const atStart = evaluateStatsPublication({
+    now: "2026-09-10T11:47:00Z",
+    observation: {
+      published: {
+        measurement: { measured_since: "2026-09-08T00:00:00.000Z" },
+        refresh: { state: "fresh", verified_at: "2026-09-10T08:00:26.790Z" },
+      },
+      lineage: {
+        available: true,
+        measured_since: "2026-09-08T00:00:00.000Z",
+        newest_day: "2026-09-07",
+        missing_days: ["2026-09-08"],
+        before_measurement: [],
+        unrecoverable_days: [],
+        receipt_retention_days: 30,
+        reconciliation: { rows: [] },
+      },
+    },
+  });
+  assert.equal(atStart.failing_stage, "frozen-publisher");
+});
+
 test("a frozen publisher is named even while it reports a fresh verification", () => {
   const finding = evaluateStatsPublication({ now: NOW, observation: specimen("failure") });
   assert.equal(finding.ok, false);
