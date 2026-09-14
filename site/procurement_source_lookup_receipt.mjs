@@ -244,11 +244,29 @@ export function buildProcurementSourceLookupProjection({ objects = [], observati
   const counts = Object.fromEntries([...STATES, "not-applicable"].map((state) => [state, 0]));
   let duplicateKeyCount = 0;
   let missingKeyCount = 0;
+  let applicableObjectSourceCount = 0;
   for (const receipt of rows) for (const source of receipt.sources) {
     const countState = source.applicability === "not-applicable" ? "not-applicable" : source.state;
     counts[countState] = (counts[countState] || 0) + 1;
+    if (source.applicability === "applicable") applicableObjectSourceCount += 1;
     duplicateKeyCount += source.state === "ambiguous" ? source.matched_source_observation_refs.length + source.matched_analytical_row_refs.length : 0;
     missingKeyCount += source.applicability === "applicable" && !source.queried_keys.length ? 1 : 0;
   }
-  return { schema: PROCUREMENT_SOURCE_LOOKUP_RECEIPT_SCHEMA, version: PROCUREMENT_SOURCE_LOOKUP_RECEIPT_VERSION, generated_at: text(generatedAt), rows, counts, duplicate_key_count: duplicateKeyCount, missing_key_count: missingKeyCount };
+  const stateCountTotal = [...STATES].reduce((total, state) => total + counts[state], 0);
+  return {
+    schema: PROCUREMENT_SOURCE_LOOKUP_RECEIPT_SCHEMA,
+    version: PROCUREMENT_SOURCE_LOOKUP_RECEIPT_VERSION,
+    generated_at: text(generatedAt),
+    rows,
+    counts,
+    duplicate_key_count: duplicateKeyCount,
+    missing_key_count: missingKeyCount,
+    applicable_object_source_population: {
+      unit: "object_source_pair",
+      object_count: rows.length,
+      applicable_object_source_count: applicableObjectSourceCount,
+      state_count_total: stateCountTotal,
+      reconciles: stateCountTotal === applicableObjectSourceCount,
+    },
+  };
 }

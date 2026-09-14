@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildProcurementSourceLookupReceipt } from "../site/procurement_source_lookup_receipt.mjs";
+import {
+  buildProcurementSourceLookupProjection,
+  buildProcurementSourceLookupReceipt,
+} from "../site/procurement_source_lookup_receipt.mjs";
 
 const obs = (system, id, snapshot) => ({ source_system: system, source_system_id: id, source_observation_ref: `${system}:${id}`, snapshot });
 
@@ -39,4 +42,36 @@ test("multiple exact candidates are ambiguous and retain all references", () => 
   const checkbook = receipt.sources.find((row) => row.source_system === "checkbook_contracts");
   assert.equal(checkbook.state, "ambiguous");
   assert.deepEqual(checkbook.matched_source_observation_refs, ["checkbook_contracts:a", "checkbook_contracts:b"]);
+});
+
+test("A9 named assertion: aggregate receipt states reconcile to the applicable object-source population", () => {
+  const projection = buildProcurementSourceLookupProjection({
+    objects: [
+      { procurement_id: "procurement:contract:CT-1", identity_keys: { contract_ids: ["CT-1"] } },
+      { procurement_id: "procurement:contract:CT-2", identity_keys: { contract_ids: ["CT-2"] } },
+    ],
+    observations: [
+      obs("checkbook_contracts", "one", { contract_id: "CT-1" }),
+      obs("checkbook_contracts", "two-a", { contract_id: "CT-2" }),
+      obs("checkbook_contracts", "two-b", { contract_id: "CT-2" }),
+    ],
+    materializations: {
+      checkbook_contracts: { status: "available", snapshot_date: "2026-09-14", generated_at: "2026-09-14T00:00:00Z" },
+      checkbook_spending: { status: "unavailable", generated_at: "2026-09-14T00:00:00Z" },
+      passport_public_contracts: { status: "stale", snapshot_date: "2026-09-01" },
+    },
+    generatedAt: "2026-09-14T00:00:00Z",
+  });
+  assert.deepEqual(
+    Object.keys(projection.counts).sort(),
+    ["ambiguous", "checked-no-match", "corroborated", "not-applicable", "not-checked", "stale", "unavailable"].sort(),
+  );
+  assert.equal(projection.duplicate_key_count, 2);
+  assert.equal(projection.missing_key_count, 2);
+  assert.equal(projection.applicable_object_source_population.object_count, 2);
+  assert.equal(
+    projection.applicable_object_source_population.state_count_total,
+    projection.applicable_object_source_population.applicable_object_source_count,
+  );
+  assert.equal(projection.applicable_object_source_population.reconciles, true);
 });
