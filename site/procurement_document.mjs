@@ -72,7 +72,10 @@ function formatAmount(value) {
 }
 
 function factsFor(object, observations) {
-  const observed = (Array.isArray(observations) ? observations : []).filter(Boolean);
+  const byRef = new Map((Array.isArray(observations) ? observations : [])
+    .filter(Boolean).map((entry) => [entry?.source_observation_ref, entry]));
+  const observed = (object?.source_observation_refs || [])
+    .map((ref) => byRef.get(ref)).filter(Boolean);
   const projected = projectProcurementFacts(object, observed).facts;
   const officialUrl = observed.map((entry) => entry?.snapshot || {})
     .map((row) => clean(row.official_url || row.official_source_url || row.source_url))

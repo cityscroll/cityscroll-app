@@ -4,6 +4,8 @@ const CONTRACT_SOURCES = new Set([
   "passport_public_contracts",
   "checkbook_contracts",
   "checkbook_nycha_contracts",
+  "mta_annual_contracts",
+  "mta_cd_awards",
 ]);
 
 const SOURCE_PRIORITY = new Map([
@@ -117,28 +119,44 @@ export function projectProcurementFacts(object = {}, observations = []) {
     const row = snapshot(observation);
     const contractOwned = CONTRACT_SOURCES.has(system);
     const cityRecord = ["city_record", "city_record_procurement", "crol"].includes(system);
+    const vendorEligible = !(system === "passport_public_rfx"
+      && String(row.rfx_status || "").trim().toLowerCase() === "selections made");
     const add = (kind, value, field, normalize = (v) => text(v)) => addCandidate(
       groups, candidate(kind, value, observation, field, normalize),
     );
     add("title", row.short_title || row.title || row.description,
       row.short_title ? "short_title" : row.title ? "title" : "description", (v) => text(v, 500));
     add("agency", row.agency_name || row.agency, row.agency_name ? "agency_name" : "agency", (v) => text(v, 240));
-    add("vendor", row.vendor_name || row.vendor || row.prime_vendor || row.payee_name,
+    if (vendorEligible) add("vendor", row.vendor_name || row.vendor || row.prime_vendor || row.payee_name,
       row.vendor_name ? "vendor_name" : row.vendor ? "vendor" : row.prime_vendor ? "prime_vendor" : "payee_name",
       (v) => text(v, 240));
+    add("contract_number", row.contract_number || row.transaction_number,
+      row.contract_number ? "contract_number" : "transaction_number", (v) => text(v, 240));
     add("amount", row.contract_amount ?? row.award_amount ?? row.current_amount ?? row.current ?? row.amount ?? row.check_amount,
       row.contract_amount != null ? "contract_amount" : row.award_amount != null ? "award_amount" : "current_amount",
       (v) => { const n = Number(String(v).replace(/[$,]/g, "")); return Number.isFinite(n) ? n : null; });
     add("method", row.selection_method_description || row.procurement_method,
       row.selection_method_description ? "selection_method_description" : "procurement_method", (v) => text(v, 240));
+    add("award_date", row.award_date, "award_date", (v) => text(v, 40));
     add("program", row.program, "program", (v) => text(v, 240));
     add("industry", row.industry, "industry", (v) => text(v, 120));
     if (contractOwned) {
-      add("contract_start", row.start_date || row.start || row.contract_start_date,
-        row.start_date ? "start_date" : row.start ? "start" : "contract_start_date", normalizeProcurementDate);
+      add("contract_start", row.start_date || row.start || row.contract_start_date || row.begin_date,
+        row.start_date ? "start_date" : row.start ? "start" : row.contract_start_date ? "contract_start_date" : "begin_date", normalizeProcurementDate);
       add("contract_end", row.end_date || row.end || row.contract_end_date,
         row.end_date ? "end_date" : row.end ? "end" : "contract_end_date", normalizeProcurementDate);
       add("registration_date", row.registration_date, "registration_date", normalizeProcurementDate);
+    }
+    if (!contractOwned) {
+      add("legacy_start_date", row.start_date || row.award_date || row.start || row.registered
+        || row.registration_date || row.issue_date || row.date,
+      row.start_date ? "start_date" : row.award_date ? "award_date" : row.start ? "start"
+        : row.registered ? "registered" : row.registration_date ? "registration_date"
+          : row.issue_date ? "issue_date" : "date", (v) => text(v, 40));
+      add("legacy_end_date", row.end_date || row.end || row.contract_end_date || row.due_date
+        || row.closing_date || row.opening_date,
+      row.end_date ? "end_date" : row.end ? "end" : row.contract_end_date ? "contract_end_date"
+        : row.due_date ? "due_date" : row.closing_date ? "closing_date" : "opening_date", (v) => text(v, 40));
     }
     if (cityRecord) {
       const noticeDate = normalizeProcurementDate(row.start_date);
@@ -170,12 +188,13 @@ export function projectProcurementFacts(object = {}, observations = []) {
       title: fact("title") || fact("program") || `Contract ${fact("canonical_contract_id") || fact("pin_epin") || object?.procurement_id || "record"}`,
       agency: fact("agency"), vendor: fact("vendor"), amount: fact("amount"), method: fact("method"),
       program: fact("program"), industry: fact("industry"),
-      startDate: fact("contract_start"), endDate: fact("contract_end"),
+      startDate: fact("contract_start") || fact("legacy_start_date"),
+      endDate: fact("contract_end") || fact("legacy_end_date"),
       start_date: fact("contract_start"), end_date: fact("contract_end"),
       contract_start: fact("contract_start"), contract_end: fact("contract_end"),
       registrationDate: fact("registration_date"), awardDate: fact("award_date"),
       noticePublicationDate: fact("notice_publication_date"),
-      contractNumber: fact("passport_contract_number"),
+      contractNumber: fact("passport_contract_number") || fact("contract_number"),
       canonicalContractId: fact("canonical_contract_id"), pinEpin: fact("pin_epin"),
     }),
     conflicts: Object.freeze(conflicts),
