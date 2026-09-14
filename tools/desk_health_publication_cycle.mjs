@@ -291,6 +291,13 @@ export function publicationReceiptFromCycle(cycle, extras = {}) {
     run_identity: cycle.run_identity,
     destination: cycle.destination,
     evidence_revision: cycle.clocks.evidence_revision,
+    data_revision: cycle.data_revision || cycle.clocks.evidence_revision || null,
+    code_revision: cycle.code_revision || null,
+    run_started_at: cycle.run_started_at || null,
+    run_finished_at: cycle.run_finished_at || null,
+    outcome: cycle.outcome || "pending",
+    collection_counts: cycle.collection_counts || { receipts: 0 },
+    publication_counts: cycle.publication_counts || { receipts: 0 },
     failing_stage: cycle.failing_stage,
     clocks: cycle.clocks,
     ...extras,
@@ -308,7 +315,10 @@ export function buildPerRunPublicationCycle(input = {}, contract = loadPublicati
   const heartbeatAccepted = input.heartbeatAccepted === true && !heartbeatRejected;
   const publicationAt = input.publicationAt || null;
   const publicationSucceeded = heartbeatAccepted && collectionSucceeded && Boolean(publicationAt);
-  return evaluatePublicationCycle({
+  const outcome = publicationSucceeded
+    ? "succeeded"
+    : (heartbeatRejected || !collectionSucceeded ? "failed" : "pending");
+  const cycle = evaluatePublicationCycle({
     now: input.now,
     isolated: input.isolated === true,
     event: input.event || null,
@@ -335,6 +345,16 @@ export function buildPerRunPublicationCycle(input = {}, contract = loadPublicati
     run_identity: input.runIdentity || null,
     destination: input.destination || contract.destination,
   }, contract);
+  return {
+    ...cycle,
+    code_revision: input.codeRevision || process.env.GITHUB_SHA || "local-build",
+    data_revision: input.dataRevision || input.evidenceRevision || null,
+    run_started_at: validAt(input.runStartedAt || input.monitorAt || input.now),
+    run_finished_at: publicationSucceeded ? validAt(publicationAt) : null,
+    outcome,
+    collection_counts: input.collectionCounts || { receipts: collectionSucceeded ? 1 : 0 },
+    publication_counts: input.publicationCounts || { receipts: publicationSucceeded ? 1 : 0 },
+  };
 }
 
 export function stampDeskPublication(receipt, {
@@ -364,6 +384,12 @@ export function stampDeskPublication(receipt, {
     clocks: {
       ...receipt.clocks,
       last_successful_desk_publication: cycleClock(at, "successful-desk-publication"),
+    },
+    run_finished_at: at,
+    outcome: "succeeded",
+    publication_counts: {
+      ...(receipt.publication_counts || {}),
+      receipts: 1,
     },
   };
 }
@@ -398,6 +424,19 @@ export function publicationReceiptQualificationFindings(receipt) {
   if (!hasDestination(receipt.destination)) findings.push("receipt is missing destination");
   if (receipt.evidence_revision == null || String(receipt.evidence_revision).trim() === "") {
     findings.push("receipt is missing evidence_revision");
+  }
+  if (receipt.data_revision == null || String(receipt.data_revision).trim() === "") {
+    findings.push("receipt is missing data_revision");
+  }
+  if (receipt.code_revision == null || String(receipt.code_revision).trim() === "") {
+    findings.push("receipt is missing code_revision");
+  }
+  if (!validAt(receipt.run_started_at) || !validAt(receipt.run_finished_at)) {
+    findings.push("receipt run timestamps are incomplete");
+  }
+  if (receipt.outcome !== "succeeded") findings.push("receipt outcome is not succeeded");
+  if (!receipt.collection_counts || !receipt.publication_counts) {
+    findings.push("receipt collection/publication counts are incomplete");
   }
   if (receipt.failing_stage !== null) findings.push("receipt failing_stage is not null");
   const monitor = clockAt(receipt.clocks, "last_monitor_attempt");
@@ -568,6 +607,14 @@ function cycleFromGraph(path, args, contract, now) {
     isolated: false,
     monitorAt: args.monitorAt || now,
     observationAt: args.observationAt || now,
+    runStartedAt: process.env.DESK_PUBLICATION_STARTED_AT || args.monitorAt || now,
+    codeRevision: process.env.GITHUB_SHA || null,
+    dataRevision: graph.sources_hash || null,
+    collectionCounts: {
+      ...(graph.counts || {}),
+      receipts: 1,
+    },
+    publicationCounts: { receipts: 0, artifacts: 0, destinations: 0 },
     publicationAt: args.publicationAt || null,
     heartbeatAccepted: args.heartbeatAccepted,
     heartbeatRejected: args.heartbeatRejected,

@@ -97,6 +97,7 @@ jobs:
             docs/data-source-graph.html
             .artifacts/desk-health-publication-cycle.json
           if-no-files-found: error
+          retention-days: 90
       - name: Record Desk publication heartbeat
         id: desk_publication_heartbeat
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
@@ -160,6 +161,7 @@ jobs:
             .artifacts/desk-health-publication-cycle.json
           if-no-files-found: error
           overwrite: true
+          retention-days: 90
       - name: Verify hosting budgets
         run: node tools/check_pages_bundle_sizes.mjs --site-dir _site
       - name: Deploy to Cloudflare Pages
