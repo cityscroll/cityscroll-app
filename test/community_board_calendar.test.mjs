@@ -17,6 +17,7 @@ import {
   communityBoardPath,
   renderCommunityBoardConstellationDocument,
 } from "../site/community_board_constellation.mjs";
+import { communityBoardParticipationPathsForView } from "../site/community_board_participation.mjs";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 
 const TODAY = "2026-05-01";
@@ -225,6 +226,37 @@ test("A7: canonical board and meeting routes are unchanged for direct visits and
   // refresh always lands on the same default (List) rendering.
   const html = renderCommunityBoardConstellationDocument(view);
   assert.doesNotMatch(html, /#month|#list|\?view=/);
+});
+
+test("the board overview selects the next full-board meeting through all four committee exclusions and reuses participation paths", () => {
+  const full = acceptedEdge({ id: "cb4-overview-full", date: "2026-05-04", host: "board", title: "Monthly board session" });
+  full.start_at = "2026-05-04T20:00:00Z";
+  full.venue_name = "Room U112";
+  const committeeName = acceptedEdge({ id: "cb4-overview-name", date: "2026-05-02", host: "board", title: "Earlier event" });
+  committeeName.committee_name = "Land Use Committee";
+  const committeeRef = acceptedEdge({ id: "cb4-overview-ref", date: "2026-05-03", host: "board", title: "Earlier event" });
+  committeeRef.committee_ref = "community-board-committee:manhattan-cb-04:land-use";
+  const committeeSource = acceptedEdge({ id: "cb4-overview-source", date: "2026-05-01", host: "board", title: "Earlier event" });
+  committeeSource.from = "community-board-committee:manhattan-cb-04:transportation";
+  const committeeTitle = acceptedEdge({ id: "cb4-overview-title", date: "2026-05-01", host: "board", title: "Budget committee session" });
+  const view = buildCommunityBoardConstellationView("manhattan-cb-04", {
+    ...boardSources("manhattan-cb-04", [committeeName, committeeRef, committeeSource, committeeTitle, full]),
+  });
+  view.board.resource_tasks = [{ task: "contact", url: "https://board.example/contact" }];
+  const paths = communityBoardParticipationPathsForView(view);
+  const contact = paths.find((path) => path.kind === "contact_board");
+  const follow = paths.find((path) => path.kind === "follow_board");
+  assert.ok(contact?.href && follow?.href);
+  const overview = renderCommunityBoardConstellationDocument(view)
+    .match(/data-community-board-overview="1">([\s\S]*?)<\/section>/)?.[1]
+    ?.replaceAll("&amp;", "&");
+  assert.ok(overview);
+  assert.match(overview, /Monthly board session/);
+  assert.match(overview, /May 4, 2026 · 4:00 PM EDT · Room U112/);
+  assert.doesNotMatch(overview, /Land Use Committee|Budget committee session/);
+  assert.match(overview, new RegExp(`href="${contact.href}"`));
+  assert.ok(overview.includes(`href="${follow.href}"`));
+  assert.doesNotMatch(overview, /data-following-subscribe-form|data-new-participation-path/);
 });
 
 test("the List stays fully usable with no JavaScript: it is present, checked by default, and complete", () => {
