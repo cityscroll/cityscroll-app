@@ -42,3 +42,37 @@ test("canonical procurement route resolves without request_id", async () => {
   assert.match(html, /registered/i);
   assert.doesNotMatch(html, /request_id|not yet|no data/i);
 });
+
+test("A8 named assertion: resident procurement detail reads only materialized assets", async () => {
+  const object = model.rows.find((row) => row.procurement_id === "procurement:contract:CT101520271400806");
+  const href = procurementCanonicalHref(object);
+  const assetPaths = [];
+  let requestTimeNetworkCalls = 0;
+  const priorFetch = globalThis.fetch;
+  globalThis.fetch = async () => {
+    requestTimeNetworkCalls += 1;
+    throw new Error("request-time network access");
+  };
+  try {
+    const env = {
+      ASSETS: {
+        async fetch(request) {
+          const path = new URL(request.url).pathname;
+          assetPaths.push(path);
+          if (path === "/data/shared_procurement_read_model.json") return Response.json(modelArtifacts.manifest);
+          const shardIndex = modelArtifacts.manifest.shards.findIndex((descriptor) => `/data/${descriptor.path}` === path);
+          if (shardIndex >= 0) return Response.json(modelArtifacts.shards[shardIndex]);
+          return new Response("asset", { status: 200 });
+        },
+      },
+    };
+    const response = await edgeWorker.fetch(new Request(`https://cityscroll.org${href}`), env);
+    assert.equal(response.status, 200);
+  } finally {
+    globalThis.fetch = priorFetch;
+  }
+  assert.equal(requestTimeNetworkCalls, 0);
+  assert.ok(assetPaths.length >= 2);
+  assert.ok(assetPaths.every((path) => path === "/data/shared_procurement_read_model.json" || path.startsWith("/data/shared_procurement_read_model/")));
+  assert.equal(assetPaths.some((path) => /analytics|checkbook|passport|city.?record|soda/i.test(path)), false);
+});
