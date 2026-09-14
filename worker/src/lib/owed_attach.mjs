@@ -146,6 +146,14 @@ export function owedSatisfiesCurrentFilter(section, item, row) {
   const current = asFilter(section?.filter);
   const recorded = recordedFilter(item, row);
   if (recorded && filtersEqual(recorded, current)) return true;
+  // The district publisher scopes rows by the enclosing `by_council_district`
+  // bucket and therefore does not repeat the district id on each item. When a
+  // legacy owed row has that production shape, the current compiled query's
+  // already-filtered source rows are the only safe membership proof.
+  if (section?.lens === "district" && row?.district_item_id) {
+    const sourceRows = Array.isArray(section.sourceRows) ? section.sourceRows : [];
+    if (sourceRows.some((sourceRow) => sameRenderedItem(sourceRow, row))) return true;
+  }
   return rowMatchesFilter(row, current);
 }
 

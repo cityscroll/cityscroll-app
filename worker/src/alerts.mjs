@@ -994,6 +994,7 @@ export async function processOneSub(env, s, ctx) {
       filter: s.filter || {},
       kind: q.kind,
       freshRows: fresh,
+      sourceRows: rows,
       new: fresh.length,
     };
     const enqueueRows = (s.lens === "rules" || q.kind === "council-matter") ? fresh : rows;
@@ -1580,6 +1581,7 @@ async function evaluateSubSection(env, s, ctx) {
       since,
       kind: q.kind,
       freshRows: fresh,
+      sourceRows: rows,
       forecastRows: forecasts,
       keywords,
       w,
