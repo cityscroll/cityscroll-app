@@ -5,7 +5,9 @@ import { NEAR_YOU_FLOOR } from "../src/data/route_read_model_floor.mjs";
 import { handleNearYou } from "../src/near_you.mjs";
 import {
   loadMeetingRecord,
+  loadCommunityDistrictDigest,
   loadNearYouActivity,
+  COMMUNITY_DISTRICT_DIGEST_MANIFEST_KEY,
   MEETING_MANIFEST_KEY,
   NEAR_YOU_MANIFEST_KEY,
 } from "../src/lib/route_read_model_kv.mjs";
@@ -50,6 +52,32 @@ test("meeting record reads are keyed and cache the versioned slice", async () =>
   assert.equal((await loadMeetingRecord(env, id)).title, "Canary meeting");
   assert.equal((await loadMeetingRecord(env, id)).title, "Canary meeting");
   assert.equal(store.getCount(), 2, "manifest and keyed meeting slice are each fetched once");
+});
+
+test("community district digest request reads only the keyed slice, never the full corpus", async () => {
+  const key = "community-district-digest:v1:test:K15";
+  const values = new Map([
+    [COMMUNITY_DISTRICT_DIGEST_MANIFEST_KEY, JSON.stringify({
+      schema_version: 1,
+      kind: "community-district-digest",
+      version: "test",
+      slices: { K15: key },
+    })],
+    [key, JSON.stringify({
+      schema_version: 1,
+      kind: "community-district-digest",
+      version: "test",
+      slice_id: "K15",
+      digest: { by_community_district: { K15: { community_district: "K15", sections: {} } } },
+    })],
+  ]);
+  const store = kv(values);
+  const env = { ALERT_STATE: store };
+  const first = await loadCommunityDistrictDigest(env, "K15");
+  const second = await loadCommunityDistrictDigest(env, "K15");
+  assert.equal(first.community_district, "K15");
+  assert.equal(second.community_district, "K15");
+  assert.equal(store.getCount(), 2, "a served request reads the manifest and K15 slice, not a full digest corpus");
 });
 
 test("Near You edge-cache miss fetches the route slice once, then serves the cached document", async () => {
