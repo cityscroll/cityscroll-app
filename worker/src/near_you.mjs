@@ -1,4 +1,5 @@
 import boundaries from "./data/district_boundaries.json" with { type: "json" };
+import communityGeography from "./data/community_board_geography_lookup.json" with { type: "json" };
 import { scopeFromNearYouUrl } from "../../site/near_you_scope_runtime.mjs";
 import {
   buildNearYouViewModel,
@@ -73,6 +74,7 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
       siteBase: SITE_BASE,
       dataState: "error",
       recoveryHref,
+      communityGeography,
     });
     return new Response(request.method === "HEAD" ? null : renderNearYouDocument(view, {
       canonicalBase: CANONICAL_BASE,

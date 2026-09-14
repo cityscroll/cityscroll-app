@@ -115,6 +115,7 @@ export function renderWalkEntry({
   title = "Search NYC records",
   description = "Search and Near You become front doors into the same graph.",
   recordSearch = false,
+  compact = false,
 } = {}) {
   const safeSource = Object.hasOwn(SOURCE_LABELS, source) ? source : "browse";
   const safeQuery = cleanWalkText(query, 240);
@@ -157,10 +158,10 @@ export function renderWalkEntry({
       <label for="walk-entry-query">What are you looking for?</label>
       <div class="walk-entry-form-row"><input id="walk-entry-query" name="walk_query" value="${esc(safeQuery)}" maxlength="240" autocomplete="off"><input type="hidden" name="walk_source" value="${esc(safeSource)}"><button type="submit">${esc(actionLabel)}</button></div>
     </form>`;
-  return `<section class="walk-entry" data-walk-entry data-walk-source="${esc(safeSource)}" aria-labelledby="walk-entry-heading">
-    <div class="walk-entry-head"><div><p class="walk-entry-kicker">${esc(recordSearch ? "Search" : "Start a walk")}</p><h2 id="walk-entry-heading">${esc(title)}</h2><p>${esc(description)}</p></div><span class="walk-entry-mark">Graph entry</span></div>
+  return `<section class="walk-entry${compact ? " walk-entry--compact" : ""}" data-walk-entry data-walk-source="${esc(safeSource)}" aria-labelledby="walk-entry-heading">
+    <div class="walk-entry-head"><div><p class="walk-entry-kicker">${esc(recordSearch ? "Search" : "Start a walk")}</p><h2 id="walk-entry-heading">${esc(title)}</h2><p>${esc(description)}</p></div>${compact ? "" : '<span class="walk-entry-mark">Graph entry</span>'}</div>
     ${form}
-    <div class="walk-entry-chips" data-walk-chips aria-label="Walk context">${chips}</div>
-    <div class="walk-entry-lanes" data-walk-families>${lanes}</div>
+    ${compact ? "" : `<div class="walk-entry-chips" data-walk-chips aria-label="Walk context">${chips}</div>
+    <div class="walk-entry-lanes" data-walk-families>${lanes}</div>`}
   </section>`;
 }

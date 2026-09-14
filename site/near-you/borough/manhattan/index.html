@@ -34,53 +34,23 @@
     data-translation-context-strip-label="Context">
     <section class="near-hero">
       <p class="near-kicker">Place-first civic records</p>
-      <h1>Near you</h1>
-      <p>Keep the same filters in the list, map, search, share link, and watch. Choosing a place narrows the results without removing your other filters.</p>
-      <ul class="near-scope" aria-label="Active filters"><li data-scope-axis="lens">Meetings</li><li data-scope-axis="borough">Manhattan</li></ul>
+      <h1>Manhattan</h1>
+
+      <p>Browse meetings records for this place. Choosing a place narrows the results without removing your other filters.</p>
+      <ul class="near-scope" aria-label="Active filters"><li data-scope-axis="topic"><span>Topic: Meetings</span></li><li data-scope-axis="borough"><span>Manhattan</span><a href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;level=community_district&amp;parent=Manhattan" data-remove-filter="borough" aria-label="Remove Manhattan">×</a></li></ul>
       <nav class="near-actions" aria-label="Map actions">
         <a href="/browse/meetings/?boro=Manhattan">Open as a list</a>
         <a href="https://cityscroll.org/following?lens=meetings&amp;filter=%7B%22borough%22%3A%22Manhattan%22%7D&amp;count=366">Watch these filters</a>
         <a href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Manhattan&amp;level=community_district&amp;parent=Manhattan">Share this map</a>
       </nav>
-      <section class="walk-entry" data-walk-entry data-walk-source="near_you" aria-labelledby="walk-entry-heading">
-    <div class="walk-entry-head"><div><p class="walk-entry-kicker">Start a walk</p><h2 id="walk-entry-heading">Walk this place</h2><p>Keep this place as you view related records.</p></div><span class="walk-entry-mark">Graph entry</span></div>
+      <details class="near-explore"><summary>Explore related records</summary><section class="walk-entry walk-entry--compact" data-walk-entry data-walk-source="near_you" aria-labelledby="walk-entry-heading">
+    <div class="walk-entry-head"><div><p class="walk-entry-kicker">Start a walk</p><h2 id="walk-entry-heading">Walk this place</h2><p>Keep this place as you view related records.</p></div></div>
     <form class="walk-entry-form" method="get" action="/near-you?v=0&amp;lens=meetings&amp;level=community_district&amp;parent=Manhattan&amp;walk_source=near_you&amp;boro=Manhattan" data-walk-search-form>
       <label for="walk-entry-query">What are you looking for?</label>
       <div class="walk-entry-form-row"><input id="walk-entry-query" name="walk_query" value="" maxlength="240" autocomplete="off"><input type="hidden" name="walk_source" value="near_you"><button type="submit">Walk this place</button></div>
     </form>
-    <div class="walk-entry-chips" data-walk-chips aria-label="Walk context"><span class="walk-entry-chip walk-entry-chip-place"><b>PLACE</b> Manhattan</span><span class="walk-entry-chip walk-entry-chip-source"><b>START</b> Near You</span></div>
-    <div class="walk-entry-lanes" data-walk-families><article class="walk-entry-lane" data-walk-family-state="unknown">
-      <p class="walk-entry-lane-kicker">Zoning</p>
-      <h3><a data-walk-family="land" href="/near-you?v=0&amp;lens=land&amp;level=community_district&amp;parent=Manhattan&amp;walk_source=near_you&amp;boro=Manhattan">Zoning</a></h3>
-      <p>No count for this family here.</p>
-      <p class="walk-entry-coverage" data-walk-coverage="unknown">Records not shown</p>
-    </article><article class="walk-entry-lane" data-walk-family-state="unknown">
-      <p class="walk-entry-lane-kicker">Property</p>
-      <h3><a data-walk-family="property" href="/near-you?v=0&amp;lens=property&amp;level=community_district&amp;parent=Manhattan&amp;walk_source=near_you&amp;boro=Manhattan">Property</a></h3>
-      <p>No count for this family here.</p>
-      <p class="walk-entry-coverage" data-walk-coverage="unknown">Records not shown</p>
-    </article><article class="walk-entry-lane" data-walk-family-state="unknown">
-      <p class="walk-entry-lane-kicker">Rules</p>
-      <h3><a data-walk-family="rules" href="/near-you?v=0&amp;lens=rules&amp;level=community_district&amp;parent=Manhattan&amp;walk_source=near_you&amp;boro=Manhattan">Rules</a></h3>
-      <p>No count for this family here.</p>
-      <p class="walk-entry-coverage" data-walk-coverage="unknown">Records not shown</p>
-    </article><article class="walk-entry-lane" data-walk-family-state="available">
-      <p class="walk-entry-lane-kicker">Current records</p>
-      <h3><a data-walk-family="meetings" href="/near-you?v=0&amp;lens=meetings&amp;level=community_district&amp;parent=Manhattan&amp;walk_source=near_you&amp;boro=Manhattan">Meetings</a></h3>
-      <p>Open these records and follow their links.</p>
-      <p class="walk-entry-coverage" data-walk-coverage="available">366 records in this family</p>
-    </article><article class="walk-entry-lane" data-walk-family-state="unknown">
-      <p class="walk-entry-lane-kicker">Contracts</p>
-      <h3><a data-walk-family="money" href="/near-you?v=0&amp;lens=money&amp;level=community_district&amp;parent=Manhattan&amp;walk_source=near_you&amp;boro=Manhattan">Contracts</a></h3>
-      <p>No count for this family here.</p>
-      <p class="walk-entry-coverage" data-walk-coverage="unknown">Records not shown</p>
-    </article><article class="walk-entry-lane" data-walk-family-state="unknown">
-      <p class="walk-entry-lane-kicker">Staffing</p>
-      <h3><a data-walk-family="people" href="/near-you?v=0&amp;lens=people&amp;level=community_district&amp;parent=Manhattan&amp;walk_source=near_you&amp;boro=Manhattan">Staffing</a></h3>
-      <p>No count for this family here.</p>
-      <p class="walk-entry-coverage" data-walk-coverage="unknown">Records not shown</p>
-    </article></div>
-  </section>
+
+  </section></details>
 
     </section>
     <section class="near-place-guide is-set" aria-labelledby="near-place-heading">
@@ -94,9 +64,9 @@
       </div>
       <p class="near-map-status" data-map-status aria-live="polite"></p>
     </section>
-    <form class="near-form" id="near-place-fields" method="get" action="https://cityscroll.org/near-you">
+    <details class="near-advanced"><summary>Advanced filters</summary><form class="near-form" id="near-place-fields" method="get" action="https://cityscroll.org/near-you">
       <input type="hidden" name="v" value="0"><input type="hidden" name="level" value="community_district">
-      <label>Lens<select name="lens"><option value="meetings" selected>Meetings</option><option value="land">Zoning</option><option value="property">Property</option><option value="rules">Rules</option><option value="money">Contracts</option><option value="people">Staffing</option></select></label>
+      <label>Topic<select name="lens"><option value="meetings" selected>Meetings</option><option value="land">Zoning</option><option value="property">Property</option><option value="rules">Rules</option><option value="money">Contracts</option><option value="people">Staffing</option></select></label>
       <label>What kind of local activity<select name="placeRole"><option value="" selected>All local activity</option><option value="venue">Happening here</option><option value="matter">About this place</option><option value="affected_area">Affecting this place</option></select></label>
       <label>Agency<input name="agency" value="" placeholder="Any agency"></label>
       <label>Type<input name="type" value="" placeholder="Any record type"></label>
@@ -107,7 +77,7 @@
       <label>Neighborhood or precinct<select name="geo"><option value="">All registered geographies</option><optgroup label="Neighborhood tabulation areas"><option value="geography:nta2020:MN0101">Financial District-Battery Park City</option><option value="geography:nta2020:MN0102">Tribeca-Civic Center</option></optgroup><optgroup label="Police precincts"><option value="geography:police_precinct:1">Police Precinct 1</option><option value="geography:police_precinct:5">Police Precinct 5</option></optgroup></select></label>
 
       <button type="submit">Apply filters</button>
-    </form>
+    </form></details>
 
 
     <nav class="near-surface-switch" aria-label="Near you view" data-near-surface-switch>
@@ -214,7 +184,7 @@
           <p class="near-vintage">Map boundaries: 2026-05-26</p>
         </div>
         <div class="near-area-panel" id="near-area-list">
-          <h3>Equivalent area list</h3>
+          <h3>Areas</h3>
           <ol class="near-area-list"><li><a data-map-area="M11" data-count="132" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Manhattan&amp;cd=M11&amp;level=community_district&amp;id=M11&amp;parent=Manhattan"><span>Manhattan Community District 11</span><strong>132</strong></a></li><li><a data-map-area="M06" data-count="71" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Manhattan&amp;cd=M06&amp;level=community_district&amp;id=M06&amp;parent=Manhattan"><span>Manhattan Community District 6</span><strong>71</strong></a></li><li><a data-map-area="M01" data-count="55" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Manhattan&amp;cd=M01&amp;level=community_district&amp;id=M01&amp;parent=Manhattan"><span>Manhattan Community District 1</span><strong>55</strong></a></li><li><a data-map-area="M07" data-count="22" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Manhattan&amp;cd=M07&amp;level=community_district&amp;id=M07&amp;parent=Manhattan"><span>Manhattan Community District 7</span><strong>22</strong></a></li><li><a data-map-area="M04" data-count="14" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Manhattan&amp;cd=M04&amp;level=community_district&amp;id=M04&amp;parent=Manhattan"><span>Manhattan Community District 4</span><strong>14</strong></a></li><li><a data-map-area="M12" data-count="13" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Manhattan&amp;cd=M12&amp;level=community_district&amp;id=M12&amp;parent=Manhattan"><span>Manhattan Community District 12</span><strong>13</strong></a></li><li><a data-map-area="M10" data-count="12" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Manhattan&amp;cd=M10&amp;level=community_district&amp;id=M10&amp;parent=Manhattan"><span>Manhattan Community District 10</span><strong>12</strong></a></li><li><a data-map-area="M02" data-count="10" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Manhattan&amp;cd=M02&amp;level=community_district&amp;id=M02&amp;parent=Manhattan"><span>Manhattan Community District 2</span><strong>10</strong></a></li><li><a data-map-area="M03" data-count="9" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Manhattan&amp;cd=M03&amp;level=community_district&amp;id=M03&amp;parent=Manhattan"><span>Manhattan Community District 3</span><strong>9</strong></a></li><li><a data-map-area="M05" data-count="8" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Manhattan&amp;cd=M05&amp;level=community_district&amp;id=M05&amp;parent=Manhattan"><span>Manhattan Community District 5</span><strong>8</strong></a></li><li><a data-map-area="M08" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Manhattan&amp;cd=M08&amp;level=community_district&amp;id=M08&amp;parent=Manhattan"><span>Manhattan Community District 8</span><strong>0</strong></a></li><li><a data-map-area="M09" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Manhattan&amp;cd=M09&amp;level=community_district&amp;id=M09&amp;parent=Manhattan"><span>Manhattan Community District 9</span><strong>0</strong></a></li></ol>
         </div>
       </div>

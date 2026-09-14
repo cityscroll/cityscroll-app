@@ -34,53 +34,23 @@
     data-translation-context-strip-label="Context">
     <section class="near-hero">
       <p class="near-kicker">Place-first civic records</p>
-      <h1>Near you</h1>
-      <p>Keep the same filters in the list, map, search, share link, and watch. Choosing a place narrows the results without removing your other filters.</p>
-      <ul class="near-scope" aria-label="Active filters"><li data-scope-axis="lens">Meetings</li><li data-scope-axis="borough">Queens</li></ul>
+      <h1>Queens</h1>
+
+      <p>Browse meetings records for this place. Choosing a place narrows the results without removing your other filters.</p>
+      <ul class="near-scope" aria-label="Active filters"><li data-scope-axis="topic"><span>Topic: Meetings</span></li><li data-scope-axis="borough"><span>Queens</span><a href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;level=community_district&amp;parent=Queens" data-remove-filter="borough" aria-label="Remove Queens">×</a></li></ul>
       <nav class="near-actions" aria-label="Map actions">
         <a href="/browse/meetings/?boro=Queens">Open as a list</a>
         <a href="https://cityscroll.org/following?lens=meetings&amp;filter=%7B%22borough%22%3A%22Queens%22%7D&amp;count=64">Watch these filters</a>
         <a href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Queens&amp;level=community_district&amp;parent=Queens">Share this map</a>
       </nav>
-      <section class="walk-entry" data-walk-entry data-walk-source="near_you" aria-labelledby="walk-entry-heading">
-    <div class="walk-entry-head"><div><p class="walk-entry-kicker">Start a walk</p><h2 id="walk-entry-heading">Walk this place</h2><p>Keep this place as you view related records.</p></div><span class="walk-entry-mark">Graph entry</span></div>
+      <details class="near-explore"><summary>Explore related records</summary><section class="walk-entry walk-entry--compact" data-walk-entry data-walk-source="near_you" aria-labelledby="walk-entry-heading">
+    <div class="walk-entry-head"><div><p class="walk-entry-kicker">Start a walk</p><h2 id="walk-entry-heading">Walk this place</h2><p>Keep this place as you view related records.</p></div></div>
     <form class="walk-entry-form" method="get" action="/near-you?v=0&amp;lens=meetings&amp;level=community_district&amp;parent=Queens&amp;walk_source=near_you&amp;boro=Queens" data-walk-search-form>
       <label for="walk-entry-query">What are you looking for?</label>
       <div class="walk-entry-form-row"><input id="walk-entry-query" name="walk_query" value="" maxlength="240" autocomplete="off"><input type="hidden" name="walk_source" value="near_you"><button type="submit">Walk this place</button></div>
     </form>
-    <div class="walk-entry-chips" data-walk-chips aria-label="Walk context"><span class="walk-entry-chip walk-entry-chip-place"><b>PLACE</b> Queens</span><span class="walk-entry-chip walk-entry-chip-source"><b>START</b> Near You</span></div>
-    <div class="walk-entry-lanes" data-walk-families><article class="walk-entry-lane" data-walk-family-state="unknown">
-      <p class="walk-entry-lane-kicker">Zoning</p>
-      <h3><a data-walk-family="land" href="/near-you?v=0&amp;lens=land&amp;level=community_district&amp;parent=Queens&amp;walk_source=near_you&amp;boro=Queens">Zoning</a></h3>
-      <p>No count for this family here.</p>
-      <p class="walk-entry-coverage" data-walk-coverage="unknown">Records not shown</p>
-    </article><article class="walk-entry-lane" data-walk-family-state="unknown">
-      <p class="walk-entry-lane-kicker">Property</p>
-      <h3><a data-walk-family="property" href="/near-you?v=0&amp;lens=property&amp;level=community_district&amp;parent=Queens&amp;walk_source=near_you&amp;boro=Queens">Property</a></h3>
-      <p>No count for this family here.</p>
-      <p class="walk-entry-coverage" data-walk-coverage="unknown">Records not shown</p>
-    </article><article class="walk-entry-lane" data-walk-family-state="unknown">
-      <p class="walk-entry-lane-kicker">Rules</p>
-      <h3><a data-walk-family="rules" href="/near-you?v=0&amp;lens=rules&amp;level=community_district&amp;parent=Queens&amp;walk_source=near_you&amp;boro=Queens">Rules</a></h3>
-      <p>No count for this family here.</p>
-      <p class="walk-entry-coverage" data-walk-coverage="unknown">Records not shown</p>
-    </article><article class="walk-entry-lane" data-walk-family-state="available">
-      <p class="walk-entry-lane-kicker">Current records</p>
-      <h3><a data-walk-family="meetings" href="/near-you?v=0&amp;lens=meetings&amp;level=community_district&amp;parent=Queens&amp;walk_source=near_you&amp;boro=Queens">Meetings</a></h3>
-      <p>Open these records and follow their links.</p>
-      <p class="walk-entry-coverage" data-walk-coverage="available">64 records in this family</p>
-    </article><article class="walk-entry-lane" data-walk-family-state="unknown">
-      <p class="walk-entry-lane-kicker">Contracts</p>
-      <h3><a data-walk-family="money" href="/near-you?v=0&amp;lens=money&amp;level=community_district&amp;parent=Queens&amp;walk_source=near_you&amp;boro=Queens">Contracts</a></h3>
-      <p>No count for this family here.</p>
-      <p class="walk-entry-coverage" data-walk-coverage="unknown">Records not shown</p>
-    </article><article class="walk-entry-lane" data-walk-family-state="unknown">
-      <p class="walk-entry-lane-kicker">Staffing</p>
-      <h3><a data-walk-family="people" href="/near-you?v=0&amp;lens=people&amp;level=community_district&amp;parent=Queens&amp;walk_source=near_you&amp;boro=Queens">Staffing</a></h3>
-      <p>No count for this family here.</p>
-      <p class="walk-entry-coverage" data-walk-coverage="unknown">Records not shown</p>
-    </article></div>
-  </section>
+
+  </section></details>
 
     </section>
     <section class="near-place-guide is-set" aria-labelledby="near-place-heading">
@@ -94,9 +64,9 @@
       </div>
       <p class="near-map-status" data-map-status aria-live="polite"></p>
     </section>
-    <form class="near-form" id="near-place-fields" method="get" action="https://cityscroll.org/near-you">
+    <details class="near-advanced"><summary>Advanced filters</summary><form class="near-form" id="near-place-fields" method="get" action="https://cityscroll.org/near-you">
       <input type="hidden" name="v" value="0"><input type="hidden" name="level" value="community_district">
-      <label>Lens<select name="lens"><option value="meetings" selected>Meetings</option><option value="land">Zoning</option><option value="property">Property</option><option value="rules">Rules</option><option value="money">Contracts</option><option value="people">Staffing</option></select></label>
+      <label>Topic<select name="lens"><option value="meetings" selected>Meetings</option><option value="land">Zoning</option><option value="property">Property</option><option value="rules">Rules</option><option value="money">Contracts</option><option value="people">Staffing</option></select></label>
       <label>What kind of local activity<select name="placeRole"><option value="" selected>All local activity</option><option value="venue">Happening here</option><option value="matter">About this place</option><option value="affected_area">Affecting this place</option></select></label>
       <label>Agency<input name="agency" value="" placeholder="Any agency"></label>
       <label>Type<input name="type" value="" placeholder="Any record type"></label>
@@ -107,7 +77,7 @@
       <label>Neighborhood or precinct<select name="geo"><option value="">All registered geographies</option><optgroup label="Neighborhood tabulation areas"><option value="geography:nta2020:MN0101">Financial District-Battery Park City</option><option value="geography:nta2020:MN0102">Tribeca-Civic Center</option></optgroup><optgroup label="Police precincts"><option value="geography:police_precinct:1">Police Precinct 1</option><option value="geography:police_precinct:5">Police Precinct 5</option></optgroup></select></label>
 
       <button type="submit">Apply filters</button>
-    </form>
+    </form></details>
 
 
     <nav class="near-surface-switch" aria-label="Near you view" data-near-surface-switch>
@@ -226,7 +196,7 @@
           <p class="near-vintage">Map boundaries: 2026-05-26</p>
         </div>
         <div class="near-area-panel" id="near-area-list">
-          <h3>Equivalent area list</h3>
+          <h3>Areas</h3>
           <ol class="near-area-list"><li><a data-map-area="Q02" data-count="30" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Queens&amp;cd=Q02&amp;level=community_district&amp;id=Q02&amp;parent=Queens"><span>Queens Community District 2</span><strong>30</strong></a></li><li><a data-map-area="Q06" data-count="22" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Queens&amp;cd=Q06&amp;level=community_district&amp;id=Q06&amp;parent=Queens"><span>Queens Community District 6</span><strong>22</strong></a></li><li><a data-map-area="Q01" data-count="2" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Queens&amp;cd=Q01&amp;level=community_district&amp;id=Q01&amp;parent=Queens"><span>Queens Community District 1</span><strong>2</strong></a></li><li><a data-map-area="Q07" data-count="2" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Queens&amp;cd=Q07&amp;level=community_district&amp;id=Q07&amp;parent=Queens"><span>Queens Community District 7</span><strong>2</strong></a></li><li><a data-map-area="Q10" data-count="1" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Queens&amp;cd=Q10&amp;level=community_district&amp;id=Q10&amp;parent=Queens"><span>Queens Community District 10</span><strong>1</strong></a></li><li><a data-map-area="Q13" data-count="1" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Queens&amp;cd=Q13&amp;level=community_district&amp;id=Q13&amp;parent=Queens"><span>Queens Community District 13</span><strong>1</strong></a></li><li><a data-map-area="Q14" data-count="1" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Queens&amp;cd=Q14&amp;level=community_district&amp;id=Q14&amp;parent=Queens"><span>Queens Community District 14</span><strong>1</strong></a></li><li><a data-map-area="Q09" data-count="1" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Queens&amp;cd=Q09&amp;level=community_district&amp;id=Q09&amp;parent=Queens"><span>Queens Community District 9</span><strong>1</strong></a></li><li><a data-map-area="Q11" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Queens&amp;cd=Q11&amp;level=community_district&amp;id=Q11&amp;parent=Queens"><span>Queens Community District 11</span><strong>0</strong></a></li><li><a data-map-area="Q12" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Queens&amp;cd=Q12&amp;level=community_district&amp;id=Q12&amp;parent=Queens"><span>Queens Community District 12</span><strong>0</strong></a></li><li><a data-map-area="Q03" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Queens&amp;cd=Q03&amp;level=community_district&amp;id=Q03&amp;parent=Queens"><span>Queens Community District 3</span><strong>0</strong></a></li><li><a data-map-area="Q04" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Queens&amp;cd=Q04&amp;level=community_district&amp;id=Q04&amp;parent=Queens"><span>Queens Community District 4</span><strong>0</strong></a></li><li><a data-map-area="Q05" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Queens&amp;cd=Q05&amp;level=community_district&amp;id=Q05&amp;parent=Queens"><span>Queens Community District 5</span><strong>0</strong></a></li><li><a data-map-area="Q08" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=meetings&amp;boro=Queens&amp;cd=Q08&amp;level=community_district&amp;id=Q08&amp;parent=Queens"><span>Queens Community District 8</span><strong>0</strong></a></li></ol>
         </div>
       </div>

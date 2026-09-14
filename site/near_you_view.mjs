@@ -30,6 +30,7 @@ import {
   renderCivicDocumentMast,
 } from "./civic_document_chrome.mjs";
 import { buildPlaceLocalConstellation } from "./community_board_geography.mjs";
+import { communityBoardPageHref } from "./community_board_links.mjs";
 import { renderLocalConstellationHTML } from "./local_constellation.mjs";
 import { renderWalkEntry, walkEntryHref, walkEntryPlaceLabel } from "./walk_entry.mjs";
 import { meetingOriginLabel } from "./meeting_origin.mjs";
@@ -262,8 +263,8 @@ function scopeSummary(scope, lens, geographyDefinitions = {}) {
   const chips = [{ axis: "lens", label: LENS_LABELS[lens] || lens }];
   const values = [
     ["borough", first(scope.place.boroughs)],
-    ["community district", first(scope.place.community_districts)],
-    ["council district", first(scope.place.council_districts)],
+    ["community district", formatCommunityDistrict(first(scope.place.community_districts))],
+    ["council district", formatCouncilDistrict(first(scope.place.council_districts))],
     ["place basis", scope.place.location_scope && BAG_LABELS[scope.place.location_scope]],
     ["local activity", placeRoleSupportedForDomain(lens) && PLACE_ROLES.includes(scope.facets.values?.place_role)
       ? placeRoleUserLabel(scope.facets.values.place_role)
@@ -294,6 +295,50 @@ function scopeSummary(scope, lens, geographyDefinitions = {}) {
   }
   for (const [axis, label] of values) if (label) chips.push({ axis, label: String(label) });
   return chips;
+}
+
+function formatCommunityDistrict(id) {
+  if (!id) return null;
+  const prefix = { M: "Manhattan", X: "Bronx", BX: "Bronx", K: "Brooklyn", Q: "Queens", R: "Staten Island", SI: "Staten Island" }[String(id).replace(/\d+$/, "")];
+  const number = String(id).match(/(\d+)$/)?.[1];
+  return prefix && number ? `${prefix} Community District ${Number(number)}` : `Community District ${id}`;
+}
+
+function formatCouncilDistrict(id) {
+  return id ? `City Council District ${Number(id)}` : null;
+}
+
+function selectedPlacePresentation(scope, communityGeography = {}) {
+  const community = first(scope.place.community_districts);
+  const council = first(scope.place.council_districts);
+  const borough = first(scope.place.boroughs);
+  if (community) {
+    const edge = (communityGeography.public_edges || []).find((candidate) => candidate?.type === "covers"
+      && candidate.to === `community-district:${community}`);
+    const board = (communityGeography.nodes || []).find((candidate) => candidate?.id === edge?.from);
+    return {
+      label: formatCommunityDistrict(community),
+      boardLabel: board?.name || null,
+      boardHref: board?.properties?.body_id ? communityBoardPageHref(board.properties.body_id) : null,
+    };
+  }
+  if (council) return { label: formatCouncilDistrict(council) };
+  if (borough) return { label: borough };
+  if (scope.place.neighborhood) return { label: scope.place.neighborhood };
+  return { label: "Near you" };
+}
+
+function scopeWithoutAxis(scope, axis) {
+  const next = structuredClone(scope);
+  if (axis === "borough") next.place.boroughs = [];
+  else if (axis === "community district") next.place.community_districts = [];
+  else if (axis === "council district") next.place.council_districts = [];
+  else if (axis === "keyword") next.topic = { ...(next.topic || {}), query: "", keywords: [] };
+  else if (axis === "agency") next.facets.agencies = [];
+  else if (axis === "type") next.facets.values = { ...(next.facets.values || {}), type: "" };
+  else if (axis === "time") next.time_window = {};
+  else if (axis === "local activity") next.facets.values = { ...(next.facets.values || {}), place_role: "" };
+  return normalizeScope(next);
 }
 
 function watchHref(scope, lens, matchCount) {
@@ -416,6 +461,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     basis,
     basisLabel: basisLayer?.basis_label || "Affected area or place of performance",
     hasPlace,
+    placePresentation: selectedPlacePresentation(scope, options.communityGeography || {}),
     lensLabel: LENS_LABELS[lens] || lens,
     scopeSummary: scopeSummary(scope, lens, activity?.geography_items?.definitions),
     geographyOptions: Object.values(activity?.geography_items?.definitions || {})
@@ -691,7 +737,7 @@ function renderNearYouMapState(view) {
           <p class="near-vintage">Map boundaries: ${esc(view.activity?.boundary_vintage || "not published")}</p>
         </div>
         <div class="near-area-panel" id="near-area-list">
-          <h3>Equivalent area list</h3>
+          <h3>Areas</h3>
           <ol class="near-area-list">${areas || "<li>No areas match these filters.</li>"}</ol>
         </div>
       </div>`;
@@ -699,7 +745,8 @@ function renderNearYouMapState(view) {
 
 export function renderNearYouBody(view, { includeListPanelMarker = false } = {}) {
   const scopeChips = view.scopeSummary
-    .map((chip) => `<li data-scope-axis="${esc(chip.axis)}">${esc(chip.label)}</li>`).join("");
+    .filter((chip) => chip.axis !== "lens")
+    .map((chip) => `<li data-scope-axis="${esc(chip.axis)}"><span>${esc(chip.label)}</span><a href="${esc(nearYouUrlFromScope(scopeWithoutAxis(view.scope, chip.axis), { base: view.canonicalBase }))}" data-remove-filter="${esc(chip.axis)}" aria-label="Remove ${esc(chip.label)}">×</a></li>`).join("");
   const currentBorough = first(view.scope.place.boroughs);
   const currentGeography = first(view.scope.place.geographies);
   const walkQuery = view.scope.topic?.query || first(view.scope.topic?.keywords);
@@ -739,6 +786,7 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
     description: view.hasPlace
       ? "Keep this place as you view related records."
       : "Choose a place first. A guessed location is not an edge.",
+    compact: true,
   });
   return `<main id="main" data-near-you-root data-lens="${esc(view.lens)}" data-level="${esc(view.level)}"
     data-near-data-state="${esc(view.dataState)}" data-near-map-state="${esc(view.mapState)}" data-near-recovery-href="${esc(view.recoveryHref)}"
@@ -758,15 +806,16 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
     data-translation-context-strip-label="Context">
     <section class="near-hero">
       <p class="near-kicker">Place-first civic records</p>
-      <h1>Near you</h1>
-      <p>Keep the same filters in the list, map, search, share link, and watch. Choosing a place narrows the results without removing your other filters.</p>
-      <ul class="near-scope" aria-label="Active filters">${scopeChips}</ul>
+      <h1>${esc(view.placePresentation.label)}</h1>
+      ${view.placePresentation.boardHref ? `<p class="near-board-link"><a href="${esc(view.placePresentation.boardHref)}">${esc(view.placePresentation.boardLabel)}</a></p>` : ""}
+      <p>Browse ${esc(view.lensLabel.toLowerCase())} records for this place. Choosing a place narrows the results without removing your other filters.</p>
+      <ul class="near-scope" aria-label="Active filters"><li data-scope-axis="topic"><span>Topic: ${esc(view.lensLabel)}</span></li>${scopeChips}</ul>
       <nav class="near-actions" aria-label="Map actions">
         <a href="${esc(view.browseHref)}">Open as a list</a>
         <a href="${esc(view.watchHref)}">Watch these filters</a>
         <a href="${esc(view.shareHref)}">Share this map</a>
       </nav>
-      ${walkEntry}
+      <details class="near-explore"><summary>Explore related records</summary>${walkEntry}</details>
       ${renderLocalConstellationHTML(view.local_constellation, { heading: "Nearby place records", id: "place-local-constellation-heading" })}
     </section>
     <section class="near-place-guide${view.hasPlace ? " is-set" : ""}" aria-labelledby="near-place-heading">
@@ -780,9 +829,9 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
       </div>
       <p class="near-map-status" data-map-status aria-live="polite"></p>
     </section>
-    <form class="near-form" id="near-place-fields" method="get" action="${esc(view.canonicalBase)}">
+    <details class="near-advanced"><summary>Advanced filters</summary><form class="near-form" id="near-place-fields" method="get" action="${esc(view.canonicalBase)}">
       ${hiddenScopeFields(view.scope, new Set(["lens", "agency", "type", "boro", "cd", "council", "geo", "neighborhood", "scope", "id", "parent", "basis", "placeRole"]))}
-      <label>Lens<select name="lens">${lensOptions(view.lens)}</select></label>
+      <label>Topic<select name="lens">${lensOptions(view.lens)}</select></label>
       ${placeRoleSupportedForDomain(view.lens)
         ? `<label>What kind of local activity<select name="placeRole">${placeRoleOptions(view.scope.facets.values?.place_role)}</select></label>`
         : view.scope.facets.values?.place_role
@@ -797,7 +846,7 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
       <label>Neighborhood or precinct<select name="geo">${geographyOptions(view.geographyOptions, currentGeography)}</select></label>
       ${view.lens === "money" ? `<label>Location basis<select name="basis">${basisOptions(view.basis)}</select></label>` : ""}
       <button type="submit">Apply filters</button>
-    </form>
+    </form></details>
     ${view.mapState === "unsupported" ? `<aside class="near-coverage" role="note"><strong>${esc(view.lensLabel)} place data is not available.</strong> Your other filters stay in place; this is not an empty activity result.</aside>` : ""}
     ${view.basis === "contract_action_address" ? `<aside class="near-coverage" role="note"><strong>${esc(view.basisLabel)}.</strong> This shows where to submit a bid, attend a pre-bid event, or pick up a file. It does not say where the contract work will happen.</aside>` : ""}
     <nav class="near-surface-switch" aria-label="Near you view" data-near-surface-switch>

@@ -34,53 +34,23 @@
     data-translation-context-strip-label="Context">
     <section class="near-hero">
       <p class="near-kicker">Place-first civic records</p>
-      <h1>Near you</h1>
-      <p>Keep the same filters in the list, map, search, share link, and watch. Choosing a place narrows the results without removing your other filters.</p>
-      <ul class="near-scope" aria-label="Active filters"><li data-scope-axis="lens">Contracts</li><li data-scope-axis="borough">Brooklyn</li></ul>
+      <h1>Brooklyn</h1>
+
+      <p>Browse contracts records for this place. Choosing a place narrows the results without removing your other filters.</p>
+      <ul class="near-scope" aria-label="Active filters"><li data-scope-axis="topic"><span>Topic: Contracts</span></li><li data-scope-axis="borough"><span>Brooklyn</span><a href="https://cityscroll.org/near-you?v=0&amp;lens=money&amp;level=community_district&amp;parent=Brooklyn" data-remove-filter="borough" aria-label="Remove Brooklyn">×</a></li></ul>
       <nav class="near-actions" aria-label="Map actions">
         <a href="/browse/contracts/?boro=Brooklyn">Open as a list</a>
         <a href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Brooklyn%22%7D&amp;count=14">Watch these filters</a>
         <a href="https://cityscroll.org/near-you?v=0&amp;lens=money&amp;boro=Brooklyn&amp;level=community_district&amp;parent=Brooklyn">Share this map</a>
       </nav>
-      <section class="walk-entry" data-walk-entry data-walk-source="near_you" aria-labelledby="walk-entry-heading">
-    <div class="walk-entry-head"><div><p class="walk-entry-kicker">Start a walk</p><h2 id="walk-entry-heading">Walk this place</h2><p>Keep this place as you view related records.</p></div><span class="walk-entry-mark">Graph entry</span></div>
+      <details class="near-explore"><summary>Explore related records</summary><section class="walk-entry walk-entry--compact" data-walk-entry data-walk-source="near_you" aria-labelledby="walk-entry-heading">
+    <div class="walk-entry-head"><div><p class="walk-entry-kicker">Start a walk</p><h2 id="walk-entry-heading">Walk this place</h2><p>Keep this place as you view related records.</p></div></div>
     <form class="walk-entry-form" method="get" action="/near-you?v=0&amp;lens=money&amp;level=community_district&amp;parent=Brooklyn&amp;walk_source=near_you&amp;boro=Brooklyn" data-walk-search-form>
       <label for="walk-entry-query">What are you looking for?</label>
       <div class="walk-entry-form-row"><input id="walk-entry-query" name="walk_query" value="" maxlength="240" autocomplete="off"><input type="hidden" name="walk_source" value="near_you"><button type="submit">Walk this place</button></div>
     </form>
-    <div class="walk-entry-chips" data-walk-chips aria-label="Walk context"><span class="walk-entry-chip walk-entry-chip-place"><b>PLACE</b> Brooklyn</span><span class="walk-entry-chip walk-entry-chip-source"><b>START</b> Near You</span></div>
-    <div class="walk-entry-lanes" data-walk-families><article class="walk-entry-lane" data-walk-family-state="unknown">
-      <p class="walk-entry-lane-kicker">Zoning</p>
-      <h3><a data-walk-family="land" href="/near-you?v=0&amp;lens=land&amp;level=community_district&amp;parent=Brooklyn&amp;walk_source=near_you&amp;boro=Brooklyn">Zoning</a></h3>
-      <p>No count for this family here.</p>
-      <p class="walk-entry-coverage" data-walk-coverage="unknown">Records not shown</p>
-    </article><article class="walk-entry-lane" data-walk-family-state="unknown">
-      <p class="walk-entry-lane-kicker">Property</p>
-      <h3><a data-walk-family="property" href="/near-you?v=0&amp;lens=property&amp;level=community_district&amp;parent=Brooklyn&amp;walk_source=near_you&amp;boro=Brooklyn">Property</a></h3>
-      <p>No count for this family here.</p>
-      <p class="walk-entry-coverage" data-walk-coverage="unknown">Records not shown</p>
-    </article><article class="walk-entry-lane" data-walk-family-state="unknown">
-      <p class="walk-entry-lane-kicker">Rules</p>
-      <h3><a data-walk-family="rules" href="/near-you?v=0&amp;lens=rules&amp;level=community_district&amp;parent=Brooklyn&amp;walk_source=near_you&amp;boro=Brooklyn">Rules</a></h3>
-      <p>No count for this family here.</p>
-      <p class="walk-entry-coverage" data-walk-coverage="unknown">Records not shown</p>
-    </article><article class="walk-entry-lane" data-walk-family-state="unknown">
-      <p class="walk-entry-lane-kicker">Meetings</p>
-      <h3><a data-walk-family="meetings" href="/near-you?v=0&amp;lens=meetings&amp;level=community_district&amp;parent=Brooklyn&amp;walk_source=near_you&amp;boro=Brooklyn">Meetings</a></h3>
-      <p>No count for this family here.</p>
-      <p class="walk-entry-coverage" data-walk-coverage="unknown">Records not shown</p>
-    </article><article class="walk-entry-lane" data-walk-family-state="available">
-      <p class="walk-entry-lane-kicker">Current records</p>
-      <h3><a data-walk-family="money" href="/near-you?v=0&amp;lens=money&amp;level=community_district&amp;parent=Brooklyn&amp;walk_source=near_you&amp;boro=Brooklyn">Contracts</a></h3>
-      <p>Open these records and follow their links.</p>
-      <p class="walk-entry-coverage" data-walk-coverage="available">14 records in this family</p>
-    </article><article class="walk-entry-lane" data-walk-family-state="unknown">
-      <p class="walk-entry-lane-kicker">Staffing</p>
-      <h3><a data-walk-family="people" href="/near-you?v=0&amp;lens=people&amp;level=community_district&amp;parent=Brooklyn&amp;walk_source=near_you&amp;boro=Brooklyn">Staffing</a></h3>
-      <p>No count for this family here.</p>
-      <p class="walk-entry-coverage" data-walk-coverage="unknown">Records not shown</p>
-    </article></div>
-  </section>
+
+  </section></details>
 
     </section>
     <section class="near-place-guide is-set" aria-labelledby="near-place-heading">
@@ -94,9 +64,9 @@
       </div>
       <p class="near-map-status" data-map-status aria-live="polite"></p>
     </section>
-    <form class="near-form" id="near-place-fields" method="get" action="https://cityscroll.org/near-you">
+    <details class="near-advanced"><summary>Advanced filters</summary><form class="near-form" id="near-place-fields" method="get" action="https://cityscroll.org/near-you">
       <input type="hidden" name="v" value="0"><input type="hidden" name="level" value="community_district">
-      <label>Lens<select name="lens"><option value="meetings">Meetings</option><option value="land">Zoning</option><option value="property">Property</option><option value="rules">Rules</option><option value="money" selected>Contracts</option><option value="people">Staffing</option></select></label>
+      <label>Topic<select name="lens"><option value="meetings">Meetings</option><option value="land">Zoning</option><option value="property">Property</option><option value="rules">Rules</option><option value="money" selected>Contracts</option><option value="people">Staffing</option></select></label>
 
       <label>Agency<input name="agency" value="" placeholder="Any agency"></label>
       <label>Type<input name="type" value="" placeholder="Any record type"></label>
@@ -108,7 +78,7 @@
       <label>Location basis<select name="basis"><option value="performance" selected>Where work may affect an area</option>
     <option value="contract_action_address">Contract response address</option></select></label>
       <button type="submit">Apply filters</button>
-    </form>
+    </form></details>
 
 
     <nav class="near-surface-switch" aria-label="Near you view" data-near-surface-switch>
@@ -251,7 +221,7 @@
           <p class="near-vintage">Map boundaries: 2026-05-26</p>
         </div>
         <div class="near-area-panel" id="near-area-list">
-          <h3>Equivalent area list</h3>
+          <h3>Areas</h3>
           <ol class="near-area-list"><li><a data-map-area="K03" data-count="1" href="https://cityscroll.org/near-you?v=0&amp;lens=money&amp;boro=Brooklyn&amp;cd=K03&amp;level=community_district&amp;id=K03&amp;parent=Brooklyn"><span>Brooklyn Community District 3</span><strong>1</strong></a></li><li><a data-map-area="K01" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=money&amp;boro=Brooklyn&amp;cd=K01&amp;level=community_district&amp;id=K01&amp;parent=Brooklyn"><span>Brooklyn Community District 1</span><strong>0</strong></a></li><li><a data-map-area="K10" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=money&amp;boro=Brooklyn&amp;cd=K10&amp;level=community_district&amp;id=K10&amp;parent=Brooklyn"><span>Brooklyn Community District 10</span><strong>0</strong></a></li><li><a data-map-area="K11" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=money&amp;boro=Brooklyn&amp;cd=K11&amp;level=community_district&amp;id=K11&amp;parent=Brooklyn"><span>Brooklyn Community District 11</span><strong>0</strong></a></li><li><a data-map-area="K12" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=money&amp;boro=Brooklyn&amp;cd=K12&amp;level=community_district&amp;id=K12&amp;parent=Brooklyn"><span>Brooklyn Community District 12</span><strong>0</strong></a></li><li><a data-map-area="K13" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=money&amp;boro=Brooklyn&amp;cd=K13&amp;level=community_district&amp;id=K13&amp;parent=Brooklyn"><span>Brooklyn Community District 13</span><strong>0</strong></a></li><li><a data-map-area="K14" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=money&amp;boro=Brooklyn&amp;cd=K14&amp;level=community_district&amp;id=K14&amp;parent=Brooklyn"><span>Brooklyn Community District 14</span><strong>0</strong></a></li><li><a data-map-area="K15" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=money&amp;boro=Brooklyn&amp;cd=K15&amp;level=community_district&amp;id=K15&amp;parent=Brooklyn"><span>Brooklyn Community District 15</span><strong>0</strong></a></li><li><a data-map-area="K16" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=money&amp;boro=Brooklyn&amp;cd=K16&amp;level=community_district&amp;id=K16&amp;parent=Brooklyn"><span>Brooklyn Community District 16</span><strong>0</strong></a></li><li><a data-map-area="K17" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=money&amp;boro=Brooklyn&amp;cd=K17&amp;level=community_district&amp;id=K17&amp;parent=Brooklyn"><span>Brooklyn Community District 17</span><strong>0</strong></a></li><li><a data-map-area="K18" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=money&amp;boro=Brooklyn&amp;cd=K18&amp;level=community_district&amp;id=K18&amp;parent=Brooklyn"><span>Brooklyn Community District 18</span><strong>0</strong></a></li><li><a data-map-area="K02" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=money&amp;boro=Brooklyn&amp;cd=K02&amp;level=community_district&amp;id=K02&amp;parent=Brooklyn"><span>Brooklyn Community District 2</span><strong>0</strong></a></li><li><a data-map-area="K04" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=money&amp;boro=Brooklyn&amp;cd=K04&amp;level=community_district&amp;id=K04&amp;parent=Brooklyn"><span>Brooklyn Community District 4</span><strong>0</strong></a></li><li><a data-map-area="K05" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=money&amp;boro=Brooklyn&amp;cd=K05&amp;level=community_district&amp;id=K05&amp;parent=Brooklyn"><span>Brooklyn Community District 5</span><strong>0</strong></a></li><li><a data-map-area="K06" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=money&amp;boro=Brooklyn&amp;cd=K06&amp;level=community_district&amp;id=K06&amp;parent=Brooklyn"><span>Brooklyn Community District 6</span><strong>0</strong></a></li><li><a data-map-area="K07" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=money&amp;boro=Brooklyn&amp;cd=K07&amp;level=community_district&amp;id=K07&amp;parent=Brooklyn"><span>Brooklyn Community District 7</span><strong>0</strong></a></li><li><a data-map-area="K08" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=money&amp;boro=Brooklyn&amp;cd=K08&amp;level=community_district&amp;id=K08&amp;parent=Brooklyn"><span>Brooklyn Community District 8</span><strong>0</strong></a></li><li><a data-map-area="K09" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=money&amp;boro=Brooklyn&amp;cd=K09&amp;level=community_district&amp;id=K09&amp;parent=Brooklyn"><span>Brooklyn Community District 9</span><strong>0</strong></a></li></ol>
         </div>
       </div>

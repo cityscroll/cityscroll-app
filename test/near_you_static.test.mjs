@@ -264,6 +264,35 @@ test("Near-you failed map data has a scope-preserving recovery link", () => {
   assert.doesNotMatch(html, /data-count="0"/);
 });
 
+test("Near-you leads with a named community district and keeps exploration secondary", () => {
+  const scope = scopeWithPlace(scopeFromLensState("meetings", { agency: "Transportation" }), {
+    borough: "Brooklyn",
+    communityDistrict: "K15",
+  });
+  const view = buildNearYouViewModel(scope, fixtureActivity(), fixtureBoundaries, {
+    communityGeography: {
+      public_edges: [{ type: "covers", from: "community-board:brooklyn-cb-15", to: "community-district:K15" }],
+      nodes: [{
+        id: "community-board:brooklyn-cb-15",
+        name: "Brooklyn Community Board 15",
+        properties: { body_id: "brooklyn-cb-15" },
+      }],
+    },
+  });
+  const html = renderNearYouDocument(view);
+  assert.match(html, />Brooklyn Community District 15<\/h1>/);
+  assert.match(html, /href="\/community-boards\/brooklyn-cb-15\/"[^>]*>Brooklyn Community Board 15<\/a>/);
+  assert.match(html, />Topic: Meetings<\/span>/);
+  assert.match(html, /Advanced filters/);
+  assert.match(html, /Explore related records/);
+  assert.doesNotMatch(html, /Graph entry/);
+  assert.doesNotMatch(html, /No count for this family here/);
+  assert.doesNotMatch(html, /Equivalent area list/);
+  assert.match(html, /<h3>Areas<\/h3>/);
+  assert.match(html, /data-remove-filter="agency"/);
+  assert.match(html, /name="walk_query"/);
+});
+
 test("the shared renderer emits exact server-owned records, counts, map paths, area links, and special bags", () => {
   const scope = scopeWithPlace(
     scopeFromLensState("meetings", { agency: "Transportation" }),
