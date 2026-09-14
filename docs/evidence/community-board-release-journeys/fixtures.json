@@ -1,0 +1,18 @@
+{
+  "schema": "cityscroll.community_board_release_journey_fixtures.v1",
+  "cases": [
+    {
+      "id": "upcoming-full-board",
+      "accepted_upcoming_full_board": true,
+      "expected": "identify-next-meeting",
+      "rendered": "Next full-board meeting"
+    },
+    {
+      "id": "no-upcoming-full-board",
+      "accepted_upcoming_full_board": false,
+      "expected": "verified-calendar-fallback",
+      "rendered": "Open the verified calendar",
+      "official_calendar": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
+    }
+  ]
+}
