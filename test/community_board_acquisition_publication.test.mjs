@@ -128,6 +128,14 @@ test("failed refresh retains last-good records and marks the role unavailable wi
     ...buildOptions(),
     fetchImpl: fetchAll(),
   });
+  const repeated = await buildCommunityBoardMeetingIndex({
+    ...buildOptions(),
+    previousIndex: first,
+    fetchImpl: fetchAll(),
+  });
+  assert.equal(repeated.rows.length, 7, "identical content on refresh remains one record per admitted board");
+  assert.equal(new Set(repeated.rows.map((row) => row.meeting_id)).size, repeated.rows.length);
+
   const second = await buildCommunityBoardMeetingIndex({
     ...buildOptions({ inventory: inventory() }),
     previousIndex: first,
