@@ -1,0 +1,25 @@
+{
+  "feature": "near-you-place-first",
+  "repository_revision": "fc57395442301d4d45431208ed2ea795839d13d6",
+  "data_vintage": "2026-05-26 district boundaries; served route read model",
+  "image_policy": "No image binaries are committed. The manifest is the retained capture proof.",
+  "captures": [
+    {
+      "name": "k15-initial-viewport-desktop",
+      "route": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K15",
+      "viewport": [1440, 900],
+      "revision": "fc57395442301d4d45431208ed2ea795839d13d6",
+      "assertion": "The district heading, exact community-board destination, active Topic, Records/Map switch, and first results/state fit in the initial viewport.",
+      "sha256": "03aafc05768292eb9334d0eaa2694b5cfdd1743d3400be0533f5edc38f8b50df"
+    },
+    {
+      "name": "k15-initial-viewport-mobile",
+      "route": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K15",
+      "viewport": [390, 844],
+      "revision": "fc57395442301d4d45431208ed2ea795839d13d6",
+      "assertion": "The district heading, exact community-board destination, active Topic, Records/Map switch, and first results/state fit within the declared narrow viewport contract.",
+      "sha256": "851f175f5efef14802b253c0bb43831b86dc9a61dd843ddc2c398c42a07acf68"
+    }
+  ],
+  "verifier": "python3 test/functional/53_near_you_place_first_journey.py"
+}

@@ -88,7 +88,9 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
   const view = buildNearYouViewModel(scope, routeReadModel.activity, boundaries, {
     canonicalBase: CANONICAL_BASE,
     siteBase: SITE_BASE,
-    communityGeography: routeReadModel.communityGeography,
+    communityGeography: routeReadModel.communityGeography?.public_edges?.length
+      ? routeReadModel.communityGeography
+      : communityGeography,
   });
   const deferredParts = deferred ? renderNearYouDeferredParts(view) : null;
   const body = deferred

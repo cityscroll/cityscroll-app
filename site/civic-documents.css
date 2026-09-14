@@ -3490,6 +3490,21 @@ select {
 }
 
 /* Near-you Records / Map switch: progressive enhancement at every width. */
+[data-near-you-root] {
+  display: flex;
+  flex-direction: column;
+}
+[data-near-you-root] > .near-hero { order: 1; }
+[data-near-you-root] > .near-surface-switch { order: 2; }
+[data-near-you-root] > .near-results,
+[data-near-you-root] > .near-results-shell { order: 3; }
+[data-near-you-root] > .near-map-section { order: 4; }
+[data-near-you-root] > .near-bags,
+[data-near-you-root] > .near-bags-shell { order: 5; }
+[data-near-you-root] > .near-place-guide { order: 6; }
+[data-near-you-root] > .near-advanced { order: 7; }
+[data-near-you-root] > .near-explore,
+[data-near-you-root] > .local-constellation { order: 8; }
 .near-surface-switch {
   display: flex;
   gap: var(--space-2);
