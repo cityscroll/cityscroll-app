@@ -211,6 +211,7 @@ export function evaluateStatsPublication({ now, observation = {}, budgets = STAT
   ])].sort();
   const missing = rawMissing.filter((day) => !dayBeforeMeasurement(day, measuredSince));
   const unrecoverable = rawUnrecoverable.filter((day) => !dayBeforeMeasurement(day, measuredSince));
+  const promisedBeforeMeasurement = dayBeforeMeasurement(promised, measuredSince);
   const promisedInScope = promisedDays.includes(promised);
   const promisedMissing = promisedInScope && (
     missing.includes(promised) || (newestDay !== null && newestDay < promised) || newestDay === null
@@ -249,6 +250,11 @@ export function evaluateStatsPublication({ now, observation = {}, budgets = STAT
   if (measuredMs !== null) {
     notes.push(`Measurement began on ${utcDay(measuredMs)}; days before that are not measured.`);
   }
+  if (promisedBeforeMeasurement) {
+    notes.push(
+      `Promised day ${promised} is before measurement start ${utcDay(measuredMs)}; it is not measured, not missing, and not a frozen publication.`,
+    );
+  }
   if (beforeMeasurement.length) {
     notes.push(`${beforeMeasurement.length} day(s) fall before measurement began and are not measured, not missing.`);
   }
@@ -277,6 +283,10 @@ export function evaluateStatsPublication({ now, observation = {}, budgets = STAT
       unrecoverable_days: unrecoverable,
       measured_since: measuredSince,
       horizon_start: horizonStart,
+      promised_day_status: promisedBeforeMeasurement ? "before_measurement_start" : "measured",
+      promised_day_reason: promisedBeforeMeasurement
+        ? `promised day ${promised} ended before measurement started on ${utcDay(measuredMs)}`
+        : null,
       verified_at: published?.refresh?.verified_at || null,
       refresh_state: published?.refresh?.state || null,
     },
