@@ -66,8 +66,9 @@ export function placeRoleForBasis(basis) {
 }
 
 /** Bucket the district-activity basis string into the one canonical place-role predicate. */
-function locationPlaceRole(record = {}) {
-  return placeRoleForBasis(record.basis) ?? "affected_area";
+function locationPlaceRole(record = {}, edge = {}) {
+  if (PLACE_ROLES.includes(edge.location_role)) return edge.location_role;
+  return placeRoleForBasis(edge.basis || edge.evidence?.locality_basis || record.basis) ?? "affected_area";
 }
 
 function subjectForRecord(lens, id) {
@@ -110,7 +111,8 @@ export function buildNearYouExplanationCandidates({
           subject_ref: edge.to,
           kind: node.kind,
           label: clean(node.label, 160),
-          place_role: locationPlaceRole(record),
+          place_role: locationPlaceRole(record, edge),
+          basis: clean(edge.basis || edge.evidence?.locality_basis, 160) || null,
           // PS-04: the one canonical evidence tier (site/location_evidence_tier.mjs), derived
           // once here rather than re-guessed by whichever surface renders this candidate.
           tier: classifyLocationEvidence({ confidence_tier: edge.confidence, method: placementMethod }),

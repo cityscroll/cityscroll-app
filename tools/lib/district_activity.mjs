@@ -100,7 +100,23 @@ function locationRoleForRecord(lens, basis) {
   if (lens === "property") return "property_affected";
   if (lens === "money") return "place_of_performance";
   if (lens === "meetings" && basis === "Venue / logistics") return "venue";
+  if (lens === "meetings" && basis === "Matter place") return "matter";
   return "subject_affected_area";
+}
+
+function localityForSlot(lens, slot) {
+  const place = compactRecordBasis(lens, [slot]);
+  return {
+    location_role: locationRoleForRecord(lens, place.basis),
+    basis: place.basis,
+    method: place.method || slot.geography_method || slot.method || "structured_bag",
+    confidence: place.confidence,
+    provenance: {
+      placement_method: slot.geography_method || slot.method || "structured_bag",
+      source_method: slot.source_method || null,
+      confidence_tier: slot.confidence_tier || place.confidence,
+    },
+  };
 }
 
 function featureForMatch(layer, id) {
@@ -125,7 +141,9 @@ function genericMatchFromSlot(type, id, slot, layerByType, place) {
     boundary_vintage: layer?.vintage?.id || null,
     location_role: place.location_role,
     basis: place.basis,
+    method: place.method,
     confidence: place.confidence,
+    provenance: place.provenance,
   };
 }
 
@@ -133,15 +151,17 @@ function genericMatchFromSlot(type, id, slot, layerByType, place) {
 function geographiesForSlots(lens, slots, geographyLayers) {
   const placeBasis = compactRecordBasis(lens, slots);
   const place = {
-    location_role: locationRoleForRecord(lens, placeBasis.basis),
-    basis: placeBasis.basis,
-    confidence: placeBasis.confidence,
+    ...localityForSlot(lens, slots[0] || {}),
+    ...placeBasis,
+    method: placeBasis.method || localityForSlot(lens, slots[0] || {}).method,
   };
+  place.location_role = locationRoleForRecord(lens, place.basis);
   const layerByType = new Map((geographyLayers || []).map((layer) => [layer?.type, layer]));
   const matches = new Map();
   for (const slot of slots || []) {
     if (isCitywidePlacement(slot) || isVirtualPlacement(slot)) continue;
     const route = geographyPlacementDecision(slot);
+    const locality = localityForSlot(lens, slot);
     const add = (match) => {
       if (!match?.key || matches.has(match.key)) return;
       matches.set(match.key, { ...match, visibility: route.decision });
@@ -156,16 +176,18 @@ function geographiesForSlots(lens, slots, geographyLayers) {
         add({
           ...match,
           relation: "located_in",
-          location_role: place.location_role,
-          basis: place.basis,
-          confidence: place.confidence,
+          location_role: locality.location_role,
+          basis: locality.basis,
+          method: locality.method,
+          confidence: locality.confidence,
+          provenance: locality.provenance,
         });
       }
     }
     const boroughId = BOROUGH_GEOGRAPHY_IDS[slot.borough];
-    add(genericMatchFromSlot("borough", boroughId, slot, layerByType, place));
-    add(genericMatchFromSlot("community_district", slot.community, slot, layerByType, place));
-    add(genericMatchFromSlot("council_district", slot.council, slot, layerByType, place));
+    add(genericMatchFromSlot("borough", boroughId, slot, layerByType, locality));
+    add(genericMatchFromSlot("community_district", slot.community, slot, layerByType, locality));
+    add(genericMatchFromSlot("council_district", slot.council, slot, layerByType, locality));
   }
   return {
     ...place,
@@ -267,7 +289,12 @@ export function geographyPlacementDecision(slot = {}) {
   if ([method, sourceMethod].some((value) => value.startsWith("vendor_") || WEAK_GEOGRAPHY_METHODS.has(value))) {
     return { decision: "evidence_only", reason: "weak_vendor_fallback" };
   }
-  if (slot.confidence_tier === "weak") {
+  const confidenceTier = classifyLocationEvidence({
+    method,
+    confidence: slot.confidence,
+    confidence_tier: slot.confidence_tier,
+  });
+  if (confidenceTier === "weak") {
     return { decision: "evidence_only", reason: "weak_placement_confidence" };
   }
   const effectiveMethod = method || "structured_bag";
@@ -1356,19 +1383,23 @@ export function buildDistrictActivity(opts = {}) {
     const to = geographySubjectRef(level, id);
     if (!from || !to) return;
     const route = geographyPlacementDecision(slot);
+    const locality = slot.locality || localityForSlot(lens, slot);
     const edge = makeSubjectLink({
       type: "located_in",
       from,
       to,
       method: GEOGRAPHY_LOCATION_METHOD,
       method_version: GEOGRAPHY_LOCATION_METHOD_VERSION,
-      confidence: slot.confidence_tier || null,
+      confidence: locality.confidence || slot.confidence_tier || null,
       evidence: {
         basis: "district_activity_placement",
         lens,
+        location_role: locality.location_role,
+        locality_basis: locality.basis,
         placement_method: slot.geography_method || slot.method || "structured_bag",
         source_method: slot.source_method || null,
         boundary_vintage: String(boundaries.boundary_vintage),
+        provenance: locality.provenance,
       },
     });
     if (!edge) return;
@@ -1376,6 +1407,9 @@ export function buildDistrictActivity(opts = {}) {
       ...edge,
       decision: route.decision,
       reason: route.reason,
+      location_role: locality.location_role,
+      basis: locality.basis,
+      provenance: locality.provenance,
     };
     const key = `${lens}|${from}|${to}`;
     const previous = geographyMemberships.get(key);
@@ -1417,6 +1451,7 @@ export function buildDistrictActivity(opts = {}) {
 
   function placeCouncilsFromCommunity(lens, cd, itemId, slot = {}, primaryMethodRef = null) {
     const councils = councilDistrictsIntersectingCommunity(cd, cdIntersectsIndex);
+    const locality = localityForSlot(lens, slot);
     for (const fromCd of councils) {
       bump(byCouncil, fromCd, lens);
       addDistrictItem(lens, "council_district", fromCd, itemId, {
@@ -1425,6 +1460,7 @@ export function buildDistrictActivity(opts = {}) {
         method: CD_INTERSECTS_COUNCIL_METHOD,
         geography_method: CD_INTERSECTS_COUNCIL_METHOD,
         council_method: CD_INTERSECTS_COUNCIL_METHOD,
+        locality,
       });
     }
     if (councils.length && primaryMethodRef && !primaryMethodRef.method) {
