@@ -50,12 +50,30 @@ const BROWSE_CAPABILITY_OUT = new URL("../site/data/procurement_browse_capabilit
 const BROWSE_CAPABILITY_SHARD_DIR = new URL("../site/data/procurement_browse_capability/", import.meta.url);
 const DIGEST_OUT = new URL("../site/data/procurement_digest_snapshot.json", import.meta.url);
 const MTA_SOURCES = new URL("../site/data/mta_procurement_sources.json", import.meta.url);
+const ANALYTICS_REGISTERED = new URL("../site/data/analytics_registered_contracts.json", import.meta.url);
+const ANALYTICS_PAYMENTS = new URL("../site/data/analytics_payments.json", import.meta.url);
 const ROOT = new URL("../", import.meta.url);
 // Ephemeral, never committed: written beside the artifacts by a build so the
 // immediately following --check can verify them without a second full build.
 const CHECK_RECEIPT = new URL("../.artifacts/procurement-read-model-check.json", import.meta.url);
 const GENERATOR = "tools/build_shared_procurement_read_model.mjs";
-const INPUTS = [SPINE, AWARDS, MTA_FIXTURES, MTA_SOURCES];
+const INPUTS = [SPINE, AWARDS, MTA_FIXTURES, MTA_SOURCES, ANALYTICS_REGISTERED, ANALYTICS_PAYMENTS];
+
+function analyticalMaterialization(manifest, baseUrl) {
+  const rows = [];
+  for (const descriptor of (manifest?.shards || [])) {
+    try {
+      const shard = JSON.parse(readFileSync(new URL(descriptor.path, baseUrl), "utf8"));
+      if (Array.isArray(shard?.rows)) rows.push(...shard.rows);
+    } catch { /* missing shard keeps this materialization unavailable */ }
+  }
+  return {
+    status: manifest ? "available" : "unavailable",
+    snapshot_date: manifest?.snapshot_date || null,
+    generated_at: manifest?.generated_at || null,
+    rows,
+  };
+}
 
 function norm(value) {
   return String(value ?? "").toUpperCase().replace(/[^A-Z0-9]/g, "");
@@ -246,6 +264,12 @@ export function buildProcurementArtifacts(spine, awards, options = {}) {
       checkbookLookupRows,
       generatedAt: spine?.generated_at || null,
       now: spine?.generated_at || null,
+      lookupMaterializations: {
+        ...options.lookupMaterializations,
+        analytics_registered_contracts: options.analyticsRegistered,
+        analytics_payments: options.analyticsPayments,
+      },
+      lookupAsOf: spine?.generated_at || null,
     }),
     publication,
   };
@@ -494,6 +518,8 @@ function buildAndEmit() {
   const awardsBytes = readFileSync(AWARDS);
   const nativeFixturesBytes = readFileSync(MTA_FIXTURES);
   const mtaBytes = readFileSync(MTA_SOURCES);
+  const analyticsRegisteredBytes = readFileSync(ANALYTICS_REGISTERED);
+  const analyticsPaymentsBytes = readFileSync(ANALYTICS_PAYMENTS);
   const { model, browse, digest } = buildProcurementArtifacts(
     JSON.parse(spineBytes.toString("utf8")),
     JSON.parse(awardsBytes.toString("utf8")),
@@ -503,6 +529,8 @@ function buildAndEmit() {
       mtaBytes,
       nativeFixtures: JSON.parse(nativeFixturesBytes.toString("utf8")),
       mtaSources: JSON.parse(mtaBytes.toString("utf8")),
+      analyticsRegistered: analyticalMaterialization(JSON.parse(analyticsRegisteredBytes.toString("utf8")), ANALYTICS_REGISTERED),
+      analyticsPayments: analyticalMaterialization(JSON.parse(analyticsPaymentsBytes.toString("utf8")), ANALYTICS_PAYMENTS),
     },
   );
   const groups = [

@@ -23,6 +23,7 @@ export const CROSS_SOURCE_COVERAGE_STATES = Object.freeze([
   "ambiguous",
   "unavailable",
   "stale",
+  "not-applicable",
 ]);
 
 const STATE_LABELS = Object.freeze({
@@ -32,6 +33,7 @@ const STATE_LABELS = Object.freeze({
   ambiguous: "Identity is ambiguous",
   unavailable: "Source unavailable",
   stale: "Source snapshot is stale",
+  "not-applicable": "Not applicable to this record",
 });
 
 const NYC_PROCUREMENT_SOURCES = Object.freeze([
@@ -149,6 +151,20 @@ function lookupOf(lookups, system) {
   return null;
 }
 
+function lookupReceiptOf(receipt, system) {
+  const source = Array.isArray(receipt?.sources)
+    ? receipt.sources.find((row) => row?.source_system === system)
+    : receipt?.sources?.[system];
+  if (!source) return null;
+  return {
+    ...source,
+    state: source.applicability === "not-applicable" ? "not-applicable" : source.state,
+    as_of: text(source.lookup_as_of),
+    vintage: text(source.snapshot_vintage),
+    basis: text(source.basis),
+  };
+}
+
 function aboLookup(aboResidual) {
   const status = lower(aboResidual?.bridge?.status);
   if (!aboResidual) return null;
@@ -230,6 +246,11 @@ function declaredSources(kind, object, observations) {
     return ["checkbook_nycha_contracts"];
   }
   const declared = [...NYC_PROCUREMENT_SOURCES];
+  const lookupAbo = Array.isArray(object?.procurement_source_lookup_receipt?.sources)
+    && object.procurement_source_lookup_receipt.sources.find((row) => row.source_system === "nys_abo_awards");
+  if (lookupAbo?.applicability === "not-applicable") {
+    return declared.filter((source) => source !== "nys_abo_awards");
+  }
   if (systems.has("checkbook_nycha_contracts")) declared.push("checkbook_nycha_contracts");
   return declared;
 }
@@ -353,6 +374,7 @@ export function buildCrossSourceCoverageLedger({
   sourceStatus = {},
   sourceCoverage,
   lookups = {},
+  lookupReceipt = null,
   aboResidual,
   crosswalk = null,
   registeredContractCoverage = null,
@@ -374,7 +396,8 @@ export function buildCrossSourceCoverageLedger({
   const sources = declaredSources(objectKind, object, observations).map((system) => {
     const envelope = envelopeOf(sourceStatus, system);
     const inventory = inventoryRow(coverageInventory, system);
-    const explicit = lookupOf(lookups, system)
+    const explicit = lookupReceiptOf(lookupReceipt, system)
+      || lookupOf(lookups, system)
       || (system === "nys_abo_awards" ? abo : null);
     const classification = classifySource({
       system,
