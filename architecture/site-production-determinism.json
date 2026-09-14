@@ -171,6 +171,7 @@
     "site/committee_memberships_build.mjs",
     "site/committee_memberships.mjs",
     "site/committee_search_producer.mjs",
+    "site/community_board_activity.mjs",
     "site/community_board_adopted_budget.mjs",
     "site/community_board_agenda_recommendation.mjs",
     "site/community_board_budget_requests_boot.mjs",

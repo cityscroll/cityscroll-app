@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/community-board-activity-stream",
+  "status": "implemented",
+  "fingerprint": "community-board-activity-stream.v1",
+  "updated_at": "2026-09-14T00:00:00.000Z",
+  "projections": [
+    { "id": "activity-read-model", "path": "site/community_board_activity.mjs" },
+    { "id": "activity-tests", "path": "test/community_board_activity_stream.test.mjs" }
+  ]
+}
