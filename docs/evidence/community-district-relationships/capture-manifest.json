@@ -2,7 +2,7 @@
   "schema": "cityscroll.render_capture_manifest.v1",
   "capture_mode": "headless_playwright_served_route",
   "route": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K15&level=community_district&id=K15&parent=Brooklyn",
-  "revision": "e3098660b7b47a8b2ed4f258821daf31ddc6b2e4",
+  "revision": "8b0b44d12c45a568edc5a1fb4ba8151041a7616b",
   "data_vintage": "2026-05-26",
   "captures": [
     {
