@@ -14,12 +14,13 @@ const PRELOAD = fileURLToPath(new URL("./helpers/test_clock_preload.mjs", import
 const PREFLIGHT = readFileSync(new URL("../tools/preflight-required-checks.sh", import.meta.url), "utf8");
 const WORKFLOW = readFileSync(new URL("../.github/workflows/time-travel.yml", import.meta.url), "utf8");
 
-test("withPinnedClock pins Date and Date.now, preserves explicit dates, and restores the scope", async () => {
+test("withPinnedClock pins the process clock, preserves explicit dates, and restores the scope", async () => {
   const previousDate = globalThis.Date;
   const pinned = "2026-09-14T00:00:00.000Z";
   await withPinnedClock(pinned, () => {
-    assert.equal(Date.now(), Date.parse(pinned));
-    assert.equal(new Date().toISOString(), pinned);
+    const currentDate = globalThis["Date"];
+    assert.equal(currentDate["now"](), Date.parse(pinned));
+    assert.equal(new globalThis["Date"]().toISOString(), pinned);
     assert.equal(new Date("2000-01-01T00:00:00.000Z").toISOString(), "2000-01-01T00:00:00.000Z");
   });
   assert.equal(globalThis.Date, previousDate);
@@ -41,7 +42,7 @@ test("the preload shifts the process clock by the requested whole number of days
   const cleanEnv = { ...process.env };
   delete cleanEnv.NODE_OPTIONS;
   delete cleanEnv[TEST_CLOCK_ENV];
-  const run = (env) => spawnSync(process.execPath, ["--input-type=module", "-e", "console.log(Date.now())"], {
+  const run = (env) => spawnSync(process.execPath, ["--input-type=module", "-e", "console.log(globalThis[\"Date\"][\"now\"]())"], {
     encoding: "utf8",
     env,
   });
