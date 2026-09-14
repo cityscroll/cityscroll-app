@@ -185,6 +185,25 @@ async function withFetch(fn) {
   }
 }
 
+async function withPinnedClock(iso, fn) {
+  const RealDate = globalThis.Date;
+  class PinnedDate extends RealDate {
+    constructor(...args) {
+      super(...(args.length ? args : [iso]));
+    }
+
+    static now() {
+      return RealDate.parse(iso);
+    }
+  }
+  globalThis.Date = PinnedDate;
+  try {
+    return await fn();
+  } finally {
+    globalThis.Date = RealDate;
+  }
+}
+
 test("A1: whole-token rat admits 20260803009; Strategy is a lexical negative, not a meeting", async () => {
   assert.ok(strategyTitle, "frozen procurement snapshot still has a Strategy title");
   assert.match(strategyTitle, /Strategy/i);
@@ -255,7 +274,8 @@ test("A2: grouped alternatives, required phrases, and exclusions share preview/s
   const feedUrl = new URL("https://api.cityscroll.org/feed.xml");
   feedUrl.searchParams.set("lens", "meetings");
   feedUrl.searchParams.set("filter", JSON.stringify(excluded.filter));
-  const feedRes = await handleFeed(new Request(feedUrl), env, {});
+  const feedRes = await withPinnedClock(`${CLOCK}T13:00:00.000Z`, () =>
+    handleFeed(new Request(feedUrl), env, {}));
   assert.equal(feedRes.status, 200);
   const feedXml = await feedRes.text();
   assert.match(feedXml, new RegExp(RAT_ID));
