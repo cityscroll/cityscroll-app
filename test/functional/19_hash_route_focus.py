@@ -155,10 +155,17 @@ def main():
                     arg=section,
                     label=f"{section} stays on the official document",
                 )
-                assert official.locator(f"#{section}").evaluate(
-                    "element => element.getBoundingClientRect().bottom > 0 "
-                    "&& element.getBoundingClientRect().top < innerHeight"
-                ), f"{section} did not scroll into view"
+                wait_for_function(
+                    official,
+                    "section => {"
+                    "  const element = document.getElementById(section);"
+                    "  if (!element) return false;"
+                    "  const rect = element.getBoundingClientRect();"
+                    "  return rect.bottom > 0 && rect.top < innerHeight;"
+                    "}",
+                    arg=section,
+                    label=f"{section} scrolls into view",
+                )
             assert official.locator('[data-route-back]').get_attribute("href") == "/browse/meetings/"
             official.close()
 
