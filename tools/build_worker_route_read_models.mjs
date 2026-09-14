@@ -13,6 +13,7 @@ const PATHS = {
   activity: join(ROOT, "worker/src/data/district_activity.json"),
   meetings: join(ROOT, "site/data/shared_meeting_read_model.json"),
   geography: join(ROOT, "site/data/community_board_geography_lookup.json"),
+  communityDigest: join(ROOT, "site/data/community_district_digests.json"),
 };
 const LENSES = ["land", "property", "rules", "meetings", "money"];
 const LEVELS = ["borough", "community_district", "council_district"];
@@ -159,6 +160,20 @@ function buildNearYou(activity, geography, version) {
   };
 }
 
+function buildCommunityDistrictDigests(digest, version) {
+  const entries = [];
+  const slices = {};
+  for (const id of Object.keys(digest.by_community_district || {}).sort()) {
+    const key = keyFor(version, "community-district-digest", id);
+    slices[id] = key;
+    entries.push({ key, value: JSON.stringify({
+      schema_version: 1, kind: "community-district-digest", version, slice_id: id,
+      digest: { ...digest, by_community_district: { [id]: digest.by_community_district[id] } },
+    }) });
+  }
+  return { entries, manifest: { schema_version: 1, kind: "community-district-digest", version, source_schema: digest.schema, slices } };
+}
+
 /**
  * The vintage envelope a reader needs to answer for one meeting served from
  * these slices: the source model's schema, its generated_at, its freshness
@@ -267,21 +282,25 @@ function main() {
   const activity = readJson(PATHS.activity);
   const meetings = readJson(PATHS.meetings);
   const geography = readJson(PATHS.geography);
+  const communityDigest = readJson(PATHS.communityDigest);
   const near = buildNearYou(activity, geography, version);
+  const community = buildCommunityDistrictDigests(communityDigest, version);
   const meeting = buildMeetings(meetings, version);
   writeFileSync(join(out, "near-you.bulk.json"), JSON.stringify(near.entries));
+  writeFileSync(join(out, "community-district-digest.bulk.json"), JSON.stringify(community.entries));
   writeFileSync(join(out, "meetings.bulk.json"), JSON.stringify(meeting.entries));
   writeBulkChunks(out, "near-you", near.entries);
   writeBulkChunks(out, "meetings", meeting.entries);
   writeFileSync(join(out, "near-you.manifest.json"), JSON.stringify(near.manifest, null, 2));
+  writeFileSync(join(out, "community-district-digest.manifest.json"), JSON.stringify(community.manifest, null, 2));
   writeFileSync(join(out, "meetings.manifest.json"), JSON.stringify(meeting.manifest, null, 2));
   writeFileSync(join(out, "route-read-model-receipt.json"), JSON.stringify({
     schema_version: 1, version, generated_at: new Date().toISOString(),
-    near_you_slice_count: near.entries.length, meeting_slice_count: meeting.entries.length,
+    near_you_slice_count: near.entries.length, community_district_digest_slice_count: community.entries.length, meeting_slice_count: meeting.entries.length,
   }, null, 2));
   assertCanaries(out);
   if (check) console.log(`route read-model canaries passed (${version})`);
-  else console.log(`built ${near.entries.length + meeting.entries.length} route read-model slices (${version})`);
+  else console.log(`built ${near.entries.length + community.entries.length + meeting.entries.length} route read-model slices (${version})`);
 }
 
 // Importable so a test can exercise the published slice layout against the
