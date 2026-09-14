@@ -1,0 +1,151 @@
+{
+  "schema": "cityscroll.historical_council_matter_authenticated_readback.v1",
+  "grounded_at": "0450a15270c65fbb5cac9ef6a91e6fcf121e40f8",
+  "acquisition_mode": "authenticated-live-publisher-read",
+  "publisher": "NYC Council Legistar",
+  "endpoint": "https://webapi.legistar.com/v1/nyc/Matters",
+  "request": {
+    "filter": "MatterFile eq one of the four exact retained files",
+    "page_size": 50,
+    "max_pages": 2,
+    "token": "supplied from mode-0600 credential file; not retained"
+  },
+  "clock": {
+    "helper": "test/helpers/test_clock.mjs",
+    "pinned_at": "2026-09-14T15:00:00.000Z"
+  },
+  "read_at": "2026-09-14T15:00:00.000Z",
+  "result": {
+    "ok": true,
+    "kind": "ok",
+    "status": 200,
+    "target_count": 4,
+    "resolved_count": 4,
+    "unresolved": [],
+    "secret_fields_retained": false
+  },
+  "assertions": [
+    {
+      "id": "A1",
+      "name": "four exact native matters retained",
+      "artifact": "rows[].publisher_response",
+      "proves": "Each requested MatterFile resolved to the publisher MatterId, source date, title and official URL below; the response hashes bind the retained projection to the live read."
+    },
+    {
+      "id": "A2",
+      "name": "historical action date remains separate",
+      "artifact": "rows[].action_date",
+      "proves": "All four Council observations carry the publisher's 2022-02-24 action date; this receipt does not substitute the later ZAP completion date or procurement observations."
+    },
+    {
+      "id": "A3",
+      "name": "authenticated read is not an absence",
+      "artifact": "result + rows",
+      "proves": "The authenticated read returned four resolved rows and no unresolved rows; the acquisition path retains no token and publishes no negative result."
+    },
+    {
+      "id": "A4",
+      "name": "secret-free live acquisition receipt",
+      "artifact": "acquisition_mode + request + rows[].publisher_response_sha256",
+      "proves": "This tracked receipt records a successful real publisher fetch, its bounded request contract and hashes of the raw responses without retaining the credential or token-bearing URL."
+    }
+  ],
+  "rows": [
+    {
+      "project_id": "2020K0270",
+      "application_id": "C210239ZMK",
+      "matter_file": "LU 0010-2022",
+      "matter_id": "68068",
+      "title": "Zoning, 2134 Coyle Street Rezoning, Brooklyn (C 210239 ZMK)",
+      "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=68068",
+      "source_date": "2022-02-24",
+      "action_date": "2022-02-24",
+      "outcome": "Adopted",
+      "publisher_response": {
+        "MatterId": 68068,
+        "MatterFile": "LU 0010-2022",
+        "MatterName": "Zoning, 2134 Coyle Street Rezoning, Brooklyn (C 210239 ZMK)",
+        "MatterTypeName": "Land Use Application",
+        "MatterStatusName": "Adopted",
+        "MatterPassedDate": "2022-02-24T00:00:00",
+        "MatterEXText6": "Res 0051-2022",
+        "MatterEXText7": "20210239 ZMK",
+        "MatterEXText10": "Approved, by Council",
+        "MatterEXDate10": "2022-02-24T13:30:00"
+      },
+      "publisher_response_sha256": "22f22797aaef3c55bd5e54e1b04657ecae0835f7f005f6827eea2904249ff34c"
+    },
+    {
+      "project_id": "2020K0270",
+      "application_id": "N210240ZRK",
+      "matter_file": "LU 0011-2022",
+      "matter_id": "68069",
+      "title": "Zoning, 2134 Coyle Street Rezoning, Brooklyn (N 210240 ZRK)",
+      "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=68069",
+      "source_date": "2022-02-24",
+      "action_date": "2022-02-24",
+      "outcome": "Adopted",
+      "publisher_response": {
+        "MatterId": 68069,
+        "MatterFile": "LU 0011-2022",
+        "MatterName": "Zoning, 2134 Coyle Street Rezoning, Brooklyn (N 210240 ZRK)",
+        "MatterTypeName": "Land Use Application",
+        "MatterStatusName": "Adopted",
+        "MatterPassedDate": "2022-02-24T00:00:00",
+        "MatterEXText6": "Res 0052-2022",
+        "MatterEXText7": "20210240 ZRK",
+        "MatterEXText10": "Approved, by Council",
+        "MatterEXDate10": "2022-02-24T13:30:00"
+      },
+      "publisher_response_sha256": "edd4dc1c2bf6cb8a9c39f72eb8263a4ff0a8216b51e5e176cb37f5d5a54f5c65"
+    },
+    {
+      "project_id": "2020K0270",
+      "application_id": "C210239ZMK",
+      "matter_file": "RES 0051-2022",
+      "matter_id": "68216",
+      "title": "LU 10 - Zoning, 2134 Coyle Street Rezoning, Brooklyn (C 210239 ZMK)",
+      "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=68216",
+      "source_date": "2022-02-24",
+      "action_date": "2022-02-24",
+      "outcome": "Adopted",
+      "publisher_response": {
+        "MatterId": 68216,
+        "MatterFile": "Res 0051-2022",
+        "MatterName": "LU 10 - Zoning, 2134 Coyle Street Rezoning, Brooklyn (C 210239 ZMK)",
+        "MatterTypeName": "Resolution",
+        "MatterStatusName": "Adopted",
+        "MatterPassedDate": "2022-02-24T00:00:00",
+        "MatterEXText6": "LU 0010-2022",
+        "MatterEXText7": "20210239 ZMK",
+        "MatterEXText10": "Approved, by Council",
+        "MatterEXDate10": "2022-02-24T13:30:00"
+      },
+      "publisher_response_sha256": "20e72597aaef3c55bd5e54e1b04657ecae0835f7f005f6827eea2904249ff34c"
+    },
+    {
+      "project_id": "2020K0270",
+      "application_id": "N210240ZRK",
+      "matter_file": "RES 0052-2022",
+      "matter_id": "68217",
+      "title": "LU 11 - Zoning, 2134 Coyle Street Rezoning, Brooklyn (N 210240 ZRK)",
+      "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=68217",
+      "source_date": "2022-02-24",
+      "action_date": "2022-02-24",
+      "outcome": "Adopted",
+      "publisher_response": {
+        "MatterId": 68217,
+        "MatterFile": "Res 0052-2022",
+        "MatterName": "LU 11 - Zoning, 2134 Coyle Street Rezoning, Brooklyn (N 210240 ZRK)",
+        "MatterTypeName": "Resolution",
+        "MatterStatusName": "Adopted",
+        "MatterPassedDate": "2022-02-24T00:00:00",
+        "MatterEXText6": "LU 0011-2022",
+        "MatterEXText7": "20210240 ZRK",
+        "MatterEXText10": "Approved, by Council",
+        "MatterEXDate10": "2022-02-24T13:30:00"
+      },
+      "publisher_response_sha256": "3456e94434d2b054e408744f3155ecc265df5d5d879755be8d7ed85fbf3563e7"
+    }
+  ]
+}
