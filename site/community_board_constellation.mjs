@@ -81,6 +81,10 @@ import {
   renderCommunityBoardBudgetRequestsSection,
 } from "./community_board_budget_requests.mjs";
 import {
+  composeCommunityBoardActivity,
+  renderCommunityBoardActivitySection,
+} from "./community_board_activity.mjs";
+import {
   communityBoardHearingContextForBoard,
   renderCommunityBoardHearingContextSection,
 } from "./community_board_hearing_context.mjs";
@@ -621,6 +625,16 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     requested,
     { projectLinks: sources.communityBoardRequestProjectLinks || null },
   );
+  const boardActivity = composeCommunityBoardActivity({
+    board_id: requested,
+    board_href: communityBoardPageHref(requested),
+    source: boardSources.find((row) => row.source_url || row.url) || {},
+    institution_edges: institutionEdges,
+    board_decisions: boardDecisions,
+    land_positions: landPositions,
+    budget_requests: budgetRequests,
+    source_records: boardSourceRecords,
+  }, { board_id: requested, board_href: communityBoardPageHref(requested) });
   // The hearing reading is given the register reading rather than the raw
   // register, so the request it teaches from and the requests listed below it
   // are the same objects. Two independent readings of one record could drift
@@ -695,6 +709,7 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     // no section at all rather than an empty one that reads as "this board
     // decided nothing".
     ...(boardDecisions ? { board_decisions: boardDecisions } : {}),
+    activity: boardActivity,
     ...(appointmentAuthority ? { appointment_authority: appointmentAuthority } : {}),
     categories,
     edge_summary: edgeSummary,
@@ -1182,8 +1197,8 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
 <a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: "browse", surfaceClass: "civic-object-mast" })}
 <main id="main" class="node-document civic-object-document" data-civic-object-kind="community-board-constellation" data-subject-ref="${esc(view.subject_ref)}" data-node-document="1">
 ${renderNodeBack({ href: "/community-boards/", label: "Back to community board sources", extraClass: "civic-object-back" })}
-<header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">Community board</p><h1>${esc(title)}</h1><p class="node-lede">A local advisory body, its district, committees, proceedings, people, and official source coverage.</p><nav class="board-section-menu" aria-label="On this board page"><a href="#overview">Overview</a> · <a href="#meetings-participation">Meetings &amp; participation</a> · <a href="#decisions">Decisions</a> · <a href="#district-priorities">District priorities</a> · <a href="#people-governance">People &amp; governance</a> · <a href="#sources">Sources</a></nav><p class="node-pivot civic-object-pivot"><a href="${esc(place?.view_all_href || "/near-you/")}">Open this board’s place view</a> · <a href="${esc(output)}">Open the source directory</a></p></header>
-  ${renderBoardOverview(view, place, nextMeeting, participationPaths)}${renderAboutBoardSection(view)}${renderCommunityBoardResourceSection(view.resource_tasks)}${sectionWithId(renderCommunityBoardParticipationSection(view), "meetings-participation")}${renderedCategories.filter((category) => category.id === "meetings").map((category) => renderCategory(category, view)).join("")}${sectionWithId(renderCommunityBoardDecisionsSection(view.board_decisions, { lang: options.lang }), "decisions")}${sectionWithId(renderCommunityBoardHearingContextSection(view.hearing_context, { lang: options.lang }), "district-priorities")}${sectionWithId(renderCommunityBoardDistrictProjectsSection(view.district_projects, { lang: options.lang }), "district-priorities")}${sectionWithId(renderCommunityBoardLandPositionsSection(view.land_positions, { lang: options.lang }), "district-priorities")}${sectionWithId(renderCommunityBoardMoneyCard(view.money), "institutional-finance")}${sectionWithId(renderCommunityBoardBudgetRequestsSection(view.budget_requests, { lang: options.lang }), "district-priorities")}${sectionWithId(renderCommunityBoardPayrollContext(view.payroll), "people-governance")}${sectionWithId(renderCommunityBoardBylawPanel(view.governance), "people-governance")}${sectionWithId(renderBoroughOfficeAppointmentSection(view.appointment_authority), "people-governance")}${renderRelatedPublicBodiesFor(view.body_id)}${renderEmptyCoverageNote(emptyCoverageCategories)}${renderedCategories.filter((category) => category.id !== "meetings").map((category) => sectionWithId(renderCategory(category, view), category.id === "sources" ? "sources" : category.id === "committees" || category.id === "members" ? "people-governance" : "decisions")).join("")}${edgeRail}${local}${actions}${renderUnjoinedSourceSection(view.source_records)}
+<header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">Community board</p><h1>${esc(title)}</h1><p class="node-lede">A local advisory body, its district, committees, proceedings, people, and official source coverage.</p><nav class="board-section-menu" aria-label="On this board page"><a href="#overview">Overview</a> · <a href="#board-activity">Board activity</a> · <a href="#meetings-participation">Meetings &amp; participation</a> · <a href="#decisions">Decisions</a> · <a href="#district-priorities">District priorities</a> · <a href="#people-governance">People &amp; governance</a> · <a href="#sources">Sources</a></nav><p class="node-pivot civic-object-pivot"><a href="${esc(place?.view_all_href || "/near-you/")}">Open this board’s place view</a> · <a href="${esc(output)}">Open the source directory</a></p></header>
+  ${renderBoardOverview(view, place, nextMeeting, participationPaths)}${renderAboutBoardSection(view)}${renderCommunityBoardResourceSection(view.resource_tasks)}${sectionWithId(renderCommunityBoardParticipationSection(view), "meetings-participation")}${renderCommunityBoardActivitySection(view.activity)}${renderedCategories.filter((category) => category.id === "meetings").map((category) => renderCategory(category, view)).join("")}${sectionWithId(renderCommunityBoardDecisionsSection(view.board_decisions, { lang: options.lang }), "decisions")}${sectionWithId(renderCommunityBoardHearingContextSection(view.hearing_context, { lang: options.lang }), "district-priorities")}${sectionWithId(renderCommunityBoardDistrictProjectsSection(view.district_projects, { lang: options.lang }), "district-priorities")}${sectionWithId(renderCommunityBoardLandPositionsSection(view.land_positions, { lang: options.lang }), "district-priorities")}${sectionWithId(renderCommunityBoardMoneyCard(view.money), "institutional-finance")}${sectionWithId(renderCommunityBoardBudgetRequestsSection(view.budget_requests, { lang: options.lang }), "district-priorities")}${sectionWithId(renderCommunityBoardPayrollContext(view.payroll), "people-governance")}${sectionWithId(renderCommunityBoardBylawPanel(view.governance), "people-governance")}${sectionWithId(renderBoroughOfficeAppointmentSection(view.appointment_authority), "people-governance")}${renderRelatedPublicBodiesFor(view.body_id)}${renderEmptyCoverageNote(emptyCoverageCategories)}${renderedCategories.filter((category) => category.id !== "meetings").map((category) => sectionWithId(renderCategory(category, view), category.id === "sources" ? "sources" : category.id === "committees" || category.id === "members" ? "people-governance" : "decisions")).join("")}${edgeRail}${local}${actions}${renderUnjoinedSourceSection(view.source_records)}
 </main>${renderNodeFooter({ extraClass: "civic-object-footer" })}
 <script id="civic-object-payload" type="application/json">${payload}</script><script defer src="${esc(`${prefix}export_workflows.js`)}"></script>${renderCalendarEventPreviewScript(assetPrefix)}<script type="module" src="${esc(`${prefix}community_board_land_positions_boot.mjs`)}"></script><script type="module" src="${esc(`${prefix}community_board_budget_requests_boot.mjs`)}"></script>
 </body></html>`;

@@ -309,6 +309,7 @@
 /site/community-board-scorecard.css
 /site/community-board-scorecard.mjs
 /site/community-boards/
+/site/community_board_activity.mjs
 /site/community_board_adopted_budget.mjs
 /site/community_board_agenda_recommendation.mjs
 /site/community_board_budget_requests.mjs
