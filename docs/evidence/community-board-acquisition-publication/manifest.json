@@ -1,0 +1,36 @@
+{
+  "schema": "cityscroll.community_board_acquisition_publication_manifest.v1",
+  "grounded_at": "b489519755cb925d2a0735d10c5210aba6d80249",
+  "verification": {
+    "command": "node --test test/community_board_acquisition_publication.test.mjs",
+    "result": "4 passed, 0 failed",
+    "scope": "deterministic materialization, resident read-back, partial child failure, last-good retention, stale and checked-empty states"
+  },
+  "captures": [
+    {
+      "route": "/community-boards/bronx-cb-01/",
+      "viewport": { "width": 1440, "height": 900 },
+      "revision": "b489519755cb925d2a0735d10c5210aba6d80249",
+      "data_vintage": "2026-09-14T12:00:00.000Z deterministic publication fixture",
+      "assertion": "Seven admitted source records retain working source links and date-time precision; resident read-back uses the same meeting identities.",
+      "render_sha256": "c316bebb523992f89441e1a998d04569e4473c0c8a1ac8d12a63cbbc9da74b4a"
+    },
+    {
+      "route": "/community-boards/bronx-cb-01/",
+      "viewport": { "width": 390, "height": 844 },
+      "revision": "b489519755cb925d2a0735d10c5210aba6d80249",
+      "data_vintage": "2026-09-14T12:00:00.000Z deterministic publication fixture",
+      "assertion": "A failed refresh keeps the last-good record, exposes unavailable freshness, and does not duplicate the source identity.",
+      "render_sha256": "da1284eb4a8f9276647602cb939977e6912b3c107d4761bdad0feeb62bfda582"
+    },
+    {
+      "route": "/community-boards/bronx-cb-01/",
+      "viewport": { "width": 390, "height": 844 },
+      "revision": "b489519755cb925d2a0735d10c5210aba6d80249",
+      "data_vintage": "2026-09-14T12:00:00.000Z deterministic publication fixture",
+      "assertion": "Checked-empty and stale source states remain distinct from one another and from unavailable acquisition.",
+      "render_sha256": "eaae9e1716d23c105e401464f912c97c8f7a4a7d838bd777d8d26c78da7e647d"
+    }
+  ],
+  "image_policy": "No image binaries are committed; this manifest is the textual render evidence."
+}
