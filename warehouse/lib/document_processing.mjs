@@ -72,6 +72,34 @@ export function documentRawObjectPath({ bytes, extension = "bin", storageNamespa
 
 export const DOCUMENT_FETCH_RECEIPT_SCHEMA = "cityscroll.document_fetch_receipt.v1";
 
+// Shared receipt primitive for bounded multi-request acquisitions. Callers
+// supply the graph id and parent link; this module only records transport
+// facts and hashes bytes, keeping acquisition policy publisher-neutral.
+export function buildAcquisitionRequestReceipt({
+  requestId, parentRequestId = null, url, requestedAt, retrievedAt,
+  status = null, bytes = null, latencyMs = null, parserVersion,
+  outcome = "ok", reason = null, retries = 0,
+} = {}) {
+  if (![requestId, url, requestedAt, retrievedAt, parserVersion].every((v) => typeof v === "string" && v.trim())) {
+    throw new Error("buildAcquisitionRequestReceipt: requestId, url, timestamps, and parserVersion are required");
+  }
+  return Object.freeze({
+    request_id: requestId,
+    parent_request_id: parentRequestId,
+    url,
+    requested_at: requestedAt,
+    retrieved_at: retrievedAt,
+    http_status: Number.isInteger(status) ? status : null,
+    bytes: bytes?.length || 0,
+    content_hash: bytes ? contentHashOf(bytes) : null,
+    latency_ms: Number.isFinite(latencyMs) ? latencyMs : null,
+    parser_version: parserVersion,
+    retries,
+    outcome,
+    reason,
+  });
+}
+
 const REQUIRED_FETCH_RECEIPT_STRING_FIELDS = ["fetchId", "sourceId", "requestedAt", "requestUrlOrQuery", "retrievedAt", "parserVersion"];
 
 /**
