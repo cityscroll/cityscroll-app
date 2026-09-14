@@ -2054,6 +2054,49 @@ select {
   font: 600 .8125rem/1.2 var(--font-label);
 }
 
+.near-scope li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.near-scope li a {
+  color: inherit;
+  font-size: 1.1em;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.near-board-link {
+  margin-block: calc(var(--space-2) * -1) var(--space-3) !important;
+  font: 600 .95rem/1.4 var(--font-interface);
+}
+
+.near-board-link a {
+  color: var(--color-action);
+}
+
+.near-explore,
+.near-advanced {
+  margin-block: var(--space-4);
+  border-block: 1px solid var(--color-border);
+}
+
+.near-explore > summary,
+.near-advanced > summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--color-action);
+  font: 700 .9rem/1.3 var(--font-interface);
+}
+
+.near-explore .walk-entry,
+.near-advanced .near-form {
+  margin-block: var(--space-3) var(--space-4);
+}
+
 .near-actions,
 .near-place-actions,
 .following-hero nav {

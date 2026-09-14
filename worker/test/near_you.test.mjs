@@ -19,11 +19,11 @@ test("the edge renderer returns an inspectable scoped HTML document and public c
   assert.equal(response.headers.get("access-control-allow-origin"), "https://cityscroll.org");
   assert.match(response.headers.get("content-security-policy") || "", /style-src[^;]+https:\/\/cityscroll\.org/);
   assert.match(response.headers.get("content-security-policy") || "", /font-src https:\/\/fonts\.gstatic\.com/);
-  assert.match(html, /<h1[^>]*>Near you<\/h1>/);
+  assert.match(html, /<h1[^>]*>Queens<\/h1>/);
   assert.match(html, /rel="stylesheet" href="https:\/\/cityscroll\.org\/brand\.css"/);
   assert.match(html, /rel="stylesheet" href="https:\/\/cityscroll\.org\/civic-documents\.css"/);
-  assert.match(html, /data-scope-axis="borough"[^>]*>Queens/);
-  assert.match(html, /data-scope-axis="agency"[^>]*>Transportation/);
+  assert.match(html, /data-scope-axis="borough"[^>]*>[\s\S]*?Queens/);
+  assert.match(html, /data-scope-axis="agency"[^>]*>[\s\S]*?Transportation/);
   assert.match(html, /data-near-deferred-href="https:\/\/cityscroll\.org\/near-you\/deferred\.json/);
   assert.match(html, /data-map-area=/);
 
@@ -55,7 +55,7 @@ test("contract response-address scope remains separate from performance geograph
   ));
   const html = await response.text();
 
-  assert.match(html, /data-scope-axis="map basis"[^>]*>Contract response address/);
+  assert.match(html, /data-scope-axis="map basis"[^>]*>[\s\S]*?Contract response address/);
   assert.match(html, /does not say where the contract work will happen/);
   const deferred = await handleNearYou(new Request(
     "https://cityscroll.org/near-you/deferred.json?v=0&lens=money&basis=contract_action_address&boro=Manhattan",
