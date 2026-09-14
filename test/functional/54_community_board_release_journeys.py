@@ -25,7 +25,8 @@ FIXTURES = ROOT / "docs/evidence/community-board-release-journeys/fixtures.json"
 
 
 def fixture_assertions() -> list[dict]:
-    cases = json.loads(FIXTURES.read_text())["cases"]
+    fixture = json.loads(FIXTURES.read_text())
+    cases = fixture["cases"]
     assert {c["expected"] for c in cases} == {"identify-next-meeting", "verified-calendar-fallback"}
     out = []
     for case in cases:
@@ -41,6 +42,15 @@ def fixture_assertions() -> list[dict]:
             assert case["official_calendar"] == CALENDAR
         out.append({"case": case["id"], "assertion": case["expected"], "passed": True})
     return out
+
+
+def request_fixture() -> dict:
+    fixture = json.loads(FIXTURES.read_text())["request_full_reading"]
+    assert fixture["board_id"] == "brooklyn-cb-15"
+    assert fixture["tracking_code"]
+    assert fixture["minimum_answers"] >= 1
+    assert fixture["requires_explanation"] is True
+    return fixture
 
 
 TEST_DAY = os.environ.get("CROL_TEST_DAY") or fixture_today()
@@ -106,6 +116,7 @@ def geometry(page, width: int) -> dict:
 
 def main() -> None:
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    request_case = request_fixture()
     entries = [{"case": c["case"], "route": "fixture://community-board-release-journeys", "viewport": {"width": 0, "height": 0}, "assertion": c["assertion"], "passed": c["passed"]} for c in fixture_assertions()]
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=True)
@@ -187,18 +198,36 @@ def main() -> None:
             assert resources.locator('[data-community-board-resource-task="contact"] a').count() >= 1
             requests = page.locator("#board-budget-requests")
             assert requests.count() == 1
-            group = requests.locator(".board-budget-request-group").first
-            group.locator("a.board-budget-request-group-open").click()
-            inspect = group.locator("button.board-budget-request-inspect").first
+            inspect = requests.locator(f'button.board-budget-request-inspect[data-budget-request="{request_case["tracking_code"]}"]')
+            assert inspect.count() == 1
+            row = inspect.locator("xpath=ancestor::li[contains(@class, 'board-budget-request')]")
+            request_group = row.locator("xpath=ancestor::section[contains(@class, 'board-budget-request-group')]")
+            if request_group.get_attribute("data-budget-request-group-collapsed") == "1":
+                request_group.locator("a.board-budget-request-group-open").click()
+            row_title = row.locator(".board-budget-request-title").inner_text().strip()
+            row_code = row.locator(".board-budget-request-code").inner_text().strip()
+            row_answers = row.locator(".board-budget-request-answer")
+            row_explanation = row.locator(".board-budget-request-explanation")
+            before_scroll = page.evaluate("window.scrollY")
             inspect.click()
-            assert page.locator("#budget-request-inspect").is_visible()
+            dialog = page.locator("#budget-request-inspect")
+            assert dialog.is_visible()
+            assert dialog.locator(".budget-request-dialog-title").inner_text().strip() == row_title
+            assert dialog.locator(".budget-request-dialog-code").inner_text().strip() == row_code
+            assert dialog.locator(".budget-request-dialog-answer").count() == row_answers.count()
+            assert dialog.locator(".budget-request-dialog-answer").count() >= request_case["minimum_answers"]
+            assert dialog.locator(".budget-request-dialog-explanation").count() == 1
+            assert row_explanation.count() == 1 if request_case["requires_explanation"] else True
+            full_reading_hash = sha(dialog.inner_text())
             page.locator("#budget-request-inspect [data-budget-request-close]").click()
             assert inspect.is_visible()
+            assert page.evaluate("window.scrollY") == before_scroll
             assert outbound_probe(page) == {"sends": 0, "subscriptions": 0, "follows": 0}
             measured = geometry(page, width)
             entries.extend([
                 {"case": f"cb15-board-resources-{width}x{height}", "route": BOARD, "viewport": {"width": width, "height": height}, "revision": revision, "data_vintage": "served committed site materialization", "assertion": "calendar, agenda, and contact destinations are explicit", "render_sha256": sha(resources.inner_text()), "passed": True},
                 {"case": f"cb15-request-return-{width}x{height}", "route": BOARD, "viewport": {"width": width, "height": height}, "revision": revision, "data_vintage": "served committed site materialization", "assertion": "agency request expands, inspects, dismisses, and returns to the same board scope with zero sends, subscriptions, and follow creations", "render_sha256": sha(requests.inner_text()), "outbound": outbound_probe(page), "passed": True},
+                {"case": f"cb15-request-full-reading-{width}x{height}", "route": BOARD, "viewport": {"width": width, "height": height}, "revision": revision, "data_vintage": "served committed site materialization", "assertion": request_case["assertion"], "render_sha256": full_reading_hash, "passed": True},
                 {"case": f"cb15-layout-{width}x{height}", "route": BOARD, "viewport": {"width": width, "height": height}, "revision": revision, "data_vintage": "served committed site materialization", "assertion": "heading, district link, and inspect control fit within the viewport without horizontal overflow", "measurements": measured, "passed": True},
                 {"case": f"cb15-district-roundtrip-{width}x{height}", "route": BOARD, "viewport": {"width": width, "height": height}, "revision": revision, "data_vintage": "served committed site materialization", "assertion": "K15 district scope opens and browser Back returns to the board", "render_sha256": sha(page.locator("body").inner_text()), "passed": True},
             ])
@@ -210,7 +239,7 @@ def main() -> None:
     assert len(layouts) == 2 and layouts[0] != layouts[1], "layout measurements must be retained per viewport and differ across release widths"
     for entry in entries:
         entry.setdefault("render_sha256", sha(entry["assertion"]))
-    evidence = ["test/functional/54_community_board_release_journeys.py", "docs/evidence/community-board-release-journeys/manifest.json"]
+    evidence = ["test/functional/54_community_board_release_journeys.py", "docs/evidence/community-board-release-journeys/fixtures.json", "docs/evidence/community-board-release-journeys/manifest.json"]
     data = {"schema": "cityscroll.community_board_release_journey_manifest.v3", "repository_revision": revision, "read_on": TEST_DAY, "data_vintage": "served committed site materialization", "unit_gate": "node --test test/community_board_links.test.mjs test/community_board_constellation.test.mjs test/near_you_static.test.mjs test/community_board_calendar.test.mjs test/community_board_request_responses.test.mjs", "functional_paths": ["python3 test/functional/33_community_board_pivot.py", "python3 test/functional/34_near_you_surface_switch.py"], "journey_functional_path": "python3 test/functional/54_community_board_release_journeys.py", "acceptance": {"A1": {"status": "proved_by_served_readback", "evidence": evidence, "assertion": "Both accepted-meeting and no-upcoming branches are rendered on served board routes; the accepted meeting detail heading matches the label read from the board."}, "A2": {"status": "proved_by_served_readback", "evidence": evidence, "assertion": "Inspection and dismissal retain the board scope and record exactly zero sends, subscriptions, and follow creations."}, "A3": {"status": "proved_by_served_readback", "board_count": 59, "resource_role_dispositions": 59, "specimens": [{"board": "brooklyn-cb-15"}, {"board": "manhattan-cb-06"}, {"board": "bronx-cb-11"}, {"board": "bronx-cb-01"}, {"board": "queens-cb-01"}, {"board": "staten-island-cb-01"}], "evidence": evidence, "assertion": "Measured heading, district-link, and inspect-control boxes fit within both release viewports without horizontal overflow."}, "A4": {"status": "proved_by_served_readback", "evidence": evidence, "assertion": "The read-back retains route, viewport, served data vintage, assertion, and render hash for each named check."}}, "fixture_assertions": entries[:2], "assertions": entries[2:]}
     MANIFEST.write_text(json.dumps(data, indent=2) + "\n")
     print("PASS: community board release journeys read back")

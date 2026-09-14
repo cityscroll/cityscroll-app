@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.community_board_release_journey_manifest.v3",
-  "repository_revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+  "repository_revision": "a3f83f793c7d709dd9684b780fef69755894b2ed",
   "read_on": "2026-09-09",
   "data_vintage": "served committed site materialization",
   "unit_gate": "node --test test/community_board_links.test.mjs test/community_board_constellation.test.mjs test/near_you_static.test.mjs test/community_board_calendar.test.mjs test/community_board_request_responses.test.mjs",
@@ -14,6 +14,7 @@
       "status": "proved_by_served_readback",
       "evidence": [
         "test/functional/54_community_board_release_journeys.py",
+        "docs/evidence/community-board-release-journeys/fixtures.json",
         "docs/evidence/community-board-release-journeys/manifest.json"
       ],
       "assertion": "Both accepted-meeting and no-upcoming branches are rendered on served board routes; the accepted meeting detail heading matches the label read from the board."
@@ -22,6 +23,7 @@
       "status": "proved_by_served_readback",
       "evidence": [
         "test/functional/54_community_board_release_journeys.py",
+        "docs/evidence/community-board-release-journeys/fixtures.json",
         "docs/evidence/community-board-release-journeys/manifest.json"
       ],
       "assertion": "Inspection and dismissal retain the board scope and record exactly zero sends, subscriptions, and follow creations."
@@ -52,6 +54,7 @@
       ],
       "evidence": [
         "test/functional/54_community_board_release_journeys.py",
+        "docs/evidence/community-board-release-journeys/fixtures.json",
         "docs/evidence/community-board-release-journeys/manifest.json"
       ],
       "assertion": "Measured heading, district-link, and inspect-control boxes fit within both release viewports without horizontal overflow."
@@ -60,6 +63,7 @@
       "status": "proved_by_served_readback",
       "evidence": [
         "test/functional/54_community_board_release_journeys.py",
+        "docs/evidence/community-board-release-journeys/fixtures.json",
         "docs/evidence/community-board-release-journeys/manifest.json"
       ],
       "assertion": "The read-back retains route, viewport, served data vintage, assertion, and render hash for each named check."
@@ -97,7 +101,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "revision": "a3f83f793c7d709dd9684b780fef69755894b2ed",
       "data_vintage": "served board with deterministic accepted-meeting fixture overlay",
       "assertion": "served fixture branch identifies the next full-board meeting and opens its canonical detail with the same rendered label",
       "render_sha256": "0e1a7e3e88b369e8e90ece71e2a00ddf5eb0ec8489c730cd1fdd2a423f02841b",
@@ -110,7 +114,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "revision": "a3f83f793c7d709dd9684b780fef69755894b2ed",
       "data_vintage": "served committed site materialization",
       "assertion": "no upcoming branch renders verified calendar fallback",
       "render_sha256": "8ea26145baed68cb4bd4e2e0a89425bf400c7f80696c4e7db916b39258119cbb",
@@ -123,10 +127,10 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "revision": "a3f83f793c7d709dd9684b780fef69755894b2ed",
       "data_vintage": "served committed site materialization",
       "assertion": "calendar, agenda, and contact destinations are explicit",
-      "render_sha256": "5147ccfa18ac1598aba0d8f7a2a3a4e5c968571f59d193d25b1d5e4d60a251ac",
+      "render_sha256": "4176fdc6d34f145919937c788b1396976cd90bceab4564f3bd34940e5e5246cc",
       "passed": true
     },
     {
@@ -136,15 +140,28 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "revision": "a3f83f793c7d709dd9684b780fef69755894b2ed",
       "data_vintage": "served committed site materialization",
       "assertion": "agency request expands, inspects, dismisses, and returns to the same board scope with zero sends, subscriptions, and follow creations",
-      "render_sha256": "680ec6f989c6bfa8944784990bc507b369950cba6bb50c271b038c0e65057155",
+      "render_sha256": "84fbaec03d51548a36c0e932bec31bc3f3f454612f78fbd454a294e097bbabdf",
       "outbound": {
         "sends": 0,
         "subscriptions": 0,
         "follows": 0
       },
+      "passed": true
+    },
+    {
+      "case": "cb15-request-full-reading-1440x900",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "a3f83f793c7d709dd9684b780fef69755894b2ed",
+      "data_vintage": "served committed site materialization",
+      "assertion": "the served inspection path carries the selected request, its complete retained answer history, and explanation before returning to the board",
+      "render_sha256": "e20d0af436a22dd6b1aa14b1de995b3e7659003b68c706355dc8550b61c941b0",
       "passed": true
     },
     {
@@ -154,7 +171,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "revision": "a3f83f793c7d709dd9684b780fef69755894b2ed",
       "data_vintage": "served committed site materialization",
       "assertion": "heading, district link, and inspect control fit within the viewport without horizontal overflow",
       "measurements": {
@@ -162,24 +179,24 @@
         "document_scroll_width": 1440,
         "heading": {
           "x": 208,
-          "y": -9119.421875,
+          "y": -10567.421875,
           "width": 1024,
           "height": 74.46875,
           "right": 1232
         },
         "district_link": {
           "x": 208,
-          "y": -8923.4375,
+          "y": -10371.4375,
           "width": 207.5,
           "height": 20,
           "right": 415.5
         },
         "inspect_control": {
-          "x": 474.84375,
-          "y": 118.75,
-          "width": 61.453125,
-          "height": 24,
-          "right": 536.296875
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "right": 0
         }
       },
       "passed": true,
@@ -192,10 +209,10 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "revision": "a3f83f793c7d709dd9684b780fef69755894b2ed",
       "data_vintage": "served committed site materialization",
       "assertion": "K15 district scope opens and browser Back returns to the board",
-      "render_sha256": "43eb530b3137d76f4490120cb19c156fcdcf8ecb88cae13706497d9191e0e860",
+      "render_sha256": "9e820c8301721aa9bd649033b73ec73886ea590fae130658b5bd878e400c84e4",
       "passed": true
     },
     {
@@ -205,10 +222,10 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "revision": "a3f83f793c7d709dd9684b780fef69755894b2ed",
       "data_vintage": "served committed site materialization",
       "assertion": "served board document is readable at the release viewport",
-      "render_sha256": "43eb530b3137d76f4490120cb19c156fcdcf8ecb88cae13706497d9191e0e860",
+      "render_sha256": "9e820c8301721aa9bd649033b73ec73886ea590fae130658b5bd878e400c84e4",
       "passed": true
     },
     {
@@ -218,7 +235,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "revision": "a3f83f793c7d709dd9684b780fef69755894b2ed",
       "data_vintage": "served board with deterministic accepted-meeting fixture overlay",
       "assertion": "served fixture branch identifies the next full-board meeting and opens its canonical detail with the same rendered label",
       "render_sha256": "0e1a7e3e88b369e8e90ece71e2a00ddf5eb0ec8489c730cd1fdd2a423f02841b",
@@ -231,7 +248,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "revision": "a3f83f793c7d709dd9684b780fef69755894b2ed",
       "data_vintage": "served committed site materialization",
       "assertion": "no upcoming branch renders verified calendar fallback",
       "render_sha256": "8ea26145baed68cb4bd4e2e0a89425bf400c7f80696c4e7db916b39258119cbb",
@@ -244,10 +261,10 @@
         "width": 390,
         "height": 844
       },
-      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "revision": "a3f83f793c7d709dd9684b780fef69755894b2ed",
       "data_vintage": "served committed site materialization",
       "assertion": "calendar, agenda, and contact destinations are explicit",
-      "render_sha256": "5147ccfa18ac1598aba0d8f7a2a3a4e5c968571f59d193d25b1d5e4d60a251ac",
+      "render_sha256": "4176fdc6d34f145919937c788b1396976cd90bceab4564f3bd34940e5e5246cc",
       "passed": true
     },
     {
@@ -257,15 +274,28 @@
         "width": 390,
         "height": 844
       },
-      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "revision": "a3f83f793c7d709dd9684b780fef69755894b2ed",
       "data_vintage": "served committed site materialization",
       "assertion": "agency request expands, inspects, dismisses, and returns to the same board scope with zero sends, subscriptions, and follow creations",
-      "render_sha256": "680ec6f989c6bfa8944784990bc507b369950cba6bb50c271b038c0e65057155",
+      "render_sha256": "84fbaec03d51548a36c0e932bec31bc3f3f454612f78fbd454a294e097bbabdf",
       "outbound": {
         "sends": 0,
         "subscriptions": 0,
         "follows": 0
       },
+      "passed": true
+    },
+    {
+      "case": "cb15-request-full-reading-390x844",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "a3f83f793c7d709dd9684b780fef69755894b2ed",
+      "data_vintage": "served committed site materialization",
+      "assertion": "the served inspection path carries the selected request, its complete retained answer history, and explanation before returning to the board",
+      "render_sha256": "e20d0af436a22dd6b1aa14b1de995b3e7659003b68c706355dc8550b61c941b0",
       "passed": true
     },
     {
@@ -275,7 +305,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "revision": "a3f83f793c7d709dd9684b780fef69755894b2ed",
       "data_vintage": "served committed site materialization",
       "assertion": "heading, district link, and inspect control fit within the viewport without horizontal overflow",
       "measurements": {
@@ -283,24 +313,24 @@
         "document_scroll_width": 390,
         "heading": {
           "x": 16,
-          "y": -10491.421875,
+          "y": -12380.421875,
           "width": 358,
           "height": 70.53125,
           "right": 374
         },
         "district_link": {
           "x": 16,
-          "y": -10246.703125,
+          "y": -12135.703125,
           "width": 207.5,
           "height": 20,
           "right": 223.5
         },
         "inspect_control": {
-          "x": 269.625,
-          "y": 169.03125,
-          "width": 61.453125,
-          "height": 24,
-          "right": 331.078125
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "right": 0
         }
       },
       "passed": true,
@@ -313,10 +343,10 @@
         "width": 390,
         "height": 844
       },
-      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "revision": "a3f83f793c7d709dd9684b780fef69755894b2ed",
       "data_vintage": "served committed site materialization",
       "assertion": "K15 district scope opens and browser Back returns to the board",
-      "render_sha256": "346e26d40e3bd99717f325bd338c68c02a86548d0466c8c962434949e26eb441",
+      "render_sha256": "18cc538ec0d882b04b195b3c7a42ff57ae8c32fc6603a8af6136f94d4fafc322",
       "passed": true
     },
     {
@@ -326,10 +356,10 @@
         "width": 390,
         "height": 844
       },
-      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "revision": "a3f83f793c7d709dd9684b780fef69755894b2ed",
       "data_vintage": "served committed site materialization",
       "assertion": "served board document is readable at the release viewport",
-      "render_sha256": "346e26d40e3bd99717f325bd338c68c02a86548d0466c8c962434949e26eb441",
+      "render_sha256": "18cc538ec0d882b04b195b3c7a42ff57ae8c32fc6603a8af6136f94d4fafc322",
       "passed": true
     }
   ]
