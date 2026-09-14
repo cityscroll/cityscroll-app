@@ -232,6 +232,44 @@ export const STAGE_PAYMENT = "payment";
 /** Cap individual payment rows stamped onto payment-stage detail (newest first). */
 export const PAYMENT_ROWS_DETAIL_CAP = 12;
 
+export const CHECKBOOK_ACQUISITION_STATES = Object.freeze({
+  NOT_RUN: "not_run",
+  MATCHED: "matched",
+  CHECKED_NO_EXACT_MATCH: "checked_no_exact_match",
+  TEMPORARILY_UNAVAILABLE: "temporarily_unavailable",
+  STALE: "stale",
+});
+
+/** Checkbook's API omits separators from prime contract ids. */
+export function normalizeCheckbookContractId(value) {
+  return String(value ?? "").trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
+}
+
+/**
+ * Classify the bounded exact-contract acquisition independently of its timeline.
+ * A completed empty lookup is deliberately not the same state as a failed lookup.
+ */
+export function checkbookAcquisitionState({
+  lookupStatus = {},
+  rows = [],
+  observedAt = null,
+  now = Date.now(),
+  staleAfterMs = 36 * 60 * 60 * 1000,
+} = {}) {
+  const statuses = [lookupStatus.pending, lookupStatus.registered];
+  if (!statuses.some((status) => status != null)) return CHECKBOOK_ACQUISITION_STATES.NOT_RUN;
+  if (observedAt && Number.isFinite(Date.parse(observedAt))
+    && now - Date.parse(observedAt) > staleAfterMs) {
+    return CHECKBOOK_ACQUISITION_STATES.STALE;
+  }
+  if (statuses.some((status) => status === "error" || status === "unavailable")) {
+    return CHECKBOOK_ACQUISITION_STATES.TEMPORARILY_UNAVAILABLE;
+  }
+  return Array.isArray(rows) && rows.length
+    ? CHECKBOOK_ACQUISITION_STATES.MATCHED
+    : CHECKBOOK_ACQUISITION_STATES.CHECKED_NO_EXACT_MATCH;
+}
+
 /**
  * Project Checkbook Spending transactions into public payment-row detail.
  * Newest issue_date first; preserves source-null as null (never invents payee/date).
@@ -262,6 +300,12 @@ export function projectPaymentRows(spending, opts = {}) {
       fiscal_year: row.year != null && String(row.year).trim() ? String(row.year).trim() : null,
       contract_id: row.contractId != null && String(row.contractId).trim()
         ? String(row.contractId).trim()
+        : null,
+      source_observation_ref: row.id != null && String(row.id).trim()
+        ? `checkbook_spending:${String(row.id).trim()}`
+        : null,
+      drill_through_href: row.id != null && String(row.id).trim()
+        ? `https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(String(row.id).trim())}`
         : null,
     });
     if (out.length >= limit) break;

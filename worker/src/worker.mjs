@@ -88,7 +88,7 @@ import { handleRules, refreshRules } from "./rules.mjs";
 import { handleMeetingOutcomes, handleAdminMeetingOutcomesRefresh, refreshMeetingOutcomes } from "./meeting_outcomes.mjs";
 import { refreshExactMatterRoster } from "./lib/matter_exact_refresh.mjs";
 import { handleSourceVault } from "./source_vault.mjs";
-import { handleContractLifecycle, prewarmContractLifecycle } from "./checkbook_lifecycle.mjs";
+import { EMMONS_CHECKBOOK_ANCHOR, handleContractLifecycle, prewarmContractLifecycle } from "./checkbook_lifecycle.mjs";
 import { handleSubsidyLifecycle, prewarmSubsidyLifecycle } from "./subsidy_lifecycle.mjs";
 import { ingestPassportPublic, readPassportIngestMeta } from "./passport.mjs";
 import { recordPassportAcquisitionFromMeta } from "./lib/source_acquisition_receipt.mjs";
@@ -434,10 +434,8 @@ export default {
     // Bounded (≤40/run); missing resident reads stay unavailable until the next acquisition.
     try {
       const awardIds = ingestResult?.awardRequestIds || [];
-      if (awardIds.length) {
-        const r = await prewarmContractLifecycle(env, awardIds);
-        console.log("contract lifecycle prewarm:", JSON.stringify(r));
-      }
+      const r = await prewarmContractLifecycle(env, awardIds, [EMMONS_CHECKBOOK_ANCHOR]);
+      console.log("contract lifecycle prewarm:", JSON.stringify(r));
     } catch (e) {
       console.error("contract lifecycle prewarm failed (digest continues):", String(e?.message || e));
     }
