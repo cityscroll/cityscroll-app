@@ -1,0 +1,67 @@
+{
+  "schema": "cityscroll.integration_recipe.v1",
+  "id": "procurement-investigation",
+  "family": "procurement",
+  "question": "How can a researcher discover an exact agency label, follow a registered group, and open a published contract detail?",
+  "steps": [
+    {
+      "method": "discoverAgencies",
+      "capability_reference": "contracts.analysis@1",
+      "input": {
+        "group_by": "agency",
+        "measure": "current"
+      },
+      "output_schema": "schemas/contracts_analysis.output.schema.json",
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ]
+    },
+    {
+      "method": "readGroups",
+      "capability_reference": "contracts.analysis@1",
+      "input": {
+        "group_by": "agency",
+        "measure": "current",
+        "agency": "exact returned label"
+      },
+      "output_schema": "schemas/contracts_analysis.output.schema.json",
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ]
+    },
+    {
+      "method": "readGroupPage",
+      "capability_reference": "contracts.browse@1",
+      "input": {
+        "population": "registered",
+        "group_by": "agency",
+        "group_label": "exact returned group label"
+      },
+      "output_schema": "schemas/contracts_browse.output.schema.json",
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ]
+    },
+    {
+      "method": "readContractReference",
+      "capability_reference": "contract.get@1",
+      "input": {
+        "procurement_id": "published procurement_id only"
+      },
+      "output_schema": "schemas/contract_get.output.schema.json",
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ]
+    }
+  ],
+  "canonical_link_policy": "Each capability envelope and published link is retained without projection; registered value is not spending.",
+  "evidence_class": "local_contract"
+}

@@ -284,6 +284,114 @@ function renderLandWorkflow() {
   return `import { createIntegrationClient } from "../index.mjs";\n\nexport async function runExpeditedLandProjectWorkflow(client = createIntegrationClient(), { projectId = "2024Q0356", corpus = "historical" } = {}) {\n  const browseInput = { procedure: "elurp", corpus, limit: 25 };\n  const browse = await client.landProjectsBrowse(browseInput);\n  const selectedProjectId = projectId || browse.results?.[0]?.project_id || null;\n  if (!selectedProjectId) return { recipe: "land-expedited-project-workflow", availability: browse.availability, steps: [{ capability_reference: "land.projects.browse@1", input: browseInput, output: browse }] };\n  const getInput = { project_id: selectedProjectId };\n  const pathInput = { project_id: selectedProjectId };\n  const project = await client.landProjectGet(getInput);\n  const decisionPath = await client.landDecisionPathGet(pathInput);\n  return { recipe: "land-expedited-project-workflow", availability: [browse.availability, project.availability, decisionPath.availability], steps: [{ capability_reference: "land.projects.browse@1", input: browseInput, output: browse }, { capability_reference: "land.project.get@1", input: getInput, output: project }, { capability_reference: "land.decision_path.get@1", input: pathInput, output: decisionPath }] };\n}\n`;
 }
 
+function renderProcurementInvestigation() {
+  return `import { CAPABILITY_MANIFEST, IntegrationClientError, createIntegrationClient } from "../index.mjs";
+
+const RECIPE = "procurement-investigation";
+const ANALYSIS_REFERENCE = "contracts.analysis@1";
+const BROWSE_REFERENCE = "contracts.browse@1";
+const GET_REFERENCE = "contract.get@1";
+const DEFAULT_REQUEST_CAP = 6;
+
+function operation(reference, tool) {
+  const advertised = CAPABILITY_MANIFEST.capabilities.find((entry) => entry.reference === reference);
+  if (!advertised || advertised.tool !== tool) throw new IntegrationClientError("procurement recipe capability manifest mismatch", { reference, tool });
+  return advertised;
+}
+
+function object(value, name) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) throw new IntegrationClientError(name + " must be an object");
+  return value;
+}
+
+function budget(options = {}) {
+  const cap = options.requestCap ?? DEFAULT_REQUEST_CAP;
+  if (!Number.isInteger(cap) || cap < 1 || cap > DEFAULT_REQUEST_CAP) throw new IntegrationClientError("procurement recipe request cap must be an integer from 1 through 6");
+  let used = 0;
+  return { take() { if (++used > cap) throw new IntegrationClientError("procurement recipe request cap exceeded", { cap, used }); } };
+}
+
+function wireInput(input = {}) {
+  object(input, "recipe input");
+  return { ...input };
+}
+
+function continuationArguments(value) {
+  const published = object(value, "group continuation");
+  if (published.capability !== BROWSE_REFERENCE) throw new IntegrationClientError("group continuation names an undeclared capability", { capability: published.capability });
+  const args = object(published.arguments, "group continuation arguments");
+  operation(BROWSE_REFERENCE, "browse_contracts");
+  if (args.population !== "registered" || typeof args.group_by !== "string" || typeof args.group_label !== "string") throw new IntegrationClientError("group continuation must publish a registered exact group");
+  const allowed = new Set(["population", "fiscal_year", "amount_band", "retroactive", "city_record_match", "group_by", "group_label", "agency", "vendor", "min_amount", "max_amount", "limit", "cursor"]);
+  if (Object.keys(args).some((key) => !allowed.has(key))) throw new IntegrationClientError("group continuation contains undeclared arguments");
+  if (args.cursor !== undefined && typeof args.cursor !== "string") throw new IntegrationClientError("group continuation cursor is invalid");
+  if (args.limit !== undefined && (!Number.isInteger(args.limit) || args.limit < 1 || args.limit > 100)) throw new IntegrationClientError("group continuation limit is invalid");
+  return { published, args };
+}
+
+function unchangedExceptPaging(left, right) {
+  const strip = (value) => { const copy = { ...value }; delete copy.cursor; delete copy.limit; return copy; };
+  return JSON.stringify(strip(left)) === JSON.stringify(strip(right));
+}
+
+function continuationFromGroup(group) {
+  object(group, "group");
+  const { published, args } = continuationArguments(group.browse);
+  return { ...published, arguments: { ...args }, original_arguments: { ...args }, scope: { group_by: args.group_by, group_label: args.group_label, agency: args.agency ?? null, fiscal_year: args.fiscal_year ?? null } };
+}
+
+export async function discoverAgencies(client = createIntegrationClient(), input = {}, options = {}) {
+  operation(ANALYSIS_REFERENCE, "analyze_contracts");
+  const requests = budget(options);
+  const analysisInput = wireInput(input);
+  delete analysisInput.agency;
+  requests.take();
+  const analysis = await client.contractsAnalysis(analysisInput);
+  return { recipe: RECIPE, scope: { ...analysisInput }, discovery: analysis.filters?.discovery?.agency ?? null, analysis };
+}
+
+export async function readGroups(client = createIntegrationClient(), input = {}, options = {}) {
+  operation(ANALYSIS_REFERENCE, "analyze_contracts");
+  const requests = budget(options);
+  const analysisInput = wireInput(input);
+  if (typeof analysisInput.agency !== "string" || !analysisInput.agency) throw new IntegrationClientError("readGroups requires an exact returned agency label");
+  requests.take();
+  const analysis = await client.contractsAnalysis(analysisInput);
+  const groups = analysis.groups ?? [];
+  return { recipe: RECIPE, scope: { ...analysisInput }, analysis, groups, continuations: groups.map(continuationFromGroup) };
+}
+
+export async function readGroupPage(client = createIntegrationClient(), continuation, options = {}) {
+  const requests = budget(options);
+  const candidate = object(continuation, "group continuation");
+  const { published, args } = continuationArguments(candidate);
+  if (candidate.original_arguments && !unchangedExceptPaging(args, candidate.original_arguments)) throw new IntegrationClientError("mutated group continuation rejected");
+  const input = { ...args };
+  if (options.limit !== undefined) {
+    if (!Number.isInteger(options.limit) || options.limit < 1 || options.limit > (args.limit ?? 100)) throw new IntegrationClientError("group continuation limit must be equal to or smaller than the published limit");
+    input.limit = options.limit;
+  }
+  requests.take();
+  const page = await client.contractsBrowse(input);
+  const nextCursor = page.pagination?.next_cursor ?? null;
+  const nextContinuation = nextCursor ? { ...published, arguments: { ...args, cursor: nextCursor, ...(options.limit === undefined ? {} : { limit: options.limit }) }, original_arguments: { ...(candidate.original_arguments ?? args) }, scope: candidate.scope } : null;
+  return { recipe: RECIPE, scope: candidate.scope ?? { group_by: input.group_by, group_label: input.group_label }, continuation: published, page, next_continuation: nextContinuation };
+}
+
+export async function readContractReference(client = createIntegrationClient(), reference, options = {}) {
+  operation(GET_REFERENCE, "get_contract");
+  const requests = budget(options);
+  const published = object(reference, "contract reference");
+  const procurementId = published.procurement_id;
+  if (procurementId === null || procurementId === undefined) return { recipe: RECIPE, scope: published.scope ?? null, reference: published, detail: { availability: "unavailable", contract: null, error: "not-published" } };
+  if (typeof procurementId !== "string" || !procurementId.startsWith("procurement:")) throw new IntegrationClientError("contract reference procurement_id is not an exact published identity");
+  requests.take();
+  const detail = await client.contractGet({ procurement_id: procurementId });
+  return { recipe: RECIPE, scope: published.scope ?? null, reference: published, detail };
+}
+`;
+}
+
 // The declared gap is read from capabilities/declared_gaps.mjs, the one place a gap is
 // stated. The package publishes a single unsupported-question recipe, so a second
 // declared gap has to be given its own recipe deliberately rather than silently dropped.
@@ -374,6 +482,8 @@ export function buildGeneratedOutputs() {
   files.set("recipes/index.json", serialize(recipeIndex));
   files.set("recipes/land-expedited-project-workflow.json", serialize({ schema: "cityscroll.integration_recipe.v1", id: "land-expedited-project-workflow", family: "land", question: "How can a resident browse an expedited land project, inspect it, and follow its decision path?", steps: [{ method: "landProjectsBrowse", capability_reference: "land.projects.browse@1", input: { procedure: "elurp", corpus: "historical", limit: 25 }, output_schema: "schemas/land_projects_browse.output.schema.json", availability: ["complete", "empty", "unavailable"] }, { method: "landProjectGet", capability_reference: "land.project.get@1", input: { project_id: "2024Q0356" }, output_schema: "schemas/land_project_get.output.schema.json", availability: ["available", "not_yet_public", "unavailable"] }, { method: "landDecisionPathGet", capability_reference: "land.decision_path.get@1", input: { project_id: "2024Q0356" }, output_schema: "schemas/land_decision_path_get.output.schema.json", availability: ["available", "not_yet_public", "unavailable"] }], canonical_link_policy: "Each step returns its validated public response unchanged, including any canonical links.", evidence_class: "local_contract" }));
   files.set("recipes/land-expedited-project-workflow.mjs", renderLandWorkflow());
+  files.set("recipes/procurement-investigation.json", serialize({ schema: "cityscroll.integration_recipe.v1", id: "procurement-investigation", family: "procurement", question: "How can a researcher discover an exact agency label, follow a registered group, and open a published contract detail?", steps: [{ method: "discoverAgencies", capability_reference: "contracts.analysis@1", input: { group_by: "agency", measure: "current" }, output_schema: "schemas/contracts_analysis.output.schema.json", availability: ["complete", "empty", "unavailable"] }, { method: "readGroups", capability_reference: "contracts.analysis@1", input: { group_by: "agency", measure: "current", agency: "exact returned label" }, output_schema: "schemas/contracts_analysis.output.schema.json", availability: ["complete", "empty", "unavailable"] }, { method: "readGroupPage", capability_reference: "contracts.browse@1", input: { population: "registered", group_by: "agency", group_label: "exact returned group label" }, output_schema: "schemas/contracts_browse.output.schema.json", availability: ["complete", "empty", "unavailable"] }, { method: "readContractReference", capability_reference: "contract.get@1", input: { procurement_id: "published procurement_id only" }, output_schema: "schemas/contract_get.output.schema.json", availability: ["available", "not_yet_public", "unavailable"] }], canonical_link_policy: "Each capability envelope and published link is retained without projection; registered value is not spending.", evidence_class: "local_contract" }));
+  files.set("recipes/procurement-investigation.mjs", renderProcurementInvestigation());
   files.set("recipes/unsupported-question.json", serialize({ schema: "cityscroll.integration_recipe_gap.v1", id: declaredGap().recipeId, question: declaredGap().question, gap: declaredGap().id, nearest: [...declaredGap().nearest], evidence_class: "local_contract" }));
   files.set("recipes/unsupported-question.mjs", renderUnsupportedQuestion());
   files.set("evaluation/corpus.json", serialize(renderEvaluation(operations, familyRecipes)));

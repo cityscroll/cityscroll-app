@@ -11,6 +11,7 @@ import {
   createIntegrationClient,
 } from "../integrations/generated-client/index.mjs";
 import { runExpeditedLandProjectWorkflow } from "../integrations/generated-client/recipes/land-expedited-project-workflow.mjs";
+import { discoverAgencies, readContractReference, readGroupPage, readGroups } from "../integrations/generated-client/recipes/procurement-investigation.mjs";
 import { unsupportedQuestion } from "../integrations/generated-client/recipes/unsupported-question.mjs";
 import { CAPABILITY_REGISTRY } from "../capabilities/registry.mjs";
 import { MCP_PUBLIC_CAPABILITY_TOOL_BINDINGS } from "../capabilities/mcp_tool_declarations.mjs";
@@ -164,4 +165,50 @@ test("generator check mode leaves the committed package byte-identical", () => {
   execFileSync(process.execPath, [GENERATOR.pathname, "--check"], { cwd: ROOT, encoding: "utf8" });
   const after = snapshotTree(CLIENT_ROOT);
   assert.deepEqual(after, before);
+});
+
+test("the procurement recipe discovers exact labels and follows a registered group across two pages", async () => {
+  const calls = [];
+  const analysis = {
+    capability_reference: "contracts.analysis@1", availability: "complete", group_by: "agency",
+    measure: { key: "current", unit: "USD" }, groups: [{ label: "Éducation — 公立", contract_count: 2, value: 12, unit: "USD", browse: { capability: "contracts.browse@1", arguments: { population: "registered", group_by: "agency", group_label: "Éducation — 公立", limit: 2 }, href: "https://api.cityscroll.org/contracts?population=registered" } }],
+    filters: { discovery: { agency: { accepted_labels: ["Éducation — 公立"], status: "not_requested" } } },
+  };
+  const pages = [
+    { results: [{ id: "r1", procurement_id: "procurement:one", href: "https://cityscroll.org/contracts#one" }], pagination: { next_cursor: "cursor-1" }, availability: "complete" },
+    { results: [{ id: "r2", procurement_id: "procurement:two", href: "https://cityscroll.org/contracts#two" }], pagination: { next_cursor: null }, availability: "complete" },
+  ];
+  const client = { async contractsAnalysis(input) { calls.push(["analysis", input]); return analysis; }, async contractsBrowse(input) { calls.push(["browse", input]); return pages[calls.filter(([kind]) => kind === "browse").length - 1]; } };
+  const discovery = await discoverAgencies(client, { group_by: "agency", measure: "current", agency: "must-be-omitted" });
+  assert.deepEqual(discovery.discovery.accepted_labels, ["Éducation — 公立"]);
+  assert.equal("agency" in calls[0][1], false);
+  const groups = await readGroups(client, { group_by: "agency", measure: "current", agency: "Éducation — 公立" });
+  const first = await readGroupPage(client, groups.continuations[0]);
+  const second = await readGroupPage(client, first.next_continuation, { limit: 1 });
+  assert.deepEqual(calls.slice(1).map(([, input]) => input), [
+    { group_by: "agency", measure: "current", agency: "Éducation — 公立" },
+    { population: "registered", group_by: "agency", group_label: "Éducation — 公立", limit: 2 },
+    { population: "registered", group_by: "agency", group_label: "Éducation — 公立", limit: 1, cursor: "cursor-1" },
+  ]);
+  assert.equal(second.scope.group_label, "Éducation — 公立");
+  assert.equal(JSON.stringify(groups.analysis).includes("spending"), false);
+});
+
+test("the procurement recipe rejects mutated continuations and never gets a null mapping", async () => {
+  const continuation = { capability: "contracts.browse@1", arguments: { population: "registered", group_by: "agency", group_label: "Original", limit: 2 }, original_arguments: { population: "registered", group_by: "agency", group_label: "Original", limit: 2 } };
+  await assert.rejects(() => readGroupPage({ contractsBrowse: async () => ({}) }, { ...continuation, arguments: { ...continuation.arguments, group_label: "Mutated" } }), /mutated group continuation rejected/);
+  let gets = 0;
+  const result = await readContractReference({ contractGet: async () => { gets += 1; } }, { id: "r-null", procurement_id: null, href: null, scope: { group_label: "Original" } });
+  assert.equal(gets, 0);
+  assert.equal(result.detail.availability, "unavailable");
+  assert.equal(JSON.stringify(result).includes("spending"), false);
+});
+
+test("the procurement recipe preserves empty results, size errors, and the request cap", async () => {
+  const empty = await discoverAgencies({ contractsAnalysis: async () => ({ filters: { discovery: { agency: { accepted_labels: [] } } }, availability: "empty" }) }, {}, { requestCap: 1 });
+  assert.deepEqual(empty.discovery.accepted_labels, []);
+  await assert.rejects(() => discoverAgencies({ contractsAnalysis: async () => ({}) }, {}, { requestCap: 0 }), /request cap/);
+  const body = { error: { code: "response_too_large", message: "bounded MCP response exceeded" } };
+  const client = createIntegrationClient({ fetchImpl: async () => ({ ok: false, status: 413, async json() { return body; } }) });
+  await assert.rejects(() => discoverAgencies(client), (error) => error.body === body && error.status === 413);
 });
