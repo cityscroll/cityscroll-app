@@ -3,6 +3,7 @@ import { MEETING_ICS_FLOOR, MEETING_FLOOR_ROWS, NEAR_YOU_FLOOR } from "../data/r
 export const ROUTE_READ_MODEL_SCHEMA_VERSION = 1;
 export const NEAR_YOU_MANIFEST_KEY = "route-read-model:near-you:manifest:v1";
 export const MEETING_MANIFEST_KEY = "route-read-model:meetings:manifest:v1";
+export const ROUTE_READ_MODEL_TIMEOUT_MS = 5_000;
 
 const cacheByKv = new WeakMap();
 const boroughNames = ["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"];
@@ -23,9 +24,14 @@ function stateFor(kv) {
   return state;
 }
 
-async function getJson(kv, key, state) {
+async function getJson(kv, key, state, timeoutMs = ROUTE_READ_MODEL_TIMEOUT_MS) {
   if (!state.values.has(key)) {
-    const pending = Promise.resolve(kv.get(key)).then((raw) => {
+    const read = Promise.resolve().then(() => kv.get(key));
+    let timer;
+    const timeout = new Promise((_, reject) => {
+      timer = setTimeout(() => reject(new RouteReadModelUnavailable(`route read-model read exceeded ${timeoutMs}ms`)), timeoutMs);
+    });
+    const pending = Promise.race([read, timeout]).then((raw) => {
       if (raw == null || raw === "") throw new RouteReadModelUnavailable(`missing route read-model key ${key}`);
       try {
         const value = typeof raw === "string" ? JSON.parse(raw) : raw;
@@ -34,17 +40,19 @@ async function getJson(kv, key, state) {
       } catch (error) {
         throw new RouteReadModelUnavailable(`invalid route read-model key ${key}: ${error.message}`);
       }
+    }).finally(() => {
+      clearTimeout(timer);
     });
     state.values.set(key, pending);
   }
   return state.values.get(key);
 }
 
-async function manifestFor(kv, kind) {
+async function manifestFor(kv, kind, timeoutMs = ROUTE_READ_MODEL_TIMEOUT_MS) {
   const state = stateFor(kv);
   if (!state.manifests.has(kind)) {
     const key = kind === "near-you" ? NEAR_YOU_MANIFEST_KEY : MEETING_MANIFEST_KEY;
-    const pending = getJson(kv, key, state).then((manifest) => {
+    const pending = getJson(kv, key, state, timeoutMs).then((manifest) => {
       if (Number(manifest.schema_version) !== ROUTE_READ_MODEL_SCHEMA_VERSION
         || manifest.kind !== kind || !manifest.version || !manifest.slices) {
         throw new RouteReadModelUnavailable(`invalid ${kind} route read-model manifest`);
@@ -130,14 +138,18 @@ export function clearRouteReadModelCache() {
 export async function loadNearYouActivity(env, scope, lens = scope?.facets?.domains?.[0] || "meetings") {
   if (missingBinding(env)) return { activity: NEAR_YOU_FLOOR, communityGeography: {} };
   const kv = env.ALERT_STATE;
-  const manifest = await manifestFor(kv, "near-you");
+  const configuredTimeout = Number(env.NEAR_YOU_READ_MODEL_TIMEOUT_MS);
+  const timeoutMs = Number.isFinite(configuredTimeout) && configuredTimeout > 0
+    ? configuredTimeout
+    : ROUTE_READ_MODEL_TIMEOUT_MS;
+  const manifest = await manifestFor(kv, "near-you", timeoutMs);
   const ids = nearYouSliceIds(scope);
   const sliceLens = ["land", "property", "rules", "meetings", "money"].includes(lens) ? lens : "meetings";
   const state = stateFor(kv);
   const slices = await Promise.all(ids.map(async (id) => {
     const key = sliceKey(manifest, id, sliceLens);
     if (!key) throw new RouteReadModelUnavailable(`missing near-you slice ${id}:${sliceLens}`);
-    return getJson(kv, key, state);
+    return getJson(kv, key, state, timeoutMs);
   }));
   if (!slices.length || slices.some((slice) => !slice.activity?.records)) {
     throw new RouteReadModelUnavailable("near-you slice is empty");
