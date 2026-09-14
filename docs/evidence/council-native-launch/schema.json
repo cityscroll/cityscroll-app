@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/resident-surface-presence-readback.v1.schema.json",
+  "title": "Resident surface presence read-back",
+  "type": "object",
+  "required": ["schema", "proceeding", "revisions", "surfaces"],
+  "properties": {
+    "schema": { "const": "cityscroll.resident_surface_presence_readback.v1" },
+    "proceeding": { "type": "object", "required": ["event_day", "event_id", "meeting_id"] },
+    "revisions": { "type": "object", "required": ["code", "data"] },
+    "surfaces": { "type": "array", "minItems": 6, "maxItems": 6 }
+  },
+  "additionalProperties": false
+}
