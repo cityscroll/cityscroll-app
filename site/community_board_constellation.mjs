@@ -1024,8 +1024,8 @@ function nextFullBoardMeeting(view) {
   const today = String(view?.proceedings_calendar?.today || view?.board?.as_of || "").slice(0, 10);
   return (view?.categories?.find((category) => category.id === "meetings")?.items || [])
     .filter((row) => communityBoardMeetingEdgeAccepted(row) && !row.committee_name
-      && !String(row.from || row.committee_ref || "").startsWith("community-board-committee:")
-      && !/\bcommittee\b/i.test(String(row.title || row.target_name || row.label || ""))
+      && ![row.from, row.committee_ref].some((value) => String(value || "").startsWith("community-board-committee:"))
+      && ![row.title, row.target_name, row.label].some((value) => /\bcommittee\b/i.test(String(value || "")))
       && communityBoardMeetingEdgeDate(row)
       && (!today || communityBoardMeetingEdgeDate(row) >= today))
     .sort((left, right) => communityBoardMeetingEdgeDate(left).localeCompare(communityBoardMeetingEdgeDate(right)))[0] || null;

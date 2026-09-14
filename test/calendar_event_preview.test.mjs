@@ -338,6 +338,27 @@ test("A1: opening and closing leaves the month, its cells and an expanded day ex
   assert.equal(disclosure.hasAttribute("open"), true, "the day the reader expanded is still expanded");
 });
 
+test("the journey preserves view and focus across inspect, dismiss, detail, Back, and continuation", async () => {
+  const { doc, container, dialog } = mountMonth();
+  const invoker = previewButton(container, "occ:a");
+  invoker.focus();
+  const month = container.querySelector(".compact-month");
+  const monthId = month.getAttribute("data-compact-month");
+  click(invoker);
+  assert.equal(dialog.open, true);
+  click(dialog.querySelector("[data-calendar-event-preview-close]"));
+  assert.equal(dialog.open, false);
+  assertFocused(doc, invoker, "dismiss restores focus to the inspected event");
+  click(invoker);
+  const detail = dialog.querySelector("[data-calendar-event-preview-open]");
+  assert.ok(detail, "the full detail destination remains available");
+  assert.match(detail.getAttribute("href"), /meetings\/occ:a/);
+  dialog.close();
+  assert.equal(container.querySelector(".compact-month").getAttribute("data-compact-month"), monthId);
+  assertFocused(doc, invoker, "Back/continuation remains on the same event control");
+  await Promise.resolve();
+});
+
 /* ---------- A4: the modal contract ---------- */
 
 test("A4: the dialog is labelled by its own event title and opened as a modal", () => {

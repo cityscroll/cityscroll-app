@@ -1,0 +1,44 @@
+{
+  "schema": "cityscroll.board_overview_verification_manifest.v1",
+  "revision": "111b80b6a41d1c203ec9023133aa19af93776b88",
+  "data_vintage": "Committed Community Board read model and source registry as built on 2026-09-14",
+  "image_policy": "Textual geometry manifests are the committed evidence; any local captures remain ignored and no image binary is committed.",
+  "captures": [
+    {
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": { "width": 1440, "height": 900 },
+      "assertion": "Dense board: identity, section navigation, next meeting date/time, Meeting details, and Contact action are in the first viewport; no horizontal overflow.",
+      "sha256": "5f2f8495ebf4fb870f51b2941ff27956bc0ae3aeb3fb523701bdde39ade73e57"
+    },
+    {
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": { "width": 390, "height": 844 },
+      "assertion": "Dense board: identity, navigation, and actions are initially visible; the complete next-meeting block is reachable within one viewport; no horizontal overflow.",
+      "sha256": "a07aa3ca83ed9e5b6220f6411d1f4983869e5975a4c37eec972c29ba7e1d9d48"
+    },
+    {
+      "route": "/community-boards/bronx-cb-11/",
+      "viewport": { "width": 1440, "height": 900 },
+      "assertion": "Sparse board: accepted proceedings remain list-only without empty month-calendar furniture.",
+      "sha256": "96b58f5c057168df1ad8c5a7479dfd093f43830e41ee0ecdc5c62dc916e6506b"
+    },
+    {
+      "route": "/community-boards/bronx-cb-11/",
+      "viewport": { "width": 390, "height": 844 },
+      "assertion": "Sparse board: accepted proceedings remain list-only without empty month-calendar furniture or horizontal overflow.",
+      "sha256": "e3521c59b3b9fae608a797f5c07fea954a10b73ebd6c323296c4c8795b7c8331"
+    },
+    {
+      "route": "/community-boards/bronx-cb-01/",
+      "viewport": { "width": 1440, "height": 900 },
+      "assertion": "Unavailable board: coverage remains explicitly unavailable, with no empty meeting card or calendar furniture.",
+      "sha256": "4e4edab484ca4c1856f9e794d74f6f72e15a69f2e5ed4a939f6398ebc322c5a6"
+    },
+    {
+      "route": "/community-boards/bronx-cb-01/",
+      "viewport": { "width": 390, "height": 844 },
+      "assertion": "Unavailable board: coverage remains explicitly unavailable, with no empty meeting card, calendar furniture, or horizontal overflow.",
+      "sha256": "83b4b50ddc9beeaa77efb803d6a330fa34366d4377f4ac08f45c20ce6b40142e"
+    }
+  ]
+}
