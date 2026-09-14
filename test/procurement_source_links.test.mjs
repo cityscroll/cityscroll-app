@@ -72,3 +72,83 @@ test("coverage keeps official handoffs separate from matched source names", () =
   assert.match(html, /target="_blank" rel="noopener noreferrer"/);
   assert.doesNotMatch(html, /Lookup not run · as of/);
 });
+
+test("the rendered specimen omits the not-applicable authority row and lookup-not-run copy", () => {
+  const city = record("city_record", "20240829105", { request_id: "20240829105" });
+  const passport = record("passport_public_contracts", "contract:CT107120258801626", { contract_id: "CT107120258801626" });
+  const checkbook = record("checkbook_contracts", "registered:CT107120258801626", { id: "CT107120258801626" });
+  const [builtObject] = buildProcurementObjects({ sourceRecords: [city, passport, checkbook] }).objects;
+  const object = {
+    ...builtObject,
+    compatibility: { ...builtObject.compatibility, city_record_notice_hrefs: ["/notices/20240829105"] },
+    procurement_source_lookup_receipt: {
+      sources: [
+        { source_system: "city_record", applicability: "applicable", state: "corroborated" },
+        { source_system: "passport_public_contracts", applicability: "applicable", state: "corroborated" },
+        { source_system: "checkbook_contracts", applicability: "applicable", state: "corroborated" },
+        { source_system: "nys_abo_awards", applicability: "not-applicable", state: "not-applicable" },
+      ],
+    },
+  };
+  const observations = [city, passport, checkbook].map((entry) => ({
+    ...entry,
+    source_observation_ref: `${entry.source_system}:${entry.source_system_id}`,
+    snapshot: JSON.parse(entry.normalized_snapshot),
+  }));
+  const ledger = buildCrossSourceCoverageLedger({
+    object,
+    observations,
+    sourceCoverage: null,
+    lookupReceipt: object.procurement_source_lookup_receipt,
+  });
+  const html = renderCrossSourceCoverageLedger(ledger);
+
+  assert.doesNotMatch(
+    html,
+    /data-source-system="(?:city_record|passport_public_contracts|checkbook_contracts)"[^>]*data-coverage-state="not-checked"|nys_abo_awards|New York State Authorities Budget Office/,
+  );
+});
+
+test("the rendered specimen exposes coverage state and has unique accessible link names", () => {
+  const city = record("city_record", "20240829105", { request_id: "20240829105" });
+  const passport = record("passport_public_contracts", "contract:CT107120258801626", { contract_id: "CT107120258801626" });
+  const checkbook = record("checkbook_contracts", "registered:CT107120258801626", { id: "CT107120258801626" });
+  const [builtObject] = buildProcurementObjects({ sourceRecords: [city, passport, checkbook] }).objects;
+  const object = {
+    ...builtObject,
+    compatibility: { ...builtObject.compatibility, city_record_notice_hrefs: ["/notices/20240829105"] },
+    procurement_source_lookup_receipt: {
+      sources: [
+        { source_system: "city_record", applicability: "applicable", state: "corroborated" },
+        { source_system: "passport_public_contracts", applicability: "applicable", state: "corroborated" },
+        { source_system: "checkbook_contracts", applicability: "applicable", state: "corroborated" },
+      ],
+    },
+  };
+  const observations = [city, passport, checkbook].map((entry) => ({
+    ...entry,
+    source_observation_ref: `${entry.source_system}:${entry.source_system_id}`,
+    snapshot: JSON.parse(entry.normalized_snapshot),
+  }));
+  const ledger = buildCrossSourceCoverageLedger({
+    object,
+    observations,
+    sourceCoverage: null,
+    lookupReceipt: object.procurement_source_lookup_receipt,
+  });
+  const html = renderCrossSourceCoverageLedger(ledger);
+  const states = [...html.matchAll(/data-source-system="([^"]+)"[^>]*data-coverage-state="([^"]+)"/g)]
+    .map((match) => [match[1], match[2]]);
+  const labels = [...html.matchAll(/<a\b[^>]*>(.*?)<\/a>/g)]
+    .map((match) => match[1].replace(/<[^>]+>/g, "").trim());
+
+  assert.deepEqual(states, [
+    ["city_record", "corroborated"],
+    ["passport_public_contracts", "corroborated"],
+    ["passport_public_rfx", "not-checked"],
+    ["checkbook_contracts", "corroborated"],
+    ["checkbook_spending", "not-checked"],
+    ["nys_abo_awards", "not-checked"],
+  ]);
+  assert.equal(new Set(labels).size, labels.length);
+});
