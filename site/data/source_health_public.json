@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.public_source_health.v1",
-  "generated_at": "2026-09-09T06:54:36.054Z",
+  "generated_at": "2026-09-13T10:08:47.000Z",
   "available": true,
   "source_count": 60,
   "sources": [
@@ -418,10 +418,8 @@
       "expected_cadence": "CFB disclosure deadlines: January/July outside election years, more frequent near elections; Open Data republication is as needed",
       "mode": "periodic",
       "health": {
-        "status": "Delayed",
-        "reason_codes": [
-          "publisher-clock-stale"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": "2025-12-19T15:24:13.000Z",
