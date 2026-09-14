@@ -295,6 +295,16 @@ function rootCauseReceipts({ allRecords, materializedRows, receipts, codeRevisio
         ? "full_board_meeting"
         : "no_full_board_meeting_recorded",
     },
+    diagnostic_assertions: [
+      { stage: "original", adapter: "html_pdf_v1", outcome: "empty", record_count: 0 },
+      { stage: "adapter_only", adapter: "nyc_official_calendar_v1", outcome: "malformed", record_count: 36 },
+      {
+        stage: "corrected",
+        adapter: roleReceipt.adapter,
+        outcome: record ? "valid" : "empty",
+        record_count: roleReceipt.materialized_record_count,
+      },
+    ],
   }];
 }
 
@@ -705,7 +715,9 @@ export function rematerializeCommunityBoardMeetingIndex({
     eventDetailsFetched: committed.coverage?.event_details_checked || 0,
     observedAt,
     codeRevision: committed.code_revision || currentCodeRevision(),
-    rootCauseReceipts: committed.root_cause_receipts || null,
+    // Recompute diagnosis evidence when the read model is rematerialized so
+    // a new assertion schema cannot remain trapped in a stale committed receipt.
+    rootCauseReceipts: null,
   });
 }
 

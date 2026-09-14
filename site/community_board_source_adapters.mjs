@@ -852,12 +852,30 @@ export function parseNycOfficialCalendarSource(html, source = {}, options = {}) 
       },
     }, receipt));
   }
-  const seen = new Set();
-  return found.filter((row) => row.record_id && row.date).filter((row) => {
-    const key = `${row.record_kind}:${row.record_id}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
+  const occurrences = new Map();
+  return found.filter((row) => row.record_id && row.date).map((row) => {
+    const baseRecordId = row.record_id;
+    const occurrence = (occurrences.get(`${row.record_kind}:${baseRecordId}`) || 0) + 1;
+    occurrences.set(`${row.record_kind}:${baseRecordId}`, occurrence);
+    if (occurrence === 1) {
+      return row.publisher_identifier
+        ? { ...row, publisher_identifier: null, publisher_identifiers: [] }
+        : row;
+    }
+    const collisionId = `${baseRecordId}:collision-${occurrence}`;
+    return {
+      ...row,
+      record_id: collisionId,
+      source_record_id: collisionId,
+      event_id: collisionId,
+      publisher_identifier: null,
+      publisher_identifiers: [],
+      identity_collision: {
+        base_record_id: baseRecordId,
+        occurrence,
+        state: "same_date_same_title",
+      },
+    };
   });
 }
 
