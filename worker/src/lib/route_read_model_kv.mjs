@@ -29,7 +29,7 @@ async function getJson(kv, key, state, timeoutMs = ROUTE_READ_MODEL_TIMEOUT_MS) 
     const read = Promise.resolve().then(() => kv.get(key));
     let timer;
     const timeout = new Promise((_, reject) => {
-      timer = setTimeout(() => reject(new Error(`route read-model read exceeded ${timeoutMs}ms`)), timeoutMs);
+      timer = setTimeout(() => reject(new RouteReadModelUnavailable(`route read-model read exceeded ${timeoutMs}ms`)), timeoutMs);
     });
     const pending = Promise.race([read, timeout]).then((raw) => {
       if (raw == null || raw === "") throw new RouteReadModelUnavailable(`missing route read-model key ${key}`);
@@ -40,9 +40,6 @@ async function getJson(kv, key, state, timeoutMs = ROUTE_READ_MODEL_TIMEOUT_MS) 
       } catch (error) {
         throw new RouteReadModelUnavailable(`invalid route read-model key ${key}: ${error.message}`);
       }
-    }).catch((error) => {
-      if (error instanceof RouteReadModelUnavailable) throw error;
-      throw new RouteReadModelUnavailable(`unavailable route read-model key ${key}: ${error.message}`);
     }).finally(() => {
       clearTimeout(timer);
     });
