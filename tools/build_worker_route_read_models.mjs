@@ -110,7 +110,7 @@ function sliceActivity(activity, id, lens, { includeBasis = true } = {}) {
   return core;
 }
 
-function communityGeographySlice(geography, id) {
+export function communityGeographySlice(geography, id) {
   const district = id.match(/^community-district:(.+)$/)?.[1] || null;
   if (!district) return {};
   const edges = (geography.public_edges || []).filter((edge) =>
@@ -122,7 +122,7 @@ function communityGeographySlice(geography, id) {
     generated_at: geography.generated_at,
     boundary_vintage: geography.boundary_vintage,
     gate: geography.gate,
-    nodes: (geography.nodes || []).filter((node) => refs.has(node.subject_ref)),
+    nodes: (geography.nodes || []).filter((node) => refs.has(node.id)),
     public_edges: edges,
   };
 }

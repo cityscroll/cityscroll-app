@@ -319,7 +319,7 @@ export function buildPlaceLocalConstellation(geography = {}, placeId = null, bou
         state: target && placeHref(target) ? "matched" : "unknown",
         provenance: edge.provenance || null,
       };
-    }),
+    }).filter((neighbor) => neighbor.state === "matched"),
   });
   const boundaryById = new Map([
     ...(Array.isArray(boundaries?.community_districts) ? boundaries.community_districts : [])

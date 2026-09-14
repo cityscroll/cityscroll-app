@@ -93,8 +93,18 @@ test("committee and place adapters use only published exact-key neighbors", () =
   }, "community-district:X01");
   assert.equal(held.status, "unknown");
   const heldHtml = renderLocalConstellationHTML(held);
-  assert.match(heldHtml, /Place connections for this district are not published yet\./);
+  assert.equal(heldHtml, "");
   assert.doesNotMatch(heldHtml, /data-local-constellation-preview/);
+});
+
+test("missing published place endpoints do not render a relationship or diagnostic row", () => {
+  const view = buildPlaceLocalConstellation({
+    gate: { publication_allowed: true },
+    nodes: [{ id: "community-district:K15", type: "community-district", name: "K15" }],
+    public_edges: [{ type: "intersects", from: "community-district:K15", to: "council-district:43" }],
+  }, "community-district:K15");
+  assert.equal(view.nodes.length, 0);
+  assert.equal(renderLocalConstellationHTML(view), "");
 });
 
 test("official local connections omit duplicate committees and retain only linked meeting records", () => {

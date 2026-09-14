@@ -1,0 +1,20 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "route": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K15&level=community_district&id=K15&parent=Brooklyn",
+  "revision": "e1a9f9e9fd90c41de7dda97f7a931c928ba9c46b",
+  "data_vintage": "2026-05-26",
+  "captures": [
+    {
+      "viewport": [1440, 900],
+      "mode": "no-javascript",
+      "assertion": "The served Near You document retains the K15 community-board and Council-district destination links without scripting.",
+      "sha256": "55f040e1e5f1364b941691e74e085ab0009c92fa4a8506062c1b8585e573d6a4"
+    },
+    {
+      "viewport": [390, 844],
+      "mode": "keyboard",
+      "assertion": "Native Tab focus reaches the K15 reverse-navigation links and Enter follows the selected canonical Near You destination.",
+      "sha256": "e107793bb69a40c13aac38bf61d962f3fd9836b3721b489cb646d4f13000451f"
+    }
+  ]
+}
