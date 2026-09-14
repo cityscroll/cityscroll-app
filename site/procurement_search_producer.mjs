@@ -15,6 +15,11 @@ import { procurementProcessStates } from "./procurement_process_state_vocabulary
 import { agencyRouteAliasTarget, resolveAgencyIdentity } from "./agency_identity.mjs";
 import { procurementOpportunityWindow } from "./procurement_opportunity_window.mjs";
 import { projectProcurementFacts } from "./procurement_fact_projection.mjs";
+import {
+  aliasesForProcurement,
+  DEFAULT_PROCUREMENT_SEARCH_ALIAS_REGISTRY,
+  validateProcurementSearchAliasRegistry,
+} from "./procurement_search_aliases.mjs";
 
 const MTA_PARENT_AGENCY_ID = "metropolitan-transportation-authority";
 const MTA_FAMILY_AGENCY_IDS = new Set([
@@ -205,7 +210,9 @@ function browseRecord(object, observations, stages, evidence, facts, processStat
   });
 }
 
-export function materializeProcurementSearchDocument(object = {}, readModel = {}, index = null) {
+export function materializeProcurementSearchDocument(object = {}, readModel = {}, index = null, {
+  aliasRegistry = DEFAULT_PROCUREMENT_SEARCH_ALIAS_REGISTRY,
+} = {}) {
   if (object?.object_type !== "procurement" || !clean(object?.procurement_id, 320)) return null;
   if (!Array.isArray(object.source_observation_refs) || !object.source_observation_refs.length) return null;
   const observations = orderedObservations(object, index || observationIndex(readModel));
@@ -216,6 +223,7 @@ export function materializeProcurementSearchDocument(object = {}, readModel = {}
   const epin = facts.pinEpin;
   const stages = stagesFor(object);
   const processStates = procurementProcessStates(object.process_events);
+  const aliases = aliasesForProcurement(aliasRegistry, object.procurement_id);
   const summary = [facts.agency, facts.vendor, facts.amount == null ? null : `$${facts.amount.toLocaleString("en-US")}`]
     .filter(Boolean).join(" · ") || null;
   const searchText = clean([
@@ -224,6 +232,7 @@ export function materializeProcurementSearchDocument(object = {}, readModel = {}
     object.identity_keys?.solicitation_ids?.[0], object.identity_keys?.event_ids?.[0],
     facts.method, facts.program, facts.industry, ...stages,
     ...evidence.map((entry) => entry.additional_description_1),
+    ...aliases.map((entry) => entry.alias),
   ].filter(Boolean).join(" "), SEARCH_TEXT_MAX_LENGTH);
   const admitted = admitSearchDocument({
     schema: SEARCH_DOCUMENT_SCHEMA,
@@ -253,6 +262,7 @@ export function materializeProcurementSearchDocument(object = {}, readModel = {}
       browse_record: browseRecord(object, observations, stages, evidence, facts, processStates),
       lifecycle: object.lifecycle,
       alias_object_refs: [...new Set([...(object.identity_keys?.epins || []).map((id) => `procurement:${id}`)])],
+      ...(aliases.length ? { search_aliases: aliases } : {}),
     },
   });
   return admitted.document ? Object.freeze({
@@ -262,7 +272,9 @@ export function materializeProcurementSearchDocument(object = {}, readModel = {}
   }) : null;
 }
 
-export function buildProcurementSearchDocuments(readModel = {}) {
+export function buildProcurementSearchDocuments(readModel = {}, {
+  aliasRegistry = DEFAULT_PROCUREMENT_SEARCH_ALIAS_REGISTRY,
+} = {}) {
   const rows = readModel?.schema === SHARED_PROCUREMENT_READ_MODEL_SCHEMA && Array.isArray(readModel.rows)
     ? readModel.rows : [];
   const documents = [];
@@ -272,13 +284,20 @@ export function buildProcurementSearchDocuments(readModel = {}) {
   // One shared observation index for the whole corpus: rebuilding it per object
   // made this producer quadratic in the size of the read model.
   const index = observationIndex(readModel);
+  // Small focused fixtures may intentionally omit the optional curated target;
+  // custom registries remain strict so a dangling entry can never pass a build.
+  const admittedRefs = rows.map((row) => row?.procurement_id).filter(Boolean);
+  validateProcurementSearchAliasRegistry(
+    aliasRegistry,
+    aliasRegistry === DEFAULT_PROCUREMENT_SEARCH_ALIAS_REGISTRY ? [] : admittedRefs,
+  );
   for (const object of rows) {
     if (seen.has(object?.procurement_id)) {
       duplicates += 1;
       continue;
     }
     if (object?.procurement_id) seen.add(object.procurement_id);
-    const document = materializeProcurementSearchDocument(object, readModel, index);
+    const document = materializeProcurementSearchDocument(object, readModel, index, { aliasRegistry });
     if (document) documents.push(document);
     else notIndexed += 1;
   }

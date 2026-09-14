@@ -89,6 +89,7 @@ function compactDocument(document) {
       browse_record: provenance.browse_record || null,
       notice_evidence: provenance.notice_evidence || [],
       alias_object_refs: provenance.alias_object_refs || [],
+      ...(provenance.search_aliases?.length ? { search_aliases: provenance.search_aliases } : {}),
       ...(communityBoardContext ? { community_board_context: communityBoardContext } : {}),
     },
     outcome: document.outcome || "indexed",
