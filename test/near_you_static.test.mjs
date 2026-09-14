@@ -243,25 +243,28 @@ test("Near-you distinguishes supported empty, populated, unsupported, and pendin
   assert.doesNotMatch(pendingHtml, /data-count="0"/);
 });
 
-test("Near-you failed map data has a scope-preserving recovery link", () => {
+test("Near-you failure triggers all terminate in the same scoped error state", () => {
   const scope = scopeWithPlace(
     scopeFromLensState("meetings", { agency: "Transportation", q: "curb" }),
     { borough: "Queens" },
   );
-  const view = buildNearYouViewModel(scope, null, fixtureBoundaries, {
-    dataState: "error",
-    canonicalBase: "https://cityscroll.org/near-you",
-  });
-  const html = renderNearYouDocument(view);
-  assert.equal(view.mapState, "error");
-  assert.equal(view.results.count, null);
-  assert.match(html, /data-near-map-state="error"/);
-  assert.match(html, /Map data is temporarily unavailable/);
-  const retryHref = html.match(/<a href="([^"]+)" data-near-recovery="retry">/)?.[1]?.replaceAll("&amp;", "&");
-  assert.ok(retryHref);
-  assert.equal(new URL(retryHref).searchParams.get("agency"), "Transportation");
-  assert.equal(new URL(retryHref).searchParams.get("boro"), "Queens");
-  assert.doesNotMatch(html, /data-count="0"/);
+  for (const trigger of ["http-error", "malformed-payload", "bounded-timeout"]) {
+    const view = buildNearYouViewModel(scope, null, fixtureBoundaries, {
+      dataState: "error",
+      canonicalBase: "https://cityscroll.org/near-you",
+    });
+    const html = renderNearYouDocument(view);
+    assert.equal(view.mapState, "error", trigger);
+    assert.equal(view.results.count, null, trigger);
+    assert.match(html, /data-near-map-state="error"/, trigger);
+    assert.match(html, /Map data is temporarily unavailable/, trigger);
+    const retryHref = html.match(/<a href="([^"]+)" data-near-recovery="retry">/)?.[1]?.replaceAll("&amp;", "&");
+    assert.ok(retryHref, trigger);
+    assert.equal(new URL(retryHref).searchParams.get("agency"), "Transportation", trigger);
+    assert.equal(new URL(retryHref).searchParams.get("boro"), "Queens", trigger);
+    assert.equal(new URL(retryHref).searchParams.get("q"), "curb", trigger);
+    assert.doesNotMatch(html, /data-count="0"/, trigger);
+  }
 });
 
 test("the shared renderer emits exact server-owned records, counts, map paths, area links, and special bags", () => {

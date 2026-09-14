@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import os
+from urllib.parse import parse_qsl, urlsplit
 
 from playwright.sync_api import Page, sync_playwright
 
@@ -47,12 +48,46 @@ def assert_switches(page: Page, width: int, height: int) -> None:
     assert page.evaluate("document.activeElement?.id") == "near-results-heading"
 
 
+def assert_failed_update_recovers(page: Page, width: int, height: int, keyboard: bool) -> None:
+    """A served document must turn a malformed deferred response into scoped recovery."""
+    route = "/near-you/?v=0&lens=meetings&boro=Queens&agency=Transportation&q=curb"
+    page.set_viewport_size({"width": width, "height": height})
+
+    def malformed(payload_route):
+        payload_route.fulfill(
+            status=200,
+            content_type="application/json",
+            body='{"schema":"cityscroll.near_you_deferred.v1","results_html":null}',
+        )
+
+    page.route("**/near-you/deferred.json*", malformed)
+    page.goto(f"{BASE}{route}", wait_until="networkidle")
+    page.locator('[data-near-deferred-state="error"]').first.wait_for()
+    retry = page.locator('[data-near-recovery="retry"]').last
+    page.unroute("**/near-you/deferred.json*")
+    assert retry.is_visible()
+    if keyboard:
+        retry.focus()
+        assert page.evaluate("document.activeElement?.dataset.nearRecovery === 'retry'")
+        retry.press("Enter")
+    else:
+        retry.click()
+    expected = urlsplit(route)
+    actual = urlsplit(page.url)
+    assert actual.path.rstrip("/") == expected.path.rstrip("/")
+    assert sorted(parse_qsl(actual.query, keep_blank_values=True)) == sorted(parse_qsl(expected.query, keep_blank_values=True))
+    assert page.locator('[data-near-you-root][data-near-deferred-state="error"]').count() == 1
+    page.locator('[data-near-you-root][data-near-deferred-state="ready"]').wait_for()
+
+
 def main() -> None:
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         page = browser.new_page()
         assert_switches(page, 1440, 1000)
         assert_switches(page, 390, 844)
+        assert_failed_update_recovers(page, 1440, 900, keyboard=False)
+        assert_failed_update_recovers(page, 390, 844, keyboard=True)
 
         no_script = browser.new_context(
             viewport={"width": 1440, "height": 1000},

@@ -94,3 +94,38 @@ test("a failed Near You read serves an honest error document and scoped retry", 
   assert.equal(payload.schema, "cityscroll.near_you_deferred_error.v1");
   assert.equal(payload.recovery_href, "https://cityscroll.org/near-you?v=0&lens=meetings&boro=Queens&agency=Transportation");
 });
+
+test("HTTP, malformed-payload, and bounded-timeout reads share the typed deferred failure contract", async () => {
+  const requestUrl = "https://cityscroll.org/near-you?v=0&lens=meetings&boro=Queens&agency=Transportation&q=curb";
+  const recoveryHref = requestUrl;
+  const triggers = [
+    ["http-error", new Map()],
+    ["malformed-payload", new Map([["route-read-model:near-you:manifest:v1", "{not-json"]])],
+    ["bounded-timeout", new Map([["route-read-model:near-you:manifest:v1", new Promise(() => {})]])],
+  ];
+
+  for (const [trigger, values] of triggers) {
+    const env = {
+      ALERT_STATE: kv(values),
+      ...(trigger === "bounded-timeout" ? { NEAR_YOU_READ_MODEL_TIMEOUT_MS: 5 } : {}),
+    };
+    const documentResponse = await handleNearYou(new Request(requestUrl), env);
+    const document = await documentResponse.text();
+    assert.equal(documentResponse.status, 503, trigger);
+    assert.match(document, /data-near-data-state="error"/, trigger);
+    assert.match(document, /data-near-map-state="error"/, trigger);
+    assert.match(document, /data-near-recovery="retry"/, trigger);
+    assert.doesNotMatch(document, /data-count="0"/, trigger);
+
+    const deferredResponse = await handleNearYou(new Request(
+      requestUrl.replace("/near-you?", "/near-you/deferred.json?"),
+    ), {
+      ALERT_STATE: kv(values),
+      ...(trigger === "bounded-timeout" ? { NEAR_YOU_READ_MODEL_TIMEOUT_MS: 5 } : {}),
+    });
+    const payload = await deferredResponse.json();
+    assert.equal(deferredResponse.status, 503, trigger);
+    assert.equal(payload.schema, "cityscroll.near_you_deferred_error.v1", trigger);
+    assert.equal(payload.recovery_href, recoveryHref, trigger);
+  }
+});
