@@ -1,5 +1,12 @@
 {
   "schema": "cityscroll.community_board_release_journey_fixtures.v1",
+  "request_full_reading": {
+    "board_id": "brooklyn-cb-15",
+    "tracking_code": "215202720E",
+    "minimum_answers": 2,
+    "requires_explanation": true,
+    "assertion": "the served inspection path carries the selected request, its complete retained answer history, and explanation before returning to the board"
+  },
   "cases": [
     {
       "id": "upcoming-full-board",
