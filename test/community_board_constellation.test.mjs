@@ -66,8 +66,8 @@ test("board pages expose reviewed task destinations without asserting current pu
   assert.match(html, /data-community-board-resources="1"/);
   assert.match(html, /Open official calendar/);
   assert.match(html, /Open minutes and records/);
-  assert.match(html, /tel:718-332-3008/);
-  assert.match(html, /mailto:BKLCB15%40verizon.net|mailto:BKLCB15@verizon.net/);
+  assert.doesNotMatch(html, /tel:718-332-3008|mailto:BKLCB15/i);
+  assert.doesNotMatch(html, /disposition|not-yet-reviewed|sha256|retrieved_at/);
   assert.match(html, /https:\/\/www\.nyc\.gov\/site\/communityboards\/about\/brooklyn-boards\.page/);
   assert.match(html, /does not by itself confirm current page content/);
   assert.match(html, /data-community-board-resource-task="agenda"/);

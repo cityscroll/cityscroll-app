@@ -256,18 +256,12 @@ test("contact paths retain the reviewed homepage and city-directory fallback", (
           task: "contact_fallback",
           url: "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
         },
-        contact_facts: {
-          office_telephone: { value: "718-332-3008" },
-          mailbox: { value: "BKLCB15@verizon.net" },
-        },
       }],
     },
   });
   const byKind = Object.fromEntries(paths.map((path) => [path.kind, path]));
   assert.equal(byKind.contact_board.href, "https://www.nyc.gov/site/brooklyncb15/index.page");
   assert.equal(byKind.contact_board.fallback_href, "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page");
-  assert.equal(byKind.contact_board.evidence.contact_facts.office_telephone.value, "718-332-3008");
-  assert.equal(byKind.contact_board.evidence.contact_facts.mailbox.value, "BKLCB15@verizon.net");
 });
 
 test("a board without equivalent evidence omits service and application opportunities", () => {
