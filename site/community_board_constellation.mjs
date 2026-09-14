@@ -1084,6 +1084,8 @@ function embeddablePayload(view) {
   const requests = view.budget_requests;
   const hearing = view.hearing_context;
   const payload = { ...view };
+  payload.resource_tasks = (view.resource_tasks || []).map(({ disposition, contact_facts, verification, ...task }) => task);
+  payload.board = view.board ? { ...view.board, resource_tasks: undefined, contact_facts: undefined } : view.board;
   if (requests) {
     const { groups, ...summary } = requests;
     payload.budget_requests = {
