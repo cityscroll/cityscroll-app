@@ -344,6 +344,7 @@
 /site/community_board_source_adapters.mjs
 /site/community_board_source_join.mjs
 /site/community_board_watch.mjs
+/site/community_district_digest.mjs
 /site/compact_calendar.css
 /site/compact_calendar.mjs
 /site/comparative_award_rank.mjs

@@ -15,11 +15,13 @@ import {
   NEAR_YOU_PUBLIC_GEOGRAPHY_TYPES,
 } from "./lib/district_activity.mjs";
 import { buildDistrictWeeklyDigests } from "./lib/district_weekly_digest.mjs";
+import { buildCommunityDistrictDigests } from "./lib/community_district_digest.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE_OUT = join(ROOT, "site/data/district_activity.json");
 const WORKER_OUT = join(ROOT, "worker/src/data/district_activity.json");
 const DIGEST_OUT = join(ROOT, "site/data/district_weekly_digests.json");
+const COMMUNITY_DIGEST_OUT = join(ROOT, "site/data/community_district_digests.json");
 const GEOGRAPHY_AUDIT_OUT = join(ROOT, "docs/evidence/geography-subjects/located-in-audit.json");
 
 const PATHS = {
@@ -129,9 +131,11 @@ function loadInputs() {
 function build() {
   const inputs = loadInputs();
   const builtAt = new Date().toISOString();
+  const activity = buildDistrictActivity({ ...inputs, builtAt });
   return {
-    activity: buildDistrictActivity({ ...inputs, builtAt }),
+    activity,
     digest: buildDistrictWeeklyDigests({ ...inputs, builtAt }),
+    communityDigest: buildCommunityDistrictDigests({ activity, communityBoardGeography: inputs.communityBoardGeography, builtAt }),
   };
 }
 
@@ -382,6 +386,17 @@ function writeDigest(doc) {
   writeFileSync(DIGEST_OUT, JSON.stringify(doc) + "\n");
 }
 
+function checkCommunityDigest(doc) {
+  if (doc?.schema !== "cityscroll.community_district_digest.v1") throw new Error("community district digest schema mismatch");
+  if (Object.keys(doc.by_community_district || {}).length !== 59) throw new Error("community district digest requires 59 districts");
+  if ((doc.performance?.measured_bytes || Infinity) > (doc.performance?.ceiling_bytes || 0)) throw new Error("community district digest exceeds payload ceiling");
+}
+
+function writeCommunityDigest(doc) {
+  mkdirSync(dirname(COMMUNITY_DIGEST_OUT), { recursive: true });
+  writeFileSync(COMMUNITY_DIGEST_OUT, JSON.stringify(doc) + "\n");
+}
+
 const args = process.argv.slice(2);
 const checkOnly = args.includes("--check");
 
@@ -399,9 +414,11 @@ if (checkOnly) {
   // Rebuild and compare shape invariants (not full byte equality — built_at moves).
   const existingDigest = loadJson(DIGEST_OUT);
   checkDigest(existingDigest);
+  checkCommunityDigest(loadJson(COMMUNITY_DIGEST_OUT));
   const fresh = build();
   check(fresh.activity);
   checkDigest(fresh.digest);
+  checkCommunityDigest(fresh.communityDigest);
   if (existing.boundary_vintage !== fresh.activity.boundary_vintage) {
     console.error("boundary_vintage drift vs boundary layer");
     process.exit(1);
@@ -418,11 +435,13 @@ if (checkOnly) {
   process.exit(0);
 }
 
-const { activity: doc, digest } = build();
+const { activity: doc, digest, communityDigest } = build();
 check(doc);
 checkDigest(digest);
+checkCommunityDigest(communityDigest);
 writeTwin(doc);
 writeDigest(digest);
+writeCommunityDigest(communityDigest);
 console.log("wrote", SITE_OUT, {
   boundary_vintage: doc.boundary_vintage,
   sources: doc.sources,
