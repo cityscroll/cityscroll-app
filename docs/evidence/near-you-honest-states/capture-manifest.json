@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.served_browser_capture_manifest.v1",
   "capture_mode": "headless_playwright_served_route",
-  "repository_revision": "2a0b0695b0b02d1d70a202bc975cd021e8962f6c",
-  "grounded_at": "2a0b0695b0b02d1d70a202bc975cd021e8962f6c",
+  "repository_revision": "4723bb87adcdba9b531c0fe4c8a5c579355eda62",
+  "grounded_at": "4723bb87adcdba9b531c0fe4c8a5c579355eda62",
   "data_vintage": "2026-09-13T12:32:37.252Z",
   "note": "Textual DOM hashes are committed; no image binaries are committed.",
   "captures": [
@@ -120,7 +120,7 @@
       "assertion": "Served Near You route recovers from a malformed deferred payload with a visible, scope-preserving retry.",
       "sha256": "1036a5d328d038a0870e16d9affd929fe730362a70b9a35a0cc994a1594bfdf8",
       "file": null,
-      "revision": "2a0b0695b0b02d1d70a202bc975cd021e8962f6c",
+      "revision": "4723bb87adcdba9b531c0fe4c8a5c579355eda62",
       "data_vintage": "2026-09-13T12:32:37.252Z"
     },
     {
@@ -133,7 +133,7 @@
       "assertion": "Served Near You route recovers from a malformed deferred payload with a visible, scope-preserving retry; keyboard focus and Enter work.",
       "sha256": "18e8f7418e2f050fb892325e5046e0ea615770f3620f47e14d3fbf416c85e265",
       "file": null,
-      "revision": "2a0b0695b0b02d1d70a202bc975cd021e8962f6c",
+      "revision": "4723bb87adcdba9b531c0fe4c8a5c579355eda62",
       "data_vintage": "2026-09-13T12:32:37.252Z"
     }
   ]
