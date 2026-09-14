@@ -216,10 +216,10 @@
     "artifacts": [
       {
         "path": "docs/evidence/notice-context-readiness/read-back.json",
-        "selection_rule": "delivery-anchored",
-        "selection_rule_detail": "The window opens at the delivery merge and closes at the latest retained observation, so it admits only post-delivery observations.",
-        "sampled_count": 79,
-        "p95_ms": 8484.3,
+        "selection_rule": "fixed-rolling-window",
+        "selection_rule_detail": "The production field read-back uses the fixed 7d bucket ending at query time.",
+        "sampled_count": 127,
+        "p95_ms": 3119.8,
         "carries_budget": true,
         "read_by_the_gate": true
       },
@@ -234,11 +234,11 @@
       }
     ],
     "difference_sources": [
-      "window composition: the rolling window strictly contains the delivery-anchored one",
+      "window composition: the production field and lattice read-backs use separate query windows",
       "per-query adaptive sampling: each query retains its own weighted rows, so two queries over overlapping windows differ even where the windows agree"
     ],
     "separable": false,
     "separable_reason": "Analytics Engine returns the aggregate, never the retained rows, so the two sources of difference cannot be apportioned from what is retained.",
-    "gate": "site/notice_context_readiness.mjs classifies the delivery-anchored artifact against the p75 and p95 budget; the lattice read-back carries no budget and states no SLO."
+    "gate": "site/notice_context_readiness.mjs classifies the production field artifact against the p75 and p95 budget; the lattice read-back carries no budget and states no SLO."
   }
 }

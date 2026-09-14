@@ -17,6 +17,8 @@
  * no delta, and the estimate is always serialized with `measured: false`.
  */
 
+import { validateFieldPerformanceEvidence } from "./field_performance_evidence.mjs";
+
 export const NOTICE_PRIMARY_READINESS_SCHEMA = "cityscroll.notice_primary_readiness.v1";
 export const NOTICE_PRIMARY_READINESS_EVIDENCE_SCHEMA = "cityscroll.notice_primary_readiness_evidence.v1";
 
@@ -171,6 +173,54 @@ function resultStateCounts(rows) {
   return counts;
 }
 
+// Analytics Engine exposes a weighted aggregate for production reads, not raw rows.
+// Keep this path separate from summarizeNoticePrimaryGroup so deterministic lab fixtures
+// cannot be mistaken for a reconstructed field distribution.
+function summarizeMeasuredNoticePrimaryGroup({
+  sampledCount,
+  windowComplete,
+  p50Ms = null,
+  p75Ms = null,
+  p95Ms = null,
+  population = null,
+  measurementClass = "field",
+} = {}, {
+  label,
+  window = null,
+  sampleFloor = NOTICE_PRIMARY_SAMPLE_FLOOR,
+  revision = null,
+} = {}) {
+  const count = Number.isSafeInteger(sampledCount) && sampledCount >= 0 ? sampledCount : 0;
+  const complete = windowComplete === true;
+  const sufficient = complete && count >= sampleFloor;
+  const scopedPopulation = population && isRecord(population)
+    ? population
+    : {
+      device_class: ["aggregate"],
+      navigation_type: ["aggregate"],
+      delivery_class: ["aggregate"],
+      traffic_class: ["production"],
+    };
+  return {
+    label: String(label || ""),
+    metric_id: NOTICE_PRIMARY_METRIC_ID,
+    surface_id: NOTICE_PRIMARY_SURFACE_ID,
+    component_id: NOTICE_PRIMARY_COMPONENT_ID,
+    sampled_count: count,
+    window_complete: complete,
+    sample_floor: sampleFloor,
+    sufficiency: sufficient ? "sufficient" : "insufficient_sample",
+    p50_ms: sufficient ? roundMs(finiteMs(p50Ms)) : null,
+    p75_ms: sufficient ? roundMs(finiteMs(p75Ms)) : null,
+    p95_ms: sufficient ? roundMs(finiteMs(p95Ms)) : null,
+    result_states: { content: null, empty: null, unavailable: null, error: null },
+    population: scopedPopulation,
+    measurement_class: measurementClass,
+    window,
+    revision: revision ? String(revision) : null,
+  };
+}
+
 /**
  * Summarize one side of the comparison. Percentiles stay null unless the window
  * is complete and the sample floor is met, so an undersized window can never be
@@ -268,21 +318,38 @@ export function projectNoticePrimaryReadiness({
   ownerCallTiming = [],
   sampleFloor = NOTICE_PRIMARY_SAMPLE_FLOOR,
   fieldBaseline = null,
+  beforeAggregate = null,
+  afterAggregate = null,
+  provenance = null,
 } = {}) {
-  const before = summarizeNoticePrimaryGroup(beforeObservations, {
-    label: "before",
-    windowComplete: beforeWindowComplete,
-    window: beforeWindow,
-    revision: beforeRevision,
-    sampleFloor,
-  });
-  const after = summarizeNoticePrimaryGroup(afterObservations, {
-    label: "after",
-    windowComplete: afterWindowComplete,
-    window: afterWindow,
-    revision: afterRevision,
-    sampleFloor,
-  });
+  const before = beforeAggregate
+    ? summarizeMeasuredNoticePrimaryGroup(beforeAggregate, {
+      label: "before",
+      window: beforeWindow,
+      revision: beforeRevision,
+      sampleFloor,
+    })
+    : summarizeNoticePrimaryGroup(beforeObservations, {
+      label: "before",
+      windowComplete: beforeWindowComplete,
+      window: beforeWindow,
+      revision: beforeRevision,
+      sampleFloor,
+    });
+  const after = afterAggregate
+    ? summarizeMeasuredNoticePrimaryGroup(afterAggregate, {
+      label: "after",
+      window: afterWindow,
+      revision: afterRevision,
+      sampleFloor,
+    })
+    : summarizeNoticePrimaryGroup(afterObservations, {
+      label: "after",
+      windowComplete: afterWindowComplete,
+      window: afterWindow,
+      revision: afterRevision,
+      sampleFloor,
+    });
 
   return {
     schema: NOTICE_PRIMARY_READINESS_EVIDENCE_SCHEMA,
@@ -324,13 +391,18 @@ export function projectNoticePrimaryReadiness({
         not_a_result: true,
       }
       : null,
+    ...(provenance && isRecord(provenance) ? { provenance: structuredClone(provenance) } : {}),
   };
 }
 
-export function validateNoticePrimaryReadinessEvidence(evidence) {
+export function validateNoticePrimaryReadinessEvidence(evidence, { requireFieldProvenance = false } = {}) {
   const errors = [];
   if (!isRecord(evidence) || evidence.schema !== NOTICE_PRIMARY_READINESS_EVIDENCE_SCHEMA) {
     return { ok: false, errors: ["missing notice primary readiness evidence"] };
+  }
+  if (requireFieldProvenance || evidence.provenance != null) {
+    const provenance = validateFieldPerformanceEvidence(evidence);
+    if (!provenance.ok) errors.push(...provenance.errors);
   }
   const serialized = JSON.stringify(evidence);
   for (const key of FORBIDDEN_EVIDENCE_KEYS) {

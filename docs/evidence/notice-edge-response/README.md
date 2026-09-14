@@ -145,16 +145,13 @@ different 95th percentiles:
 
 | Artifact | Window selection | Retained rows | p95 | Carries a budget |
 | --- | --- | ---: | ---: | --- |
-| [`../notice-context-readiness/read-back.json`](../notice-context-readiness/read-back.json) | delivery-anchored | 79 | 8,484.3 ms | yes |
+| [`../notice-context-readiness/read-back.json`](../notice-context-readiness/read-back.json) | fixed rolling `7d` | 127 | 3,119.8 ms | yes |
 | [`../field-coverage-lattice-read-back/read-back.json`](../field-coverage-lattice-read-back/read-back.json) | fixed rolling `7d` | 85 | 8,001.9 ms | no |
 
-**The selection rule that differs is the window anchor.** The readiness artifact
-opens its window at the delivery merge and closes it at the latest retained
-observation, so it admits only post-delivery observations. The lattice read-back
-uses the fixed seven-day bucket ending at query time, which starts about
-fourteen hours earlier and ends about an hour later. That window strictly
-contains the delivery-anchored one, so it also admits observations from before
-the delivery — six more retained rows in total.
+**The two artifacts use separate fixed rolling windows.** The readiness artifact
+is the current production-field read-back, while the lattice read-back is a
+historical context window. Their separate observation windows and independent
+sampling weights mean the retained counts and percentiles must remain separate.
 
 A second source of difference cannot be removed: Cloudflare assigns a sampling
 weight per retained row, so two queries over overlapping windows retain their own
@@ -163,10 +160,10 @@ aggregate and never the retained rows, so the two sources cannot be apportioned
 from what is retained. The window anchor is the identifiable difference; the
 sampling is the irreducible one.
 
-**The gate reads the delivery-anchored artifact.**
+**The gate reads the current production-field artifact.**
 `site/notice_context_readiness.mjs` is what classifies a window against the
 p75 ≤ 2,500 ms and p95 ≤ 5,000 ms budget, and
-`node tools/build_notice_context_readiness_evidence.mjs --check` is what enforces
-it. The lattice read-back carries no budget and states no SLO: it answers a
+`tools/capture_field_rum_evidence.mjs` is what refreshes it. The lattice read-back
+carries no budget and states no SLO: it answers a
 coverage question — which cells of the lattice have a sufficient sample — not a
 budget one. Neither figure is wrong, and neither supersedes the other.

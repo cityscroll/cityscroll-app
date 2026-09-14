@@ -126,6 +126,7 @@ export const NOTICE_MODULE_PRELOADS = Object.freeze([
   "/app/subsidy.mjs",
   "/app/notice-context.mjs",
   "/notice_context_readiness.mjs",
+  "/field_performance_evidence.mjs",
   "/app/authority-award.mjs",
   "/app/entities.mjs",
   "/official_profile_navigation.mjs",
