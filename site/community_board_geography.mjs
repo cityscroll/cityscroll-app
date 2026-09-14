@@ -20,6 +20,7 @@ import {
   polygonsToSvgPath,
 } from "./map_exploration.mjs";
 import { nearYouUrlFromScope } from "./scope_v0.mjs";
+import { scopeFromNearYouUrl } from "./near_you_scope_runtime.mjs";
 
 export const COMMUNITY_BOARD_GEOGRAPHY_SCHEMA = "cityscroll.community_board_geography.v1";
 export const COMMUNITY_BOARD_GEOGRAPHY_VINTAGE = "2026-05-26";
@@ -270,25 +271,30 @@ function boardIdentity(bodyId) {
   };
 }
 
-function placeHref(node) {
+function placeHref(node, scope = null) {
+  const preserveScope = (href) => {
+    if (!scope || !href) return href;
+    const target = scopeFromNearYouUrl(new URL(href, "https://cityscroll.invalid"));
+    return nearYouUrlFromScope({ ...scope, place: { ...scope.place, ...target.place } });
+  };
   if (node?.type === "community-board") {
-    return communityBoardPlaceHref(node.properties?.body_id);
+    return preserveScope(communityBoardPlaceHref(node.properties?.body_id));
   }
   if (node?.type === "community-district") {
     const id = String(node.id || "").replace(/^community-district:/, "");
     if (!/^[MXKQR]\d{2}$/.test(id)) return null;
-    return nearYouUrlFromScope({ facets: { domains: ["meetings"] }, place: { community_districts: [id] } });
+    return preserveScope(nearYouUrlFromScope({ facets: { domains: ["meetings"] }, place: { community_districts: [id] } }));
   }
   if (node?.type === "council-district") {
     const id = String(node.id || "").replace(/^council-district:/, "");
     if (!/^(?:[1-9]|[1-4]\d|5[01])$/.test(id)) return null;
-    return nearYouUrlFromScope({ facets: { domains: ["meetings"] }, place: { council_districts: [id] } });
+    return preserveScope(nearYouUrlFromScope({ facets: { domains: ["meetings"] }, place: { council_districts: [id] } }));
   }
   return null;
 }
 
 /** Build the small geometry neighborhood for one published place node. */
-export function buildPlaceLocalConstellation(geography = {}, placeId = null, boundaries = {}) {
+export function buildPlaceLocalConstellation(geography = {}, placeId = null, boundaries = {}, scope = null) {
   const requested = clean(placeId);
   const nodes = Array.isArray(geography.nodes) ? geography.nodes : [];
   const edges = geography.gate?.publication_allowed && Array.isArray(geography.public_edges)
@@ -315,8 +321,8 @@ export function buildPlaceLocalConstellation(geography = {}, placeId = null, bou
         target_kind: target?.type || "place",
         target_id: targetId || null,
         target_name: target?.name || targetId || null,
-        href: placeHref(target),
-        state: target && placeHref(target) ? "matched" : "unknown",
+        href: placeHref(target, scope),
+        state: target && placeHref(target, scope) ? "matched" : "unknown",
         provenance: edge.provenance || null,
       };
     }).filter((neighbor) => neighbor.state === "matched"),

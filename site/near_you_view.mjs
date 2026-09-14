@@ -511,6 +511,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
           ? `council-district:${first(scope.place.council_districts)}`
           : null,
       boundaries,
+      scope,
     ),
   };
 }
