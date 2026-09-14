@@ -26,6 +26,42 @@ export const OCP_SELECT_COLS = [
   "vendor_name",
 ];
 
+// Site-evidence acquisition must happen before the compact OCP award projection
+// drops publisher prose and role-specific addresses.  Keep this separate from
+// OCP_SELECT_COLS so existing lifecycle lookups remain byte-compatible while
+// the evidence materializer can request the full publisher fields it needs.
+export const OCP_SITE_EVIDENCE_SELECT_COLS = Object.freeze([
+  ...OCP_SELECT_COLS,
+  "category_description",
+  "selection_method_description",
+  "section_name",
+  "due_date",
+  "address_to_request",
+  "additional_description_1",
+  "additional_description_2",
+  "additional_description_3",
+  "other_info_1",
+  "other_info_2",
+  "other_info_3",
+  "vendor_address",
+  "building_name",
+  "street_address_1",
+  "street_address_2",
+  "city",
+  "state",
+  "zip_code",
+]);
+
+export function rowToSiteEvidenceSource(row) {
+  if (!row || typeof row !== "object") return null;
+  const out = {};
+  for (const field of OCP_SITE_EVIDENCE_SELECT_COLS) {
+    out[field] = row[field] == null ? null : String(row[field]);
+  }
+  if (!out.request_id && !out.pin) return null;
+  return out;
+}
+
 const OCP_PIN_LIMIT = 10;
 const OCP_REQUEST_ID_LIMIT = 5;
 

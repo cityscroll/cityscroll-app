@@ -1,0 +1,128 @@
+{
+  "schema": "cityscroll.procurement_site_evidence.fixture.v1",
+  "source_snapshot": {
+    "ocp_dataset_id": "qyyg-4tf5",
+    "city_record_dataset_id": "dg92-zbpx",
+    "observed_at": "2026-09-13",
+    "pad_snapshot": "nyc_dcp_pad_snapshot",
+    "pad_version": "26b",
+    "pad_generated_at": "2026-08-17T11:24:50.716Z"
+  },
+  "award_rows": [
+    {
+      "request_id": "20241104015",
+      "short_title": "Shelter Facilities, Homeless FWC at Coyle Family Residence (175 units)",
+      "pin": "07122P0010020",
+      "agency_name": "Homeless Services",
+      "vendor_name": "Westhab Inc.",
+      "vendor_address": "8 Bashford Street",
+      "address_to_request": "150 Greenwich Street, New York, NY 10007",
+      "additional_description_1": "DHS is seeking vendors to operate Tier II residences for families with children. Coyle Family Residence at 2134 Coyle Street, Brooklyn, NY 11229 (Round 16).",
+      "other_info_1": "This is an open-ended RFP for shelter service."
+    },
+    {
+      "request_id": "20021219009",
+      "short_title": "TEMPORARY STAFFING SERVICES",
+      "pin": "806026008180",
+      "agency_name": "Housing Preservation and Development",
+      "vendor_name": "New York Staffing, Inc.",
+      "vendor_address": "40 Exchange Place, Suite 1900, NY, NY 10005",
+      "additional_description_1": "All CDs, Brooklyn, Queens & Staten Island"
+    },
+    {
+      "request_id": "20260728014",
+      "short_title": "FY27 Renewal - SA El Cacique Court + Annex (401 beds)",
+      "pin": "07121P0122001R001",
+      "agency_name": "Homeless Services",
+      "vendor_name": "Neighborhood Association for Inter-Cultural Affairs",
+      "vendor_address": "1075 Grand Concourse",
+      "additional_description_1": "Shelter Facilities for Homeless SA at El Cacique Court located at 2314 Jerome Avenue, Bronx, NY 10468 (197 beds) as well as annex Hotel Arex, 9 Malcolm X Boulevard, Brooklyn, NY 11221 (204 beds) (total 401 beds)"
+    },
+    {
+      "request_id": "20250718031",
+      "short_title": "PRODUCTION UPGRADE AT CITY COUNCIL 250 BROADWAY",
+      "pin": "85825W0117001",
+      "agency_name": "Information Technology and Telecommunications",
+      "vendor_name": "Compulink Technologies Inc.",
+      "vendor_address": "260 West 39th Street"
+    },
+    {
+      "request_id": "20241130012",
+      "short_title": "Olea 8 Non ADA & 2 ADA Compliant Kiosks",
+      "pin": "06925W0011001",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "vendor_name": "American Computer Consultants Inc.",
+      "vendor_address": "212-55 Jamaica Avenue",
+      "additional_description_1": "DSS is requesting kiosks and services for a new Brooklyn site at 2400 Fulton St. HRA requests a new site at 2440 Fulton Avenue. Former offices are at 250 Livingston Street and 404 Pine Street."
+    },
+    {
+      "request_id": "20250320005",
+      "short_title": "Bronx Janitorial Services Renewal # 1",
+      "pin": "82021M0001001R001",
+      "agency_name": "Administrative Trials and Hearings",
+      "vendor_name": "New York State Industries For The Disabled Inc.",
+      "vendor_address": "11 Columbia Circle Drive",
+      "additional_description_1": "To provide Janitorial Cleaning services to Bronx office location 260 E 161st Street, 6th Floor, Bronx, NY 10451."
+    },
+    {
+      "request_id": "20260804018",
+      "short_title": "FY27 Renewal - SA Tillary Shelter (150 beds)",
+      "pin": "07126X8002KXLR001",
+      "agency_name": "Homeless Services",
+      "vendor_name": "Bowery Residents' Committee, Inc.",
+      "vendor_address": "131 West 25th Street",
+      "additional_description_1": "Stand Alone Transitional Residence for Homeless Single Adults at 200 Tillary Street, Brooklyn, NY 11201."
+    },
+    {
+      "request_id": "20260817022",
+      "short_title": "FY27 Renewal - SA Tillary Shelter (200 beds)",
+      "pin": "07126X8002KXLR001",
+      "agency_name": "Homeless Services",
+      "vendor_name": "Bowery Residents' Committee, Inc.",
+      "vendor_address": "131 West 25th Street",
+      "additional_description_1": "Stand Alone Transitional Residence for Homeless Single Adults at 200 Tillary Street, Brooklyn, NY 11201."
+    },
+    {
+      "request_id": "20260730013",
+      "short_title": "FY27 Renewal - Shelter services for Homeless Families with Children at Icahn House East",
+      "pin": "07121P0098001R001",
+      "agency_name": "Homeless Services",
+      "vendor_name": "CRF-House East, LLC",
+      "vendor_address": "4 E 28th Street",
+      "additional_description_1": "Shelter services for families at Icahn House East. Located at 4 East 28th Street, New York, NY 10016. (199 units)"
+    }
+  ],
+  "hearing_rows": [
+    {
+      "request_id": "20230911014",
+      "short_title": "SEVEN DHS NOTICES FOR CONTRACT PUBLIC HEARING",
+      "pin": null,
+      "vendor_address": "8 Bashford Street",
+      "additional_description_1": "IN THE MATTER OF a proposed contract with a contractor located at 11 Columbia Circle Drive, Albany, NY 12203, to provide specialized cleaning services at a path facility. E-PIN #: 07123M0001001. IN THE MATTER OF a proposed shelter contract with a contractor located at 75 Broad Street, New York, NY 10004, for shelter services at 2250 Adam Clayton Powell Jr. Boulevard, New York, NY 10027. E-PIN #: 07122P0010012. IN THE MATTER OF a proposed Safe Haven contract at 106-108 West 83rd Street, New York, NY 10024. E-PIN #: 07121P0125006. IN THE MATTER OF a proposed shelter contract at 225 East 45th Street, New York, NY 10017. E-PIN #: 07119P0001036. IN THE MATTER OF a proposed shelter contract with a contractor at 1520 Brook Avenue, Bronx, NY 10457, for shelter facilities at 92-32 Union Hall Street, Queens, NY 11433. E-PIN #: 07121P0125007. IN THE MATTER OF a proposed shelter contract for 16-63 Cody Avenue, Queens, NY 11385. EPIN #: 07122P0012017. IN THE MATTER OF a proposed contract between DHS and Westhab, Inc. located at 8 Bashford Street, Yonkers, NY 10701, for the provision of Shelter Facilities for Homeless Families With Children at 2134 Coyle Street, Brooklyn, NY 11229. The contract amount will be $522,787,431. E-PIN #: 07122P0010020. A draft copy is available for public inspection at 150 Greenwich Street, New York, NY 10007."
+    }
+  ],
+  "pad_rows": [
+    { "address": "2134 Coyle Street, Brooklyn, NY 11229", "bbl": "3073670011", "zip": "11229" },
+    { "address": "2314 Jerome Avenue, Bronx, NY 10468", "bbl": "2031870007", "zip": "10468" },
+    { "address": "9 Malcolm X Boulevard, Brooklyn, NY 11221", "bbl": "3016001001", "zip": "11221" },
+    { "address": "250 Broadway", "bbl": "1000000001", "zip": "10001" },
+    { "address": "250 Broadway", "bbl": "3000000001", "zip": "11201" },
+    { "address": "2400 Fulton Street, Brooklyn, NY 11206", "bbl": "3012340001", "zip": "11206" },
+    { "address": "2440 Fulton Avenue, Bronx, NY 10458", "bbl": "2022340002", "zip": "10458" },
+    { "address": "260 E 161st Street, Bronx, NY 10451", "bbl": "2024430100", "zip": "10451" },
+    { "address": "200 Tillary Street, Brooklyn, NY 11201", "bbl": "3020500104", "zip": "11201" },
+    { "address": "4 East 28th Street, New York, NY 10016", "bbl": "1020840001", "zip": "10016" }
+  ],
+  "expected": {
+    "20241104015": { "classification": "accepted", "bbls": ["3073670011"] },
+    "20230911014": { "sections": 7, "classification": "accepted", "bbls": ["3073670011"] },
+    "20021219009": { "classification": "unsupported_extraction", "bbls": [] },
+    "20260728014": { "classification": "accepted", "bbls": ["2031870007", "3016001001"] },
+    "20250718031": { "classification": "ambiguous_target", "bbls": [] },
+    "20241130012": { "classification": "conflicting_target", "bbls": [] },
+    "20250320005": { "classification": "accepted", "bbls": ["2024430100"] },
+    "20260804018": { "classification": "accepted", "bbls": ["3020500104"], "capacity": 150 },
+    "20260817022": { "classification": "accepted", "bbls": ["3020500104"], "capacity": 200 },
+    "20260730013": { "classification": "accepted", "bbls": ["1020840001"] }
+  }
+}
