@@ -60,6 +60,9 @@ const CITY_RECORD_SYSTEM = "city_record";
 const OPPORTUNITY_WINDOW_DAY_MS = 86_400_000;
 const OPPORTUNITY_WINDOW_ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const OPPORTUNITY_WINDOW_US_DATE_PATTERN = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
+const SOLICITATION_NOTICE_TYPE = /solicitation|request\s+for\s+(?:proposal|bid|quote)|invitation\s+for\s+(?:bid|proposal)/i;
+const POST_OPPORTUNITY_NOTICE_TYPE = /award|selection|registered|payment|bid\s*(?:opening|result)|intent\s+to\s+(?:award|negotiate)|vendor\s+list/i;
+const POST_OPPORTUNITY_RFX_STATUS = /award|selection|registered|payment|bid\s*(?:opening|result)|intent\s+to\s+(?:award|negotiate)/i;
 
 function text(value) {
   const result = String(value ?? "").trim();
@@ -203,6 +206,25 @@ function bySourceSystem(entries, system) {
     .sort((left, right) => text(right.ingested_at)?.localeCompare(text(left.ingested_at) || "") || 0);
 }
 
+function isSolicitationLikeObservation(entry) {
+  const system = text(entry?.source_system)?.toLowerCase();
+  const snapshot = entry?.snapshot || {};
+  if (system === PASSPORT_SYSTEM) {
+    const status = text(snapshot.rfx_status || snapshot.status || snapshot.stage);
+    return !status || !POST_OPPORTUNITY_RFX_STATUS.test(status);
+  }
+  if (system !== CITY_RECORD_SYSTEM) return false;
+  const noticeType = text(
+    snapshot.type_of_notice_description
+      || snapshot.type_of_notice
+      || snapshot.stage
+      || snapshot.observation_type,
+  );
+  return Boolean(noticeType)
+    && SOLICITATION_NOTICE_TYPE.test(noticeType)
+    && !POST_OPPORTUNITY_NOTICE_TYPE.test(noticeType);
+}
+
 /**
  * Object/observations adapter — the same calling convention used by
  * `procurementOpportunityOccurrences()` in `opportunity_calendar.mjs` and by
@@ -217,8 +239,14 @@ export function procurementOpportunityWindow(object = {}, observations = []) {
   const referenced = referencedObservations(object, observations);
   if (!referenced.length) return unavailableWindow("no_qualifying_observation");
 
-  const passportCandidates = bySourceSystem(referenced, PASSPORT_SYSTEM);
-  const cityRecordCandidates = bySourceSystem(referenced, CITY_RECORD_SYSTEM);
+  const passportCandidates = bySourceSystem(referenced, PASSPORT_SYSTEM)
+    .filter(isSolicitationLikeObservation);
+  const cityRecordCandidates = bySourceSystem(referenced, CITY_RECORD_SYSTEM)
+    .filter(isSolicitationLikeObservation);
+
+  if (!passportCandidates.length && !cityRecordCandidates.length) {
+    return unavailableWindow("no_qualifying_observation");
+  }
 
   const passport = passportCandidates.find((entry) => {
     const snapshot = entry?.snapshot || {};
