@@ -1152,6 +1152,7 @@ test/hearing_logistics.test.mjs
 test/hearing_widening.test.mjs
 test/helpers/mandate_subject.mjs
 test/helpers/site_source.mjs
+test/helpers/test_clock.mjs
 test/home_cold_load.test.mjs
 test/homepage_cta.test.mjs
 test/hosting_budget_gate.test.mjs

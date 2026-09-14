@@ -10,11 +10,21 @@ import {
 } from "../site/now_surface.mjs";
 import { NOW_SOURCE_TIMEOUT_MS, nowDateLabel, renderNowSurface, safeJson } from "../site/now_view.mjs";
 import { propertyProjectionScope, projectPropertyRecord } from "../site/property_action_projection.mjs";
+import { primaryDocumentOutputs } from "../tools/build_primary_documents.mjs";
 
 const require = createRequire(import.meta.url);
 const CrolActions = require("../site/action_registry.js");
 
 const TODAY = "2026-08-03";
+
+test("build-rendered Now includes an eligible Council event from the shared meeting feed", () => {
+  const nowOutput = primaryDocumentOutputs().find(([path]) => path.endsWith("/now/index.html"));
+  assert.ok(nowOutput, "expected the primary document builder to emit Now");
+  const html = nowOutput[1];
+  assert.match(html, /Committee on Contracts/);
+  assert.match(html, /2026-09-23/);
+  assert.match(html, /href="\/meetings\/meeting%3Anyc_legistar_events%3A22691"/);
+});
 
 function fixtureSources() {
   return {

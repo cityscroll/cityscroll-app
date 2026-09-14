@@ -23,7 +23,7 @@ export function surfaces({ site = SITE, api = API } = {}) {
   return [
     { id: "meetings", url: `${site}/data/shared_meeting_read_model.json`, route: `${site}/browse/meetings/`, needles: [MEETING_ID, PUBLISHER_EVENT_ID, "Committee on Contracts"] },
     { id: "search", url: `${api}/search?q=${encodeURIComponent("M/WBE utilization")}`, route: `${site}/search/?q=${encodeURIComponent("M/WBE utilization")}`, needles: [PUBLISHER_EVENT_ID, "Committee on Contracts"] },
-    { id: "now", url: `${api}/hearings`, route: `${site}/now/`, needles: [PUBLISHER_EVENT_ID, "Committee on Contracts"] },
+    { id: "now", url: `${site}/now/`, route: `${site}/now/`, needles: [PUBLISHER_EVENT_ID, EVENT_DAY, "Committee on Contracts", `/meetings/${encodeURIComponent(MEETING_ID)}`] },
     { id: "canonical-detail", url: `${site}/meetings/${encodeURIComponent(MEETING_ID)}`, route: `${site}/meetings/${encodeURIComponent(MEETING_ID)}`, needles: [MEETING_ID, PUBLISHER_EVENT_ID, EVENT_DAY] },
     { id: "ics", url: `${api}/meeting.ics?id=${encodeURIComponent(MEETING_ID)}`, route: null, needles: ["20260923", "Committee on Contracts", PUBLISHER_EVENT_ID] },
     { id: "watch-preview", url: `${site}/following?lens=meetings&filter=${filter}`, route: `${site}/following?lens=meetings&filter=${filter}`, needles: [MEETING_ID, "Committee on Contracts"] },
