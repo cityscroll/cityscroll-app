@@ -25,6 +25,28 @@ import { renderAgencyIndex } from "../tools/build_agency_documents.mjs";
 import rulesSemanticLaneArtifact from "../site/data/rules_semantic_lane.json" with { type: "json" };
 
 const read = (path) => readFileSync(new URL(path, import.meta.url), "utf8");
+const procurementParityFixture = JSON.parse(read("./fixtures/procurement-detail-parity/ct107120258801626.json"));
+
+function procurementAssetEnv() {
+  const manifest = JSON.parse(read("../site/data/shared_procurement_read_model.json"));
+  const shardPath = manifest.procurement_shard_by_id[procurementParityFixture.object.procurement_id];
+  const shard = JSON.parse(read(`../site/data/${shardPath}`));
+  const requestedPaths = [];
+  return {
+    requestedPaths,
+    env: {
+      ASSETS: {
+        async fetch(request) {
+          const path = new URL(request.url).pathname;
+          requestedPaths.push(path);
+          if (path === "/data/shared_procurement_read_model.json") return new Response(JSON.stringify(manifest));
+          if (path === `/data/${shardPath}`) return new Response(JSON.stringify(shard));
+          return new Response("missing asset", { status: 404 });
+        },
+      },
+    },
+  };
+}
 
 function fakeKV(seed = {}) {
   const store = new Map(Object.entries(seed));
@@ -106,6 +128,43 @@ test("Browse route matrix rejects retired and unknown facets instead of treating
   assert.deepEqual(browseRoute("/browse/people/"), { kind: "concept", concept: "people" });
   assert.deepEqual(browseRoute("/browse/places/"), { kind: "concept", concept: "places" });
   assert.deepEqual(browseRoute("/browse/exams/"), { kind: "object", object: "exams" });
+});
+
+test("served procurement route reads one bounded shard and preserves the complete specimen record", async () => {
+  const { env, requestedPaths } = procurementAssetEnv();
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => { throw new Error("unexpected request-time procurement source fetch"); };
+  try {
+    const id = procurementParityFixture.object.procurement_id;
+    const response = await edgeWorker.fetch(new Request(
+      `https://cityscroll.org/procurements/${encodeURIComponent(id)}/`,
+    ), env);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.deepEqual(requestedPaths, [
+      "/data/shared_procurement_read_model.json",
+      "/data/shared_procurement_read_model/shard-004.json",
+    ]);
+    for (const href of [
+      "/agencies/homeless-services/",
+      "/vendors/BHRAGS%20HOME%20CARE/",
+      "/search/?q=CT107120258801626",
+      "/search/?q=07124E0044001",
+      "/notices/20240829105",
+      "https://a0333-passportpublic.nyc.gov/contracts.html",
+      "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT107120258801626",
+    ]) assert.ok(html.includes(`href="${href}"`), href);
+    assert.match(html, /Contract start<\/dt><dd>2023-10-11/);
+    assert.match(html, /Contract end<\/dt><dd>2026-06-30/);
+    assert.match(html, /Registration date<\/dt><dd>2024-08-28/);
+    assert.match(html, /Observed events[\s\S]*2024-09-05/);
+    assert.doesNotMatch(html, /Lookup not run/);
+    assert.doesNotMatch(html, /NYS ABO/);
+    assert.doesNotMatch(html, /procurement-opportunity-window|procurement-opportunity-month/);
+    assert.doesNotMatch(html, /tabindex="-1"/);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
 
 test("canonical meeting routes resolve exact read-model rows and reject unknown ids", async () => {

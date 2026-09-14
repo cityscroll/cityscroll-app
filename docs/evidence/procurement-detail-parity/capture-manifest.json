@@ -1,0 +1,31 @@
+{
+  "schema": "cityscroll.procurement_detail_parity_capture_manifest.v1",
+  "browser_mode": "headless HTML assertion capture; image files omitted",
+  "source_commit": "fc40b5d5b2849786196420b656ae9ef745ca88f6",
+  "fixture": "test/fixtures/procurement-detail-parity/ct107120258801626.json",
+  "fixture_sha256": "849258af42184d7fda487887a71868cd7f17e49387c1fe21c67114e07ef372ca",
+  "data_vintage": "2026-09-09T06:33:01.880Z",
+  "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
+  "expected_links": [
+    "/agencies/homeless-services/",
+    "/vendors/BHRAGS%20HOME%20CARE/",
+    "/search/?q=CT107120258801626",
+    "/search/?q=07124E0044001",
+    "/notices/20240829105",
+    "https://a0333-passportpublic.nyc.gov/contracts.html",
+    "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT107120258801626"
+  ],
+  "captures": [
+    {
+      "viewport": { "name": "desktop", "width": 1440, "height": 900 },
+      "assertion": "The served route preserves all expected entity, identifier, City Record, PASSPort, and Checkbook destinations; contract dates retain their source meanings; no optional lookup apology, state-authority row, or opportunity chrome appears.",
+      "render_sha256": "60bb1b1262921607ff067251cebf02f3d1d19cf5030a737185a224f8d75def0b"
+    },
+    {
+      "viewport": { "name": "mobile", "width": 390, "height": 844 },
+      "assertion": "The same server-rendered semantic record remains complete and keyboard-focusable at 390 px with no horizontal overflow.",
+      "render_sha256": "60bb1b1262921607ff067251cebf02f3d1d19cf5030a737185a224f8d75def0b"
+    }
+  ],
+  "image_policy": "Capture binaries remain ignored and uncommitted. Hashes cover the deterministic semantic capture artifact."
+}

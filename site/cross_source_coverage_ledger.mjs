@@ -386,7 +386,9 @@ export function buildCrossSourceCoverageLedger({
     : aboResidual;
   const present = objectSystems(object, observations);
   const corroboration = corroborationState(object);
-  const links = objectKind === "procurement" ? procurementSourceLinkDescriptors(object, observations) : new Map();
+  const links = objectKind === "procurement"
+    ? procurementSourceLinkDescriptors(object, observations, { lookupReceipt })
+    : new Map();
   const abo = objectKind === "procurement" ? aboLookup(residual) : null;
   const sources = declaredSources(objectKind, object, observations).map((system) => {
     const envelope = envelopeOf(sourceStatus, system);

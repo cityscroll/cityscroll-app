@@ -52,8 +52,14 @@ function checkbook(object, rows) {
   };
 }
 
+function lookupReceiptHasSource(receipt, system) {
+  const source = receipt?.sources?.find?.((entry) => entry?.source_system === system);
+  return source?.applicability !== "not-applicable"
+    && (source?.state === "corroborated" || source?.matched_analytical_row_refs?.length > 0);
+}
+
 /** The single allowlisted destination policy shared by the two renderers. */
-export function procurementSourceLinkDescriptors(object = {}, observations = []) {
+export function procurementSourceLinkDescriptors(object = {}, observations = [], { lookupReceipt = null } = {}) {
   const rows = rowsFor(object, observations);
   const descriptors = new Map();
   const put = (system, descriptor) => descriptor && descriptors.set(system, Object.freeze({ source_system: system, ...descriptor }));
@@ -68,13 +74,13 @@ export function procurementSourceLinkDescriptors(object = {}, observations = [])
     put("passport_public_rfx", { official_href: source.href, official_label: source.per_item ? "Open official record" : "Open PASSPort solicitations portal" });
   }
   for (const system of ["checkbook_contracts", "checkbook_spending", "checkbook_nycha_contracts"]) {
-    if (!rows.some((entry) => entry.source_system === system)) continue;
+    if (!rows.some((entry) => entry.source_system === system) && !lookupReceiptHasSource(lookupReceipt, system)) continue;
     const descriptor = checkbook(object, rows);
     put(system, descriptor);
   }
   return descriptors;
 }
 
-export function procurementSourceLinkItems(object = {}, observations = []) {
-  return [...procurementSourceLinkDescriptors(object, observations).values()];
+export function procurementSourceLinkItems(object = {}, observations = [], options = {}) {
+  return [...procurementSourceLinkDescriptors(object, observations, options).values()];
 }
