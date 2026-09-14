@@ -17,7 +17,6 @@ import {
 import { followingUrlFromWatch } from "./following_view.mjs";
 import { procurementCanonicalHref } from "./procurement_object_contract.mjs";
 import { renderProcurementObjectCoverageHtml } from "./procurement_coverage_labels.mjs";
-import { passportPublicOfficialSource } from "../worker/src/lib/passport_parse.mjs";
 import { snapshotsForPublicAmount } from "./checkbook_passport_corroboration.mjs";
 import { renderCrossSourceEvidenceReceipt } from "./cross_source_evidence_receipt.mjs";
 import {
@@ -51,9 +50,8 @@ import {
 import { buildProcurementHandoffCopy, renderProcurementHandoffCopyHtml } from "./procurement_handoff_copy.mjs";
 import { projectProcurementFacts } from "./procurement_fact_projection.mjs";
 import { entityChipHTML, entityHref, entityRouteRef } from "./entity_pivot.mjs";
+import { procurementSourceLinkItems } from "./procurement_source_links.mjs";
 
-const CHECKBOOK_SMART_SEARCH = "https://www.checkbooknyc.com/smart_search/citywide";
-const CHECKBOOK_CONTRACT_SEARCH = "https://www.checkbooknyc.com/contract_search";
 
 function esc(value) {
   return String(value ?? "").replace(/[<>&"']/g, (char) => ({
@@ -209,38 +207,6 @@ function lastObservedAtFor(object, observations) {
   return latest || null;
 }
 
-function checkbookOfficialSource(object, rows) {
-  const snapshots = rows.map((entry) => entry?.snapshot).filter(Boolean);
-  const first = (...fields) => {
-    for (const row of snapshots) for (const field of fields) {
-      const value = clean(row?.[field], 80);
-      if (value) return value;
-    }
-    return null;
-  };
-  const agid = first("agid", "original_agreement_id");
-  const direct = first("official_url", "source_url");
-  if (direct) return { href: direct, label: "Checkbook NYC" };
-  const contractId = object?.identity_keys?.contract_ids?.[0] || first("id", "contract_id", "contractId", "prime_contract_id");
-  const vendor = first("vendor", "vendor_name", "prime_vendor", "payee_name");
-  if (/^\d+$/.test(agid || "")) {
-    const codeMatch = String(contractId || "").trim().match(/^([A-Za-z]+)(\d)/);
-    const code = codeMatch ? `${codeMatch[1]}${codeMatch[2]}`.toUpperCase() : "CT1";
-    return {
-      href: `https://www.checkbooknyc.com/contract_details/agid/${encodeURIComponent(agid)}/doctype/${encodeURIComponent(code)}`,
-      label: "Checkbook NYC",
-    };
-  }
-  const term = contractId || vendor;
-  if (term) {
-    return {
-      href: `${CHECKBOOK_SMART_SEARCH}?search_term=${encodeURIComponent(term)}`,
-      label: "Search Checkbook NYC",
-    };
-  }
-  return { href: CHECKBOOK_CONTRACT_SEARCH, label: "Checkbook NYC" };
-}
-
 function nativeOfficialSources(rows) {
   return rows
     .filter((entry) => ["nys_contract_reporter", "mta_current_opportunities", "mta_bid_results"].includes(entry.source_system))
@@ -277,11 +243,6 @@ function mtaOfficialSource(entry) {
  */
 export function procurementOfficialSourceItems(object = {}, observations = []) {
   const rows = observationRows(object, observations);
-  const systems = new Set(rows.map((entry) => String(entry.source_system || "").toLowerCase()));
-  for (const ref of object?.source_observation_refs || []) {
-    const system = String(ref).split(":")[0]?.toLowerCase();
-    if (system) systems.add(system);
-  }
   const items = [];
   const seen = new Set();
   const add = (item) => {
@@ -297,16 +258,14 @@ export function procurementOfficialSourceItems(object = {}, observations = []) {
   for (const href of object?.compatibility?.city_record_notice_hrefs || []) {
     add({ href, label: "City Record notice" });
   }
-  if (systems.has("passport_public_contracts")) {
-    add(passportPublicOfficialSource("contract"));
-  }
-  if (systems.has("passport_public_rfx")) {
-    const rfx = rows.find((entry) => entry.source_system === "passport_public_rfx");
-    add(passportPublicOfficialSource("rfx", rfx?.snapshot || {}));
-  }
-  if (systems.has("checkbook_contracts") || systems.has("checkbook_nycha_contracts") || systems.has("checkbook_spending")) {
-    add(checkbookOfficialSource(object, rows.filter((entry) =>
-      entry.source_system === "checkbook_contracts" || entry.source_system === "checkbook_nycha_contracts" || entry.source_system === "checkbook_spending")));
+  for (const descriptor of procurementSourceLinkItems(object, observations)) {
+    if (descriptor.source_system === "city_record") continue;
+    const label = descriptor.search_href
+      ? "Search Checkbook NYC"
+      : descriptor.source_system === "passport_public_contracts"
+        ? "PASSPort Public contracts"
+        : descriptor.official_label || "Open official record";
+    add({ href: descriptor.official_href || descriptor.search_href, label });
   }
   for (const item of nativeOfficialSources(rows)) add(item);
   for (const row of rows) {
@@ -609,6 +568,21 @@ export function renderProcurementDocument(object = {}, observations = [], {
     ["Event", object?.identity_keys?.event_ids?.[0], "event_id"],
   ].filter(([, value]) => value).map(([label, value, kind]) => `<div><dt>${esc(label)}</dt><dd>${kind ? procurementFactValue(facts, kind, value, object) : esc(value)}</dd></div>`).join("");
   const sourceItems = procurementOfficialSourceItems(object, observations);
+  const coverageLedger = object?.cross_source_coverage_ledger || buildCrossSourceCoverageLedger({
+    object,
+    observations,
+    sourceStatus,
+    sourceCoverage,
+    lookups,
+    lookupReceipt: object?.procurement_source_lookup_receipt,
+    aboResidual,
+    crosswalk,
+    registeredContractCoverage,
+    kind: "procurement",
+  });
+  const representedOfficialHrefs = new Set((coverageLedger?.sources || [])
+    .flatMap((source) => [source.record_href, source.official_href, source.search_href].filter(Boolean)));
+  const uniqueSourceItems = sourceItems.filter((item) => !representedOfficialHrefs.has(item.href));
   // Card "PPD-07": where the access classification says a field is reachable
   // only after signing in, or is carried by no public source this product
   // observes, say so beside the official-record handoff rather than leaving a
@@ -634,18 +608,7 @@ ${procurementActions(object, facts)}
 ${renderCrossSourceEvidenceReceipt(object?.cross_source_evidence_receipt)}
 ${renderNodeSection({ heading: "Contract facts", body: factRows ? `<dl class="node-facts">${factRows}</dl>` : "" })}
 ${renderProcurementInstitutionRoles(object, observations)}
-${renderCrossSourceCoverageLedger(object?.cross_source_coverage_ledger || buildCrossSourceCoverageLedger({
-  object,
-  observations,
-  sourceStatus,
-  sourceCoverage,
-    lookups,
-    lookupReceipt: object?.procurement_source_lookup_receipt,
-  aboResidual,
-  crosswalk,
-  registeredContractCoverage,
-  kind: "procurement",
-}))}
+${renderCrossSourceCoverageLedger(coverageLedger)}
 ${renderProcurementObjectCoverageHtml(object, observations)}
 ${renderNodeSection({
   heading: "Opportunity window",
@@ -671,7 +634,7 @@ ${renderNodeSection({
   heading: "Observed stages",
   body: Array.isArray(object?.process_events) && object.process_events.length ? "" : stageList(object),
 })}
-${renderNodeProvenance({ heading: sourceItems.length ? "Official records" : "", sourceItems })}
+${renderNodeProvenance({ heading: uniqueSourceItems.length ? "Official records" : "", sourceItems: uniqueSourceItems })}
 ${renderNodeSection({
   heading: "What these official records do not carry",
   headingId: "procurement-handoff-access",

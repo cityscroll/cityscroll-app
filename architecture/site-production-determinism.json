@@ -483,6 +483,7 @@
     "site/procurement_route.mjs",
     "site/procurement_search_aliases.mjs",
     "site/procurement_search_producer.mjs",
+    "site/procurement_source_links.mjs",
     "site/procurement_source_lookup_receipt.mjs",
     "site/product_updates_delivery.mjs",
     "site/product_updates_honesty.mjs",

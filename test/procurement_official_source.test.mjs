@@ -88,9 +88,10 @@ test("PASSPort-only procurement object links the public contracts browse, not a 
   }]);
 
   const html = renderProcurementDocument(object, observations);
-  assert.match(html, /Official records/);
+  assert.match(html, /Open PASSPort contracts portal/);
+  assert.doesNotMatch(html, /<h2>Official records<\/h2>/);
   assert.match(html, /href="https:\/\/a0333-passportpublic\.nyc\.gov\/contracts\.html"/);
-  assert.match(html, />PASSPort Public contracts<span aria-hidden="true">↗<\/span>/);
+  assert.match(html, />Open PASSPort contracts portal<span aria-hidden="true">↗<\/span>/);
   assert.doesNotMatch(html, /City Record notice/);
   assert.doesNotMatch(html, /passport\.cityofnewyork\.us\/.*CT185720228800365/);
   assert.doesNotMatch(html, /a0333-passportpublic\.nyc\.gov\/contracts\.html\?/);
