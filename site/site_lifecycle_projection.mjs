@@ -138,6 +138,8 @@ export function createSiteLifecycleReader(manifest, shards = [], reverse = null)
   for (const shard of shards) for (const row of shard?.rows || []) if (bbl(row?.parcel_id)) parcels.set(row.parcel_id, row);
   const generation = manifest?.generation || shards.find((s) => s?.generation)?.generation || null;
   if (manifest?.generation && shards.some((s) => s?.generation && s.generation !== manifest.generation)) throw new Error("site lifecycle generation mismatch");
+  if (reverse && manifest?.generation !== reverse.generation) throw new Error("site lifecycle reverse index generation mismatch");
+  if (reverse && manifest?.content_hash !== reverse.content_hash) throw new Error("site lifecycle reverse index content hash mismatch");
   return { generation, get(parcelId) { const key = bbl(parcelId); return key ? parcels.get(key) || null : null; }, memberParcels(subjectId) { const key = id(subjectId); return reverse?.members?.[key]?.parcel_ids?.slice() || []; }, size: parcels.size };
 }
 
