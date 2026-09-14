@@ -142,6 +142,7 @@ docs/adr/source-vault.md
 docs/adr/static-first.md
 docs/adr/subject-registry.md
 docs/architecture.md
+docs/evidence/community-board-acquisition-sources/manifest.json
 docs/evidence/matter-coverage-recovery/manifest.json
 docs/evidence/retained-matter-publication-generation/manifest.json
 docs/evidence/working-copy-reduction/raw/closure/agents-router.json
@@ -957,6 +958,7 @@ test/community_board_institution_edges.test.mjs
 test/community_board_links.test.mjs
 test/community_board_meeting_coverage.test.mjs
 test/community_board_meeting_index.test.mjs
+test/community_board_acquisition_sources.test.mjs
 test/community_board_meeting_lens_parity.test.mjs
 test/community_board_minutes_records.test.mjs
 test/community_board_money.test.mjs

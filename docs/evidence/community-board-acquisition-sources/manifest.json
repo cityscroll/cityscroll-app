@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.community_board_acquisition_replay_manifest.v1",
+  "grounded_at": "22ab76434e718f04e896179b41555518e56b7eca",
+  "observed_at": "2026-09-14T01:44:00Z",
+  "verification": {
+    "command": "node --test test/community_board_acquisition_sources.test.mjs",
+    "result": "5 passed, 0 failed",
+    "scope": "deterministic replay and bounded seven-source smoke; no network"
+  },
+  "letters": {
+    "A1": {
+      "status": "met",
+      "assertion": "Six saved HTML inputs replay to 66 records with stable source identities, dates and titles; cancellation and closure labels remain publisher-visible.",
+      "fixtures": [
+        {"board_id":"bronx-cb-06","path":"test/fixtures/community_board_acquisition_sources/bronx-cb-06.html","sha256":"0e993c26b5daa1b5e9f2f5dbb582a5ff40c30ac7e59d6f4f08ae761c1c8263a2"},
+        {"board_id":"bronx-cb-08","path":"test/fixtures/community_board_acquisition_sources/bronx-cb-08.html","sha256":"87bc8e540e8db36810048ac46f83fcf5e0921bbabd5aa6ea5ca6bc30f23f2277"},
+        {"board_id":"manhattan-cb-02","path":"test/fixtures/community_board_acquisition_sources/manhattan-cb-02.html","sha256":"aa7b1aeb202b78d4c279dd9ddea29c8fb6422e9dc17db4f27cbe2ff351bbcd2a"},
+        {"board_id":"manhattan-cb-04","path":"test/fixtures/community_board_acquisition_sources/manhattan-cb-04.html","sha256":"2a891eceee216045982b99f6ae866cb1793f43b4422c49f44bb02b173763bc20"},
+        {"board_id":"manhattan-cb-10","path":"test/fixtures/community_board_acquisition_sources/manhattan-cb-10.html","sha256":"f064688cb9b58694a155ea6f66ffef161f269302dd4e2d841ef3ffecd8979a90"},
+        {"board_id":"manhattan-cb-12","path":"test/fixtures/community_board_acquisition_sources/manhattan-cb-12.html","sha256":"30d772af2a4012ee9100f35ecc1c74b9800528c1978296667e6904da4baa863a"}
+      ]
+    },
+    "A2": {
+      "status": "met",
+      "assertion": "A duplicate Bronx 8 event is emitted once; the cancelled Manhattan 2 meeting and Manhattan 4 office closure retain their source labels; date-only evidence has no fabricated start time; an expired required child is unavailable rather than checked-empty.",
+      "negative_controls": ["duplicate publisher event", "cancelled meeting", "office closure", "date-only value", "expired embedded request"]
+    },
+    "A3": {
+      "status": "met",
+      "assertion": "Seven descriptors produce usable deterministic records; CB11 follows the calendar iframe to a freshly derived read request with America/New_York and does not follow an unrelated share.",
+      "fixture": {"board_id":"manhattan-cb-11","path":"test/fixtures/community_board_acquisition_sources/manhattan-cb-11.json","sha256":"084bebad87c7dcf4b858277cb920475b8902485a6b6b6ed01bc6be7b2a0ede5c"},
+      "retained_request_shape": "/v0.3/view/<view>/readSharedViewData?accessPolicy=<fresh policy>",
+      "retained_headers": {"x-time-zone":"America/New_York","x-airtable-accept-msgpack":"false"}
+    }
+  },
+  "interpretation": "The CB11 fixture is a sanitized public-table specimen containing three source rows and one admitted meeting; it is not a claim about current calendar population. No image binary is committed."
+}
