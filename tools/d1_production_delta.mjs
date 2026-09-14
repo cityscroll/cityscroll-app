@@ -48,7 +48,7 @@ export const D1_PUBLICATION_RECOVERY_SCHEMA = "cityscroll.d1-publication-recover
  * An auth, transport, or other Wrangler failure must continue to fail closed.
  */
 export function buildMissingPriorSnapshotRecovery({ published_state: state, snapshot_key: snapshotKey, kv_error: errorText } = {}) {
-  if (!/\b404\s+Not Found\b/i.test(String(errorText || ""))) return null;
+  if (!/(?:\b404\s*:?\s+Not Found\b|-\s+404\b)/i.test(String(errorText || ""))) return null;
   if (state?.schema !== D1_GENERATION_FENCE_SCHEMA || state.status !== "published" || !Number.isInteger(state.generation) || state.generation < 1) {
     fail("missing prior snapshot recovery requires a published generation fence state");
   }

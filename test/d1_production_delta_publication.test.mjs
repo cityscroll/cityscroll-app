@@ -110,6 +110,18 @@ test("a published pointer with an absent prior KV snapshot records explicit-rebu
   }), null, "non-404 failures must still fail the deployment");
 });
 
+test("classifies Wrangler's colon-form missing snapshot error for the published generation", () => {
+  for (const kv_error of [
+    "Failed to fetch https://api.cloudflare.com/.../values/<key> - 404: Not Found",
+    "Failed to fetch https://api.cloudflare.com/.../values/<key> - 404",
+  ]) {
+    const recovery = buildMissingPriorSnapshotRecovery({ ...missingSnapshotFixture, kv_error });
+    assert.equal(recovery?.reason, "published_snapshot_missing");
+    assert.equal(recovery?.published_generation, missingSnapshotFixture.published_state.generation);
+    assert.equal(recovery?.snapshot_key, "d1-publication:snapshot:v2:20");
+  }
+});
+
 test("production delta applies keyed inserts, updates, explicit deletes, and no whole-table rebuild", { skip: !DatabaseSync }, async () => {
   const currentSnapshot = snapshotFor(manifest, fixture.current);
   const { fenceStore, generation, holder } = await claimed(currentSnapshot);
