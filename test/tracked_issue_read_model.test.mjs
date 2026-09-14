@@ -5,6 +5,7 @@ import {
   buildEmmonsShelterMonitorPack,
   validateTrackedIssueRegistry,
   TRACKED_ISSUE_REGISTRY_SCHEMA,
+  renderEmmonsShelterMonitorPack,
 } from "../site/emmons_shelter_monitor_pack.mjs";
 
 test("the versioned monitor-pack registry projects bounded resident sections", () => {
@@ -29,6 +30,12 @@ test("the versioned monitor-pack registry projects bounded resident sections", (
     watch: "What to watch",
     not_yet_covered: "Not yet covered",
   });
+  const rendered = renderEmmonsShelterMonitorPack(pack);
+  assert.deepEqual(
+    [...rendered.matchAll(/<h2>([^<]+)<\/h2>/g)].map((match) => match[1]),
+    Object.values(registry.sections),
+    "rendered resident headings must preserve every declared section",
+  );
   assert.equal(validateTrackedIssueRegistry(registry), true);
 });
 
