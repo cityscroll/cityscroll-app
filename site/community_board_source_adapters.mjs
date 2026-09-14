@@ -1423,6 +1423,17 @@ export function airtableShareIdsFromHtml(html) {
   return [...ids];
 }
 
+function airtableCalendarEmbedShareIdsFromHtml(html) {
+  const ids = new Set();
+  const text = decodeHtmlEntities(html);
+  const iframePattern = /<iframe\b[^>]*\bsrc\s*=\s*["']([^"']+)["'][^>]*>/gi;
+  for (const match of text.matchAll(iframePattern)) {
+    const id = airtableShareIdFromUrl(match[1]);
+    if (id && /airtable-embed|airtable\.com\/embed\//i.test(match[0])) ids.add(id);
+  }
+  return [...ids];
+}
+
 export function airtableEmbedUrl(shareId) {
   const id = clean(shareId, 80);
   return /^shr[A-Za-z0-9]+$/.test(id) ? `https://airtable.com/embed/${id}` : null;
@@ -1586,9 +1597,11 @@ async function harvestAirtableRecords(text, contentType, source, { fetchImpl, ob
     return parseAirtableSource(parsed, source, { observedAt, receipt, committeeRegistry });
   }
   const records = [];
+  const explicitShareId = airtableShareIdFromUrl(source.record_url || explicitUrl(source));
+  const iframeShareIds = airtableCalendarEmbedShareIdsFromHtml(text);
   const shareIds = [...new Set([
-    airtableShareIdFromUrl(source.record_url || explicitUrl(source)),
-    ...airtableShareIdsFromHtml(text),
+    explicitShareId,
+    ...(iframeShareIds.length ? iframeShareIds : airtableShareIdsFromHtml(text)),
   ].filter(Boolean))];
   for (const shareId of shareIds) {
     const embedUrl = airtableEmbedUrl(shareId);
@@ -1693,11 +1706,6 @@ export async function fetchCommunityBoardSource(source = {}, { fetchImpl = globa
         content_sha256: contentSha256,
         reason: !response.ok ? (["challenge_html", "not_modified_without_verified_cache", "redirect_limit_exceeded", "malformed_json"].includes(response.receipt?.reason) ? response.receipt.reason : "http_error") : length > limit ? "byte_limit_exceeded" : accessDenied ? "access_denied" : null,
       }, source);
-      receipt.acquisition = {
-        graph: transport.graph.slice(),
-        stats: transport.stats(),
-        complete: transport.graph.every((entry) => entry.outcome === "ok"),
-      };
       lastReceipt = receipt;
       if (!response.ok || length > limit || accessDenied) continue;
       const adapter = adapterId(source);
@@ -1710,7 +1718,17 @@ export async function fetchCommunityBoardSource(source = {}, { fetchImpl = globa
         : adapter === "airtable_v1"
           ? await harvestAirtableRecords(text, contentType, source, { fetchImpl: transport, observedAt, receipt, limit, committeeRegistry })
         : parseCommunityBoardSource(text, source, { observedAt, receipt, committeeRegistry });
-      if (receipt.acquisition.complete === false) receipt.status = "unknown";
+      // Required child reads (calendar ICS, PDF, or shared-view data) happen
+      // inside the adapter harvest. Refresh the graph after that work so a
+      // failed child cannot remain a parent-only successful acquisition.
+      receipt.acquisition = {
+        graph: transport.graph.slice(),
+        stats: transport.stats(),
+        complete: transport.graph.every((entry) => entry.outcome === "ok"),
+      };
+      const requiredChild = source.required_child === true
+        || (adapter === "airtable_v1" && /public Airtable shared view/i.test(String(source.format || "")));
+      if (receipt.acquisition.complete === false && requiredChild) receipt.status = "unknown";
       return { records, receipt };
     } catch (error) {
       lastReceipt = normalizeObservedReceipt({ ...baseReceipt, reason: clean(error?.name || "fetch_error", 80) }, source);

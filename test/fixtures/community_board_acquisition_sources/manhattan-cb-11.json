@@ -1,0 +1,14 @@
+{
+  "msg": "SUCCESS",
+  "data": {"table": {
+    "columns": [
+      {"id":"name","name":"Name"}, {"id":"date","name":"Date"},
+      {"id":"location","name":"Location"}, {"id":"id","name":"Record ID"}
+    ],
+    "rows": [
+      {"id":"rec-cb11-full","cellValuesByColumnId":{"name":"Full Board Meeting","date":"2026-09-16T00:00:00.000Z","location":"1664 Park Avenue, New York, NY 10035"}},
+      {"id":"rec-cb11-closed","cellValuesByColumnId":{"name":"Labor Day - CLOSED","date":"2026-09-07T00:00:00.000Z"}},
+      {"id":"rec-cb11-rfp","cellValuesByColumnId":{"name":"RFP for a sports facility","date":"2026-09-16T00:00:00.000Z"}}
+    ]
+  }}
+}
