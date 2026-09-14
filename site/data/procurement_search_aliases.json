@@ -1,0 +1,39 @@
+{
+  "schema": "cityscroll.procurement_search_alias_registry.v1",
+  "version": 1,
+  "generated_at": "2026-09-14",
+  "aliases": [
+    {
+      "alias": "3218 Emmons Avenue",
+      "canonical_object_ref": "procurement:contract:CT107120258801626",
+      "provenance": {
+        "source": "site-owner-reviewed",
+        "basis": "curated address vocabulary for the exact admitted procurement"
+      }
+    },
+    {
+      "alias": "Comfort Inn Sheepshead Bay",
+      "canonical_object_ref": "procurement:contract:CT107120258801626",
+      "provenance": {
+        "source": "site-owner-reviewed",
+        "basis": "curated hotel name vocabulary for the exact admitted procurement"
+      }
+    },
+    {
+      "alias": "Gold Star Inn",
+      "canonical_object_ref": "procurement:contract:CT107120258801626",
+      "provenance": {
+        "source": "site-owner-reviewed",
+        "basis": "curated former hotel name vocabulary for the exact admitted procurement"
+      }
+    },
+    {
+      "alias": "Sheepshead Bay shelter",
+      "canonical_object_ref": "procurement:contract:CT107120258801626",
+      "provenance": {
+        "source": "site-owner-reviewed",
+        "basis": "curated resident description for the exact admitted procurement"
+      }
+    }
+  ]
+}
