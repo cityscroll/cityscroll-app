@@ -40,6 +40,11 @@ def digest(value: object) -> str:
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
 
+def stable_url(url: str) -> str:
+    parsed = urlsplit(url)
+    return parsed._replace(scheme="", netloc="").geturl()
+
+
 def local_route_html() -> str:
     script = r'''
 import { readFileSync } from "node:fs";
@@ -110,7 +115,7 @@ def no_script_capture(browser, html: str):
         response = page.goto(href, wait_until="domcontentloaded", timeout=30000)
         assert response.ok, f"reverse destination is not resolvable: {href} ({response.status})"
         page.goto(BASE + ROUTE, wait_until="domcontentloaded", timeout=30000)
-    result = {"route": ROUTE, "links": sorted(hrefs), "text": links.locator("..").all_inner_texts()}
+    result = {"route": ROUTE, "links": sorted(stable_url(href) for href in hrefs), "text": links.locator("..").all_inner_texts()}
     return digest(result)
 
 
@@ -138,7 +143,7 @@ def keyboard_capture(browser, html: str):
         label = page.evaluate("document.activeElement?.textContent.trim()")
         page.keyboard.press("Enter")
         wait_for_navigation_scope(page, expected_href)
-        observations.append({"label": label, "active": "A", "url": page.url})
+        observations.append({"label": label, "active": "A", "url": stable_url(page.url)})
         assert_route_parameters(page.url, expected)
     return digest(observations)
 

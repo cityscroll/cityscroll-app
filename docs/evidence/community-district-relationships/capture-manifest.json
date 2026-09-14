@@ -2,20 +2,20 @@
   "schema": "cityscroll.render_capture_manifest.v1",
   "capture_mode": "headless_playwright_served_route",
   "route": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K15&level=community_district&id=K15&parent=Brooklyn",
-  "revision": "8b0b44d12c45a568edc5a1fb4ba8151041a7616b",
+  "revision": "4c26f75cc7d3846c8cbb7d871e9a9c6c11e24fbb",
   "data_vintage": "2026-05-26",
   "captures": [
     {
       "viewport": [1440, 900],
       "mode": "no-javascript",
       "assertion": "With JavaScript disabled, the served K15 Near You markup contains native, resolvable community-board and Council-district reverse links.",
-      "sha256": "5006c1fcf581d896dc09d779941be7c9ff5023268c37aa1c6158ac8dda42d9bb"
+      "sha256": "bfdf7bda9fff593b0badc8c6bde4ab301924ee84a0394aa503c65d8f59707335"
     },
     {
       "viewport": [390, 844],
       "mode": "keyboard",
       "assertion": "With JavaScript enabled, Tab reaches each K15 reverse-navigation link, Enter activates it, and the fiscal-year, agency, lens, and place scope parameters remain unchanged.",
-      "sha256": "fae9ce9a80830bfe34b21187248c0d024150436147d108a81d421438862d888f"
+      "sha256": "a744c40103d73c7022963b0241548e8786522b35de3ab68ce7e4920a3e89e28d"
     }
   ]
 }
