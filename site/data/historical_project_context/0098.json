@@ -1,0 +1,835 @@
+{
+  "schema_version": "cityscroll.historical_project_context.v1",
+  "shard": "0098",
+  "rows": [
+    {
+      "project_id": "P2018R0021",
+      "project_name": "SS 72 & 74 Harris Lane",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2017-08-25T00:00:00.000",
+      "ulurp_numbers": "N180010RCR",
+      "ceqr_number": "18DCP006R",
+      "primary_applicant": "Michael Perez"
+    },
+    {
+      "project_id": "P2018R0026",
+      "project_name": "120 Whitlock Avenue aka 2 Helena Road",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2019-11-12T00:00:00.000",
+      "ulurp_numbers": "N190198ZAR; N190199ZCR",
+      "ceqr_number": "19DCP096R",
+      "primary_applicant": "William Petrouleous"
+    },
+    {
+      "project_id": "P2018R0027",
+      "project_name": "551 Richmond Road",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2020-08-28T00:00:00.000",
+      "ulurp_numbers": "N210009ZCR",
+      "ceqr_number": "21DCP004R",
+      "primary_applicant": "Unknown"
+    },
+    {
+      "project_id": "P2018R0033",
+      "project_name": "27 Emerson Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2019-05-03T00:00:00.000",
+      "ulurp_numbers": "N190272ZCR",
+      "ceqr_number": "19DCP133R",
+      "primary_applicant": "Unknown"
+    },
+    {
+      "project_id": "P2018R0034",
+      "project_name": "45 Coverly Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2019-03-19T00:00:00.000",
+      "ulurp_numbers": "N190169ZAR; N190170ZAR; N190171ZAR",
+      "ceqr_number": "19DCP079R",
+      "primary_applicant": "Thomas Crimmins"
+    },
+    {
+      "project_id": "P2018R0044",
+      "project_name": "SD 57 Canton Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2017-11-01T00:00:00.000",
+      "ulurp_numbers": "N180040RCR",
+      "ceqr_number": "18DCP018R",
+      "primary_applicant": "Carmine Cautela"
+    },
+    {
+      "project_id": "P2018R0045",
+      "project_name": "SS 61 Seguine Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2017-10-03T00:00:00.000",
+      "ulurp_numbers": "N180041RCR",
+      "ceqr_number": "18DCP019R",
+      "primary_applicant": "MELISSA PICCININNI"
+    },
+    {
+      "project_id": "P2018R0052",
+      "project_name": "135 Cromwell Circle - Pool",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2019-02-28T00:00:00.000",
+      "ulurp_numbers": "N190206ZAR",
+      "ceqr_number": "19DCP098R",
+      "primary_applicant": "Pasquale Meleleo"
+    },
+    {
+      "project_id": "P2018R0054",
+      "project_name": "SD 41 & 43 Ramblewood Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2017-11-01T00:00:00.000",
+      "ulurp_numbers": "N180049RCR",
+      "ceqr_number": "18DCP026R",
+      "primary_applicant": "Joseph Palermo"
+    },
+    {
+      "project_id": "P2018R0061",
+      "project_name": "SS Butler Manor Renewal",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2017-10-03T00:00:00.000",
+      "ulurp_numbers": "N180071RCR",
+      "ceqr_number": "18DCP032R",
+      "primary_applicant": "Ray Masucci"
+    },
+    {
+      "project_id": "P2018R0062",
+      "project_name": "SS 165 Pleasant Plains Avenue - renewal",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2017-10-25T00:00:00.000",
+      "ulurp_numbers": "N180074RCR",
+      "ceqr_number": "18DCP035R",
+      "primary_applicant": "Jason Harnick"
+    },
+    {
+      "project_id": "P2018R0063",
+      "project_name": "SS SD 5403 Arthur Kill Road",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-01-08T00:00:00.000",
+      "ulurp_numbers": "N180075RCR; N180076RCR",
+      "ceqr_number": "18DCP036R",
+      "primary_applicant": "David Fogel"
+    },
+    {
+      "project_id": "P2018R0071",
+      "project_name": "SS 3, 17, & 23 Fonda Place - renewal",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2017-10-25T00:00:00.000",
+      "ulurp_numbers": "N180080RCR",
+      "ceqr_number": "18DCP037R",
+      "primary_applicant": "Bob Mack"
+    },
+    {
+      "project_id": "P2018R0072",
+      "project_name": "33 Ridgefield Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2021-05-12T00:00:00.000",
+      "ulurp_numbers": "N200311ZAR; N200312ZAR; N200313ZCR",
+      "ceqr_number": "20DCP139R",
+      "primary_applicant": "Foster Development LLC"
+    },
+    {
+      "project_id": "P2018R0093",
+      "project_name": "SS 33 Idaho Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2017-10-31T00:00:00.000",
+      "ulurp_numbers": "N180103RCR",
+      "ceqr_number": "18DCP046R",
+      "primary_applicant": "Franco Pellegriti"
+    },
+    {
+      "project_id": "P2018R0095",
+      "project_name": "SS SD 66 Arbutus Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-01-08T00:00:00.000",
+      "ulurp_numbers": "N180104RCR; N180105RCR",
+      "ceqr_number": "18DCP047R",
+      "primary_applicant": "Scott Lieberman"
+    },
+    {
+      "project_id": "P2018R0096",
+      "project_name": "SS SD 495 Butler Blvd and Richard Ave",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-01-24T00:00:00.000",
+      "ulurp_numbers": "N180106RCR; N180107RCR",
+      "ceqr_number": "18DCP048R",
+      "primary_applicant": "Bruno Savo"
+    },
+    {
+      "project_id": "P2018R0103",
+      "project_name": "166 Benedict Road",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2019-05-16T00:00:00.000",
+      "ulurp_numbers": "N190319ZCR",
+      "ceqr_number": "19DCP156R",
+      "primary_applicant": "Keith Pillarella"
+    },
+    {
+      "project_id": "P2018R0130",
+      "project_name": "SS 136 Mayberry Promenade - renewal",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2017-11-27T00:00:00.000",
+      "ulurp_numbers": "N180118RCR",
+      "ceqr_number": "18DCP051R",
+      "primary_applicant": "Julius Nasso"
+    },
+    {
+      "project_id": "P2018R0134",
+      "project_name": "SS 51, 53, 55 Nelson Avenue - renewal",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2017-11-27T00:00:00.000",
+      "ulurp_numbers": "N180119RCR",
+      "ceqr_number": "18DCP052R",
+      "primary_applicant": "Bob Mack"
+    },
+    {
+      "project_id": "P2018R0148",
+      "project_name": "56 William Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2023-08-03T00:00:00.000",
+      "ulurp_numbers": "N230068ZRR",
+      "ceqr_number": "23DCP032R",
+      "primary_applicant": "Estate of Clement Marotte"
+    },
+    {
+      "project_id": "P2018R0149",
+      "project_name": "SS 432 Albourne Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2017-12-27T00:00:00.000",
+      "ulurp_numbers": "N180141RCR",
+      "ceqr_number": "18DCP058R",
+      "primary_applicant": "Mangone Development Corporation"
+    },
+    {
+      "project_id": "P2018R0152",
+      "project_name": "860 Edgegrove Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2019-01-04T00:00:00.000",
+      "ulurp_numbers": "N180271RCR",
+      "ceqr_number": "18DCP109R",
+      "primary_applicant": "Michael Mesheriakov"
+    },
+    {
+      "project_id": "P2018R0157",
+      "project_name": "156, 160, 164, and 168 Hopkins Ave",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-04-03T00:00:00.000",
+      "ulurp_numbers": "N180134RCR",
+      "ceqr_number": "18DCP055R",
+      "primary_applicant": "CMW REALTY LLC, MORTY WOLKOFF"
+    },
+    {
+      "project_id": "P2018R0164",
+      "project_name": "SS Edgegrove Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2017-12-27T00:00:00.000",
+      "ulurp_numbers": "N180142RCR",
+      "ceqr_number": "18DCP062R",
+      "primary_applicant": "Robert Vonderosten"
+    },
+    {
+      "project_id": "P2018R0165",
+      "project_name": "SS SD 600 Foster Road",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-01-24T00:00:00.000",
+      "ulurp_numbers": "N180143RCR; N180144RCR",
+      "ceqr_number": "18DCP065R",
+      "primary_applicant": "Julio Mulkay"
+    },
+    {
+      "project_id": "P2018R0189",
+      "project_name": "57 St. James Place",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2019-04-26T00:00:00.000",
+      "ulurp_numbers": "N190249ZCR",
+      "ceqr_number": "19DCP124R",
+      "primary_applicant": "Richard Cardinale"
+    },
+    {
+      "project_id": "P2018R0191",
+      "project_name": "SS 236 Wiman Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-01-24T00:00:00.000",
+      "ulurp_numbers": "N180162RCR",
+      "ceqr_number": "18DCP073R",
+      "primary_applicant": "GAGMESH GIRAN"
+    },
+    {
+      "project_id": "P2018R0201",
+      "project_name": "SS 184 Albee Avenue - renewal",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-01-24T00:00:00.000",
+      "ulurp_numbers": "N180177RCR",
+      "ceqr_number": "18DCP078R",
+      "primary_applicant": "Michael Margarella"
+    },
+    {
+      "project_id": "P2018R0204",
+      "project_name": "569 Todt Hill Road",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2021-05-25T00:00:00.000",
+      "ulurp_numbers": "N200267ZCR",
+      "ceqr_number": "20DCP123R",
+      "primary_applicant": "Peter Calvanico"
+    },
+    {
+      "project_id": "P2018R0211",
+      "project_name": "SS 29 Finlay Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-02-13T00:00:00.000",
+      "ulurp_numbers": "N180176RCR",
+      "ceqr_number": "18DCP077R",
+      "primary_applicant": "DANIELA M. TRAGNI"
+    },
+    {
+      "project_id": "P2018R0223",
+      "project_name": "SS SD 485 Maguire Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-05-22T00:00:00.000",
+      "ulurp_numbers": "N180191RCR; N180192RCR",
+      "ceqr_number": "18DCP081R",
+      "primary_applicant": "Gordon Rugg"
+    },
+    {
+      "project_id": "P2018R0224",
+      "project_name": "SS SD 3 Bartlett Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-05-29T00:00:00.000",
+      "ulurp_numbers": "N180193RCR; N180194RCR",
+      "ceqr_number": "18DCP082R",
+      "primary_applicant": "John Manzione"
+    },
+    {
+      "project_id": "P2018R0225",
+      "project_name": "SS SD 95 Cloverdale Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-05-22T00:00:00.000",
+      "ulurp_numbers": "N180195RCR; N180196RCR",
+      "ceqr_number": "18DCP083R",
+      "primary_applicant": "Charles Fleming"
+    },
+    {
+      "project_id": "P2018R0226",
+      "project_name": "SD Tenafly Place & Hoda Place",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "ulurp_numbers": "N180197RCR",
+      "ceqr_number": "18DCP085R",
+      "primary_applicant": "Randy Franza"
+    },
+    {
+      "project_id": "P2018R0227",
+      "project_name": "SS SD 102 Prall Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-05-05T00:00:00.000",
+      "ulurp_numbers": "N180198RCR; N180199RCR",
+      "ceqr_number": "18DCP086R",
+      "primary_applicant": "Joseph Verdino"
+    },
+    {
+      "project_id": "P2018R0228",
+      "project_name": "3 Helena Road",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2019-05-16T00:00:00.000",
+      "ulurp_numbers": "N190201ZAR",
+      "ceqr_number": "19DCP097R",
+      "primary_applicant": "Leon Miskin"
+    },
+    {
+      "project_id": "P2018R0246",
+      "project_name": "SS SD 44 Herbert Street (aka 73 Seguine Avenue)",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-06-18T00:00:00.000",
+      "ulurp_numbers": "N180221RCR; N180220RCR",
+      "ceqr_number": "18DCP088R",
+      "primary_applicant": "Robert Kelly"
+    },
+    {
+      "project_id": "P2018R0247",
+      "project_name": "SD 66 Bennett Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-06-05T00:00:00.000",
+      "ulurp_numbers": "N180222RCR",
+      "ceqr_number": "18DCP090R",
+      "primary_applicant": "Maria Buonsante"
+    },
+    {
+      "project_id": "P2018R0248",
+      "project_name": "SS 30 Madsen Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-02-22T00:00:00.000",
+      "ulurp_numbers": "N180231RCR",
+      "ceqr_number": "18DCP093R",
+      "primary_applicant": "MICHAEL A. BIAGIOLI"
+    },
+    {
+      "project_id": "P2018R0249",
+      "project_name": "18 Emerson Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2024-10-28T00:00:00.000",
+      "completed_date": "2025-12-12T00:00:00.000",
+      "ulurp_numbers": "N210470ZAR",
+      "ceqr_number": "21DCP207R",
+      "primary_applicant": "Richard Cotogno"
+    },
+    {
+      "project_id": "P2018R0253",
+      "project_name": "SS 5165 Amboy Road (renewal)",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-03-09T00:00:00.000",
+      "ulurp_numbers": "N180250RCR",
+      "ceqr_number": "18DCP095R",
+      "primary_applicant": "Pat Rotondi"
+    },
+    {
+      "project_id": "P2018R0254",
+      "project_name": "SS 6650 Hylan Boulevard (renewal)",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-03-09T00:00:00.000",
+      "ulurp_numbers": "N180251RCR",
+      "ceqr_number": "18DCP096R",
+      "primary_applicant": "Nicola Iacoviello"
+    },
+    {
+      "project_id": "P2018R0263",
+      "project_name": "SS SD 34 Woodvale Avenue and 6136 Amboy Road",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-06-14T00:00:00.000",
+      "ulurp_numbers": "N180189RCR; N180190RCR",
+      "ceqr_number": "18DCP080R",
+      "primary_applicant": "Ronald D'Angelo"
+    },
+    {
+      "project_id": "P2018R0278",
+      "project_name": "Olmsted-Beil House Park expansion",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2019-01-14T00:00:00.000",
+      "ulurp_numbers": "C190061PCR",
+      "primary_applicant": "Garrett Burger"
+    },
+    {
+      "project_id": "P2018R0279",
+      "project_name": "SS Princes Point (renewal)",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-03-23T00:00:00.000",
+      "ulurp_numbers": "N180272RCR",
+      "ceqr_number": "18DCP110R",
+      "primary_applicant": "PRINCES POINT VENTURE LLC"
+    },
+    {
+      "project_id": "P2018R0287",
+      "project_name": "SD 71 Holcomb Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-06-05T00:00:00.000",
+      "ulurp_numbers": "N180274RCR",
+      "ceqr_number": "18DCP112R",
+      "primary_applicant": "Robert Kelly"
+    },
+    {
+      "project_id": "P2018R0288",
+      "project_name": "SD 52 Stafford Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-05-29T00:00:00.000",
+      "ulurp_numbers": "N180275RCR",
+      "ceqr_number": "18DCP113R",
+      "primary_applicant": "CARMINE CAUTELA/FJN DEVELOPMENT CORP."
+    },
+    {
+      "project_id": "P2018R0289",
+      "project_name": "SS 3508 & 3512 Amboy Road",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-03-23T00:00:00.000",
+      "ulurp_numbers": "N180276RCR",
+      "ceqr_number": "18DCP115R",
+      "primary_applicant": "Marni Caruso"
+    },
+    {
+      "project_id": "P2018R0290",
+      "project_name": "SS SD Inez Street",
+      "public_status": "Completed",
+      "project_status": "Terminated-Applicant Unresponsive",
+      "ceqr_number": "18DCP116R",
+      "primary_applicant": "Ashfaq Nagori"
+    },
+    {
+      "project_id": "P2018R0298",
+      "project_name": "450 - 470 New Dorp Lane  - Sunrise",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2020-11-23T00:00:00.000",
+      "ulurp_numbers": "N200323ZCR",
+      "ceqr_number": "20DCP143R",
+      "primary_applicant": "Sunrise of New Dorp PropCo, LLC"
+    },
+    {
+      "project_id": "P2018R0317",
+      "project_name": "SS 24 Tottenville Place",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-06-14T00:00:00.000",
+      "ulurp_numbers": "N180284RCR",
+      "ceqr_number": "18DCP125R",
+      "primary_applicant": "Arthur Santopietro"
+    },
+    {
+      "project_id": "P2018R0318",
+      "project_name": "SS SD 19 Highmount Road",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-08-13T00:00:00.000",
+      "ulurp_numbers": "N180286RCR; N180287RCR",
+      "ceqr_number": "18DCP126R",
+      "primary_applicant": "Andrew Calcagno"
+    },
+    {
+      "project_id": "P2018R0319",
+      "project_name": "321 Harold Street - House of Worship",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2020-01-31T00:00:00.000",
+      "ulurp_numbers": "N190519ZCR",
+      "ceqr_number": "19DCP217R",
+      "primary_applicant": "Or HaChaim"
+    },
+    {
+      "project_id": "P2018R0326",
+      "project_name": "252 Victory Boulevard",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2021-10-21T00:00:00.000",
+      "completed_date": "2022-04-06T00:00:00.000",
+      "ulurp_numbers": "C210361ZMR; N210362ZRR; N210363ZAR; N210364ZAR; N210366LDR",
+      "ceqr_number": "21DCP153R",
+      "primary_applicant": "Thomas Cordasco",
+      "noticed_date": "2021-04-02T00:00:00.000"
+    },
+    {
+      "project_id": "P2018R0341",
+      "project_name": "SS Sleight Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-08-13T00:00:00.000",
+      "ulurp_numbers": "N180307RCR",
+      "ceqr_number": "18DCP136R",
+      "primary_applicant": "Alan Becker"
+    },
+    {
+      "project_id": "P2018R0344",
+      "project_name": "West Castor Place (DDC Capital Project SER200258)",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2021-03-10T00:00:00.000",
+      "ulurp_numbers": "200341RAR; 200340RAR",
+      "ceqr_number": "97DEP026R",
+      "primary_applicant": "DDC"
+    },
+    {
+      "project_id": "P2018X0023",
+      "project_name": "Bridge Park South Mapping",
+      "public_status": "Completed",
+      "project_status": "Active",
+      "ulurp_numbers": "190508MMX",
+      "ceqr_number": "18DPR007X",
+      "primary_applicant": "DPR - Department of Parks & Recreation NYC"
+    },
+    {
+      "project_id": "P2018X0076",
+      "project_name": "East 180th Street Bridge Rehabilitation",
+      "public_status": "Completed",
+      "project_status": "Active",
+      "ulurp_numbers": "190043MMX",
+      "ceqr_number": "17DOT008X",
+      "primary_applicant": "NYC DOT New York City Dept. of Transportation  - Bridges"
+    },
+    {
+      "project_id": "P2018X0084",
+      "project_name": "4697 Third Avenue UDAAP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2019-01-30T00:00:00.000",
+      "ulurp_numbers": "C190026HAX",
+      "primary_applicant": "Kay Real"
+    },
+    {
+      "project_id": "P2018X0086",
+      "project_name": "Melrose Open Door CB1",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2021-06-23T00:00:00.000",
+      "ulurp_numbers": "210154HAX; 210155HUX",
+      "primary_applicant": "HPD - NYC Dept of Housing Preservation & Development",
+      "noticed_date": "2020-10-02T00:00:00.000"
+    },
+    {
+      "project_id": "P2018X0087",
+      "project_name": "Melrose Open Door CB3",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2021-06-23T00:00:00.000",
+      "ulurp_numbers": "210156HAX",
+      "primary_applicant": "HPD - NYC Dept of Housing Preservation & Development",
+      "noticed_date": "2020-10-02T00:00:00.000"
+    },
+    {
+      "project_id": "P2018X0138",
+      "project_name": "Betances VI",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2019-03-19T00:00:00.000",
+      "ulurp_numbers": "C190143ZMX; N190144ZRX",
+      "ceqr_number": "18CHA005X",
+      "primary_applicant": "NYCHA - New York City Housing Authority"
+    },
+    {
+      "project_id": "P2018X0141",
+      "project_name": "East 175th Street Bridge Rehabilitation",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2022-07-13T00:00:00.000",
+      "ulurp_numbers": "190087MMX",
+      "ceqr_number": "18DOT009X",
+      "primary_applicant": "NYC DOT New York City Dept. of Transportation  - Bridges"
+    },
+    {
+      "project_id": "P2018X0163",
+      "project_name": "Park Haven FRESH",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2019-05-28T00:00:00.000",
+      "ulurp_numbers": "N190423ZCX",
+      "ceqr_number": "17HPD039X",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P2018X0171",
+      "project_name": "SAR Academy - ELC Building - SNAD Cert",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-06-05T00:00:00.000",
+      "ulurp_numbers": "N180316ZCX",
+      "ceqr_number": "18DCP139X",
+      "primary_applicant": "SALANTER AKIBA RIVERDALE ACADEMY"
+    },
+    {
+      "project_id": "P2018X0177",
+      "project_name": "Bronx Point Non-ULURP UDAAP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2019-09-30T00:00:00.000",
+      "ulurp_numbers": "N190501HNX",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P2018X0186",
+      "project_name": "Samuel H. and Mary T. Booth House",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-01-31T00:00:00.000",
+      "primary_applicant": "NYC LPC"
+    },
+    {
+      "project_id": "P2018X0187",
+      "project_name": "Stafford Osborn House",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-03-22T00:00:00.000",
+      "primary_applicant": "NYC LPC"
+    },
+    {
+      "project_id": "P2018X0203",
+      "project_name": "784 Courtlandt Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2019-07-29T00:00:00.000",
+      "ulurp_numbers": "C190292HUX; C190293HAX",
+      "ceqr_number": "19HPD016X",
+      "primary_applicant": "Infinite Horizons"
+    },
+    {
+      "project_id": "P2018X0206",
+      "project_name": "599 Courtlandt Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-11-15T00:00:00.000",
+      "ulurp_numbers": "C180391PQX; C180390HAX",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P2018X0209",
+      "project_name": "431 Concord Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2021-06-02T00:00:00.000",
+      "ulurp_numbers": "C200274ZMX; N200275ZRX",
+      "ceqr_number": "21DCP007X",
+      "primary_applicant": "Nissan Cohen",
+      "noticed_date": "2020-10-02T00:00:00.000"
+    },
+    {
+      "project_id": "P2018X0210",
+      "project_name": "Brook 156",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2019-07-16T00:00:00.000",
+      "ulurp_numbers": "C190208PPX; C190207ZMX; N190209ZRX; C190210ZSX",
+      "ceqr_number": "19HPD011X",
+      "primary_applicant": "NYC HPD"
+    },
+    {
+      "project_id": "P2018X0229",
+      "project_name": "Wave Hill Gardens - SNAD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2019-10-29T00:00:00.000",
+      "ulurp_numbers": "N190245ZAX",
+      "ceqr_number": "19DCP122X",
+      "primary_applicant": "Wave Hill Gardens"
+    },
+    {
+      "project_id": "P2018X0231",
+      "project_name": "Pappas Residence - 4637 Grosvenor Ave - SNAD",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "18DCP141X",
+      "primary_applicant": "Claud Pappas"
+    },
+    {
+      "project_id": "P2018X0242",
+      "project_name": "College of Mt St Vincent - New Building - SNAD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2019-01-09T00:00:00.000",
+      "ulurp_numbers": "N180374ZAX; N180375ZAX; N180376ZAX",
+      "ceqr_number": "18DCP151X",
+      "primary_applicant": "Kevin DeGroat"
+    },
+    {
+      "project_id": "P2018X0243",
+      "project_name": "Office Space for Taxi & Limousine Commission",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2018-03-20T00:00:00.000",
+      "primary_applicant": "BRIAN SWITZER"
+    },
+    {
+      "project_id": "P2018X0267",
+      "project_name": "695 West 246th St - Goldberg - Version 2 - SNAD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2019-04-02T00:00:00.000",
+      "ulurp_numbers": "N190045ZAX; N190046ZAX; N190047ZAX; N190048ZCX",
+      "ceqr_number": "19DCP035X",
+      "primary_applicant": "Alan Goldberg"
+    },
+    {
+      "project_id": "P2018X0270",
+      "project_name": "893 Eagle Avenue Rezoning",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2023-09-12T00:00:00.000",
+      "completed_date": "2025-12-30T00:00:00.000",
+      "ulurp_numbers": "220334ZMX; N220335ZRX; 220336ZSX; N220393LDX",
+      "ceqr_number": "20DCP076X",
+      "primary_applicant": "H.O.G.A.R. Inc.",
+      "noticed_date": "2022-04-08T00:00:00.000"
+    },
+    {
+      "project_id": "P2018X0271",
+      "project_name": "198 East 135th St -SHRWD Waterfront Cert (Revised)",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2018-07-10T00:00:00.000",
+      "ulurp_numbers": "N180301ZCX",
+      "ceqr_number": "18DCP131X",
+      "primary_applicant": "DEEGAN 135 REALTY LLC"
+    },
+    {
+      "project_id": "P2018X0305",
+      "project_name": "PEARTREE SELF STORAGE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "2021-02-04T00:00:00.000",
+      "ceqr_number": "20DCP055X",
+      "primary_applicant": "Laquila Group",
+      "noticed_date": "2020-09-04T00:00:00.000"
+    },
+    {
+      "project_id": "P2018X0310",
+      "project_name": "EMS Station 17 New Facility",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2022-06-16T00:00:00.000",
+      "completed_date": "2022-07-13T00:00:00.000",
+      "ulurp_numbers": "C210293PSX; C210294ZSX",
+      "ceqr_number": "20FDO001X",
+      "primary_applicant": "FDNY - Fire Department of NYC",
+      "app_filed_date": "2021-07-20T00:00:00.000",
+      "noticed_date": "2021-08-20T00:00:00.000"
+    },
+    {
+      "project_id": "P2018X0328",
+      "project_name": "Grand ConCourse Bridge Rehabilitation",
+      "public_status": "Filed",
+      "project_status": "On-Hold",
+      "ulurp_numbers": "200003MMX",
+      "primary_applicant": "DOT - NYC Dept of Transportation"
+    },
+    {
+      "project_id": "P2018X0337",
+      "project_name": "439 Devoe Avenue",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "22DCP079X",
+      "primary_applicant": "Benjamin Atkins",
+      "noticed_date": "2022-04-08T00:00:00.000"
+    }
+  ]
+}

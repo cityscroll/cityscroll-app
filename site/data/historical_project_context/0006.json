@@ -1,0 +1,2332 @@
+{
+  "schema_version": "cityscroll.historical_project_context.v1",
+  "shard": "0006",
+  "rows": [
+    {
+      "project_id": "2025Q0155",
+      "project_name": "158-06 Northern Boulevard Rezoning",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "ulurp_numbers": "260171ZMQ; 260172ZRQ",
+      "ceqr_number": "26DCP065Q",
+      "primary_applicant": "Northern 158 Holding LLC",
+      "app_filed_date": "2025-11-25T00:00:00.000",
+      "noticed_date": "2026-01-16T00:00:00.000"
+    },
+    {
+      "project_id": "2025Q0247",
+      "project_name": "69-67 108th Street Rezoning",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "ulurp_numbers": "260186ZMQ; 260187ZRQ",
+      "ceqr_number": "26DCP064Q",
+      "primary_applicant": "108 ST ., LLC",
+      "app_filed_date": "2025-11-25T00:00:00.000",
+      "noticed_date": "2026-03-27T00:00:00.000"
+    },
+    {
+      "project_id": "2025Q0280",
+      "project_name": "95-25 Queens Blvd NYPD Office Application",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-02-27T00:00:00.000",
+      "primary_applicant": "Michael Gries",
+      "app_filed_date": "2025-01-09T00:00:00.000"
+    },
+    {
+      "project_id": "2025Q0281",
+      "project_name": "97-77 Queens Blvd NYPD Office Space Application",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-02-27T00:00:00.000",
+      "ceqr_number": "n/a",
+      "primary_applicant": "NYPD - New York City Police Department",
+      "app_filed_date": "2025-01-09T00:00:00.000"
+    },
+    {
+      "project_id": "2025Q0304",
+      "project_name": "50-01 Queens Boulevard Rezoning",
+      "public_status": "Noticed",
+      "project_status": "Active",
+      "ulurp_numbers": "260267ZMQ; 260268ZRQ",
+      "ceqr_number": "26DCP118Q",
+      "primary_applicant": "ZDJ QUEENS 50 LLC",
+      "app_filed_date": "2026-02-19T00:00:00.000",
+      "noticed_date": "2026-05-15T00:00:00.000"
+    },
+    {
+      "project_id": "2025Q0307",
+      "project_name": "Queens CD 3 Walk to Park Site Selection/Acq.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-12-04T00:00:00.000",
+      "ulurp_numbers": "250297PCQ",
+      "primary_applicant": "DPR - Department of Parks & Recreation NYC",
+      "app_filed_date": "2025-05-08T00:00:00.000",
+      "noticed_date": "2025-04-18T00:00:00.000"
+    },
+    {
+      "project_id": "2025Q0314",
+      "project_name": "Queens CD 4 Walk to Park Site Selection/Acq.",
+      "public_status": "Noticed",
+      "project_status": "Active",
+      "primary_applicant": "DPR - Department of Parks & Recreation NYC",
+      "noticed_date": "2026-02-10T00:00:00.000"
+    },
+    {
+      "project_id": "2025Q0316",
+      "project_name": "Queens CD 2 Walk to Park Site Selection/Acq.",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "ulurp_numbers": "C260089PCQ",
+      "primary_applicant": "DPR - Department of Parks & Recreation NYC",
+      "app_filed_date": "2025-08-29T00:00:00.000",
+      "noticed_date": "2025-08-15T00:00:00.000"
+    },
+    {
+      "project_id": "2025Q0319",
+      "project_name": "161-01 Jamaica Avenue ACS Office Acquisition",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-04-10T00:00:00.000",
+      "primary_applicant": "ACS - NYC Administration for Children's Services",
+      "app_filed_date": "2025-02-20T00:00:00.000"
+    },
+    {
+      "project_id": "2025Q0327",
+      "project_name": "Flushing Creek CSO Demapping",
+      "public_status": "Completed",
+      "project_status": "Active",
+      "approval_date": "2026-03-02T00:00:00.000",
+      "ulurp_numbers": "250323MMQ",
+      "ceqr_number": "23DEP015Q",
+      "primary_applicant": "DEP - New York City Department of Environmental Protection",
+      "app_filed_date": "2025-06-09T00:00:00.000",
+      "noticed_date": "2025-09-05T00:00:00.000"
+    },
+    {
+      "project_id": "2025Q0331",
+      "project_name": "44-17 Greenpoint Avenue Rezoning",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "ulurp_numbers": "260348ZMQ; 260349ZRQ",
+      "ceqr_number": "26DCP140Q",
+      "primary_applicant": "Jasper Wu",
+      "app_filed_date": "2026-05-05T00:00:00.000",
+      "noticed_date": "2026-05-15T00:00:00.000"
+    },
+    {
+      "project_id": "2025Q0335",
+      "project_name": "97-27 57th Avenue FRESH Certification",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ceqr_number": "26DCP153Q",
+      "primary_applicant": "SDWM 57 LLC",
+      "app_filed_date": "2026-06-04T00:00:00.000"
+    },
+    {
+      "project_id": "2025Q0367",
+      "project_name": "69-10 34th Avenue Rezoning",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "78DCP195Q",
+      "primary_applicant": "Rachel Scall",
+      "app_filed_date": "2025-07-08T00:00:00.000"
+    },
+    {
+      "project_id": "2025Q0387",
+      "project_name": "33-28 Northern Blvd HRA Office Acquisition",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-06-30T00:00:00.000",
+      "primary_applicant": "HRA - Human Resources Administration of NYC",
+      "app_filed_date": "2025-05-09T00:00:00.000"
+    },
+    {
+      "project_id": "2025Q0444",
+      "project_name": "Beach 29th Street Waterfront Certification",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-11-25T00:00:00.000",
+      "completed_date": "2025-12-04T00:00:00.000",
+      "ulurp_numbers": "260175ZCQ",
+      "ceqr_number": "26DCP057Q",
+      "primary_applicant": "Beach Development 30th LLC",
+      "app_filed_date": "2025-11-12T00:00:00.000"
+    },
+    {
+      "project_id": "2025Q0445",
+      "project_name": "Flushing Commons RD Modification",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ulurp_numbers": "260236LDQ",
+      "ceqr_number": "26DCP084Q",
+      "primary_applicant": "Richard Siu",
+      "app_filed_date": "2026-01-15T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0102",
+      "project_name": "534 South Avenue_Special Permit Renewal",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-05-14T00:00:00.000",
+      "completed_date": "2025-05-22T00:00:00.000",
+      "ulurp_numbers": "N250074CMR",
+      "ceqr_number": "25DCP034R",
+      "primary_applicant": "ORI ALPERT",
+      "app_filed_date": "2024-10-22T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0120",
+      "project_name": "Cole Street Drainage Plan OWB-6",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2024-09-24T00:00:00.000",
+      "completed_date": "2024-10-08T00:00:00.000",
+      "primary_applicant": "DEP - New York City Department of Environmental Protection",
+      "app_filed_date": "2024-10-08T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0137",
+      "project_name": "Staten Island Family Court Consolidation",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "ulurp_numbers": "260227PSR",
+      "ceqr_number": "26DAS001R",
+      "primary_applicant": "Mayor's Office of Criminal Justice",
+      "app_filed_date": "2026-01-05T00:00:00.000",
+      "noticed_date": "2025-12-19T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0140",
+      "project_name": "4450 Arthur Kill Road",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "ulurp_numbers": "; 260198LDR",
+      "ceqr_number": "26DCP071R",
+      "primary_applicant": "frank mcerlean",
+      "app_filed_date": "2025-12-12T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0222",
+      "project_name": "St. Joseph by the Sea Special Permit",
+      "public_status": "Noticed",
+      "project_status": "Active",
+      "ulurp_numbers": "260323RSR; 260324RCR; 260325RAR; 260389LDR",
+      "ceqr_number": "26DCP145R",
+      "primary_applicant": "Ronald Fasone",
+      "app_filed_date": "2026-05-19T00:00:00.000",
+      "noticed_date": "2026-05-01T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0228",
+      "project_name": "Skyline Playground Upgrades",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2026-02-23T00:00:00.000",
+      "completed_date": "2026-02-24T00:00:00.000",
+      "ulurp_numbers": "260134ZAR",
+      "primary_applicant": "Sarah Dornner",
+      "app_filed_date": "2025-10-07T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0244",
+      "project_name": "925 Todt Hill Road",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2026-01-29T00:00:00.000",
+      "completed_date": "2026-01-29T00:00:00.000",
+      "ulurp_numbers": "260070ZCR",
+      "ceqr_number": "26DCP018R",
+      "primary_applicant": "Joseph Zahriyeh",
+      "app_filed_date": "2025-08-20T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0248",
+      "project_name": "1239 Forest Hill Road",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-04-29T00:00:00.000",
+      "completed_date": "2025-05-30T00:00:00.000",
+      "ceqr_number": "25DCP065R",
+      "primary_applicant": "Jay Goldstein",
+      "app_filed_date": "2025-03-06T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0255",
+      "project_name": "16 Callan Avenue Pool and Patio",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-12-12T00:00:00.000",
+      "completed_date": "2025-12-23T00:00:00.000",
+      "ulurp_numbers": "260057ZAR",
+      "ceqr_number": "26DCP014R",
+      "primary_applicant": "Ilber (Billy) Pilku",
+      "app_filed_date": "2025-08-15T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0257",
+      "project_name": "Saw Mill Creek Marsh Park Addition",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "ulurp_numbers": "260217PCR",
+      "primary_applicant": "DPR - Department of Parks & Recreation NYC",
+      "app_filed_date": "2025-12-22T00:00:00.000",
+      "noticed_date": "2026-01-30T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0275",
+      "project_name": "209 Bay Street HRA Office Space",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-03-13T00:00:00.000",
+      "primary_applicant": "DCAS - NYC Department of Citywide Administrative Services",
+      "app_filed_date": "2025-01-23T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0277",
+      "project_name": "44 Burton Court",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ceqr_number": "26DCP098R",
+      "primary_applicant": "ZAKI ALBANNA",
+      "app_filed_date": "2026-02-05T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0285",
+      "project_name": "225 Howard Avenue",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "ulurp_numbers": "260220ZCR; 260221ZAR; 260222ZAR; 260223ZAR; 260224ZAR; 260225ZAR",
+      "ceqr_number": "26DCP093R",
+      "primary_applicant": "Edmond Sukalic",
+      "app_filed_date": "2026-01-30T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0286",
+      "project_name": "45 Charter Oak Road",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2026-04-16T00:00:00.000",
+      "completed_date": "2026-04-16T00:00:00.000",
+      "ulurp_numbers": "N260001ZAR",
+      "ceqr_number": "26DCP004R",
+      "primary_applicant": "Kelvin Wong",
+      "app_filed_date": "2025-07-07T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0309",
+      "project_name": "Lipsett Avenue - Street End Stabilization",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "ulurp_numbers": "260298RAR",
+      "primary_applicant": "EDC - Economic Development Corporation for NYC",
+      "app_filed_date": "2026-03-19T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0312",
+      "project_name": "39 The Oval",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ulurp_numbers": "260050ZCR; 260018ZCR",
+      "ceqr_number": "26DCP009R",
+      "primary_applicant": "Imer Cami",
+      "app_filed_date": "2025-08-21T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0320",
+      "project_name": "3 Helena Rd - Subdivision and development",
+      "public_status": "Completed",
+      "project_status": "Active",
+      "ulurp_numbers": "260176ZAR; 260177ZAR; 260178ZCR",
+      "ceqr_number": "26DCP062R",
+      "primary_applicant": "Leon Miskin",
+      "app_filed_date": "2025-11-14T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0328",
+      "project_name": "21 Merrick Avenue",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "ceqr_number": "26DCP036R",
+      "primary_applicant": "Craig Phillips",
+      "app_filed_date": "2025-09-30T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0378",
+      "project_name": "114 Ridgewood Place",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-08-22T00:00:00.000",
+      "completed_date": "2025-09-18T00:00:00.000",
+      "ulurp_numbers": "N250317ZCR",
+      "ceqr_number": "25DCP089R",
+      "primary_applicant": "Thomas Fleming",
+      "app_filed_date": "2025-06-10T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0397",
+      "project_name": "22 Farview Place",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-12-18T00:00:00.000",
+      "completed_date": "2025-12-19T00:00:00.000",
+      "ulurp_numbers": "260056ZAR",
+      "ceqr_number": "26DCP015R",
+      "primary_applicant": "Wahib Zafar",
+      "app_filed_date": "2025-08-14T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0398",
+      "project_name": "108 Scribner Avenue",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ulurp_numbers": "N260073ZCR",
+      "ceqr_number": "26DCP043R",
+      "primary_applicant": "Edward Fine",
+      "app_filed_date": "2025-10-07T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0440",
+      "project_name": "20 Pleasant Valley Avenue Subdivision",
+      "public_status": "Completed",
+      "project_status": "Active",
+      "ulurp_numbers": "260168ZCR",
+      "ceqr_number": "26DCP146R",
+      "primary_applicant": "Edward Perlin",
+      "app_filed_date": "2026-01-22T00:00:00.000"
+    },
+    {
+      "project_id": "2025R0485",
+      "project_name": "Liotti Ikefugi Playground Reconstruction",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2026-02-24T00:00:00.000",
+      "completed_date": "2026-02-24T00:00:00.000",
+      "ulurp_numbers": "260189ZAR",
+      "primary_applicant": "DPR - Department of Parks & Recreation NYC",
+      "app_filed_date": "2025-11-24T00:00:00.000"
+    },
+    {
+      "project_id": "2025X0108",
+      "project_name": "2553 University Avenue",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2026-03-23T00:00:00.000",
+      "completed_date": "2026-04-02T00:00:00.000",
+      "ulurp_numbers": "260164 LDX",
+      "ceqr_number": "26DCP051X",
+      "primary_applicant": "Citadel Enterprise Americas LLC",
+      "app_filed_date": "2025-11-03T00:00:00.000"
+    },
+    {
+      "project_id": "2025X0116",
+      "project_name": "3901 White Plains Road Rezoning",
+      "public_status": "Filed",
+      "project_status": "On-Hold",
+      "ceqr_number": "26DCP088X",
+      "primary_applicant": "Akerman LLP",
+      "app_filed_date": "2026-01-20T00:00:00.000"
+    },
+    {
+      "project_id": "2025X0143",
+      "project_name": "Montefiore LSCFD Update",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ceqr_number": "26DCP104X",
+      "primary_applicant": "Adam Taubman"
+    },
+    {
+      "project_id": "2025X0153",
+      "project_name": "5445 Palisade Avenue-SNAD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-03-26T00:00:00.000",
+      "completed_date": "2025-04-24T00:00:00.000",
+      "ulurp_numbers": "250133ZAX; 250134LDX",
+      "ceqr_number": "25DCP046X",
+      "primary_applicant": "ROBERT SCHULTZ",
+      "app_filed_date": "2024-11-26T00:00:00.000"
+    },
+    {
+      "project_id": "2025X0223",
+      "project_name": "350 Grand Concourse FRESH",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2026-02-25T00:00:00.000",
+      "completed_date": "2026-02-26T00:00:00.000",
+      "ceqr_number": "26DCP029X",
+      "primary_applicant": "Akerman LLP",
+      "app_filed_date": "2025-09-18T00:00:00.000"
+    },
+    {
+      "project_id": "2025X0262",
+      "project_name": "Kingsbridge Armory Redevelopment",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-10-29T00:00:00.000",
+      "completed_date": "2025-11-22T00:00:00.000",
+      "ulurp_numbers": "250292ZSX; 250293PPX; 250294ZMX; 250295ZSX; 250296ZRX",
+      "ceqr_number": "25DME006X",
+      "primary_applicant": "8th Regiment Partners LLC",
+      "app_filed_date": "2025-05-06T00:00:00.000",
+      "noticed_date": "2025-04-18T00:00:00.000"
+    },
+    {
+      "project_id": "2025X0266",
+      "project_name": "5051 Iselin Avenue - SNAD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-07-10T00:00:00.000",
+      "completed_date": "2025-07-16T00:00:00.000",
+      "ulurp_numbers": "250210ZAX; 250211ZAX; 250212ZAX",
+      "ceqr_number": "25DCP056X",
+      "primary_applicant": "John Field",
+      "app_filed_date": "2025-02-10T00:00:00.000"
+    },
+    {
+      "project_id": "2025X0283",
+      "project_name": "Fordham Landing South Rezoning",
+      "public_status": "Noticed",
+      "project_status": "Active",
+      "ulurp_numbers": "260173ZMX",
+      "primary_applicant": "DS Fordham Landing 1 LLC",
+      "app_filed_date": "2025-11-24T00:00:00.000",
+      "noticed_date": "2025-11-14T00:00:00.000"
+    },
+    {
+      "project_id": "2025X0341",
+      "project_name": "4695 Independence Avenue SNAD",
+      "public_status": "Completed",
+      "project_status": "Active",
+      "approval_date": "2025-07-22T00:00:00.000",
+      "completed_date": "2025-09-30T00:00:00.000",
+      "ulurp_numbers": "250321ZCX",
+      "ceqr_number": "25DCP084X",
+      "primary_applicant": "Hal Dorfman",
+      "app_filed_date": "2025-06-09T00:00:00.000"
+    },
+    {
+      "project_id": "2025X0385",
+      "project_name": "139th Street Demapping",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ulurp_numbers": "260343MMX",
+      "ceqr_number": "26DCP158X",
+      "primary_applicant": "Sprague Operating Resources LLC",
+      "app_filed_date": "2026-04-30T00:00:00.000"
+    },
+    {
+      "project_id": "2025X0430",
+      "project_name": "555 East Tremont",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-09-25T00:00:00.000",
+      "primary_applicant": "DCAS - NYC Department of Citywide Administrative Services",
+      "app_filed_date": "2025-08-06T00:00:00.000"
+    },
+    {
+      "project_id": "2025Y0129",
+      "project_name": "DEP Newtown Creek CSO Tunnel",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2026-03-26T00:00:00.000",
+      "ulurp_numbers": "260063PCY; 260064PSY",
+      "ceqr_number": "24DEP053Y",
+      "primary_applicant": "DEP - New York City Department of Environmental Protection",
+      "app_filed_date": "2025-08-12T00:00:00.000",
+      "noticed_date": "2025-08-01T00:00:00.000"
+    },
+    {
+      "project_id": "2025Y0279",
+      "project_name": "Last-Mile Facility Text Amendment",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ceqr_number": "25DCP067Y",
+      "primary_applicant": "New York City Department of City Planning"
+    },
+    {
+      "project_id": "2026K0123",
+      "project_name": "1550 Bedford Avenue Rezoning",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ceqr_number": "78DCP250K",
+      "primary_applicant": "Brian Ezra",
+      "app_filed_date": "2026-07-02T00:00:00.000"
+    },
+    {
+      "project_id": "2026K0129",
+      "project_name": "2 Noble Street Waterfront Cert",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ceqr_number": "26DCP147K",
+      "primary_applicant": "Jodi Stein",
+      "app_filed_date": "2026-05-21T00:00:00.000"
+    },
+    {
+      "project_id": "2026K0132",
+      "project_name": "ACS - 1000 & 1040 Dean Street",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2026-01-08T00:00:00.000",
+      "primary_applicant": "Gendell, Stephanie (ACS)"
+    },
+    {
+      "project_id": "2026K0149",
+      "project_name": "Coney Island Business Improvement District",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "ulurp_numbers": "260074BDK",
+      "ceqr_number": "26SBS001K",
+      "primary_applicant": "NYC Small Business Services (SBS)",
+      "app_filed_date": "2025-08-25T00:00:00.000"
+    },
+    {
+      "project_id": "2026K0202",
+      "project_name": "130 St. Felix Special Permit Renewal",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2026-02-05T00:00:00.000",
+      "completed_date": "2026-02-12T00:00:00.000",
+      "ulurp_numbers": "260138CMK",
+      "ceqr_number": "26DCP045K",
+      "primary_applicant": "Stephanie Rhoades",
+      "app_filed_date": "2025-10-15T00:00:00.000"
+    },
+    {
+      "project_id": "2026K0233",
+      "project_name": "240 Nassau Street",
+      "public_status": "Noticed",
+      "project_status": "Active",
+      "ceqr_number": "26ECF001K",
+      "primary_applicant": "New York City Education Construction Fund",
+      "noticed_date": "2026-06-26T00:00:00.000"
+    },
+    {
+      "project_id": "2026K0240",
+      "project_name": "6 Howard Avenue FRESH Cancellation",
+      "public_status": "Completed",
+      "project_status": "Active",
+      "ulurp_numbers": "M220257ALDK",
+      "ceqr_number": "26DCP100K",
+      "primary_applicant": "Joseph Atarien",
+      "app_filed_date": "2026-02-11T00:00:00.000"
+    },
+    {
+      "project_id": "2026K0254",
+      "project_name": "NYPD Office Space Acquisition- 241 37th Street",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "primary_applicant": "Michael Gries",
+      "app_filed_date": "2026-02-05T00:00:00.000"
+    },
+    {
+      "project_id": "2026K0289",
+      "project_name": "Beverley Square West Historic District",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2026-02-24T00:00:00.000",
+      "ulurp_numbers": "N260209HKK",
+      "primary_applicant": "Margaret Herman",
+      "app_filed_date": "2025-12-08T00:00:00.000"
+    },
+    {
+      "project_id": "2026K0290",
+      "project_name": "Ditmas Park West Historic District",
+      "public_status": "Completed",
+      "project_status": "Active",
+      "approval_date": "2026-02-24T00:00:00.000",
+      "ulurp_numbers": "N260210HKK",
+      "primary_applicant": "Margaret Herman",
+      "app_filed_date": "2025-12-08T00:00:00.000"
+    },
+    {
+      "project_id": "2026K0395",
+      "project_name": "241 37th Street NYPD Office Space Acquisition",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2026-05-06T00:00:00.000",
+      "primary_applicant": "William Costello",
+      "app_filed_date": "2026-03-19T00:00:00.000"
+    },
+    {
+      "project_id": "2026K0443",
+      "project_name": "Public School 15 Annex (LP-2696)",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "primary_applicant": "LPC - NYC Landmarks Preservation Commission",
+      "app_filed_date": "2026-04-20T00:00:00.000"
+    },
+    {
+      "project_id": "2026M0118",
+      "project_name": "1633 Broadway Cafe",
+      "public_status": "Completed",
+      "project_status": "Active",
+      "ulurp_numbers": "260250LDM; M890860DZSM",
+      "ceqr_number": "26DCP090M",
+      "primary_applicant": "Mark Barak",
+      "app_filed_date": "2026-01-26T00:00:00.000"
+    },
+    {
+      "project_id": "2026M0120",
+      "project_name": "100 Wall Street Arcade Infill",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ceqr_number": "26DCP112M",
+      "primary_applicant": "100 Wall Realty LLC",
+      "app_filed_date": "2026-03-06T00:00:00.000"
+    },
+    {
+      "project_id": "2026M0136",
+      "project_name": "800 Fifth Avenue Non-ULURP Mod",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ceqr_number": "26DCP155M",
+      "primary_applicant": "Jeremy Kozin",
+      "app_filed_date": "2026-06-08T00:00:00.000"
+    },
+    {
+      "project_id": "2026M0164",
+      "project_name": "3 East 89th Street Special Permit Renewal",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ceqr_number": "26DCP144M",
+      "primary_applicant": "3 East 89 Holding LLC",
+      "app_filed_date": "2026-05-13T00:00:00.000"
+    },
+    {
+      "project_id": "2026M0170",
+      "project_name": "Barbey Building",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-11-25T00:00:00.000",
+      "primary_applicant": "LPC - NYC Landmarks Preservation Commission",
+      "app_filed_date": "2025-08-22T00:00:00.000"
+    },
+    {
+      "project_id": "2026M0171",
+      "project_name": "Fashion Tower",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-11-25T00:00:00.000",
+      "primary_applicant": "LPC - NYC Landmarks Preservation Commission",
+      "app_filed_date": "2025-08-22T00:00:00.000"
+    },
+    {
+      "project_id": "2026M0172",
+      "project_name": "29th Street Towers",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-11-25T00:00:00.000",
+      "primary_applicant": "LPC - NYC Landmarks Preservation Commission",
+      "app_filed_date": "2025-08-22T00:00:00.000"
+    },
+    {
+      "project_id": "2026M0173",
+      "project_name": "Furcraft Building",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-11-25T00:00:00.000",
+      "primary_applicant": "LPC - NYC Landmarks Preservation Commission",
+      "app_filed_date": "2025-08-22T00:00:00.000"
+    },
+    {
+      "project_id": "2026M0206",
+      "project_name": "41-47 West 57th Street/ 50 West 58th Street",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ceqr_number": "26DCP049M",
+      "primary_applicant": "Alexia Landesman",
+      "app_filed_date": "2025-10-27T00:00:00.000"
+    },
+    {
+      "project_id": "2026M0211",
+      "project_name": "343 Madison Ave Special Permit Renewal",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "primary_applicant": "BP 347 Madison Associates, LLC .",
+      "app_filed_date": "2025-10-06T00:00:00.000"
+    },
+    {
+      "project_id": "2026M0218",
+      "project_name": "343 Madison Ave Non-ULURP Modification",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2026-04-23T00:00:00.000",
+      "completed_date": "2026-05-05T00:00:00.000",
+      "ulurp_numbers": "M210369AZSM; M210370AZSM; M210371AZSM",
+      "ceqr_number": "21DCP020M",
+      "primary_applicant": "BP 347 Madison Associates, LLC .",
+      "app_filed_date": "2025-11-14T00:00:00.000"
+    },
+    {
+      "project_id": "2026M0220",
+      "project_name": "345 Park Avenue Plaza Reduction",
+      "public_status": "Completed",
+      "project_status": "Active",
+      "ulurp_numbers": "260305ZCM",
+      "ceqr_number": "26DCP123M",
+      "primary_applicant": "Jane Luger",
+      "app_filed_date": "2026-03-31T00:00:00.000"
+    },
+    {
+      "project_id": "2026M0247",
+      "project_name": "Thompson Central Park Open Air Cafe Certification",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ulurp_numbers": "N260308ZCM; 260083LDM",
+      "ceqr_number": "26DCP125M",
+      "primary_applicant": "Dan Egers",
+      "app_filed_date": "2026-03-31T00:00:00.000"
+    },
+    {
+      "project_id": "2026M0252",
+      "project_name": "1345 Avenue of the Americas Open Air Cafe Renewal",
+      "public_status": "Completed",
+      "project_status": "Active",
+      "ulurp_numbers": "260252ZCM; 260253LDM",
+      "ceqr_number": "26DCP096M",
+      "primary_applicant": "Gregory Minucci",
+      "app_filed_date": "2026-02-02T00:00:00.000"
+    },
+    {
+      "project_id": "2026M0275",
+      "project_name": "415 Madison Avenue Special Permits Renewal",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ceqr_number": "26DCP079M",
+      "primary_applicant": "415 Madison LLC",
+      "app_filed_date": "2026-01-12T00:00:00.000"
+    },
+    {
+      "project_id": "2026M0312",
+      "project_name": "460 Tenth Avenue DIB Certification",
+      "public_status": "Completed",
+      "project_status": "Active",
+      "ulurp_numbers": "260266ZCM",
+      "ceqr_number": "26DCP105M",
+      "primary_applicant": "Jonathan Snider",
+      "app_filed_date": "2026-02-17T00:00:00.000"
+    },
+    {
+      "project_id": "2026M0366",
+      "project_name": "301 E 71st Street Transit Easement Certification",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ulurp_numbers": "N260302ZCM",
+      "ceqr_number": "26DCP126M",
+      "primary_applicant": "301 East 71 Investors LLC",
+      "app_filed_date": "2026-04-03T00:00:00.000"
+    },
+    {
+      "project_id": "2026M0432",
+      "project_name": "31 West 52nd Street - Fogo de Chao OAC Renewal",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ulurp_numbers": "N260368ZCM; 260369LDM",
+      "ceqr_number": "26DCP149M",
+      "primary_applicant": "Shaneka Lee",
+      "app_filed_date": "2026-05-26T00:00:00.000"
+    },
+    {
+      "project_id": "2026M0444",
+      "project_name": "Church of Saint Mary (LP-2694)",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "primary_applicant": "LPC - NYC Landmarks Preservation Commission",
+      "app_filed_date": "2026-04-29T00:00:00.000"
+    },
+    {
+      "project_id": "2026M0445",
+      "project_name": "Lithuanian Alliance Building (LP-2695)",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "primary_applicant": "LPC - NYC Landmarks Preservation Commission",
+      "app_filed_date": "2026-04-29T00:00:00.000"
+    },
+    {
+      "project_id": "2026Q0128",
+      "project_name": "Astoria Cove WF Cert and Substantial Compliance",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ceqr_number": "26DCP152Q",
+      "primary_applicant": "Ron Mandel",
+      "app_filed_date": "2026-05-27T00:00:00.000"
+    },
+    {
+      "project_id": "2026Q0143",
+      "project_name": "Beach 30th Street Waterfront Certification",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2025-11-25T00:00:00.000",
+      "completed_date": "2025-12-04T00:00:00.000",
+      "ulurp_numbers": "260174ZCQ",
+      "ceqr_number": "26DCP058Q",
+      "primary_applicant": "Beach Development 30th LLC",
+      "app_filed_date": "2025-11-12T00:00:00.000"
+    },
+    {
+      "project_id": "2026Q0210",
+      "project_name": "Atlantic Avenue Demapping",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "ulurp_numbers": "260226MMQ",
+      "ceqr_number": "24DCP132Q",
+      "primary_applicant": "New York City Department of City Planning",
+      "app_filed_date": "2025-12-31T00:00:00.000",
+      "noticed_date": "2026-01-16T00:00:00.000"
+    },
+    {
+      "project_id": "2026Q0291",
+      "project_name": "Edgemere Commons - Phase 2B Modification and Cert",
+      "public_status": "Completed",
+      "project_status": "Active",
+      "ulurp_numbers": "F220149HLDQ; M220149ELDQ",
+      "ceqr_number": "26DCP095Q",
+      "primary_applicant": "Peter Gross",
+      "app_filed_date": "2026-02-03T00:00:00.000"
+    },
+    {
+      "project_id": "2026Q0320",
+      "project_name": "Grand Central Parkway Service Road Demapping",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ceqr_number": "26SCA005Q",
+      "primary_applicant": "SCA - New York City School Construction Authority",
+      "app_filed_date": "2026-05-07T00:00:00.000"
+    },
+    {
+      "project_id": "2026R0127",
+      "project_name": "FDNY Cont'd Use of WTC Unit 1688 Victory Blvd",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "ulurp_numbers": "260330PQR",
+      "ceqr_number": "25FDO001R",
+      "primary_applicant": "FDNY - Fire Department of NYC",
+      "app_filed_date": "2026-04-16T00:00:00.000",
+      "noticed_date": "2026-04-10T00:00:00.000"
+    },
+    {
+      "project_id": "2026R0137",
+      "project_name": "St. Peter's Boys High School - Athletic Field",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "ulurp_numbers": "N260318ZAR; N260319ZAR; 260320LDR",
+      "ceqr_number": "26DCP130R",
+      "primary_applicant": "John Fodera",
+      "app_filed_date": "2026-04-10T00:00:00.000"
+    },
+    {
+      "project_id": "2026R0142",
+      "project_name": "221 Benedict Road",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "ulurp_numbers": "N260240ZAR; N260241ZAR",
+      "ceqr_number": "26DCP086R",
+      "primary_applicant": "Michael Markowitz",
+      "app_filed_date": "2026-01-15T00:00:00.000"
+    },
+    {
+      "project_id": "2026R0145",
+      "project_name": "54 Shore Acres Road",
+      "public_status": "Filed",
+      "project_status": "On-Hold",
+      "ceqr_number": "26DCP063R",
+      "primary_applicant": "Franklin Deliessche",
+      "app_filed_date": "2025-11-20T00:00:00.000"
+    },
+    {
+      "project_id": "2026R0166",
+      "project_name": "Tompkins Circle (Block 569, Lot 360 to 363)",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "ulurp_numbers": "260291ZAR; 260292ZAR; 260293ZAR; 260294ZCR",
+      "ceqr_number": "26DCP114R",
+      "primary_applicant": "Westside Guy Realty Corp. .",
+      "app_filed_date": "2026-03-10T00:00:00.000"
+    },
+    {
+      "project_id": "2026R0186",
+      "project_name": "336 Meredith Avenue Fleet Maintenance Facility",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "ulurp_numbers": "260248PCR",
+      "primary_applicant": "DPR - Department of Parks & Recreation NYC",
+      "app_filed_date": "2026-01-21T00:00:00.000",
+      "noticed_date": "2026-01-02T00:00:00.000"
+    },
+    {
+      "project_id": "2026R0189",
+      "project_name": "35 Douglas Court Renewal",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ulurp_numbers": "260242CMR; 260181CMR",
+      "ceqr_number": "26DCP087R",
+      "primary_applicant": "Minsoo Hyun",
+      "app_filed_date": "2026-01-20T00:00:00.000"
+    },
+    {
+      "project_id": "2026R0195",
+      "project_name": "51 Cedarcliff Road",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "ulurp_numbers": "260326ZAR; 260327ZAR; 260003LDR",
+      "ceqr_number": "26DCP137R",
+      "primary_applicant": "Westside Guy Realty",
+      "app_filed_date": "2026-04-27T00:00:00.000"
+    },
+    {
+      "project_id": "2026R0196",
+      "project_name": "23 Cedarcliff Road - Lot: 125",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "ulurp_numbers": "260321ZAR; 260322ZAR; 260072LDR; 260069ZAR",
+      "ceqr_number": "26DCP129R",
+      "primary_applicant": "Ed Esposito",
+      "app_filed_date": "2026-04-10T00:00:00.000"
+    },
+    {
+      "project_id": "2026R0319",
+      "project_name": "South Richmond Designated Open Space Amendment",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "ulurp_numbers": "260362ZRR",
+      "ceqr_number": "20DCP130R",
+      "primary_applicant": "DCP - NYC Department of City Planning Staten Island Office",
+      "app_filed_date": "2026-05-18T00:00:00.000"
+    },
+    {
+      "project_id": "2026R0327",
+      "project_name": "THAMES AVENUE DEVELOPMENT",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ceqr_number": "26DCP131R",
+      "primary_applicant": "WILLIAM FORMICA",
+      "app_filed_date": "2026-04-10T00:00:00.000"
+    },
+    {
+      "project_id": "2026X0103",
+      "project_name": "Hebrew Home Special Permit Second Renewal",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2026-01-09T00:00:00.000",
+      "completed_date": "2026-03-24T00:00:00.000",
+      "ulurp_numbers": "260114CMX",
+      "ceqr_number": "26DCP034X",
+      "primary_applicant": "Hebrew Home for the Aged at Riverdale",
+      "app_filed_date": "2025-09-25T00:00:00.000"
+    },
+    {
+      "project_id": "2026X0130",
+      "project_name": "5211 Arlington Ave - SNAD",
+      "public_status": "Completed",
+      "project_status": "Active",
+      "ulurp_numbers": "N260278ZAX; N260279ZCX; 260196LDX",
+      "ceqr_number": "26DCP110X",
+      "primary_applicant": "NGHS 5211 Arlington LLC",
+      "app_filed_date": "2026-03-04T00:00:00.000"
+    },
+    {
+      "project_id": "2026X0274",
+      "project_name": "5204 Arlington Avenue - SNAD",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "ulurp_numbers": "N260229ZAX; N260284ZAX; 260286LDX",
+      "ceqr_number": "26DCP083X",
+      "primary_applicant": "Talner Congregation Beth David",
+      "app_filed_date": "2026-01-13T00:00:00.000"
+    },
+    {
+      "project_id": "2026X0282",
+      "project_name": "4675 Dodgewood Road - SNAD",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ceqr_number": "21DCP149X",
+      "primary_applicant": "Teena Lerner",
+      "app_filed_date": "2026-06-18T00:00:00.000"
+    },
+    {
+      "project_id": "2026X0354",
+      "project_name": "2 Ploughmans Bush  SNAD",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "ceqr_number": "26DCP139X",
+      "primary_applicant": "Michael Goldblum",
+      "app_filed_date": "2026-05-05T00:00:00.000"
+    },
+    {
+      "project_id": "2026X0362",
+      "project_name": "351 Powers Avenue (HPD ELURP)",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "approval_date": "2026-05-20T00:00:00.000",
+      "ceqr_number": "25HPD069X",
+      "primary_applicant": "HPD - NYC Dept of Housing Preservation & Development",
+      "app_filed_date": "2026-02-20T00:00:00.000"
+    },
+    {
+      "project_id": "2026X0464",
+      "project_name": "Test Project April272026",
+      "public_status": "Filed",
+      "project_status": "Record Closed",
+      "approval_date": "2026-04-28T00:00:00.000",
+      "ulurp_numbers": "260344UKX; 260345ZRX",
+      "primary_applicant": "Jennette Cheung",
+      "app_filed_date": "2026-04-28T00:00:00.000"
+    },
+    {
+      "project_id": "2026Y0360",
+      "project_name": "Affordable Housing Fast Track Methodology Rule",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "ceqr_number": "26DCP099Y",
+      "primary_applicant": "DCP Department of City Planning"
+    },
+    {
+      "project_id": "P1975Q0003",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-10-17T00:00:00.000",
+      "ulurp_numbers": "C770041MMQ",
+      "primary_applicant": "L.I. JEWISH-HILLSIDE MEDICAL CENTER"
+    },
+    {
+      "project_id": "P1975X0004",
+      "project_name": "DEMAP EMERSON AV",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-09-22T00:00:00.000",
+      "ulurp_numbers": "C760059MMX",
+      "primary_applicant": "ST RAYMONDS CEMETERY"
+    },
+    {
+      "project_id": "P1975X0005",
+      "project_name": "RANDALL AVE & BRUSH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "2005-05-12T00:00:00.000",
+      "ulurp_numbers": "C760023MMX",
+      "primary_applicant": "DELMA ENGINEERING CORP"
+    },
+    {
+      "project_id": "P1976Q0004",
+      "project_name": "KISSENA BLVD & HORACE HARDING EXPWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1980-10-20T00:00:00.000",
+      "ulurp_numbers": "C760097ZMQ",
+      "primary_applicant": "STORCH, E FOR M FOSCHI"
+    },
+    {
+      "project_id": "P1976Q0010",
+      "project_name": "161TH AVE BET CROSS BAY BLVD & SHELL BANK BASIN",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-02-16T00:00:00.000",
+      "ulurp_numbers": "C760153MMQ",
+      "primary_applicant": "GIACALONE, JOSEPH F"
+    },
+    {
+      "project_id": "P1976R0001",
+      "project_name": "STEWART AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "ulurp_numbers": "C760172MMR",
+      "primary_applicant": "FERENCZY, EDWARD"
+    },
+    {
+      "project_id": "P1976R0002",
+      "project_name": "FONDA PL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-01-27T00:00:00.000",
+      "ulurp_numbers": "C770009MMR",
+      "primary_applicant": "GELLIS, HILLIE"
+    },
+    {
+      "project_id": "P1976R0005",
+      "project_name": "20 WARDS PT AVE,AMBOY RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-06-03T00:00:00.000",
+      "ulurp_numbers": "N760099RCR",
+      "primary_applicant": "LAURIA, E FOR B TARANTO"
+    },
+    {
+      "project_id": "P1976R0012",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-01-27T00:00:00.000",
+      "ulurp_numbers": "C770059MMR",
+      "primary_applicant": "CARNEGIE, DOUGLAS R"
+    },
+    {
+      "project_id": "P1976R0014",
+      "project_name": "210 MEISNER AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-11-10T00:00:00.000",
+      "ulurp_numbers": "N760019ZAR",
+      "primary_applicant": "LAURIA ASSOC FOR JIM LINANE"
+    },
+    {
+      "project_id": "P1976X0007",
+      "project_name": "E176TH ST & WALTON AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-06-03T00:00:00.000",
+      "ulurp_numbers": "C760057ZPX",
+      "primary_applicant": "RODRIGUEZ, P"
+    },
+    {
+      "project_id": "P1977K0012",
+      "project_name": "E92TH ST BET FOSTER AVE AND BEDELL LANE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "primary_applicant": "SCHEIBEL, HERBERT L"
+    },
+    {
+      "project_id": "P1977K0029",
+      "project_name": "11TH ST,2ND AVE,12TH ST & GOWANUS CANAL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-06-23T00:00:00.000",
+      "ulurp_numbers": "C760033ZMK",
+      "primary_applicant": "ROTHKRUG, LEONARD FOR GOYA FOODS"
+    },
+    {
+      "project_id": "P1977K0050",
+      "project_name": "2416-28 FLATBUSH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-07-08T00:00:00.000",
+      "ulurp_numbers": "A760056ZMK",
+      "primary_applicant": "YARISH, H"
+    },
+    {
+      "project_id": "P1977K0061",
+      "project_name": "3111 OCEAN PARKWAY",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1977-12-30T00:00:00.000",
+      "primary_applicant": "JEWISH WAR VETERANS OF USA"
+    },
+    {
+      "project_id": "P1977K0063",
+      "project_name": "ATLANTIC TERMINAL URA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-02-17T00:00:00.000",
+      "ulurp_numbers": "C760073HDK",
+      "primary_applicant": "HDA"
+    },
+    {
+      "project_id": "P1977K0105",
+      "project_name": "AVE V,KIMBALL,RYDER & E38TH STS",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1977-05-25T00:00:00.000",
+      "primary_applicant": "ARKER, SOL"
+    },
+    {
+      "project_id": "P1977K0141",
+      "project_name": "BMT LINE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-02-16T00:00:00.000",
+      "ulurp_numbers": "C760167PSK",
+      "primary_applicant": "TRANSIT"
+    },
+    {
+      "project_id": "P1977K0150",
+      "project_name": "HIGHLAND AVE & OCEANVIEW AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-02-09T00:00:00.000",
+      "ulurp_numbers": "S760173MLK",
+      "primary_applicant": "LODGE CONSTRUCTION CORP"
+    },
+    {
+      "project_id": "P1977K0151",
+      "project_name": "BRAGG ST,SHEEPSHEAD BAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-04-24T00:00:00.000",
+      "primary_applicant": "OCEANAIRE BLDG CORP"
+    },
+    {
+      "project_id": "P1977K0159",
+      "project_name": "PENNSYLVANIA & SCHROEDERS AVS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-01-13T00:00:00.000",
+      "ulurp_numbers": "N760187ZAK",
+      "primary_applicant": "STARRETT CITY ASSOC"
+    },
+    {
+      "project_id": "P1977K0169",
+      "project_name": "CONEY ISLAND URA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-06-23T00:00:00.000",
+      "ulurp_numbers": "C760194HOK; C760195HDK",
+      "primary_applicant": "HDA"
+    },
+    {
+      "project_id": "P1977K0180",
+      "project_name": "MAIMONIDES MEDICAL CENTER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-07-18T00:00:00.000",
+      "ulurp_numbers": "C760206ZSK",
+      "primary_applicant": "Maimonides Medical Center"
+    },
+    {
+      "project_id": "P1977K0222",
+      "project_name": "TAPSCOTT ST & ROCHESTER AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-12-13T00:00:00.000",
+      "primary_applicant": "BD OF ED"
+    },
+    {
+      "project_id": "P1977K0224",
+      "project_name": "GREENPOINT AVE,NEWAL ST,CALYER ST & MCGUINNESS BLV",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-10-21T00:00:00.000",
+      "ulurp_numbers": "C770032ZSK",
+      "primary_applicant": "BLAUFEUX, HEYWOOD"
+    },
+    {
+      "project_id": "P1977K0230",
+      "project_name": "172 Pearl Street",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-12-13T00:00:00.000",
+      "ulurp_numbers": "N770071PAK",
+      "primary_applicant": "NYC BD OF HIGHER ED"
+    },
+    {
+      "project_id": "P1977K0236",
+      "project_name": "Maspeth URA",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1979-09-20T00:00:00.000",
+      "primary_applicant": "HDA & EDA"
+    },
+    {
+      "project_id": "P1977K0386",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-01-19T00:00:00.000",
+      "ulurp_numbers": "C770285PPK",
+      "primary_applicant": "DEPT OF REAL ESTATE"
+    },
+    {
+      "project_id": "P1977K0387",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-01-19T00:00:00.000",
+      "ulurp_numbers": "C770286PPK",
+      "primary_applicant": "DEPT OF REAL ESTATE"
+    },
+    {
+      "project_id": "P1977K0388",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-01-19T00:00:00.000",
+      "ulurp_numbers": "C770287PPK",
+      "primary_applicant": "DEPT OF REAL ESTATE"
+    },
+    {
+      "project_id": "P1977K0389",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-01-19T00:00:00.000",
+      "ulurp_numbers": "C770288PPK",
+      "primary_applicant": "DEPT OF REAL ESTATE"
+    },
+    {
+      "project_id": "P1977K0390",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-01-19T00:00:00.000",
+      "ulurp_numbers": "C770289PPK",
+      "primary_applicant": "DEPT OF REAL ESTATE"
+    },
+    {
+      "project_id": "P1977K0391",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-01-19T00:00:00.000",
+      "ulurp_numbers": "C770290PPK",
+      "primary_applicant": "DEPT OF REAL ESTATE"
+    },
+    {
+      "project_id": "P1977K0394",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-01-19T00:00:00.000",
+      "ulurp_numbers": "C770293PPK",
+      "primary_applicant": "DEPT OF REAL ESTATE"
+    },
+    {
+      "project_id": "P1977K0401",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-01-19T00:00:00.000",
+      "ulurp_numbers": "C770300PPK",
+      "primary_applicant": "DEPT OF REAL ESTATE"
+    },
+    {
+      "project_id": "P1977K0403",
+      "project_name": "SALE OF CITY-OWNED PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-01-19T00:00:00.000",
+      "ulurp_numbers": "C770302PPK",
+      "primary_applicant": "DEPT OF REAL ESTATE"
+    },
+    {
+      "project_id": "P1977K0477",
+      "project_name": "CZECHWAN EMPIRE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-07-21T00:00:00.000",
+      "ulurp_numbers": "C760200TCK",
+      "primary_applicant": "TOM, LEE"
+    },
+    {
+      "project_id": "P1977K0489",
+      "project_name": "MINIMAX HALLMARK GALLERY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-09-16T00:00:00.000",
+      "ulurp_numbers": "C770051TCK",
+      "primary_applicant": "GARCIA, FRANK"
+    },
+    {
+      "project_id": "P1977K0493",
+      "project_name": "2901 EMMONS AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-01-19T00:00:00.000",
+      "ulurp_numbers": "C770057TCK",
+      "primary_applicant": "ROLL-N-ROASTER CORP"
+    },
+    {
+      "project_id": "P1977K0510",
+      "project_name": "PICCADELI",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-08-17T00:00:00.000",
+      "ulurp_numbers": "C770081TCK",
+      "primary_applicant": "3H'S RESTAURANT, INC, THE"
+    },
+    {
+      "project_id": "P1977M0018",
+      "project_name": "200 PARK AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-04-20T00:00:00.000",
+      "ulurp_numbers": "C760015ZSM",
+      "primary_applicant": "GRAND CENTRAL BLDG"
+    },
+    {
+      "project_id": "P1977M0024",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-01-20T00:00:00.000",
+      "ulurp_numbers": "C760029HDM",
+      "primary_applicant": "HDA"
+    },
+    {
+      "project_id": "P1977M0026",
+      "project_name": "THE GALLERIA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-08-13T00:00:00.000",
+      "ulurp_numbers": "N760030ZSM",
+      "primary_applicant": "ROSENMAN ETC FOR MADISON CO"
+    },
+    {
+      "project_id": "P1977M0041",
+      "project_name": "26-30 W61TH ST,39-43 W60TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-10-06T00:00:00.000",
+      "ulurp_numbers": "C760047ZPM",
+      "primary_applicant": "RHODE ISLAND CORP"
+    },
+    {
+      "project_id": "P1977M0044",
+      "project_name": "25 HARRISON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-02-17T00:00:00.000",
+      "ulurp_numbers": "C760050HDM",
+      "primary_applicant": "HDA"
+    },
+    {
+      "project_id": "P1977M0046",
+      "project_name": "27 HARRISON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-02-17T00:00:00.000",
+      "ulurp_numbers": "C760052HDM",
+      "primary_applicant": "HDA"
+    },
+    {
+      "project_id": "P1977M0047",
+      "project_name": "117-119 W92TH",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-12-02T00:00:00.000",
+      "ulurp_numbers": "N760053HRM",
+      "primary_applicant": "HDA"
+    },
+    {
+      "project_id": "P1977M0054",
+      "project_name": "250 E60TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-09-13T00:00:00.000",
+      "ulurp_numbers": "N760063ZCM",
+      "primary_applicant": "KLEIN, S FOR H MACKLOWE"
+    },
+    {
+      "project_id": "P1977M0066",
+      "project_name": "TOWERS NURSING HOME",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-10-21T00:00:00.000",
+      "ulurp_numbers": "N760079HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1977M0079",
+      "project_name": "147 W23TH",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-12-12T00:00:00.000",
+      "ulurp_numbers": "N760089ZRY; C760090ZSM",
+      "primary_applicant": "ASSOCIATED BLIND, INC, THE"
+    },
+    {
+      "project_id": "P1977M0081",
+      "project_name": "218-220 E86TH ST & 217-219 E85TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-03-25T00:00:00.000",
+      "ulurp_numbers": "A760092ZSM",
+      "primary_applicant": "CAHN, M FOR BREMEN HOUSE"
+    },
+    {
+      "project_id": "P1977M0085",
+      "project_name": "ARTIST HOUSING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-10-20T00:00:00.000",
+      "ulurp_numbers": "N760103ZCM",
+      "primary_applicant": "WESTON, MARTYN & DON"
+    },
+    {
+      "project_id": "P1977M0090",
+      "project_name": "BROWNSTONE DISPOSITION",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-02-17T00:00:00.000",
+      "ulurp_numbers": "C760105HDM",
+      "primary_applicant": "HDA"
+    },
+    {
+      "project_id": "P1977M0094",
+      "project_name": "BROWNSTONES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-03-11T00:00:00.000",
+      "ulurp_numbers": "N760113HCM",
+      "primary_applicant": "HDA"
+    },
+    {
+      "project_id": "P1977M0099",
+      "project_name": "428-434 & 446 E 117th St,222-228 & 234-238 E 119th",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-03-24T00:00:00.000",
+      "ulurp_numbers": "C760116HOM",
+      "primary_applicant": "HDA"
+    },
+    {
+      "project_id": "P1977M0100",
+      "project_name": "36 ATTORNEY ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-02-17T00:00:00.000",
+      "ulurp_numbers": "C760118HDM",
+      "primary_applicant": "HDA"
+    },
+    {
+      "project_id": "P1977M0103",
+      "project_name": "PITT ST,BROOME & GRAND STS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-02-17T00:00:00.000",
+      "ulurp_numbers": "C760121HDM",
+      "primary_applicant": "HDA"
+    },
+    {
+      "project_id": "P1977M0108",
+      "project_name": "4295 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1977-01-18T00:00:00.000",
+      "primary_applicant": "DPW"
+    },
+    {
+      "project_id": "P1977M0111",
+      "project_name": "WASHINGTON ST URA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-02-17T00:00:00.000",
+      "ulurp_numbers": "C760128HDM",
+      "primary_applicant": "HDA"
+    },
+    {
+      "project_id": "P1977M0116",
+      "project_name": "241-249 E28TH ST,501-511 2TH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-04-21T00:00:00.000",
+      "ulurp_numbers": "C760133ZPM",
+      "primary_applicant": "ROSENMAN COLIN ETC FOR 501 2 AVE CORP"
+    },
+    {
+      "project_id": "P1977M0137",
+      "project_name": "333 E56TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-04-26T00:00:00.000",
+      "ulurp_numbers": "C760162ZSM",
+      "primary_applicant": "LINDENBAUM FOR 325-343 E 56 ST CORP"
+    },
+    {
+      "project_id": "P1977M0140",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1980-04-21T00:00:00.000",
+      "primary_applicant": "TRANSIT"
+    },
+    {
+      "project_id": "P1977M0157",
+      "project_name": "BELLEVUE SO URA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-05-26T00:00:00.000",
+      "ulurp_numbers": "C760198HDM; C760199HOM",
+      "primary_applicant": "HDA"
+    },
+    {
+      "project_id": "P1977M0158",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1978-09-07T00:00:00.000",
+      "primary_applicant": "LINDENBAUM, S"
+    },
+    {
+      "project_id": "P1977M0181",
+      "project_name": "MILBANK-FRAWLEY URA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-06-10T00:00:00.000",
+      "ulurp_numbers": "C760209HDM; C760210HOM",
+      "primary_applicant": "HDA"
+    },
+    {
+      "project_id": "P1977M0182",
+      "project_name": "AMUSEMENT CENTER",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1977-06-24T00:00:00.000",
+      "primary_applicant": "WORLD WIDE VENTURE CORP"
+    },
+    {
+      "project_id": "P1977M0183",
+      "project_name": "WEST,CHARLES & WASHINGTON STS,CHARLES LANE,151-7 C",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-12-20T00:00:00.000",
+      "ulurp_numbers": "C760215ZMM",
+      "primary_applicant": "NOVEMBER, W REPRES BAY COLONY PROPTIES"
+    },
+    {
+      "project_id": "P1977M0198",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-05-26T00:00:00.000",
+      "ulurp_numbers": "C760230ZMM; C760231ZSM",
+      "primary_applicant": "HDA"
+    },
+    {
+      "project_id": "P1977M0205",
+      "project_name": "BELLEVUE SO URA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-11-17T00:00:00.000",
+      "ulurp_numbers": "C770006HDM",
+      "primary_applicant": "HDA"
+    },
+    {
+      "project_id": "P1977M0207",
+      "project_name": "135 E22TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-12-15T00:00:00.000",
+      "ulurp_numbers": "N770075PAM",
+      "primary_applicant": "NYC BD OF HIGHER ED"
+    },
+    {
+      "project_id": "P1977M0209",
+      "project_name": "45 CROSBY ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-05-03T00:00:00.000",
+      "ulurp_numbers": "N770008ZCM",
+      "primary_applicant": "45 CROSBY ST HSG DEV FUND CORP"
+    },
+    {
+      "project_id": "P1977M0227",
+      "project_name": "W42TH ST BET 9ND & DYER AVES",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1977-04-27T00:00:00.000",
+      "primary_applicant": "42 ST REDEVELOPMENT CORP"
+    },
+    {
+      "project_id": "P1977M0228",
+      "project_name": "42TH ST BET 9ND & DYER AVES",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1977-04-27T00:00:00.000",
+      "primary_applicant": "EDA"
+    },
+    {
+      "project_id": "P1977M0229",
+      "project_name": "AC POWELL BLVD BET W126TH & W127TH STS",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1977-10-24T00:00:00.000",
+      "primary_applicant": "COMMONWEALTH HOLDING CO"
+    },
+    {
+      "project_id": "P1977M0245",
+      "project_name": "131-139 W51TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-09-23T00:00:00.000",
+      "ulurp_numbers": "C770078ZPM",
+      "primary_applicant": "EQUITABLE LIFE ASSURANCE SOCIETY OF US"
+    },
+    {
+      "project_id": "P1977M0294",
+      "project_name": "42TH ST BET 9ND & DYER AVES",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1977-04-27T00:00:00.000",
+      "primary_applicant": "EDA"
+    },
+    {
+      "project_id": "P1977M0467",
+      "project_name": "COURT ST REST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-04-21T00:00:00.000",
+      "ulurp_numbers": "C760017TCM",
+      "primary_applicant": "ANDROS DEVELOPING CORP"
+    },
+    {
+      "project_id": "P1977M0468",
+      "project_name": "EMPIRE_DINER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-12-01T00:00:00.000",
+      "ulurp_numbers": "C760036TCM",
+      "primary_applicant": "NOTHING HEAVY, INC"
+    },
+    {
+      "project_id": "P1977M0469",
+      "project_name": "NOTHING HEAVY,INC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-06-10T00:00:00.000",
+      "ulurp_numbers": "C760039TCM",
+      "primary_applicant": "NOTHING HEAVY, INC"
+    },
+    {
+      "project_id": "P1977M0470",
+      "project_name": "TWO BEARS RESTAUTANT,INC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-07-21T00:00:00.000",
+      "ulurp_numbers": "C760070TCM",
+      "primary_applicant": "ANTINORI, ANTONIO"
+    },
+    {
+      "project_id": "P1977M0471",
+      "project_name": "THE MAGIC FLUTE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-06-10T00:00:00.000",
+      "ulurp_numbers": "C760074TCM",
+      "primary_applicant": "SB REST OF 64 ST, INC (DCA)"
+    },
+    {
+      "project_id": "P1977M0472",
+      "project_name": "MAGIC CARPET RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-04-21T00:00:00.000",
+      "ulurp_numbers": "C760076TCM",
+      "primary_applicant": "MAGIC CARPET RESTAURANT, LTD (DCA)"
+    },
+    {
+      "project_id": "P1977M0474",
+      "project_name": "260 6TH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-05-26T00:00:00.000",
+      "ulurp_numbers": "C760132TCM",
+      "primary_applicant": "MARCHETTO, SILVANO"
+    },
+    {
+      "project_id": "P1977M0475",
+      "project_name": "ARTHUR'COURT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-06-10T00:00:00.000",
+      "ulurp_numbers": "C760146TCM",
+      "primary_applicant": "KORWEY PUB, INC."
+    },
+    {
+      "project_id": "P1977M0476",
+      "project_name": "AMY'S",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-10-20T00:00:00.000",
+      "ulurp_numbers": "C760157TCM",
+      "primary_applicant": "SHTEINMAN, NATHAN"
+    },
+    {
+      "project_id": "P1977M0480",
+      "project_name": "FRIAR TUCK INN",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-02-02T00:00:00.000",
+      "ulurp_numbers": "C770004TCM",
+      "primary_applicant": "FRIAR TUCK INN"
+    },
+    {
+      "project_id": "P1977M0481",
+      "project_name": "UMBERTO'S CLAM HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-11-03T00:00:00.000",
+      "ulurp_numbers": "C770005TCM",
+      "primary_applicant": "OSBRO RESTAURANT CORP"
+    },
+    {
+      "project_id": "P1977M0486",
+      "project_name": "CENTRAL PARC RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-09-16T00:00:00.000",
+      "ulurp_numbers": "C770048TCM",
+      "primary_applicant": "1024 SECOND AVE RESTAURANT CORP"
+    },
+    {
+      "project_id": "P1977M0487",
+      "project_name": "246 COLUMBUS AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-09-16T00:00:00.000",
+      "ulurp_numbers": "C770049TCM",
+      "primary_applicant": "BROTHERS GLEASON, INC, THE"
+    },
+    {
+      "project_id": "P1977M0488",
+      "project_name": "LIBRARY RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-09-16T00:00:00.000",
+      "ulurp_numbers": "C770050TCM",
+      "primary_applicant": "BRUTUS ENTERPRISES, INC"
+    },
+    {
+      "project_id": "P1977M0490",
+      "project_name": "MAD HATTER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-03-16T00:00:00.000",
+      "ulurp_numbers": "C770054TCM",
+      "primary_applicant": "RUGGERITE INC"
+    },
+    {
+      "project_id": "P1977M0491",
+      "project_name": "GOOD TIMES RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-12-01T00:00:00.000",
+      "ulurp_numbers": "C770055TCM",
+      "primary_applicant": "449 TAVERN CORP"
+    },
+    {
+      "project_id": "P1977M0492",
+      "project_name": "TACO VILLA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-03-16T00:00:00.000",
+      "ulurp_numbers": "C770056TCM",
+      "primary_applicant": "TACO VILLA ENTERPRISES, INC"
+    },
+    {
+      "project_id": "P1977M0494",
+      "project_name": "NOAK'ARK",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-09-16T00:00:00.000",
+      "ulurp_numbers": "C770058TCM",
+      "primary_applicant": "1205 FIRST REST CORP"
+    },
+    {
+      "project_id": "P1977M0495",
+      "project_name": "MONA LISA RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-12-01T00:00:00.000",
+      "ulurp_numbers": "C770060TCM",
+      "primary_applicant": "N.T. RESTAURANT CORP"
+    },
+    {
+      "project_id": "P1977M0496",
+      "project_name": "PETE'S TAVERN",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-09-16T00:00:00.000",
+      "ulurp_numbers": "C770061TCM",
+      "primary_applicant": "BEL-DEL GRAMERCY PANTRY INC"
+    },
+    {
+      "project_id": "P1977M0497",
+      "project_name": "DOYLE'S CORNER,LTD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-09-16T00:00:00.000",
+      "ulurp_numbers": "C770062TCM",
+      "primary_applicant": "DOYLE'S CORNER, LTD"
+    },
+    {
+      "project_id": "P1977M0498",
+      "project_name": "NY BOAT YARD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-06-09T00:00:00.000",
+      "ulurp_numbers": "C770064TCM",
+      "primary_applicant": "1562 PUB INC"
+    },
+    {
+      "project_id": "P1977M0499",
+      "project_name": "HUDSON BAY INN",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-09-16T00:00:00.000",
+      "ulurp_numbers": "C770068TCM",
+      "primary_applicant": "LE TRECS, INC"
+    },
+    {
+      "project_id": "P1977M0500",
+      "project_name": "FLUFFY RESTAURANT,INC",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-06-10T00:00:00.000",
+      "ulurp_numbers": "C770069TCM",
+      "primary_applicant": "FLUFFY RESTAURANT, INC"
+    },
+    {
+      "project_id": "P1977M0501",
+      "project_name": "LA GRANDE BOUFFE(MELINA'S REST)",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-11-17T00:00:00.000",
+      "ulurp_numbers": "C770070TCM",
+      "primary_applicant": "ONASIS RESTAURANT INC"
+    },
+    {
+      "project_id": "P1977M0503",
+      "project_name": "ARGONAUT COFFEE HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-11-03T00:00:00.000",
+      "ulurp_numbers": "C770082TCM",
+      "primary_applicant": "1030 COFFEE SHOP, INC"
+    },
+    {
+      "project_id": "P1977M0508",
+      "project_name": "PENNYFEATHERS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-10-06T00:00:00.000",
+      "ulurp_numbers": "C770079TCM",
+      "primary_applicant": "ARBEE RESTAURANT CORP"
+    },
+    {
+      "project_id": "P1977M0509",
+      "project_name": "SZECHUAN PALACE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-09-16T00:00:00.000",
+      "ulurp_numbers": "C770080TCM",
+      "primary_applicant": "PING-PONG RESTAURANT, INC"
+    },
+    {
+      "project_id": "P1977Q0019",
+      "project_name": "RONZONI CORP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-07-19T00:00:00.000",
+      "ulurp_numbers": "N760018ZCQ",
+      "primary_applicant": "RONZONI CORP"
+    },
+    {
+      "project_id": "P1977Q0049",
+      "project_name": "32-50 F.LEWIS_BLVD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-03-03T00:00:00.000",
+      "ulurp_numbers": "C760055ZMQ",
+      "primary_applicant": "BRODERICK, C"
+    },
+    {
+      "project_id": "P1977Q0058",
+      "project_name": "BROOKHAVEN AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-09-28T00:00:00.000",
+      "primary_applicant": "SEAVIEW TOWERS, INC"
+    },
+    {
+      "project_id": "P1977Q0059",
+      "project_name": "39-69 47TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-03-03T00:00:00.000",
+      "ulurp_numbers": "C760068ZSQ",
+      "primary_applicant": "RAMO, NOVRUS"
+    },
+    {
+      "project_id": "P1977Q0191",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-10-06T00:00:00.000",
+      "ulurp_numbers": "C760190MLQ",
+      "primary_applicant": "PEPSICO"
+    },
+    {
+      "project_id": "P1977Q0427",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-02-02T00:00:00.000",
+      "ulurp_numbers": "C770326PPQ",
+      "primary_applicant": "DEPT OF REAL ESTATE"
+    },
+    {
+      "project_id": "P1977Q0428",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-02-02T00:00:00.000",
+      "ulurp_numbers": "C770327PPQ",
+      "primary_applicant": "DEPT OF REAL ESTATE"
+    },
+    {
+      "project_id": "P1977Q0429",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-02-02T00:00:00.000",
+      "ulurp_numbers": "C770328PPQ",
+      "primary_applicant": "DEPT OF REAL ESTATE"
+    },
+    {
+      "project_id": "P1977R0003",
+      "project_name": "715 TODT HILL RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-08-13T00:00:00.000",
+      "ulurp_numbers": "N760025RCR",
+      "primary_applicant": "RAIA, J  FOR S.I. ACADEMY"
+    },
+    {
+      "project_id": "P1977R0009",
+      "project_name": "PURDY AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-03-22T00:00:00.000",
+      "ulurp_numbers": "C760006MMR",
+      "primary_applicant": "EBNER, LOIS & PIERRE, HARRIET"
+    },
+    {
+      "project_id": "P1977R0020",
+      "project_name": "MERRICK CT,WOODHAVEN AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-06-28T00:00:00.000",
+      "ulurp_numbers": "C760027ZSR",
+      "primary_applicant": "CALVANICO ASSOC FOR MRS MACMINN"
+    },
+    {
+      "project_id": "P1977R0021",
+      "project_name": "500 ST,GEORGE RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-12-08T00:00:00.000",
+      "ulurp_numbers": "N760020ZAR",
+      "primary_applicant": "LAURIA ASSOC FOR JOE UGGIANO"
+    },
+    {
+      "project_id": "P1977R0033",
+      "project_name": "POILLON AVE,HYLAN BLVD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-11-24T00:00:00.000",
+      "ulurp_numbers": "A760037ZLR",
+      "primary_applicant": "DEL PESCE, PETER"
+    },
+    {
+      "project_id": "P1977R0035",
+      "project_name": "290 ALBOURNE AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-09-13T00:00:00.000",
+      "ulurp_numbers": "N760040RCR",
+      "primary_applicant": "MAGRINO, CHARLES"
+    },
+    {
+      "project_id": "P1977R0040",
+      "project_name": "HENNING ST,WINDSOR RD,SLOSSON & REON AVES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-08-18T00:00:00.000",
+      "ulurp_numbers": "C760046ZMR",
+      "primary_applicant": "CASEY FUNERAL HOME, INC"
+    },
+    {
+      "project_id": "P1977R0045",
+      "project_name": "FITZGERALD & NELSON AVES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-10-14T00:00:00.000",
+      "ulurp_numbers": "N760051RCR",
+      "primary_applicant": "GRUSHKIN, J FOR KANDEL CORP"
+    },
+    {
+      "project_id": "P1977R0052",
+      "project_name": "20 WARDS PT AVE,AMBOY RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-03-13T00:00:00.000",
+      "ulurp_numbers": "N760060ZAR",
+      "primary_applicant": "LAURIA ASSOC FOR B TARANTO"
+    },
+    {
+      "project_id": "P1977R0053",
+      "project_name": "POILLON AVE, AMBOY RD, HYLAN BLVD",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "1978-12-05T00:00:00.000",
+      "primary_applicant": "DEL PESCE, PETER"
+    },
+    {
+      "project_id": "P1977R0067",
+      "project_name": "618,620,622,624 ARMSTRONG AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-10-14T00:00:00.000",
+      "ulurp_numbers": "N760080RCR",
+      "primary_applicant": "GRUSHKIN, J FOR MANBUILT CORP"
+    },
+    {
+      "project_id": "P1977R0068",
+      "project_name": "410 & 416 EDGEGROVE AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-11-09T00:00:00.000",
+      "ulurp_numbers": "N760081RCR",
+      "primary_applicant": "GRUSHKIN, J FOR MADONIA HOMES, INC"
+    },
+    {
+      "project_id": "P1977R0069",
+      "project_name": "16,26,36 WEAVER AVE,15A70 ARDEN AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-10-14T00:00:00.000",
+      "ulurp_numbers": "N760082RCR",
+      "primary_applicant": "GRUSHKIN, J FOR MADONIA HOMES, INC"
+    },
+    {
+      "project_id": "P1977R0074",
+      "project_name": "HEAFY ST,EUNICE PLACE,VAN NAME AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-03-10T00:00:00.000",
+      "ulurp_numbers": "N760084MPR",
+      "primary_applicant": "POMPA, ANN"
+    },
+    {
+      "project_id": "P1977R0076",
+      "project_name": "JERSEY ST URA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-01-19T00:00:00.000",
+      "ulurp_numbers": "C760058PSR",
+      "primary_applicant": "HDA"
+    },
+    {
+      "project_id": "P1977R0082",
+      "project_name": "GARRICK ST,AMADOR & WEMPLESTS",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1978-01-12T00:00:00.000",
+      "primary_applicant": "GLENVIC, INC"
+    },
+    {
+      "project_id": "P1977R0083",
+      "project_name": "BEACHCOMBER RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-11-24T00:00:00.000",
+      "ulurp_numbers": "N760096ZCR",
+      "primary_applicant": "VACCARO, F FOR H BREGULLA"
+    },
+    {
+      "project_id": "P1977R0084",
+      "project_name": "RUSTIC PLACE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-11-09T00:00:00.000",
+      "ulurp_numbers": "N760101RCR",
+      "primary_applicant": "DIAMOND, H"
+    },
+    {
+      "project_id": "P1977R0088",
+      "project_name": "462 LIGHTHOUSE AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-11-23T00:00:00.000",
+      "ulurp_numbers": "N760104ZAR",
+      "primary_applicant": "ODDO, P FOR A SCARDINA"
+    },
+    {
+      "project_id": "P1977R0093",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-06-10T00:00:00.000",
+      "ulurp_numbers": "C760108MLR",
+      "primary_applicant": "CHANNEL BEND MARINA"
+    },
+    {
+      "project_id": "P1977R0096",
+      "project_name": "49 & 51 HEINZ AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-11-09T00:00:00.000",
+      "ulurp_numbers": "N760112RCR",
+      "primary_applicant": "GRUSHKIN FOR KANDEL CORP"
+    },
+    {
+      "project_id": "P1977R0104",
+      "project_name": "161,163,167,169 WILSON AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1976-11-09T00:00:00.000",
+      "ulurp_numbers": "N760120RCR",
+      "primary_applicant": "Calvanico Associates"
+    },
+    {
+      "project_id": "P1977R0109",
+      "project_name": "443,451 YETMAN,480 SLEIGHT,7121 HYLAN BLVD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-02-06T00:00:00.000",
+      "ulurp_numbers": "N760126ZAR",
+      "primary_applicant": "ESPOSITO, FRANK"
+    },
+    {
+      "project_id": "P1977R0112",
+      "project_name": "168 ARTHUR KILL RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-10-06T00:00:00.000",
+      "ulurp_numbers": "C760129ZMR",
+      "primary_applicant": "STENGER, JOHN"
+    },
+    {
+      "project_id": "P1977R0118",
+      "project_name": "3494 AMBOY RD",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1977-01-27T00:00:00.000",
+      "primary_applicant": "LAURIA, E"
+    },
+    {
+      "project_id": "P1977R0121",
+      "project_name": "AMBOY RD,GREAT KILLS",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1978-04-24T00:00:00.000",
+      "primary_applicant": "COM-DEL INT'L/MARIO ESPOSITO"
+    },
+    {
+      "project_id": "P1977R0122",
+      "project_name": "3040 ARTHUR KILL RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-01-27T00:00:00.000",
+      "ulurp_numbers": "N760136ZCR",
+      "primary_applicant": "MAGRINO, C"
+    },
+    {
+      "project_id": "P1977R0129",
+      "project_name": "HYLAN BLVD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1979-02-20T00:00:00.000",
+      "ulurp_numbers": "C760154ZMR",
+      "primary_applicant": "FERRERAS, H FOR A CAPOTELLI"
+    },
+    {
+      "project_id": "P1977R0145",
+      "project_name": "FOREST HILL RD & RICHMOND HILL RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1978-07-07T00:00:00.000",
+      "ulurp_numbers": "S760169ZSR",
+      "primary_applicant": "DAVMAR ESTATES, INC"
+    },
+    {
+      "project_id": "P1977R0147",
+      "project_name": "WHITWELL PL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1977-11-10T00:00:00.000",
+      "ulurp_numbers": "N760170ZAR",
+      "primary_applicant": "CALVANICO ASSOC."
+    }
+  ]
+}

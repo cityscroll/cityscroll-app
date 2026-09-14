@@ -1,0 +1,2238 @@
+{
+  "schema_version": "cityscroll.historical_project_context.v1",
+  "shard": "0029",
+  "rows": [
+    {
+      "project_id": "P1987Q0497",
+      "project_name": "FARMERS MARKET JAMAICA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-04-23T00:00:00.000",
+      "ulurp_numbers": "M760138AZSQ",
+      "ceqr_number": "86-274Q",
+      "primary_applicant": "DOT"
+    },
+    {
+      "project_id": "P1987Q0529",
+      "project_name": "ROCKAWAY BEACH HOUSING FOR SINGLES",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1987-08-19T00:00:00.000",
+      "ceqr_number": "87-212Q",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1987Q0531",
+      "project_name": "FARMERS MARKET JAMAICA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-05-21T00:00:00.000",
+      "ulurp_numbers": "C870598PSQ; C870599PPQ",
+      "ceqr_number": "86-274Q",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1987Q0532",
+      "project_name": "RIKERS ISLAND NEW WATER MAIN",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-06-18T00:00:00.000",
+      "ulurp_numbers": "I870609PSQ",
+      "ceqr_number": "87-265Q",
+      "primary_applicant": "DEP"
+    },
+    {
+      "project_id": "P1987Q0572",
+      "project_name": "ROCKAWAY BEACH HOUSING FOR SINGLES",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1987-08-19T00:00:00.000",
+      "ceqr_number": "87-212Q",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1987Q0579",
+      "project_name": "47TH AVE HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-06-16T00:00:00.000",
+      "ulurp_numbers": "N870665HKQ",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1987Q0615",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-08-13T00:00:00.000",
+      "ulurp_numbers": "C870693PPQ",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1987Q0621",
+      "project_name": "VAN WYCK SHELTER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "C870709ZMQ",
+      "ceqr_number": "87-163Q",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1987Q0627",
+      "project_name": "HRA BOARDING HOME",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-12-17T00:00:00.000",
+      "ulurp_numbers": "C870715PLQ",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1987Q0650",
+      "project_name": "134TH ST FAMILY RESIDENCE CENTER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-06-30T00:00:00.000",
+      "ulurp_numbers": "C870744MMQ",
+      "ceqr_number": "87-187Q",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1987Q0656",
+      "project_name": "TRADE WINDS BY THE SEA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-11-17T00:00:00.000",
+      "ulurp_numbers": "C870746ZMQ",
+      "ceqr_number": "87-269Q",
+      "primary_applicant": "SHORE HORIZION ASSOC/HOUSING FUTURES, INC"
+    },
+    {
+      "project_id": "P1987Q0659",
+      "project_name": "CHAUDHRI SITE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-09-29T00:00:00.000",
+      "ulurp_numbers": "C870750ZMQ",
+      "ceqr_number": "88-097Q",
+      "primary_applicant": "CHAUDHRI & LUTZES/MCGEE & MORSELLINO"
+    },
+    {
+      "project_id": "P1987Q0666",
+      "project_name": "PARSONS BLVD STORE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-24T00:00:00.000",
+      "ulurp_numbers": "C870761ZMQ",
+      "ceqr_number": "87-279Q",
+      "primary_applicant": "XIKIS, JOHN/ROTHKRUG, LEONARD"
+    },
+    {
+      "project_id": "P1987Q0667",
+      "project_name": "RIVERVIEW",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1993-10-18T00:00:00.000",
+      "ulurp_numbers": "M820250CZAQ",
+      "primary_applicant": "SCHORR BROS. DEVELOPMENT CORP/BROWN & WOOD/TUFU & ZUCCOTTI"
+    },
+    {
+      "project_id": "P1987Q0668",
+      "project_name": "BAY TERRACE SHOPPING CENTER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-21T00:00:00.000",
+      "ulurp_numbers": "N870762ZAQ",
+      "ceqr_number": "87-205Q",
+      "primary_applicant": "R.A.L. DESIGN ASSOC"
+    },
+    {
+      "project_id": "P1987Q0692",
+      "project_name": "CITICORP AT COURT SQUARE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-08-24T00:00:00.000",
+      "ulurp_numbers": "M860429AZSQ",
+      "ceqr_number": "85-279Q",
+      "primary_applicant": "ROSENMAN, COLIN/FREUND LEWIS & COHEN"
+    },
+    {
+      "project_id": "P1987Q0699",
+      "project_name": "COLLEGE PT INDUSTRIAL PK URA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-05-22T00:00:00.000",
+      "ulurp_numbers": "N870795HCQ",
+      "ceqr_number": "87-036Q",
+      "primary_applicant": "PDC"
+    },
+    {
+      "project_id": "P1987Q0701",
+      "project_name": "COLLEGE PT INDUST PK URA EQUIP MART",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1987-12-21T00:00:00.000",
+      "ceqr_number": "87-036Q",
+      "primary_applicant": "PDC"
+    },
+    {
+      "project_id": "P1987Q0712",
+      "project_name": "57-02 METROPOLITAN",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1988-05-10T00:00:00.000",
+      "ceqr_number": "87-268Q",
+      "primary_applicant": "CRIFASI, SALVATORE/MORELLINO, JOSEPH"
+    },
+    {
+      "project_id": "P1987Q0715",
+      "project_name": "POWELL'S COVE BLVD DEMAPPING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "ulurp_numbers": "C870779MMQ",
+      "ceqr_number": "87-281AQ",
+      "primary_applicant": "EDO CORP/STADMAUER & BAILKIN"
+    },
+    {
+      "project_id": "P1987Q0750",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1988-01-14T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1987Q0766",
+      "project_name": "QUEENS 11 SANITATION GARAGE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-24T00:00:00.000",
+      "ulurp_numbers": "C870881PLQ",
+      "ceqr_number": "87-305Q",
+      "primary_applicant": "DSNY"
+    },
+    {
+      "project_id": "P1987Q0785",
+      "project_name": "55-20 FLUSHING AVE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1988-09-20T00:00:00.000",
+      "ceqr_number": "87-312Q",
+      "primary_applicant": "INGRAM & REX CARNER"
+    },
+    {
+      "project_id": "P1987Q0791",
+      "project_name": "CONGREGATION SHAAR HATORAH",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1988-08-05T00:00:00.000",
+      "ceqr_number": "87-316Q",
+      "primary_applicant": "YESHIVA SHAAR HATORAH"
+    },
+    {
+      "project_id": "P1987Q0812",
+      "project_name": "JET ASPHALT PLANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-01-14T00:00:00.000",
+      "ulurp_numbers": "C870936PSQ",
+      "primary_applicant": "DOT"
+    },
+    {
+      "project_id": "P1987Q0815",
+      "project_name": "BROAD CHANNEL PORTA-BRANCH LIBRARY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-02-25T00:00:00.000",
+      "ulurp_numbers": "C870939PSQ",
+      "ceqr_number": "87-327Q",
+      "primary_applicant": "QBPL"
+    },
+    {
+      "project_id": "P1987Q0839",
+      "project_name": "75TH ST REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-12-07T00:00:00.000",
+      "ulurp_numbers": "I870970ZMQ",
+      "ceqr_number": "87-315Q",
+      "primary_applicant": "DRS B. KRYNCKI & K. ARSHED/KOTCHER, HARRY"
+    },
+    {
+      "project_id": "P1987Q0848",
+      "project_name": "DEPT OF HEALTH CENTRAL WAREHOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-01-28T00:00:00.000",
+      "ulurp_numbers": "C870976PLQ",
+      "primary_applicant": "DOHMH - DEPARTMENT OF HEALTH AND MENTAL HYGIENE"
+    },
+    {
+      "project_id": "P1987Q0852",
+      "project_name": "FIRE DEPARTMENT WAREHOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-01-14T00:00:00.000",
+      "ulurp_numbers": "C870981PLQ",
+      "primary_applicant": "NYCFD"
+    },
+    {
+      "project_id": "P1987Q0857",
+      "project_name": "COLLEGE POINT INDUSTRIAL DEV PLAN",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-05-04T00:00:00.000",
+      "ulurp_numbers": "I870988HUQ",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1987Q0866",
+      "project_name": "AGENCY OPERATED CHILDREN'S HOME",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-12-17T00:00:00.000",
+      "ulurp_numbers": "C870995PLQ",
+      "ceqr_number": "87-329Q",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1987Q0878",
+      "project_name": "DI FIORE & SONS WOODWORK",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-009Q",
+      "primary_applicant": "H. IRVING SIGMAN"
+    },
+    {
+      "project_id": "P1987Q0884",
+      "project_name": "242-30 NORTHERN BOULEVARD",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-016Q",
+      "primary_applicant": "F & H REALTY CO./HOROWITZ, LAWR"
+    },
+    {
+      "project_id": "P1987Q0889",
+      "project_name": "PYRAMID INTERNATIONAL",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-039Q",
+      "primary_applicant": "NATHAN MCCALLA/H.A. ODDMAN"
+    },
+    {
+      "project_id": "P1987Q0890",
+      "project_name": "11-19 30TH AVENUE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-034Q",
+      "primary_applicant": "SHELDON LOBEL/FREDERICK A. BECKER"
+    },
+    {
+      "project_id": "P1987Q0893",
+      "project_name": "BELLE HARBOR",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-041Q",
+      "primary_applicant": "INGRAM S. CARNER"
+    },
+    {
+      "project_id": "P1987Q0898",
+      "project_name": "THOMPSON EXPANSION",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-056Q",
+      "primary_applicant": "O. THOMPSON INC/MCGEE & MORSELLINO"
+    },
+    {
+      "project_id": "P1987Q0911",
+      "project_name": "144-01 LIBERTY AVE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-079Q",
+      "primary_applicant": "GABRIELLI, AMADEO & ARMANDO/GORMAN, WALTER"
+    },
+    {
+      "project_id": "P1987Q0915",
+      "project_name": "MCDONALD'S DRIVE THRU",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-085Q",
+      "primary_applicant": "ARMORY SYSTEMS INC/JOSEPH P. MORSELLINO"
+    },
+    {
+      "project_id": "P1987Q0918",
+      "project_name": "217-07 NORTHERN BLVD",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-091Q",
+      "primary_applicant": "Sheldon Lobel"
+    },
+    {
+      "project_id": "P1987Q0920",
+      "project_name": "KENTUCKY FRIED CHICKEN",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-097Q",
+      "primary_applicant": "MORSELLINO, JOSEPH"
+    },
+    {
+      "project_id": "P1987Q0924",
+      "project_name": "82-05 ROCKAWAY BLVD",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-102Q",
+      "primary_applicant": "HAROLD WEINBERG, HOWARD HORNSTEIN"
+    },
+    {
+      "project_id": "P1987Q0945",
+      "project_name": "KEW GARDENS CAB SERVICE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-128Q",
+      "primary_applicant": "PHILIP, AGUSTA"
+    },
+    {
+      "project_id": "P1987Q0947",
+      "project_name": "429 ONDERDONK AVE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-131Q",
+      "primary_applicant": "Sheldon Lobel"
+    },
+    {
+      "project_id": "P1987Q0948",
+      "project_name": "241-02 NORTHERN BLVD",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-132Q",
+      "primary_applicant": "AGUSTA, PHILIP"
+    },
+    {
+      "project_id": "P1987Q0957",
+      "project_name": "59-41 LINDEN ST",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-159Q",
+      "primary_applicant": "Sheldon Lobel"
+    },
+    {
+      "project_id": "P1987Q0961",
+      "project_name": "45TH DRIVE HOMES",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-171Q",
+      "primary_applicant": "MARIO FERAZZOLI & HYRAM ROTHKRUG"
+    },
+    {
+      "project_id": "P1987Q0963",
+      "project_name": "34-18 43RD STREET",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-173Q",
+      "primary_applicant": "EUGENE & STEPHANIE DOROSH/IVAN ZAYAC"
+    },
+    {
+      "project_id": "P1987Q0973",
+      "project_name": "218-28/36 HILLSIDE AVENUE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-217Q",
+      "primary_applicant": "MARIE CATALDI, IRVING SIGMAN"
+    },
+    {
+      "project_id": "P1987Q0978",
+      "project_name": "BROTHER'S ITALIAN FOOD STORE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-226Q",
+      "primary_applicant": "AGUSTA, PHILIP"
+    },
+    {
+      "project_id": "P1987Q0983",
+      "project_name": "AMBROSIO'S AUTO STORAGE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-239Q",
+      "primary_applicant": "PHILIP P. AUGUSTA"
+    },
+    {
+      "project_id": "P1987Q0991",
+      "project_name": "PFEIL & HOLING, INC",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-250Q",
+      "primary_applicant": "AGUSTA, PHILIP"
+    },
+    {
+      "project_id": "P1987Q0993",
+      "project_name": "DR EIVACK, SENREICH, & WULWICK",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-252Q",
+      "primary_applicant": "JOSEPH KLEIN"
+    },
+    {
+      "project_id": "P1987Q0994",
+      "project_name": "ROCKAWAY BLVD RETAIL STORES & OFF",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-253Q",
+      "primary_applicant": "JUSTICE REALTY CO,INC. ENVIRONMENTAL PROJ DATA STATEMNTS,CO."
+    },
+    {
+      "project_id": "P1987Q1008",
+      "project_name": "269-10 GRAND CENTRAL PARKWAY",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-274Q",
+      "primary_applicant": "SHELDON LOBEL/FREDERICK A. BECKER"
+    },
+    {
+      "project_id": "P1987Q1009",
+      "project_name": "270 - 10 GRAND CENTRAL PARKWAY",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-275Q",
+      "primary_applicant": "SHELDON LOBEL/FREDERICK"
+    },
+    {
+      "project_id": "P1987Q1010",
+      "project_name": "271-10 GRAND CENTRAL PARKWAY",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-276Q",
+      "primary_applicant": "SHELDON LOBEL/FREDERICK BECKER"
+    },
+    {
+      "project_id": "P1987Q1012",
+      "project_name": "POWELL'S COVE BLVD DEMAPPING",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-281Q",
+      "primary_applicant": "EDO CORP/STADMAUER & BAILKIN"
+    },
+    {
+      "project_id": "P1987Q1015",
+      "project_name": "52-16 FLUSHING AVE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-290Q",
+      "primary_applicant": "ACE ATLAS CORP/JOSEPH MORSELLINO"
+    },
+    {
+      "project_id": "P1987Q1016",
+      "project_name": "66-90/92 60TH PLACE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-291Q",
+      "primary_applicant": "SHELDON LOBEL/FREDERICK A. BECKER"
+    },
+    {
+      "project_id": "P1987Q1017",
+      "project_name": "91-19 SPRINGFIELD BLVD.",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-293Q",
+      "primary_applicant": "INGRAM GARNER"
+    },
+    {
+      "project_id": "P1987Q1023",
+      "project_name": "AUTO LAUNDRY",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-304Q",
+      "primary_applicant": "SHELL OIL CO./JOSEPH MORSELLINO"
+    },
+    {
+      "project_id": "P1987Q1025",
+      "project_name": "TOURO COLLEGE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-309Q",
+      "primary_applicant": "TOURO COLLEGE/ETHAN C. ELDON ASSOC."
+    },
+    {
+      "project_id": "P1987Q1028",
+      "project_name": "QUEENS BLVD OFFICE TOWER",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-317Q",
+      "primary_applicant": "KING CHUNG TRADING CO./THOMAS HUANG"
+    },
+    {
+      "project_id": "P1987Q1032",
+      "project_name": "37-17 23RD AVE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-326Q",
+      "primary_applicant": "LOBEL, SHELDON"
+    },
+    {
+      "project_id": "P1987Q1036",
+      "project_name": "109-04 98TH STREET",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-332Q",
+      "primary_applicant": "MARTYN & DON WESTON"
+    },
+    {
+      "project_id": "P1987Q1037",
+      "project_name": "NYNEX",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-333Q",
+      "primary_applicant": "HAROLD WEINBERG"
+    },
+    {
+      "project_id": "P1987Q1038",
+      "project_name": "48-03 206TH STREET",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-334Q",
+      "primary_applicant": "S. SAFIR & M. ESKENAZI/H. IRVING SIGMAN"
+    },
+    {
+      "project_id": "P1987Q1049",
+      "project_name": "LA AQUACATALA",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "87-348Q",
+      "primary_applicant": "OSCAR FRANCO/LORENZO CASANOVA"
+    },
+    {
+      "project_id": "P1987Q1051",
+      "project_name": "IL TOSCANO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-09-17T00:00:00.000",
+      "ulurp_numbers": "N870017TCQ",
+      "primary_applicant": "IL TOSCANO, INC"
+    },
+    {
+      "project_id": "P1987Q1053",
+      "project_name": "PIZZERIA UNO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-04-17T00:00:00.000",
+      "ulurp_numbers": "N870029TCQ",
+      "primary_applicant": "PIZZERIA UNO OF FOREST HILLS INC"
+    },
+    {
+      "project_id": "P1987Q1094",
+      "project_name": "THE STRATTON",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-01-23T00:00:00.000",
+      "ulurp_numbers": "N870625TCQ",
+      "primary_applicant": "A.S.V. REST, INC"
+    },
+    {
+      "project_id": "P1987Q1106",
+      "project_name": "EDELWEISS PIZZERIA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-12-21T00:00:00.000",
+      "ulurp_numbers": "N870747TCQ",
+      "primary_applicant": "EDELWEISS PIZZERIA, INC."
+    },
+    {
+      "project_id": "P1987Q1113",
+      "project_name": "OMONIA PASTRY CORP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-06-30T00:00:00.000",
+      "ulurp_numbers": "N870811TCQ",
+      "primary_applicant": "OMONIA PASTRY CORP/DBA EDLEWEISS PASTRY"
+    },
+    {
+      "project_id": "P1987Q1125",
+      "project_name": "WASHINGTON REST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-25T00:00:00.000",
+      "ulurp_numbers": "N870868TCQ",
+      "primary_applicant": "DEMETRIOS, OLYMBIOS"
+    },
+    {
+      "project_id": "P1987R0005",
+      "project_name": "145 ASPINWALL ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-04T00:00:00.000",
+      "ulurp_numbers": "N870005RCR",
+      "primary_applicant": "DELL'ANGELO, DENNIS"
+    },
+    {
+      "project_id": "P1987R0006",
+      "project_name": "100 WADSWORTH RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-03-09T00:00:00.000",
+      "ulurp_numbers": "C870006ZSR",
+      "primary_applicant": "DELL'ANGELO, DENNIS/BIGGICA, D."
+    },
+    {
+      "project_id": "P1987R0007",
+      "project_name": "44-76 GUNTON PL, 35-77 SELKIRK ST & 200-220 ALVERS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-15T00:00:00.000",
+      "ulurp_numbers": "N870009RCR",
+      "primary_applicant": "SAL CALGANO CONST/GRUSHKIN, J"
+    },
+    {
+      "project_id": "P1987R0008",
+      "project_name": "SURFSIDE VILLAGE_(POINT EAST CONDO)",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-06T00:00:00.000",
+      "ulurp_numbers": "N870008RAR",
+      "primary_applicant": "BRODY, RICHARD/FERRERAS, PAUL"
+    },
+    {
+      "project_id": "P1987R0009",
+      "project_name": "314, 322 MASON BLVD, 317 & 309 MCBAINE AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-15T00:00:00.000",
+      "ulurp_numbers": "N870011RCR",
+      "primary_applicant": "BENEDA, RUDOLF"
+    },
+    {
+      "project_id": "P1987R0010",
+      "project_name": "106 IONIA AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-08T00:00:00.000",
+      "ulurp_numbers": "N870012RCR",
+      "primary_applicant": "BENEDA, RUDOLF"
+    },
+    {
+      "project_id": "P1987R0011",
+      "project_name": "SURFSIDE VILLAGE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-09-10T00:00:00.000",
+      "ulurp_numbers": "M800062AZSR",
+      "primary_applicant": "RARITAN BAY DEVELOPMENT"
+    },
+    {
+      "project_id": "P1987R0013",
+      "project_name": "24 YEOMALT AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-15T00:00:00.000",
+      "ulurp_numbers": "N870013RCR",
+      "primary_applicant": "SALVATORE, ROBERT/CALVANICO, A"
+    },
+    {
+      "project_id": "P1987R0014",
+      "project_name": "687 WOODROW RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-15T00:00:00.000",
+      "ulurp_numbers": "N870014RCR",
+      "primary_applicant": "CALGANO, SAL/CALVANICO, A"
+    },
+    {
+      "project_id": "P1987R0015",
+      "project_name": "3855 HYLAN BLVD, 272 HILLSIDE TERRACE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-21T00:00:00.000",
+      "ulurp_numbers": "N870015RCR",
+      "primary_applicant": "BORG, JOSEPH/CALVANICO, A"
+    },
+    {
+      "project_id": "P1987R0027",
+      "project_name": "300-304 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-11-20T00:00:00.000",
+      "ulurp_numbers": "C870028PPR",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1987R0029",
+      "project_name": "422-446 SHIRLEY AVE, 274-282 NOEL ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-15T00:00:00.000",
+      "ulurp_numbers": "N870031RCR",
+      "primary_applicant": "BENEDA, RUDOLF"
+    },
+    {
+      "project_id": "P1987R0036",
+      "project_name": "7, 15, 23, 31, 39 KESSLER RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-11-30T00:00:00.000",
+      "ulurp_numbers": "N870040RAR",
+      "primary_applicant": "ZYGELMAN, DAVE/ODDO, PETER"
+    },
+    {
+      "project_id": "P1987R0037",
+      "project_name": "150-181 PAGE AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-07-15T00:00:00.000",
+      "ulurp_numbers": "N870060RCR",
+      "primary_applicant": "CALCAGNI, WILLIAM/CALVANICO, A"
+    },
+    {
+      "project_id": "P1987R0038",
+      "project_name": "PRINCES POINT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-12-21T00:00:00.000",
+      "ulurp_numbers": "C870059MMR; C870057ZMR; C870058ZSR",
+      "ceqr_number": "86-064R",
+      "primary_applicant": "MUSS DEVELOPMENT CO"
+    },
+    {
+      "project_id": "P1987R0039",
+      "project_name": "376 DEERE PARK PL & 77 BUTTERWORTH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-05-21T00:00:00.000",
+      "ulurp_numbers": "N870061ZAR",
+      "primary_applicant": "BERMAN, MIARIAM/DIFIORE, GIACOBBE & ASSOC"
+    },
+    {
+      "project_id": "P1987R0054",
+      "project_name": "357-405 ABINGDON AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-21T00:00:00.000",
+      "ulurp_numbers": "N870062RCR",
+      "primary_applicant": "FORRESTAL IV/ODDO, PETER"
+    },
+    {
+      "project_id": "P1987R0060",
+      "project_name": "315 KINGHORN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-11-10T00:00:00.000",
+      "ulurp_numbers": "N870067RAR",
+      "primary_applicant": "SALVATORE, BONANO/SARNO, NICHOLAS"
+    },
+    {
+      "project_id": "P1987R0061",
+      "project_name": "24-36 OCEANIC, 4341-4349 RICHMOND AVES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-02-06T00:00:00.000",
+      "ulurp_numbers": "N870068RCR",
+      "primary_applicant": "TENZER, ARTHUR/MORACE, JOSEPH"
+    },
+    {
+      "project_id": "P1987R0063",
+      "project_name": "61 PORTSMOUTH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-10-27T00:00:00.000",
+      "ulurp_numbers": "N870076ZAR",
+      "primary_applicant": "BRUSCO, ROSETTA & ANTHONY/GRUSHKIN, J"
+    },
+    {
+      "project_id": "P1987R0064",
+      "project_name": "791-801 KATAN, 171-196 FIGUREA AVES, 509-521 ANNAD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-10-03T00:00:00.000",
+      "ulurp_numbers": "N870077RAR",
+      "primary_applicant": "NOVA VILLA CONST CORP/GRUSHKIN, J"
+    },
+    {
+      "project_id": "P1987R0073",
+      "project_name": "42 ELMHURST AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-05-08T00:00:00.000",
+      "ulurp_numbers": "N870088ZAR",
+      "primary_applicant": "SALVADEO, N/LAROCCA, R"
+    },
+    {
+      "project_id": "P1987R0079",
+      "project_name": "195 BARCLAY AVE, 160 FABIAN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-21T00:00:00.000",
+      "ulurp_numbers": "N870093RCR",
+      "primary_applicant": "ROWE, DONALD"
+    },
+    {
+      "project_id": "P1987R0080",
+      "project_name": "422-466 WINANT AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-09-02T00:00:00.000",
+      "ulurp_numbers": "N870094RCR",
+      "primary_applicant": "SANDYWOODS ESTATES, INC/ODDO, PETER"
+    },
+    {
+      "project_id": "P1987R0081",
+      "project_name": "87-93 ARMSTRONG AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-21T00:00:00.000",
+      "ulurp_numbers": "N870096RCR",
+      "primary_applicant": "FOREST HOMES, INC/GRUSHKIN, J."
+    },
+    {
+      "project_id": "P1987R0086",
+      "project_name": "EVERGREEN PARK CONDO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-09-08T00:00:00.000",
+      "ulurp_numbers": "M780109ARAR",
+      "primary_applicant": "ED, LAURIA ASSOC"
+    },
+    {
+      "project_id": "P1987R0087",
+      "project_name": "67 WARDS POINT AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-21T00:00:00.000",
+      "ulurp_numbers": "N870100RCR",
+      "primary_applicant": "ZARCONE, J./VACCARO, F."
+    },
+    {
+      "project_id": "P1987R0105",
+      "project_name": "308 DOUGLAS ROAD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-08-20T00:00:00.000",
+      "ulurp_numbers": "N870119ZAR",
+      "primary_applicant": "EMERSON HILLS REALTY CORP"
+    },
+    {
+      "project_id": "P1987R0115",
+      "project_name": "43 ALMOND STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-21T00:00:00.000",
+      "ulurp_numbers": "N870138RCR",
+      "primary_applicant": "BOLOGNIA, F. LOMBARDO, M/GRUSHKIN, J"
+    },
+    {
+      "project_id": "P1987R0116",
+      "project_name": "66 DEWEY AVE.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-08-21T00:00:00.000",
+      "ulurp_numbers": "N870139RCR",
+      "primary_applicant": "GARGIULO, R./GRUSHKIN, J."
+    },
+    {
+      "project_id": "P1987R0125",
+      "project_name": "39 CALLAN AVENUE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "2012-01-12T00:00:00.000",
+      "primary_applicant": "LA GANGA, V."
+    },
+    {
+      "project_id": "P1987R0126",
+      "project_name": "100 FLAGG PLACE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-09-02T00:00:00.000",
+      "ulurp_numbers": "N870145ZAR",
+      "primary_applicant": "DELL'ANGELO, DENNIS"
+    },
+    {
+      "project_id": "P1987R0130",
+      "project_name": "3391 RICHMOND, 318-324 BARTLETT AVENUES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-09-04T00:00:00.000",
+      "ulurp_numbers": "N870148RCR",
+      "primary_applicant": "WOLFE, WILLIAM/CALVANICO, A."
+    },
+    {
+      "project_id": "P1987R0131",
+      "project_name": "11 BUTLER STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-09-04T00:00:00.000",
+      "ulurp_numbers": "N870149RCR",
+      "primary_applicant": "ABBRUZZESE, LOUISE/CALVANICO, A."
+    },
+    {
+      "project_id": "P1987R0132",
+      "project_name": "136 ASPINWALL STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-09-04T00:00:00.000",
+      "ulurp_numbers": "N870150RCR",
+      "primary_applicant": "GREENLEAF HOMES/CALVANICO, A."
+    },
+    {
+      "project_id": "P1987R0133",
+      "project_name": "136 ASPINWALL STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-09-29T00:00:00.000",
+      "ulurp_numbers": "N870151RCR",
+      "primary_applicant": "ZURLO, RALPH/CALVANICO, A."
+    },
+    {
+      "project_id": "P1987R0143",
+      "project_name": "30 BARTLETT AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-09-04T00:00:00.000",
+      "ulurp_numbers": "N870162RCR",
+      "primary_applicant": "MATZEL, ALAN/ODDO, PETER"
+    },
+    {
+      "project_id": "P1987R0146",
+      "project_name": "268, 270 SPRAGUE AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-09-11T00:00:00.000",
+      "ulurp_numbers": "N870166RCR",
+      "primary_applicant": "RARITAN BAY DEVELOPMENT CO/FERRERAS, P."
+    },
+    {
+      "project_id": "P1987R0147",
+      "project_name": "49, 53 OCEANVIEW PL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-09-11T00:00:00.000",
+      "ulurp_numbers": "N870167RCR",
+      "primary_applicant": "FERRERAS, MARIA/FERRERAS, PAUL"
+    },
+    {
+      "project_id": "P1987R0161",
+      "project_name": "180 YETMAN AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-09-11T00:00:00.000",
+      "ulurp_numbers": "N870182RCR",
+      "primary_applicant": "BRENNER, BART/VACCARO, FRANK"
+    },
+    {
+      "project_id": "P1987R0162",
+      "project_name": "168 GIFFORDS LANE & 7-15 WOODLAND AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-09-11T00:00:00.000",
+      "ulurp_numbers": "N870183RCR",
+      "primary_applicant": "AMATO, BENNY/VACCARO, FRANK"
+    },
+    {
+      "project_id": "P1987R0163",
+      "project_name": "1070 FATHER CAPODANO BLVD",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1987-10-09T00:00:00.000",
+      "ceqr_number": "86-271R",
+      "primary_applicant": "Calvanico Associates"
+    },
+    {
+      "project_id": "P1987R0165",
+      "project_name": "ALICE AUSTIN",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-06-01T00:00:00.000",
+      "ulurp_numbers": "I870191ZMR",
+      "ceqr_number": "87-051R",
+      "primary_applicant": "REYNOLDS SHIPYARD, CORP./MELNIKER, A."
+    },
+    {
+      "project_id": "P1987R0172",
+      "project_name": "361 WOODVALE AVE, 50 WOODVALE LOOP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-09-29T00:00:00.000",
+      "ulurp_numbers": "N870198RCR",
+      "primary_applicant": "KRUGER, JACK/CLAVANICO, A."
+    },
+    {
+      "project_id": "P1987R0173",
+      "project_name": "254, 268 RENNSSELAER AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-09-29T00:00:00.000",
+      "ulurp_numbers": "N870199RCR",
+      "primary_applicant": "MARROCCO, LOU"
+    },
+    {
+      "project_id": "P1987R0174",
+      "project_name": "707 BLOOMINGDALE ROAD, 122-132 RADIGAN AVE, 305-33",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-09-29T00:00:00.000",
+      "ulurp_numbers": "N870200RCR",
+      "primary_applicant": "NOCE, JOHN/CALVANICO, A."
+    },
+    {
+      "project_id": "P1987R0175",
+      "project_name": "58 BENNETT PLACE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-09-29T00:00:00.000",
+      "ulurp_numbers": "N870201RCR",
+      "primary_applicant": "TOMASINO, DOM/CALVANICO, A."
+    },
+    {
+      "project_id": "P1987R0246",
+      "project_name": "BURGHER & EVERGREEN AVES N/S/O SO RAILROAD AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-02-05T00:00:00.000",
+      "ulurp_numbers": "C870280PPR",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1987R0247",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-02-05T00:00:00.000",
+      "ulurp_numbers": "C870281PPR",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1987R0280",
+      "project_name": "VILLAGE SQUARE WEST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-09-29T00:00:00.000",
+      "ulurp_numbers": "C870328ZSR",
+      "primary_applicant": "SYLVIA REALTY CORP/ROTHKRUG, LEONARD"
+    },
+    {
+      "project_id": "P1987R0284",
+      "project_name": "63-65 TARLEE PL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-11-06T00:00:00.000",
+      "ulurp_numbers": "N870331RCR",
+      "primary_applicant": "B.J.,K.W. SAVALIA/GRUSHKIN, JEROME"
+    },
+    {
+      "project_id": "P1987R0285",
+      "project_name": "260 SHORE RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-11-06T00:00:00.000",
+      "ulurp_numbers": "N870332RCR",
+      "primary_applicant": "DEL ANGELO, DENNIS"
+    },
+    {
+      "project_id": "P1987R0286",
+      "project_name": "33 MELVILLE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-11-06T00:00:00.000",
+      "ulurp_numbers": "N870337RCR",
+      "primary_applicant": "CORONA, FRED/RAMPULLA ASSOC"
+    },
+    {
+      "project_id": "P1987R0289",
+      "project_name": "10 SOUTH DRUM ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-11-06T00:00:00.000",
+      "ulurp_numbers": "N870343RCR",
+      "primary_applicant": "STOJANOWSKI, WALTER/IOCOBELLIS, AGOSTINO"
+    },
+    {
+      "project_id": "P1987R0294",
+      "project_name": "227 YORK ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1987-01-14T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1987R0296",
+      "project_name": "HUGUENOT VILLAGE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1987-04-22T00:00:00.000",
+      "ceqr_number": "86-217R",
+      "primary_applicant": "HUGUENOT VILLAGE PARTNERS/CALVANICO, A"
+    },
+    {
+      "project_id": "P1987R0297",
+      "project_name": "208 SINCLAIR AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-11-06T00:00:00.000",
+      "ulurp_numbers": "N870348RCR",
+      "primary_applicant": "NANDA, SABHESH/CALVANICO, A"
+    },
+    {
+      "project_id": "P1987R0299",
+      "project_name": "104 BAYVIEW AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-12-04T00:00:00.000",
+      "ulurp_numbers": "N870349RCR",
+      "primary_applicant": "LAGANGA, VINCENT"
+    },
+    {
+      "project_id": "P1987R0306",
+      "project_name": "115 CANTON AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-11-06T00:00:00.000",
+      "ulurp_numbers": "N870351RCR",
+      "primary_applicant": "ROWE, DONALD"
+    },
+    {
+      "project_id": "P1987R0309",
+      "project_name": "MILFORD DR & HEWITT AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-12-22T00:00:00.000",
+      "ulurp_numbers": "N870357ZAR",
+      "ceqr_number": "81-040R",
+      "primary_applicant": "MEHRBERG, JULIUS/DIFIORE, GIACOBBE & ASSOC"
+    },
+    {
+      "project_id": "P1987R0310",
+      "project_name": "HUGUENOT VILLAGE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-12-23T00:00:00.000",
+      "ulurp_numbers": "N870358RAR",
+      "primary_applicant": "HUGUENOT VILLAGE/DIFIORE, GIACOBBE & ASSOC"
+    },
+    {
+      "project_id": "P1987R0311",
+      "project_name": "115 & 119 SWINNERTON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-12-04T00:00:00.000",
+      "ulurp_numbers": "N870359RCR",
+      "primary_applicant": "GALLINARO, ARTHUR/ODDO,PETER"
+    },
+    {
+      "project_id": "P1987R0318",
+      "project_name": "SURFSIDE VILLAGE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1987-12-09T00:00:00.000",
+      "ceqr_number": "80-021R",
+      "primary_applicant": "BRODY, RICHARD/FERRERAS PAUL"
+    },
+    {
+      "project_id": "P1987R0319",
+      "project_name": "600, 594, 596, 598 CRAIG AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-12-04T00:00:00.000",
+      "ulurp_numbers": "N870373RCR",
+      "primary_applicant": "HAYNBERG, SVEN/WINTERS, DAVID"
+    },
+    {
+      "project_id": "P1987R0321",
+      "project_name": "163-185 RYE AVE, 591-631 ANNADALE RD & 2-28 MOTT S",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-01-05T00:00:00.000",
+      "ulurp_numbers": "N870375RCR",
+      "primary_applicant": "CARTEN CONSTRUCTION CORP/ODDO,PETER"
+    },
+    {
+      "project_id": "P1987R0324",
+      "project_name": "364 LIGHTHOUSE AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-11-11T00:00:00.000",
+      "ulurp_numbers": "N870381ZAR",
+      "primary_applicant": "SPINELLI, T./MORACE, J."
+    },
+    {
+      "project_id": "P1987R0326",
+      "project_name": "ROSEBANK REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-10-12T00:00:00.000",
+      "ulurp_numbers": "C870384ZMR",
+      "ceqr_number": "87-174R",
+      "primary_applicant": "ROSEBANK, FT WADSWORTH, SHORE ACRES OF BD R1"
+    },
+    {
+      "project_id": "P1987R0340",
+      "project_name": "67-77 ELTINGVILLE BLVD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-02-27T00:00:00.000",
+      "ulurp_numbers": "N870404RAR",
+      "primary_applicant": "383 WILSON AVE ASSOC/GRUSHKIN, JEROME"
+    },
+    {
+      "project_id": "P1987R0342",
+      "project_name": "CHALET GARDENS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-06-11T00:00:00.000",
+      "ulurp_numbers": "N870406ZAR",
+      "primary_applicant": "CHALET DEVELOPMENT CORP/DIFIORE, GIACOBBE & ASSOC"
+    },
+    {
+      "project_id": "P1987R0346",
+      "project_name": "86-100 BOYCE AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-08-11T00:00:00.000",
+      "ulurp_numbers": "M820072FZAR",
+      "ceqr_number": "81-320R",
+      "primary_applicant": "EMS CONSTRUCTION CORP/DIFIORE, GIACOBBE ASSOC"
+    },
+    {
+      "project_id": "P1987R0347",
+      "project_name": "207 EYLANDT ST & 193 EDWIN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-12-18T00:00:00.000",
+      "ulurp_numbers": "N870411RCR",
+      "primary_applicant": "GALLINARO, ARTHUR/ODDO, PETER"
+    },
+    {
+      "project_id": "P1987R0351",
+      "project_name": "30 MOHN PL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-12-27T00:00:00.000",
+      "ulurp_numbers": "N870415ZAR",
+      "primary_applicant": "HADAR ESTATES/GRUSHKIN, JEROME"
+    },
+    {
+      "project_id": "P1987R0354",
+      "project_name": "5-15 GREAVES AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-12-18T00:00:00.000",
+      "ulurp_numbers": "N870418RCR",
+      "primary_applicant": "NOCE, JOHN/CALVANICO, A."
+    },
+    {
+      "project_id": "P1987R0355",
+      "project_name": "193 BRIGHTON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-12-18T00:00:00.000",
+      "ulurp_numbers": "N870419RCR",
+      "primary_applicant": "POALI DELLI, RALPH/CALVANICO, A."
+    },
+    {
+      "project_id": "P1987R0356",
+      "project_name": "385-399 STAFFORD AVE, 384,404-424 VINELAND AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-01-05T00:00:00.000",
+      "ulurp_numbers": "N870420RCR",
+      "primary_applicant": "FRANCES HOMES LTD/CALVANICO, A"
+    },
+    {
+      "project_id": "P1987R0357",
+      "project_name": "DURANT AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-12-18T00:00:00.000",
+      "ulurp_numbers": "N870421RCR",
+      "primary_applicant": "SUDEL ASSOC, INC/CALVANICO, A"
+    },
+    {
+      "project_id": "P1987R0358",
+      "project_name": "DOS BOUNDARIES TEXT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N870429ZRR",
+      "primary_applicant": "CAMPOLO, ARNOLD/VACARRO, FRANK"
+    },
+    {
+      "project_id": "P1987R0359",
+      "project_name": "30 TODT HILL COURT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-08-25T00:00:00.000",
+      "ulurp_numbers": "N870423ZAR; N870424ZAR; N870425ZAR",
+      "primary_applicant": "DEFRANCO, ROBERT/RAMPULLA ASSOC"
+    },
+    {
+      "project_id": "P1987R0360",
+      "project_name": "COPPER FLAGG ESTATES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-25T00:00:00.000",
+      "ulurp_numbers": "N870426ZAR",
+      "primary_applicant": "LANGWORTHY, ELEANOR/RAMPULLA ASSOC"
+    },
+    {
+      "project_id": "P1987R0361",
+      "project_name": "308 SO RAILROAD ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-12-18T00:00:00.000",
+      "ulurp_numbers": "N870427RCR",
+      "primary_applicant": "DAVIS, JOANNE/VACCARO, FRANK"
+    },
+    {
+      "project_id": "P1987R0362",
+      "project_name": "111 & 121 CONNECTICUT ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-01-28T00:00:00.000",
+      "ulurp_numbers": "N870428RCR",
+      "primary_applicant": "PIETRO, ARTHUR SANTO"
+    },
+    {
+      "project_id": "P1987R0363",
+      "project_name": "5775 AMBOY RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-07-15T00:00:00.000",
+      "ulurp_numbers": "N870430RCR",
+      "primary_applicant": "NORTHFIELD SAVINGS BANK/MELNIKER, ALBERT"
+    },
+    {
+      "project_id": "P1987R0365",
+      "project_name": "8 TUCKAHOE AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-12-18T00:00:00.000",
+      "ulurp_numbers": "N870432RCR",
+      "primary_applicant": "JASZCZAK, RICHARD/MORACE, JOSEPH"
+    },
+    {
+      "project_id": "P1987R0366",
+      "project_name": "117 SHELDON AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-01-05T00:00:00.000",
+      "ulurp_numbers": "N870434RCR",
+      "primary_applicant": "BENEDA, RUDOLF"
+    },
+    {
+      "project_id": "P1987R0367",
+      "project_name": "W/S/O WOODVALE AVE, N/O HYLAN BLVD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-08-17T00:00:00.000",
+      "ulurp_numbers": "N870435RAR",
+      "primary_applicant": "BENEDA, RUDOLF"
+    },
+    {
+      "project_id": "P1987R0375",
+      "project_name": "574 MAIN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-01-02T00:00:00.000",
+      "ulurp_numbers": "N870441RCR",
+      "primary_applicant": "ALISON, VINCENT/CALVANICO, A"
+    },
+    {
+      "project_id": "P1987R0376",
+      "project_name": "455 VINELAND AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-01-02T00:00:00.000",
+      "ulurp_numbers": "N870442RCR",
+      "primary_applicant": "LIGOTTI, JOSEPH/CALVANICO, A"
+    },
+    {
+      "project_id": "P1987R0379",
+      "project_name": "10-46 FILIPE LANE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1986-12-22T00:00:00.000",
+      "ulurp_numbers": "M860780ARAR",
+      "primary_applicant": "SILVER REALTY CORP/DIFIORE, GIACOBBE & ASSOC"
+    },
+    {
+      "project_id": "P1987R0380",
+      "project_name": "181, 185 SPRATT AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-01-02T00:00:00.000",
+      "ulurp_numbers": "N870446RCR",
+      "primary_applicant": "PASSARELLI, GUIDO/CALVANICO, A."
+    },
+    {
+      "project_id": "P1987R0389",
+      "project_name": "20 TRICIA WAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-01-02T00:00:00.000",
+      "ulurp_numbers": "N870456RCR",
+      "primary_applicant": "JULIANO, JOHN/CALVANICO, A."
+    },
+    {
+      "project_id": "P1987R0409",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-06-16T00:00:00.000",
+      "ulurp_numbers": "C870476PPR",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1987R0410",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-06-16T00:00:00.000",
+      "ulurp_numbers": "C870477PPR",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1987R0414",
+      "project_name": "174 ST. GEORGE RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-09-10T00:00:00.000",
+      "ulurp_numbers": "N870481ZAR",
+      "primary_applicant": "RAIA, JOSEPH"
+    },
+    {
+      "project_id": "P1987R0415",
+      "project_name": "197 EYLANDT ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-01-05T00:00:00.000",
+      "ulurp_numbers": "N870482RCR",
+      "primary_applicant": "DENTZLER, JAMES/NARIANI, GARY"
+    },
+    {
+      "project_id": "P1987R0416",
+      "project_name": "8-20 RUMBA PL, 175-183 DAHLIA ST, 15-63 LINDSAY CT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-01-28T00:00:00.000",
+      "ulurp_numbers": "N870483RCR",
+      "primary_applicant": "WEISS, ARMIN/CALVANICO, A."
+    },
+    {
+      "project_id": "P1987R0419",
+      "project_name": "141-169 CHARLESTON AVE, 101-155 WESTFIELD AVE,&",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-04-03T00:00:00.000",
+      "ulurp_numbers": "N870486RCR",
+      "primary_applicant": "CHARLESTON SQUARE, INC/ODDO, PETER"
+    },
+    {
+      "project_id": "P1987R0420",
+      "project_name": "174-182 CHARLESTON AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-01-28T00:00:00.000",
+      "ulurp_numbers": "N870487RCR",
+      "primary_applicant": "CHARLESTON SQUARE, INC/ODDO, PETER, JR"
+    },
+    {
+      "project_id": "P1987R0427",
+      "project_name": "ARLINGTON HOMES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-03-04T00:00:00.000",
+      "ulurp_numbers": "M810019AZSR",
+      "ceqr_number": "81-037R",
+      "primary_applicant": "PRESERVATION SPECIALTIES/JACOBS, STEPHEN"
+    },
+    {
+      "project_id": "P1987R0428",
+      "project_name": "2-66 MARNE AVE, 11-79 POMPEY AVE, &  32-43 MONTERE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-01-28T00:00:00.000",
+      "ulurp_numbers": "N870495RCR",
+      "primary_applicant": "DRUMGOOLE ANNADALE PROPERTIES/ODDO, PETER"
+    },
+    {
+      "project_id": "P1987R0429",
+      "project_name": "95 WOODROW ROAD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-01-28T00:00:00.000",
+      "ulurp_numbers": "N870496RCR",
+      "primary_applicant": "NOTARFRANCESCO/CALVANICO, A"
+    },
+    {
+      "project_id": "P1987R0435",
+      "project_name": "372 BRIGHTON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-01-28T00:00:00.000",
+      "ulurp_numbers": "N870502RCR",
+      "primary_applicant": "PARAMONTE, CARMELO/CALVANICO"
+    },
+    {
+      "project_id": "P1987R0436",
+      "project_name": "102 RIDGE AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-29T00:00:00.000",
+      "ulurp_numbers": "N870503ZAR",
+      "primary_applicant": "DENZLER, J/AGOLIATTI, CHRIS"
+    },
+    {
+      "project_id": "P1987R0438",
+      "project_name": "8, 12 HARTFORD ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-01-28T00:00:00.000",
+      "ulurp_numbers": "N870505RCR",
+      "primary_applicant": "HOLCK, ROBERT/RAMPULLA, PHILIP"
+    },
+    {
+      "project_id": "P1987R0439",
+      "project_name": "444 SEGUINE AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-04-03T00:00:00.000",
+      "ulurp_numbers": "N870506RCR",
+      "primary_applicant": "BENEDA, RUDOLF"
+    },
+    {
+      "project_id": "P1987R0440",
+      "project_name": "46, 52 ROCHELLE PLACE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-01-28T00:00:00.000",
+      "ulurp_numbers": "N870507RCR",
+      "primary_applicant": "RUDOLF, BENEDA"
+    },
+    {
+      "project_id": "P1987R0441",
+      "project_name": "366 TENNYSON DRIVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-02-10T00:00:00.000",
+      "ulurp_numbers": "N870509RCR",
+      "primary_applicant": "FERRERAS, PAUL/PNIEWSKI, VOYTEK"
+    },
+    {
+      "project_id": "P1987R0448",
+      "project_name": "87 NEWTON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-02-10T00:00:00.000",
+      "ulurp_numbers": "N870515RCR",
+      "primary_applicant": "DENZLER, JAMES/HARTGE, ROBERT"
+    },
+    {
+      "project_id": "P1987R0449",
+      "project_name": "267-273 MAIN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-02-10T00:00:00.000",
+      "ulurp_numbers": "N870516RCR",
+      "primary_applicant": "DENZLER, JAMES/EPPI BUILDING CORP"
+    },
+    {
+      "project_id": "P1987R0451",
+      "project_name": "310 POILLON AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-02-06T00:00:00.000",
+      "ulurp_numbers": "N870518RCR",
+      "primary_applicant": "DENZLER, JAMES/BERLIN, JOSEPH"
+    },
+    {
+      "project_id": "P1987R0454",
+      "project_name": "MORAVIAN CEMETERY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-10-02T00:00:00.000",
+      "ulurp_numbers": "N870524ZAR",
+      "primary_applicant": "MORAVIAN CEMETERY/MELNIKER, ALBERT"
+    },
+    {
+      "project_id": "P1987R0470",
+      "project_name": "GREENFIELD AVE FAMILY RESID CENTER",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1987-06-17T00:00:00.000",
+      "ceqr_number": "87-190R",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1987R0471",
+      "project_name": "WASHINGTON AVE FAMILY RESID CENTER",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1987-06-17T00:00:00.000",
+      "ceqr_number": "87-191R",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1987R0472",
+      "project_name": "RICHMOND AVE FAMILY RESID CENTER",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1987-06-17T00:00:00.000",
+      "ceqr_number": "87-192R",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1987R0498",
+      "project_name": "61 COLON AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-03-09T00:00:00.000",
+      "ulurp_numbers": "N870582RCR",
+      "primary_applicant": "PARISI, VINCENT/CALVANICO, A"
+    },
+    {
+      "project_id": "P1987R0499",
+      "project_name": "121-151 RADIGAN AVE, 152-190 SHIEL AVE, 725 BLOOMI",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-16T00:00:00.000",
+      "ulurp_numbers": "N870583RCR",
+      "primary_applicant": "SAVO, OTTO, CALVANICO, A"
+    },
+    {
+      "project_id": "P1987R0500",
+      "project_name": "30 EAST TENAFLY AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-03-09T00:00:00.000",
+      "ulurp_numbers": "N870584RCR",
+      "primary_applicant": "ROSALIE & VINCENT FRISONE/GRUSHKIN JEROME"
+    },
+    {
+      "project_id": "P1987R0501",
+      "project_name": "HYLAN BLVD SPEC PERMIT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-02-08T00:00:00.000",
+      "ulurp_numbers": "C870585ZSR",
+      "primary_applicant": "MARSILLO, MARIO/SALVADEO, NICHOLAS"
+    },
+    {
+      "project_id": "P1987R0506",
+      "project_name": "395 CHELSEA ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-03-09T00:00:00.000",
+      "ulurp_numbers": "N870587RCR",
+      "primary_applicant": "DENZLER, JAMES/DIGANGI, MICHAEL"
+    },
+    {
+      "project_id": "P1987R0507",
+      "project_name": "398 BRIGHTON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-03-09T00:00:00.000",
+      "ulurp_numbers": "N870588RCR",
+      "primary_applicant": "DENZLER, JAMES/SCARABAGGIO, DANIEL"
+    },
+    {
+      "project_id": "P1987R0508",
+      "project_name": "TOTTEN'S LANDING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-01-22T00:00:00.000",
+      "ulurp_numbers": "I870591ZSR",
+      "primary_applicant": "TOTTEN'S LANDING CORP/WILLLS, JOSEPH"
+    },
+    {
+      "project_id": "P1987R0509",
+      "project_name": "TOTTEN'S LANDING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-01-22T00:00:00.000",
+      "ulurp_numbers": "I870589ZMR; I870590MMR",
+      "ceqr_number": "85-103R",
+      "primary_applicant": "TOTTEN'S LANDING CORP/WILLS, JOSEPH"
+    },
+    {
+      "project_id": "P1987R0510",
+      "project_name": "DOLLARD RESIDENCE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-07-13T00:00:00.000",
+      "ulurp_numbers": "N870592ZAR",
+      "primary_applicant": "DOLLARD, JAMES/CALVANICO, A."
+    },
+    {
+      "project_id": "P1987R0523",
+      "project_name": "61 LUDLOW ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-03-09T00:00:00.000",
+      "ulurp_numbers": "N870596RCR",
+      "primary_applicant": "ACP HOME BUILDERS, INC/CANECO, ROBERT"
+    },
+    {
+      "project_id": "P1987R0524",
+      "project_name": "15 WALCH PL, 28-50 MELVILLE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-03-09T00:00:00.000",
+      "ulurp_numbers": "N870597RCR",
+      "primary_applicant": "ROYAL MANOR BLDG CORP/CANECO, ROBERT"
+    },
+    {
+      "project_id": "P1987R0530",
+      "project_name": "RICHMOND TERRACE HOUSING FOR SINGLS",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1987-06-17T00:00:00.000",
+      "ceqr_number": "87-213R",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1987R0536",
+      "project_name": "152 CORTELYOU AVE & 555,559 LEVERETT AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-08-05T00:00:00.000",
+      "ulurp_numbers": "N870613RAR",
+      "primary_applicant": "MURRAY BERMAN, ASSOC/ODDO, PETER"
+    },
+    {
+      "project_id": "P1987R0539",
+      "project_name": "1 RECTOR ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-01-19T00:00:00.000",
+      "ulurp_numbers": "I870616PSR",
+      "primary_applicant": "DEP"
+    },
+    {
+      "project_id": "P1987R0544",
+      "project_name": "796-810 RENSSELAER AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-04-02T00:00:00.000",
+      "ulurp_numbers": "N870627RAR",
+      "primary_applicant": "ORTNER, MARCEL/CALVANICO, A."
+    },
+    {
+      "project_id": "P1987R0545",
+      "project_name": "10-25 ELIZABETH CT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-05-21T00:00:00.000",
+      "ulurp_numbers": "N870620RAR",
+      "primary_applicant": "PAGE AVE REALTY CO/GRUSHKIN, JEROME"
+    },
+    {
+      "project_id": "P1987R0546",
+      "project_name": "PAGE AVE SHOPPING CENTER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-02-15T00:00:00.000",
+      "ulurp_numbers": "N870621RAR",
+      "ceqr_number": "88-052R",
+      "primary_applicant": "MARTINEZ, LUIS/RAMPULLA, PHILIP"
+    },
+    {
+      "project_id": "P1987R0548",
+      "project_name": "10-28 STAR CT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-03-18T00:00:00.000",
+      "ulurp_numbers": "N870623RCR",
+      "primary_applicant": "BOKHARI, INHAM/CALVANICO, A"
+    },
+    {
+      "project_id": "P1987R0549",
+      "project_name": "707 SHARROTTS RD",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1987-05-29T00:00:00.000",
+      "primary_applicant": "CUMMINGS, BILL/CALVANICO, A"
+    },
+    {
+      "project_id": "P1987R0550",
+      "project_name": "44-76 POND ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-07-23T00:00:00.000",
+      "ulurp_numbers": "N870626RCR",
+      "primary_applicant": "CALCAGNO, SAL/CALVANICO, A."
+    },
+    {
+      "project_id": "P1987R0551",
+      "project_name": "3617 RICHMOND RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-09-04T00:00:00.000",
+      "ulurp_numbers": "N870628ZCR",
+      "primary_applicant": "WEGENAAR, JOHN/IACOBELLIS, AGOSTINO"
+    },
+    {
+      "project_id": "P1987R0553",
+      "project_name": "SURF SIDE VILLAGE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1988-01-11T00:00:00.000",
+      "ceqr_number": "87-231R",
+      "primary_applicant": "RARITAN BAY DEVELOPMENT/NAGEL, STEPHEN"
+    },
+    {
+      "project_id": "P1987R0555",
+      "project_name": "174, 166 MCBAINE AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-03-18T00:00:00.000",
+      "ulurp_numbers": "N870636RCR",
+      "primary_applicant": "BENEDA, RUDOLF"
+    },
+    {
+      "project_id": "P1987R0556",
+      "project_name": "99 FINE BLVD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-02-25T00:00:00.000",
+      "ulurp_numbers": "N870638ZAR",
+      "primary_applicant": "ZURLO, RALPH/VACCARO, FRANK"
+    },
+    {
+      "project_id": "P1987R0558",
+      "project_name": "HUGUENOT VILLAGE VII",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-08-29T00:00:00.000",
+      "ulurp_numbers": "N870639RAR",
+      "primary_applicant": "HUGUENOT VILLAGE/DIFIORE, GIACOBBE & ASSOC"
+    },
+    {
+      "project_id": "P1987R0559",
+      "project_name": "OUR LADY HELP OF CHRISTIANS CHURCH",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1987-07-29T00:00:00.000",
+      "ceqr_number": "87-232R",
+      "primary_applicant": "OUR LADY HELP OF CHRISTIANS/FERRERAS, PAUL"
+    },
+    {
+      "project_id": "P1987R0560",
+      "project_name": "262 BETHAL AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-03-18T00:00:00.000",
+      "ulurp_numbers": "N870641RCR",
+      "primary_applicant": "DENZLER, JAMES"
+    },
+    {
+      "project_id": "P1987R0563",
+      "project_name": "STATEN ISLAND FAMILY RESIDENCE CNTR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-07-16T00:00:00.000",
+      "ulurp_numbers": "C870643PSR",
+      "ceqr_number": "87-236R",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1987R0569",
+      "project_name": "RICHMOND AVE FAMILY RESIDNTL CENTER",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1987-06-17T00:00:00.000",
+      "ceqr_number": "87-192R",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1987R0580",
+      "project_name": "95 WEST ENTRY ROAD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-04-09T00:00:00.000",
+      "ulurp_numbers": "N870666HKR",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1987R0581",
+      "project_name": "285 FLAGG PLACE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-04-09T00:00:00.000",
+      "ulurp_numbers": "N870667HKR",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1987R0582",
+      "project_name": "MCCALL'S DEMONSTRATION HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-04-09T00:00:00.000",
+      "ulurp_numbers": "N870668HKR",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1987R0616",
+      "project_name": "309 ARDEN AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-01-13T00:00:00.000",
+      "ulurp_numbers": "N870703RCR",
+      "primary_applicant": "LIGOTTI, JOSEPH/CALVANICO, A."
+    },
+    {
+      "project_id": "P1987R0617",
+      "project_name": "32 ALMOND ST, 31 RUXTON AVES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-04-14T00:00:00.000",
+      "ulurp_numbers": "N870704RCR",
+      "primary_applicant": "CALCAGNI, W/CALVANICO, A"
+    },
+    {
+      "project_id": "P1987R0618",
+      "project_name": "41, 45 EASTMAN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-04-27T00:00:00.000",
+      "ulurp_numbers": "N870705RCR",
+      "primary_applicant": "FONTANA, ANTHONY/CALVANICO, A"
+    },
+    {
+      "project_id": "P1987R0619",
+      "project_name": "16, 18 POILLON AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-12-17T00:00:00.000",
+      "ulurp_numbers": "N870706RCR",
+      "primary_applicant": "CHILLI, VALERIE"
+    },
+    {
+      "project_id": "P1987R0623",
+      "project_name": "1525 RICHMOND RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-12-02T00:00:00.000",
+      "ulurp_numbers": "N870711ZAR",
+      "primary_applicant": "LONGOBARDI, RAYMOND/CALVANICO, A."
+    },
+    {
+      "project_id": "P1987R0624",
+      "project_name": "TODT HILL RD",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-10-26T00:00:00.000",
+      "ulurp_numbers": "N870712ZAR",
+      "primary_applicant": "COSTA, TOM/SALVADEO, NICHOLAS"
+    },
+    {
+      "project_id": "P1987R0625",
+      "project_name": "51, 47, 45, 43, 41, 39, 37 OSBORN AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-04-14T00:00:00.000",
+      "ulurp_numbers": "N870713RCR",
+      "primary_applicant": "PIEDALATO, IGNAZIO/ODDO, PETER"
+    },
+    {
+      "project_id": "P1987R0626",
+      "project_name": "60 ST. JAMES AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-23T00:00:00.000",
+      "ulurp_numbers": "N870714ZAR",
+      "primary_applicant": "ADDEO, RICHARD/SALVADEO, NICHOLAS"
+    },
+    {
+      "project_id": "P1987R0632",
+      "project_name": "36 ROSEDALE AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-04-14T00:00:00.000",
+      "ulurp_numbers": "N870719RCR",
+      "primary_applicant": "PRINCIPE, RALPH JR./CALVANICO, A."
+    },
+    {
+      "project_id": "P1987R0634",
+      "project_name": "LATOURETTE PARK GOLF COURSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-05-26T00:00:00.000",
+      "ulurp_numbers": "M851132AZAR",
+      "primary_applicant": "AMERICAN GOLF CORP/O'MARA, WILLIAM"
+    },
+    {
+      "project_id": "P1987R0636",
+      "project_name": "705 BARLOW AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-04-27T00:00:00.000",
+      "ulurp_numbers": "N870723RCR",
+      "primary_applicant": "AMBER LITE ELECTRIC CORP"
+    },
+    {
+      "project_id": "P1987R0648",
+      "project_name": "116-120 SYLVIA ST, 39-65 STUYVESANT AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-06-19T00:00:00.000",
+      "ulurp_numbers": "N870741RAR",
+      "primary_applicant": "STUYVESANT CORP/DIFIORE, GIACOBBE & ASSOC"
+    },
+    {
+      "project_id": "P1987R0662",
+      "project_name": "53, 57 HEINZ AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-06-19T00:00:00.000",
+      "ulurp_numbers": "N870754RAR",
+      "primary_applicant": "SALAMI, ESFANDIAR/DIFIORE, GIACOBBE & ASSOC"
+    },
+    {
+      "project_id": "P1987R0669",
+      "project_name": "718-726 JANSEN ST, 269-285 ANDROVETTE AVE, 23-29 S",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-11-10T00:00:00.000",
+      "ulurp_numbers": "N870763RCR",
+      "primary_applicant": "BENEDA, RUDOLF"
+    },
+    {
+      "project_id": "P1987R0670",
+      "project_name": "630-640 YETMAN AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-04-30T00:00:00.000",
+      "ulurp_numbers": "N870764RCR",
+      "primary_applicant": "BENEDA, RUDOLF"
+    },
+    {
+      "project_id": "P1987R0674",
+      "project_name": "1845 CARLTON AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-04-30T00:00:00.000",
+      "ulurp_numbers": "N870768RCR",
+      "primary_applicant": "TUCCI, GINO/CALVANICO, A"
+    },
+    {
+      "project_id": "P1987R0675",
+      "project_name": "10 TRICIA WAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-04-30T00:00:00.000",
+      "ulurp_numbers": "N870767RCR",
+      "primary_applicant": "HAYNBERG, SVEN/CALVANICO, A"
+    },
+    {
+      "project_id": "P1987R0680",
+      "project_name": "248 CONNECTICUT ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-04-30T00:00:00.000",
+      "ulurp_numbers": "N870774RCR",
+      "primary_applicant": "DAZZO, JOSEPH/ODDO, PETER"
+    },
+    {
+      "project_id": "P1987R0681",
+      "project_name": "118 HITCHCOCK AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-10-01T00:00:00.000",
+      "ulurp_numbers": "N870775ZAR",
+      "primary_applicant": "FREDERICKSEN, CHARLES/VICTORIO, RONALD"
+    },
+    {
+      "project_id": "P1987R0700",
+      "project_name": "81 ASPINWALL ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-05-14T00:00:00.000",
+      "ulurp_numbers": "N870794RCR",
+      "primary_applicant": "BENZI, LOUIS/CALVANICO, A"
+    },
+    {
+      "project_id": "P1987R0703",
+      "project_name": "67 SOUTH GOFF AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-07-06T00:00:00.000",
+      "ulurp_numbers": "N870789RCR",
+      "primary_applicant": "DENZLER, JAMES"
+    },
+    {
+      "project_id": "P1987R0705",
+      "project_name": "95 THE CIRCLE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-01-26T00:00:00.000",
+      "ulurp_numbers": "N870797ZAR",
+      "primary_applicant": "LA FORGIA, FRANK/CALVANICO, A."
+    },
+    {
+      "project_id": "P1987R0708",
+      "project_name": "130 OLD FARMER'S LANE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-12-14T00:00:00.000",
+      "ulurp_numbers": "N870804ZAR",
+      "primary_applicant": "DE VIDO, ALFREDO"
+    },
+    {
+      "project_id": "P1987R0711",
+      "project_name": "OPEN SPACE TEXT AMENDMENT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-11-19T00:00:00.000",
+      "ulurp_numbers": "N870809ZRR",
+      "ceqr_number": "87-288R",
+      "primary_applicant": "DCP"
+    },
+    {
+      "project_id": "P1987R0714",
+      "project_name": "36 MOTLEY AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-09-26T00:00:00.000",
+      "ulurp_numbers": "N870814ZAR",
+      "primary_applicant": "PATEL, SURESH/VACCARO, FRANK"
+    },
+    {
+      "project_id": "P1987R0729",
+      "project_name": "94 MADSEN AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-05-14T00:00:00.000",
+      "ulurp_numbers": "N870835RCR",
+      "primary_applicant": "LAGANGA, VINCENT"
+    },
+    {
+      "project_id": "P1987R0733",
+      "project_name": "101 NASHVILLE ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-05-14T00:00:00.000",
+      "ulurp_numbers": "N870834RCR",
+      "primary_applicant": "DELL'ANGELO, DENNIS"
+    },
+    {
+      "project_id": "P1987R0735",
+      "project_name": "25, 135 MEADE LOOP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-05-14T00:00:00.000",
+      "ulurp_numbers": "N870837RCR",
+      "primary_applicant": "P.M. TIMBERLINE RUN, INC/ODDO, PETER"
+    },
+    {
+      "project_id": "P1987R0736",
+      "project_name": "363 MANHATTAN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-05-14T00:00:00.000",
+      "ulurp_numbers": "N870838RCR",
+      "primary_applicant": "DENZLER, JAMES"
+    },
+    {
+      "project_id": "P1987R0737",
+      "project_name": "105-133 CARDIFF ST & 102-128 BOULDER STS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-05-14T00:00:00.000",
+      "ulurp_numbers": "N870839RCR",
+      "primary_applicant": "WIELAND HOMES, INC/ODDO, PETER"
+    }
+  ]
+}

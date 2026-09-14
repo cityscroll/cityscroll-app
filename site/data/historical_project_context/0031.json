@@ -1,0 +1,2254 @@
+{
+  "schema_version": "cityscroll.historical_project_context.v1",
+  "shard": "0031",
+  "rows": [
+    {
+      "project_id": "P1988K0306",
+      "project_name": "FRESH CREEK SHORELINE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-04-24T00:00:00.000",
+      "ulurp_numbers": "I880351MLK",
+      "primary_applicant": "PORTS"
+    },
+    {
+      "project_id": "P1988K0312",
+      "project_name": "384 KEAP ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-24T00:00:00.000",
+      "ulurp_numbers": "C880353HDK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988K0317",
+      "project_name": "452 BEDFORD AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-24T00:00:00.000",
+      "ulurp_numbers": "C880369HDK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988K0319",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-07-14T00:00:00.000",
+      "ulurp_numbers": "C880367PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0332",
+      "project_name": "ST MARKS DAY CARE & SENIOR CENTER",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1988-07-25T00:00:00.000",
+      "ceqr_number": "88-105K",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1988K0343",
+      "project_name": "70TH POLICE PRECINCT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-07-20T00:00:00.000",
+      "ulurp_numbers": "C880388PSK; C880389ZSK",
+      "ceqr_number": "88-111K",
+      "primary_applicant": "NYPD"
+    },
+    {
+      "project_id": "P1988K0345",
+      "project_name": "ELMWOOD AVE REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-05-04T00:00:00.000",
+      "ulurp_numbers": "C880406ZMK",
+      "ceqr_number": "88-117K",
+      "primary_applicant": "Stroock & Stroock & Lavan"
+    },
+    {
+      "project_id": "P1988K0362",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-23T00:00:00.000",
+      "ulurp_numbers": "C880397PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0363",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-23T00:00:00.000",
+      "ulurp_numbers": "C880398PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0364",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-23T00:00:00.000",
+      "ulurp_numbers": "C880399PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0365",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "1988-06-09T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0366",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-23T00:00:00.000",
+      "ulurp_numbers": "C880401PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0367",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-23T00:00:00.000",
+      "ulurp_numbers": "C880402PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0368",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-23T00:00:00.000",
+      "ulurp_numbers": "C880403PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0377",
+      "project_name": "TORAH TEMIMAH TALMUDICAL SEMINARY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-12-12T00:00:00.000",
+      "ulurp_numbers": "N880432ZCK",
+      "primary_applicant": "TORAH TEMIMAH TALMUDICAL ACADEMY/STROOCK & STROOCK & LAVAN"
+    },
+    {
+      "project_id": "P1988K0382",
+      "project_name": "C-O-P/JERALEMON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-04-28T00:00:00.000",
+      "ulurp_numbers": "C880434PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0400",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "1988-06-23T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0428",
+      "project_name": "BROADWAY TRIANGLE URP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1999-08-26T00:00:00.000",
+      "ulurp_numbers": "C880488MMK",
+      "ceqr_number": "86-304K",
+      "primary_applicant": "HPD/PDC"
+    },
+    {
+      "project_id": "P1988K0434",
+      "project_name": "SHEEPSHEAD LANDING",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1989-04-12T00:00:00.000",
+      "ceqr_number": "88-085K",
+      "primary_applicant": "M.R.A.J. REALTY/TIM MILLER ASSOC."
+    },
+    {
+      "project_id": "P1988K0452",
+      "project_name": "STEEPLECHASE AMUSEMENT PARK",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-05-23T00:00:00.000",
+      "ulurp_numbers": "C880522MMK; I880523ZMK; C880524PPK",
+      "ceqr_number": "87-147K",
+      "primary_applicant": "DPR/PDC/CONEY ISLAND RESORTS/ZIMMERMAN-DAY"
+    },
+    {
+      "project_id": "P1988K0453",
+      "project_name": "MAIMONIDES MEDICAL ARTS BLDG",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-02-10T00:00:00.000",
+      "ulurp_numbers": "M760206AZSK; N880525ZAK",
+      "ceqr_number": "88-122K",
+      "primary_applicant": "MAIMONIDES MEDICAL CENTER/ROTHKRUG, LEONARD"
+    },
+    {
+      "project_id": "P1988K0476",
+      "project_name": "63 FRANKLIN ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-09T00:00:00.000",
+      "ulurp_numbers": "C880548HDK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988K0492",
+      "project_name": "124 COLUMBIA HEIGHTS TUNNEL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-02-23T00:00:00.000",
+      "ulurp_numbers": "C880563GFK",
+      "ceqr_number": "88-175K",
+      "primary_applicant": "WATCHTOWER BIBLE & TRACT SOCIETY"
+    },
+    {
+      "project_id": "P1988K0497",
+      "project_name": "BAY PROPERTY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-31T00:00:00.000",
+      "ulurp_numbers": "M870007AMMK",
+      "primary_applicant": "BAY PROPERTIES ASSOCIATES/DAVIS, ROBERT"
+    },
+    {
+      "project_id": "P1988K0500",
+      "project_name": "648 GRAND STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-23T00:00:00.000",
+      "ulurp_numbers": "C880569HDK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988K0501",
+      "project_name": "12 BLEECKER STREET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-23T00:00:00.000",
+      "ulurp_numbers": "C880570HDK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988K0506",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1988-04-28T00:00:00.000",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0507",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-23T00:00:00.000",
+      "ulurp_numbers": "C880578PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0508",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-23T00:00:00.000",
+      "ulurp_numbers": "C880579PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0509",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-23T00:00:00.000",
+      "ulurp_numbers": "C880580PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0522",
+      "project_name": "BROOKLYN NORTH DIST GARAGE 3",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-08-02T00:00:00.000",
+      "ulurp_numbers": "I880591PSK",
+      "ceqr_number": "88-192K",
+      "primary_applicant": "DSNY"
+    },
+    {
+      "project_id": "P1988K0523",
+      "project_name": "RIDGEWOOD BUSHWICK SR CITIZENS HSG",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-09-29T00:00:00.000",
+      "ulurp_numbers": "C880594HDK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988K0564",
+      "project_name": "E69TH ST REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-06-23T00:00:00.000",
+      "ulurp_numbers": "I880637ZMK",
+      "ceqr_number": "88-206K",
+      "primary_applicant": "LANDOLFI, RALPH/ROTHKRUG & ROTHKRUG"
+    },
+    {
+      "project_id": "P1988K0569",
+      "project_name": "LYNCH ST REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-01-10T00:00:00.000",
+      "ulurp_numbers": "I880639ZMK",
+      "ceqr_number": "88-315K",
+      "primary_applicant": "OSTREICHER, EUGENE"
+    },
+    {
+      "project_id": "P1988K0580",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-09-08T00:00:00.000",
+      "ulurp_numbers": "C880646PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0581",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-09-08T00:00:00.000",
+      "ulurp_numbers": "C880647PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0582",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-09-29T00:00:00.000",
+      "ulurp_numbers": "C880648PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0583",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-10-13T00:00:00.000",
+      "ulurp_numbers": "C880649PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0584",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-09-29T00:00:00.000",
+      "ulurp_numbers": "C880650PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0585",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-09-29T00:00:00.000",
+      "ulurp_numbers": "C880651PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0586",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-09-29T00:00:00.000",
+      "ulurp_numbers": "C880652PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0587",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-10-27T00:00:00.000",
+      "ulurp_numbers": "C880653PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0588",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-10-27T00:00:00.000",
+      "ulurp_numbers": "C880654PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0589",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-10-27T00:00:00.000",
+      "ulurp_numbers": "C880655PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0623",
+      "project_name": "STANWIX ST & EVERGREEN AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-11-16T00:00:00.000",
+      "ulurp_numbers": "N880700MEK",
+      "primary_applicant": "PDC/DEP"
+    },
+    {
+      "project_id": "P1988K0632",
+      "project_name": "NARROWS AVENUE HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-05-26T00:00:00.000",
+      "ulurp_numbers": "N880709HKK",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988K0639",
+      "project_name": "REHABILITATION CAMPUS FOR U.C.P.",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-05-11T00:00:00.000",
+      "ulurp_numbers": "M830466AZAK",
+      "primary_applicant": "UNITED CEREBRAL PALSY OF NYC, INC"
+    },
+    {
+      "project_id": "P1988K0649",
+      "project_name": "METROPOLITAN JEWISH GERIATRIC CNTR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-01-31T00:00:00.000",
+      "ulurp_numbers": "C880723ZSK",
+      "ceqr_number": "88-109K",
+      "primary_applicant": "METROPOLITAN JEWISH GERIATRIC CNTR/STROOCK & STROOCK & LAVAN"
+    },
+    {
+      "project_id": "P1988K0656",
+      "project_name": "E69TH ST REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-06-23T00:00:00.000",
+      "ulurp_numbers": "I880733MLK",
+      "ceqr_number": "88-206K",
+      "primary_applicant": "ROTHKRUG, ADAM/LANDOLFI, RALPH"
+    },
+    {
+      "project_id": "P1988K0695",
+      "project_name": "OLD FULTON STREET REZONING",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1989-07-19T00:00:00.000",
+      "ceqr_number": "88-241K",
+      "primary_applicant": "DCP"
+    },
+    {
+      "project_id": "P1988K0718",
+      "project_name": "8202, 8204, 8206 5TH AVE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1989-07-28T00:00:00.000",
+      "primary_applicant": "I. KLEINFELD & SON, INC/MARINO, PETER"
+    },
+    {
+      "project_id": "P1988K0719",
+      "project_name": "ALBEE SQUARE MALL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-09-26T00:00:00.000",
+      "ulurp_numbers": "N880812ZCK",
+      "primary_applicant": "TIME-OUT FAMILY AMUSEMENT CENTERS,INC/ROSEMAN & COLIN"
+    },
+    {
+      "project_id": "P1988K0733",
+      "project_name": "SPRING CREEK",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-10-13T00:00:00.000",
+      "ulurp_numbers": "C880818ZSK; C880817ZMK",
+      "ceqr_number": "88-025K",
+      "primary_applicant": "SPRING CREEK ASSOC/MARCUS, JED"
+    },
+    {
+      "project_id": "P1988K0748",
+      "project_name": "SS JOACHIM & ANN RESIDENCE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-11-30T00:00:00.000",
+      "ulurp_numbers": "C880834ZSK",
+      "ceqr_number": "88-265K",
+      "primary_applicant": "SS JOACHIM & ANNE RESIDENCE/ANZELMO & LOMBARDO"
+    },
+    {
+      "project_id": "P1988K0757",
+      "project_name": "RUGBY LIBRARY BRANCH GARDENS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-01-26T00:00:00.000",
+      "ulurp_numbers": "C880841PSK",
+      "primary_applicant": "BPL"
+    },
+    {
+      "project_id": "P1988K0759",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-09-29T00:00:00.000",
+      "ulurp_numbers": "C880843PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0760",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-09-29T00:00:00.000",
+      "ulurp_numbers": "C880844PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0761",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-09-29T00:00:00.000",
+      "ulurp_numbers": "C880845PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0768",
+      "project_name": "BROOKLYN BOROUGH REPAIR SHOP",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1988-10-25T00:00:00.000",
+      "ceqr_number": "88-276K",
+      "primary_applicant": "DSNY"
+    },
+    {
+      "project_id": "P1988K0777",
+      "project_name": "HART/WILLOUGHBY TRANSITIONAL HSG",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-10-27T00:00:00.000",
+      "ulurp_numbers": "C880865HAK",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1988K0778",
+      "project_name": "DEKALB AVE TRANSITIONAL REHAB",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-10-27T00:00:00.000",
+      "ulurp_numbers": "C880867HAK",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1988K0779",
+      "project_name": "STOCKHOLM ST TRANSITIONAL REHAB",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-10-27T00:00:00.000",
+      "ulurp_numbers": "C880869HAK",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1988K0780",
+      "project_name": "DUMONT AVE TRANSITIONAL REHAB",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-10-27T00:00:00.000",
+      "ulurp_numbers": "C880871HAK",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1988K0781",
+      "project_name": "NEW JERSEY AVE TRANSITIONAL REHAB",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-10-27T00:00:00.000",
+      "ulurp_numbers": "C880873HAK",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1988K0782",
+      "project_name": "SARATOGA/RIVERDALE TRANSITIONAL HSG",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-10-27T00:00:00.000",
+      "ulurp_numbers": "C880875HAK",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1988K0783",
+      "project_name": "MCDONOUGH ST TRANSITIONAL REHAB",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-10-27T00:00:00.000",
+      "ulurp_numbers": "C880877HAK",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1988K0784",
+      "project_name": "SUMPTER ST TRANSITIONAL REHAB",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-10-27T00:00:00.000",
+      "ulurp_numbers": "C880879HAK",
+      "primary_applicant": "HRA"
+    },
+    {
+      "project_id": "P1988K0811",
+      "project_name": "EL GRECO",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-07-19T00:00:00.000",
+      "ulurp_numbers": "N880894ZCK",
+      "primary_applicant": "EMMONS ENTERPRISES"
+    },
+    {
+      "project_id": "P1988K0820",
+      "project_name": "BIG R SUPERMARKET",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-03-08T00:00:00.000",
+      "ulurp_numbers": "C880923ZMK",
+      "ceqr_number": "89-003K",
+      "primary_applicant": "ROTHKRUG, LEONARD/ALWAYNE CONSTRUCTION, CORP"
+    },
+    {
+      "project_id": "P1988K0821",
+      "project_name": "OLD NEW UTRECHT RD",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1989-12-21T00:00:00.000",
+      "ceqr_number": "85-219K",
+      "primary_applicant": "KOLEL MAHNE SIMCHA/ROTHKRUG, ADAM & LEONARD"
+    },
+    {
+      "project_id": "P1988K0838",
+      "project_name": "BROOKLYN RENAISSANCE PLAZA GARAGE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-07-14T00:00:00.000",
+      "ulurp_numbers": "I880952ZSK",
+      "primary_applicant": "OED/MUSS DEVELOPMENT, CO"
+    },
+    {
+      "project_id": "P1988K0839",
+      "project_name": "BROWNSVILLE II URA NYCHA TURNKEY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-09-28T00:00:00.000",
+      "ulurp_numbers": "C880951HAK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988K0852",
+      "project_name": "2121 EMMONS AVENUE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-11-08T00:00:00.000",
+      "ulurp_numbers": "N880967ZRK",
+      "ceqr_number": "88-234K",
+      "primary_applicant": "ETHAN ELDON ASSOC/SIDRAN REALTY CORP"
+    },
+    {
+      "project_id": "P1988K0857",
+      "project_name": "MARCUS GARVEY URP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-09-05T00:00:00.000",
+      "ulurp_numbers": "N880969HCK",
+      "ceqr_number": "85-283K",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988K0858",
+      "project_name": "35 CLAVER PL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-07-20T00:00:00.000",
+      "ulurp_numbers": "C880943PLK",
+      "primary_applicant": "DEPT OF CONSUMER AFFAIRS"
+    },
+    {
+      "project_id": "P1988K0860",
+      "project_name": "345 ADAMS ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-02-23T00:00:00.000",
+      "ulurp_numbers": "C880970PSK",
+      "primary_applicant": "Department of General Services (now part of DCAS)"
+    },
+    {
+      "project_id": "P1988K0864",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-12-01T00:00:00.000",
+      "ulurp_numbers": "C880975PPK",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988K0865",
+      "project_name": "COBBLE HILL HISTORIC DIST EXTENSION",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-08-11T00:00:00.000",
+      "ulurp_numbers": "N880986HKK",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988K0871",
+      "project_name": "192 SKILLMAN AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-03-30T00:00:00.000",
+      "ulurp_numbers": "C881005HDK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988K0872",
+      "project_name": "252 HEYWARD ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-03-30T00:00:00.000",
+      "ulurp_numbers": "C881006HDK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988K0873",
+      "project_name": "281 CLASSON AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-03-30T00:00:00.000",
+      "ulurp_numbers": "C881007HDK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988K0874",
+      "project_name": "313 MILFORD ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-03-30T00:00:00.000",
+      "ulurp_numbers": "C881008HDK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988K0875",
+      "project_name": "392 SOUTH 5TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-09-28T00:00:00.000",
+      "ulurp_numbers": "C881009HDK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988K0884",
+      "project_name": "90 LEXINGTON AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-03-30T00:00:00.000",
+      "ulurp_numbers": "C881001HDK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988K0885",
+      "project_name": "108 DIVISION AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-03-30T00:00:00.000",
+      "ulurp_numbers": "C881002HDK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988K0886",
+      "project_name": "141 MCDONOUGH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-03-30T00:00:00.000",
+      "ulurp_numbers": "C881003HDK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988K0887",
+      "project_name": "164 RALPH AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-03-30T00:00:00.000",
+      "ulurp_numbers": "C881004HDK",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988K0897",
+      "project_name": "SITE H-VACANT BLDG PROGRAM II",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1990-11-01T00:00:00.000",
+      "ceqr_number": "88-228K",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988K0899",
+      "project_name": "WILLIAMSBURG I URA, SITE 5B",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1988-11-09T00:00:00.000",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988K0915",
+      "project_name": "ST. MARKS HOUSES",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-005K",
+      "primary_applicant": "ST. MARKS ASSOCIATES/CO/BLAMNK-MARANS ASSC RICHARD MARANS"
+    },
+    {
+      "project_id": "P1988K0921",
+      "project_name": "514 MORGAN AVE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-018K",
+      "primary_applicant": "FRANCISCO CHIN DOMINICK SALVATI & SON"
+    },
+    {
+      "project_id": "P1988K0940",
+      "project_name": "147 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-056K",
+      "primary_applicant": "NORMAN TUCK"
+    },
+    {
+      "project_id": "P1988K0941",
+      "project_name": "OCEAN AVENUE DEVELOPMENT",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-059K",
+      "primary_applicant": "OCEAN AVENUE DEVELOPMENT CORP. ENVIRONM PROJT DAT STAMT CO"
+    },
+    {
+      "project_id": "P1988K0943",
+      "project_name": "SWEENEY I FULTON LANDING",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-061K",
+      "primary_applicant": "BROOKLAKE ASSOCIATES"
+    },
+    {
+      "project_id": "P1988K0947",
+      "project_name": "WALLABOUT URBAN RENEWAL AREA",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-072K",
+      "primary_applicant": "NYCHPD"
+    },
+    {
+      "project_id": "P1988K0952",
+      "project_name": "SHALOM RESIDENCE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-078K",
+      "primary_applicant": "STROOCK AND STROOCK AND LAVAN"
+    },
+    {
+      "project_id": "P1988K0955",
+      "project_name": "3616 SURF AVE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-086K",
+      "primary_applicant": "ROBERT HENRY/ZENO SALVEZ"
+    },
+    {
+      "project_id": "P1988K0960",
+      "project_name": "RIDGEWOOD BUSHWICK SENIOR HOUSING",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-095K",
+      "primary_applicant": "NYCHPD"
+    },
+    {
+      "project_id": "P1988K0976",
+      "project_name": "STORE ENLARGEMENT",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-143K",
+      "primary_applicant": "PARIS ESTATES REALTY/HARRIET JACOBS"
+    },
+    {
+      "project_id": "P1988K0984",
+      "project_name": "1593 CONEY ISLAND AVENUE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-158K",
+      "primary_applicant": "SHELDON LOBEL/FREDERICK A. BECKER"
+    },
+    {
+      "project_id": "P1988K0993",
+      "project_name": "33 FIRST PLACE, 172-174 CARROLL STREET",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-181K",
+      "primary_applicant": "FREDERICK A. BECKER/SHELDON LOBEL"
+    },
+    {
+      "project_id": "P1988K0995",
+      "project_name": "EXXON COMPANY USA",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-187K",
+      "primary_applicant": "EXXON COMPANY, USA/LAMA & VASSALOTTI"
+    },
+    {
+      "project_id": "P1988K0996",
+      "project_name": "JIFFY LUBE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-188K",
+      "primary_applicant": "AMERICAN OIL CHANGE CORP/MCGEE & MORSELLINO"
+    },
+    {
+      "project_id": "P1988K0999",
+      "project_name": "THE DOCKSIDE AT SHEEPSHEAD BAY",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-199K",
+      "primary_applicant": "ROBERT ROSENBERG/DOUG RICE/MARIAN GREENE"
+    },
+    {
+      "project_id": "P1988K1003",
+      "project_name": "PHYSICAL CULTURE ESTABLISHMENT",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-205K",
+      "primary_applicant": "JOHN BARBERO/HIRAM ROTHKRUG"
+    },
+    {
+      "project_id": "P1988K1006",
+      "project_name": "TEMPLE SHAARE ZION ADDITION",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-211K",
+      "primary_applicant": "SHAARE ZION CONGREGATION/HIRAM A. ROTHKRUG"
+    },
+    {
+      "project_id": "P1988K1012",
+      "project_name": "FORDE CABARET",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-219K",
+      "primary_applicant": "EION FORDE/HARRIET JACOB"
+    },
+    {
+      "project_id": "P1988K1013",
+      "project_name": "5808 FLATLANDS AVENUE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-221K",
+      "primary_applicant": "SUN OIL COMPANY / WALTER T. GORMAN"
+    },
+    {
+      "project_id": "P1988K1017",
+      "project_name": "USPS BROWNSVILLE STATION",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-233K",
+      "primary_applicant": "CHARLES PUMILIA/KENNETH SEVITSKY"
+    },
+    {
+      "project_id": "P1988K1032",
+      "project_name": "KANE STREET CONDOMINIUMS",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-258K",
+      "primary_applicant": "GARDENIA ORGANIZATION/TIM  MILLER"
+    },
+    {
+      "project_id": "P1988K1037",
+      "project_name": "418 AVENUE Y",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-266K",
+      "primary_applicant": "WAI, CHOY, & LEE ASSOC"
+    },
+    {
+      "project_id": "P1988K1043",
+      "project_name": "TOBY DABAH",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-273K",
+      "primary_applicant": "HAROLD WEINBERG"
+    },
+    {
+      "project_id": "P1988K1045",
+      "project_name": "526, 528, 536 STERLING PL",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "89-275K",
+      "primary_applicant": "FRANK BELL FUNERAL HOME/HENRY, ROBERT"
+    },
+    {
+      "project_id": "P1988K1051",
+      "project_name": "HOLY SPIRIT SENIOR HOUSING",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "89-282K",
+      "primary_applicant": "PROGRESS OF PEOPLES DEV/BROWN & WOOD"
+    },
+    {
+      "project_id": "P1988K1060",
+      "project_name": "KINGS HIGHWAY BUSINESS IMPROVEMENT",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-298K",
+      "primary_applicant": "NYCOBD"
+    },
+    {
+      "project_id": "P1988K1063",
+      "project_name": "ACE CAR & LIMO SERVICE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-306K",
+      "primary_applicant": "ACE TWO-WAY RADIO CORP/SALVATI ARCHITECTS"
+    },
+    {
+      "project_id": "P1988K1067",
+      "project_name": "1612-1626 CHURCH AVE",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-311K",
+      "primary_applicant": "SOLED HARRY"
+    },
+    {
+      "project_id": "P1988K1068",
+      "project_name": "87 GRAND STREET",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-312K",
+      "primary_applicant": "MARTYN & WESTON DON"
+    },
+    {
+      "project_id": "P1988K1070",
+      "project_name": "GREENHUT & RUBIN",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "ceqr_number": "88-314K",
+      "primary_applicant": "GREENHUT & RUBIN/HEIMBERGER & SEIDMAN"
+    },
+    {
+      "project_id": "P1988K1073",
+      "project_name": "P.J. COFFEE SHOP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-02-23T00:00:00.000",
+      "ulurp_numbers": "N880003TCK",
+      "primary_applicant": "P.J. COFFEE SHOP, INC."
+    },
+    {
+      "project_id": "P1988K1093",
+      "project_name": "ARMANDO'S REST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-10-16T00:00:00.000",
+      "ulurp_numbers": "N880097TCK",
+      "primary_applicant": "PETER BYROS ENTERPRISE, INC"
+    },
+    {
+      "project_id": "P1988K1103",
+      "project_name": "MCDONALD'S",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-04-21T00:00:00.000",
+      "ulurp_numbers": "N880237TCK",
+      "primary_applicant": "J & A SYSTEMS, INC"
+    },
+    {
+      "project_id": "P1988K1106",
+      "project_name": "MARTINS RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-09-19T00:00:00.000",
+      "ulurp_numbers": "N880258TCK",
+      "primary_applicant": "FAMILY STYLE FOODS, INC"
+    },
+    {
+      "project_id": "P1988K1118",
+      "project_name": "OASIS RESTAURANT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-11-06T00:00:00.000",
+      "ulurp_numbers": "N880681TCK",
+      "primary_applicant": "OASIS FOOD, LTD"
+    },
+    {
+      "project_id": "P1988K1136",
+      "project_name": "MR TANG",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-12-15T00:00:00.000",
+      "ulurp_numbers": "N880786TCK",
+      "primary_applicant": "MR TANG, INC"
+    },
+    {
+      "project_id": "P1988K1149",
+      "project_name": "THE RESTAURANT ST HAMILTON HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-12-31T00:00:00.000",
+      "ulurp_numbers": "N880962TCK",
+      "primary_applicant": "THE RESTAURANT AT HAMILTON HOUSE, INC"
+    },
+    {
+      "project_id": "P1988M0001",
+      "project_name": "AMERICAN FOLK ART MUSEUM/MORMON BDG",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-06T00:00:00.000",
+      "ulurp_numbers": "N880002ZAM",
+      "ceqr_number": "88-001M",
+      "primary_applicant": "TWO LINCOLN SQUARE ASSOC/SHEA & GOULD"
+    },
+    {
+      "project_id": "P1988M0013",
+      "project_name": "54 GREENE ST A/K/A 465-467 BROOME ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-11-14T00:00:00.000",
+      "ulurp_numbers": "C880024ZSM",
+      "primary_applicant": "54 GREENE ST REALTY CORP/POTOFSKY, RICHARD"
+    },
+    {
+      "project_id": "P1988M0014",
+      "project_name": "1540-1548 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-09-24T00:00:00.000",
+      "ulurp_numbers": "N880028ZCM",
+      "primary_applicant": "BROADWAY STATE PARTNERS C/O EICHNER PROPTS. HORNSTEIN/KERMEN"
+    },
+    {
+      "project_id": "P1988M0018",
+      "project_name": "AMERICAS TOWERS/HS PERFORMING ARTS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-01-14T00:00:00.000",
+      "ulurp_numbers": "C880034PPM; C880035ZSM",
+      "ceqr_number": "86-104M",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988M0020",
+      "project_name": "216 & 218 E75TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-10-21T00:00:00.000",
+      "ulurp_numbers": "N880033ZAM",
+      "primary_applicant": "NAHON, DAVID"
+    },
+    {
+      "project_id": "P1988M0022",
+      "project_name": "SYMPHONY HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-06-14T00:00:00.000",
+      "ulurp_numbers": "M850451BZCM",
+      "primary_applicant": "BROADWAY & 56TH ST ASSOC/J. RESNICK & SONS ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1988M0023",
+      "project_name": "PENN STATION/AMTRAK TERMINAL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-02-10T00:00:00.000",
+      "ulurp_numbers": "N880054ZCM",
+      "primary_applicant": "JUST GAMES OF WESTCHESTER, INC/ARONAUER, JOSEPH"
+    },
+    {
+      "project_id": "P1988M0029",
+      "project_name": "N.Y. HOSPITAL MULTI-PURPOSE BLDG",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-05-17T00:00:00.000",
+      "ulurp_numbers": "M840900CZSM",
+      "ceqr_number": "81-317M",
+      "primary_applicant": "NEW YORK HOSPITAL/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1988M0031",
+      "project_name": "RIVERWALK BRIDGE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1988-09-01T00:00:00.000",
+      "ceqr_number": "84-043M",
+      "primary_applicant": "PORTS"
+    },
+    {
+      "project_id": "P1988M0034",
+      "project_name": "BELZ FACTORY OUTLET MALL",
+      "public_status": "Completed",
+      "project_status": "Terminated",
+      "completed_date": "1988-02-11T00:00:00.000",
+      "ceqr_number": "85-150M",
+      "primary_applicant": "ABLE EMPIRE GROUP,INC/BELZ INVESTMENT INC/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1988M0037",
+      "project_name": "COLUMBIA PRESBYTERIAN MEDICAL CNTR",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1987-09-28T00:00:00.000",
+      "primary_applicant": "PRESBYTERIAN HOSPITAL & COLUMBIA UNIVERSITY/BROWN & WOOD"
+    },
+    {
+      "project_id": "P1988M0038",
+      "project_name": "W168TH ST BRIDGE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1988-04-14T00:00:00.000",
+      "ceqr_number": "88-019M",
+      "primary_applicant": "COLUMBIA UNIVERSITY & PRESBYTERIAN HOSPITAL/BROWN & WOOD"
+    },
+    {
+      "project_id": "P1988M0039",
+      "project_name": "PRESBYTERIAN HOSPITAL/W165 ST BRDGE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1988-04-14T00:00:00.000",
+      "ceqr_number": "88-020M",
+      "primary_applicant": "THE PRESBYTERIAN HOSPITAL/BROWN & WOOD"
+    },
+    {
+      "project_id": "P1988M0041",
+      "project_name": "15 W17TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-10-04T00:00:00.000",
+      "ulurp_numbers": "M830805AZCM",
+      "primary_applicant": "BERZAK, NEIL"
+    },
+    {
+      "project_id": "P1988M0042",
+      "project_name": "RIVERTERRACE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-01-27T00:00:00.000",
+      "ulurp_numbers": "M840233BZSM",
+      "primary_applicant": "YORK 72 ASSOC"
+    },
+    {
+      "project_id": "P1988M0046",
+      "project_name": "HUNAN FORTUNE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-09-15T00:00:00.000",
+      "ulurp_numbers": "I880058GFM",
+      "ceqr_number": "88-090M",
+      "primary_applicant": "HUNAN FORTUNE, INC/KWONG SEUNG"
+    },
+    {
+      "project_id": "P1988M0072",
+      "project_name": "LEX-PARK",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-11-17T00:00:00.000",
+      "ulurp_numbers": "C880086ZSM",
+      "ceqr_number": "88-024M",
+      "primary_applicant": "MEIRSON, JULIAN"
+    },
+    {
+      "project_id": "P1988M0073",
+      "project_name": "PALACE THEATRE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-10-01T00:00:00.000",
+      "ulurp_numbers": "N880095HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0092",
+      "project_name": "CASA VICTORIA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-07-14T00:00:00.000",
+      "ulurp_numbers": "C880117HAM",
+      "ceqr_number": "88-043M",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988M0093",
+      "project_name": "BRIDGE HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-02-11T00:00:00.000",
+      "ulurp_numbers": "C880118HAM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988M0100",
+      "project_name": "124 W18TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-10-03T00:00:00.000",
+      "ulurp_numbers": "N880124ZCM",
+      "primary_applicant": "GOHO EQUITIES/GOLDIN, HOWARD"
+    },
+    {
+      "project_id": "P1988M0113",
+      "project_name": "36-38 W20TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-09-27T00:00:00.000",
+      "ulurp_numbers": "N880139ZCM",
+      "primary_applicant": "ERICA REALTY CORP/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1988M0116",
+      "project_name": "NEW YORK UNIVERSITY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-04-18T00:00:00.000",
+      "ulurp_numbers": "N880134CMM",
+      "primary_applicant": "New York University"
+    },
+    {
+      "project_id": "P1988M0117",
+      "project_name": "THE HORIZON",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-07-05T00:00:00.000",
+      "ulurp_numbers": "M850370AZMM; M850371BZSM",
+      "ceqr_number": "83-244M",
+      "primary_applicant": "GLICK CONSTRUCTION CORP/MORSELLINO, J."
+    },
+    {
+      "project_id": "P1988M0120",
+      "project_name": "411 W35TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-09T00:00:00.000",
+      "ulurp_numbers": "N880144ZAM",
+      "ceqr_number": "87-345M",
+      "primary_applicant": "EDISON PARKING ASSOC/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1988M0121",
+      "project_name": "419 & 421 W35TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-09T00:00:00.000",
+      "ulurp_numbers": "N880143ZAM",
+      "ceqr_number": "87-346M",
+      "primary_applicant": "EDISON PARKING ASSOC/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1988M0130",
+      "project_name": "EXCHANGES PROJECT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-01-13T00:00:00.000",
+      "ulurp_numbers": "I880152MMM",
+      "ceqr_number": "87-033M",
+      "primary_applicant": "PDC/TBTA & THE EXCHANGES"
+    },
+    {
+      "project_id": "P1988M0158",
+      "project_name": "WEST SIDE YMCA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-01-09T00:00:00.000",
+      "ulurp_numbers": "C880189ZSM",
+      "ceqr_number": "87-150M",
+      "primary_applicant": "YMCA OF GREATER NY/BERLE, KASS & CASE"
+    },
+    {
+      "project_id": "P1988M0161",
+      "project_name": "HOTEL DRAKE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-02-21T00:00:00.000",
+      "ulurp_numbers": "I880195GFM",
+      "primary_applicant": "SNH REAL ESTATE LTD/LOWELL, STANLEY"
+    },
+    {
+      "project_id": "P1988M0163",
+      "project_name": "PRUDENTIAL-HILTON BLDG",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-10-05T00:00:00.000",
+      "ulurp_numbers": "N880194ZCM",
+      "primary_applicant": "NY HILTON JOINT VENTURE/KOHN, PEDERSON, & FOX ASSOC"
+    },
+    {
+      "project_id": "P1988M0166",
+      "project_name": "GOUVERNEUR HOSPITAL DISPNSRY/C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-11-06T00:00:00.000",
+      "ulurp_numbers": "I880196PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988M0175",
+      "project_name": "THE HORIZON",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-03-08T00:00:00.000",
+      "ulurp_numbers": "C880205GFM",
+      "ceqr_number": "83-244M",
+      "primary_applicant": "HORIZON CONDOMINIUM"
+    },
+    {
+      "project_id": "P1988M0179",
+      "project_name": "632 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-01-20T00:00:00.000",
+      "ulurp_numbers": "C880211ZSM",
+      "primary_applicant": "FISHEL, FAY/KEN-ROB CO/HORNSTEIN-KREMEN"
+    },
+    {
+      "project_id": "P1988M0188",
+      "project_name": "JANE ST FENCE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-03-09T00:00:00.000",
+      "ulurp_numbers": "C880222GFM",
+      "ceqr_number": "88-114M",
+      "primary_applicant": "WATSON, ALBERT & ELIZABETH/CWA DESIGN GROUP, LTD"
+    },
+    {
+      "project_id": "P1988M0191",
+      "project_name": "NMU MARITIME BUILDING",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1987-11-02T00:00:00.000",
+      "ceqr_number": "88-058M",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988M0194",
+      "project_name": "127 E36TH ST",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1988-10-13T00:00:00.000",
+      "primary_applicant": "177 MULBERRY REALTY CORP/WECHSLER-GRASSO-MENZIUSO"
+    },
+    {
+      "project_id": "P1988M0201",
+      "project_name": "VIETNAM VETERAN'S PEDESTRIAN TUNNEL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-12-01T00:00:00.000",
+      "ulurp_numbers": "C880236GFM",
+      "primary_applicant": "OLYMPIA & YORK WATER ST CO/BROWN & WOOD"
+    },
+    {
+      "project_id": "P1988M0202",
+      "project_name": "ALONQUIN HOTEL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-11-19T00:00:00.000",
+      "ulurp_numbers": "N880244HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0203",
+      "project_name": "BERESFORD APARTMENTS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-10-29T00:00:00.000",
+      "ulurp_numbers": "N880245HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0212",
+      "project_name": "MILBANK-FRAWLEY CIRCLE URP-SITE 25B",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-11-02T00:00:00.000",
+      "ulurp_numbers": "N880255HCM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988M0235",
+      "project_name": "YORK AVE REZONING",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-10-27T00:00:00.000",
+      "ulurp_numbers": "C880273ZMM",
+      "ceqr_number": "88-070M",
+      "primary_applicant": "YORK SEVENTY-SEVEN ASSOC/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1988M0241",
+      "project_name": "FORMER GOUVERNEUR HOSP DISPENSARY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-23T00:00:00.000",
+      "ulurp_numbers": "C880280PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988M0243",
+      "project_name": "1593 2ND AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-12-21T00:00:00.000",
+      "ulurp_numbers": "N880279ZCM",
+      "primary_applicant": "NEYDAVOUD, HOMAYOUN"
+    },
+    {
+      "project_id": "P1988M0245",
+      "project_name": "CORNELL MEDICAL COL/YORK AVE TUNNEL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-02-21T00:00:00.000",
+      "ulurp_numbers": "I880306GFM",
+      "primary_applicant": "CORNELL UNIVERSITY/MEDICAL COLLEGE"
+    },
+    {
+      "project_id": "P1988M0254",
+      "project_name": "SHEARSON LEHMAN PLAZA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-12-22T00:00:00.000",
+      "ulurp_numbers": "M870987ACMM",
+      "primary_applicant": "SHEARSON LEHMAN BROS"
+    },
+    {
+      "project_id": "P1988M0255",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-05-26T00:00:00.000",
+      "ulurp_numbers": "C880291PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988M0256",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-05-26T00:00:00.000",
+      "ulurp_numbers": "C880292PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988M0285",
+      "project_name": "599 LEXINGTON AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1987-11-02T00:00:00.000",
+      "ulurp_numbers": "N880323CMM",
+      "primary_applicant": "LAXREAL ASSOC"
+    },
+    {
+      "project_id": "P1988M0288",
+      "project_name": "THE BROMLEY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-08-08T00:00:00.000",
+      "ulurp_numbers": "M850349CZSM",
+      "primary_applicant": "83RD ST INVESTORS/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1988M0296",
+      "project_name": "PALACE THEATRE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-18T00:00:00.000",
+      "ulurp_numbers": "N880334ZCM",
+      "primary_applicant": "1568 BROADWAY ASSOC/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1988M0297",
+      "project_name": "504 W135TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "C880335HDM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988M0298",
+      "project_name": "237 E121ST ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "C880336HDM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988M0299",
+      "project_name": "547 W160TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-24T00:00:00.000",
+      "ulurp_numbers": "C880337HDM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988M0303",
+      "project_name": "LE MERIDIEN LIBERTY HOTEL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-02-24T00:00:00.000",
+      "ulurp_numbers": "N880342ZCM",
+      "primary_applicant": "MK WEST STREET CO/BROWN & WOOD"
+    },
+    {
+      "project_id": "P1988M0307",
+      "project_name": "PS 217/IS 217",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-09-14T00:00:00.000",
+      "ulurp_numbers": "C880352PSM",
+      "ceqr_number": "88-102M",
+      "primary_applicant": "BD OF ED"
+    },
+    {
+      "project_id": "P1988M0311",
+      "project_name": "GATEWAY PLAZA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-12-28T00:00:00.000",
+      "ulurp_numbers": "N880350ZCM",
+      "primary_applicant": "BPC"
+    },
+    {
+      "project_id": "P1988M0326",
+      "project_name": "TIMES SQUARE HOTEL",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ceqr_number": "88-106M",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988M0327",
+      "project_name": "BROOKS ATKINSON THEATRE INTERIOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880357HKM; N880358HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0328",
+      "project_name": "BARRYMORE THEATRE EXTERIOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880359HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0329",
+      "project_name": "MARTIN BECK THEATRE INTERIOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880360HKM; N880361HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0330",
+      "project_name": "BELASCO THEATRE INTERIOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880362HKM; N880363HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0331",
+      "project_name": "BOOTH THEATRE INTERIOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880364HKM; N880365HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0333",
+      "project_name": "BARRYMORE THEATRE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880383HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0334",
+      "project_name": "CENTRAL PARK WEST HOUSE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-01-28T00:00:00.000",
+      "ulurp_numbers": "N880378HKM; N880379HKM; N880380HKM; N880381HKM; N880382HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0335",
+      "project_name": "BILTMORE THEATRE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880384HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0336",
+      "project_name": "BROADHURST THEATRE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880385HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0337",
+      "project_name": "SPECIAL BATTERY PARK TEXT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-02-17T00:00:00.000",
+      "ulurp_numbers": "N880386ZRM",
+      "ceqr_number": "88-068M",
+      "primary_applicant": "DCP"
+    },
+    {
+      "project_id": "P1988M0340",
+      "project_name": "22 HARRISON ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-10-11T00:00:00.000",
+      "ulurp_numbers": "N880394ZCM",
+      "primary_applicant": "CHU ELENA"
+    },
+    {
+      "project_id": "P1988M0346",
+      "project_name": "CORT THEATRE INTERIOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880407HKM; N880408HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0347",
+      "project_name": "EMBASSY I THEATRE INTERIOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880409HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0348",
+      "project_name": "46TH STREET THEATRE INTERIOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880410HKM; N880411HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0349",
+      "project_name": "GOLDEN THEATRE INTERIOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880412HKM; N880413HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0351",
+      "project_name": "MARK HELLINGER THEATRE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880415HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0352",
+      "project_name": "HUDSON THEATRE INTERIOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880416HKM; N880417HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0353",
+      "project_name": "IMPERIAL THEATRE INTERIOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880418HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0354",
+      "project_name": "HELEN HAYES THEATRE/LITTLE THEATRE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880419HKM; N880420HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0355",
+      "project_name": "CHELSEA VOCATIONAL HS",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1990-04-04T00:00:00.000",
+      "ceqr_number": "88-118M",
+      "primary_applicant": "BD OF ED"
+    },
+    {
+      "project_id": "P1988M0372",
+      "project_name": "SHERWOOD EQUITIES",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-17T00:00:00.000",
+      "ulurp_numbers": "M860886BZSM",
+      "ceqr_number": "86-225M",
+      "primary_applicant": "SHERWOOD 70 ASSOC/ROSENMAN COLIN ET AL"
+    },
+    {
+      "project_id": "P1988M0374",
+      "project_name": "902, 904, 906, 908, 910 BROADWAY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-05-13T00:00:00.000",
+      "ulurp_numbers": "N880430ZCM",
+      "primary_applicant": "KAY, IRVING/902 ASSOC"
+    },
+    {
+      "project_id": "P1988M0376",
+      "project_name": "THE LANDMARK",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-03-15T00:00:00.000",
+      "ulurp_numbers": "M860959AZSM",
+      "primary_applicant": "THE LANDMARK/MARK MORRISON ASSOC"
+    },
+    {
+      "project_id": "P1988M0386",
+      "project_name": "COLUMBIA UNIVERSITY",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1992-03-06T00:00:00.000",
+      "primary_applicant": "COLUMBIA UNIVERSITY/GOLDEN, BYRON"
+    },
+    {
+      "project_id": "P1988M0387",
+      "project_name": "COLUMBIA UNIVERSITY",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1992-04-08T00:00:00.000",
+      "primary_applicant": "COLUMBIA UNIVERSITY/GOLDEN, BYRON"
+    },
+    {
+      "project_id": "P1988M0388",
+      "project_name": "COLUMBIA UNIVERSITY",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1992-06-27T00:00:00.000",
+      "ulurp_numbers": "C880442GFM",
+      "primary_applicant": "COLUMBIA UNIVERSITY/GOLDEN, BYRON"
+    },
+    {
+      "project_id": "P1988M0390",
+      "project_name": "JUMEL PLACE ELEMENTARY SCHOOL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-08-17T00:00:00.000",
+      "ulurp_numbers": "C880445PSM",
+      "ceqr_number": "88-128M",
+      "primary_applicant": "BD OF ED"
+    },
+    {
+      "project_id": "P1988M0391",
+      "project_name": "AMSTERDAM/W160 ST ELEMENTARY SCHOOL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-11-17T00:00:00.000",
+      "ulurp_numbers": "C880446PSM",
+      "ceqr_number": "88-127M",
+      "primary_applicant": "BD OF ED"
+    },
+    {
+      "project_id": "P1988M0392",
+      "project_name": "BROADWAY ACADEMY ELEMENTARY SCHOOL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-11-17T00:00:00.000",
+      "ulurp_numbers": "C880447PSM",
+      "ceqr_number": "88-126M",
+      "primary_applicant": "BD OF ED"
+    },
+    {
+      "project_id": "P1988M0399",
+      "project_name": "JUMEL PLACE IS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-08-17T00:00:00.000",
+      "ulurp_numbers": "C880460PSM",
+      "ceqr_number": "88-133M",
+      "primary_applicant": "BD OF ED"
+    },
+    {
+      "project_id": "P1988M0405",
+      "project_name": "SHERMAN CREEK PS",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1989-07-18T00:00:00.000",
+      "ceqr_number": "88-134M",
+      "primary_applicant": "BD OF ED"
+    },
+    {
+      "project_id": "P1988M0411",
+      "project_name": "LONGACRE THEATRE, 1ST FLR INTERIOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880467HKM; N880468HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0412",
+      "project_name": "LUNT-FONTANNE THEATRE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880469HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0413",
+      "project_name": "LYCEUM THEATRE, 1ST FLR INTERIOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880470HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0415",
+      "project_name": "HENRY MILLER THEATRE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880473HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0416",
+      "project_name": "MUSIC BOX THEATRE, 1ST FLR INTERIOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880474HKM; N880475HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0417",
+      "project_name": "EUGENE O'NEIL THEATRE, 1ST FL INTER",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880476HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0427",
+      "project_name": "PLYMOUTH THEATRE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880477HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0437",
+      "project_name": "JERICHO RESIDENCE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-09-06T00:00:00.000",
+      "ulurp_numbers": "I880496ZSM",
+      "ceqr_number": "88-191M",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988M0441",
+      "project_name": "MANHATTAN WEST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-02-22T00:00:00.000",
+      "ulurp_numbers": "C880506ZMM; C880507ZSM",
+      "ceqr_number": "86-268M",
+      "primary_applicant": "BRODCOM WEST DEVELOPMENT CO/BROWN & WOOD"
+    },
+    {
+      "project_id": "P1988M0443",
+      "project_name": "LEADER HOUSE",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1988-12-01T00:00:00.000",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988M0444",
+      "project_name": "LEADER HOUSE, W/S URA SITE 20",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1988-12-01T00:00:00.000",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988M0445",
+      "project_name": "ST. JAMES THEATRE INTERIOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880513HKM; N880514HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0446",
+      "project_name": "BROADHURST THEATRE INTERIOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880509HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0447",
+      "project_name": "PLYMOUTH THEATRE INTERIOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880512HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0448",
+      "project_name": "ROYALE THEATRE INTERIOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880510HKM; N880511HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0449",
+      "project_name": "SHUBERT THEATRE INTERIOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880515HKM; N880516HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0451",
+      "project_name": "CENTRAL HARLEM SOBERING-UP STATION",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1988-05-12T00:00:00.000",
+      "ceqr_number": "88-159M",
+      "primary_applicant": "CENTRAL HARLEM SOBERING-UP STATION, INC"
+    },
+    {
+      "project_id": "P1988M0456",
+      "project_name": "THE BELCANTO",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1988-05-12T00:00:00.000",
+      "primary_applicant": "BELCANTO/HARDING, JOHN"
+    },
+    {
+      "project_id": "P1988M0462",
+      "project_name": "MILBANK FRAWLEY CIRCLE URP",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-05-03T00:00:00.000",
+      "ulurp_numbers": "N880534HCM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988M0465",
+      "project_name": "MARK HELLINGER THEATRE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880539HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0469",
+      "project_name": "ED SULLIVAN THEATRE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880540HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0470",
+      "project_name": "WINTER GARDEN THEATRE INTERIOR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "N880541HKM",
+      "primary_applicant": "LPC"
+    },
+    {
+      "project_id": "P1988M0472",
+      "project_name": "FORDHAM DEVELOPMENT/LINCOLN SQ URA",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1990-05-23T00:00:00.000",
+      "ulurp_numbers": "C880544ZSM",
+      "ceqr_number": "86-327M",
+      "primary_applicant": "FORDHAM UNIVERSITY & CAROL MANAGEMENT CORP/BROWN & WOOD"
+    },
+    {
+      "project_id": "P1988M0475",
+      "project_name": "557-563 W150TH ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-09T00:00:00.000",
+      "ulurp_numbers": "C880547HDM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988M0485",
+      "project_name": "NEW YORK HOSPITAL",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-05-17T00:00:00.000",
+      "ulurp_numbers": "M840637AZSM",
+      "primary_applicant": "NEW YORK HOSPITAL/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1988M0486",
+      "project_name": "SPECIAL BATTERY PARK TEXT",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-03-10T00:00:00.000",
+      "ulurp_numbers": "M880386AZRM",
+      "ceqr_number": "88-068M",
+      "primary_applicant": "DCP"
+    },
+    {
+      "project_id": "P1988M0496",
+      "project_name": "CRYSTAL PAVILION",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-08-24T00:00:00.000",
+      "ulurp_numbers": "M790329AZSM",
+      "primary_applicant": "COHEN EDWARD/STROOCK & STROOCK & LAVAN"
+    },
+    {
+      "project_id": "P1988M0499",
+      "project_name": "369 EDGECOMBE AVE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-23T00:00:00.000",
+      "ulurp_numbers": "C880568HDM",
+      "primary_applicant": "HPD"
+    },
+    {
+      "project_id": "P1988M0513",
+      "project_name": "COLUMBIA PRESBYTERIAN MEDICAL CNTR",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-06-29T00:00:00.000",
+      "ulurp_numbers": "M840563BZSM",
+      "primary_applicant": "THE PRESBYTERIAN HOSPITAL/BROWN AND WOOD"
+    },
+    {
+      "project_id": "P1988M0531",
+      "project_name": "THE SAVOY CONDOMINIUM",
+      "public_status": "Completed",
+      "project_status": "Withdrawn-Other",
+      "completed_date": "1989-02-23T00:00:00.000",
+      "primary_applicant": "DAVINCI INTERNATIONAL INC"
+    },
+    {
+      "project_id": "P1988M0534",
+      "project_name": "SYMPHONY CAFE",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1989-06-14T00:00:00.000",
+      "ulurp_numbers": "N890477ZCM",
+      "primary_applicant": "BROADWAY & 56TH ST ASSOC/J. RESNICK & SONS/ROSENMAN & COLIN"
+    },
+    {
+      "project_id": "P1988M0540",
+      "project_name": "140 LIBERTY ST",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1991-05-08T00:00:00.000",
+      "ulurp_numbers": "N880611ZCM",
+      "primary_applicant": "140 LIBERTY ST ASSOC/BROWN & WOOD"
+    },
+    {
+      "project_id": "P1988M0544",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-08-11T00:00:00.000",
+      "ulurp_numbers": "C880614PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988M0545",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-08-11T00:00:00.000",
+      "ulurp_numbers": "C880615PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988M0546",
+      "project_name": "C-O-P",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-08-11T00:00:00.000",
+      "ulurp_numbers": "C880616PPM",
+      "primary_applicant": "DRP"
+    },
+    {
+      "project_id": "P1988M0565",
+      "project_name": "GAINSBOROUGH STUDIOS",
+      "public_status": "Completed",
+      "project_status": "Complete",
+      "completed_date": "1988-04-14T00:00:00.000",
+      "ulurp_numbers": "N880640HKM",
+      "primary_applicant": "LPC"
+    }
+  ]
+}
