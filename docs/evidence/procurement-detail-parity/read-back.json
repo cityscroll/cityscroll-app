@@ -2,6 +2,7 @@
   "schema": "cityscroll.procurement_detail_parity_fixture_readback.v1",
   "fixture": "test/fixtures/procurement-detail-parity/ct107120258801626.json",
   "clock": "fixture vintage from capture-manifest.json",
+  "capture_mode": "headless Chromium with repository CSS; image files omitted",
   "assertions": {
     "A5": "Rendering the canonical object with core observations but optional lookup enrichment absent keeps the canonical heading, identifiers, and contract facts while emitting no lookup apology.",
     "A6": "The canonical procurement id, observation references, accepted identity edge, exact-search result order, and contract/vendor follow URLs equal the retained fixture baseline.",
