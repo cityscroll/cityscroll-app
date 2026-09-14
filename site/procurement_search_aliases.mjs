@@ -1,14 +1,10 @@
 /** Reviewed, editorial search aliases for already-admitted procurements. */
 
-import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
+import registry from "./data/procurement_search_aliases.json" with { type: "json" };
 
 export const PROCUREMENT_SEARCH_ALIAS_REGISTRY_SCHEMA = "cityscroll.procurement_search_alias_registry.v1";
 
-export const DEFAULT_PROCUREMENT_SEARCH_ALIAS_REGISTRY = Object.freeze(JSON.parse(readFileSync(
-  fileURLToPath(new URL("./data/procurement_search_aliases.json", import.meta.url)),
-  "utf8",
-)));
+export const DEFAULT_PROCUREMENT_SEARCH_ALIAS_REGISTRY = Object.freeze(registry);
 
 function clean(value, max = 500) {
   return String(value ?? "").normalize("NFKC").replace(/\s+/g, " ").trim().slice(0, max);
