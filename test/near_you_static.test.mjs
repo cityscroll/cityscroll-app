@@ -296,6 +296,20 @@ test("Near-you leads with a named community district and keeps exploration secon
   assert.match(html, /name="walk_query"/);
 });
 
+test("Near-you never presents a council district as a governing community board", () => {
+  const scope = scopeWithPlace(scopeFromLensState("meetings"), { borough: "Brooklyn", councilDistrict: "8" });
+  const view = buildNearYouViewModel(scope, fixtureActivity(), fixtureBoundaries, {
+    communityGeography: {
+      public_edges: [{ type: "covers", from: "community-board:brooklyn-cb-15", to: "community-district:K15" }],
+      nodes: [{ id: "community-board:brooklyn-cb-15", name: "Brooklyn Community Board 15", properties: { body_id: "brooklyn-cb-15" } }],
+    },
+  });
+  const html = renderNearYouDocument(view);
+  assert.match(html, />City Council District 8<\/h1>/);
+  assert.doesNotMatch(html, /class="near-board-link"/);
+  assert.doesNotMatch(html, /Brooklyn Community Board 15/);
+});
+
 test("the shared renderer emits exact server-owned records, counts, map paths, area links, and special bags", () => {
   const scope = scopeWithPlace(
     scopeFromLensState("meetings", { agency: "Transportation" }),

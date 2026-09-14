@@ -18,7 +18,14 @@ const server = http.createServer(async (request, response) => {
   const relative = normalize(url.pathname).replace(/^[/\\]+/, "").replace(/^([.][.][/\\])+/, "");
   try {
     const body = await readFile(join(root, relative === "/" ? "index.html" : relative));
-    response.writeHead(200, { "content-type": url.pathname.endsWith(".mjs") ? "text/javascript" : "text/html" });
+    const contentType = url.pathname.endsWith(".mjs")
+      ? "text/javascript"
+      : url.pathname.endsWith(".css")
+        ? "text/css"
+        : url.pathname.endsWith(".json")
+          ? "application/json"
+          : "text/html";
+    response.writeHead(200, { "content-type": contentType });
     response.end(body);
   } catch {
     response.writeHead(404);

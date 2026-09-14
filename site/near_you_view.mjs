@@ -835,9 +835,9 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
         <a href="${esc(view.watchHref)}">Watch these filters</a>
         <a href="${esc(view.shareHref)}">Share this map</a>
       </nav>
+    </section>
       <details class="near-explore"><summary>Explore related records</summary>${walkEntry}</details>
       ${renderLocalConstellationHTML(view.local_constellation, { heading: "Nearby place records", id: "place-local-constellation-heading" })}
-    </section>
     <section class="near-place-guide${view.hasPlace ? " is-set" : ""}" aria-labelledby="near-place-heading">
       <p class="near-kicker">${view.hasPlace ? "Place set" : "Start here"}</p>
       <h2 id="near-place-heading">${view.hasPlace ? "Change what “near you” means" : "Set what “near you” means"}</h2>
