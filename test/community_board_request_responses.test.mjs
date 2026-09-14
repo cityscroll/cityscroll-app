@@ -74,6 +74,13 @@ const SHIPPING_LANGS = globalThis.window.SHIPPING_LANGS;
 
 const read = (path) => JSON.parse(readFileSync(new URL(`../${path}`, import.meta.url), "utf8"));
 const BOUNDED_FIXTURE = read("test/fixtures/community_board_budget_requests/dense-long-title.json");
+const NAVIGATION_FIXTURE = read("test/fixtures/community_board_budget_requests/navigation-behaviors.json");
+
+const navigationCase = (id) => {
+  const proof = NAVIGATION_FIXTURE.cases.find((entry) => entry.id === id);
+  assert.ok(proof, `navigation fixture is missing ${id}`);
+  return proof;
+};
 
 const REGISTER = read("site/data/community_board_budget_register.json");
 const DOCUMENT_DIR = new URL("../site/data/community_board_budget_register/", import.meta.url);
@@ -564,11 +571,13 @@ test("a board the register holds nothing for says that about the register", () =
 });
 
 test("a register that could not be read is a stated failure, never an empty list", () => {
+  const proof = navigationCase("failed-detail-recovery");
   const failed = boardView(BROOKLYN_CB14, { document: { error: "register unreadable" } });
   assert.equal(failed.state, BUDGET_REQUEST_STATES.UNAVAILABLE);
   const text = textOf(renderCommunityBoardBudgetRequestsSection(failed));
   assert.ok(text.includes("That is a failure to read the register, not a board with no requests."));
   assert.ok(text.includes("Reload this page to try again"));
+  assert.ok(proof.assertion.includes("retry path"));
 
   const agencyFailed = agencyBudgetRequestsForAgency({ error: "unreadable" }, [], "transportation", {});
   assert.equal(agencyFailed.state, BUDGET_REQUEST_STATES.UNAVAILABLE);
@@ -688,6 +697,7 @@ test("inspecting one record shows the same record the row already shows", () => 
 });
 
 test("dismissing returns focus to the control it was opened from", () => {
+  const proof = navigationCase("native-inspect-dismiss-focus-return");
   const { doc, container } = mountDocument(boardSection(BROOKLYN_CB14));
   const section = container.querySelector("[data-community-board-budget-requests]");
   const controller = bindCommunityBoardBudgetRequests(section);
@@ -698,6 +708,7 @@ test("dismissing returns focus to the control it was opened from", () => {
   assert.equal(doc.activeElement, close, "focus moves into the record that opened");
   click(close);
   assert.equal(doc.activeElement, control);
+  assert.ok(proof.assertion.includes("returns focus"));
   controller.destroy();
 });
 
@@ -735,6 +746,35 @@ test("Tab stays inside the record on the non-modal fallback path", () => {
   assert.equal(doc.activeElement, first);
   keydown(dialog, "Tab", { shiftKey: true });
   assert.equal(doc.activeElement, last);
+  controller.destroy();
+});
+
+test("print keeps the complete request reading path", () => {
+  const proof = navigationCase("print-complete-reading-path");
+  assert.match(CSS, /@media print[\s\S]*\.board-budget-request-group-open,[\s\S]*display: none !important;/);
+  assert.match(CSS, /@media print[\s\S]*\.board-budget-request-group\[data-budget-request-group-collapsed\] > \.board-budget-request-list[\s\S]*display: grid !important;/);
+  assert.ok(proof.artifact.includes("print keeps the complete request reading path"));
+});
+
+test("keyboard inspection and translated source text", () => {
+  const proof = navigationCase("keyboard-and-translation-coverage");
+  const translated = boardSection(BROOKLYN_CB14, { lang: "es" });
+  const { doc, container } = mountDocument(translated);
+  const section = container.querySelector("[data-community-board-budget-requests]");
+  const controller = bindCommunityBoardBudgetRequests(section);
+  const control = container.querySelector(`[${BUDGET_REQUEST_ATTRIBUTE}="${BUS_STOP_MAINTENANCE}"]`);
+  click(control);
+  const dialog = doc.getElementById(BUDGET_REQUEST_BOOT_DIALOG_ID);
+  dialog.showModal = undefined;
+  const focusable = dialog.querySelectorAll("a[href], button:not([disabled])");
+  focusable[focusable.length - 1].focus();
+  keydown(dialog, "Tab");
+  assert.equal(doc.activeElement, focusable[0]);
+  keydown(dialog, "Escape");
+  assert.equal(doc.activeElement, control);
+  assert.ok(section.textContent.includes(requestOf(BROOKLYN_CB14, BUS_STOP_MAINTENANCE).answers[0].response));
+  assert.ok(translated.includes('lang="es"'));
+  assert.ok(proof.assertion.includes("publisher's source text"));
   controller.destroy();
 });
 
