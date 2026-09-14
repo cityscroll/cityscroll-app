@@ -122,6 +122,24 @@ function meetingRowMatchesWatch(row, filter, keywords) {
   return hearingMatchesLocation(row, filter);
 }
 
+function meetingRowHostedByBoard(row, communityBoard) {
+  if (!communityBoard) return true;
+  const boardId = String(communityBoard).replace(/^community-board:/, "");
+  // board_id is the canonical board-host edge in the shared meeting read model.
+  // Do not fall back to district, borough, venue, or searchable text: those are
+  // placement hints and would admit meetings hosted by other bodies.
+  return String(row?.board_id || "") === boardId;
+}
+
+export function communityBoardWatchCompilationStatus(sub) {
+  const raw = sub?.filter?.communityBoard;
+  if (raw == null || String(raw).trim() === "") return null;
+  const normalized = normalizeCommunityBoardRef(raw);
+  if (!normalized) return "unknown_board_identity";
+  const board = communityBoardDistricts[String(normalized).replace(/^community-board:/, "").toLowerCase()];
+  return board ? "ready" : "unknown_board_identity";
+}
+
 function materializedMeetingRows(filter, todayISO, dateWindow, sourceRows = MEETING_FLOOR_ROWS) {
   const end = dateWindowEnd(todayISO, dateWindow);
   const keywords = (Array.isArray(filter?.keywords) ? filter.keywords : [])
@@ -129,6 +147,7 @@ function materializedMeetingRows(filter, todayISO, dateWindow, sourceRows = MEET
   const rows = sourceRows === MEETING_FLOOR_ROWS ? localFloorMeetingRows(todayISO) : sourceRows;
   const dated = rows.filter((row) => meetingRowInWindow(row, todayISO, end));
   const matchedIds = new Set(dated
+    .filter((row) => meetingRowHostedByBoard(row, filter?.communityBoard))
     .filter((row) => meetingRowMatchesWatch(row, filter, keywords))
     .map((row) => row.meeting_id)
     .filter(Boolean));
@@ -217,7 +236,7 @@ export async function rowsForCompiledQuery(q, env, fetchImpl = fetch) {
       // Unit-test and local Node callers historically replayed the committed floor with
       // a mock ALERT_STATE. The deployed Worker has no `process` global, so a missing
       // production manifest remains fail-closed rather than silently serving the floor.
-      if (!(error instanceof RouteReadModelUnavailable) || typeof process === "undefined") throw error;
+      if (!(error instanceof RouteReadModelUnavailable) || typeof process === "undefined" || q.routeReadModel.communityBoard) throw error;
       sourceRows = MEETING_FLOOR_ROWS;
     }
     rows = materializedMeetingRows(
@@ -349,6 +368,39 @@ export function compileSub(sub, todayISO) {
     const coveringKey = `geography:community_district:${boardCommunityDistrict}`;
     if (geographyKeys.length && (geographyKeys.length !== 1 || geographyKeys[0] !== coveringKey)) return null;
     geographyKeys = [coveringKey];
+  }
+
+  // An exact board is a meeting-host relation, not a geography shortcut. Keep
+  // the old transformRows shape for callers that inspect compiled descriptors,
+  // but delivery and preview read the canonical meetings snapshot below.
+  if (communityBoard) {
+    return {
+      url: DISTRICT_ACTIVITY,
+      params: {},
+      idField: "meeting_id",
+      kind: "meetings",
+      communityBoard,
+      coveringCommunityDistrict: boardCommunityDistrict,
+      textQuery: f.text_query || undefined,
+      soda: false,
+      readRows: () => materializedMeetingRows(f, todayISO, f.dateWindow || f.when),
+      routeReadModel: {
+        kind: "meetings",
+        todayISO,
+        endISO: dateWindowEnd(todayISO, f.dateWindow || f.when),
+        dateWindow: f.dateWindow || f.when,
+        filter: f,
+        communityBoard,
+      },
+      // Compatibility projection for old callers; it is not the source used
+      // by rowsForCompiledQuery when routeReadModel is present.
+      transformRows: (payload) => {
+        const ids = new Set(payload?.geography_items?.by_key?.[geographyKeys[0]]?.meetings || []);
+        return [...ids].map((id) => payload?.records?.meetings?.[id]).filter(Boolean)
+          .filter((record) => record.id)
+          .map((record) => ({ ...record, geography_item_id: `meetings:${record.id}`, request_id: record.id }));
+      },
+    };
   }
 
   if (["land", "property", "rules", "meetings", "money"].includes(sub.lens)

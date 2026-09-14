@@ -19,12 +19,23 @@ import {
   projectMeetingNoticeFields,
 } from "../../../site/watch_text_query_eval.mjs";
 import { textQueryEvaluationSupported } from "../../../site/watch_text_query.mjs";
-import { compileSub, rowsForCompiledQuery, scopedMeetingWatchRows } from "./compile.mjs";
+import {
+  compileSub,
+  communityBoardWatchCompilationStatus,
+  rowsForCompiledQuery,
+  scopedMeetingWatchRows,
+} from "./compile.mjs";
 
 export const PRECISE_MEETING_ADAPTER = Object.freeze({
   notices: "meeting-notice-materialization",
   route: "meeting-route-read-model",
   unavailable: "unavailable",
+});
+
+export const COMMUNITY_BOARD_WATCH_STATUS = Object.freeze({
+  unknownBoard: "unknown_board_identity",
+  unavailable: "unavailable_materialization",
+  failed: "failed_loading",
 });
 
 const NOTICE_BY_ID = new Map(
@@ -153,12 +164,25 @@ export async function evaluateMeetingTextQueryWatch({
       scoped = scopedMeetingWatchRows(sub.filter, todayISO, sourceRows);
     } else {
       const compiled = compileSub(sub, todayISO);
-      if (!compiled) return unavailable("uncompilable_scope", clock);
+      if (!compiled) {
+        if (communityBoardWatchCompilationStatus(sub) === "unknown_board_identity") {
+          return unavailable(COMMUNITY_BOARD_WATCH_STATUS.unknownBoard, clock);
+        }
+        return unavailable("uncompilable_scope", clock);
+      }
       scoped = await rowsForCompiledQuery(compiled, env);
       if (compiled.postFilter) scoped = scoped.filter(compiled.postFilter);
     }
   } catch (error) {
-    return unavailable("missing_materialization", clock, { error: String(error?.message || error) });
+    const isReadModelFailure = error?.name === "RouteReadModelUnavailable";
+    return {
+      ...unavailable(
+        isReadModelFailure ? COMMUNITY_BOARD_WATCH_STATUS.unavailable : COMMUNITY_BOARD_WATCH_STATUS.failed,
+        clock,
+        { error: String(error?.message || error) },
+      ),
+      status: isReadModelFailure ? TEXT_QUERY_EVAL_STATUS.unavailable : TEXT_QUERY_EVAL_STATUS.failed,
+    };
   }
 
   if (!Array.isArray(scoped)) return unavailable("missing_materialization", clock);

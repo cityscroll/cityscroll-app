@@ -8,6 +8,7 @@
  */
 
 import { scopeFromWatch, watchFromScope } from "./scope_v0.mjs";
+import { normalizeCommunityBoardRef } from "./community_board_watch.mjs";
 
 export const WATCH_TEMPLATES_SCHEMA_VERSION = 1;
 
@@ -89,6 +90,11 @@ export function normalizeFilter(filter) {
   if (clean(f.kind)) out.kind = clean(f.kind);
   if (clean(f.name)) out.name = clean(f.name);
   if (clean(f.status)) out.status = clean(f.status);
+  const communityBoard = normalizeCommunityBoardRef(f.communityBoard);
+  if (communityBoard) out.communityBoard = communityBoard;
+  if (f.text_query && typeof f.text_query === "object") {
+    out.text_query = structuredClone(f.text_query);
+  }
   if (f.minAmount != null && Number.isFinite(Number(f.minAmount))) {
     out.minAmount = Number(f.minAmount);
   }

@@ -26,6 +26,7 @@ export const TEXT_QUERY_EVAL_STATUS = Object.freeze({
   complete: "complete",
   incomplete: "incomplete",
   unavailable: "unavailable",
+  failed: "failed",
 });
 
 /** Notice-backed rows: title + cleaned description. Structured facets stay filters. */
