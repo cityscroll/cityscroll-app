@@ -240,6 +240,7 @@
     "site/district_weekly_digest.mjs",
     "site/e_designation_digest_view.mjs",
     "site/edge_summary.mjs",
+    "site/emmons_shelter_monitor_pack.mjs",
     "site/entity_pivot.mjs",
     "site/exam_calendar.mjs",
     "site/exam_detail_facets.mjs",

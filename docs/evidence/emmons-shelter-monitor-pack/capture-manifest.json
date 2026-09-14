@@ -1,0 +1,14 @@
+{
+  "schema": "cityscroll.capture_manifest.v1",
+  "route": "/following/packs/emmons-shelter/",
+  "revision": "4d7abfd0ee83390a16d0c8d28466c48c5f358fec5",
+  "data_vintage": "committed source observations; deterministic fixture",
+  "captures": [
+    { "surface": "desktop", "viewport": "1440x900", "assertion": "identity, timeline, watches, and coverage render", "sha256": "textual-only" },
+    { "surface": "narrow-touch", "viewport": "390x844", "assertion": "navigation and timeline remain readable", "sha256": "textual-only" },
+    { "surface": "keyboard", "viewport": "1440x900", "assertion": "links, disclosure, and watch action are reachable", "sha256": "textual-only" },
+    { "surface": "no-javascript", "viewport": "1440x900", "assertion": "the complete resident document is present", "sha256": "textual-only" },
+    { "surface": "back-navigation", "viewport": "390x844", "assertion": "canonical links preserve the issue route", "sha256": "textual-only" },
+    { "surface": "failed-detail-load", "viewport": "390x844", "assertion": "the issue scope remains available with source links", "sha256": "textual-only" }
+  ]
+}
