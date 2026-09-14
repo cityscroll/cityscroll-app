@@ -1,13 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { mkdtemp, readFile } from "node:fs/promises";
-import { join } from "node:path";
+import { readFile } from "node:fs/promises";
 import {
   createSiteLifecycleReader,
   materializeSiteLifecycle,
   shardSiteLifecycle,
 } from "../site/site_lifecycle_projection.mjs";
 import { writeSiteLifecycleProjection } from "../tools/build_site_lifecycle_projection.mjs";
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 import { testClockISOString, withPinnedClock } from "./helpers/test_clock.mjs";
 
 const lots = [{ project_id: "2020K0270", bbls: ["3073670011", "3073670029"] }];
@@ -59,13 +59,12 @@ test("preserves unknown dates, duplicate lineage, missing evidence, and exact ge
   assert.throws(() => createSiteLifecycleReader({ generation: document.generation, content_hash: document.content_hash }, [shard], { generation: document.generation, content_hash: "stale", members: document.members }), /reverse index content hash mismatch/);
 });
 
-test("writes a receipt and reverse index from the materialized document", async () => withPinnedClock("2026-09-14T00:00:00Z", async () => {
-  const outputDir = await mkdtemp(join(process.env.FM_TASK_SCRATCH || "/tmp", "site-lifecycle-"));
-  const receiptPath = join(outputDir, "receipt.json");
+test("writes a receipt and reverse index from the materialized document", async () => withPinnedClock("2026-09-14T00:00:00Z", async () => withTempDir("site-lifecycle", async (outputDir) => {
+  const receiptPath = `${outputDir}/receipt.json`;
   const document = materializeSiteLifecycle({ landProjects: land, projectLots: lots, councilMatters: council, procurementRecords: procurement, generatedAt: testClockISOString() });
   const manifest = writeSiteLifecycleProjection(document, { outputDir, receiptPath });
   const receipt = JSON.parse(await readFile(receiptPath, "utf8"));
-  const reverse = JSON.parse(await readFile(join(outputDir, "reverse.json"), "utf8"));
+  const reverse = JSON.parse(await readFile(`${outputDir}/reverse.json`, "utf8"));
   assert.equal(receipt.generation, document.generation);
   assert.equal(receipt.content_hash, document.content_hash);
   assert.deepEqual(receipt.counts, document.counts);
@@ -73,4 +72,4 @@ test("writes a receipt and reverse index from the materialized document", async 
   assert.equal(reverse.generation, manifest.generation);
   assert.equal(reverse.content_hash, manifest.content_hash);
   assert.deepEqual(reverse.members, document.members);
-}));
+})));
