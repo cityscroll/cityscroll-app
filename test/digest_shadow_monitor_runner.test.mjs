@@ -135,8 +135,9 @@ function quietWatermarkReceipt(runDay = "2026-09-10", candidates = 379) {
         code: "quiet_watermark",
         severity: "info",
         stage: "watermark_fresh",
-        reason: "the per-watch seen watermark already contained every candidate",
-        evidence: { source_candidates: candidates, watermark_fresh: 0 },
+        classification: "watermark exhaustion after backlog flush",
+        reason: "watermark exhaustion after backlog flush",
+        evidence: { source_candidates: candidates, watermark_fresh: 0, backlog_flush_day: "2026-09-07" },
       }],
       upstream_incidents: [],
     },
@@ -248,5 +249,27 @@ test("a quiet watermark rehearsal opens no attention issue", async () => {
     assert.equal(output.result.comment_written, false);
     assert.equal(output.intents[0].issue.mode, "close");
     assert.equal(github.issues.length, 0);
+  });
+});
+
+test("a quiet watermark receipt records why the shadow issue did not page", async () => {
+  await withTempDir("crol-digest-shadow-backlog-flush", async (stateDir) => {
+    const github = fakeGithub();
+    const receipt = quietWatermarkReceipt();
+    const output = await withDigestShadowEnv({
+      CITYSCROLL_ADMIN_KEY: "probe-secret",
+      CITYSCROLL_DIGEST_SHADOW_URL: "https://example.invalid/admin/digest-shadow",
+    }, async () => runDigestShadowJob(DIGEST_SHADOW_JOB, {
+      stateDir,
+      now: new Date("2026-09-10T10:10:00.000Z"),
+      runKey: runKey(new Date("2026-09-10T10:10:00.000Z")),
+      async fetchImpl() { return { ok: true, status: 200, async json() { return receipt; } }; },
+    }));
+
+    assert.equal(output.result.finding_severity, "info");
+    assert.match(output.intents[0].issue.body, /watermark exhaustion after backlog flush/);
+    await persistJobOutput(stateDir, new Date("2026-09-10T10:10:00.000Z"), output);
+    const stored = JSON.parse(await readFile(join(stateDir, "jobs", DIGEST_SHADOW_JOB.id, "quiet-watermark-cycles-2026-09-14.json"), "utf8"));
+    assert.equal(stored.observations[0].rehearsal_reason, "watermark exhaustion after backlog flush");
   });
 });

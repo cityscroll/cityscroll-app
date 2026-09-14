@@ -12,6 +12,7 @@ import {
 } from "../worker/src/digest_shadow.mjs";
 import { normalizeFunnel } from "../worker/src/lib/digest_funnel.mjs";
 import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
+import { withPinnedClock } from "./helpers/test_clock.mjs";
 import {
   DIGEST_SHADOW_MONITOR_EVIDENCE_RELPATH,
   DIGEST_SHADOW_MONITOR_OBSERVATION_SCHEMA,
@@ -39,6 +40,25 @@ function spikeHistory() {
     { day: "2026-09-03", totalNotices: 9, sentCount: 1 },
     { day: "2026-09-02", totalNotices: 11, sentCount: 2 },
     { day: "2026-09-01", totalNotices: 8, sentCount: 1 },
+  ];
+}
+
+function backlogFlushHistory() {
+  return [
+    {
+      day: "2026-09-07",
+      mode: "inline",
+      entries: [{
+        id: "sub:backlog",
+        action: "match",
+        traffic_class: "catch_up",
+        sent: true,
+        noticeCount: 234,
+      }],
+      sentCount: 1,
+      totalNotices: 234,
+    },
+    ...spikeHistory().slice(1),
   ];
 }
 
@@ -79,7 +99,7 @@ function replayCycle(cycle) {
         selection_funnel: normalizeFunnel(funnel),
       }],
     },
-    history: items > 0 ? ordinaryHistory() : spikeHistory(),
+    history: items > 0 ? ordinaryHistory() : backlogFlushHistory(),
     now: new Date(`${summary.run_day}T10:00:00.000Z`),
   });
   const healthy = out.status === DIGEST_SHADOW_READY;
@@ -117,43 +137,47 @@ function seedObservations(cycles) {
   return observations;
 }
 
-test("replaying retained 2026-09-06..10 receipts raises no attention on quiet watermark days", () => {
-  const watermarkDays = new Set(["2026-09-08", "2026-09-09", "2026-09-10"]);
-  for (const cycle of RETAINED.cycles) {
-    const replayed = replayCycle(cycle);
-    const runDay = cycle.summary?.run_day;
-    if (watermarkDays.has(runDay)) {
-      assert.equal(replayed.summary.status, DIGEST_SHADOW_READY, cycle.run_key);
-      assert.equal(replayed.summary.collapse_stage, "watermark_fresh", cycle.run_key);
-      assert.ok(replayed.summary.selection_funnel.source_candidates > QUIET_WATERMARK_CANDIDATE_FLOOR, cycle.run_key);
-      assert.deepEqual(replayed.summary.redlines.map((row) => row.code), [], cycle.run_key);
-      assert.equal(replayed.finding_severity, "info", cycle.run_key);
+test("replaying retained 2026-09-06..10 receipts raises no attention on quiet watermark days", async () => {
+  await withPinnedClock("2026-09-14T12:00:00.000Z", () => {
+    const watermarkDays = new Set(["2026-09-08", "2026-09-09", "2026-09-10"]);
+    for (const cycle of RETAINED.cycles) {
+      const replayed = replayCycle(cycle);
+      const runDay = cycle.summary?.run_day;
+      if (watermarkDays.has(runDay)) {
+        assert.equal(replayed.summary.status, DIGEST_SHADOW_READY, cycle.run_key);
+        assert.equal(replayed.summary.collapse_stage, "watermark_fresh", cycle.run_key);
+        assert.ok(replayed.summary.selection_funnel.source_candidates > QUIET_WATERMARK_CANDIDATE_FLOOR, cycle.run_key);
+        assert.deepEqual(replayed.summary.redlines.map((row) => row.code), [], cycle.run_key);
+        assert.equal(replayed.finding_severity, "info", cycle.run_key);
+      }
+      if (runDay === "2026-09-07") {
+        assert.equal(replayed.summary.status, DIGEST_SHADOW_ATTENTION, cycle.run_key);
+        assert.ok(replayed.summary.redlines.some((row) => row.code === "aggregate_count_explosion"), cycle.run_key);
+      }
+      if (!runDay) {
+        assert.equal(replayed.finding_severity, "attention", cycle.run_key);
+      }
     }
-    if (runDay === "2026-09-07") {
-      assert.equal(replayed.summary.status, DIGEST_SHADOW_ATTENTION, cycle.run_key);
-      assert.ok(replayed.summary.redlines.some((row) => row.code === "aggregate_count_explosion"), cycle.run_key);
-    }
-    if (!runDay) {
-      assert.equal(replayed.finding_severity, "attention", cycle.run_key);
-    }
-  }
+  });
 });
 
-test("the committed quiet-watermark evidence names each retained cycle", () => {
-  assert.equal(EVIDENCE.schema, DIGEST_SHADOW_MONITOR_OBSERVATION_SCHEMA);
-  const expected = seedObservations(RETAINED.cycles);
-  assert.deepEqual(EVIDENCE.observations.map((row) => row.run_key), expected.map((row) => row.run_key));
-  for (const [index, row] of EVIDENCE.observations.entries()) {
-    const want = expected[index];
-    assert.equal(row.collapse_stage, want.collapse_stage, row.run_key);
-    assert.equal(row.source_candidates, want.source_candidates, row.run_key);
-    assert.equal(row.finding_severity, want.finding_severity, row.run_key);
-    assert.equal(row.comment_written, want.comment_written, row.run_key);
-    assert.equal(row.comment_suppressed, want.comment_suppressed, row.run_key);
-  }
-  const quiet = EVIDENCE.observations.filter((row) => row.run_day === "2026-09-08" || row.run_day === "2026-09-09" || row.run_day === "2026-09-10");
-  assert.ok(quiet.length >= 5);
-  assert.ok(quiet.every((row) => row.finding_severity === "info" && row.comment_written === false && row.collapse_stage === "watermark_fresh"));
+test("the committed quiet-watermark evidence names each retained cycle", async () => {
+  await withPinnedClock("2026-09-14T12:00:00.000Z", () => {
+    assert.equal(EVIDENCE.schema, DIGEST_SHADOW_MONITOR_OBSERVATION_SCHEMA);
+    const expected = seedObservations(RETAINED.cycles);
+    assert.deepEqual(EVIDENCE.observations.map((row) => row.run_key), expected.map((row) => row.run_key));
+    for (const [index, row] of EVIDENCE.observations.entries()) {
+      const want = expected[index];
+      assert.equal(row.collapse_stage, want.collapse_stage, row.run_key);
+      assert.equal(row.source_candidates, want.source_candidates, row.run_key);
+      assert.equal(row.finding_severity, want.finding_severity, row.run_key);
+      assert.equal(row.comment_written, want.comment_written, row.run_key);
+      assert.equal(row.comment_suppressed, want.comment_suppressed, row.run_key);
+    }
+    const quiet = EVIDENCE.observations.filter((row) => row.run_day === "2026-09-08" || row.run_day === "2026-09-09" || row.run_day === "2026-09-10");
+    assert.ok(quiet.length >= 5);
+    assert.ok(quiet.every((row) => row.finding_severity === "info" && row.comment_written === false && row.collapse_stage === "watermark_fresh"));
+  });
 });
 
 test("the committed quiet-watermark evidence carries production provenance", () => {

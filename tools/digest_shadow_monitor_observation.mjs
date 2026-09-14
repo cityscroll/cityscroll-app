@@ -89,12 +89,17 @@ export function observationFromCycle({
   const summary = result.summary || {};
   const funnel = summary.selection_funnel || {};
   const sourceCandidates = funnel.source_candidates;
+  const rehearsalReason = (summary.observations || [])
+    .find((row) => row?.classification || row?.reason)?.classification
+    || (summary.observations || []).find((row) => row?.reason)?.reason
+    || null;
   return {
     run_key: runKey,
     observed_at: result.observed_at || null,
     run_day: summary.run_day || null,
     collapse_stage: summary.collapse_stage || null,
     source_candidates: Number.isFinite(Number(sourceCandidates)) ? Number(sourceCandidates) : null,
+    rehearsal_reason: rehearsalReason,
     finding_severity: result.finding_severity
       || findingSeverity({
         healthy: result.status === "healthy",

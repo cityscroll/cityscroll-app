@@ -154,9 +154,25 @@ function watermarkRun(candidates, { now, history = spikeHistory() } = {}) {
   });
 }
 
-test("a quiet watermark with candidates above the floor is informational, not an attention redline", () => {
+function backlogFlushHistory() {
+  return [
+    {
+      day: "2026-09-07",
+      mode: "inline",
+      entries: [{ id: "sub:backlog", action: "match", traffic_class: "catch_up", sent: true, noticeCount: 234 }],
+      sentCount: 1,
+      totalNotices: 234,
+    },
+    ...spikeHistory().slice(1),
+  ];
+}
+
+test("watermark exhaustion after a documented backlog flush is informational", () => {
   assert.ok(QUIET_WATERMARK_CANDIDATE_FLOOR >= 1);
-  const out = watermarkRun(290, { now: new Date("2026-09-08T10:00:00.000Z") });
+  const out = watermarkRun(290, {
+    now: new Date("2026-09-08T10:00:00.000Z"),
+    history: backlogFlushHistory(),
+  });
 
   assert.equal(out.total_items, 0);
   assert.equal(out.collapse_stage, "watermark_fresh");
@@ -170,8 +186,18 @@ test("a quiet watermark with candidates above the floor is informational, not an
   assert.ok(observation, "the receipt must still name the stage");
   assert.equal(observation.severity, "info");
   assert.equal(observation.stage, "watermark_fresh");
+  assert.equal(observation.classification, "watermark exhaustion after backlog flush");
   assert.equal(observation.evidence.source_candidates, 290);
   assert.equal(observation.evidence.watermark_fresh, 0);
+});
+
+test("watermark exhaustion without a documented backlog flush still pages", () => {
+  const out = watermarkRun(290, { now: new Date("2026-09-08T10:00:00.000Z") });
+
+  assert.equal(out.status, DIGEST_SHADOW_ATTENTION);
+  assert.ok(out.redlines.find((item) => item.code === "aggregate_count_collapse"));
+  assert.ok(out.redlines.find((item) => item.code === "historical_watch_zero") === undefined);
+  assert.equal(out.observations.find((item) => item.code === "quiet_watermark"), undefined);
 });
 
 test("an empty source still raises an attention collapse", () => {
@@ -201,7 +227,10 @@ test("retained watermark-exhausted days do not raise an attention finding", () =
     { day: "2026-09-10", candidates: 379 },
   ];
   for (const row of retained) {
-    const out = watermarkRun(row.candidates, { now: new Date(`${row.day}T10:00:00.000Z`) });
+    const out = watermarkRun(row.candidates, {
+      now: new Date(`${row.day}T10:00:00.000Z`),
+      history: backlogFlushHistory(),
+    });
     assert.equal(out.status, DIGEST_SHADOW_READY, row.day);
     assert.equal(out.collapse_stage, "watermark_fresh", row.day);
     assert.ok(out.selection_funnel.source_candidates > QUIET_WATERMARK_CANDIDATE_FLOOR, row.day);
