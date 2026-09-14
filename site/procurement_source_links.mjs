@@ -30,7 +30,12 @@ function cityRecord(object, rows) {
 }
 
 function checkbook(object, rows) {
-  const snapshot = rows.find((entry) => entry.source_system === "checkbook_contracts")?.snapshot || {};
+  const snapshots = rows
+    .filter((entry) => String(entry.source_system || "").startsWith("checkbook"))
+    .map((entry) => entry.snapshot || {});
+  const snapshot = snapshots[0] || {};
+  const direct = snapshots.map((row) => text(row.official_url || row.source_url, 500)).find(Boolean);
+  if (direct) return { official_href: direct, official_label: "Open official record" };
   const agid = text(snapshot.agid || snapshot.original_agreement_id, 80);
   if (/^\d+$/.test(agid || "")) {
     const contractId = text(object?.identity_keys?.contract_ids?.[0] || snapshot.id || snapshot.contract_id, 120);
@@ -62,10 +67,10 @@ export function procurementSourceLinkDescriptors(object = {}, observations = [])
     const source = passportPublicOfficialSource("rfx", row?.snapshot || {});
     put("passport_public_rfx", { official_href: source.href, official_label: source.per_item ? "Open official record" : "Open PASSPort solicitations portal" });
   }
-  if (rows.some((entry) => entry.source_system === "checkbook_contracts" || entry.source_system === "checkbook_spending")) {
+  for (const system of ["checkbook_contracts", "checkbook_spending", "checkbook_nycha_contracts"]) {
+    if (!rows.some((entry) => entry.source_system === system)) continue;
     const descriptor = checkbook(object, rows);
-    put("checkbook_contracts", descriptor);
-    put("checkbook_spending", descriptor);
+    put(system, descriptor);
   }
   return descriptors;
 }

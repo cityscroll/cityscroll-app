@@ -48,12 +48,6 @@ test("procurement source destinations are centralized and accurately labeled", (
       official_href: undefined,
       search_href: "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT107120258801626",
     },
-    {
-      source_system: "checkbook_spending",
-      record_href: undefined,
-      official_href: undefined,
-      search_href: "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT107120258801626",
-    },
   ]);
 });
 
