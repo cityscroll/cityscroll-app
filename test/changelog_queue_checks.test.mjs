@@ -59,7 +59,7 @@ test("required jobs stay runnable (not job-level skipped) so the check name alwa
   );
   assert.match(
     ci,
-    /a11y-pr:[\s\S]*?\n    needs:\s*\[changes,\s*unit,\s*a11y-pr-shard,\s*a11y-routes-focus-primary,\s*a11y-routes-focus-retry\]/,
+    /a11y-pr:[\s\S]*?\n    needs:\s*\[changes,\s*unit,\s*a11y-pr-shard,\s*a11y-rendered-census-primary,\s*a11y-rendered-census-retry,\s*a11y-routes-focus-primary,\s*a11y-routes-focus-retry\]/,
   );
   assert.match(ci, /reading-level:[\s\S]*?\n    needs:\s*\[changes,\s*unit\]/);
   assert.match(

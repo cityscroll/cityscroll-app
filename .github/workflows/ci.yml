@@ -855,7 +855,7 @@ jobs:
   # it. All shards consume one verified _site artifact and bind their own OS-assigned port.
   a11y-pr:
     name: Accessibility + language gate (axe on every PR)
-    needs: [changes, unit, a11y-pr-shard, a11y-routes-focus-primary, a11y-routes-focus-retry]
+    needs: [changes, unit, a11y-pr-shard, a11y-rendered-census-primary, a11y-rendered-census-retry, a11y-routes-focus-primary, a11y-routes-focus-retry]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -872,15 +872,17 @@ jobs:
           fi
           echo "Reporting success for 'Accessibility + language gate (axe on every PR)'."
       - name: Fail when an accessibility shard fails or is missing
-        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && (needs.a11y-pr-shard.result != 'success' || (needs.a11y-routes-focus-primary.outputs.routes_focus_primary_passed != 'true' && needs.a11y-routes-focus-retry.result != 'success'))
+        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && (needs.a11y-pr-shard.result != 'success' || (needs.a11y-rendered-census-primary.outputs.rendered_census_primary_passed != 'true' && needs.a11y-rendered-census-retry.result != 'success') || (needs.a11y-routes-focus-primary.outputs.routes_focus_primary_passed != 'true' && needs.a11y-routes-focus-retry.result != 'success'))
         run: |
           echo "Accessibility matrix result: ${{ needs.a11y-pr-shard.result }}"
+          echo "Rendered-census primary passed: ${{ needs.a11y-rendered-census-primary.outputs.rendered_census_primary_passed }}"
+          echo "Rendered-census fresh-runner retry result: ${{ needs.a11y-rendered-census-retry.result }}"
           echo "Routes-focus primary result: ${{ needs.a11y-routes-focus-primary.result }}"
           echo "Routes-focus primary attempt passed: ${{ needs.a11y-routes-focus-primary.outputs.routes_focus_primary_passed }}"
           echo "Routes-focus fresh-runner retry result: ${{ needs.a11y-routes-focus-retry.result }}"
           exit 1
       - name: Report all accessibility shards green
-        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-shard.result == 'success' && (needs.a11y-routes-focus-primary.outputs.routes_focus_primary_passed == 'true' || needs.a11y-routes-focus-retry.result == 'success')
+        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-shard.result == 'success' && (needs.a11y-rendered-census-primary.outputs.rendered_census_primary_passed == 'true' || needs.a11y-rendered-census-retry.result == 'success') && (needs.a11y-routes-focus-primary.outputs.routes_focus_primary_passed == 'true' || needs.a11y-routes-focus-retry.result == 'success')
         run: |
           # `needs` does not resolve until every matrix child and its final artifact
           # upload step completes. Keep the required verdict on that job result: a
@@ -991,7 +993,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [browser-a11y, language-layout, rendered-census]
+        shard: [browser-a11y, language-layout]
     steps:
       - name: Accessibility shard fast path
         if: always() && (needs.changes.outputs.unit_full != 'true' || needs.changes.outputs.frontend != 'true' || needs.unit.result != 'success')
@@ -1026,6 +1028,113 @@ jobs:
           # survive failed-job-only reruns; a full shard rerun replaces its own receipt.
           name: a11y-pr-shard-${{ matrix.shard }}-primary-logs-${{ github.run_id }}
           path: ${{ runner.temp }}/a11y-pr-shard-${{ matrix.shard }}-primary-logs
+          if-no-files-found: error
+          overwrite: true
+          retention-days: 7
+
+  # Rendered-census has a bounded fresh-runner recovery path for hosted-browser
+  # crashes. The primary job remains strict for real test and axe failures.
+  a11y-rendered-census-primary:
+    name: Accessibility + language shard (rendered-census primary)
+    needs: [changes, unit, browser-pr-site]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    continue-on-error: true
+    outputs:
+      rendered_census_primary_passed: ${{ steps.rendered-census-result.outputs.passed }}
+      rendered_census_browser_crashed: ${{ steps.rendered-census-result.outputs.browser_crashed }}
+    steps:
+      - name: Rendered-census fast path
+        if: always() && (needs.changes.outputs.unit_full != 'true' || needs.changes.outputs.frontend != 'true' || needs.unit.result != 'success')
+        run: |
+          echo "No frontend rendered-census shard is needed for this path set."
+      - name: Fail when the shared site artifact is unavailable
+        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result != 'success'
+        run: |
+          echo "The shared verified browser site artifact job did not succeed: ${{ needs.browser-pr-site.result }}"
+          exit 1
+      - uses: actions/checkout@v4
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+        with:
+          persist-credentials: false
+      - name: Restore and verify exact-input site artifact
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+        uses: ./.github/actions/use-site-artifact
+        with:
+          artifact-name: browser-pr-site-${{ github.run_id }}
+      - uses: ./.github/actions/setup-playwright
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+      - name: Run rendered-census primary
+        id: rendered-census-check
+        continue-on-error: true
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+        env:
+          NO_DISCLAIMER_SLOP_MODE: ${{ vars.NO_DISCLAIMER_SLOP_MODE || 'block' }}
+        run: tools/run_a11y_ci_shard.sh rendered-census primary
+      - name: Classify rendered-census result
+        id: rendered-census-result
+        if: always()
+        env:
+          NO_DISCLAIMER_SLOP_MODE: ${{ vars.NO_DISCLAIMER_SLOP_MODE || 'block' }}
+        run: |
+          if [[ "${{ needs.changes.outputs.unit_full }}" != "true" || "${{ needs.changes.outputs.frontend }}" != "true" || "${{ needs.unit.result }}" != "success" ]]; then
+            echo "passed=true" >> "$GITHUB_OUTPUT"
+            echo "browser_crashed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          log="$RUNNER_TEMP/a11y-pr-shard-rendered-census-primary-logs/a11y-pr-rendered-census-primary.log"
+          if [[ "${{ steps.rendered-census-check.outcome }}" == "success" ]]; then
+            echo "passed=true" >> "$GITHUB_OUTPUT"
+            echo "browser_crashed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          classification="$(tools/classify_a11y_browser_failure.sh "$log" 1)"
+          if [[ "$classification" == "browser-crashed" ]]; then
+            echo "Browser crashed before producing axe results; requesting one fresh-runner retry."
+            echo "passed=false" >> "$GITHUB_OUTPUT"
+            echo "browser_crashed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "Rendered-census produced a real test or axe failure; no retry is allowed."
+          echo "passed=false" >> "$GITHUB_OUTPUT"
+          echo "browser_crashed=false" >> "$GITHUB_OUTPUT"
+          exit 1
+      - name: Upload rendered-census primary evidence
+        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11y-pr-shard-rendered-census-primary-logs-${{ github.run_id }}
+          path: ${{ runner.temp }}/a11y-pr-shard-rendered-census-primary-logs
+          if-no-files-found: error
+          overwrite: true
+          retention-days: 7
+
+  a11y-rendered-census-retry:
+    name: Accessibility + language shard (rendered-census fresh-runner retry)
+    needs: [changes, unit, browser-pr-site, a11y-rendered-census-primary]
+    if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success' && needs.a11y-rendered-census-primary.outputs.rendered_census_browser_crashed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Restore and verify exact-input site artifact
+        uses: ./.github/actions/use-site-artifact
+        with:
+          artifact-name: browser-pr-site-${{ github.run_id }}
+      - uses: ./.github/actions/setup-playwright
+      - name: Retry rendered-census on a fresh hosted runner
+        env:
+          NO_DISCLAIMER_SLOP_MODE: ${{ vars.NO_DISCLAIMER_SLOP_MODE || 'block' }}
+        run: tools/run_a11y_ci_shard.sh rendered-census fresh-runner-retry
+      - name: Upload rendered-census fresh-runner retry evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11y-pr-shard-rendered-census-fresh-runner-retry-logs-${{ github.run_id }}
+          path: ${{ runner.temp }}/a11y-pr-shard-rendered-census-fresh-runner-retry-logs
           if-no-files-found: error
           overwrite: true
           retention-days: 7

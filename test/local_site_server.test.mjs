@@ -157,15 +157,15 @@ test("accessibility aggregate accepts only a green matrix and a green routes-foc
 
   assert.match(
     aggregate,
-    /needs:\s*\[changes,\s*unit,\s*a11y-pr-shard,\s*a11y-routes-focus-primary,\s*a11y-routes-focus-retry\]/,
+    /needs:\s*\[changes,\s*unit,\s*a11y-pr-shard,\s*a11y-rendered-census-primary,\s*a11y-rendered-census-retry,\s*a11y-routes-focus-primary,\s*a11y-routes-focus-retry\]/,
   );
   assert.match(
     aggregate,
-    /needs\.a11y-pr-shard\.result != 'success' \|\| \(needs\.a11y-routes-focus-primary\.outputs\.routes_focus_primary_passed != 'true' && needs\.a11y-routes-focus-retry\.result != 'success'\)[\s\S]*?exit 1/,
+    /needs\.a11y-pr-shard\.result != 'success' \|\| \(needs\.a11y-rendered-census-primary\.outputs\.rendered_census_primary_passed != 'true' && needs\.a11y-rendered-census-retry\.result != 'success'\) \|\| \(needs\.a11y-routes-focus-primary\.outputs\.routes_focus_primary_passed != 'true' && needs\.a11y-routes-focus-retry\.result != 'success'\)[\s\S]*?exit 1/,
   );
   assert.match(
     aggregate,
-    /needs\.a11y-pr-shard\.result == 'success' && \(needs\.a11y-routes-focus-primary\.outputs\.routes_focus_primary_passed == 'true' \|\| needs\.a11y-routes-focus-retry\.result == 'success'\)/,
+    /needs\.a11y-pr-shard\.result == 'success' && \(needs\.a11y-rendered-census-primary\.outputs\.rendered_census_primary_passed == 'true' \|\| needs\.a11y-rendered-census-retry\.result == 'success'\) && \(needs\.a11y-routes-focus-primary\.outputs\.routes_focus_primary_passed == 'true' \|\| needs\.a11y-routes-focus-retry\.result == 'success'\)/,
   );
   assert.match(aggregate, /Routes-focus recovered on its one fresh-runner retry/);
   assert.doesNotMatch(
@@ -177,9 +177,14 @@ test("accessibility aggregate accepts only a green matrix and a green routes-foc
   assert.match(shards, /fail-fast:\s*false/);
   assert.match(
     shards,
-    /matrix:\s*\n\s*shard:\s*\[browser-a11y, language-layout, rendered-census\]/,
+    /matrix:\s*\n\s*shard:\s*\[browser-a11y, language-layout\]/,
   );
   assert.doesNotMatch(shards, /shard:\s*\[[^\]]*routes-focus/);
+  assert.match(ci, /a11y-rendered-census-primary:[\s\S]*?continue-on-error: true/);
+  assert.match(ci, /a11y-rendered-census-retry:[\s\S]*?rendered_census_browser_crashed == 'true'/);
+  assert.match(ci, /Browser crashed before producing axe results; requesting one fresh-runner retry/);
+  assert.match(ci, /tools\/classify_a11y_browser_failure\.sh/);
+  assert.doesNotMatch(ci, /a11y-rendered-census-primary:[\s\S]*?continue-on-error: true[\s\S]*?axe violation[\s\S]*?retry/);
   assert.match(
     shards,
     /name: a11y-pr-shard-\$\{\{ matrix\.shard \}\}-primary-logs-\$\{\{ github\.run_id \}\}/,
