@@ -7,7 +7,7 @@
     "meeting_id": "meeting:nyc_legistar_events:22691"
   },
   "revisions": {
-    "code": "aa34c9481ad843030719eceb026dbdebdb2db054",
+    "code": "41fc630b26d21a613bf2190d2714b513c4df0467",
     "data": "b74ec7f80df1712c8781e00cd917bdb4f938eb1bdefb95e2655572173c969bd3"
   },
   "surfaces": [
@@ -15,12 +15,12 @@
       "id": "meetings",
       "route": "https://cityscroll.org/browse/meetings/",
       "url": "https://cityscroll.org/data/shared_meeting_read_model.json",
-      "read_at": "2026-09-14T05:23:39.154Z",
+      "read_at": "2026-09-14T08:18:24.869Z",
       "found": true,
       "measurement_state": "measured",
       "status": 200,
       "seen": {
-        "excerpt": "role\": \"representative\", \"minutes_freshness\": { \"status\": \"not_published\", \"latest_date\": null, \"checked_at\": \"2026-09-14T04:43:24.760Z\" } }, { \"event_id\": \"22691\", \"meeting_id\": \"meeting:nyc_legistar_events:22691\", \"identity\": { \"source_system\": \"nyc_legistar_events\", \"event_id\": \"22691\", \"event_guid\": \"0996EE1D-9814-4C5D-B338-EF2C19BBE32F\" }, \"event_date\": \"2026-09-23T10:00:00\", \"wall_time\": \"2026-09-23T10:00:00\", \"time_zone\": \"America/New_York\", \"venue\": { \"address\": \"250 Broadway - 8th Floor - Hearing Room 2\" }, \"committee\": { \"name\": \"Committee on Contracts\", \"href\": null }, \"governing_bo",
+        "excerpt": "role\": \"representative\", \"minutes_freshness\": { \"status\": \"not_published\", \"latest_date\": null, \"checked_at\": \"2026-09-14T08:02:05.650Z\" } }, { \"event_id\": \"22691\", \"meeting_id\": \"meeting:nyc_legistar_events:22691\", \"identity\": { \"source_system\": \"nyc_legistar_events\", \"event_id\": \"22691\", \"event_guid\": \"0996EE1D-9814-4C5D-B338-EF2C19BBE32F\" }, \"event_date\": \"2026-09-23T10:00:00\", \"wall_time\": \"2026-09-23T10:00:00\", \"time_zone\": \"America/New_York\", \"venue\": { \"address\": \"250 Broadway - 8th Floor - Hearing Room 2\" }, \"committee\": { \"name\": \"Committee on Contracts\", \"href\": null }, \"governing_bo",
         "structured": {
           "top_level_keys": [
             "schema",
@@ -42,7 +42,7 @@
       },
       "missing_needles": [],
       "revisions": {
-        "code": "aa34c9481ad843030719eceb026dbdebdb2db054",
+        "code": "41fc630b26d21a613bf2190d2714b513c4df0467",
         "data": "b74ec7f80df1712c8781e00cd917bdb4f938eb1bdefb95e2655572173c969bd3"
       }
     },
@@ -50,7 +50,7 @@
       "id": "search",
       "route": "https://cityscroll.org/search/?q=M%2FWBE%20utilization",
       "url": "https://api.cityscroll.org/search?q=M%2FWBE%20utilization",
-      "read_at": "2026-09-14T05:23:39.154Z",
+      "read_at": "2026-09-14T08:18:24.869Z",
       "found": true,
       "measurement_state": "measured",
       "status": 200,
@@ -76,46 +76,24 @@
       },
       "missing_needles": [],
       "revisions": {
-        "code": "aa34c9481ad843030719eceb026dbdebdb2db054",
+        "code": "41fc630b26d21a613bf2190d2714b513c4df0467",
         "data": "b74ec7f80df1712c8781e00cd917bdb4f938eb1bdefb95e2655572173c969bd3"
       }
     },
     {
       "id": "now",
       "route": "https://cityscroll.org/now/",
-      "url": "https://api.cityscroll.org/hearings",
-      "read_at": "2026-09-14T05:23:39.154Z",
+      "url": "https://cityscroll.org/now/",
+      "read_at": "2026-09-14T08:18:24.869Z",
       "found": true,
       "measurement_state": "measured",
       "status": 200,
       "seen": {
-        "excerpt": "on_visibility\":\"visible\",\"collection_role\":\"representative\",\"minutes_freshness\":{\"status\":\"not_published\",\"latest_date\":null,\"checked_at\":\"2026-09-13T13:14:56.165Z\"}},{\"event_id\":\"22691\",\"meeting_id\":\"meeting:nyc_legistar_events:22691\",\"identity\":{\"source_system\":\"nyc_legistar_events\",\"event_id\":\"22691\",\"event_guid\":\"0996EE1D-9814-4C5D-B338-EF2C19BBE32F\"},\"event_date\":\"2026-09-23T10:00:00\",\"wall_time\":\"2026-09-23T10:00:00\",\"time_zone\":\"America/New_York\",\"venue\":{\"address\":\"250 Broadway - 8th Floor - Hearing Room 2\"},\"committee\":{\"name\":\"Committee on Contracts\",\"href\":null},\"governing_body\":{\"n",
-        "structured": {
-          "top_level_keys": [
-            "schema",
-            "version",
-            "generated_at",
-            "freshness",
-            "sources",
-            "counts",
-            "same_proceeding",
-            "rows",
-            "hearings",
-            "read_model",
-            "schema_version",
-            "source_extraction_version",
-            "source",
-            "stale"
-          ],
-          "matched_needles": [
-            "22691",
-            "Committee on Contracts"
-          ]
-        }
+        "excerpt": " <div class=\"actions\"><a class=\"act primary\" href=\"/#land/2022X0393\">Open details</a></div> </article><article class=\"now-card\" data-now-item=\"meetings:meeting:nyc_legistar_events:22691\" data-now-lane=\"happening_soon\"> <div class=\"now-card-tags\"><span class=\"tag open\">meeting</span><span class=\"tag asset\">NYC Council calendar</span></div> <p class=\"now-card-when\"><time datetime=\"2026-09-23T10:00:00\"><b>2026-09-23</b></time></p> <h3><a href=\"/meetings/meeting%3Anyc_legistar_events%3A22691\" lang=\"en\" dir=\"ltr\">Committee on Contracts</a></h3> <p class=\"now-card-agency\" lang=\"en\" dir=\"ltr\">Committ"
       },
       "missing_needles": [],
       "revisions": {
-        "code": "aa34c9481ad843030719eceb026dbdebdb2db054",
+        "code": "41fc630b26d21a613bf2190d2714b513c4df0467",
         "data": "b74ec7f80df1712c8781e00cd917bdb4f938eb1bdefb95e2655572173c969bd3"
       }
     },
@@ -123,7 +101,7 @@
       "id": "canonical-detail",
       "route": "https://cityscroll.org/meetings/meeting%3Anyc_legistar_events%3A22691",
       "url": "https://cityscroll.org/meetings/meeting%3Anyc_legistar_events%3A22691",
-      "read_at": "2026-09-14T05:23:39.154Z",
+      "read_at": "2026-09-14T08:18:24.869Z",
       "found": true,
       "measurement_state": "measured",
       "status": 200,
@@ -132,7 +110,7 @@
       },
       "missing_needles": [],
       "revisions": {
-        "code": "aa34c9481ad843030719eceb026dbdebdb2db054",
+        "code": "41fc630b26d21a613bf2190d2714b513c4df0467",
         "data": "b74ec7f80df1712c8781e00cd917bdb4f938eb1bdefb95e2655572173c969bd3"
       }
     },
@@ -140,16 +118,16 @@
       "id": "ics",
       "route": null,
       "url": "https://api.cityscroll.org/meeting.ics?id=meeting%3Anyc_legistar_events%3A22691",
-      "read_at": "2026-09-14T05:23:39.154Z",
+      "read_at": "2026-09-14T08:18:24.869Z",
       "found": true,
       "measurement_state": "measured",
       "status": 200,
       "seen": {
-        "excerpt": "REQ=YEARLY;BYMONTH=11;BYDAY=1SU END:STANDARD END:VTIMEZONE BEGIN:VEVENT UID:meeting:nyc_legistar_events:22691@cityscroll.org DTSTAMP:20260914T052343Z DTSTART;TZID=America/New_York:20260923T100000 DTEND;TZID=America/New_York:20260923T110000 SUMMARY:Committee on Contracts LOCATION:250 Broadway - 8th Floor - Hearing Room 2 DESCRIPTION:Location: 250 Broadway - 8th Floor - Hearing Room 2\\nNYC Counci l Legistar: https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22691&GID=61 &G=2FD004F1-D85B-4588-A648-0A736C77D6E3 BEGIN:VALARM TRIGGER:-P1D ACTION:DISPLAY DESCRIPTION:Hearing tomorrow END:VALARM END:VE"
+        "excerpt": "REQ=YEARLY;BYMONTH=11;BYDAY=1SU END:STANDARD END:VTIMEZONE BEGIN:VEVENT UID:meeting:nyc_legistar_events:22691@cityscroll.org DTSTAMP:20260914T081827Z DTSTART;TZID=America/New_York:20260923T100000 DTEND;TZID=America/New_York:20260923T110000 SUMMARY:Committee on Contracts LOCATION:250 Broadway - 8th Floor - Hearing Room 2 DESCRIPTION:Location: 250 Broadway - 8th Floor - Hearing Room 2\\nNYC Counci l Legistar: https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22691&GID=61 &G=2FD004F1-D85B-4588-A648-0A736C77D6E3 BEGIN:VALARM TRIGGER:-P1D ACTION:DISPLAY DESCRIPTION:Hearing tomorrow END:VALARM END:VE"
       },
       "missing_needles": [],
       "revisions": {
-        "code": "aa34c9481ad843030719eceb026dbdebdb2db054",
+        "code": "41fc630b26d21a613bf2190d2714b513c4df0467",
         "data": "b74ec7f80df1712c8781e00cd917bdb4f938eb1bdefb95e2655572173c969bd3"
       }
     },
@@ -157,7 +135,7 @@
       "id": "watch-preview",
       "route": "https://cityscroll.org/following?lens=meetings&filter=%7B%22keywords%22%3A%5B%22M%2FWBE%22%5D%7D",
       "url": "https://cityscroll.org/following?lens=meetings&filter=%7B%22keywords%22%3A%5B%22M%2FWBE%22%5D%7D",
-      "read_at": "2026-09-14T05:23:39.154Z",
+      "read_at": "2026-09-14T08:18:24.869Z",
       "found": true,
       "measurement_state": "measured",
       "status": 200,
@@ -166,7 +144,7 @@
       },
       "missing_needles": [],
       "revisions": {
-        "code": "aa34c9481ad843030719eceb026dbdebdb2db054",
+        "code": "41fc630b26d21a613bf2190d2714b513c4df0467",
         "data": "b74ec7f80df1712c8781e00cd917bdb4f938eb1bdefb95e2655572173c969bd3"
       }
     }
