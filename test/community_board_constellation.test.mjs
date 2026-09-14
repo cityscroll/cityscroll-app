@@ -29,6 +29,7 @@ const meetingIndex = readCommunityBoardMeetingIndex(new URL("../site/data/commun
 const sources = { sourceRegistry, sourceInventory, scorecard, geography };
 
 test("release journey evidence names every acceptance obligation and its retained artifacts", () => {
+  assert.equal(releaseJourneyManifest.schema, "cityscroll.community_board_release_journey_manifest.v3");
   assert.match(releaseJourneyManifest.repository_revision, /^[0-9a-f]{40}$/);
   assert.equal(releaseJourneyManifest.acceptance.A3.board_count, 59);
   assert.equal(releaseJourneyManifest.acceptance.A3.resource_role_dispositions, 59);
@@ -40,7 +41,7 @@ test("release journey evidence names every acceptance obligation and its retaine
     ["brooklyn-cb-15", "manhattan-cb-06", "bronx-cb-11", "bronx-cb-01", "queens-cb-01", "staten-island-cb-01"],
   );
   for (const key of ["A1", "A2", "A3", "A4"]) {
-    assert.equal(releaseJourneyManifest.acceptance[key].status, "proved_by_existing_evidence");
+    assert.equal(releaseJourneyManifest.acceptance[key].status, "proved_by_served_readback");
     assert.ok(releaseJourneyManifest.acceptance[key].evidence.length > 0, `${key} has no retained evidence`);
     for (const path of releaseJourneyManifest.acceptance[key].evidence) {
       assert.equal(existsSync(new URL(`../${path}`, import.meta.url)), true, `${key} evidence missing: ${path}`);
@@ -52,6 +53,25 @@ test("release journey evidence names every acceptance obligation and its retaine
     "python3 test/functional/34_near_you_surface_switch.py",
   ]);
   assert.equal(releaseJourneyManifest.journey_functional_path, "python3 test/functional/54_community_board_release_journeys.py");
+  assert.equal(releaseJourneyManifest.assertions.filter((entry) => entry.case.includes("calendar-accepted-fixture")).length, 2);
+  assert.deepEqual(
+    releaseJourneyManifest.assertions.filter((entry) => entry.case.includes("request-return-")).map((entry) => entry.outbound),
+    [{ sends: 0, subscriptions: 0, follows: 0 }, { sends: 0, subscriptions: 0, follows: 0 }],
+  );
+  const layouts = releaseJourneyManifest.assertions.filter((entry) => entry.case.startsWith("cb15-layout-"));
+  assert.equal(layouts.length, 2);
+  assert.notDeepEqual(layouts[0].measurements, layouts[1].measurements);
+  for (const entry of layouts) {
+    assert.equal(entry.measurements.document_scroll_width, entry.viewport.width);
+    for (const box of ["heading", "district_link", "inspect_control"]) {
+      assert.ok(entry.measurements[box].x >= 0);
+      assert.ok(entry.measurements[box].right <= entry.viewport.width);
+    }
+  }
+  for (const entry of releaseJourneyManifest.assertions.filter((row) => row.case.includes("served-readback-"))) {
+    assert.equal(entry.data_vintage, "served committed site materialization");
+    assert.match(entry.render_sha256, /^[0-9a-f]{64}$/);
+  }
 });
 
 test("board routes preserve the separate place, governance, and output projections", () => {

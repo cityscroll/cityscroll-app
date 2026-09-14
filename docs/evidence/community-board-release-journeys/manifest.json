@@ -1,7 +1,7 @@
 {
-  "schema": "cityscroll.community_board_release_journey_manifest.v2",
-  "repository_revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
-  "read_on": "2026-09-14",
+  "schema": "cityscroll.community_board_release_journey_manifest.v3",
+  "repository_revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+  "read_on": "2026-09-09",
   "data_vintage": "served committed site materialization",
   "unit_gate": "node --test test/community_board_links.test.mjs test/community_board_constellation.test.mjs test/near_you_static.test.mjs test/community_board_calendar.test.mjs test/community_board_request_responses.test.mjs",
   "functional_paths": [
@@ -11,23 +11,23 @@
   "journey_functional_path": "python3 test/functional/54_community_board_release_journeys.py",
   "acceptance": {
     "A1": {
-      "status": "proved_by_existing_evidence",
+      "status": "proved_by_served_readback",
       "evidence": [
         "test/functional/54_community_board_release_journeys.py",
         "docs/evidence/community-board-release-journeys/manifest.json"
       ],
-      "assertion": "CB15 next-meeting selection is conditional: an accepted upcoming meeting is opened, otherwise the verified calendar fallback is read back."
+      "assertion": "Both accepted-meeting and no-upcoming branches are rendered on served board routes; the accepted meeting detail heading matches the label read from the board."
     },
     "A2": {
-      "status": "proved_by_existing_evidence",
+      "status": "proved_by_served_readback",
       "evidence": [
         "test/functional/54_community_board_release_journeys.py",
         "docs/evidence/community-board-release-journeys/manifest.json"
       ],
-      "assertion": "A board request is expanded, inspected, dismissed, and returned to its board scope."
+      "assertion": "Inspection and dismissal retain the board scope and record exactly zero sends, subscriptions, and follow creations."
     },
     "A3": {
-      "status": "proved_by_existing_evidence",
+      "status": "proved_by_served_readback",
       "board_count": 59,
       "resource_role_dispositions": 59,
       "specimens": [
@@ -54,15 +54,15 @@
         "test/functional/54_community_board_release_journeys.py",
         "docs/evidence/community-board-release-journeys/manifest.json"
       ],
-      "assertion": "The served board and district transitions preserve the selected K15 scope at desktop and narrow widths."
+      "assertion": "Measured heading, district-link, and inspect-control boxes fit within both release viewports without horizontal overflow."
     },
     "A4": {
-      "status": "proved_by_existing_evidence",
+      "status": "proved_by_served_readback",
       "evidence": [
         "test/functional/54_community_board_release_journeys.py",
         "docs/evidence/community-board-release-journeys/manifest.json"
       ],
-      "assertion": "The read-back retains route, viewport, revision, data vintage, assertion, and render hash for each named check."
+      "assertion": "The read-back retains route, viewport, served data vintage, assertion, and render hash for each named check."
     }
   },
   "fixture_assertions": [
@@ -75,8 +75,6 @@
       },
       "assertion": "identify-next-meeting",
       "passed": true,
-      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
-      "data_vintage": "deterministic committed fixture",
       "render_sha256": "1fb0d5b02b01d2decfc82914350439118f43fec5e8b7c6fa7b8c59e8a3a2e359"
     },
     {
@@ -88,12 +86,23 @@
       },
       "assertion": "verified-calendar-fallback",
       "passed": true,
-      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
-      "data_vintage": "deterministic committed fixture",
       "render_sha256": "422460b4fbc394c97db114ca623b81d9985d58fcb72a6aa89bcfb4a087689ed5"
     }
   ],
   "assertions": [
+    {
+      "case": "cb15-calendar-accepted-fixture-1440x900",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "data_vintage": "served board with deterministic accepted-meeting fixture overlay",
+      "assertion": "served fixture branch identifies the next full-board meeting and opens its canonical detail with the same rendered label",
+      "render_sha256": "0e1a7e3e88b369e8e90ece71e2a00ddf5eb0ec8489c730cd1fdd2a423f02841b",
+      "passed": true
+    },
     {
       "case": "cb15-calendar-1440x900",
       "route": "/community-boards/brooklyn-cb-15/",
@@ -101,7 +110,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
       "data_vintage": "served committed site materialization",
       "assertion": "no upcoming branch renders verified calendar fallback",
       "render_sha256": "8ea26145baed68cb4bd4e2e0a89425bf400c7f80696c4e7db916b39258119cbb",
@@ -114,7 +123,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
       "data_vintage": "served committed site materialization",
       "assertion": "calendar, agenda, and contact destinations are explicit",
       "render_sha256": "5147ccfa18ac1598aba0d8f7a2a3a4e5c968571f59d193d25b1d5e4d60a251ac",
@@ -127,11 +136,54 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
       "data_vintage": "served committed site materialization",
-      "assertion": "agency request expands, inspects, dismisses, and returns to the same board scope",
+      "assertion": "agency request expands, inspects, dismisses, and returns to the same board scope with zero sends, subscriptions, and follow creations",
       "render_sha256": "680ec6f989c6bfa8944784990bc507b369950cba6bb50c271b038c0e65057155",
+      "outbound": {
+        "sends": 0,
+        "subscriptions": 0,
+        "follows": 0
+      },
       "passed": true
+    },
+    {
+      "case": "cb15-layout-1440x900",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "data_vintage": "served committed site materialization",
+      "assertion": "heading, district link, and inspect control fit within the viewport without horizontal overflow",
+      "measurements": {
+        "viewport_width": 1440,
+        "document_scroll_width": 1440,
+        "heading": {
+          "x": 208,
+          "y": -9119.421875,
+          "width": 1024,
+          "height": 74.46875,
+          "right": 1232
+        },
+        "district_link": {
+          "x": 208,
+          "y": -8923.4375,
+          "width": 207.5,
+          "height": 20,
+          "right": 415.5
+        },
+        "inspect_control": {
+          "x": 474.84375,
+          "y": 118.75,
+          "width": 61.453125,
+          "height": 24,
+          "right": 536.296875
+        }
+      },
+      "passed": true,
+      "render_sha256": "8d3ae4bb2914279c0fb0708422e845c2a7d223347e4cd279a26abacdebf5c819"
     },
     {
       "case": "cb15-district-roundtrip-1440x900",
@@ -140,10 +192,10 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
       "data_vintage": "served committed site materialization",
       "assertion": "K15 district scope opens and browser Back returns to the board",
-      "render_sha256": "494f2d26846a8fd998b26160a7675aab0dbcb40126c0b0b90e4d42dc461464e0",
+      "render_sha256": "43eb530b3137d76f4490120cb19c156fcdcf8ecb88cae13706497d9191e0e860",
       "passed": true
     },
     {
@@ -153,11 +205,24 @@
         "width": 1440,
         "height": 900
       },
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "data_vintage": "served committed site materialization",
       "assertion": "served board document is readable at the release viewport",
-      "render_sha256": "494f2d26846a8fd998b26160a7675aab0dbcb40126c0b0b90e4d42dc461464e0",
-      "passed": true,
-      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
-      "data_vintage": "deterministic committed fixture"
+      "render_sha256": "43eb530b3137d76f4490120cb19c156fcdcf8ecb88cae13706497d9191e0e860",
+      "passed": true
+    },
+    {
+      "case": "cb15-calendar-accepted-fixture-390x844",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "data_vintage": "served board with deterministic accepted-meeting fixture overlay",
+      "assertion": "served fixture branch identifies the next full-board meeting and opens its canonical detail with the same rendered label",
+      "render_sha256": "0e1a7e3e88b369e8e90ece71e2a00ddf5eb0ec8489c730cd1fdd2a423f02841b",
+      "passed": true
     },
     {
       "case": "cb15-calendar-390x844",
@@ -166,7 +231,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
       "data_vintage": "served committed site materialization",
       "assertion": "no upcoming branch renders verified calendar fallback",
       "render_sha256": "8ea26145baed68cb4bd4e2e0a89425bf400c7f80696c4e7db916b39258119cbb",
@@ -179,7 +244,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
       "data_vintage": "served committed site materialization",
       "assertion": "calendar, agenda, and contact destinations are explicit",
       "render_sha256": "5147ccfa18ac1598aba0d8f7a2a3a4e5c968571f59d193d25b1d5e4d60a251ac",
@@ -192,11 +257,54 @@
         "width": 390,
         "height": 844
       },
-      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
       "data_vintage": "served committed site materialization",
-      "assertion": "agency request expands, inspects, dismisses, and returns to the same board scope",
+      "assertion": "agency request expands, inspects, dismisses, and returns to the same board scope with zero sends, subscriptions, and follow creations",
       "render_sha256": "680ec6f989c6bfa8944784990bc507b369950cba6bb50c271b038c0e65057155",
+      "outbound": {
+        "sends": 0,
+        "subscriptions": 0,
+        "follows": 0
+      },
       "passed": true
+    },
+    {
+      "case": "cb15-layout-390x844",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "data_vintage": "served committed site materialization",
+      "assertion": "heading, district link, and inspect control fit within the viewport without horizontal overflow",
+      "measurements": {
+        "viewport_width": 390,
+        "document_scroll_width": 390,
+        "heading": {
+          "x": 16,
+          "y": -10491.421875,
+          "width": 358,
+          "height": 70.53125,
+          "right": 374
+        },
+        "district_link": {
+          "x": 16,
+          "y": -10246.703125,
+          "width": 207.5,
+          "height": 20,
+          "right": 223.5
+        },
+        "inspect_control": {
+          "x": 269.625,
+          "y": 169.03125,
+          "width": 61.453125,
+          "height": 24,
+          "right": 331.078125
+        }
+      },
+      "passed": true,
+      "render_sha256": "8d3ae4bb2914279c0fb0708422e845c2a7d223347e4cd279a26abacdebf5c819"
     },
     {
       "case": "cb15-district-roundtrip-390x844",
@@ -205,10 +313,10 @@
         "width": 390,
         "height": 844
       },
-      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
       "data_vintage": "served committed site materialization",
       "assertion": "K15 district scope opens and browser Back returns to the board",
-      "render_sha256": "ead3fa4f5b5565be550936357de8aaebd1fe8ea4380d91790ccc9f125fb1dee3",
+      "render_sha256": "346e26d40e3bd99717f325bd338c68c02a86548d0466c8c962434949e26eb441",
       "passed": true
     },
     {
@@ -218,11 +326,11 @@
         "width": 390,
         "height": 844
       },
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "data_vintage": "served committed site materialization",
       "assertion": "served board document is readable at the release viewport",
-      "render_sha256": "ead3fa4f5b5565be550936357de8aaebd1fe8ea4380d91790ccc9f125fb1dee3",
-      "passed": true,
-      "revision": "98b51b1c8216fe860d6e88f1f5fbfdc4b0f3b466",
-      "data_vintage": "deterministic committed fixture"
+      "render_sha256": "346e26d40e3bd99717f325bd338c68c02a86548d0466c8c962434949e26eb441",
+      "passed": true
     }
   ]
 }

@@ -5,13 +5,17 @@
       "id": "upcoming-full-board",
       "accepted_upcoming_full_board": true,
       "expected": "identify-next-meeting",
-      "rendered": "Next full-board meeting"
+      "rendered": "Next full-board meeting",
+      "served_route": "/community-boards/brooklyn-cb-15/",
+      "meeting_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2026-06-30%3Ageneral-board-meeting-in-person/",
+      "meeting_title": "General Board Meeting (In Person)"
     },
     {
       "id": "no-upcoming-full-board",
       "accepted_upcoming_full_board": false,
       "expected": "verified-calendar-fallback",
       "rendered": "Open the verified calendar",
+      "served_route": "/community-boards/brooklyn-cb-15/",
       "official_calendar": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
     }
   ]
