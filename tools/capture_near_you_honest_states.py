@@ -62,6 +62,7 @@ def capture(page, width: int, height: int, keyboard: bool) -> dict[str, object]:
     assert sorted(parse_qsl(actual.query, keep_blank_values=True)) == sorted(parse_qsl(expected.query, keep_blank_values=True)), (actual.query, expected.query)
     page.locator('[data-near-you-root][data-near-deferred-state="ready"]').wait_for()
     return {
+        "source": "headless-http-served-route",
         "route": ROUTE,
         "viewport": {"width": width, "height": height},
         "assertion": (
