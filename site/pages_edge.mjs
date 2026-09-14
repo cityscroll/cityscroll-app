@@ -857,7 +857,7 @@ async function procurementObjectFromAsset(env, request, id) {
       return object ? {
         object,
         observations: manifest.observations,
-        sources: manifest.sources,
+        sources: manifest.sources, lookupReceipt: object.procurement_source_lookup_receipt || null,
         generated_at: manifest.generated_at,
       } : null;
     }
@@ -872,7 +872,7 @@ async function procurementObjectFromAsset(env, request, id) {
     return object ? {
       object,
       observations: shard.observations,
-      sources: manifest.sources,
+      sources: manifest.sources, lookupReceipt: object.procurement_source_lookup_receipt || null,
       generated_at: manifest.generated_at,
     } : null;
   } catch {
@@ -1002,7 +1002,7 @@ async function handleProcurement(request, env, encodedId) {
   if (result) {
     html = renderProcurementDocument(result.object, result.observations, {
       currentHref: request.url,
-      sourceStatus: result.sources,
+      sourceStatus: result.sources, lookupReceipt: result.lookupReceipt,
       // determinism-lint: allow clock the request day for the served procurement document's opportunity-month past/current/future states; this handler renders per request, never at build time.
       today: new Date().toISOString().slice(0, 10),
     });

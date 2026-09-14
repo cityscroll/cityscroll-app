@@ -241,7 +241,7 @@ function mtaOfficialSource(entry) {
  * the public source. Checkbook search is labeled as search unless a
  * contract-detail agid is present.
  */
-export function procurementOfficialSourceItems(object = {}, observations = []) {
+export function procurementOfficialSourceItems(object = {}, observations = [], { lookupReceipt = null } = {}) {
   const rows = observationRows(object, observations);
   const items = [];
   const seen = new Set();
@@ -258,7 +258,7 @@ export function procurementOfficialSourceItems(object = {}, observations = []) {
   for (const href of object?.compatibility?.city_record_notice_hrefs || []) {
     add({ href, label: "City Record notice" });
   }
-  for (const descriptor of procurementSourceLinkItems(object, observations)) {
+  for (const descriptor of procurementSourceLinkItems(object, observations, { lookupReceipt })) {
     if (descriptor.source_system === "city_record") continue;
     const label = descriptor.search_href
       ? "Search Checkbook NYC"
@@ -448,7 +448,7 @@ function pursuitSnapshotFor(object, observations, facts, window, occurrences, pr
     important_dates: importantDates,
     procurement_method: method,
     mwbe_view: mwbeView,
-    official_source_items: procurementOfficialSourceItems(object, observations),
+    official_source_items: procurementOfficialSourceItems(object, observations, { lookupReceipt: object?.procurement_source_lookup_receipt }),
     source_status_label: sourceStatusLabel,
     cityscroll_url: `https://cityscroll.org${procurementCanonicalHref(object)}`,
     preference_match: preferenceMatch || null,
@@ -527,6 +527,7 @@ export function renderProcurementDocument(object = {}, observations = [], {
   projectContextMaterialization = null,
   preferenceMatch = null,
   accessClassification = null,
+  lookupReceipt = object?.procurement_source_lookup_receipt || null,
 } = {}) {
   const id = clean(object?.procurement_id, 320);
   if (!id.startsWith("procurement:")) return null;
@@ -567,14 +568,14 @@ export function renderProcurementDocument(object = {}, observations = [], {
     ["Solicitation", object?.identity_keys?.solicitation_ids?.[0], "solicitation_id"],
     ["Event", object?.identity_keys?.event_ids?.[0], "event_id"],
   ].filter(([, value]) => value).map(([label, value, kind]) => `<div><dt>${esc(label)}</dt><dd>${kind ? procurementFactValue(facts, kind, value, object) : esc(value)}</dd></div>`).join("");
-  const sourceItems = procurementOfficialSourceItems(object, observations);
+  const sourceItems = procurementOfficialSourceItems(object, observations, { lookupReceipt });
   const coverageLedger = object?.cross_source_coverage_ledger || buildCrossSourceCoverageLedger({
     object,
     observations,
     sourceStatus,
     sourceCoverage,
     lookups,
-    lookupReceipt: object?.procurement_source_lookup_receipt,
+    lookupReceipt,
     aboResidual,
     crosswalk,
     registeredContractCoverage,
