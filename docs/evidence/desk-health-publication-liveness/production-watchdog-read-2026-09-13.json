@@ -1,0 +1,171 @@
+{
+  "schema": "cityscroll.desk_publication_production_observation.v1",
+  "evidence_class": "live-production-read",
+  "isolated": false,
+  "observed_at": "2026-09-13T23:28:32.838Z",
+  "observer": {
+    "workflow": "Reliability watchdogs",
+    "schedule": "existing GitHub Actions reliability-watchdogs.yml",
+    "endpoint": "https://api.cityscroll.org/admin/reliability/scheduler"
+  },
+  "consecutive_unattended_observer_cycles": [
+    {
+      "run_id": "34776252840",
+      "event": "schedule",
+      "conclusion": "success",
+      "created_at": "2026-09-13T18:58:28Z",
+      "head_sha": "e47b7edd3147f5ade799f60be2da677c48b7f9fd",
+      "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/34776252840"
+    },
+    {
+      "run_id": "34784677032",
+      "event": "schedule",
+      "conclusion": "success",
+      "created_at": "2026-09-13T21:43:37Z",
+      "head_sha": "26d11a492ad29d60fecfe7d4136005af6fcb6791",
+      "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/34784677032"
+    }
+  ],
+  "consecutive_unattended_publication_cycles": [],
+  "publication_receipt_retention": {
+    "source": "scheduled Pages workflow artifact data-source-graph-<run_id>",
+    "retrieved_count": 0,
+    "qualifying_count": 0,
+    "empty_reason": "No per-run cityscroll.desk_publication_receipt.v1 file was retained for the consecutive scheduled Pages runs."
+  },
+  "publication_dependency_and_backlog": {
+    "scheduled_pages_publication": {
+      "workflow": "Deploy Cloudflare Pages",
+      "consecutive_successful_scheduled_runs": [
+        {
+          "run_id": "34140178131",
+          "event": "schedule",
+          "conclusion": "success",
+          "created_at": "2026-09-07T15:48:33Z",
+          "head_sha": "1113e0eeb6cee1b79145c9c4cee07e267e03e076",
+          "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/34140178131"
+        },
+        {
+          "run_id": "34238662276",
+          "event": "schedule",
+          "conclusion": "success",
+          "created_at": "2026-09-08T14:30:10Z",
+          "head_sha": "67adff8bb8331df0cdfd3be1ee380815206f0b0e",
+          "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/34238662276"
+        },
+        {
+          "run_id": "34364169860",
+          "event": "schedule",
+          "conclusion": "success",
+          "created_at": "2026-09-09T14:31:29Z",
+          "head_sha": "bdd8f02b7a7352a45ca66cbb523c8240f7c68fb2",
+          "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/34364169860"
+        },
+        {
+          "run_id": "34488734259",
+          "event": "schedule",
+          "conclusion": "success",
+          "created_at": "2026-09-10T14:23:26Z",
+          "head_sha": "e3ab5d6d65f54e475eae941a3da32f3fc395d625",
+          "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/34488734259"
+        },
+        {
+          "run_id": "34609815751",
+          "event": "schedule",
+          "conclusion": "success",
+          "created_at": "2026-09-11T14:23:20Z",
+          "head_sha": "233a42d95a73c0d10b49ce5e96d59f6ebf386b65",
+          "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/34609815751"
+        },
+        {
+          "run_id": "34696822218",
+          "event": "schedule",
+          "conclusion": "success",
+          "created_at": "2026-09-12T13:34:54Z",
+          "head_sha": "233a42d95a73c0d10b49ce5e96d59f6ebf386b65",
+          "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/34696822218"
+        },
+        {
+          "run_id": "34762333247",
+          "event": "schedule",
+          "conclusion": "success",
+          "created_at": "2026-09-13T14:19:34Z",
+          "head_sha": "e47b7edd3147f5ade799f60be2da677c48b7f9fd",
+          "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/34762333247"
+        }
+      ],
+      "last_successful_scheduled_run": {
+        "run_id": "34762333247",
+        "event": "schedule",
+        "conclusion": "success",
+        "created_at": "2026-09-13T14:19:34Z",
+        "head_sha": "e47b7edd3147f5ade799f60be2da677c48b7f9fd",
+        "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/34762333247"
+      },
+      "last_scheduled_attempt": {
+        "run_id": "34762333247",
+        "event": "schedule",
+        "conclusion": "success",
+        "created_at": "2026-09-13T14:19:34Z",
+        "head_sha": "e47b7edd3147f5ade799f60be2da677c48b7f9fd",
+        "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/34762333247"
+      }
+    },
+    "unrelated_successful_push_deploys": "Recent successful main-branch Pages deploys are application-code deploys. They are not Desk evidence-publication cycles.",
+    "dataset_refresh_pull_requests": {
+      "workflow": "First-class dataset refresh",
+      "observed_runs": [
+        {
+          "run_id": "34756560163",
+          "event": "schedule",
+          "conclusion": "cancelled",
+          "created_at": "2026-09-13T12:14:44Z",
+          "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/34756560163"
+        },
+        {
+          "run_id": "34690446650",
+          "event": "schedule",
+          "conclusion": "failure",
+          "created_at": "2026-09-12T11:12:38Z",
+          "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/34690446650"
+        },
+        {
+          "run_id": "34595536750",
+          "event": "schedule",
+          "conclusion": "failure",
+          "created_at": "2026-09-11T11:45:11Z",
+          "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/34595536750"
+        },
+        {
+          "run_id": "34473021555",
+          "event": "schedule",
+          "conclusion": "failure",
+          "created_at": "2026-09-10T11:45:57Z",
+          "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/34473021555"
+        },
+        {
+          "run_id": "34347395289",
+          "event": "schedule",
+          "conclusion": "success",
+          "created_at": "2026-09-09T11:47:33Z",
+          "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/34347395289"
+        }
+      ],
+      "role": "backlog-only",
+      "note": "Observed runs remain backlog. Opening a pull request is not successful Desk publication."
+    },
+    "private_destination": "https://desk.cityscroll.org/data-sources",
+    "private_destination_check": {
+      "http_status": 302,
+      "access_protected": true
+    }
+  },
+  "watchdog_read": {
+    "run_id": "34784677032",
+    "http_ok": true,
+    "alert": null,
+    "publication_ok": true,
+    "publication_heartbeat_run_id": "34762333247",
+    "note": "The independent observer completed 2 consecutive unattended scheduled cycle(s). A scheduled Deploy Cloudflare Pages run succeeded at 2026-09-13T14:19:34Z (https://github.com/cityscroll/cityscroll-app/actions/runs/34762333247). Observer cycles do not count as publication. No per-run cityscroll.desk_publication_receipt.v1 file was retained for the consecutive scheduled Pages runs. The scheduler heartbeat reports Desk publication as healthy."
+  }
+}
