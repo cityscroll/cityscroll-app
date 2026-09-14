@@ -1,0 +1,69 @@
+name: Time-travel
+
+# This is intentionally non-required during its calibration period. Promote the check to required
+# only after both shifts are green on main.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  time-travel:
+    name: Time-travel (${{ matrix.family }}, +${{ matrix.shift }}d)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        shift: [1, 45]
+        family: [site-node, worker, combined]
+    env:
+      CITYSCROLL_TEST_TIME_SHIFT_DAYS: ${{ matrix.shift }}
+      CS10_SKIP_LIVE_CANARY: "true"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        if: matrix.family == 'worker' || matrix.family == 'combined'
+        with:
+          version: 10.15.1
+          run_install: false
+      - uses: actions/setup-node@v4
+        if: matrix.family == 'worker' || matrix.family == 'combined'
+        with:
+          node-version: "22"
+          cache: pnpm
+          cache-dependency-path: worker/pnpm-lock.yaml
+      - uses: actions/setup-node@v4
+        if: matrix.family == 'site-node'
+        with:
+          node-version: "22"
+      - name: Install Worker dependencies
+        if: matrix.family == 'worker' || matrix.family == 'combined'
+        run: tools/install_worker_dependencies.sh
+      - name: Run shifted unit family
+        env:
+          NODE_OPTIONS: --import=${{ github.workspace }}/test/helpers/test_clock_preload.mjs
+        run: |
+          set -euo pipefail
+          case "${{ matrix.family }}" in
+            site-node)
+              node --test --test-concurrency=2 test/*.test.mjs
+              ;;
+            worker)
+              (cd worker && node --test --test-concurrency=2)
+              ;;
+            combined)
+              node --test --test-concurrency=2 test/*.test.mjs worker/test/*.test.mjs
+              ;;
+            *)
+              echo "unknown test family: ${{ matrix.family }}" >&2
+              exit 2
+              ;;
+          esac
