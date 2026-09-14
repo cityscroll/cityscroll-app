@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.procurement_detail_links_capture_manifest.v1",
+  "browser_mode": "headless HTML assertion capture; image file omitted",
+  "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
+  "viewports": [
+    { "name": "mobile", "width": 390, "height": 844 },
+    { "name": "desktop", "width": 1440, "height": 900 }
+  ],
+  "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+  "data_vintage": "fixture origin commit 26d11a492ad29d60fecfe7d4136005af6fcb6791",
+  "captures": [
+    {
+      "state": "complete",
+      "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
+      "viewport": { "name": "mobile", "width": 390, "height": 844 },
+      "file": null,
+      "sha256": "22ac8cd7e6c802c90d1ffe4d79a9d410ea6d694e5190c15da3a2bc8989485eb6",
+      "assertion": "Contract facts contain the accepted agency and vendor pivots plus exact Contract ID and PIN/EPIN searches; unresolved agency identity remains text"
+    },
+    {
+      "state": "complete",
+      "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
+      "viewport": { "name": "desktop", "width": 1440, "height": 900 },
+      "file": null,
+      "sha256": "22ac8cd7e6c802c90d1ffe4d79a9d410ea6d694e5190c15da3a2bc8989485eb6",
+      "assertion": "Server-rendered Contract facts preserve source-facing labels and shared typed-link metadata"
+    }
+  ]
+}
