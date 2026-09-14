@@ -64,6 +64,120 @@ export const COMMUNITY_BOARD_SOURCE_ADAPTER_CONTRACTS = Object.freeze({
   }),
 });
 
+export const COMMUNITY_BOARD_TRANSPORT_DEFAULTS = Object.freeze({
+  requestTimeoutMs: 25_000, maxRedirects: 3, maxRetries: 2,
+  minOriginIntervalMs: 2_000, maxRequests: 100, maxBytes: 25_000_000,
+  maxRunMs: 600_000, parserVersion: "community_board_acquisition.v1",
+});
+
+async function buildAcquisitionRequestReceipt({
+  requestId, parentRequestId = null, url, requestedAt, retrievedAt,
+  status = null, bytes = null, latencyMs = null, parserVersion,
+  outcome = "ok", reason = null, retries = 0,
+} = {}) {
+  const digest = bytes && globalThis.crypto?.subtle
+    ? [...new Uint8Array(await globalThis.crypto.subtle.digest("SHA-256", bytes))]
+      .map((value) => value.toString(16).padStart(2, "0")).join("")
+    : null;
+  return Object.freeze({
+    request_id: requestId, parent_request_id: parentRequestId, url,
+    requested_at: requestedAt, retrieved_at: retrievedAt,
+    http_status: Number.isInteger(status) ? status : null,
+    bytes: bytes?.length || 0, content_hash: digest ? `sha256:${digest}` : null,
+    latency_ms: Number.isFinite(latencyMs) ? latencyMs : null,
+    parser_version: parserVersion, retries, outcome, reason,
+  });
+}
+
+function byteReader(response, limit) {
+  if (response?.body?.getReader) {
+    return (async () => {
+      const reader = response.body.getReader(); const chunks = []; let total = 0;
+      while (true) {
+        const next = await reader.read(); if (next.done) break;
+        const chunk = Buffer.from(next.value); total += chunk.length;
+        if (total > limit) { try { await reader.cancel(); } catch {} ; throw new Error("byte_limit_exceeded"); }
+        chunks.push(chunk);
+      }
+      return Buffer.concat(chunks);
+    })();
+  }
+  return response?.arrayBuffer ? response.arrayBuffer().then((value) => {
+    const bytes = Buffer.from(value); if (bytes.length > limit) throw new Error("byte_limit_exceeded"); return bytes;
+  }) : Promise.resolve(Buffer.from(String(response?.body || "")));
+}
+
+export function createBoundedCommunityBoardTransport(fetchImpl, options = {}) {
+  const cfg = { ...COMMUNITY_BOARD_TRANSPORT_DEFAULTS, ...options };
+  // determinism-lint: allow clock network acquisition timing is an explicit receipt field
+  const started = Date.now(); let requestCount = 0; let totalBytes = 0; let sequence = 0;
+  const lastByOrigin = new Map(); const graph = [];
+  const wait = (ms) => ms > 0 ? new Promise((resolve) => setTimeout(resolve, ms)) : Promise.resolve();
+  const request = async (url, init = {}, context = {}) => {
+    const parentRequestId = context.parentRequestId || request.parentRequestId || null;
+    const requestId = `${context.graphId || "acquisition"}-${++sequence}`;
+    // determinism-lint: allow clock network acquisition timestamps are receipt evidence
+    const requestedAt = new Date().toISOString(); const startedAt = Date.now();
+    let currentUrl = String(url); let redirects = 0; let retries = 0; let response; let bytes = null; let reason = null; let outcome = "failed";
+    try {
+      while (true) {
+        // determinism-lint: allow clock whole-run deadline uses elapsed acquisition time
+        if (Date.now() - started > cfg.maxRunMs) throw new Error("whole_run_deadline_exceeded");
+        if (++requestCount > cfg.maxRequests) throw new Error("request_limit_exceeded");
+        const origin = new URL(currentUrl).origin; const last = lastByOrigin.get(origin) || 0;
+        // determinism-lint: allow clock origin pacing uses elapsed acquisition time
+        await wait(Math.max(0, cfg.minOriginIntervalMs - (Date.now() - last))); lastByOrigin.set(origin, Date.now());
+        const controller = new AbortController(); const timer = setTimeout(() => controller.abort(), cfg.requestTimeoutMs);
+        let rejectTimeout;
+        const timeout = setTimeout(() => rejectTimeout(Object.assign(new Error("timeout"), { name: "AbortError" })), cfg.requestTimeoutMs);
+        try {
+          response = await Promise.race([
+            fetchImpl(currentUrl, { ...init, signal: controller.signal, redirect: "manual" }),
+            new Promise((_, reject) => { rejectTimeout = reject; }),
+          ]);
+        }
+        finally { clearTimeout(timer); clearTimeout(timeout); }
+        const status = Number(response?.status || 0);
+        if ([301, 302, 303, 307, 308].includes(status)) {
+          if (++redirects > cfg.maxRedirects) throw new Error("redirect_limit_exceeded");
+          const location = response.headers?.get?.("location") || response.headers?.location;
+          if (!location) throw new Error("redirect_location_missing"); currentUrl = new URL(location, currentUrl).href; continue;
+        }
+        if ([408, 425, 429, 500, 502, 503, 504].includes(status) && retries < cfg.maxRetries) {
+          retries += 1; const retryAfter = Number(response.headers?.get?.("retry-after"));
+          await wait(Number.isFinite(retryAfter) ? retryAfter * 1000 : Math.min(1000 * 2 ** retries, 8000)); continue;
+        }
+        if (status === 304) throw new Error("not_modified_without_verified_cache");
+        bytes = await byteReader(response, Math.min(cfg.maxBytes - totalBytes, context.maxBytes || cfg.maxBytes));
+        totalBytes += bytes.length; if (totalBytes > cfg.maxBytes) throw new Error("whole_run_byte_limit_exceeded");
+        const contentType = response.headers?.get?.("content-type") || null;
+        const text = /text|json|html|javascript/i.test(contentType || "") ? new TextDecoder().decode(bytes) : "";
+        if (/access denied|captcha|challenge|cloudflare ray id/i.test(text) && /html/i.test(contentType || "")) throw new Error("challenge_html");
+        if (init._expectedJson) { try { JSON.parse(text); } catch { throw new Error("malformed_json"); } }
+        if (status < 200 || status >= 300) throw new Error(`http_${status || "error"}`);
+        outcome = "ok"; break;
+      }
+    } catch (error) { reason = error?.name === "AbortError" ? "timeout" : String(error?.message || "fetch_error"); }
+    // determinism-lint: allow clock receipt records the observed completion time
+    const retrievedAt = new Date().toISOString();
+    // determinism-lint: allow clock receipt records measured network latency
+    const latencyMs = Date.now() - startedAt;
+    const receipt = await buildAcquisitionRequestReceipt({ requestId, parentRequestId, url: currentUrl, requestedAt,
+      retrievedAt, status: response?.status, bytes, latencyMs,
+      parserVersion: cfg.parserVersion, outcome, reason, retries });
+    graph.push(receipt);
+    if (outcome !== "ok") return { ok: false, status: response?.status || 0, headers: response?.headers, bytes: null, requestId,
+      arrayBuffer: async () => new ArrayBuffer(0), text: async () => "", receipt };
+    return { ok: true, status: response.status, headers: response.headers, bytes, requestId,
+      arrayBuffer: async () => bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength),
+      text: async () => new TextDecoder().decode(bytes), receipt };
+  };
+  // determinism-lint: allow clock stats report measured acquisition duration
+  request.graph = graph; request.stats = () => ({ requests: requestCount, bytes: totalBytes, elapsed_ms: Date.now() - started });
+  request.parentRequestId = null;
+  return request;
+}
+
 const ADAPTER_ALIASES = Object.freeze({
   html_document_index_v1: "html_pdf_v1",
   google_calendar: "google_calendar_v1",
@@ -1481,7 +1595,7 @@ async function harvestAirtableRecords(text, contentType, source, { fetchImpl, ob
           "x-airtable-accept-msgpack": "false",
           "x-time-zone": "America/New_York",
           "x-user-locale": "en",
-        },
+        }, _expectedJson: true,
       });
       if (!dataResponse?.ok) continue;
       const dataBytes = dataResponse.arrayBuffer
@@ -1526,7 +1640,7 @@ async function harvestGoogleCalendarRecords(text, contentType, source, { fetchIm
   return dedupeSourceRecords(records);
 }
 
-export async function fetchCommunityBoardSource(source = {}, { fetchImpl = globalThis.fetch, observedAt = new Date().toISOString(), maxBytes = null, extractPdfText = null, committeeRegistry = null } = {}) {
+export async function fetchCommunityBoardSource(source = {}, { fetchImpl = globalThis.fetch, observedAt = new Date().toISOString(), maxBytes = null, extractPdfText = null, committeeRegistry = null, transportOptions = {} } = {}) {
   const contract = sourceAdapterContract(source);
   const url = explicitUrl(source);
   const limit = Math.min(Number(maxBytes) || contract?.max_bytes || 1_000_000, contract?.max_bytes || 1_000_000);
@@ -1539,9 +1653,11 @@ export async function fetchCommunityBoardSource(source = {}, { fetchImpl = globa
     fetchUrls.push(url.replace(/^https:\/\/www\.nyc\.gov\//i, "https://www1.nyc.gov/"));
   }
   let lastReceipt = null;
+  const transport = fetchImpl?.graph ? fetchImpl : createBoundedCommunityBoardTransport(fetchImpl, { ...transportOptions, maxBytes: limit });
   for (const fetchUrl of fetchUrls) {
     try {
-      const response = await fetchImpl(fetchUrl, { method: "GET", credentials: "omit", redirect: "follow" });
+      const response = await transport(fetchUrl, { method: "GET", credentials: "omit" });
+      transport.parentRequestId = response.requestId || null;
       const contentType = response?.headers?.get?.("content-type") || null;
       const bytes = response?.arrayBuffer
         ? await response.arrayBuffer()
@@ -1557,23 +1673,30 @@ export async function fetchCommunityBoardSource(source = {}, { fetchImpl = globa
         content_type: contentType,
         content_length: length,
         content_sha256: contentSha256,
-        reason: !response.ok ? "http_error" : length > limit ? "byte_limit_exceeded" : accessDenied ? "access_denied" : null,
+        reason: !response.ok ? (["challenge_html", "not_modified_without_verified_cache", "redirect_limit_exceeded", "malformed_json"].includes(response.receipt?.reason) ? response.receipt.reason : "http_error") : length > limit ? "byte_limit_exceeded" : accessDenied ? "access_denied" : null,
       }, source);
+      receipt.acquisition = {
+        graph: transport.graph.slice(),
+        stats: transport.stats(),
+        complete: transport.graph.every((entry) => entry.outcome === "ok"),
+      };
       lastReceipt = receipt;
       if (!response.ok || length > limit || accessDenied) continue;
       const adapter = adapterId(source);
       const records = adapter === "google_calendar_v1"
-          ? await harvestGoogleCalendarRecords(text, contentType, source, { fetchImpl, observedAt, receipt, limit, committeeRegistry })
+          ? await harvestGoogleCalendarRecords(text, contentType, source, { fetchImpl: transport, observedAt, receipt, limit, committeeRegistry })
         : adapter === "pdf_calendar_v1"
           ? await harvestPdfCalendarRecords(looksLikePdfBytes(bytes, contentType) ? bytes : text, contentType, source, {
-            fetchImpl, observedAt, receipt, limit, extractPdfText, committeeRegistry,
+            fetchImpl: transport, observedAt, receipt, limit, extractPdfText, committeeRegistry,
           })
         : adapter === "airtable_v1"
-          ? await harvestAirtableRecords(text, contentType, source, { fetchImpl, observedAt, receipt, limit, committeeRegistry })
+          ? await harvestAirtableRecords(text, contentType, source, { fetchImpl: transport, observedAt, receipt, limit, committeeRegistry })
         : parseCommunityBoardSource(text, source, { observedAt, receipt, committeeRegistry });
+      if (receipt.acquisition.complete === false) receipt.status = "unknown";
       return { records, receipt };
     } catch (error) {
       lastReceipt = normalizeObservedReceipt({ ...baseReceipt, reason: clean(error?.name || "fetch_error", 80) }, source);
+      lastReceipt.acquisition = { graph: transport.graph.slice(), stats: transport.stats(), complete: false };
     }
   }
   return { records: [], receipt: lastReceipt || normalizeObservedReceipt({ ...baseReceipt, reason: "fetch_error" }, source) };
