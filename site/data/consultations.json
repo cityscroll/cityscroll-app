@@ -14,7 +14,7 @@
       "sources": [
         { "id": "fast-buses-project", "role": "organizer_invitation", "url": "https://nycdotprojects.info/project/fast-buses-central-brooklyn", "source_hash": "8246f785cc670fac2e4f0834e1adc418326854b72dc6428bebbb004cc66bfb4b", "field_locator": "main h1; main article; response links" },
         { "id": "fast-buses-survey", "role": "survey", "url": "https://www.surveymonkey.com/r/fastbuses-centralbk", "source_hash": "ea09ee4ebc60311680bb644fa2b4ff05843858f632416faed252a933ee1d00c7", "field_locator": "questionnaire body: deadline and duration" },
-        { "id": "fast-buses-map", "role": "feedback_map", "url": "https://nycdotprojects.info/project-feedback-map/feedback-map-centralbk", "source_hash": "e582ecfb8e85be21db338c758e60e77a697c76fce880a024c01b70f764e72823c", "field_locator": "organizer project link; public map response affordance" }
+        { "id": "fast-buses-map", "role": "feedback_map", "url": "https://nycdotprojects.info/project-feedback-map/feedback-map-centralbk", "source_hash": "e582ecfb8e85be21db338c758e60e77a697c76fce880a024c01b70f764e72823", "field_locator": "organizer project link; public map response affordance" }
       ],
       "channels": [
         { "id": "fast-buses-survey", "kind": "survey", "label": "Complete the questionnaire", "url": "https://www.surveymonkey.com/r/fastbuses-centralbk", "state": "listed", "open_now": false, "deadline": "2026-10-31", "duration_minutes": { "min": 3, "max": 5 } },

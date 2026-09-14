@@ -33,7 +33,7 @@ export const DOT_PILOT_SEEDS = Object.freeze([
     sources: [
       source("fast-buses-project", "organizer_invitation", "https://nycdotprojects.info/project/fast-buses-central-brooklyn", "main h1; main article; response links", "8246f785cc670fac2e4f0834e1adc418326854b72dc6428bebbb004cc66bfb4b"),
       source("fast-buses-survey", "survey", "https://www.surveymonkey.com/r/fastbuses-centralbk", "questionnaire body: deadline and duration", "ea09ee4ebc60311680bb644fa2b4ff05843858f632416faed252a933ee1d00c7"),
-      source("fast-buses-map", "feedback_map", "https://nycdotprojects.info/project-feedback-map/feedback-map-centralbk", "organizer project link; public map response affordance", "e582ecfb8e85be21db338c758e60e77a697c76fce880a024c01b70f764e72823c"),
+      source("fast-buses-map", "feedback_map", "https://nycdotprojects.info/project-feedback-map/feedback-map-centralbk", "organizer project link; public map response affordance", "e582ecfb8e85be21db338c758e60e77a697c76fce880a024c01b70f764e72823"),
     ],
     channels: [
       { id: "fast-buses-survey", kind: "survey", label: "Complete the questionnaire", url: "https://www.surveymonkey.com/r/fastbuses-centralbk", state: "listed", open_now: false, deadline: "2026-10-31", duration_minutes: { min: 3, max: 5 } },
@@ -99,6 +99,7 @@ const sha256 = async (bytes) => {
 
 export function validateConsultationSource(sourceRecord) {
   if (!sourceRecord?.id || !sourceRecord?.url || !sourceRecord?.field_locator) throw new Error("source requires id, url and field_locator");
+  if (sourceRecord.source_hash != null && !/^[0-9a-f]{64}$/i.test(sourceRecord.source_hash)) throw new Error("source_hash must be exactly 64 hexadecimal characters");
   if (sourceRecord.role === "administrative" || /manage|admin|edit/i.test(`${sourceRecord.role} ${sourceRecord.url}`)) throw new Error("administrative source is not a resident channel");
   if (sourceRecord.role === "microsoft_form" && sourceRecord.open_now === true) throw new Error("Microsoft form loading evidence cannot prove open_now");
   return true;

@@ -13,6 +13,28 @@ test("fixed materialization contains four organizer-backed rounds and separate c
   assert.ok(materialized.consultations.every((item) => item.sources.every((source) => source.field_locator)));
 });
 
+test("resident materialization rendering performs zero publisher requests", () => {
+  const originalFetch = globalThis.fetch;
+  let requests = 0;
+  globalThis.fetch = async () => { requests += 1; throw new Error("resident rendering must not fetch publisher data"); };
+  try {
+    const renderedMaterialization = materializeConsultations({ asOf: "2026-09-14T00:00:00.000Z" });
+    assert.equal(renderedMaterialization.schema, "cityscroll.consultation_materialization.v1");
+    assert.equal(renderedMaterialization.consultations.length, 4);
+    assert.equal(requests, 0);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("source fingerprints are exact SHA-256 shapes", () => {
+  assert.ok(DOT_PILOT_SEEDS.every((round) => round.sources.every((item) => /^[0-9a-f]{64}$/i.test(item.source_hash))));
+  assert.throws(() => validateConsultationMaterialization([
+    { ...DOT_PILOT_SEEDS[0], sources: [{ ...DOT_PILOT_SEEDS[0].sources[0], source_hash: `${DOT_PILOT_SEEDS[0].sources[0].source_hash}0` }] },
+    ...DOT_PILOT_SEEDS.slice(1),
+  ]), /64 hexadecimal/);
+});
+
 test("maps and forms remain organizer-linked channels and administrative links are rejected", () => {
   const channels = DOT_PILOT_SEEDS.flatMap((item) => item.channels);
   assert.ok(channels.every((channel) => channel.open_now === false));
