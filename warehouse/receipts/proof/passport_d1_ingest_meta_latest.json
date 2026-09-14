@@ -1,0 +1,108 @@
+{
+  "schema": "cityscroll.passport_ingest_meta_production_read.v1",
+  "evidence_class": "live-production-read",
+  "isolated": false,
+  "observed_at": "2026-09-14T03:53:56.472Z",
+  "producer": "worker-d1-passport-ingest-meta",
+  "endpoint": "https://api.cityscroll.org/admin/passport-ingest-meta",
+  "meta": {
+    "ok": true,
+    "loader_probe": "1",
+    "ingested_at": "2026-09-13T13:01:59.965Z",
+    "contract_rows": "61670",
+    "rfx_rows": "12213",
+    "last_modified": "{\"contracts\":\"Sun, 13 Sep 2026 05:37:25 GMT\",\"rfx\":\"Sun, 13 Sep 2026 05:37:26 GMT\"}",
+    "last_attempt_at": "2026-09-13T13:01:59.965Z",
+    "last_ok": "true",
+    "last_error": "",
+    "dual_write_contracts": "61670",
+    "dual_write_rfx": "12213",
+    "dual_write_errors": "0"
+  },
+  "receipts": [
+    {
+      "schema": "cityscroll.source_acquisition_receipt.v1",
+      "source_contract_id": "passport-public-contracts",
+      "observed_at": "2026-09-13T13:01:59.965Z",
+      "status": "succeeded",
+      "run_id": "passport-d1:2026-09-13T13:01:59.965Z",
+      "publisher_clock_basis": "passport_http_last_modified",
+      "publisher_updated_at": "2026-09-13T05:37:25.000Z",
+      "adapter": "worker-d1-passport-ingest-meta",
+      "clock_kind": "acquisition",
+      "event_kind": "acquisition",
+      "input_vintage": "2026-09-13T13:01:59.965Z",
+      "population": 61670,
+      "attempt_at": "2026-09-13T13:01:59.965Z",
+      "result_at": "2026-09-13T13:01:59.965Z",
+      "producer": "worker-d1-passport-ingest-meta",
+      "production_provenance": {
+        "schema": "cityscroll.production_provenance.v1",
+        "evidence_class": "live-production-read",
+        "isolated": false,
+        "observed_at": "2026-09-14T03:53:56.472Z",
+        "observer": {
+          "tool": "tools/capture_priority_source_health_production_read.mjs",
+          "source_revision": "bcf3cdb7e1c4ea37c2dd35cf1e4c849cf6064303"
+        },
+        "methods": [
+          "GET"
+        ],
+        "bases": [
+          "https://api.cityscroll.org"
+        ]
+      },
+      "path": "https://api.cityscroll.org/admin/passport-ingest-meta"
+    },
+    {
+      "schema": "cityscroll.source_acquisition_receipt.v1",
+      "source_contract_id": "passport-public-rfx",
+      "observed_at": "2026-09-13T13:01:59.965Z",
+      "status": "succeeded",
+      "run_id": "passport-d1:2026-09-13T13:01:59.965Z",
+      "publisher_clock_basis": "passport_http_last_modified",
+      "publisher_updated_at": "2026-09-13T05:37:26.000Z",
+      "adapter": "worker-d1-passport-ingest-meta",
+      "clock_kind": "acquisition",
+      "event_kind": "acquisition",
+      "input_vintage": "2026-09-13T13:01:59.965Z",
+      "population": 12213,
+      "attempt_at": "2026-09-13T13:01:59.965Z",
+      "result_at": "2026-09-13T13:01:59.965Z",
+      "producer": "worker-d1-passport-ingest-meta",
+      "production_provenance": {
+        "schema": "cityscroll.production_provenance.v1",
+        "evidence_class": "live-production-read",
+        "isolated": false,
+        "observed_at": "2026-09-14T03:53:56.472Z",
+        "observer": {
+          "tool": "tools/capture_priority_source_health_production_read.mjs",
+          "source_revision": "bcf3cdb7e1c4ea37c2dd35cf1e4c849cf6064303"
+        },
+        "methods": [
+          "GET"
+        ],
+        "bases": [
+          "https://api.cityscroll.org"
+        ]
+      },
+      "path": "https://api.cityscroll.org/admin/passport-ingest-meta"
+    }
+  ],
+  "provenance": {
+    "schema": "cityscroll.production_provenance.v1",
+    "evidence_class": "live-production-read",
+    "isolated": false,
+    "observed_at": "2026-09-14T03:53:56.472Z",
+    "observer": {
+      "tool": "tools/capture_priority_source_health_production_read.mjs",
+      "source_revision": "bcf3cdb7e1c4ea37c2dd35cf1e4c849cf6064303"
+    },
+    "methods": [
+      "GET"
+    ],
+    "bases": [
+      "https://api.cityscroll.org"
+    ]
+  }
+}

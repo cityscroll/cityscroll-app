@@ -77,6 +77,7 @@ export function passportReceiptsFromMeta(meta = {}, options = {}) {
   const ingestedAt = validTimestamp(meta.ingested_at);
   const lastAttempt = validTimestamp(meta.last_attempt_at) || ingestedAt;
   if (!lastAttempt) return [];
+  const resultAt = ingestedAt || lastAttempt;
   const lastOk = meta.last_ok === true || meta.last_ok === "true";
   const lastModified = parsePassportLastModified(meta.last_modified);
   const runId = options.run_id || `passport-d1:${lastAttempt}`;
@@ -96,16 +97,22 @@ export function passportReceiptsFromMeta(meta = {}, options = {}) {
       && lastOk;
     return sourceAcquisitionReceipt({
       source_contract_id: sourceId,
-      observed_at: lastAttempt,
+      observed_at: resultAt,
       status: lastOk ? "succeeded" : "failed",
       run_id: runId,
       publisher_clock_basis: publisherUpdatedAt ? "passport_http_last_modified" : null,
       publisher_updated_at: publisherUpdatedAt,
       adapter: "worker-d1-passport-ingest-meta",
+      producer: options.producer || "worker-d1-passport-ingest-meta",
+      attempt_at: lastAttempt,
+      result_at: resultAt,
       clock_kind: noChange ? "check" : "acquisition",
       event_kind: noChange ? "successful-no-change-check" : (lastOk ? "acquisition" : "failed-check"),
       input_vintage: ingestedAt,
       population: Number(rowCounts[sourceId]) || 0,
+      ...(options.production_provenance
+        ? { production_provenance: options.production_provenance }
+        : {}),
     });
   });
 }

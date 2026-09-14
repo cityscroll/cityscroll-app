@@ -7,9 +7,9 @@
  * ingestion staleness.
  */
 
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { normalizeClock } from "../ontology/source_health.mjs";
 
@@ -92,6 +92,18 @@ function hasCityScrollControlledEvidence(observation = {}) {
   const clocks = observationClocks(observation);
   if (clockKnown(clocks.checked) || clockKnown(clocks.acquired)) return true;
   return realProducerRuns(observation).length > 0;
+}
+
+function hasQualifyingAcquisitionEvidence(observation = {}) {
+  const receipts = [
+    ...(observation?.operator?.acquisition_receipts || []),
+    ...(observation?.acquisition_receipts || []),
+  ];
+  return receipts.some((receipt) => (
+    receipt?.status === "succeeded"
+    && validAt(receipt?.observed_at)
+    && (receipt?.event_kind !== "failed-check")
+  ));
 }
 
 export function isActiveObservabilitySource(contract = {}) {
@@ -349,18 +361,27 @@ export function familyRetentionRow(family, observationById = new Map(), options 
       || validAt(observation?.operator?.clocks?.acquired?.at)
       || validAt(clocks.acquired?.at);
     const served = validAt(clocks.serving?.at);
-    const cityscrollControlled = hasCityScrollControlledEvidence(observation);
+    const cityscrollControlled = hasQualifyingAcquisitionEvidence(observation)
+      || hasCityScrollControlledEvidence(observation) && observation?.acquisition_status === "succeeded";
+    const receipt = (observation?.operator?.acquisition_receipts || [])[0] || null;
+    const runDetails = realProducerRuns(observation)[0] || null;
+    const attemptAt = validAt(receipt?.attempt_at) || validAt(runDetails?.attempt_at);
+    const resultAt = validAt(receipt?.result_at) || validAt(runDetails?.result_at);
     return {
       source_id: sourceId,
-      attempt_at: validAt(clocks.checked?.at) || validAt(run?.at) || validAt(run?.observed_at),
-      result_at: inputVintage || validAt(clocks.checked?.at),
+      attempt_at: attemptAt || validAt(clocks.checked?.at) || validAt(run?.at) || validAt(run?.observed_at),
+      result_at: resultAt || inputVintage || validAt(clocks.checked?.at),
       acquisition_or_no_change: Boolean(
         observation?.event_kind === "successful-no-change-check"
         || observation?.acquisition_status === "succeeded"
         || clocks.acquired?.state === "KNOWN",
       ),
       producer_run_id: run?.run_id || null,
-      producer: run?.adapter || family.producer || null,
+      producer: receipt?.producer || runDetails?.producer || run?.adapter || family.producer || null,
+      production_provenance: receipt?.production_provenance
+        || runDetails?.production_provenance
+        || null,
+      provenance: receipt?.provenance || runDetails?.provenance || null,
       input_vintage: inputVintage,
       served_artifact_at: served,
       cityscroll_controlled_evidence: cityscrollControlled,
@@ -408,6 +429,60 @@ export function buildPrioritySourceHealthClosure({
         active_source_observability: census.active_source_observability,
         priority_families_closed: families.filter((row) => !row.obligation_open).map((row) => row.family_id),
         board_dispositions: boardClosure?.counts || null,
+      },
+    },
+  };
+}
+
+export function buildPrioritySourceClosureMatrix({
+  registry,
+  projection,
+  previous = null,
+  boardDispositions = null,
+  rail = null,
+  evidenceRevision = null,
+} = {}) {
+  const closure = buildPrioritySourceHealthClosure({
+    registry,
+    projection,
+    boardClosure: boardDispositions,
+    rail,
+    before: previous,
+    evidenceRevision,
+  });
+  const active = closure.census.active_source_observability;
+  const blockerRows = closure.families
+    .filter((family) => family.obligation_open)
+    .map((family) => ({
+      family_id: family.family_id,
+      blocker: "absent-live-receipt",
+      note: "No successful production or scheduled-rail acquisition receipt is retained for this family.",
+    }));
+  const before = previous?.before_after?.before
+    || (previous?.families
+      ? { open_priority_families: previous.families.filter((family) => family.obligation_open).map((family) => family.family_id) }
+      : null);
+  return {
+    schema: "cityscroll.priority_source_closure_matrix.v1",
+    evidence_class: "committed-receipt-plus-live-host-inspection",
+    generated_at: projection?.generated_at || null,
+    families: closure.families,
+    census: {
+      numerator: active.numerator,
+      denominator: active.denominator,
+      definition: active.definition,
+    },
+    observation_classes: closure.census.counts,
+    board_dispositions: boardDispositions?.counts || previous?.board_dispositions || null,
+    board_evidence_revision: boardDispositions?.evidence_revision || previous?.board_evidence_revision || null,
+    remaining_non_priority_observation_gaps: closure.remaining_non_priority_observation_gaps,
+    named_blockers: blockerRows,
+    before_after: {
+      before,
+      after: {
+        active_source_observability: active,
+        priority_families_closed: closure.families.filter((family) => !family.obligation_open).map((family) => family.family_id),
+        board_dispositions: boardDispositions?.counts || previous?.board_dispositions || null,
       },
     },
   };
@@ -461,4 +536,66 @@ export function inspectWarehouseRefreshRail(options = {}) {
     identity: options.identity || "com.cityscroll.first-class-refresh",
     schedule: options.schedule || "10 7 * * *",
   };
+}
+
+export const CLOSURE_MATRIX_PATH = "docs/evidence/priority-source-health-closure/closure-matrix.json";
+
+function closureMatrixFromRepo(root = ROOT) {
+  const registry = JSON.parse(readFileSync(join(root, "site/data/source_contracts.json"), "utf8"));
+  const projection = JSON.parse(readFileSync(join(root, "site/data/source_health_observations.json"), "utf8"));
+  const path = join(root, CLOSURE_MATRIX_PATH);
+  const previous = loadJsonIfPresent(path);
+  const rail = loadJsonIfPresent(join(root, "docs/evidence/priority-source-health-closure/warehouse-rail.json"));
+  const matrix = buildPrioritySourceClosureMatrix({
+    registry,
+    projection,
+    previous,
+    rail,
+    evidenceRevision: projection.generated_at,
+  });
+  return { matrix, path };
+}
+
+export function regeneratePrioritySourceClosureMatrix(root = ROOT) {
+  const { matrix, path } = closureMatrixFromRepo(root);
+  // determinism-lint: allow write --write mode emits the declared closure matrix only
+  writeFileSync(path, `${JSON.stringify(matrix, null, 2)}\n`);
+  return matrix;
+}
+
+export function checkPrioritySourceClosureMatrix(root = ROOT) {
+  const { matrix, path } = closureMatrixFromRepo(root);
+  const actual = readFileSync(path, "utf8");
+  const expected = `${JSON.stringify(matrix, null, 2)}\n`;
+  if (actual !== expected) throw new Error(`${CLOSURE_MATRIX_PATH} is stale; run with --write`);
+  return matrix;
+}
+
+function parseArgs(argv = []) {
+  const args = { check: false, write: false };
+  for (const arg of argv) {
+    if (arg === "--check") args.check = true;
+    else if (arg === "--write") args.write = true;
+    else throw new Error(`unknown argument: ${arg}`);
+  }
+  if (args.check && args.write) throw new Error("choose one of --check or --write");
+  return args;
+}
+
+function main(argv = process.argv.slice(2)) {
+  const args = parseArgs(argv);
+  if (args.check) {
+    const matrix = checkPrioritySourceClosureMatrix();
+    console.log(`checked ${CLOSURE_MATRIX_PATH} open=${matrix.named_blockers.length}`);
+    return;
+  }
+  const matrix = regeneratePrioritySourceClosureMatrix();
+  console.log(`wrote ${CLOSURE_MATRIX_PATH} open=${matrix.named_blockers.length}`);
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  try { main(); } catch (error) {
+    console.error(error?.stack || error);
+    process.exitCode = 1;
+  }
 }

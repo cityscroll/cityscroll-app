@@ -1,6 +1,7 @@
 {
   "schema": "cityscroll.priority_source_closure_matrix.v1",
   "evidence_class": "committed-receipt-plus-live-host-inspection",
+  "generated_at": "2026-09-14T03:54:01.554Z",
   "families": [
     {
       "family_id": "city-record",
@@ -13,6 +14,8 @@
           "acquisition_or_no_change": true,
           "producer_run_id": "warehouse/receipts/proof/city-record_bulk_latest.json",
           "producer": "warehouse-acquisition-receipt",
+          "production_provenance": null,
+          "provenance": null,
           "input_vintage": "2026-08-05T10:41:44.000Z",
           "served_artifact_at": "2026-08-18T13:12:27.955Z",
           "cityscroll_controlled_evidence": true,
@@ -29,32 +32,66 @@
       "sources": [
         {
           "source_id": "passport-public-contracts",
-          "attempt_at": null,
-          "result_at": null,
-          "acquisition_or_no_change": false,
-          "producer_run_id": null,
+          "attempt_at": "2026-09-13T13:01:59.965Z",
+          "result_at": "2026-09-13T13:01:59.965Z",
+          "acquisition_or_no_change": true,
+          "producer_run_id": "passport-d1:2026-09-13T13:01:59.965Z",
           "producer": "worker-d1-passport-ingest-meta",
-          "input_vintage": null,
-          "served_artifact_at": "2026-08-06T00:00:00.000Z",
-          "cityscroll_controlled_evidence": false,
-          "publisher_date_unknown": true,
-          "obligation_open": true
+          "production_provenance": {
+            "schema": "cityscroll.production_provenance.v1",
+            "evidence_class": "live-production-read",
+            "isolated": false,
+            "observed_at": "2026-09-14T03:53:56.472Z",
+            "observer": {
+              "tool": "tools/capture_priority_source_health_production_read.mjs",
+              "source_revision": "bcf3cdb7e1c4ea37c2dd35cf1e4c849cf6064303"
+            },
+            "methods": [
+              "GET"
+            ],
+            "bases": [
+              "https://api.cityscroll.org"
+            ]
+          },
+          "provenance": null,
+          "input_vintage": "2026-09-13T13:01:59.965Z",
+          "served_artifact_at": "2026-09-13T13:01:59.965Z",
+          "cityscroll_controlled_evidence": true,
+          "publisher_date_unknown": false,
+          "obligation_open": false
         },
         {
           "source_id": "passport-public-rfx",
-          "attempt_at": null,
-          "result_at": null,
-          "acquisition_or_no_change": false,
-          "producer_run_id": null,
+          "attempt_at": "2026-09-13T13:01:59.965Z",
+          "result_at": "2026-09-13T13:01:59.965Z",
+          "acquisition_or_no_change": true,
+          "producer_run_id": "passport-d1:2026-09-13T13:01:59.965Z",
           "producer": "worker-d1-passport-ingest-meta",
-          "input_vintage": null,
-          "served_artifact_at": null,
-          "cityscroll_controlled_evidence": false,
-          "publisher_date_unknown": true,
-          "obligation_open": true
+          "production_provenance": {
+            "schema": "cityscroll.production_provenance.v1",
+            "evidence_class": "live-production-read",
+            "isolated": false,
+            "observed_at": "2026-09-14T03:53:56.472Z",
+            "observer": {
+              "tool": "tools/capture_priority_source_health_production_read.mjs",
+              "source_revision": "bcf3cdb7e1c4ea37c2dd35cf1e4c849cf6064303"
+            },
+            "methods": [
+              "GET"
+            ],
+            "bases": [
+              "https://api.cityscroll.org"
+            ]
+          },
+          "provenance": null,
+          "input_vintage": "2026-09-13T13:01:59.965Z",
+          "served_artifact_at": "2026-09-13T13:01:59.965Z",
+          "cityscroll_controlled_evidence": true,
+          "publisher_date_unknown": false,
+          "obligation_open": false
         }
       ],
-      "obligation_open": true,
+      "obligation_open": false,
       "evidence_class": "committed-receipt"
     },
     {
@@ -63,13 +100,15 @@
       "sources": [
         {
           "source_id": "checkbook-contracts",
-          "attempt_at": "2026-08-18T04:05:51.552Z",
-          "result_at": "2026-08-18T04:05:51.552Z",
+          "attempt_at": "2026-09-09T06:33:01.880Z",
+          "result_at": "2026-09-09T06:33:01.880Z",
           "acquisition_or_no_change": true,
           "producer_run_id": "warehouse/receipts/proof/checkbook_contracts_population_latest.json",
           "producer": "warehouse-acquisition-receipt",
-          "input_vintage": "2026-08-18T04:05:51.552Z",
-          "served_artifact_at": "2026-08-18T04:05:51.552Z",
+          "production_provenance": null,
+          "provenance": null,
+          "input_vintage": "2026-09-09T06:33:01.880Z",
+          "served_artifact_at": "2026-09-09T06:33:01.880Z",
           "cityscroll_controlled_evidence": true,
           "publisher_date_unknown": true,
           "obligation_open": false
@@ -81,6 +120,8 @@
           "acquisition_or_no_change": true,
           "producer_run_id": "warehouse/receipts/proof/checkbook_spending_population_latest.json",
           "producer": "warehouse-acquisition-receipt",
+          "production_provenance": null,
+          "provenance": null,
           "input_vintage": "2026-08-11T19:25:33.574Z",
           "served_artifact_at": "2026-08-26T00:00:00.000Z",
           "cityscroll_controlled_evidence": true,
@@ -97,19 +138,41 @@
       "sources": [
         {
           "source_id": "nyc-council-legistar",
-          "attempt_at": null,
-          "result_at": null,
-          "acquisition_or_no_change": false,
-          "producer_run_id": null,
-          "producer": null,
-          "input_vintage": null,
+          "attempt_at": "2026-09-14T03:54:00.528Z",
+          "result_at": "2026-09-14T03:54:01.287Z",
+          "acquisition_or_no_change": true,
+          "producer_run_id": "warehouse-priority-source-observer:nyc-council-legistar:2026-09-14T03:54:01.287Z",
+          "producer": "warehouse-priority-source-observer",
+          "production_provenance": null,
+          "provenance": {
+            "schema": "cityscroll.priority_source_observation_provenance.v1",
+            "evidence_class": "scheduled-rail",
+            "isolated": false,
+            "observed_at": "2026-09-14T03:54:01.287Z",
+            "producer": "warehouse-priority-source-observer",
+            "source": "https://webapi.legistar.com/v1/nyc/Events",
+            "bounds": {
+              "endpoint": "Events",
+              "page_size": 1,
+              "max_pages": 1,
+              "lookback_days": 180
+            },
+            "response": {
+              "status": 200,
+              "kind": "ok",
+              "row_count": 1,
+              "complete": false,
+              "content_sha256": "sha256:e66f306927218ad5a5e5873fe40606a81da575dd1c808149d72a89a61d0c94f8"
+            }
+          },
+          "input_vintage": "2026-09-14T03:54:01.287Z",
           "served_artifact_at": null,
-          "cityscroll_controlled_evidence": false,
+          "cityscroll_controlled_evidence": true,
           "publisher_date_unknown": true,
-          "obligation_open": true
+          "obligation_open": false
         }
       ],
-      "obligation_open": true,
+      "obligation_open": false,
       "evidence_class": "committed-receipt"
     },
     {
@@ -118,19 +181,37 @@
       "sources": [
         {
           "source_id": "nyc-rules-rss",
-          "attempt_at": null,
-          "result_at": null,
-          "acquisition_or_no_change": false,
-          "producer_run_id": null,
-          "producer": null,
-          "input_vintage": null,
+          "attempt_at": "2026-09-14T03:54:00.528Z",
+          "result_at": "2026-09-14T03:54:01.554Z",
+          "acquisition_or_no_change": true,
+          "producer_run_id": "warehouse-priority-source-observer:nyc-rules-rss:2026-09-14T03:54:01.554Z",
+          "producer": "warehouse-priority-source-observer",
+          "production_provenance": null,
+          "provenance": {
+            "schema": "cityscroll.priority_source_observation_provenance.v1",
+            "evidence_class": "scheduled-rail",
+            "isolated": false,
+            "observed_at": "2026-09-14T03:54:01.554Z",
+            "producer": "warehouse-priority-source-observer",
+            "source": "https://rules.cityofnewyork.us/feed/",
+            "bounds": {
+              "endpoint": "https://rules.cityofnewyork.us/feed/",
+              "max_bytes": 2097152
+            },
+            "response": {
+              "status": 200,
+              "row_count": 50,
+              "content_sha256": "sha256:ba7c341bc59dc65e8f20068a9ca06b19a76c3559b20013fd69fa540dbc69e459"
+            }
+          },
+          "input_vintage": "2026-09-14T03:54:01.554Z",
           "served_artifact_at": null,
-          "cityscroll_controlled_evidence": false,
+          "cityscroll_controlled_evidence": true,
           "publisher_date_unknown": true,
-          "obligation_open": true
+          "obligation_open": false
         }
       ],
-      "obligation_open": true,
+      "obligation_open": false,
       "evidence_class": "committed-receipt"
     },
     {
@@ -144,8 +225,10 @@
           "acquisition_or_no_change": true,
           "producer_run_id": "warehouse/receipts/proof/zap-projects_bulk_latest.json",
           "producer": "warehouse-acquisition-receipt",
+          "production_provenance": null,
+          "provenance": null,
           "input_vintage": "2026-08-03T05:05:03.000Z",
-          "served_artifact_at": "2026-08-23T07:59:09.786Z",
+          "served_artifact_at": "2026-09-09T06:54:36.054Z",
           "cityscroll_controlled_evidence": true,
           "publisher_date_unknown": true,
           "obligation_open": false
@@ -160,12 +243,14 @@
       "sources": [
         {
           "source_id": "non-council-board-minutes",
-          "attempt_at": "2026-09-06T07:20:20.822Z",
-          "result_at": "2026-09-06T07:20:20.822Z",
+          "attempt_at": "2026-09-07T18:12:14.249Z",
+          "result_at": "2026-09-07T18:12:14.249Z",
           "acquisition_or_no_change": true,
-          "producer_run_id": "cb-minutes-probes:2026-09-06T07:20:20.822Z",
-          "producer": "community-board-minutes-detector",
-          "input_vintage": "2026-09-06T07:20:20.822Z",
+          "producer_run_id": "warehouse/receipts/proof/community_board_hearing_context_latest.json",
+          "producer": "warehouse-acquisition-receipt",
+          "production_provenance": null,
+          "provenance": null,
+          "input_vintage": "2026-09-07T18:12:14.249Z",
           "served_artifact_at": "2026-09-06T00:00:00.000Z",
           "cityscroll_controlled_evidence": true,
           "publisher_date_unknown": true,
@@ -177,15 +262,15 @@
     }
   ],
   "census": {
-    "numerator": 18,
-    "denominator": 54,
+    "numerator": 24,
+    "denominator": 55,
     "definition": "Observed active sources over live/build-time sources that are not historical, manual, pointer, disabled, or candidate."
   },
   "observation_classes": {
-    "observed": 18,
+    "observed": 24,
     "legitimately-historical-or-manual": 6,
     "disabled-or-candidate": 3,
-    "requires-observation-producer": 36
+    "requires-observation-producer": 31
   },
   "board_dispositions": {
     "measured": 9,
@@ -197,7 +282,6 @@
   "remaining_non_priority_observation_gaps": [
     "active-civil-service-list",
     "annual-examination-schedule",
-    "cfb-campaign-contributions",
     "checkbook-nycha-contracts",
     "city-clerk-elobbyist",
     "city-council-committee-membership",
@@ -228,21 +312,36 @@
     "suitability-city-owned-leased-property-ll48",
     "zap-api-outcomes"
   ],
-  "named_blockers": [
-    {
-      "family_id": "passport",
-      "blocker": "absent-live-receipt",
-      "note": "Worker/D1 ingest-meta export is instrumented on GET /admin/passport-ingest-meta; this checkout has no authenticated worker CLI for a live D1 read."
+  "named_blockers": [],
+  "before_after": {
+    "before": {
+      "open_priority_families": [
+        "passport",
+        "legistar",
+        "rules-rss"
+      ]
     },
-    {
-      "family_id": "legistar",
-      "blocker": "absent-live-receipt",
-      "note": "Worker scheduled acquisition receipts are instrumented; no live KV export is present in this checkout."
-    },
-    {
-      "family_id": "rules-rss",
-      "blocker": "absent-live-receipt",
-      "note": "Worker scheduled acquisition receipts are instrumented; no live KV export is present in this checkout."
+    "after": {
+      "active_source_observability": {
+        "numerator": 24,
+        "denominator": 55,
+        "definition": "Observed active sources over live/build-time sources that are not historical, manual, pointer, disabled, or candidate."
+      },
+      "priority_families_closed": [
+        "city-record",
+        "passport",
+        "checkbook",
+        "legistar",
+        "rules-rss",
+        "zap-projects",
+        "community-board-minutes"
+      ],
+      "board_dispositions": {
+        "measured": 9,
+        "checked-no-dated-observation": 50,
+        "failed-collection": 0,
+        "unmeasured": 0
+      }
     }
-  ]
+  }
 }

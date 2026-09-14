@@ -91,6 +91,15 @@ read model derived from them, writes the freshness report, and opens a pull
 request when something changed. It never pushes to the default branch and never
 merges.
 
+The existing warehouse refresh rail also runs bounded source-health observations
+for the Council Events API and NYC Rules RSS feed before rematerialization. The
+Council probe reads the already-installed `LEGISTAR_API_TOKEN_FILE` credential
+when configured, limits itself to one Events page, and records a failed receipt
+when that machine identity is unavailable. The Rules probe uses the source's
+identifying User-Agent and a bounded response size. Both write acquisition
+receipts beside the warehouse populations, so source-health rebuilding can
+distinguish a successful no-change check from an absent producer.
+
 `--run-due` stops after each owning builder, so the rebuild is what keeps the
 served read models and the keyword search index coherent with the refreshed
 data.

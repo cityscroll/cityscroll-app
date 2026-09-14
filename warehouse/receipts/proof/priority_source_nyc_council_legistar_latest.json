@@ -1,0 +1,39 @@
+{
+  "schema": "cityscroll.source_acquisition_receipt.v1",
+  "source_contract_id": "nyc-council-legistar",
+  "source_url": "https://webapi.legistar.com/v1/nyc/Events",
+  "attempt_at": "2026-09-14T03:54:00.528Z",
+  "result_at": "2026-09-14T03:54:01.287Z",
+  "observed_at": "2026-09-14T03:54:01.287Z",
+  "status": "succeeded",
+  "run_id": "warehouse-priority-source-observer:nyc-council-legistar:2026-09-14T03:54:01.287Z",
+  "producer": "warehouse-priority-source-observer",
+  "adapter": "warehouse-priority-source-observer",
+  "publisher_clock_basis": null,
+  "publisher_updated_at": null,
+  "clock_kind": "acquisition",
+  "event_kind": "bounded-acquisition",
+  "input_vintage": "2026-09-14T03:54:01.287Z",
+  "content_hash": "sha256:e66f306927218ad5a5e5873fe40606a81da575dd1c808149d72a89a61d0c94f8",
+  "provenance": {
+    "schema": "cityscroll.priority_source_observation_provenance.v1",
+    "evidence_class": "scheduled-rail",
+    "isolated": false,
+    "observed_at": "2026-09-14T03:54:01.287Z",
+    "producer": "warehouse-priority-source-observer",
+    "source": "https://webapi.legistar.com/v1/nyc/Events",
+    "bounds": {
+      "endpoint": "Events",
+      "page_size": 1,
+      "max_pages": 1,
+      "lookback_days": 180
+    },
+    "response": {
+      "status": 200,
+      "kind": "ok",
+      "row_count": 1,
+      "complete": false,
+      "content_sha256": "sha256:e66f306927218ad5a5e5873fe40606a81da575dd1c808149d72a89a61d0c94f8"
+    }
+  }
+}

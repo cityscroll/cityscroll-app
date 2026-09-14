@@ -25,6 +25,7 @@ import {
   PRIORITY_SOURCE_IDS,
   acquisitionObservationDate,
   buildPrioritySourceHealthClosure,
+  buildPrioritySourceClosureMatrix,
   cardSynthesisOwner,
   classifyRegistryCensus,
   classifySourceObservation,
@@ -49,6 +50,7 @@ import {
   mergeRepairObservations,
 } from "../tools/repair_observations.mjs";
 import { passportReceiptsFromMeta } from "../worker/src/lib/source_acquisition_receipt.mjs";
+import { capturePrioritySourceHealthProductionRead } from "../tools/capture_priority_source_health_production_read.mjs";
 
 const readJson = (path) => JSON.parse(readFileSync(join(ROOT, path), "utf8"));
 const NOW = "2026-09-06T12:00:00.000Z";
@@ -408,4 +410,95 @@ test("committed load path still builds one observation per contract", () => {
   const inputs = loadSourceHealthInputs(ROOT, registry);
   const projection = buildSourceHealthObservations(registry, { ...inputs, asOf: inputs.asOf || NOW });
   assert.equal(projection.observations.length, registry.contracts.length);
+});
+
+test("closure matrix exposes receipt clocks and provenance for every closed family", () => {
+  const registry = {
+    contracts: [
+      contract({ id: "passport-public-contracts" }),
+      contract({ id: "passport-public-rfx" }),
+      contract({ id: "nyc-council-legistar" }),
+      contract({ id: "nyc-rules-rss" }),
+      contract({ id: "city-record" }),
+      contract({ id: "checkbook-contracts" }),
+      contract({ id: "checkbook-spending" }),
+      contract({ id: "zap-projects" }),
+      contract({ id: "non-council-board-minutes" }),
+    ],
+  };
+  const receipt = (sourceId, producer, evidenceClass) => ({
+    source_contract_id: sourceId,
+    observed_at: NOW,
+    attempt_at: "2026-09-13T13:59:00.000Z",
+    result_at: NOW,
+    status: "succeeded",
+    run_id: `${producer}:${sourceId}`,
+    producer,
+    event_kind: "bounded-acquisition",
+    input_vintage: NOW,
+    provenance: { evidence_class: evidenceClass, isolated: false },
+  });
+  const projection = buildSourceHealthObservations(registry, {
+    asOf: NOW,
+    warehouseReceipts: [
+      { ...receipt("nyc-council-legistar", "warehouse-priority-source-observer", "scheduled-rail"), source_id: "nyc-council-legistar", adapter: "warehouse-priority-source-observer", path: "receipt" },
+      { ...receipt("nyc-rules-rss", "warehouse-priority-source-observer", "scheduled-rail"), source_id: "nyc-rules-rss", adapter: "warehouse-priority-source-observer", path: "receipt" },
+    ],
+    serveObservations: [],
+    workerAcquisitionReceipts: [],
+    passportIngestMeta: {
+      ingested_at: NOW,
+      last_attempt_at: "2026-09-13T13:59:00.000Z",
+      last_ok: true,
+      contract_rows: 2,
+      rfx_rows: 1,
+      production_provenance: { evidence_class: "live-production-read", isolated: false },
+    },
+  });
+  const matrix = buildPrioritySourceClosureMatrix({ registry, projection, evidenceRevision: "test-rev" });
+  for (const familyId of ["passport", "legistar", "rules-rss"]) {
+    const family = matrix.families.find((row) => row.family_id === familyId);
+    assert.equal(family.obligation_open, false);
+    assert.equal(matrix.named_blockers.some((row) => row.family_id === familyId), false);
+    for (const source of family.sources) {
+      assert.ok(source.attempt_at);
+      assert.ok(source.result_at);
+      assert.ok(source.producer);
+      assert.ok(source.input_vintage);
+      assert.ok(source.provenance || source.production_provenance);
+    }
+  }
+});
+
+test("production PASSPort read attaches a live provenance block without retaining the key", async () => {
+  let request = null;
+  const envelope = await capturePrioritySourceHealthProductionRead({
+    adminKey: "test-admin-key",
+    now: NOW,
+    sourceRevision: "production-revision",
+    apiBase: "https://api.example.test",
+    fetchImpl: async (url, options) => {
+      request = { url, options };
+      return new Response(JSON.stringify({
+        producer: "worker-d1-passport-ingest-meta",
+        meta: {
+          ingested_at: NOW,
+          last_attempt_at: "2026-09-13T13:59:00.000Z",
+          last_ok: true,
+          contract_rows: 2,
+          rfx_rows: 1,
+        },
+      }), { status: 200, headers: { "content-type": "application/json" } });
+    },
+  });
+  assert.equal(request.url, "https://api.example.test/admin/passport-ingest-meta");
+  assert.equal(request.options.headers.Authorization, "Bearer test-admin-key");
+  assert.equal(envelope.provenance.evidence_class, "live-production-read");
+  assert.equal(envelope.provenance.observer.source_revision, "production-revision");
+  assert.deepEqual(envelope.receipts.map((row) => row.source_contract_id), [
+    "passport-public-contracts",
+    "passport-public-rfx",
+  ]);
+  assert.ok(envelope.receipts.every((row) => row.attempt_at && row.result_at && row.producer));
+  assert.equal(JSON.stringify(envelope).includes("test-admin-key"), false);
 });
