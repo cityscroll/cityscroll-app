@@ -8,7 +8,6 @@
  */
 
 import { matchCommunityBoardCommittee } from "./community_board_committees.mjs";
-import { buildAcquisitionRequestReceipt } from "../warehouse/lib/document_processing.mjs";
 
 export const COMMUNITY_BOARD_SOURCE_RECORD_SCHEMA = "cityscroll.community_board_source_record.v1";
 export const COMMUNITY_BOARD_SOURCE_RECEIPT_SCHEMA = "cityscroll.community_board_source_receipt.v1";
@@ -71,6 +70,25 @@ export const COMMUNITY_BOARD_TRANSPORT_DEFAULTS = Object.freeze({
   maxRunMs: 600_000, parserVersion: "community_board_acquisition.v1",
 });
 
+async function buildAcquisitionRequestReceipt({
+  requestId, parentRequestId = null, url, requestedAt, retrievedAt,
+  status = null, bytes = null, latencyMs = null, parserVersion,
+  outcome = "ok", reason = null, retries = 0,
+} = {}) {
+  const digest = bytes && globalThis.crypto?.subtle
+    ? [...new Uint8Array(await globalThis.crypto.subtle.digest("SHA-256", bytes))]
+      .map((value) => value.toString(16).padStart(2, "0")).join("")
+    : null;
+  return Object.freeze({
+    request_id: requestId, parent_request_id: parentRequestId, url,
+    requested_at: requestedAt, retrieved_at: retrievedAt,
+    http_status: Number.isInteger(status) ? status : null,
+    bytes: bytes?.length || 0, content_hash: digest ? `sha256:${digest}` : null,
+    latency_ms: Number.isFinite(latencyMs) ? latencyMs : null,
+    parser_version: parserVersion, retries, outcome, reason,
+  });
+}
+
 function byteReader(response, limit) {
   if (response?.body?.getReader) {
     return (async () => {
@@ -91,19 +109,23 @@ function byteReader(response, limit) {
 
 export function createBoundedCommunityBoardTransport(fetchImpl, options = {}) {
   const cfg = { ...COMMUNITY_BOARD_TRANSPORT_DEFAULTS, ...options };
+  // determinism-lint: allow clock network acquisition timing is an explicit receipt field
   const started = Date.now(); let requestCount = 0; let totalBytes = 0; let sequence = 0;
   const lastByOrigin = new Map(); const graph = [];
   const wait = (ms) => ms > 0 ? new Promise((resolve) => setTimeout(resolve, ms)) : Promise.resolve();
   const request = async (url, init = {}, context = {}) => {
     const parentRequestId = context.parentRequestId || request.parentRequestId || null;
     const requestId = `${context.graphId || "acquisition"}-${++sequence}`;
+    // determinism-lint: allow clock network acquisition timestamps are receipt evidence
     const requestedAt = new Date().toISOString(); const startedAt = Date.now();
     let currentUrl = String(url); let redirects = 0; let retries = 0; let response; let bytes = null; let reason = null; let outcome = "failed";
     try {
       while (true) {
+        // determinism-lint: allow clock whole-run deadline uses elapsed acquisition time
         if (Date.now() - started > cfg.maxRunMs) throw new Error("whole_run_deadline_exceeded");
         if (++requestCount > cfg.maxRequests) throw new Error("request_limit_exceeded");
         const origin = new URL(currentUrl).origin; const last = lastByOrigin.get(origin) || 0;
+        // determinism-lint: allow clock origin pacing uses elapsed acquisition time
         await wait(Math.max(0, cfg.minOriginIntervalMs - (Date.now() - last))); lastByOrigin.set(origin, Date.now());
         const controller = new AbortController(); const timer = setTimeout(() => controller.abort(), cfg.requestTimeoutMs);
         let rejectTimeout;
@@ -136,8 +158,12 @@ export function createBoundedCommunityBoardTransport(fetchImpl, options = {}) {
         outcome = "ok"; break;
       }
     } catch (error) { reason = error?.name === "AbortError" ? "timeout" : String(error?.message || "fetch_error"); }
-    const receipt = buildAcquisitionRequestReceipt({ requestId, parentRequestId, url: currentUrl, requestedAt,
-      retrievedAt: new Date().toISOString(), status: response?.status, bytes, latencyMs: Date.now() - startedAt,
+    // determinism-lint: allow clock receipt records the observed completion time
+    const retrievedAt = new Date().toISOString();
+    // determinism-lint: allow clock receipt records measured network latency
+    const latencyMs = Date.now() - startedAt;
+    const receipt = await buildAcquisitionRequestReceipt({ requestId, parentRequestId, url: currentUrl, requestedAt,
+      retrievedAt, status: response?.status, bytes, latencyMs,
       parserVersion: cfg.parserVersion, outcome, reason, retries });
     graph.push(receipt);
     if (outcome !== "ok") return { ok: false, status: response?.status || 0, headers: response?.headers, bytes: null, requestId,
@@ -146,6 +172,7 @@ export function createBoundedCommunityBoardTransport(fetchImpl, options = {}) {
       arrayBuffer: async () => bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength),
       text: async () => new TextDecoder().decode(bytes), receipt };
   };
+  // determinism-lint: allow clock stats report measured acquisition duration
   request.graph = graph; request.stats = () => ({ requests: requestCount, bytes: totalBytes, elapsed_ms: Date.now() - started });
   request.parentRequestId = null;
   return request;
