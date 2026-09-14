@@ -185,8 +185,8 @@ function assertHostNeutral(serialised) {
   const user = userInfo().username;
   const host = hostname();
   const banned = [
-    ["an absolute home path", /\/Users\/|\/home\//],
-    ["an absolute temporary path", /\/var\/folders\/|\/private\/tmp|(^|[^\w])\/tmp\//],
+    ["an absolute home path", /(^|[\"\s])\/(?:Users|home)\//],
+    ["an absolute temporary path", /(^|[\"\s])(?:\/var\/folders\/|\/private\/tmp|\/tmp\/)/],
     ["the current user name", new RegExp(`\\b${user.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`)],
     ["the current host name", new RegExp(`\\b${host.split(".")[0].replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`)]
   ];

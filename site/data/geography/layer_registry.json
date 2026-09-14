@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.geography_layer_registry.v1",
-  "generated_at": "2026-09-09T11:56:26.515Z",
+  "generated_at": "2026-09-13T10:08:47.000Z",
   "layers": [
     {
       "type": "borough",
@@ -325,9 +325,9 @@
         "dataset_id": "i6mn-amj2",
         "dataset_name": "DSNY Districts",
         "url": "https://data.cityofnewyork.us/resource/i6mn-amj2.geojson?$limit=100",
-        "updated_at": "2024-04-10T10:00:05.000Z"
+        "updated_at": "2026-09-13T10:08:47.000Z"
       },
-      "boundary_vintage": "2024-04-10",
+      "boundary_vintage": "2026-09-13",
       "cardinality": "exactly_one_on_covered_land",
       "coverage": {
         "status": "complete",
@@ -346,20 +346,20 @@
         "qa"
       ],
       "receipt": {
-        "path": "data/geography/receipts/sanitation_district/2024-04-10.json",
-        "sha256": "eb706047ebb7b4b109954cb10c7f8d90b71df59aee15327cd47a3f8b3bda9b36"
+        "path": "data/geography/receipts/sanitation_district/2026-09-13.json",
+        "sha256": "0b387ccb09a7c2df9cd3e059f3f47890510959c4bcf6f36586f3008562b628dd"
       },
       "artifacts": {
         "full": {
-          "path": "data/geography/layers/sanitation_district/2024-04-10.full.json",
-          "sha256": "919b200e718d623c6c0662e6312081c33ce465ea36415373c60d762611ab86c5",
+          "path": "data/geography/layers/sanitation_district/2026-09-13.full.json",
+          "sha256": "10d56433b147fa14a0a11e09a6c003b78df5f47a5a7c6137ee23c707ec54e4eb",
           "bytes": 2054531,
           "geometry_fidelity": "full"
         },
         "simplified": {
-          "site_path": "site/data/geography/layers/sanitation_district/2024-04-10.json",
-          "worker_path": "worker/src/data/geography/layers/sanitation_district/2024-04-10.json",
-          "sha256": "cac978bdb4c99091d6f109aa6f479e674311a91ea032d1233893fbd244be8d84",
+          "site_path": "site/data/geography/layers/sanitation_district/2026-09-13.json",
+          "worker_path": "worker/src/data/geography/layers/sanitation_district/2026-09-13.json",
+          "sha256": "160ae8045fc811ab2576e5af9822c551c79945b8008ae9cd0d7e3011ac91ab94",
           "bytes": 87709,
           "geometry_fidelity": "simplified"
         }

@@ -104,7 +104,7 @@ test("geography acquisition receipts feed backstage source health", () => {
   const expected = new Map([
     ["dcp-nta2020-boundaries", "Healthy"],
     ["dcp-police-precinct-boundaries", "Healthy"],
-    ["dsny-district-boundaries", "Delayed"],
+    ["dsny-district-boundaries", "Healthy"],
     ["business-improvement-district-boundaries", "Healthy"],
   ]);
   for (const [sourceId, status] of expected) {
