@@ -445,7 +445,7 @@ function sourceMeta(source) {
     source.lookup_basis ? `lookup: ${source.lookup_basis}` : null,
     source.denominator != null && source.population
       ? `${source.denominator} in ${source.population}`
-      : (source.vintage ? `Source snapshot ${source.vintage}` : null),
+      : (source.vintage ? ["Source snapshot", source.vintage].join(" ") : null),
     source.stopped ? "stopped lookup" : null,
   ].filter(Boolean);
   return parts.join(" · ");
