@@ -309,7 +309,9 @@ jobs:
           --timeout-ms 720000
           --interval-ms 20000
       - name: Post-deploy procurement detail parity canary
+        if: needs.deploy.outputs.is_preview != 'true'
         env:
+          LIVE_PROCUREMENT_CANARY: "1"
           CITYSCROLL_PROCUREMENT_BASE_URL: ${{ steps.origin.outputs.base_host }}
           CITYSCROLL_PROCUREMENT_API_BASE_URL: https://api.cityscroll.org
         run: node --test test/live_procurement_detail_canary.test.mjs

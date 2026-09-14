@@ -427,7 +427,7 @@ family_site_node() {
   # deployed production MCP endpoint; CS10_SKIP_LIVE_CANARY tells it to no-op
   # here so this fast local gate stays network-independent (see its own guard
   # and .github/workflows/ci.yml's matching env var).
-  CS10_SKIP_LIVE_CANARY=true CITYSCROLL_SKIP_LIVE_PROCUREMENT_CANARY=true run_node_test test/*.test.mjs
+  CS10_SKIP_LIVE_CANARY=true run_node_test test/*.test.mjs
   run_node_test test/community_board*.test.mjs \
     test/people_organizations_community_boards.test.mjs
   run_and_fail node tools/no_live_external_reads.mjs --check

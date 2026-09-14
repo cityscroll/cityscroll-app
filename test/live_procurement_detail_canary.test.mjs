@@ -1,6 +1,6 @@
 // Production-only canary for the canonical procurement route and its two exact
-// identifier searches. The ordinary test sweep sets the skip variable so this
-// file never turns a local or CI unit run into an unbounded network read.
+// identifier searches. It requires explicit opt-in so unit, time-travel, and
+// other local test families never turn into an unbounded network read.
 
 import assert from "node:assert/strict";
 import test from "node:test";
@@ -29,8 +29,8 @@ async function getJson(url) {
   return { response, payload: await response.json() };
 }
 
-if (process.env.CITYSCROLL_SKIP_LIVE_PROCUREMENT_CANARY) {
-  test("production procurement canary skipped in the default sweep", () => {});
+if (process.env.LIVE_PROCUREMENT_CANARY !== "1") {
+  test("production procurement canary skipped without explicit opt-in", () => {});
 } else {
   test("production procurement route and exact identifier searches remain in parity", async () => {
     const page = await fetch(`${BASE}${ROUTE}`, { headers: { Accept: "text/html" } });
