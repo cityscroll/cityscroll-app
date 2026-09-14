@@ -1,0 +1,174 @@
+{
+  "schema": "cityscroll.resident_surface_presence_readback.v1",
+  "title": "Council hearing resident-surface production read-back",
+  "proceeding": {
+    "event_day": "2026-09-23",
+    "event_id": "22691",
+    "meeting_id": "meeting:nyc_legistar_events:22691"
+  },
+  "revisions": {
+    "code": "aa34c9481ad843030719eceb026dbdebdb2db054",
+    "data": "b74ec7f80df1712c8781e00cd917bdb4f938eb1bdefb95e2655572173c969bd3"
+  },
+  "surfaces": [
+    {
+      "id": "meetings",
+      "route": "https://cityscroll.org/browse/meetings/",
+      "url": "https://cityscroll.org/data/shared_meeting_read_model.json",
+      "read_at": "2026-09-14T05:23:39.154Z",
+      "found": true,
+      "measurement_state": "measured",
+      "status": 200,
+      "seen": {
+        "excerpt": "role\": \"representative\", \"minutes_freshness\": { \"status\": \"not_published\", \"latest_date\": null, \"checked_at\": \"2026-09-14T04:43:24.760Z\" } }, { \"event_id\": \"22691\", \"meeting_id\": \"meeting:nyc_legistar_events:22691\", \"identity\": { \"source_system\": \"nyc_legistar_events\", \"event_id\": \"22691\", \"event_guid\": \"0996EE1D-9814-4C5D-B338-EF2C19BBE32F\" }, \"event_date\": \"2026-09-23T10:00:00\", \"wall_time\": \"2026-09-23T10:00:00\", \"time_zone\": \"America/New_York\", \"venue\": { \"address\": \"250 Broadway - 8th Floor - Hearing Room 2\" }, \"committee\": { \"name\": \"Committee on Contracts\", \"href\": null }, \"governing_bo",
+        "structured": {
+          "top_level_keys": [
+            "schema",
+            "version",
+            "generated_at",
+            "freshness",
+            "sources",
+            "counts",
+            "same_proceeding",
+            "rows",
+            "hearings"
+          ],
+          "matched_needles": [
+            "meeting:nyc_legistar_events:22691",
+            "22691",
+            "Committee on Contracts"
+          ]
+        }
+      },
+      "missing_needles": [],
+      "revisions": {
+        "code": "aa34c9481ad843030719eceb026dbdebdb2db054",
+        "data": "b74ec7f80df1712c8781e00cd917bdb4f938eb1bdefb95e2655572173c969bd3"
+      }
+    },
+    {
+      "id": "search",
+      "route": "https://cityscroll.org/search/?q=M%2FWBE%20utilization",
+      "url": "https://api.cityscroll.org/search?q=M%2FWBE%20utilization",
+      "read_at": "2026-09-14T05:23:39.154Z",
+      "found": true,
+      "measurement_state": "measured",
+      "status": 200,
+      "seen": {
+        "excerpt": "\"tie_break\":[\"calibrated_score_desc\",\"entity_type_asc\",\"stable_key_asc\",\"lens_asc\"]},\"results\":[{\"schema\":\"cityscroll.search_document.v1\",\"object_ref\":\"meeting:nyc_legistar_events:22691\",\"object_type\":\"meeting\",\"domain\":\"meetings\",\"canonical_href\":\"/meetings/meeting%3Anyc_legistar_events%3A22691\",\"title\":\"Committee on Contracts\",\"summary\":\"Oversight - M/WBE Utilization and the Required Disparity Study. | T2026-2485 | A Local Law to amend the administrative code of the city of New York, in relation to reporting on minority- and women-owned business participation in subcontracts for human servic",
+        "structured": {
+          "top_level_keys": [
+            "schema",
+            "capability_reference",
+            "federated",
+            "query",
+            "match_mode",
+            "resolved_term",
+            "lanes",
+            "results",
+            "coverage"
+          ],
+          "matched_needles": [
+            "22691",
+            "Committee on Contracts"
+          ]
+        }
+      },
+      "missing_needles": [],
+      "revisions": {
+        "code": "aa34c9481ad843030719eceb026dbdebdb2db054",
+        "data": "b74ec7f80df1712c8781e00cd917bdb4f938eb1bdefb95e2655572173c969bd3"
+      }
+    },
+    {
+      "id": "now",
+      "route": "https://cityscroll.org/now/",
+      "url": "https://api.cityscroll.org/hearings",
+      "read_at": "2026-09-14T05:23:39.154Z",
+      "found": true,
+      "measurement_state": "measured",
+      "status": 200,
+      "seen": {
+        "excerpt": "on_visibility\":\"visible\",\"collection_role\":\"representative\",\"minutes_freshness\":{\"status\":\"not_published\",\"latest_date\":null,\"checked_at\":\"2026-09-13T13:14:56.165Z\"}},{\"event_id\":\"22691\",\"meeting_id\":\"meeting:nyc_legistar_events:22691\",\"identity\":{\"source_system\":\"nyc_legistar_events\",\"event_id\":\"22691\",\"event_guid\":\"0996EE1D-9814-4C5D-B338-EF2C19BBE32F\"},\"event_date\":\"2026-09-23T10:00:00\",\"wall_time\":\"2026-09-23T10:00:00\",\"time_zone\":\"America/New_York\",\"venue\":{\"address\":\"250 Broadway - 8th Floor - Hearing Room 2\"},\"committee\":{\"name\":\"Committee on Contracts\",\"href\":null},\"governing_body\":{\"n",
+        "structured": {
+          "top_level_keys": [
+            "schema",
+            "version",
+            "generated_at",
+            "freshness",
+            "sources",
+            "counts",
+            "same_proceeding",
+            "rows",
+            "hearings",
+            "read_model",
+            "schema_version",
+            "source_extraction_version",
+            "source",
+            "stale"
+          ],
+          "matched_needles": [
+            "22691",
+            "Committee on Contracts"
+          ]
+        }
+      },
+      "missing_needles": [],
+      "revisions": {
+        "code": "aa34c9481ad843030719eceb026dbdebdb2db054",
+        "data": "b74ec7f80df1712c8781e00cd917bdb4f938eb1bdefb95e2655572173c969bd3"
+      }
+    },
+    {
+      "id": "canonical-detail",
+      "route": "https://cityscroll.org/meetings/meeting%3Anyc_legistar_events%3A22691",
+      "url": "https://cityscroll.org/meetings/meeting%3Anyc_legistar_events%3A22691",
+      "read_at": "2026-09-14T05:23:39.154Z",
+      "found": true,
+      "measurement_state": "measured",
+      "status": 200,
+      "seen": {
+        "excerpt": ">Browse</a><a href=\"/guide/\">Guide</a></nav></div></header> <main id=\"main\" class=\"civic-document node-document meeting-document\" data-civic-object-kind=\"meeting\" data-meeting-id=\"meeting:nyc_legistar_events:22691\" data-source-record-id=\"22691\" data-capability-reference=\"meeting.get@1\" tabindex=\"-1\"> <p class=\"node-back\"><a href=\"/browse/meetings/\">Browse meetings and hearings</a></p> <section class=\"node-hero civic-object-hero meeting-hero\"><p class=\"node-kicker civic-object-kicker\">City Council meeting</p><h1>Committee on Contracts</h1><p class=\"node-lede\"><time datetime=\"2026-09-23T10:00:00"
+      },
+      "missing_needles": [],
+      "revisions": {
+        "code": "aa34c9481ad843030719eceb026dbdebdb2db054",
+        "data": "b74ec7f80df1712c8781e00cd917bdb4f938eb1bdefb95e2655572173c969bd3"
+      }
+    },
+    {
+      "id": "ics",
+      "route": null,
+      "url": "https://api.cityscroll.org/meeting.ics?id=meeting%3Anyc_legistar_events%3A22691",
+      "read_at": "2026-09-14T05:23:39.154Z",
+      "found": true,
+      "measurement_state": "measured",
+      "status": 200,
+      "seen": {
+        "excerpt": "REQ=YEARLY;BYMONTH=11;BYDAY=1SU END:STANDARD END:VTIMEZONE BEGIN:VEVENT UID:meeting:nyc_legistar_events:22691@cityscroll.org DTSTAMP:20260914T052343Z DTSTART;TZID=America/New_York:20260923T100000 DTEND;TZID=America/New_York:20260923T110000 SUMMARY:Committee on Contracts LOCATION:250 Broadway - 8th Floor - Hearing Room 2 DESCRIPTION:Location: 250 Broadway - 8th Floor - Hearing Room 2\\nNYC Counci l Legistar: https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22691&GID=61 &G=2FD004F1-D85B-4588-A648-0A736C77D6E3 BEGIN:VALARM TRIGGER:-P1D ACTION:DISPLAY DESCRIPTION:Hearing tomorrow END:VALARM END:VE"
+      },
+      "missing_needles": [],
+      "revisions": {
+        "code": "aa34c9481ad843030719eceb026dbdebdb2db054",
+        "data": "b74ec7f80df1712c8781e00cd917bdb4f938eb1bdefb95e2655572173c969bd3"
+      }
+    },
+    {
+      "id": "watch-preview",
+      "route": "https://cityscroll.org/following?lens=meetings&filter=%7B%22keywords%22%3A%5B%22M%2FWBE%22%5D%7D",
+      "url": "https://cityscroll.org/following?lens=meetings&filter=%7B%22keywords%22%3A%5B%22M%2FWBE%22%5D%7D",
+      "read_at": "2026-09-14T05:23:39.154Z",
+      "found": true,
+      "measurement_state": "measured",
+      "status": 200,
+      "seen": {
+        "excerpt": "iew</p><h2 id=\"following-preview-heading\">1 matching records</h2> <p>Every current match is shown.</p> <ol class=\"following-diglist\"><li class=\"following-digitem\" data-preview-id=\"meeting:nyc_legistar_events:22691\"> <div class=\"following-dig-title\"><a class=\"ui-constellation-link following-record-link\" href=\"/meetings/meeting%3Anyc_legistar_events%3A22691/\"><span aria-hidden=\"true\">◆</span>Committee on Contracts</a></div> <p class=\"following-dig-meta\">Committee on Contracts · 250 Broadway - 8th Floor - Hearing Room 2</p> <div class=\"following-dig-awareness\" aria-label=\"Status\"><span class=\"fol"
+      },
+      "missing_needles": [],
+      "revisions": {
+        "code": "aa34c9481ad843030719eceb026dbdebdb2db054",
+        "data": "b74ec7f80df1712c8781e00cd917bdb4f938eb1bdefb95e2655572173c969bd3"
+      }
+    }
+  ]
+}

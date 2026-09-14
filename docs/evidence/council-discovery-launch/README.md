@@ -16,3 +16,5 @@ same path deterministically. A path that was not live when this read ran is
 node tools/council_discovery_launch_readback.mjs
 node tools/council_discovery_launch_readback.mjs --check
 ```
+
+The retained six-surface presence envelope is at [`../council-native-launch/event-22691-resident-surface-readback.json`](../council-native-launch/event-22691-resident-surface-readback.json) and can be refreshed with `node tools/council_native_launch_resident_readback.mjs`.
