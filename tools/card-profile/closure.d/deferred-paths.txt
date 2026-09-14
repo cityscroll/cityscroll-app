@@ -271,6 +271,7 @@ warehouse/receipts/proof/lup2_c7_stance_backtest_latest.json
 warehouse/receipts/proof/lup2_c9_shadow_latest.json
 warehouse/receipts/proof/neighborhood_search_latest.json
 warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json
+warehouse/receipts/proof/passport_d1_ingest_meta_latest.json
 warehouse/receipts/proof/passport_public_fields_latest.json
 warehouse/receipts/proof/person_hub_source_records_latest.json
 warehouse/receipts/proof/rc1_procurement_plans_framework_latest.json
