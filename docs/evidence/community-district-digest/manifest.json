@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "capture_type": "textual-route-manifest",
+  "repository_revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+  "data_vintage": "2026-09-01",
+  "entries": [
+    {
+      "route": "worker://community-district-digest/K15",
+      "viewport": "route-read-model payload",
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "data_vintage": "2026-09-01",
+      "assertion": "59 community-district slices; schema cityscroll.community_district_digest.v1",
+      "sha256": "5a250265913e4e8f643bc852a79b6d0f588168c882e46b7174042c7c796f1025"
+    },
+    {
+      "route": "worker://community-district-digest/K15",
+      "viewport": "route-read-model payload",
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "data_vintage": "2026-09-01",
+      "assertion": "K15 five sections with bounded references",
+      "sha256": "8c4c016a4d2259eeabb413b98dec97e355d0c2dbdebd84387a60bbccd333b9cd"
+    },
+    {
+      "route": "worker://community-district-digest/K15",
+      "viewport": "route-read-model payload",
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "data_vintage": "2026-09-01",
+      "assertion": "K15 board, council overlaps, build time, vintages, and coverage",
+      "sha256": "78fb5da418524b3c645bf3a3af43367f545f9f33bb65e579050c4b52ab478eb6"
+    },
+    {
+      "route": "worker://community-district-digest/K15,K16",
+      "viewport": "route-read-model payload",
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "data_vintage": "2026-09-01",
+      "assertion": "K15 and K16 exercise supported, known_zero, unsupported, unavailable, stale, failed",
+      "sha256": "b1ec68f802929301402c9eec560a01dbd34b17eeba7ead189893a75f3820bda6"
+    },
+    {
+      "route": "worker://community-district-digest/K15",
+      "viewport": "route-read-model payload",
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "data_vintage": "2026-09-01",
+      "assertion": "K15 land and meeting identifiers in bounded materialized route payload",
+      "sha256": "302a62817b3c69abf77bd5591f0d5fc05f97258b911e5a4fd34520046d3ccbd8"
+    }
+  ]
+}
