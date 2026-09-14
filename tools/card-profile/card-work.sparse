@@ -778,6 +778,7 @@
 /site/shared_meeting_read_model.mjs
 /site/shared_procurement_read_model.mjs
 /site/site.webmanifest
+/site/site_lifecycle_projection.mjs
 /site/sitemap.xml
 /site/solicitation_procurement_method.mjs
 /site/solicitation_response_context.mjs
