@@ -17,6 +17,7 @@ import {
   buildCrossSourceEvidenceReceipt,
 } from "./cross_source_evidence_receipt.mjs";
 import { procurementObservationIndex, procurementProcessEvents } from "./procurement_process_events.mjs";
+import { buildProcurementSourceLookupProjection } from "./procurement_source_lookup_receipt.mjs";
 
 export const SHARED_PROCUREMENT_READ_MODEL_SCHEMA = "cityscroll.shared_procurement_read_model.v1";
 export const SHARED_PROCUREMENT_READ_MODEL_VERSION = 1;
@@ -84,6 +85,8 @@ export function buildSharedProcurementReadModel({
   now = generatedAt || new Date().toISOString(),
   checkbookLookupRows = null,
   includeUnknownCheckbookCorroboration = false,
+  lookupMaterializations = {},
+  lookupAsOf = generatedAt,
 } = {}) {
   const records = Array.isArray(sourceRecords) ? sourceRecords.filter(Boolean) : [];
   const built = buildProcurementObjects({
@@ -107,6 +110,14 @@ export function buildSharedProcurementReadModel({
     acceptedJoins: built.cross_source_identity_joins,
     checkbookLookupRows,
   });
+  const lookupProjection = buildProcurementSourceLookupProjection({
+    objects: rows,
+    observations,
+    materializations: lookupMaterializations,
+    generatedAt,
+    lookupAsOf,
+  });
+  const lookupByObject = new Map(lookupProjection.rows.map((receipt) => [receipt.procurement_id, receipt]));
   for (const object of rows) {
     const processEvents = procurementProcessEvents(object, observations, observationIndex);
     if (processEvents.length) object.process_events = processEvents;
@@ -120,6 +131,8 @@ export function buildSharedProcurementReadModel({
       index: evidenceIndex,
     });
     if (receipt) object.cross_source_evidence_receipt = receipt;
+    const lookupReceipt = lookupByObject.get(object.procurement_id);
+    if (lookupReceipt) object.procurement_source_lookup_receipt = lookupReceipt;
   }
   return {
     schema: SHARED_PROCUREMENT_READ_MODEL_SCHEMA,
@@ -141,7 +154,9 @@ export function buildSharedProcurementReadModel({
       identity_edges: built.identity_edges.length,
       cross_source_identity_joins: built.cross_source_identity_joins.length,
       lifecycle_rows: Array.isArray(lifecycleRows) ? lifecycleRows.length : 0,
+      procurement_source_lookup_receipts: lookupProjection.rows.length,
     },
+    procurement_source_lookup_projection: lookupProjection,
     rows,
   };
 }
