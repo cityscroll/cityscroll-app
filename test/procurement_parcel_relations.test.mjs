@@ -86,6 +86,6 @@ test("relations reject non-site roles, preserve separate sites, and are determin
 });
 
 test("no publisher fetch is needed on relation reads", () => {
-  const doc = buildProcurementParcelRelations({ siteEvidence: { records: [] } });
+  const doc = buildProcurementParcelRelations({ siteEvidence: { records: [] }, fetch: () => { throw new Error("publisher fetch must not occur"); } });
   assert.deepEqual(doc.relations, []);
 });
