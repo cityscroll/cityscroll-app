@@ -1,0 +1,7 @@
+Four fixed organizer seeds are materialized as four consultation rounds.
+Each round retains organizer provenance, source URLs, field locators, date precision and separate response channels.
+Maps and surveys are channels of the organizer-linked round; administrative DOT links and submission side effects are excluded.
+Microsoft-form loading evidence remains unresolved and never asserts open-now.
+Bounded GET transport: 3 redirects, 2 retries, 2-second origin interval, 25-second timeout, 100 requests, 25 MB run, 5 MB response cap.
+Failures retain explicit receipts and do not erase a previous materialization.
+Resident code consumes retained data; it does not fetch publisher pages.

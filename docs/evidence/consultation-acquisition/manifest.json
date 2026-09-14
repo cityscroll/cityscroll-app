@@ -1,0 +1,19 @@
+{
+  "schema": "cityscroll.textual_evidence_manifest.v1",
+  "subject": "Four organizer-backed public consultation rounds",
+  "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+  "data_vintage": "2026-09-14",
+  "captures": [
+    { "route": "https://nycdotprojects.info/project/fast-buses-central-brooklyn", "viewport": "not-applicable", "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70", "data_vintage": "2026-09-14", "assertion": "organizer invitation and two response channels", "sha256": "8246f785cc670fac2e4f0834e1adc418326854b72dc6428bebbb004cc66bfb4b" },
+    { "route": "https://www.surveymonkey.com/r/fastbuses-centralbk", "viewport": "not-applicable", "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70", "data_vintage": "2026-09-14", "assertion": "questionnaire deadline and duration", "sha256": "ea09ee4ebc60311680bb644fa2b4ff05843858f632416faed252a933ee1d00c7" },
+    { "route": "https://nycdotprojects.info/project-feedback-map/feedback-map-centralbk", "viewport": "not-applicable", "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70", "data_vintage": "2026-09-14", "assertion": "feedback map channel", "sha256": "e582ecfb8e85be21db338c758e60e77a697c76fce880a024c01b70f764e72823c" },
+    { "route": "https://nycdotprojects.info/project/coney-island-transportation-study", "viewport": "not-applicable", "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70", "data_vintage": "2026-09-14", "assertion": "organizer invitation", "sha256": "77992a53a53cdb08b3c9d422aadcd618753619ceeb341289e4d11e7ba6ac335e" },
+    { "route": "https://nycdotprojects.info/project-feedback-map/traffic-and-transportation-issues-map", "viewport": "not-applicable", "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70", "data_vintage": "2026-09-14", "assertion": "feedback map channel", "sha256": "8a4264663671164187adebe96248a08d8668336e3b929fb7d3b8fa0d0f28f58f" },
+    { "route": "https://nycdotprojects.info/project/secure-bike-parking-program", "viewport": "not-applicable", "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70", "data_vintage": "2026-09-14", "assertion": "citywide organizer invitation", "sha256": "d20c1728b0f312ec16d30ddd42f1834df5dcd39b33b7d3be63faa3d09971bac9" },
+    { "route": "https://nycdotprojects.info/SecureBikeParking", "viewport": "not-applicable", "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70", "data_vintage": "2026-09-14", "assertion": "location suggestion channel; 5 MB cap", "sha256": "d1a7695975e9dbce45d4c83d5aab0989d26be7891186c0b0080c4b68a83c424c" },
+    { "route": "https://nycdotprojects.info/project/public-e-bike-charging-pec-program", "viewport": "not-applicable", "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70", "data_vintage": "2026-09-14", "assertion": "organizer invitation", "sha256": "de9bfb42e170599f316bbf94a3651904f715290c378d3a3852da84937d98b382" },
+    { "route": "https://nycdotprojects.info/content/share-your-feedback", "viewport": "not-applicable", "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70", "data_vintage": "2026-09-14", "assertion": "feedback landing channel", "sha256": "b709c414522ab60191f4d0c187065062fbad4d4305e6b225824ea66b7eb4ad1c" },
+    { "route": "https://forms.office.com/g/CsmBAJsTkD?origin=lprLink", "viewport": "not-applicable", "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70", "data_vintage": "2026-09-14", "assertion": "loading shell retained; open-now and submission excluded", "sha256": "328c16f08cdab133bd3639879ec8e1a9844b49f5cce5a1c0b8d96f36744b4961" }
+  ],
+  "note": "No image binaries are committed. Acquisition receipts retain URL, status, observed date, field locator and SHA-256 when a bounded GET succeeds."
+}
