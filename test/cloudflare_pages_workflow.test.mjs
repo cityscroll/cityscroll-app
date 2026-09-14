@@ -130,7 +130,9 @@ test("scheduled Pages deploys stage the authenticated graph and record a Desk pu
   assert.match(workflow, /--heartbeat-accepted/);
   assert.match(workflow, /--publication-at/);
   assert.match(workflow, /overwrite: true/);
+  assert.match(workflow, /retention-days: 90/);
   assert.match(action, /DESK_PUBLICATION_OBSERVATION_AT/);
+  assert.match(action, /DESK_PUBLICATION_STARTED_AT/);
   assert.match(build, /GITHUB_EVENT_NAME/);
   const heartbeat = workflow.indexOf("Record Desk publication heartbeat");
   const stamp = workflow.indexOf("Stamp Desk publication clock after accepted heartbeat");

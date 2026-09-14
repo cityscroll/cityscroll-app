@@ -483,6 +483,13 @@ function qualifyingPublicationReceipt(id, {
     run_identity: String(id),
     destination: "https://desk.cityscroll.org/data-sources",
     evidence_revision: `rev-${id}`,
+    data_revision: `rev-${id}`,
+    code_revision: `code-${id}`,
+    run_started_at: monitor,
+    run_finished_at: publication,
+    outcome: "succeeded",
+    collection_counts: { receipts: 1 },
+    publication_counts: { receipts: 1 },
     failing_stage: failingStage,
     clocks: {
       last_monitor_attempt: { at: monitor, state: "KNOWN", basis: "monitor-attempt" },
@@ -504,6 +511,13 @@ function collapsedPublicationReceipt(id, at) {
       artifact: "docs/data-source-graph.json",
     },
     evidence_revision: `rev-${id}`,
+    data_revision: `rev-${id}`,
+    code_revision: `code-${id}`,
+    run_started_at: at,
+    run_finished_at: at,
+    outcome: "succeeded",
+    collection_counts: { receipts: 1 },
+    publication_counts: { receipts: 1 },
     failing_stage: null,
     clocks: {
       last_monitor_attempt: { at, state: "KNOWN", basis: "pages-build-monitor-attempt" },
@@ -762,6 +776,11 @@ function fixtureCycleReceipt({
     heartbeatRejected,
     collectionStatus,
     evidenceRevision: "rev-fixture",
+    dataRevision: "rev-fixture",
+    codeRevision: "code-fixture",
+    runStartedAt: MONITOR_AT,
+    collectionCounts: { receipts: 1 },
+    publicationCounts: { receipts: 1 },
     runIdentity,
     destination: contract.destination,
   });
@@ -784,6 +803,13 @@ test("a fixture scheduled cycle yields a receipt the liveness reader accepts", (
   assert.equal(receipt.failing_stage, null);
   assert.ok(receipt.destination);
   assert.equal(receipt.evidence_revision, "rev-fixture");
+  assert.equal(receipt.code_revision, "code-fixture");
+  assert.equal(receipt.data_revision, "rev-fixture");
+  assert.equal(receipt.outcome, "succeeded");
+  assert.ok(receipt.run_started_at);
+  assert.equal(receipt.run_finished_at, PUBLICATION_AT);
+  assert.equal(receipt.collection_counts.receipts, 1);
+  assert.equal(receipt.publication_counts.receipts, 1);
   assert.equal(receipt.clocks.last_monitor_attempt.at, MONITOR_AT);
   assert.equal(receipt.clocks.last_successful_observation.at, OBSERVATION_AT);
   assert.equal(receipt.clocks.last_successful_desk_publication.at, PUBLICATION_AT);
@@ -793,6 +819,30 @@ test("a fixture scheduled cycle yields a receipt the liveness reader accepts", (
   assert.deepEqual(publicationReceiptQualificationFindings(receipt), []);
   assert.equal(isQualifyingUnattendedPublicationReceipt(receipt), true);
   assert.deepEqual(consecutiveUnattendedPublicationCycles([receipt]), [receipt]);
+});
+
+test("the liveness reader counts two retained per-run receipts and no receipts as zero", () => {
+  const receipts = ["run-1", "run-2"].map((runIdentity, index) => ({
+    ...qualifyingPublicationReceipt(runIdentity, {
+      monitor: `2026-09-${String(6 + index).padStart(2, "0")}T10:00:00.000Z`,
+      observation: `2026-09-${String(6 + index).padStart(2, "0")}T10:10:00.000Z`,
+      publication: `2026-09-${String(6 + index).padStart(2, "0")}T10:25:00.000Z`,
+    }),
+    code_revision: "code-fixture",
+    data_revision: "rev-fixture",
+    run_started_at: MONITOR_AT,
+    run_finished_at: `2026-09-${String(6 + index).padStart(2, "0")}T10:25:00.000Z`,
+    outcome: "succeeded",
+    collection_counts: { receipts: 1 },
+    publication_counts: { receipts: 1 },
+  }));
+  assert.equal(consecutiveUnattendedPublicationCycles(receipts).length, 2);
+  assert.equal(consecutiveUnattendedPublicationCycles([]).length, 0);
+  for (const receipt of receipts) {
+    assert.equal(receipt.outcome, "succeeded");
+    assert.equal(receipt.collection_counts.receipts, 1);
+    assert.equal(receipt.publication_counts.receipts, 1);
+  }
 });
 
 test("a push run records event=push and is not counted as an unattended publication cycle", () => {
@@ -924,4 +974,3 @@ test("check mode stays pure and write mode requires an injected clock", () => {
   assert.match(cycleTool, /if \(args\.check\) \{\n    console\.log\("desk health publication cycle contract is current"\);\n    return;/);
   assert.doesNotMatch(cycleTool, /args\.now \|\| new Date\(\)/);
 });
-
