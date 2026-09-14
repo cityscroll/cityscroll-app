@@ -50,6 +50,7 @@ import {
 } from "./procurement_project_context.mjs";
 import { buildProcurementHandoffCopy, renderProcurementHandoffCopyHtml } from "./procurement_handoff_copy.mjs";
 import { projectProcurementFacts } from "./procurement_fact_projection.mjs";
+import { entityChipHTML, entityHref, entityRouteRef } from "./entity_pivot.mjs";
 
 const CHECKBOOK_SMART_SEARCH = "https://www.checkbooknyc.com/smart_search/citywide";
 const CHECKBOOK_CONTRACT_SEARCH = "https://www.checkbooknyc.com/contract_search";
@@ -76,11 +77,56 @@ function factsFor(object, observations) {
     .filter(Boolean).map((entry) => [entry?.source_observation_ref, entry]));
   const observed = (object?.source_observation_refs || [])
     .map((ref) => byRef.get(ref)).filter(Boolean);
-  const projected = projectProcurementFacts(object, observed).facts;
+  const projection = projectProcurementFacts(object, observed);
+  const projected = projection.facts;
   const officialUrl = observed.map((entry) => entry?.snapshot || {})
     .map((row) => clean(row.official_url || row.official_source_url || row.source_url))
     .find(Boolean) || null;
-  return { ...projected, amount: formatAmount(projected.amount), officialUrl };
+  return { ...projected, amount: formatAmount(projected.amount), officialUrl, entries: projection.entries };
+}
+
+/** Return an exact internal search continuation for a retained identifier. */
+export function procurementIdentifierSearchHref(value) {
+  const raw = String(value ?? "");
+  if (!raw.trim() || /[<>\u0000-\u001f\u007f]/.test(raw)) return null;
+  const identifier = clean(raw, 320);
+  return identifier ? `/search/?q=${encodeURIComponent(identifier)}` : null;
+}
+
+function factEntry(facts, kind) {
+  return (facts.entries || []).find((entry) => entry.kind === kind) || null;
+}
+
+function procurementFactValue(facts, kind, value, object) {
+  const label = String(value ?? "");
+  if (!label) return "";
+  const entry = factEntry(facts, kind);
+  if (kind === "agency" || kind === "vendor") {
+    const ref = entityRouteRef(kind, label);
+    if (!ref) return esc(label);
+    const href = entityHref({ ref, label });
+    if (!href) return esc(label);
+    return entityChipHTML({
+      ref,
+      label,
+      link_confidence: "strong",
+      relation: kind === "agency" ? "contracting agency" : "contractor",
+    }, {
+      source: {
+        kind: "procurement",
+        id: object?.procurement_id || "",
+        name: "Procurement",
+      },
+    });
+  }
+  const identifierKinds = new Set([
+    "canonical_contract_id", "pin_epin", "contract_reporter_number", "solicitation_id", "event_id",
+  ]);
+  if (identifierKinds.has(kind)) {
+    const href = procurementIdentifierSearchHref(label);
+    return href ? `<a class="ui-constellation-link procurement-identifier-link" href="${esc(href)}" data-search-key="${esc(label)}">${esc(label)}</a>` : esc(label);
+  }
+  return esc(entry?.value || label);
 }
 
 export function procurementContractWatchHref(procurementId) {
@@ -551,15 +597,17 @@ export function renderProcurementDocument(object = {}, observations = [], {
   // fetch, no second copy of the relation, and nothing to load at read time.
   const projectContextInspect = projectContext ? projectContextInspectSummary(projectContext) : null;
   const factRows = [
-    ["Agency", facts.agency], ["Vendor", facts.vendor], ["Amount", facts.amount], ["Award date", facts.awardDate],
+    ["Agency", facts.agency, "agency"], ["Vendor", facts.vendor, "vendor"], ["Amount", facts.amount], ["Award date", facts.awardDate],
     ["PASSPort contract number", facts.contractNumber], ["Method", facts.method],
     ["Program", facts.program], ["Industry", facts.industry],
     ["Contract start", facts.start_date || facts.startDate], ["Contract end", facts.end_date || facts.endDate],
     ["Registration date", facts.registrationDate],
-    ["Contract ID", object?.identity_keys?.contract_ids?.[0]], ["PIN / EPIN", object?.identity_keys?.epins?.[0]],
-    ["Contract Reporter number", object?.identity_keys?.contract_reporter_numbers?.[0]],
-    ["Solicitation", object?.identity_keys?.solicitation_ids?.[0]], ["Event", object?.identity_keys?.event_ids?.[0]],
-  ].filter(([, value]) => value).map(([label, value]) => `<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join("");
+    ["Contract ID", object?.identity_keys?.contract_ids?.[0] || facts.canonicalContractId, "canonical_contract_id"],
+    ["PIN / EPIN", object?.identity_keys?.epins?.[0] || facts.pinEpin, "pin_epin"],
+    ["Contract Reporter number", object?.identity_keys?.contract_reporter_numbers?.[0], "contract_reporter_number"],
+    ["Solicitation", object?.identity_keys?.solicitation_ids?.[0], "solicitation_id"],
+    ["Event", object?.identity_keys?.event_ids?.[0], "event_id"],
+  ].filter(([, value]) => value).map(([label, value, kind]) => `<div><dt>${esc(label)}</dt><dd>${kind ? procurementFactValue(facts, kind, value, object) : esc(value)}</dd></div>`).join("");
   const sourceItems = procurementOfficialSourceItems(object, observations);
   // Card "PPD-07": where the access classification says a field is reachable
   // only after signing in, or is carried by no public source this product
