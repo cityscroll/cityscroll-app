@@ -10,6 +10,7 @@ import { handleNl } from "./nl.mjs";
 import { handleCheckbook, handleForecast, handleForecastAccuracy } from "./checkbook.mjs";
 import { handleUsage } from "./usage.mjs";
 import { handleSubscribe } from "./subscribe.mjs";
+import { handleMonitorPackSubscribe } from "./monitor_packs.mjs";
 import { handleConfirm } from "./confirm.mjs";
 import { handleUnsubscribe } from "./unsubscribe.mjs";
 import { handlePrefs } from "./prefs.mjs";
@@ -174,6 +175,7 @@ export default {
     if (pathname === "/forecast/accuracy") return handleForecastAccuracy(request, env);
     if (pathname === "/usage") return handleUsage(request, env);
     if (pathname === "/subscribe") return handleSubscribe(request, env);
+    if (pathname === "/subscribe-pack") return handleMonitorPackSubscribe(request, env);
     if (pathname === "/confirm") return handleConfirm(request, env);
     if (pathname === "/unsubscribe") return handleUnsubscribe(request, env);
     if (pathname === "/prefs") return handlePrefs(request, env);

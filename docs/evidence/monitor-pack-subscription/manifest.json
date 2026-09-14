@@ -1,0 +1,24 @@
+{
+  "schema": "cityscroll.monitor_pack_subscription_evidence.v1",
+  "grounded_at": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+  "tests": {
+    "command": "node --test test/monitor_pack_subscription.test.mjs",
+    "passed": 6,
+    "failed": 0,
+    "letters": {
+      "A1": "pack payload preserves Money and Meetings child lenses and procurement_id, noticeType, communityBoard, text_query, subject_refs_all, and entity_refs_all",
+      "A2": "monitor-pack document action names the complete child set and cadence before POST /subscribe-pack",
+      "A3": "successful creation, replay, partial failure and retry, invalid child rejection, and serialized payloads are tested",
+      "A4": "strict admission rejects an invalid mixed filter instead of discarding its constraint"
+    }
+  },
+  "serialized_specimen": {
+    "pack_id": "housing-watch-set",
+    "children": [
+      { "label": "Money contract", "lens": "money", "filter_keys": ["procurement_id", "noticeType", "text_query", "subject_refs_all", "entity_refs_all"] },
+      { "label": "Meetings at Brooklyn CB15", "lens": "meetings", "filter_keys": ["communityBoard", "text_query", "subject_refs_all", "entity_refs_all"] }
+    ],
+    "replay_result": { "created": 0, "missing_children": [] },
+    "partial_retry_result": { "created": 1, "missing_children": [] }
+  }
+}
