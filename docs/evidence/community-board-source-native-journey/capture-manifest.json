@@ -1,0 +1,114 @@
+{
+  "schema": "cityscroll.community_board_source_native_journey_manifest.v1",
+  "repository_revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+  "read_on": "2026-09-14",
+  "data_vintage": "served route read-back on 2026-09-14",
+  "route_base": "https://cityscroll.org",
+  "source_url": "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page",
+  "assertions": [
+    {
+      "case": "board-to-event-preview-1440x900",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "data_vintage": "served route read-back on 2026-09-14",
+      "assertion": "board publishes the retained September 29 event identity as a canonical preview link",
+      "render_sha256": "9cb86f60487fc061c67896212a5bfdd3aa883d46709db3a3180ac4b7580da1ef",
+      "passed": true
+    },
+    {
+      "case": "event-preview-to-detail-1440x900",
+      "route": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2026-09-29%3Ageneral-board-meeting-in-person",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "data_vintage": "served route read-back on 2026-09-14",
+      "assertion": "the canonical event identity resolves to detail with the published title, date, and room",
+      "render_sha256": "48e47a758ca8ef5f1b0f4cfd9ade4d0b30638d2ad592652a5bf928e5dddd5487",
+      "passed": true
+    },
+    {
+      "case": "detail-to-official-source-1440x900",
+      "route": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2026-09-29%3Ageneral-board-meeting-in-person",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "data_vintage": "served route read-back on 2026-09-14",
+      "assertion": "canonical detail retains the exact official calendar destination",
+      "render_sha256": "48e47a758ca8ef5f1b0f4cfd9ade4d0b30638d2ad592652a5bf928e5dddd5487",
+      "passed": true
+    },
+    {
+      "case": "official-source-back-to-detail-1440x900",
+      "route": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2026-09-29%3Ageneral-board-meeting-in-person",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "data_vintage": "served route read-back on 2026-09-14",
+      "assertion": "opening the official source and pressing browser Back returns to the same canonical detail",
+      "render_sha256": "48e47a758ca8ef5f1b0f4cfd9ade4d0b30638d2ad592652a5bf928e5dddd5487",
+      "passed": true
+    },
+    {
+      "case": "board-to-event-preview-390x844",
+      "route": "/community-boards/brooklyn-cb-15/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "data_vintage": "served route read-back on 2026-09-14",
+      "assertion": "board publishes the retained September 29 event identity as a canonical preview link",
+      "render_sha256": "56d135e4a9dfdad391d0ece1de6e563fcb44baa613487831fc18af43d16f699c",
+      "passed": true
+    },
+    {
+      "case": "event-preview-to-detail-390x844",
+      "route": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2026-09-29%3Ageneral-board-meeting-in-person",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "data_vintage": "served route read-back on 2026-09-14",
+      "assertion": "the canonical event identity resolves to detail with the published title, date, and room",
+      "render_sha256": "48e47a758ca8ef5f1b0f4cfd9ade4d0b30638d2ad592652a5bf928e5dddd5487",
+      "passed": true
+    },
+    {
+      "case": "detail-to-official-source-390x844",
+      "route": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2026-09-29%3Ageneral-board-meeting-in-person",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "data_vintage": "served route read-back on 2026-09-14",
+      "assertion": "canonical detail retains the exact official calendar destination",
+      "render_sha256": "48e47a758ca8ef5f1b0f4cfd9ade4d0b30638d2ad592652a5bf928e5dddd5487",
+      "passed": true
+    },
+    {
+      "case": "official-source-back-to-detail-390x844",
+      "route": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2026-09-29%3Ageneral-board-meeting-in-person",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "dd81b0bacbc1d3f7765466be3f89f487181eaa70",
+      "data_vintage": "served route read-back on 2026-09-14",
+      "assertion": "opening the official source and pressing browser Back returns to the same canonical detail",
+      "render_sha256": "48e47a758ca8ef5f1b0f4cfd9ade4d0b30638d2ad592652a5bf928e5dddd5487",
+      "passed": true
+    }
+  ]
+}
