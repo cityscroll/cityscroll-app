@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /** Build/check the bounded LDP-11 Council exact-identifier land-bridge receipt. */
 
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -11,6 +11,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const MEETING_OUTCOMES_SNAPSHOT = path.join(ROOT, "site/data/meeting_outcomes_snapshot.json");
 const ZAP_PROJECTS = path.join(ROOT, "site/data/zap_projects_warehouse_lookup.json");
 const RECEIPT = path.join(ROOT, "warehouse/receipts/proof/council_land_bridge_latest.json");
+const HISTORICAL = path.join(ROOT, "site/data/historical_council_matter_observations.json");
 // Pinned to the measurement date: this receipt is a bounded point-in-time
 // reconciliation over already-committed inputs, not a live-refreshed feed,
 // so a re-run against the same committed inputs must reproduce byte-for-byte.
@@ -28,7 +29,8 @@ function stringify(value) {
 function build() {
   const snapshot = JSON.parse(readFileSync(MEETING_OUTCOMES_SNAPSHOT, "utf8"));
   const zap = JSON.parse(readFileSync(ZAP_PROJECTS, "utf8"));
-  const rows = flattenCouncilMatterRows(snapshot);
+  const historical = existsSync(HISTORICAL) ? JSON.parse(readFileSync(HISTORICAL, "utf8")) : [];
+  const rows = flattenCouncilMatterRows(snapshot, historical.rows || historical);
   return measureCouncilLandBridge({
     rows,
     zapRows: zap.rows,
@@ -41,6 +43,7 @@ function build() {
         absent_count: snapshot.absent_count,
       },
       zap_projects_warehouse_lookup_materialized_at: zap.materialized_at,
+      ...(existsSync(HISTORICAL) ? { historical_council_matter_observations_generated_at: historical.generated_at || null } : {}),
     },
   });
 }

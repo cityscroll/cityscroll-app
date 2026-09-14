@@ -34,6 +34,8 @@ export const MATTERS_PAGE_SIZE = 200;
 export const MATTERS_MAX_PAGES = 20;
 export const MATTER_HISTORIES_PAGE_SIZE = 100;
 export const MATTER_EVENT_ITEMS_PAGE_SIZE = 100;
+export const HISTORICAL_MATTER_PAGE_SIZE = 50;
+export const HISTORICAL_MATTER_MAX_PAGES = 2;
 
 export function parseRetryAfter(header, now = new Date()) {
   if (header == null || header === "") return null;
@@ -326,6 +328,62 @@ export async function fetchLegistarMatters({
 export async function fetchLegistarMatter({ matterId, token, fetchImpl = fetch } = {}) {
   if (!token || !matterId) return null;
   return fetchJson(fetchImpl, authedUrl(`Matters/${encodeURIComponent(matterId)}`, token));
+}
+
+/**
+ * Fetch a bounded set of publisher matters by their exact MatterFile values.
+ * This is an acquisition primitive for retained historical context; callers
+ * must still reject responses that do not contain exactly the requested key.
+ */
+export async function fetchLegistarMattersByFiles({
+  matterFiles = [],
+  token,
+  fetchImpl = fetch,
+  pageSize = HISTORICAL_MATTER_PAGE_SIZE,
+  maxPages = HISTORICAL_MATTER_MAX_PAGES,
+  timeoutMs = 15000,
+  now = new Date(),
+} = {}) {
+  const files = [...new Set((Array.isArray(matterFiles) ? matterFiles : [])
+    .map((file) => String(file ?? "").trim()).filter(Boolean))];
+  if (!token) return { ok: false, kind: "token-absent", status: 0, rows: [], files, complete: false, retryAfter: null };
+  const rows = [];
+  for (const matterFile of files) {
+    const result = await fetchLegistarPage({
+      path: "Matters",
+      token,
+      fetchImpl,
+      top: Math.max(1, Math.min(100, Number(pageSize) || HISTORICAL_MATTER_PAGE_SIZE)),
+      skip: 0,
+      filter: `MatterFile eq '${matterFile.replaceAll("'", "''")}'`,
+      orderby: "MatterId asc",
+      timeoutMs,
+      now,
+    });
+    if (!result.ok) return { ...result, files, rows: [], complete: false };
+    rows.push(...result.rows);
+    if (result.rows.length >= (Number(pageSize) || HISTORICAL_MATTER_PAGE_SIZE)) {
+      // A full page is deliberately not treated as a complete exact match.
+      // The normalizer will reject ambiguity; maxPages documents the bound.
+      for (let page = 1; page < Math.max(1, Math.min(4, Number(maxPages) || HISTORICAL_MATTER_MAX_PAGES)); page += 1) {
+        const next = await fetchLegistarPage({
+          path: "Matters",
+          token,
+          fetchImpl,
+          top: Math.max(1, Math.min(100, Number(pageSize) || HISTORICAL_MATTER_PAGE_SIZE)),
+          skip: page * (Number(pageSize) || HISTORICAL_MATTER_PAGE_SIZE),
+          filter: `MatterFile eq '${matterFile.replaceAll("'", "''")}'`,
+          orderby: "MatterId asc",
+          timeoutMs,
+          now,
+        });
+        if (!next.ok) return { ...next, files, rows: [], complete: false };
+        rows.push(...next.rows);
+        if (next.rows.length < (Number(pageSize) || HISTORICAL_MATTER_PAGE_SIZE)) break;
+      }
+    }
+  }
+  return { ok: true, kind: "ok", status: 200, rows, files, complete: true, retryAfter: null };
 }
 
 /** Fetch the available-for-web matter attachments for one enacted law. */

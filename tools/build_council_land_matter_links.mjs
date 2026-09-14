@@ -12,7 +12,7 @@
  * third before either is written.
  */
 
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -24,6 +24,7 @@ const MEETING_OUTCOMES_SNAPSHOT = path.join(ROOT, "site/data/meeting_outcomes_sn
 const ZAP_PROJECTS = path.join(ROOT, "site/data/zap_projects_warehouse_lookup.json");
 const BRIDGE_RECEIPT = path.join(ROOT, "warehouse/receipts/proof/council_land_bridge_latest.json");
 const LOOKUP = path.join(ROOT, "site/data/council_land_matter_links.json");
+const HISTORICAL = path.join(ROOT, "site/data/historical_council_matter_observations.json");
 
 function stable(value) {
   if (Array.isArray(value)) return value.map(stable);
@@ -37,10 +38,11 @@ function stringify(value) {
 function build() {
   const snapshot = JSON.parse(readFileSync(MEETING_OUTCOMES_SNAPSHOT, "utf8"));
   const zap = JSON.parse(readFileSync(ZAP_PROJECTS, "utf8"));
+  const historical = existsSync(HISTORICAL) ? JSON.parse(readFileSync(HISTORICAL, "utf8")) : [];
   const receiptText = readFileSync(BRIDGE_RECEIPT, "utf8");
   const receipt = JSON.parse(receiptText);
   const measurement = measureCouncilLandBridge({
-    rows: flattenCouncilMatterRows(snapshot),
+    rows: flattenCouncilMatterRows(snapshot, historical.rows || historical),
     zapRows: zap.rows,
     // The receipt owns the generation. Re-deriving it here would let this
     // artifact drift onto a second clock the receipt never saw.

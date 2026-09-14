@@ -52,7 +52,33 @@ function clean(value, max = 2000) {
  * @param {object} snapshot - `site/data/meeting_outcomes_snapshot.json` shape
  * @returns {object[]}
  */
-export function flattenCouncilMatterRows(snapshot = {}) {
+function normalizeHistoricalRow(raw = {}) {
+  const event = raw.event || {};
+  const eventId = raw.event_id ?? event.event_id ?? raw.EventId;
+  return {
+    request_id: clean(raw.request_id, 40) || null,
+    event: {
+      event_id: clean(eventId, 40) || null,
+      name: clean(raw.event_name ?? event.name, 240) || null,
+      date: clean(raw.action_date ?? raw.source_date ?? event.date, 40) || null,
+      url: clean(raw.event_url ?? event.url, 1000) || null,
+      documents: Array.isArray(raw.documents) ? raw.documents : (Array.isArray(event.documents) ? event.documents : []),
+    },
+    matter_id: clean(raw.matter_id, 40) || null,
+    matter_file: clean(raw.matter_file, 120) || null,
+    matter_url: clean(raw.matter_url, 1000) || null,
+    title: clean(raw.title, 2000) || null,
+    actions: Array.isArray(raw.actions) ? raw.actions.map((a) => clean(a, 240)).filter(Boolean) : [],
+    outcome: clean(raw.outcome, 240) || null,
+    votes: raw.votes && typeof raw.votes === "object" ? raw.votes : null,
+    documents: Array.isArray(raw.documents) ? raw.documents : [],
+    identity_granularity: raw.identity_granularity || "native",
+    source_date: clean(raw.source_date ?? raw.action_date, 40) || null,
+  };
+}
+
+/** Flatten rolling appearances plus already-retained historical observations. */
+export function flattenCouncilMatterRows(snapshot = {}, historicalRows = []) {
   const rows = [];
   for (const [requestId, notice] of Object.entries(snapshot?.by_notice || {})) {
     if (notice?.snapshot_state !== "present") continue;
@@ -77,6 +103,14 @@ export function flattenCouncilMatterRows(snapshot = {}) {
         documents: Array.isArray(matter?.documents) ? matter.documents : [],
       });
     }
+  }
+  const historical = Array.isArray(historicalRows)
+    ? historicalRows.map(normalizeHistoricalRow).filter((row) => row.matter_id)
+    : [];
+  const seen = new Set(rows.map((row) => `${row.matter_id}|${row.event?.event_id || ""}`));
+  for (const row of historical) {
+    const key = `${row.matter_id}|${row.event?.event_id || ""}`;
+    if (!seen.has(key)) rows.push(row);
   }
   return rows;
 }
