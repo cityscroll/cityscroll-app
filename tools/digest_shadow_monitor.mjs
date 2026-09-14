@@ -59,6 +59,11 @@ function digestShadowUnreachableReason({ response, report, summary, parseFailure
 }
 
 function digestShadowIssueBody({ healthy, upstream, unreachable, observed, redlines, incidents, report }) {
+  const quiet = (report?.summary?.observations || report?.observations || [])
+    .find((row) => row?.classification === "watermark exhaustion after backlog flush");
+  if (healthy && quiet) {
+    return `The digest shadow rehearsal is READY. It did not page because this run was classified as “${quiet.classification}.”\n\n${JSON.stringify({ classification: quiet.classification, evidence: sanitize(quiet.evidence) }, null, 2)}`;
+  }
   if (healthy) return "The digest shadow rehearsal is READY.";
   if (unreachable) {
     return `The digest shadow rehearsal could not be read: ${unreachable.detail}. Nothing is claimed about the digest itself.\n\n${JSON.stringify({ reason: unreachable.reason, route_error: sanitize(report?.error || null), detail: sanitize(report?.detail || null) }, null, 2)}`;

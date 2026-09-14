@@ -2,7 +2,7 @@
 // state advancement disabled, persist rendered previews in D1, and publish structured redlines.
 
 import { describeCollapse, mergeFunnels, normalizeFunnel } from "./lib/digest_funnel.mjs";
-import { dayLogBuiltItemTotal } from "./lib/digest_ops.mjs";
+import { dayLogBuiltItemTotal, isCatchUpDayLogEntry } from "./lib/digest_ops.mjs";
 import {
   DIGEST_SHADOW_DEGRADED_UPSTREAM,
   UPSTREAM_UNAVAILABLE,
@@ -28,6 +28,7 @@ const MIN_TRAILING_AVERAGE = 4;
 // backlog still sitting in a 7-day mean as an outage. Distinguish by the
 // funnel's collapsing stage, never by item count alone.
 export const QUIET_WATERMARK_CANDIDATE_FLOOR = 1;
+export const WATERMARK_BACKLOG_FLUSH_CLASSIFICATION = "watermark exhaustion after backlog flush";
 const WEEKDAY_MATCH_MIN_SAMPLES = 2;
 const WEEKDAY_MATCH_WEEKS = 4;
 
@@ -66,6 +67,28 @@ export function isQuietWatermarkCollapse(funnel, collapse = describeCollapse(fun
   return collapse?.stage === "watermark_fresh"
     && normalized.source_candidates >= QUIET_WATERMARK_CANDIDATE_FLOOR
     && normalized.items === 0;
+}
+
+/** Find a recorded recovery send in the trailing comparison window. */
+export function documentedBacklogFlush(history = [], day, windowDays = TRAILING_DAYS) {
+  const current = new Date(`${day}T00:00:00.000Z`).getTime();
+  if (!Number.isFinite(current)) return null;
+  for (const log of Array.isArray(history) ? history : []) {
+    const logDay = typeof log?.day === "string" ? log.day.slice(0, 10) : "";
+    const logTime = new Date(`${logDay}T00:00:00.000Z`).getTime();
+    const age = (current - logTime) / 86400000;
+    if (!Number.isFinite(logTime) || age < 0 || age >= windowDays) continue;
+    const entry = (Array.isArray(log.entries) ? log.entries : [])
+      .find((candidate) => candidate?.sent === true && isCatchUpDayLogEntry(candidate, log));
+    if (entry) {
+      return {
+        day: logDay,
+        sent_count: Number(log.sentCount) || 0,
+        item_count: dayLogBuiltItemTotal(log),
+      };
+    }
+  }
+  return null;
 }
 
 /**
@@ -349,9 +372,16 @@ export function buildDigestShadowSummary({
 
   const watchCounts = currentWatchCounts(results);
   const historicMax = historicalWatchMaximum(history);
+  // The classification must be backed by both sides of the explanation: the funnel says the
+  // candidates were consumed by the seen watermark, and the day log records the recovery send
+  // that legitimately populated that watermark during the trailing window.
+  const selectionFunnel = mergeFunnels(results.map((result) => result?.selection_funnel).filter(Boolean));
+  const collapse = describeCollapse(selectionFunnel);
+  const backlogFlush = documentedBacklogFlush(history, day);
+  const quietWatermark = isQuietWatermarkCollapse(selectionFunnel, collapse) && !!backlogFlush;
   for (const watch of watchCounts) {
     const previous = historicMax.get(watch.historical_id) || { count: 0, day: null };
-    if (watch.evaluation_state === "evaluated" && watch.item_count === 0 && previous.count > 0) {
+    if (watch.evaluation_state === "evaluated" && watch.item_count === 0 && previous.count > 0 && !quietWatermark) {
       redlines.push(redline(
         "historical_watch_zero",
         watch.digest_id,
@@ -374,9 +404,6 @@ export function buildDigestShadowSummary({
   // Selection funnel: how many candidates survived each narrowing step this run.
   // A bare "0 items" cannot distinguish an empty source read from a watermark that
   // has already absorbed the whole candidate window; these counts can.
-  const selectionFunnel = mergeFunnels(results.map((result) => result?.selection_funnel).filter(Boolean));
-  const collapse = describeCollapse(selectionFunnel);
-
   // Like for like. The rehearsal totals every item it built, delivered or not, new notices and
   // forecasts together. `totalNotices` totals new notices on delivered entries only, so a day
   // with holds, caps or a rejecting provider records fewer items than it built — and comparing
@@ -397,15 +424,15 @@ export function buildDigestShadowSummary({
   // that built fewer items than usual. Raising a second, differently-worded finding for the same
   // outage would only put a name on it that points at us.
   const aggregateComparable = upstreamIncidents.length === 0;
-  const quietWatermark = isQuietWatermarkCollapse(selectionFunnel, collapse);
   if (quietWatermark) {
     // Informational: candidates were present and the seen watermark already held them.
     // This is not an attention redline and it does not hold anyone's mail.
     observations.push({
       code: "quiet_watermark",
       severity: "info",
+      classification: WATERMARK_BACKLOG_FLUSH_CLASSIFICATION,
       stage: collapse.stage,
-      reason: collapse.reason,
+      reason: WATERMARK_BACKLOG_FLUSH_CLASSIFICATION,
       evidence: {
         source_candidates: selectionFunnel.source_candidates,
         watermark_fresh: selectionFunnel.watermark_fresh,
@@ -413,6 +440,7 @@ export function buildDigestShadowSummary({
         trailing_average: trailingAverage,
         trailing_baseline: trailingBaseline,
         trailing_baseline_method: baseline.method,
+        backlog_flush: backlogFlush,
       },
     });
   } else if (trailingBaseline != null && trailingBaseline >= MIN_TRAILING_AVERAGE && aggregateComparable) {
