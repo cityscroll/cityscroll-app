@@ -974,13 +974,28 @@ function resourceTaskMarkup(task) {
   const link = href
     ? officialSourceLink({ href, label: task.task === "calendar" ? "Open official calendar" : `Open ${label.toLowerCase()}`, className: "board-source-link", escape: esc })
     : "";
+  const contactFacts = task.task === "contact" ? task.contact_facts || {} : {};
+  const telephone = contactFacts.office_telephone?.value
+    ? `<a href="tel:${esc(contactFacts.office_telephone.value)}">${esc(contactFacts.office_telephone.value)}</a>`
+    : "";
+  const mailbox = contactFacts.mailbox?.value
+    ? `<a href="mailto:${esc(contactFacts.mailbox.value)}">${esc(contactFacts.mailbox.value)}</a>`
+    : "";
+  const contactSource = contactFacts.office_telephone?.source_url || contactFacts.mailbox?.source_url;
+  const contactObserved = contactFacts.office_telephone?.retrieved_at || contactFacts.mailbox?.retrieved_at;
+  const contactDetails = [
+    telephone ? `Office phone: ${telephone}` : "",
+    mailbox ? `Email: ${mailbox}` : "",
+    contactSource ? officialSourceLink({ href: contactSource, label: "Open contact source", className: "board-source-link", escape: esc }) : "",
+    contactObserved ? `Source observed ${esc(String(contactObserved).slice(0, 10))}` : "",
+  ].filter(Boolean).join(" · ");
   const fallback = task.fallback?.url
     ? `<span class="board-resource-fallback">Fallback: ${officialSourceLink({ href: task.fallback.url, label: task.fallback.task === "contact_fallback" ? "City directory entry" : "Open fallback", className: "board-source-link", escape: esc })}</span>`
     : "";
   const attribution = [task.publisher, task.observed_on ? `destination observed ${task.observed_on}` : ""]
     .filter(Boolean)
     .join(" · ");
-  return `<li class="node-record board-resource-task" data-community-board-resource-task="${esc(task.task)}" data-resource-status="${esc(task.status || "unknown")}"><div class="node-record-main"><strong>${esc(label)}</strong> ${link}</div>${fallback ? `<span class="muted node-muted">${fallback}</span>` : ""}${attribution ? `<span class="muted node-muted">${esc(attribution)}</span>` : ""}</li>`;
+  return `<li class="node-record board-resource-task" data-community-board-resource-task="${esc(task.task)}" data-resource-status="${esc(task.status || "unknown")}"><div class="node-record-main"><strong>${esc(label)}</strong> ${link}</div>${contactDetails ? `<span class="muted node-muted">${contactDetails}</span>` : ""}${fallback ? `<span class="muted node-muted">${fallback}</span>` : ""}${attribution ? `<span class="muted node-muted">${esc(attribution)}</span>` : ""}</li>`;
 }
 
 function renderCommunityBoardResourceSection(tasks = []) {
