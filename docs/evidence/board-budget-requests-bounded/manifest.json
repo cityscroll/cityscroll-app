@@ -1,8 +1,11 @@
 {
   "schema": "cityscroll.board_budget_requests_bounded_manifest.v1",
-  "grounded_at": "aa34c9481ad843030719eceb026dbdebdb2db054",
+  "grounded_at": "d01aab62ffc0e0e90e219c7f1bcd882a090872ab",
   "source": "site/data/community_board_budget_register/brooklyn-cb-15.json",
-  "fixture": "test/fixtures/community_board_budget_requests/dense-long-title.json",
+  "fixture": [
+    "test/fixtures/community_board_budget_requests/dense-long-title.json",
+    "test/fixtures/community_board_budget_requests/navigation-behaviors.json"
+  ],
   "image_policy": "Textual manifests are committed evidence; no image binary is committed.",
   "captures": [
     {
@@ -31,14 +34,53 @@
       "proof": "test/fixtures/community_board_budget_requests/dense-long-title.json and test/community_board_request_responses.test.mjs :: the dense long-title fixture keeps exact source text behind the same bounded address"
     }
   ],
-  "navigation_proof": {
-    "group_anchor_opens_collapsed_content": true,
-    "request_anchor_opens_containing_group": true,
-    "native_inspect_dismiss_focus_return": true,
-    "no_script_complete_path": true,
-    "print_complete_path": true,
-    "keyboard_and_translation_coverage": true,
-    "failed_detail_recovery": true,
-    "source": "test/community_board_request_responses.test.mjs"
-  }
+  "acceptance_assertions": {
+    "A3": {
+      "assertion": "Existing request anchors reveal their containing collapsed group without scripting, while native dismissal returns focus and print exposes the complete request reading.",
+      "artifact": "test/community_board_request_responses.test.mjs",
+      "fixture": "test/fixtures/community_board_budget_requests/navigation-behaviors.json"
+    },
+    "A4": {
+      "assertion": "The CB15 and long-title fixtures exercise keyboard containment, translated source-text preservation, failed-detail recovery, and the disclosure and anchor counts as executable assertions.",
+      "artifact": "test/community_board_request_responses.test.mjs",
+      "fixture": "test/fixtures/community_board_budget_requests/navigation-behaviors.json"
+    }
+  },
+  "navigation_proof": [
+    {
+      "id": "group-anchor-opens-collapsed-content",
+      "assertion": "A group fragment reveals its collapsed request list through the stylesheet target rule.",
+      "artifact": "test/community_board_request_responses.test.mjs :: CB15 opens as a bounded FY2027 agency summary"
+    },
+    {
+      "id": "request-anchor-opens-containing-group",
+      "assertion": "A request fragment reveals its containing collapsed group through the stylesheet target rule.",
+      "artifact": "test/community_board_request_responses.test.mjs :: CB15 opens as a bounded FY2027 agency summary"
+    },
+    {
+      "id": "native-inspect-dismiss-focus-return",
+      "assertion": "Native inspection opens the selected request and dismissal returns focus to its invoking control.",
+      "artifact": "test/community_board_request_responses.test.mjs :: dismissing returns focus to the control it was opened from"
+    },
+    {
+      "id": "no-script-complete-path",
+      "assertion": "Without scripting, the rendered row still carries the request, explanation, and dated answers.",
+      "artifact": "test/community_board_request_responses.test.mjs :: a document with no scripting at all still carries every fact"
+    },
+    {
+      "id": "print-complete-reading-path",
+      "assertion": "Print hides disclosure controls and exposes every collapsed request list.",
+      "artifact": "test/community_board_request_responses.test.mjs :: print keeps the complete request reading path"
+    },
+    {
+      "id": "keyboard-and-translation-coverage",
+      "assertion": "Keyboard dismissal and focus containment work on the fallback path, while translated surfaces retain publisher source text and direction metadata.",
+      "artifact": "test/community_board_request_responses.test.mjs :: keyboard inspection and translated source text"
+    },
+    {
+      "id": "failed-detail-recovery",
+      "assertion": "An unreadable register remains an explicit failure with a retry path rather than becoming an empty request list.",
+      "artifact": "test/community_board_request_responses.test.mjs :: a register that could not be read is a stated failure, never an empty list"
+    }
+  ]
 }

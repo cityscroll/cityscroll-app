@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.community_board_budget_requests_navigation_fixture.v1",
+  "cases": [
+    {
+      "id": "native-inspect-dismiss-focus-return",
+      "artifact": "test/community_board_request_responses.test.mjs :: dismissing returns focus to the control it was opened from",
+      "assertion": "Native inspection opens the selected request, and dismissing it returns focus to the invoking control without changing the board scope."
+    },
+    {
+      "id": "print-complete-reading-path",
+      "artifact": "test/community_board_request_responses.test.mjs :: print keeps the complete request reading path",
+      "assertion": "Print hides disclosure controls and exposes every collapsed request list so the complete reading remains available without scripting."
+    },
+    {
+      "id": "keyboard-and-translation-coverage",
+      "artifact": "test/community_board_request_responses.test.mjs :: keyboard inspection and translated source text",
+      "assertion": "Keyboard dismissal and focus containment work on the fallback path, while translated surfaces retain the publisher's source text and direction metadata."
+    },
+    {
+      "id": "failed-detail-recovery",
+      "artifact": "test/community_board_request_responses.test.mjs :: failed detail keeps the recovery path",
+      "assertion": "An unreadable register renders an explicit failure state with a retry path and does not become an empty request list."
+    }
+  ]
+}

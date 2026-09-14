@@ -4904,6 +4904,17 @@ select {
   display: none;
 }
 
+@media print {
+  .board-budget-request-group-open,
+  .board-budget-request-group-close {
+    display: none !important;
+  }
+
+  .board-budget-request-group[data-budget-request-group-collapsed] > .board-budget-request-list {
+    display: grid !important;
+  }
+}
+
 .board-budget-request-group-open,
 .board-budget-request-group-close {
   display: inline-block;
