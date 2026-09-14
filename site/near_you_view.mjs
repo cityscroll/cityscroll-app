@@ -17,6 +17,7 @@ import {
   watchFromScope,
 } from "./scope_v0.mjs";
 import { ACTION_LOCATION_BASIS_LABELS } from "./contract_action_location.mjs";
+import { civicGeographyKey } from "./civic_geography_registry.mjs";
 import { scopeWithPlace } from "./near_you_scope_runtime.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
 import { migrateLegacyUrl } from "./route_migration.mjs";
@@ -136,6 +137,24 @@ function effectiveTimeWindow(scope, builtAt) {
   return { start, end };
 }
 
+function selectedMembership(record = {}, scope = {}) {
+  const memberships = record?.place?.geographies || [];
+  const explicit = scope.place?.geographies || [];
+  const keys = explicit.length ? explicit : [
+    first(scope.place?.community_districts) && civicGeographyKey("community_district", first(scope.place.community_districts)),
+    first(scope.place?.council_districts) && civicGeographyKey("council_district", first(scope.place.council_districts)),
+    first(scope.place?.boroughs) && ({ Manhattan: "1", Bronx: "2", Brooklyn: "3", Queens: "4", "Staten Island": "5" }[first(scope.place.boroughs)]
+      ? civicGeographyKey("borough", { Manhattan: "1", Bronx: "2", Brooklyn: "3", Queens: "4", "Staten Island": "5" }[first(scope.place.boroughs)])
+      : null),
+  ].filter(Boolean);
+  return keys.map((key) => memberships.find((membership) => membership.key === key)).find(Boolean) || null;
+}
+
+function membershipRole(record, scope) {
+  const membership = selectedMembership(record, scope);
+  return membership?.location_role || placeRoleForBasis(membership?.basis || record?.basis);
+}
+
 function recordMatches(record, scope, builtAt) {
   const lens = first(scope.facets.domains) || "meetings";
   const requestedPlaceRole = scope.facets.values?.place_role;
@@ -144,7 +163,7 @@ function recordMatches(record, scope, builtAt) {
   // district-specific evidence (citywide, virtual, unlocated, weak fallback) never satisfies
   // a specific role — see PS-02 acceptance A4-A6.
   if (requestedPlaceRole && PLACE_ROLES.includes(requestedPlaceRole) && placeRoleSupportedForDomain(lens)
-    && placeRoleForBasis(record.basis) !== requestedPlaceRole) return false;
+    && membershipRole(record, scope) !== requestedPlaceRole) return false;
   const agency = first(scope.facets.agencies);
   if (agency && String(record.agency || "").toLowerCase() !== agency.toLowerCase()) return false;
   const type = scope.facets.values?.type || scope.facets.values?.noticeType;
