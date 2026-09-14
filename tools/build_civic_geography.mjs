@@ -26,6 +26,7 @@ import {
   normalizePolicePrecinctSource,
   normalizeSanitationDistrictSource,
 } from "./lib/civic_geography_source_adapters.mjs";
+import { contentDigest } from "./lib/source_content_digest.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE_REGISTRY = join(ROOT, "site/data/geography/layer_registry.json");
@@ -61,8 +62,8 @@ const SOURCE_SPECS = Object.freeze({
     dataset_id: "i6mn-amj2",
     dataset_name: "DSNY Districts",
     source_url: "https://data.cityofnewyork.us/resource/i6mn-amj2.geojson?$limit=100",
-    boundary_vintage: "2026-09-13",
-    source_updated_at: "2026-09-13T10:08:47.000Z",
+    boundary_vintage: "2026-09-14",
+    source_updated_at: "2026-09-14T10:12:41.000Z",
     input: "dsny.geojson",
     acquisition: "dsny.geojson",
   },
@@ -197,7 +198,7 @@ function writeText(path, text) {
   writeFileSync(path, text);
 }
 
-function sourceReceipt(type, pair, spec, sourceFiles, diagnostics, builtAt) {
+function sourceReceipt(type, pair, spec, sourceFiles, diagnostics, builtAt, sourceRows) {
   const acquisition = readFileSync(sourceFiles.acquisition);
   const input = readFileSync(sourceFiles.input);
   const paths = artifactPaths(type, pair.full.vintage.id);
@@ -219,6 +220,14 @@ function sourceReceipt(type, pair, spec, sourceFiles, diagnostics, builtAt) {
       bytes: acquisition.byteLength,
       source_feature_count: pair.full.feature_count + rejected.length,
     },
+    ...(type === "sanitation_district" ? {
+      content_digest: {
+        schema: "cityscroll.source_content_digest.v1",
+        algorithm: "sha256",
+        required_fields: ["district", "districtcode", "objectid", "multipolygon"],
+        digest: contentDigest(sourceRows.features || sourceRows, ["district", "districtcode", "objectid", "multipolygon"]),
+      },
+    } : {}),
     normalized_input: {
       format: "GeoJSON",
       crs: "EPSG:4326",
@@ -286,6 +295,7 @@ export function writeFirstFour({ sourceDir, builtAt }) {
       files[type],
       built.diagnostics[type],
       builtAt,
+      sources[type],
     );
     writeText(join(ROOT, paths.full), jsonText(pair.full));
     writeText(join(ROOT, paths.site), jsonText(pair.simplified));

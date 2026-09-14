@@ -175,6 +175,23 @@ function validateStableReference(label, freshness) {
   return errors;
 }
 
+function validateRepublishContentCheck(label, freshness) {
+  const check = freshness.republish_content_check;
+  if (check === undefined) return [];
+  const errors = [];
+  if (!check || typeof check !== "object") {
+    errors.push(`${label}: freshness_contract.republish_content_check must be an object`);
+    return errors;
+  }
+  if (check.mode !== "content_digest") {
+    errors.push(`${label}: freshness_contract.republish_content_check.mode must be content_digest`);
+  }
+  if (typeof check.artifact_path !== "string" || !check.artifact_path.trim()) {
+    errors.push(`${label}: freshness_contract.republish_content_check.artifact_path must be a path`);
+  }
+  return errors;
+}
+
 export function validateSourceContracts(registry) {
   const errors = [];
   if (registry?.schema_version !== 1) errors.push("schema_version must be 1");
@@ -236,6 +253,7 @@ export function validateSourceContracts(registry) {
       errors.push(...validatePublisherVintageField(label, contract, freshness));
       errors.push(...validateRetainedVintage(label, freshness));
       errors.push(...validateStableReference(label, freshness));
+      errors.push(...validateRepublishContentCheck(label, freshness));
     }
 
     const healthPolicy = contract.health_policy;

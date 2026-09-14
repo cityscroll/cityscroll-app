@@ -15,6 +15,7 @@ import {
   verifyCodeReferences,
 } from "../tools/source_contracts.mjs";
 import {
+  contentDigest,
   formatFetchError,
   freshnessLimit,
   verifyCheckbook,
@@ -508,6 +509,57 @@ test("a stable-reference pin gates on the publisher republishing, not on elapsed
   await assert.rejects(verifySocrata(contract), /publisher republished .*re-acquire the retained snapshot/s);
 });
 
+test("a same-content Socrata republish is affirmed without opening drift, while changed content still drifts", async (t) => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  const retainedRows = [
+    { district: "MN01", districtcode: "1", objectid: "10", multipolygon: { type: "MultiPolygon", coordinates: [[[1]]] } },
+    { district: "MN02", districtcode: "2", objectid: "20", multipolygon: { type: "MultiPolygon", coordinates: [[[2]]] } },
+  ];
+  const contract = {
+    id: "field-case",
+    domain: "https://data.example.gov",
+    dataset_id: "aaaa-bbbb",
+    required_fields: ["district", "districtcode", "objectid", "multipolygon"],
+    freshness_contract: {
+      mode: "periodic",
+      clock_basis: "publisher_updated",
+      stable_reference: {
+        publisher_updated_at: "2026-09-13T10:00:00Z",
+        retained_vintage_at: "2026-09-13T10:00:00Z",
+        observed_on: "2026-09-13",
+        method: "pin the publisher stamp",
+        evidence: "retained rows",
+        recheck: "re-acquire and compare",
+      },
+      republish_content_check: { mode: "content_digest" },
+    },
+  };
+  const retainedReceipt = {
+    content_digest: {
+      schema: "cityscroll.source_content_digest.v1",
+      algorithm: "sha256",
+      digest: contentDigest(retainedRows, contract.required_fields),
+    },
+  };
+  const metadata = (rowsUpdatedAt) => socrataMetadata({
+    rowsUpdatedAt: rowsUpdatedAt / 1000,
+    fields: contract.required_fields,
+  });
+  globalThis.fetch = async (url) => String(url).includes("/api/views/")
+    ? metadata(Date.UTC(2026, 8, 14, 10))
+    : new Response(JSON.stringify(retainedRows), { status: 200, headers: { "Content-Type": "application/json" } });
+  const affirmed = await verifySocrata(contract, { retainedReceipt });
+  assert.match(affirmed, /republished, content unchanged/);
+
+  const changedRows = structuredClone(retainedRows);
+  changedRows[1].district = "MN99";
+  globalThis.fetch = async (url) => String(url).includes("/api/views/")
+    ? metadata(Date.UTC(2026, 8, 14, 10))
+    : new Response(JSON.stringify(changedRows), { status: 200, headers: { "Content-Type": "application/json" } });
+  await assert.rejects(verifySocrata(contract, { retainedReceipt }), /publisher republished .*re-acquire the retained snapshot/);
+});
+
 test("a stable-reference pin must name a publisher vintage we actually retain", () => {
   const registry = loadSourceContracts();
   const dsny = registry.contracts.find((row) => row.id === "dsny-district-boundaries");
@@ -517,8 +569,8 @@ test("a stable-reference pin must name a publisher vintage we actually retain", 
   const geography = readFileSync(new URL("../site/civic_geography_registry.mjs", import.meta.url), "utf8");
   assert.ok(geography.includes("dsny-district-boundaries"));
   const retained = readFileSync(new URL("../tools/build_civic_geography.mjs", import.meta.url), "utf8");
-  assert.match(retained, /source_updated_at: "2026-09-13T10:08:47\.000Z"/);
-  assert.equal(Date.parse(pin.publisher_updated_at), Date.parse("2026-09-13T10:08:47.000Z"));
+  assert.match(retained, /source_updated_at: "2026-09-14T10:12:41\.000Z"/);
+  assert.equal(Date.parse(pin.publisher_updated_at), Date.parse("2026-09-14T10:12:41.000Z"));
 
   const drifted = structuredClone(registry);
   const target = drifted.contracts.find((row) => row.id === "dsny-district-boundaries");

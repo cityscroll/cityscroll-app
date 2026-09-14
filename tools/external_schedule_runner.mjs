@@ -137,6 +137,17 @@ function sourceHealthy(output) {
   return [...output.matchAll(/^ok ([a-z0-9-]+):/gm)].map((match) => match[1]);
 }
 
+function sourceObservations(output) {
+  const observations = new Map();
+  for (const match of output.matchAll(/^observation (\{.*\})$/gm)) {
+    try {
+      const observation = JSON.parse(match[1]);
+      if (observation?.id) observations.set(observation.id, observation);
+    } catch { /* malformed optional metadata never hides the health result */ }
+  }
+  return observations;
+}
+
 /**
  * The live verifier prints a machine-readable companion line for every
  * freshness error. It carries both clocks — the publisher's own updated stamp
@@ -191,6 +202,7 @@ async function runSourceContracts(job, context) {
   const output = `${resultRun.stdout}${resultRun.stderr}`;
   const failures = sourceFailures(output);
   const healthy = sourceHealthy(output);
+  const observations = sourceObservations(output);
   const findings = sourceFindings(output);
   const observed = new Date().toISOString();
   const receipts = [
@@ -200,8 +212,11 @@ async function runSourceContracts(job, context) {
       observed_at: observed,
       status: "succeeded",
       run_id: `${context.runKey}:${id}`,
-      publisher_clock_basis: null,
-      publisher_updated_at: null,
+      publisher_clock_basis: observations.get(id)?.publisher_clock_basis ?? null,
+      publisher_updated_at: observations.get(id)?.publisher_updated_at ?? null,
+      ...(observations.get(id)?.status === "affirmed"
+        ? { pin_status: "affirmed", content_digest: observations.get(id).content_digest }
+        : {}),
       clock_kind: "check",
     })),
     ...failures.map((failure) => ({
