@@ -8,13 +8,18 @@ import {
   mapContractRow,
   reconcilePassportPopulations,
 } from "../worker/src/lib/passport_parse.mjs";
+import { testClockISOString, withPinnedClock } from "./helpers/test_clock.mjs";
 
 const ACQUIRED_AT = "2026-09-07T12:00:00Z";
 
-function cells({ ctr, epin, contract, title, vendor, type, method, amount, registration }) {
+function cells({
+  ctr, epin, contract, title, vendor, type, method, amount, registration,
+  award = amount, current = amount, encumbered = amount, paid = amount,
+  start = "09/01/2026", end = "08/31/2027",
+}) {
   return [
     ctr, epin, contract, title, "TEST AGENCY", vendor, "TEST PROGRAM", method,
-    type, "Registered", amount, amount, amount, amount, "09/01/2026", "08/31/2027",
+    type, "Registered", award, current, encumbered, paid, start, end,
     registration, "Goods", "", "", "", "",
   ];
 }
@@ -47,22 +52,23 @@ const tameer = tameerIds.map((ctr, index) => contractRow({
 }));
 
 const aha = contractRow({
-  ctr: "5778239", epin: "CT105720278802113", contract: "FMS-AHA-1",
+  ctr: "5778239", epin: "05727U0002001", contract: "CT1-057-20278802113",
   title: "057270000251- AHA MATERIALS FOR TRAINING, EMS ACADEMY (EMS TRAINING FT TOTTEN)",
-  vendor: "AMERICAN HEART ASSOCIATION INC", type: "Original", method: "Subscription",
-  amount: "$46,673.32", registration: "09/07/2026",
+  vendor: "AMERICAN HEART ASSOCIATION INC", type: "General Contract (CT1)", method: "Subscription",
+  amount: "$46,673.32", paid: "$0.00", registration: "09/07/2026",
+  start: "08/21/2026", end: "06/30/2027",
 });
 
-function modelFor(rows) {
+function modelFor(rows, acquiredAt = testClockISOString()) {
   const records = procurementSourceRecordsFromMaterializations({
-    generated_at: ACQUIRED_AT,
+    generated_at: acquiredAt,
     rows: { passport_contracts: rows },
   }, { rows: [] });
   return buildSharedProcurementReadModel({
     sourceRecords: records,
     lifecycleRows: [],
-    generatedAt: ACQUIRED_AT,
-    now: ACQUIRED_AT,
+    generatedAt: acquiredAt,
+    now: acquiredAt,
   });
 }
 
@@ -86,10 +92,14 @@ test("A1 retains complete Firematic and TAMEER action families with source field
   assert.deepEqual(firematicObject.passport_action_family.actions.map((row) => row.action_role), ["base", "action"]);
 });
 
-test("A2 serves AHA without a City Record lifecycle match", () => {
-  const model = modelFor([aha]);
+test("A2 serves AHA without a City Record lifecycle match", async () => {
+  const model = await withPinnedClock(ACQUIRED_AT, () => modelFor([aha]));
   assert.equal(model.rows.length, 1);
+  assert.equal(model.rows[0].procurement_id, "procurement:contract:CT105720278802113");
   assert.equal(model.rows[0].lifecycle, null);
+  assert.deepEqual(model.rows[0].source_observation_refs, [
+    "passport_public_contracts:contract:05727U0002001:5778239",
+  ]);
   const html = renderProcurementDocument(model.rows[0], model.observations);
   assert.match(html, /AHA MATERIALS FOR TRAINING/);
   assert.match(html, /46,673\.32/);
@@ -118,10 +128,13 @@ test("A3 is order-independent and keeps population stages explicit", () => {
   assert.throws(() => reconcilePassportPopulations({ rejectedRows: [{}] }), /requires a reason/);
 });
 
-test("A4 carries acquisition vintage through builder and detail-loader inputs offline", () => {
-  const model = modelFor([aha]);
-  assert.equal(model.generated_at, ACQUIRED_AT);
-  assert.equal(model.observations[0].ingested_at, ACQUIRED_AT);
+test("A4 carries acquisition vintage through builder and detail-loader inputs offline", async () => {
+  const { model, acquiredAt } = await withPinnedClock(ACQUIRED_AT, () => {
+    const acquiredAt = testClockISOString();
+    return { model: modelFor([aha], acquiredAt), acquiredAt };
+  });
+  assert.equal(model.generated_at, acquiredAt);
+  assert.equal(model.observations[0].ingested_at, acquiredAt);
   const html = renderProcurementDocument(model.rows[0], model.observations);
   assert.match(html, /2026-09-07T12:00:00Z|2026-09-07/);
 });
