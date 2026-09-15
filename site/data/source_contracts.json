@@ -1977,7 +1977,7 @@
       "required_fields": ["district", "districtcode", "objectid", "multipolygon"],
       "max_stale_days": 730,
       "publisher_cadence": "Publisher-managed. Socrata metadata declares a monthly automated update; sanitation-district geometry changes only when a district is redrawn",
-      "product_freshness": "The 2026-09-14 geometry clock is retained independently from DCP Community Districts and checked as an equivalence/drift canary.",
+      "product_freshness": "The 2026-09-15 geometry clock is retained independently from DCP Community Districts and checked as an equivalence/drift canary.",
       "used_for": "Backstage-only sanitation-district ingestion, MapPLUTO QA, and DSNY-to-Community-District congruence drift measurement.",
       "code_references": [
         { "path": "tools/build_civic_geography.mjs", "contains": "i6mn-amj2" },
@@ -1989,16 +1989,16 @@
         "max_stale_days": 730,
         "clock_basis": "publisher_updated",
         "stable_reference": {
-          "publisher_updated_at": "2026-09-14T10:12:41Z",
-          "retained_vintage_at": "2026-09-14T10:12:41Z",
-          "observed_on": "2026-09-14",
+          "publisher_updated_at": "2026-09-15T10:18:58Z",
+          "retained_vintage_at": "2026-09-15T10:18:58Z",
+          "observed_on": "2026-09-15",
           "method": "Pin the publisher's own updated stamp and retain the geometry taken from it, so the gate is whether the publisher has republished rather than how many days have passed",
-          "evidence": "Socrata rowsUpdatedAt for i6mn-amj2 read 1789380761 (2026-09-14T10:12:41Z) on 2026-09-14. The re-acquired GeoJSON retained 59 features with the same required fields, canonical IDs, and source-property keys as the prior snapshot; site/civic_geography_registry.mjs continues to consume district, districtcode, objectid, and multipolygon through the existing adapter.",
+          "evidence": "Socrata rowsUpdatedAt for i6mn-amj2 read 1789467538 (2026-09-15T10:18:58Z) on 2026-09-15. The re-acquired GeoJSON retained 59 features with the same required fields, canonical IDs, and source-property keys as the prior snapshot; site/civic_geography_registry.mjs continues to consume district, districtcode, objectid, and multipolygon through the existing adapter.",
           "recheck": "When rowsUpdatedAt moves off this pin the check fails and names the new stamp; re-acquire the GeoJSON, compare its required fields and canonical IDs, then re-run tools/build_civic_geography.mjs and re-pin both fields to the vintage actually retained."
         },
         "republish_content_check": {
           "mode": "content_digest",
-          "artifact_path": "data/geography/receipts/sanitation_district/2026-09-14.json"
+          "artifact_path": "data/geography/receipts/sanitation_district/2026-09-15.json"
         },
         "serving_max_age_days": 730,
         "serve_contract_id": null

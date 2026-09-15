@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.geography_layer_registry.v1",
-  "generated_at": "2026-09-14T10:12:41.000Z",
+  "generated_at": "2026-09-15T10:18:58.000Z",
   "layers": [
     {
       "type": "borough",
@@ -325,9 +325,9 @@
         "dataset_id": "i6mn-amj2",
         "dataset_name": "DSNY Districts",
         "url": "https://data.cityofnewyork.us/resource/i6mn-amj2.geojson?$limit=100",
-        "updated_at": "2026-09-14T10:12:41.000Z"
+        "updated_at": "2026-09-15T10:18:58.000Z"
       },
-      "boundary_vintage": "2026-09-14",
+      "boundary_vintage": "2026-09-15",
       "cardinality": "exactly_one_on_covered_land",
       "coverage": {
         "status": "complete",
@@ -346,21 +346,21 @@
         "qa"
       ],
       "receipt": {
-        "path": "data/geography/receipts/sanitation_district/2026-09-14.json",
-        "sha256": "2901d697542db79a329b2729ae4a813f56ebf12a067f6354886a43796b34fd87"
+        "path": "data/geography/receipts/sanitation_district/2026-09-15.json",
+        "sha256": "77ccca317eed087917eeea3fdb0aae635a39c28a52e55489b5c49c7469b589aa"
       },
       "artifacts": {
         "full": {
-          "path": "data/geography/layers/sanitation_district/2026-09-14.full.json",
-          "sha256": "a9a0aacf0bf959761aedf3fcad93f913c9d0540728bde8c2793dbd22b75dd248",
-          "bytes": 2054461,
+          "path": "data/geography/layers/sanitation_district/2026-09-15.full.json",
+          "sha256": "c1ad13ba1aace06ce70b1d9ed378e192d683d52d90c3ca3163675f11e9919a5d",
+          "bytes": 2054531,
           "geometry_fidelity": "full"
         },
         "simplified": {
-          "site_path": "site/data/geography/layers/sanitation_district/2026-09-14.json",
-          "worker_path": "worker/src/data/geography/layers/sanitation_district/2026-09-14.json",
-          "sha256": "f2fc73a42ca8296661cb16d8fb4c0c2e9b21864d1023d885c9d3a9ed7a00920a",
-          "bytes": 87639,
+          "site_path": "site/data/geography/layers/sanitation_district/2026-09-15.json",
+          "worker_path": "worker/src/data/geography/layers/sanitation_district/2026-09-15.json",
+          "sha256": "e9309a7e6d8daffd80c8cabfc4c85f9f08d21abcb76345184edd73f2a5dc0bbe",
+          "bytes": 87709,
           "geometry_fidelity": "simplified"
         }
       }

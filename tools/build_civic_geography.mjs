@@ -62,8 +62,8 @@ const SOURCE_SPECS = Object.freeze({
     dataset_id: "i6mn-amj2",
     dataset_name: "DSNY Districts",
     source_url: "https://data.cityofnewyork.us/resource/i6mn-amj2.geojson?$limit=100",
-    boundary_vintage: "2026-09-14",
-    source_updated_at: "2026-09-14T10:12:41.000Z",
+    boundary_vintage: "2026-09-15",
+    source_updated_at: "2026-09-15T10:18:58.000Z",
     input: "dsny.geojson",
     acquisition: "dsny.geojson",
   },
@@ -262,10 +262,10 @@ function sourceReceipt(type, pair, spec, sourceFiles, diagnostics, builtAt, sour
   };
 }
 
-function sourcesFromDirectory(sourceDir) {
+function sourcesFromDirectory(sourceDir, types = FIRST_FOUR) {
   const sources = {};
   const files = {};
-  for (const type of FIRST_FOUR) {
+  for (const type of types) {
     const spec = SOURCE_SPECS[type];
     const input = join(sourceDir, spec.input);
     const acquisition = join(sourceDir, spec.acquisition);
@@ -277,15 +277,15 @@ function sourcesFromDirectory(sourceDir) {
   return { sources, files };
 }
 
-export function writeFirstFour({ sourceDir, builtAt }) {
-  const { sources, files } = sourcesFromDirectory(sourceDir);
+export function writeFirstFour({ sourceDir, builtAt, types = FIRST_FOUR }) {
+  const { sources, files } = sourcesFromDirectory(sourceDir, types);
   const reviewedBidIds = readJson(REVIEWED_BID_IDS);
   const built = buildFirstFourLayers({ sources, reviewedBidIds, builtAt });
   const committedRegistry = readJson(SITE_REGISTRY);
   const existing = new Map((committedRegistry.layers || []).map((row) => [row.type, row]));
   const rows = new Map(existing);
 
-  for (const type of FIRST_FOUR) {
+  for (const type of types) {
     const pair = built.pairs[type];
     const paths = artifactPaths(type, pair.full.vintage.id);
     const receipt = sourceReceipt(
@@ -384,7 +384,7 @@ async function main(argv = process.argv.slice(2)) {
   }
   if (!options.sourceDir) throw new Error("pass --source-dir with nta.geojson, pp.geojson, dsny.geojson, bid.geojson, and DCP archives");
   const builtAt = options.builtAt || new Date().toISOString();
-  const registry = writeFirstFour({ sourceDir: resolve(options.sourceDir), builtAt });
+  const registry = writeFirstFour({ sourceDir: resolve(options.sourceDir), builtAt, types: options.layers });
   console.log(`wrote ${FIRST_FOUR.length} layers; registry now contains ${registry.layers.length} independent vintages`);
 }
 
