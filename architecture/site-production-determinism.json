@@ -219,6 +219,7 @@
     "site/consultation_acquisition.mjs",
     "site/consultation_classification.mjs",
     "site/consultation_documents.mjs",
+    "site/consultation_place_time.mjs",
     "site/consultation_publisher_adapters.mjs",
     "site/consultation_search_producer.mjs",
     "site/contextual_suggestions.mjs",

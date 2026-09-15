@@ -1,8 +1,10 @@
 import { normalizeScope } from "./scope_v0.mjs";
+import { consultationMatchesScope } from "./consultation_place_time.mjs";
 
 // Geographic scope socket for the lazily loaded Now surface.
 export function nowItemMatchesScope(item, value) {
   const scope = normalizeScope(value);
+  if (item?.domain === "consultations") return consultationMatchesScope(item, scope);
   const domains = item?.scope_domains?.length ? item.scope_domains : [item?.domain];
   if (scope.facets.domains.length && !scope.facets.domains.some((domain) => domains.includes(domain))) return false;
   if (scope.facets.agencies.length && !scope.facets.agencies.includes(item?.agency)) return false;
