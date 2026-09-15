@@ -1,12 +1,18 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
+import { buildBrowseView, renderBrowseView } from "../site/browse_view.mjs";
 import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
 import {
   buildCommunityBoardMeetingIndex,
 } from "../tools/build_community_board_meeting_index.mjs";
+import { withPinnedClock } from "./helpers/test_clock.mjs";
 
 const OBSERVED_AT = "2026-09-14T12:00:00.000Z";
+const GROUNDED_REVISION = "3929e7a3a206990ddb2b8c77c69c3cca602ddba4";
+const CAPTURE_MANIFEST = JSON.parse(readFileSync(new URL("../docs/evidence/community-board-acquisition-publication/manifest.json", import.meta.url)));
 const BOARD_IDS = [
   "bronx-cb-01", "bronx-cb-02", "brooklyn-cb-01", "manhattan-cb-01",
   "queens-cb-01", "staten-island-cb-01", "manhattan-cb-02",
@@ -77,6 +83,19 @@ function readBack(index, now = OBSERVED_AT) {
     generatedAt: index.generated_at,
     now,
   });
+}
+
+function renderBoardFixture(index, boardId = "bronx-cb-01") {
+  const rows = index.rows.filter((row) => row.board_id === boardId);
+  const view = buildBrowseView("meetings", {
+    retrieved_at: index.generated_at,
+    rows,
+  }, new URLSearchParams(), { asOf: OBSERVED_AT });
+  return renderBrowseView(view);
+}
+
+function renderSha256(html) {
+  return createHash("sha256").update(html).digest("hex");
 }
 
 test("successful publication admits all seven boards and resident read-back has the same records", async () => {
@@ -179,4 +198,43 @@ test("stale and genuinely empty states remain distinct, and closures are not adm
   assert.equal(cancelled.rows.filter((row) => row.board_id === "bronx-cb-01").length, 1);
   assert.equal(cancelled.rows[0].title, "Board meeting cancelled");
   assert.deepEqual(cancelled.rows[0].participation.links, []);
+});
+
+test("capture manifest hashes the rendered fixture pages it describes", async () => {
+  await withPinnedClock(OBSERVED_AT, async () => {
+    const first = await buildCommunityBoardMeetingIndex({
+      ...buildOptions(),
+      fetchImpl: fetchAll(),
+    });
+    const failed = await buildCommunityBoardMeetingIndex({
+      ...buildOptions(),
+      previousIndex: first,
+      fetchImpl: fetchAll({ failing: new Set(["bronx-cb-01"]) }),
+    });
+    const empty = await buildCommunityBoardMeetingIndex({
+      ...buildOptions(),
+      fetchImpl: fetchAll({ empty: new Set(["bronx-cb-01"]) }),
+    });
+    const fixtures = [first, failed, empty];
+
+    assert.equal(CAPTURE_MANIFEST.schema, "cityscroll.community_board_acquisition_publication_manifest.v1");
+    assert.equal(CAPTURE_MANIFEST.captures.length, fixtures.length);
+    const renderedHashes = [];
+    for (const [capture, index] of CAPTURE_MANIFEST.captures.map((capture, i) => [capture, fixtures[i]])) {
+      assert.equal(capture.route, "/browse/meetings/");
+      assert.equal(capture.revision, GROUNDED_REVISION);
+      assert.match(capture.data_vintage, /^2026-09-14T12:00:00\.000Z/);
+      assert.ok(capture.assertion);
+      assert.match(capture.render_sha256, /^[0-9a-f]{64}$/);
+      const rendered = renderBoardFixture(index);
+      assert.match(rendered, /data-build-rendered="browse"/);
+      if (index === first || index === failed) {
+        assert.match(rendered, /https:\/\/bronx-cb-01\.sources\.example\/calendar\.ics/);
+      } else {
+        assert.doesNotMatch(rendered, /data-record-id=/);
+      }
+      renderedHashes.push(renderSha256(rendered));
+    }
+    assert.deepEqual(renderedHashes, CAPTURE_MANIFEST.captures.map((capture) => capture.render_sha256));
+  });
 });
