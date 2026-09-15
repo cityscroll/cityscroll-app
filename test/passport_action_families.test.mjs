@@ -103,6 +103,7 @@ test("A2 serves AHA without a City Record lifecycle match", async () => {
   const html = renderProcurementDocument(model.rows[0], model.observations);
   assert.match(html, /AHA MATERIALS FOR TRAINING/);
   assert.match(html, /46,673\.32/);
+  assert.match(html, /<dt>Method<\/dt><dd>Subscription<\/dd>/);
   assert.match(html, /2026-09-07|09\/07\/2026/);
 });
 
