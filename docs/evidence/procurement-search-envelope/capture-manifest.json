@@ -1,0 +1,10 @@
+{
+  "schema": "cityscroll.capture_manifest.v1",
+  "route": "/search/?q=CT107120258801626",
+  "viewport": "1280x900",
+  "revision": "63d320b26be7b921f651c8257e4f53a3ddb86b52",
+  "data_vintage": "2026-09-15",
+  "served_by": "local site render with local edge-shaped search response",
+  "assertion": "The resident-facing search page renders one procurement card for the exact identifier, even though the response envelope carries the same object in three projections.",
+  "sha256": "34c3750be755c525215e86738a526770afea253ee3291a85fe7c80c24056e49e"
+}
