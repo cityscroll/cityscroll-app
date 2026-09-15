@@ -526,11 +526,12 @@ test("Browse landing and every bounded child are exact build outputs with useful
     "Rules",
     "Meetings",
     "Exams",
+    "Consultations",
   ]) {
     const escapedLane = lane.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     assert.match(search, new RegExp(`<h3[^>]*>${escapedLane}<\\/h3>`));
   }
-  assert.equal((search.match(/data-search-lane=/g) || []).length, 6);
+  assert.equal((search.match(/data-search-lane=/g) || []).length, 7);
   assert.match(search, /name="q"[^>]+maxlength="240"/);
   assert.doesNotMatch(search, /app\/main\.mjs/);
   assert.match(search, /search_(?:entry|document)\.mjs/);
