@@ -175,7 +175,7 @@ const SPEAKING_RIGHTS = Object.freeze(["allowed", "not_allowed", "requires_regis
 function normalizeActivity(value, source) {
   const activity = optionalText(value)?.toLowerCase();
   if (activity && MEETING_ACTIVITIES.includes(activity)) return activity;
-  return ["pdc_calendar", "bsa_calendar", "oath_trial_calendar"].includes(source) ? "observe" : null;
+  return ["pdc_calendar", "oath_trial_calendar"].includes(source) ? "observe" : null;
 }
 
 function normalizeSpeakingRights(value) {
@@ -296,6 +296,10 @@ export function normalizeMeetingObject(row = {}) {
     description: optionalText(row.description || row.source_body),
     search_text: searchableText(row, fields),
     affected_area: row.affected_area || null,
+    ...(source === "bsa_calendar" && Array.isArray(row.agenda_items) ? { agenda_items: row.agenda_items } : {}),
+    ...(source === "bsa_calendar" && Array.isArray(row.phases) ? { phases: row.phases } : {}),
+    ...(source === "bsa_calendar" && row.schedule_relation ? { schedule_relation: row.schedule_relation } : {}),
+    ...(source === "bsa_calendar" && optionalText(row.agenda_url) ? { agenda_url: optionalText(row.agenda_url) } : {}),
     meeting_documents: Array.isArray(row.meeting_documents) ? row.meeting_documents : [],
     source_url: sourceHref,
     source_system: source,
@@ -423,12 +427,30 @@ export function normalizePdcCalendarMeeting(row = {}) {
 }
 
 export function normalizeBsaCalendarMeeting(row = {}) {
+  const hasAccessEvidence = Boolean(
+    row.observer_access
+    || row.remote_registration_url
+    || row.participation
+    || row.access_steps,
+  );
   return normalizeMeetingObject({
     ...row,
     source_system: "bsa_calendar",
     publisher_identifier: row.publisher_identifier || row.bsa_session_id || row.session_id || row.source_record_id,
     source_url: row.source_url || row.record_url,
-    activity: "observe",
+    activity: row.activity || (hasAccessEvidence ? "observe" : null),
+    observer_access: row.observer_access || (hasAccessEvidence ? {
+      watch_url: "https://www.youtube.com/@NYCBSA",
+      remote_join_url: row.remote_registration_url || null,
+    } : null),
+    participation: row.participation || (hasAccessEvidence ? {
+      links: [{ label: "BSA attendance procedures", url: "https://www.nyc.gov/site/bsa/public-hearings/procedures-for-attendance.page" }],
+    } : null),
+    access_steps: row.access_steps || (hasAccessEvidence ? [{
+      kind: "observer_instructions",
+      destination: "https://www.nyc.gov/site/bsa/public-hearings/public-hearing-format.page",
+      source_url: "https://www.nyc.gov/site/bsa/public-hearings/public-hearing-format.page",
+    }] : null),
   });
 }
 

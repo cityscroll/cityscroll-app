@@ -190,7 +190,7 @@ function observerAccessConsequence(record = {}) {
     pending_question: null,
     body_role: "unknown",
     participation_modes: modes,
-    activity: record.activity || "observe",
+    activity: record.activity || (modes.length ? "observe" : null),
     speaking_rights: record.speaking_rights || profile.process_profile.observer_access?.speaking || "unknown",
     access_steps: normalizedSteps,
     record_destination: null,

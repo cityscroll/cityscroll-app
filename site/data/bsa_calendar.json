@@ -1,0 +1,183 @@
+{
+  "schema": "cityscroll.bsa_calendar_materialization.v1",
+  "generated_at": "2026-09-09T00:00:00.000Z",
+  "source": {
+    "system": "bsa_calendar",
+    "url": "https://www.nyc.gov/site/bsa/public-hearings/upcoming-hearing-info.page",
+    "agenda_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/september_14_15_2026_public_hearing.pdf"
+  },
+  "rows": [
+    {
+      "source_system": "bsa_calendar",
+      "bsa_session_id": "bsa-2026-09-14",
+      "event_date": "2026-09-14T10:00:00",
+      "title": "Board of Standards and Appeals hearing — September 14, 2026",
+      "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/september_14_15_2026_public_hearing.pdf",
+      "remote_registration_url": "https://www.zoomgov.com/webinar/register/WN_OD06_S6ATSCpisnz4uIkJg",
+      "venue": {
+        "name": "Spector Hall",
+        "address": "22 Reade Street, New York, NY 10007",
+        "role": "venue"
+      },
+      "agenda_items": [
+        {
+          "case_id": "2024-58-BZ",
+          "section": "adjournments",
+          "lifecycle": {
+            "state": "adjourned"
+          },
+          "disposition": null,
+          "affected_area": {
+            "addresses": [
+              "1228 Avenue V"
+            ],
+            "community_districts": [
+              "K15"
+            ]
+          }
+        },
+        {
+          "case_id": "2025-01-BZ"
+        },
+        {
+          "case_id": "2025-02-BZ"
+        },
+        {
+          "case_id": "2025-03-BZ"
+        },
+        {
+          "case_id": "2025-04-BZ"
+        },
+        {
+          "case_id": "2025-05-BZ"
+        },
+        {
+          "case_id": "2025-06-BZ"
+        },
+        {
+          "case_id": "2025-07-BZ"
+        },
+        {
+          "case_id": "2025-08-BZ"
+        },
+        {
+          "case_id": "2025-10-BZ"
+        },
+        {
+          "case_id": "2025-11-BZ"
+        },
+        {
+          "case_id": "2025-12-BZ"
+        },
+        {
+          "case_id": "2026-01-BZ"
+        },
+        {
+          "case_id": "2026-04-BZ"
+        },
+        {
+          "case_id": "2026-05-BZ"
+        },
+        {
+          "case_id": "2026-06-BZ"
+        },
+        {
+          "case_id": "2026-07-BZ"
+        },
+        {
+          "case_id": "2026-17-BZ"
+        },
+        {
+          "case_id": "2026-18-BZ"
+        },
+        {
+          "case_id": "2026-21-A",
+          "affected_area": {
+            "addresses": [
+              "126 Industrial Loop"
+            ],
+            "community_districts": [
+              "R03"
+            ]
+          }
+        },
+        {
+          "case_id": "2026-31-A",
+          "affected_area": {
+            "addresses": [
+              "1801 Richmond Terrace"
+            ],
+            "community_districts": [
+              "R01"
+            ]
+          }
+        }
+      ],
+      "phases": [
+        {
+          "id": "bsa-2026-09-14:executive-review",
+          "kind": "executive_review",
+          "state": "observation",
+          "access": "watch"
+        },
+        {
+          "id": "bsa-2026-09-14:public-hearing",
+          "kind": "public_hearing",
+          "state": "applicant_response_and_public_testimony",
+          "access": "register_to_testify"
+        }
+      ],
+      "schedule_relation": {
+        "relation": "contains_schedule",
+        "from": "meeting:city_record:20260817015",
+        "method": "explicit_dated_agenda_sections"
+      }
+    },
+    {
+      "source_system": "bsa_calendar",
+      "bsa_session_id": "bsa-2026-09-15",
+      "event_date": "2026-09-15T10:00:00",
+      "title": "Board of Standards and Appeals hearing — September 15, 2026",
+      "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/september_14_15_2026_public_hearing.pdf",
+      "remote_registration_url": "https://www.zoomgov.com/webinar/register/WN_-_pUZn5pRDKT8tqL7_RI0Q",
+      "venue": {
+        "name": "Spector Hall",
+        "address": "22 Reade Street, New York, NY 10007",
+        "role": "venue"
+      },
+      "agenda_items": [
+        {
+          "case_id": "2025-42-BZ"
+        },
+        {
+          "case_id": "2026-04-BZ"
+        },
+        {
+          "case_id": "2026-07-BZ"
+        },
+        {
+          "case_id": "2026-16-BZ"
+        }
+      ],
+      "phases": [
+        {
+          "id": "bsa-2026-09-15:executive-review",
+          "kind": "executive_review",
+          "state": "observation",
+          "access": "watch"
+        },
+        {
+          "id": "bsa-2026-09-15:public-hearing",
+          "kind": "public_hearing",
+          "state": "applicant_response_and_public_testimony",
+          "access": "register_to_testify"
+        }
+      ],
+      "schedule_relation": {
+        "relation": "contains_schedule",
+        "from": "meeting:city_record:20260817015",
+        "method": "explicit_dated_agenda_sections"
+      }
+    }
+  ]
+}
