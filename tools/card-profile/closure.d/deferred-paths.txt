@@ -181,6 +181,8 @@ site/data/rules_adoption_predictions.json
 site/data/rules_sources/verification_receipts/rulemaking_sibling_stitch_2026-08-02.json
 site/data/shared_procurement_read_model.json
 site/data/shared_procurement_read_model/shard-000.json
+site/data/site_lifecycle/0000.json
+site/data/site_lifecycle/reverse.json
 site/data/source_health_observations.json
 site/data/source_vintage_alternates.json
 site/data/source_vintage_observations.json

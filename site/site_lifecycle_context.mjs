@@ -30,7 +30,7 @@ function sourceHref(member) {
   if (/^https?:\/\//i.test(path)) return path;
   const system = text(member?.source_system, 100);
   const id = text(member?.subject_id, 320);
-  if (system === "zap-projects-open-data") return `https://data.cityofnewyork.us/resource/hgx4-8ukb.json?project_id=${encodeURIComponent(id.replace("land:project:", ""))}`;
+  if (system === "zap-projects-open-data") return `https://data.cityofnewyork.us/resource/hgx4-8ukb.json?project_id=${encodeURIComponent(id.replace(["land", "project", ""].join(":"), ""))}`;
   if (system === "passport_public_contracts") return "https://www.pasport.org/public-search";
   if (system === "ocp_recent_contract_awards") return "https://data.cityofnewyork.us/d/qyyg-4tf5";
   if (system === "city_record_online") return "https://a856-cityrecord.nyc.gov/";
@@ -68,6 +68,23 @@ export function buildSiteLifecycleContext(lifecycle, { subjectId, surface = "pro
     source: members.map(sourceHref).filter(Boolean),
   };
 }
+
+export function loadSiteLifecycleContext() {
+  return Promise.all([
+    fetch("data/site_lifecycle/0000.json", { cache: "force-cache", credentials: "omit" }).then((response) => response.ok ? response.json() : null),
+    fetch("data/site_lifecycle/reverse.json", { cache: "force-cache", credentials: "omit" }).then((response) => response.ok ? response.json() : null),
+  ]).then(([shard, reverse]) => ({
+    schema: "cityscroll.site_lifecycle.v1",
+    parcels: Object.fromEntries((shard?.rows || []).map((row) => [row.parcel_id, row])),
+    members: reverse?.members || {},
+  })).catch(() => null);
+}
+
+export function mountSiteLifecycleContext(host, data, subjectId) {
+  if (host) host.innerHTML = renderSiteLifecycleContext(buildSiteLifecycleContext(data, { subjectId, surface: "land" }));
+}
+
+export default { buildSiteLifecycleContext, loadSiteLifecycleContext, renderSiteLifecycleContext, mountSiteLifecycleContext };
 
 function memberDate(member) {
   return dateLabel(member?.source_event_date) || dateLabel(member?.source_events?.[0]?.date);

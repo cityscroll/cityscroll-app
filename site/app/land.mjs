@@ -71,7 +71,7 @@ import {
   fetchBrowseScoped,
   projectBrowseScopedRows,
 } from "../browse_scoped_adapters.mjs";
-import { buildSiteLifecycleContext, renderSiteLifecycleContext } from "../site_lifecycle_context.mjs";
+import lifecycle from "../site_lifecycle_context.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -87,21 +87,6 @@ let landCouncilDistrict="";
 let landProjectInventory=[];
 let landActionInventory=[];
 let landRecordLinksPromise=null;
-let landSiteLifecyclePromise=null;
-
-function loadLandSiteLifecycle(){
-  if(!landSiteLifecyclePromise){
-    landSiteLifecyclePromise=Promise.all([
-      fetch("data/site_lifecycle/0000.json",{cache:"force-cache",credentials:"omit"}).then(r=>r.ok?r.json():null),
-      fetch("data/site_lifecycle/reverse.json",{cache:"force-cache",credentials:"omit"}).then(r=>r.ok?r.json():null),
-    ]).then(([shard,reverse])=>({
-      schema:"cityscroll.site_lifecycle.v1",
-      parcels:Object.fromEntries((shard?.rows||[]).map(row=>[row.parcel_id,row])),
-      members:reverse?.members||{},
-    })).catch(()=>null);
-  }
-  return landSiteLifecyclePromise;
-}
 const mihOn = v => v===true || v==="true";
 
 function hydrateLandRecordLinks(record, selection){
@@ -825,7 +810,7 @@ async function landSelect(i, el){
     <span id="land-city-record-source"></span>
   </div>
   <div id="project-connections"></div>
-  <div id="land-site-lifecycle-context"></div>
+  <div id="slc"></div>
   <div id="project-connected-calendar"></div>
   <div id="land-outcomes" class="land-outcomes">${landOutcomeFirstPaintHTML(r)}</div>
   <div id="land-ulurp-rec"></div>
@@ -838,15 +823,7 @@ async function landSelect(i, el){
   </div>
   <div class="note" id="landmapnote"><span class="loading"></span> ${t("locating")}</div>`;
   $("#ldetail").innerHTML=html;
-  loadLandSiteLifecycle().then(lifecycle=>{
-    if(selection!==landSelectionSeq) return;
-    const host=$("#land-site-lifecycle-context");
-    if(!host) return;
-    host.innerHTML=renderSiteLifecycleContext(buildSiteLifecycleContext(lifecycle,{
-      subjectId:`land:project:${r.project_id}`,
-      surface:"land",
-    }));
-  });
+  lifecycle.loadSiteLifecycleContext().then(data=>{if(selection===landSelectionSeq)lifecycle.mountSiteLifecycleContext($("#slc"),data,["land","project",r.project_id].join(":"));});
   hydrateLandRecordLinks(r, selection);
   wireLandFilingReportTrigger($("#ldetail"),{t,escape:escUiHtml});
   // Immediate rail from list row (ZAP status + portal); hydrates again when outcomes load.
