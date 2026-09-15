@@ -73,7 +73,7 @@ function sourceResult(observation, consumerRecords, asOf) {
 export function buildCommunityBoardAcquisitionParityReport({
   observations = [], consumerReadback = {}, revision = null,
   environment = "unknown", observedAt = new Date().toISOString(),
-  scheduled = false,
+  scheduled = false, historicalBaseline = null,
 } = {}) {
   const sources = observations.map((observation) => sourceResult(
     observation, consumerReadback[sourceKey(observation)] || null, observedAt,
@@ -81,6 +81,9 @@ export function buildCommunityBoardAcquisitionParityReport({
   const vintages = new Set(sources.map((source) => source.source_vintage).filter(Boolean));
   const comparable = vintages.size === 1;
   const currentIdentities = sources.flatMap((source) => source.identities).sort();
+  const currentRecordCount = currentIdentities.length;
+  const historicalRecordCount = Number.isFinite(historicalBaseline?.record_count)
+    ? historicalBaseline.record_count : null;
   return {
     schema: COMMUNITY_BOARD_ACQUISITION_PARITY_SCHEMA,
     revision, environment, observed_at: observedAt, scheduled,
@@ -89,7 +92,24 @@ export function buildCommunityBoardAcquisitionParityReport({
     comparison: {
       same_vintage: comparable,
       source_vintages: [...vintages].sort(),
-      total_records: currentIdentities.length,
+      // A current observation is not a historical baseline. Keep both values
+      // named and scoped so a changing publisher window cannot be read as a
+      // regression or recovery against an unrelated point-in-time count.
+      current_record_count: currentRecordCount,
+      current_unique_identities: new Set(currentIdentities).size,
+      historical_record_count: historicalRecordCount,
+      historical_vintage: historicalBaseline?.observed_at || null,
+      count_comparison: historicalRecordCount === null ? {
+        status: "not_provided",
+        note: "current observation is not a historical baseline",
+      } : {
+        status: "context_only",
+        current_record_count: currentRecordCount,
+        historical_record_count: historicalRecordCount,
+        delta: currentRecordCount - historicalRecordCount,
+        note: "current and historical counts are distinct observations; delta is descriptive only",
+      },
+      total_records: currentRecordCount,
       unique_identities: new Set(currentIdentities).size,
       duplicate_identities: currentIdentities.filter((id, index, all) => all.indexOf(id) !== index),
     },
@@ -114,5 +134,15 @@ export function validateCommunityBoardAcquisitionParityReport(report, {
     }
   }
   if (!report?.comparison?.same_vintage) errors.push("same_vintage");
+  if (report?.comparison?.count_comparison?.status === "context_only"
+    && report.comparison.count_comparison.current_record_count
+      !== report.comparison.current_record_count) {
+    errors.push("current_count_mismatch");
+  }
+  if (report?.comparison?.count_comparison?.status === "context_only"
+    && report.comparison.count_comparison.historical_record_count
+      !== report.comparison.historical_record_count) {
+    errors.push("historical_count_mismatch");
+  }
   return { valid: errors.length === 0, errors };
 }
