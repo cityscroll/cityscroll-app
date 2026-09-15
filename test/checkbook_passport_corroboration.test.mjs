@@ -145,7 +145,7 @@ test("Firematic exact contract-id/PIN corroboration keeps the PASSPort amount", 
   }]), 49689.78);
 });
 
-test("TAMEER PIN-family and amount disagreement is related-instrument or needs-review", () => {
+test("A3: near-identical IDs stay separate while exact-ID conflicts remain attributable", () => {
   const classified = classifyCheckbookPassportCorroboration({
     passport: TAMEER_PASSPORT,
     checkbookRows: [TAMEER_CHECKBOOK],
@@ -176,6 +176,22 @@ test("TAMEER PIN-family and amount disagreement is related-instrument or needs-r
   assert.ok(["related_instrument", "needs_review"].includes(object.checkbook_corroboration.identity_class));
   assert.equal(object.checkbook_corroboration.passport_amount, 26112.93);
   assert.equal(new Set(built.objects.map((row) => row.procurement_id)).size, 1);
+
+  const conflicting = buildProcurementObjects({
+    sourceRecords: [
+      passportRecord(TAMEER_PASSPORT),
+      sourceRecord("checkbook_contracts", "contract:registered:CT185020228802305:row-a", {
+        id: "CT185020228802305", pin: "85021B0087001C011", current: 1779343.45,
+      }),
+      sourceRecord("checkbook_contracts", "contract:registered:CT185020228802305:row-b", {
+        id: "CT185020228802305", pin: "85021B0087001C011", current: 1800000,
+      }),
+    ],
+  });
+  assert.equal(conflicting.objects.length, 1);
+  assert.equal(conflicting.objects[0].procurement_id, "procurement:contract:CT185020228802305");
+  assert.ok(conflicting.objects[0].source_observation_refs.includes("checkbook_contracts:contract:registered:CT185020228802305:row-a"));
+  assert.ok(conflicting.objects[0].source_observation_refs.includes("checkbook_contracts:contract:registered:CT185020228802305:row-b"));
 });
 
 test("Checkbook miss stays unknown and a hit does not mint a detail route", () => {

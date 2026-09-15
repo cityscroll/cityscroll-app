@@ -2,8 +2,11 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { renderProcurementDocument } from "../site/procurement_document.mjs";
-import { contractAmountBand } from "../site/analytical_projection.mjs";
+import { contractAmountBand, groupAnalyticalContracts } from "../site/analytical_projection.mjs";
 import { projectProcurementFacts } from "../site/procurement_fact_projection.mjs";
+import { materializeProcurementSearchDocument } from "../site/procurement_search_producer.mjs";
+import { publicProcurementAmount } from "../site/checkbook_passport_corroboration.mjs";
+import { buildProcurementBrowseQueryArtifacts } from "../site/procurement_browse_query.mjs";
 import { buildSharedProcurementReadModel } from "../site/shared_procurement_read_model.mjs";
 import { procurementSourceRecordsFromMaterializations } from "../tools/build_shared_procurement_read_model.mjs";
 import {
@@ -124,9 +127,46 @@ test("A1: rendered action families keep base and revision amounts in separate ro
 
 test("A2: action titles use publisher numbering rather than identifier suffixes", () => {
   const model = modelFor(tameer);
-  const actions = model.rows.find((row) => row.passport_action_family?.family_key === "FMS-TAMEER-1").passport_action_family.actions;
+  const tameerObject = model.rows.find((row) => row.passport_action_family?.family_key === "FMS-TAMEER-1");
+  const actions = tameerObject.passport_action_family.actions;
   assert.match(actions.find((row) => row.epin.endsWith("C011")).title, /Change Order #8/);
   assert.match(actions.find((row) => row.epin.endsWith("C010")).title, /Change Order #11/);
+  const observations = model.observations.filter((row) => tameerObject.source_observation_refs.includes(row.source_observation_ref));
+  const search = materializeProcurementSearchDocument(tameerObject, model);
+  const browse = search.provenance.browse_record;
+  assert.deepEqual({
+    search: [browse.original_contract_amount, browse.current_contract_amount, browse.action_amount],
+    browse: ((row) => [row.original_contract_amount, row.current_contract_amount, row.action_amount])(
+      buildProcurementBrowseQueryArtifacts({ rows: [browse] }).queryRowsArtifact.query_rows[0],
+    ),
+    export: publicProcurementAmount(tameerObject, observations),
+    aggregate: groupAnalyticalContracts([
+      { prime_contract_id: "FMS-TAMEER-1", agency: "Department of Design and Construction", current_registered_amount: 1779343.45, original_registered_amount: 1442820.77 },
+    ]).groups[0],
+  }, {
+    search: [1442820.77, 1779343.45, 26112.93],
+    browse: [1442820.77, 1779343.45, 26112.93],
+    export: 1442820.77,
+    aggregate: {
+      label: "Department of Design and Construction",
+      contract_ids: ["FMS-TAMEER-1"],
+      contract_count: 1,
+      sum_current_registered_amount: 1779343.45,
+      sum_original_registered_amount: 1442820.77,
+      median_current_registered_amount: 1779343.45,
+      total_contract_count: 1,
+      eligible_contract_count: 0,
+      missing_date_contract_count: 1,
+      retroactive_contract_count: 0,
+      early_on_time_contract_count: 0,
+      retroactive_share: null,
+      missing_date_share: 1,
+      median_lag_days: null,
+      p75_lag_days: null,
+      p90_lag_days: null,
+      excluded_row_count: 1,
+    },
+  });
 });
 
 test("A2 serves AHA without a City Record lifecycle match", async () => {
