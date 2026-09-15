@@ -944,6 +944,23 @@ async function initWatchTemplates(){
   const tools=await loadWatchTemplateTools();
   if(!tools){ list.innerHTML=""; return; }
   watchTemplateRegistry=await tools.loadWatchTemplateRegistry();
+  // District overviews provide a scoped, reviewed template without adding it to the
+  // global registry. Keep the same confirmation and /subscribe-pack path as other sets.
+  try{
+    const hash=String(location.hash||"");
+    const params=new URLSearchParams(hash.includes("?") ? hash.slice(hash.indexOf("?")+1) : "");
+    if(params.get("template")==="local-district-follow"){
+      const bundleTools=await import("../local_district_follow_bundle.mjs");
+      const bundle=bundleTools.buildLocalDistrictFollowBundle({
+        scope:{place:{community_districts:[params.get("cd")||""]}},
+        board:params.get("board")||"",
+      });
+      if(bundle.children.length) watchTemplateRegistry={
+        ...watchTemplateRegistry,
+        templates:[...(watchTemplateRegistry?.templates||[]), {...bundle, watches:bundle.children}],
+      };
+    }
+  }catch(_e){}
   const templates=watchTemplateRegistry?.templates||[];
   if(!templates.length){ list.innerHTML=""; return; }
   // role=group on the list container; plain buttons with aria-pressed (not listitem — axe).

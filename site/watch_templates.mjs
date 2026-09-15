@@ -7,7 +7,7 @@
  * Artifact: site/data/watch_templates.json
  */
 
-import { scopeFromWatch, watchFromScope } from "./scope_v0.mjs";
+import { scopeFromWatch, watchFromScope, normalizeGeographyKey } from "./scope_v0.mjs";
 import { normalizeCommunityBoardRef } from "./community_board_watch.mjs";
 
 export const WATCH_TEMPLATES_SCHEMA_VERSION = 1;
@@ -85,6 +85,10 @@ export function normalizeFilter(filter) {
       ? [clean(f.keywords)]
       : [];
   const out = {};
+  const geographies = Array.isArray(f.geographies)
+    ? [...new Set(f.geographies.map(normalizeGeographyKey).filter(Boolean))].sort()
+    : [];
+  if (geographies.length) out.geographies = geographies;
   if (keywords.length) out.keywords = keywords;
   if (clean(f.agency)) out.agency = clean(f.agency);
   if (clean(f.kind)) out.kind = clean(f.kind);
@@ -98,7 +102,10 @@ export function normalizeFilter(filter) {
   if (f.minAmount != null && Number.isFinite(Number(f.minAmount))) {
     out.minAmount = Number(f.minAmount);
   }
-  for (const key of ["procurement_id", "noticeType"]) {
+  for (const key of [
+    "procurement_id", "noticeType", "when", "dateWindow", "place_role",
+    "communityDistrict", "councilDistrict", "borough", "neighborhood", "locationScope",
+  ]) {
     const value = clean(f[key]);
     if (value) out[key] = value;
   }
