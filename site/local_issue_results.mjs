@@ -6,6 +6,10 @@
  * joins two canonical objects.
  */
 import { searchDistrictTopics } from "./district_topic_index.mjs";
+import {
+  buildLocalIssueRequestResponseTrail,
+  renderLocalIssueRequestResponseTrail,
+} from "./local_issue_request_response_trail.mjs";
 
 export const LOCAL_ISSUE_RESULTS_SCHEMA = "cityscroll.local_issue_results.v1";
 export const LOCAL_ISSUE_RESULTS_VERSION = 1;
@@ -49,7 +53,7 @@ function normalizeParticipation(entry, supplied) {
     .filter((link) => link.label && link.href));
 }
 
-function projectEntry(entry, terms, district, board, participation = []) {
+function projectEntry(entry, terms, district, board, participation = [], requestResponseTrail = null) {
   const group = GROUP_BY_FAMILY[entry.source_family];
   if (!group) return null;
   const boardLabel = clean(board?.label || board?.name || board?.id, 180);
@@ -67,7 +71,19 @@ function projectEntry(entry, terms, district, board, participation = []) {
     relationship: Object.freeze({ label: entry.source_family === "community_board_decision" ? "Formal board action" : "Source record connected to this district", board: boardLabel || null }),
     evidence: Object.freeze({ source_reference: entry.source.reference, source_url: entry.source.url, observed_through: entry.observed_through }),
     participation: normalizeParticipation(entry, participation),
+    request_response_trail: requestResponseTrail,
   });
+}
+
+function suppliedTrailFor(entry, options, input) {
+  if (!entry || entry.source_family !== "community_board_request") return null;
+  const supplied = options.request_response_trails ?? input?.request_response_trails;
+  const candidates = Array.isArray(supplied) ? supplied : supplied && typeof supplied === "object" ? Object.values(supplied) : [];
+  const match = candidates.find((trail) => {
+    const request = trail?.request || trail;
+    return String(request?.tracking_code || request?.request_id || request?.code || request?.object_id || "") === String(entry.object_id);
+  });
+  return match ? buildLocalIssueRequestResponseTrail(match, { board_label: options.board?.label || input?.board?.label }) : null;
 }
 
 function pageInfo(total, page, pageSize) {
@@ -84,7 +100,7 @@ export function buildLocalIssueResults(input = {}, options = {}) {
   const terms = query.toLocaleLowerCase("en-US").split(/\s+/).filter(Boolean);
   const matches = query ? searchDistrictTopics(index, query) : [];
   const participation = options.participation_links || input?.participation_links;
-  const entries = matches.map((entry) => projectEntry(entry, terms, district, options.board || input?.board, participation)).filter(Boolean);
+  const entries = matches.map((entry) => projectEntry(entry, terms, district, options.board || input?.board, participation, suppliedTrailFor(entry, options, input))).filter(Boolean);
   const pageSize = Math.min(50, Math.max(1, Number(options.page_size ?? input?.page_size) || 10));
   const page = Number(options.page ?? input?.page) || 1;
   const groups = LOCAL_ISSUE_RESULT_GROUPS.map((definition) => {
@@ -101,7 +117,7 @@ export function buildLocalIssueResults(input = {}, options = {}) {
 
 export function renderLocalIssueResults(view) {
   if (!view || view.schema !== LOCAL_ISSUE_RESULTS_SCHEMA) return "";
-  const groups = view.groups.map((group) => `<section class="local-issue-results-group" data-issue-group="${esc(group.id)}"><h2>${esc(group.label)}</h2><p class="local-issue-results-count">${group.total} result${group.total === 1 ? "" : "s"}</p>${group.results.length ? `<ol>${group.results.map((entry) => `<li class="local-issue-result" data-source-family="${esc(entry.source_family)}"><h3><a href="${esc(entry.canonical_href)}">${esc(entry.title)}</a></h3><p class="local-issue-match"><strong>Why it matched:</strong> ${esc(entry.match.passage)}</p><p class="local-issue-locality"><strong>Why it is here:</strong> ${esc(entry.locality.reason)}${entry.locality.board ? ` · ${esc(entry.locality.board)}` : ""}</p><p class="local-issue-evidence"><a href="${esc(entry.evidence.source_url)}">Source evidence</a> · observed through ${esc(entry.evidence.observed_through)}</p>${entry.participation.length ? `<p class="local-issue-participation">${entry.participation.map((link) => `<a href="${esc(link.href)}">${esc(link.label)}</a>`).join(" · ")}</p>` : ""}</li>`).join("")}</ol>` : "<p>No matching records are shown in this group; the searched source scope is retained in the coverage details.</p>"}</section>`).join("\n");
+  const groups = view.groups.map((group) => `<section class="local-issue-results-group" data-issue-group="${esc(group.id)}"><h2>${esc(group.label)}</h2><p class="local-issue-results-count">${group.total} result${group.total === 1 ? "" : "s"}</p>${group.results.length ? `<ol>${group.results.map((entry) => `<li class="local-issue-result" data-source-family="${esc(entry.source_family)}"><h3><a href="${esc(entry.canonical_href)}">${esc(entry.title)}</a></h3><p class="local-issue-match"><strong>Why it matched:</strong> ${esc(entry.match.passage)}</p><p class="local-issue-locality"><strong>Why it is here:</strong> ${esc(entry.locality.reason)}${entry.locality.board ? ` · ${esc(entry.locality.board)}` : ""}</p><p class="local-issue-evidence"><a href="${esc(entry.evidence.source_url)}">Source evidence</a> · observed through ${esc(entry.evidence.observed_through)}</p>${entry.participation.length ? `<p class="local-issue-participation">${entry.participation.map((link) => `<a href="${esc(link.href)}">${esc(link.label)}</a>`).join(" · ")}</p>` : ""}${entry.request_response_trail ? renderLocalIssueRequestResponseTrail(entry.request_response_trail) : ""}</li>`).join("")}</ol>` : "<p>No matching records are shown in this group; the searched source scope is retained in the coverage details.</p>"}</section>`).join("\n");
   const canonical = view.canonical_issue ? `<p class="local-issue-canonical"><a href="${esc(view.canonical_issue.href)}">${esc(view.canonical_issue.label)}</a></p>` : "";
   const back = view.return_href ? `<a class="local-issue-return" href="${esc(view.return_href)}">Return to results</a>` : "";
   return `<div class="local-issue-results" data-local-issue-results="1"><p class="local-issue-scope">Topic: <strong>${esc(view.query)}</strong> · District: <strong>${esc(view.district.toUpperCase())}</strong></p>${canonical}${back}${groups}</div>`;

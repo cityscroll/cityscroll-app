@@ -552,6 +552,7 @@
 /site/local_constellation.css
 /site/local_constellation.mjs
 /site/local_district_follow_bundle.mjs
+/site/local_issue_request_response_trail.mjs
 /site/local_issue_results.mjs
 /site/local_topic_watch_bundle.mjs
 /site/location_awareness.js
