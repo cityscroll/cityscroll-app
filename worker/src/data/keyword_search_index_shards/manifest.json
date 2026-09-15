@@ -6,10 +6,10 @@
   "representation": "family-sharded-compressed",
   "shard_schema": "cityscroll.keyword_search_index_shard.v1",
   "logical_index": {
-    "sha256": "8d24da59b0131ce60faf7fc13b371376281670f486a8adae2e9c1cc3732a74eb",
-    "bytes": 72584644,
+    "sha256": "2fa79da412ea8a7e825967982fdf9848968c62423891d7866e779d2874c217fb",
+    "bytes": 75380792,
     "family_count": 12,
-    "document_count": 21909
+    "document_count": 21960
   },
   "build_receipt": {
     "source_artifacts": {
@@ -21,6 +21,7 @@
       "community_board_decisions": "site/data/community_board_resolution_pilot.json",
       "land": "site/data/zap_projects_warehouse_lookup.json",
       "meetings": "site/data/shared_meeting_read_model.json",
+      "council_land_matter_links": "site/data/council_land_matter_links.json",
       "exams": "site/data/staffing_exams.json",
       "parcels": "site/data/property_cross_domain_lookup.json",
       "property_residents": "site/data/property_resident_snapshot.json",
@@ -121,26 +122,26 @@
       "path": "land.json.br",
       "gzip_path": "land.json.gz",
       "document_count": 238,
-      "uncompressed_bytes": 307119,
-      "gzip_bytes": 20693,
-      "brotli_bytes": 17420,
-      "sha256": "559a3f3793421a6a7c1532cf782be10bd9d71a9fe2e6cbba47a33b53e08c3be7",
-      "gzip_sha256": "23b7fb9953968b8499bb03158abf79f43ae0ae10d543ad2086c98b6968c29066",
-      "brotli_sha256": "efaf70591278706a07dfb93689b004bb7c16f84e93c206cca5932de1842199ab",
-      "receipt_sha256": "daafa9cf01050ea8adf7b08a9ed3a6d8f10b68c5f0264bf87c8464e464b785e9"
+      "uncompressed_bytes": 341459,
+      "gzip_bytes": 26682,
+      "brotli_bytes": 22538,
+      "sha256": "be0f600ffbe4ad6ec1af710c71b38cf651d93b3e8f4cdba53052c78dc4be77e5",
+      "gzip_sha256": "a14f8d51dc93e61e58673d424a81c91e83d320064d8f0eae25ac6da53b123784",
+      "brotli_sha256": "2f69bded939e5e30b14e97ecd08434180217fbd3cfb3de9a9e482cf36d8f40cf",
+      "receipt_sha256": "0c9ea9d27832ae28f6ac7a4eef9b69854590cf6def118f6fefe03f18b45a2e3c"
     },
     {
       "family": "meetings",
       "path": "meetings.json.br",
       "gzip_path": "meetings.json.gz",
-      "document_count": 570,
-      "uncompressed_bytes": 1191979,
-      "gzip_bytes": 84658,
-      "brotli_bytes": 58627,
-      "sha256": "5cca1d7a3aa263fddc44d99fa638fd1d689b57f1987120797767eb7d6bc8a6d9",
-      "gzip_sha256": "66ddb83744caf6cd153c7328ba087bf3f6ee6688582252d4a228e49ab7d5c633",
-      "brotli_sha256": "02c7a159a432e0b8e36281e9c73732dff2a01fbba16c6f2ad95a52efb34264ba",
-      "receipt_sha256": "52eb869b5ea13c702633ce69f14fa43906f0ccf0ae46228969a7b40ebc8eee1d"
+      "document_count": 621,
+      "uncompressed_bytes": 1255411,
+      "gzip_bytes": 88105,
+      "brotli_bytes": 61205,
+      "sha256": "ee1cfc96f502e42afc4e39eb31eac59ea3fe74ef60200445335571be4a903f9e",
+      "gzip_sha256": "e3073ded1df5f5c22f87e92f04be64b1c7c23a818e79c7643becd7e93ba8e113",
+      "brotli_sha256": "e7c1d74d68858aaec42615b646cf561148d7f2cb6990b7404743812efa72e314",
+      "receipt_sha256": "d8df98c5e8fdd35e90b819315a35d399682eb012dc3d1f27343a7b73ae3e4edb"
     },
     {
       "family": "exams",
@@ -186,13 +187,13 @@
       "path": "procurements.json.br",
       "gzip_path": "procurements.json.gz",
       "document_count": 19872,
-      "uncompressed_bytes": 62644535,
-      "gzip_bytes": 3352822,
-      "brotli_bytes": 2482196,
-      "sha256": "69d458894febd65664407cc41c5e9ae4661fc6788d785c17ed869734eca63b9d",
-      "gzip_sha256": "aaa64d24875d2ec59b5e5de6bc8cd31cb677b8c71ff3880768cf92ba25f77aba",
-      "brotli_sha256": "29604735332b84e670739cb3a98b58c09dc98a9040a0c78e9e67c2d359e68c91",
-      "receipt_sha256": "bffe29d0fce0abd37a89302536878392e12f7a1a0f313fccfb436606a7b8e0f4"
+      "uncompressed_bytes": 64979188,
+      "gzip_bytes": 3572172,
+      "brotli_bytes": 2682908,
+      "sha256": "4273ea50699c09bdd14c20a6c7cdba69d31d246cf28cf5e5078ecb0ee4a8d306",
+      "gzip_sha256": "c51f99673d995d3571ead131106d4efa680a68cae93948a315e6660b958dc0b1",
+      "brotli_sha256": "4fbf34c776ebd3db25db6fe89e718c612afa34ba0df08dbf941c18121d00ecb2",
+      "receipt_sha256": "41839c37fbe8ea1d08ad9d21ca5acb0059f2b975b47aea5756d146885b19fc79"
     },
     {
       "family": "consultations",

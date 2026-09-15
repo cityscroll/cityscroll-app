@@ -2,8 +2,8 @@
   "schema": "cityscroll.architecture.watermark-shard.v1",
   "id": "canary:production-search",
   "owner": "canary:production-search",
-  "updated_at": "2026-09-15T03:22:21-04:00",
-  "commit": "ad2c904c2d2047f7869b6105340695368e06472c",
+  "updated_at": "2026-09-15T07:04:29-04:00",
+  "commit": "f41e092c64246acc37a8d27c53b9565b3f4a634a",
   "value": {
     "path": "worker/src/search.mjs",
     "count": 6,
