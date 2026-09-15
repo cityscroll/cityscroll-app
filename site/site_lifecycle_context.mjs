@@ -84,8 +84,6 @@ export function mountSiteLifecycleContext(host, data, subjectId) {
   if (host) host.innerHTML = renderSiteLifecycleContext(buildSiteLifecycleContext(data, { subjectId, surface: "land" }));
 }
 
-export default { buildSiteLifecycleContext, loadSiteLifecycleContext, renderSiteLifecycleContext, mountSiteLifecycleContext };
-
 function memberDate(member) {
   return dateLabel(member?.source_event_date) || dateLabel(member?.source_events?.[0]?.date);
 }
