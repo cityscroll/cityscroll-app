@@ -17,6 +17,7 @@
   W.STRINGS["ht"] = W.STRINGS["ht"] || {};
   Object.assign(W.STRINGS["ht"], {
     // BEGIN GUIDE TRANSLATIONS
+    guide_text_4519627edf694ca3: "61 sous piblik ki dèyè dosye sa yo, klase selon konbyen fwa chak sous chanje",
     guide_text_a79aae29f4b3dde6: "Sou paj yon reyinyon, chwazi `Add to calendar` pami aksyon li yo. Kontwòl sa a parèt sèlman lè dosye a gen yon lè presi. Louvri fichye ou telechaje a nan aplikasyon kalandriye ou epi verifye tit, dat ak lè evènman an.",
     guide_text_427f9ea76a2de8cd: "Louvri [{control_b}]({link_a}) epi chwazi tit yon reyinyon pou ouvri paj li.",
     guide_text_0bd019485364f283: "Si panèl filtè a kouvri ba zouti a, fèmen **{control_a}** epi chwazi **{control_b}**.",

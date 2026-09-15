@@ -18,6 +18,7 @@
   W.STRINGS["ko"] = W.STRINGS["ko"] || {};
   Object.assign(W.STRINGS["ko"], {
     // BEGIN GUIDE TRANSLATIONS
+    guide_text_4519627edf694ca3: "이 기록의 기반이 되는 61개 공개 출처를 각 출처의 변경 빈도별로 표시합니다",
     guide_text_a79aae29f4b3dde6: "회의 페이지의 작업에서 `Add to calendar`를 선택하세요. 이 기능은 기록에 시각이 있을 때만 나타납니다. 내려받은 파일을 달력 앱으로 열고 행사 제목, 날짜, 시간을 확인하세요.",
     guide_text_427f9ea76a2de8cd: "[{control_b}]({link_a})을 열고 회의 제목을 선택하여 해당 회의 페이지를 여세요.",
     guide_text_0bd019485364f283: "필터 패널이 도구 모음을 가리면 **{control_a}**를 닫고 **{control_b}**을 선택하세요.",

@@ -73,7 +73,10 @@ test("district activity retains residual accounting while adding ontology-placed
   assert.equal(meetings.row_count, 119);
   assert.equal(meetings.location_residual.fixed_rows, 24);
   assert.equal(activity.sources.meetings.corpus, "shared_meeting_read_model");
-  assert.equal(activity.sources.meetings.counted, sharedMeetings.rows.length);
+  assert.equal(sharedMeetings.rows.length, 574);
+  // Four newly materialized PDC sessions are placed meetings, so the
+  // location-residual activity baseline now counts 570 eligible rows.
+  assert.equal(activity.sources.meetings.counted, 570);
   assert.equal(activity.sources.meetings.located, 543);
   assert.equal(activity.sources.meetings.by_method.community_board_ontology, 450);
   assert.equal(sharedMeetings.counts.community_board, 450);
