@@ -2,6 +2,9 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   MEETING_SOURCE_SYSTEMS,
+  normalizeCityRecordMeeting,
+  normalizeCommunityBoardMeeting,
+  normalizeNycLegistarEventsMeeting,
   normalizePdcCalendarMeeting,
   normalizeBsaCalendarMeeting,
   normalizeOathTrialCalendarMeeting,
@@ -12,6 +15,7 @@ import {
 } from "../site/meeting_process_profile.mjs";
 import { buildConsequenceProjection } from "../site/consequence_projection.mjs";
 import { renderMeetingDocument } from "../site/meeting_document.mjs";
+import { withPinnedClock, todayISO } from "./helpers/test_clock.mjs";
 
 const source = "https://example.nyc.gov/calendar";
 
@@ -65,16 +69,96 @@ test("item adjournment and lack of quorum do not cancel a parent session", () =>
   assert.equal(pdc.observed.event_state.value, "scheduled");
 });
 
-test("observer detail renders actual instruction destination without Council or board diagnostics", () => {
-  const html = renderMeetingDocument(normalizePdcCalendarMeeting({
-    pdc_event_id: "pdc-1", title: "Public Design Commission review", event_date: "2026-09-22",
-    source_url: source, venue: { name: "City Hall" },
-    access_steps: [{ kind: "observer_instructions", destination: source, effort: "open_details", source_url: source }],
-  }));
-  assert.match(html, /Public Design Commission meeting/);
-  assert.match(html, /How to observe/);
-  assert.match(html, /observer-instructions-action/);
-  assert.match(html, /https:\/\/example\.nyc\.gov\/calendar/);
-  assert.doesNotMatch(html, /No exact Council hearing match/);
-  assert.doesNotMatch(html, /community-board lookup/i);
+test("A1: PDC and BSA details show purpose, evidenced venue/watch access, and official next step", async () => {
+  await withPinnedClock("2026-09-15T12:00:00Z", () => {
+    const day = todayISO();
+    const fixtures = [
+      normalizePdcCalendarMeeting({
+        pdc_event_id: "pdc-1", title: "Public Design Commission review", event_date: `${day}T10:00:00`,
+        source_url: source, venue: { name: "City Hall" },
+        observer_access: { watch_url: "https://video.example.nyc/watch/pdc-1" },
+        access_steps: [{ kind: "observer_instructions", destination: source, effort: "open_details", source_url: source }],
+      }),
+      normalizeBsaCalendarMeeting({
+        bsa_session_id: "bsa-1", title: "Board of Standards and Appeals session", event_date: `${day}T14:00:00`,
+        source_url: source, venue: { name: "Municipal Building", address: "1 Centre Street" },
+        observer_access: { watch_url: "https://video.example.nyc/watch/bsa-1" },
+        access_steps: [{ kind: "observer_instructions", destination: source, effort: "open_details", source_url: source }],
+      }),
+    ];
+    for (const [html, title, venue, watch] of fixtures.map((record) => [
+      renderMeetingDocument(record), record.title, record.venue.name,
+      record.observer_access.watch_url,
+    ])) {
+      assert.match(html, new RegExp(title));
+      assert.match(html, new RegExp(venue));
+      assert.match(html, new RegExp(watch.replaceAll("/", "\\/")));
+      assert.match(html, /How to observe/);
+      assert.match(html, /observer-instructions-action/);
+      assert.match(html, /https:\/\/example\.nyc\.gov\/calendar/);
+    }
+    const pdcHtml = renderMeetingDocument(fixtures[0]);
+    assert.doesNotMatch(pdcHtml, /No exact Council hearing match/);
+    assert.doesNotMatch(pdcHtml, /community-board lookup/i);
+  });
+});
+
+test("A3: existing City Record, community-board, and Council families retain their source behavior", () => {
+  const cityRecord = normalizeCityRecordMeeting({ request_id: "20260915001", title: "City Record hearing" });
+  const board = normalizeCommunityBoardMeeting({
+    source_record_id: "board-event-1", board_id: "brooklyn-cb-06", title: "Board meeting",
+  });
+  const council = normalizeNycLegistarEventsMeeting({ EventId: 22691, EventBodyName: "Committee on Contracts" });
+  assert.equal(cityRecord.meeting_family, "descriptive_meeting_v0");
+  assert.equal(cityRecord.compatibility.legacy_notice_href, "/notices/20260915001");
+  assert.equal(board.meeting_family, "community_board_meeting_v0");
+  assert.equal(board.institution_refs.board_ref, "community-board:brooklyn-cb-06");
+  assert.equal(council.meeting_family, "descriptive_meeting_v0");
+  assert.equal(council.source_keys[0].key_type, "event_id");
+});
+
+test("A4: observer details report effort and perform zero side effects", () => {
+  const previousFetch = globalThis.fetch;
+  let fetchCalls = 0;
+  globalThis.fetch = () => {
+    fetchCalls += 1;
+    throw new Error("observer detail must not fetch");
+  };
+  try {
+    const html = renderMeetingDocument(normalizePdcCalendarMeeting({
+      pdc_event_id: "pdc-side-effect-free", title: "Public Design Commission review", event_date: "2026-09-22",
+      source_url: source, access_steps: [{ kind: "observer_instructions", destination: source, effort: "open_details", source_url: source }],
+    }));
+    assert.match(html, /observer-instructions-action/);
+    assert.match(html, /meeting-access-effort">\(open_details\)/);
+    assert.equal(fetchCalls, 0);
+    assert.doesNotMatch(html, /mailto:|subscribe|reserve access|confirmation/i);
+  } finally {
+    globalThis.fetch = previousFetch;
+  }
+});
+
+test("A6: positive and absent access controls remain keyboard-usable and no-JavaScript safe", async () => {
+  await withPinnedClock("2026-09-15T12:00:00Z", () => {
+    const day = todayISO();
+    const cases = [
+      normalizeBsaCalendarMeeting({
+        bsa_session_id: "bsa-positive", title: "BSA observed session", event_date: day,
+        source_url: source, venue: { name: "Municipal Building" },
+        access_steps: [{ kind: "observer_instructions", destination: source, effort: "open_details", source_url: source }],
+      }),
+      normalizeBsaCalendarMeeting({
+        bsa_session_id: "bsa-absent", title: "BSA access not published", event_date: day, source_url: source,
+      }),
+    ];
+    for (const record of cases) {
+      const html = renderMeetingDocument(record);
+      assert.match(html, /<meta name="viewport" content="width=device-width,initial-scale=1">/);
+      assert.match(html, /data-capability-reference="meeting\.get@1"/);
+      assert.match(html, /<main[^>]*tabindex="-1"/);
+      assert.doesNotMatch(html, /onclick=|onkeydown=/i);
+    }
+    assert.match(renderMeetingDocument(cases[0]), /observer-instructions-action/);
+    assert.doesNotMatch(renderMeetingDocument(cases[1]), /observer-instructions-action|watch_url|video\.example/i);
+  });
 });

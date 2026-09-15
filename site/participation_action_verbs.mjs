@@ -38,6 +38,7 @@ export const PARTICIPATION_ACTION_VERBS = Object.freeze({
 const LINKABLE_EVIDENCE_BASES = Object.freeze(new Set([
   "recognized_video_conference_join_url",
   "published_livestream_url",
+  "published_observer_watch_link",
   "published_testimony_signup",
   "open_comment_submission_channel",
   "published_comment_channel",
