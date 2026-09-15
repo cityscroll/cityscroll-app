@@ -1,7 +1,9 @@
 /**
  * Shared static document chrome for CityScroll node pages.
  *
- * Notice detail (SPA shell) is the visual standard; standalone exam / parcel /
+ * Notice detail and standalone civic documents share one composed-page visual
+ * standard: compact mast first, primary identity next, enrichment after it.
+ * Standalone exam / parcel /
  * pack / digest / agency documents inherit the same layout grammar through
  * these helpers + civic-documents.css node-* rules.
  *
