@@ -2,7 +2,7 @@
   "schema": "cityscroll.public_source_health.v1",
   "generated_at": "2026-09-14T14:24:52.594Z",
   "available": true,
-  "source_count": 61,
+  "source_count": 62,
   "sources": [
     {
       "source_id": "abo-local-authorities",
@@ -2503,9 +2503,7 @@
       "mode": "periodic",
       "health": {
         "status": "UNKNOWN",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": null,

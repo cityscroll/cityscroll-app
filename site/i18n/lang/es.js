@@ -526,6 +526,7 @@
     guide_text_d06dee0ebe003a1d: "Algunos editores publican a medida que suceden los hechos y otros lo hacen por ciclos. Esa diferencia es el motivo más habitual por el que algo que la ciudad ya hizo todavía no ha llegado aquí; conviene saber qué tipo de fuente está leyendo.",
     guide_text_172ed63464284add: "Las 60 fuentes públicas de estos registros, según la frecuencia de cambio",
     guide_text_4519627edf694ca3: "Las 61 fuentes públicas detrás de estos registros, según la frecuencia con la que cambia cada una",
+    guide_text_d56f9637f2ded084: "Las 62 fuentes públicas detrás de estos registros, según la frecuencia con la que cambia cada una",
     guide_text_804d092455f8f8d9: "A medida que suceden los hechos",
     guide_text_cbb5a736940c6071: "El editor actualiza la fuente al presentarse los registros; por eso lo que ve sigue de cerca a la ciudad.",
     guide_text_1816d56c3c707b5d: "Según el calendario del editor",

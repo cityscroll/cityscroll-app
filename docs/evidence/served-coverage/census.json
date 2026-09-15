@@ -2,8 +2,8 @@
   "schema": "cityscroll.served_coverage_census.v1",
   "purpose": "Disposition of every registered source contract against the served product, and the served-population evidence behind each published coverage unit. Not a served artifact: this is the receipt the public snapshot is derived from.",
   "registry": {
-    "reviewed_registry_size": 65,
-    "observed_registry_size": 65,
+    "reviewed_registry_size": 66,
+    "observed_registry_size": 66,
     "changed": false
   },
   "disposition_vocabulary": [
@@ -16,7 +16,7 @@
     "publicly_represented": 19,
     "context_only": 28,
     "not_served": 8,
-    "unresolved": 10
+    "unresolved": 11
   },
   "served_units": [
     {
@@ -1243,6 +1243,19 @@
           "source_system": "passport_public_rfx",
           "served_observations": 0,
           "declared_input_rows": 0
+        }
+      }
+    },
+    {
+      "source_id": "public-consultations",
+      "name": "Public consultation invitations",
+      "disposition": "unresolved",
+      "reason": "Consultation invitations are served through a dedicated retained materialization, but no selected served-population unit counts them yet, so no served count is established.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Consultation browsing, local-scope placement, search evidence, and supported response-date actions."
         }
       }
     },
