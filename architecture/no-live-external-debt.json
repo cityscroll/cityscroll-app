@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-15",
-  "expires_on": "2026-09-14",
+  "generated_at": "2026-09-15",
+  "expires_on": "2026-10-15",
   "entries": [
     {
       "id": "no-live-01",
@@ -14,7 +14,7 @@
       "owner": "web",
       "migration_card": "public-api-01",
       "reason": "The public batch cross-reference still executes publisher-backed aggregate queries.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     },
     {
       "id": "no-live-02",
@@ -27,7 +27,7 @@
       "owner": "web",
       "migration_card": "read-core-01",
       "reason": "The legacy Socrata transport remains reachable by exact debt-listed callers until their retained read models land.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     },
     {
       "id": "no-live-03",
@@ -40,7 +40,7 @@
       "owner": "web",
       "migration_card": "entities-01",
       "reason": "Agency and vendor profile aggregates still need a complete retained profile read model.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     },
     {
       "id": "no-live-04",
@@ -53,7 +53,7 @@
       "owner": "web",
       "migration_card": "entities-01",
       "reason": "Agency and vendor profile aggregates still need a complete retained profile read model.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     },
     {
       "id": "no-live-05",
@@ -66,7 +66,7 @@
       "owner": "web",
       "migration_card": "entities-01",
       "reason": "Agency and vendor profile aggregates still need a complete retained profile read model.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     },
     {
       "id": "no-live-06",
@@ -79,7 +79,7 @@
       "owner": "web",
       "migration_card": "entities-01",
       "reason": "Agency and vendor profile aggregates still need a complete retained profile read model.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     },
     {
       "id": "no-live-07",
@@ -92,7 +92,7 @@
       "owner": "web",
       "migration_card": "entities-01",
       "reason": "Agency and vendor profile aggregates still need a complete retained profile read model.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     },
     {
       "id": "no-live-08",
@@ -105,7 +105,7 @@
       "owner": "web",
       "migration_card": "entities-01",
       "reason": "Agency and vendor profile aggregates still need a complete retained profile read model.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     },
     {
       "id": "no-live-09",
@@ -118,7 +118,7 @@
       "owner": "web",
       "migration_card": "entities-01",
       "reason": "Agency and vendor profile aggregates still need a complete retained profile read model.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     },
     {
       "id": "no-live-10",
@@ -131,7 +131,7 @@
       "owner": "web",
       "migration_card": "entities-01",
       "reason": "Agency and vendor profile aggregates still need a complete retained profile read model.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     },
     {
       "id": "no-live-11",
@@ -144,7 +144,7 @@
       "owner": "web",
       "migration_card": "entities-01",
       "reason": "Agency and vendor profile aggregates still need a complete retained profile read model.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     },
     {
       "id": "no-live-12",
@@ -157,7 +157,7 @@
       "owner": "web",
       "migration_card": "entities-01",
       "reason": "Agency and vendor profile aggregates still need a complete retained profile read model.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     },
     {
       "id": "no-live-14",
@@ -170,7 +170,7 @@
       "owner": "web",
       "migration_card": "detail-models-01",
       "reason": "This detail endpoint still computes publisher-backed enrichment on a materialization miss.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     },
     {
       "id": "no-live-15",
@@ -183,7 +183,7 @@
       "owner": "web",
       "migration_card": "detail-models-01",
       "reason": "This detail endpoint still computes publisher-backed enrichment on a materialization miss.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     },
     {
       "id": "no-live-16",
@@ -196,7 +196,7 @@
       "owner": "site-owner",
       "migration_card": "demolition-status-snapshot",
       "reason": "The explicit demolition-status check still needs a retained DOB filing snapshot.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     },
     {
       "id": "no-live-17",
@@ -209,7 +209,7 @@
       "owner": "site-owner",
       "migration_card": "demolition-status-snapshot",
       "reason": "The explicit demolition-status check still needs a retained DOB filing snapshot.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     },
     {
       "id": "no-live-18",
@@ -222,7 +222,7 @@
       "owner": "web",
       "migration_card": "transactions-01",
       "reason": "Translation source resolution still needs to become D1-only before this explicit transaction is compliant.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     },
     {
       "id": "no-live-19",
@@ -235,7 +235,7 @@
       "owner": "web",
       "migration_card": "detail-models-01",
       "reason": "This detail endpoint still computes publisher-backed enrichment on a materialization miss.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     },
     {
       "id": "no-live-20",
@@ -248,7 +248,7 @@
       "owner": "web",
       "migration_card": "read-core-01",
       "reason": "Notice fallback resolution still needs a complete retained notice index.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     },
     {
       "id": "no-live-21",
@@ -261,7 +261,7 @@
       "owner": "web",
       "migration_card": "read-core-01",
       "reason": "Notice fallback resolution still needs a complete retained notice index.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     },
     {
       "id": "no-live-22",
@@ -274,7 +274,7 @@
       "owner": "web",
       "migration_card": "read-core-01",
       "reason": "Notice fallback resolution still needs a complete retained notice index.",
-      "expires_on": "2026-09-14"
+      "expires_on": "2026-10-15"
     }
   ]
 }
