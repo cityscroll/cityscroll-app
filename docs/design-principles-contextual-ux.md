@@ -4,6 +4,19 @@ Status: design-guidance draft; specific interface applications remain hypotheses
 
 ## Preserve the full sequence
 
+## Compose the document before promoting the product
+
+When a reader opens a direct civic record, the page must begin as a readable
+document: compact document chrome, one subject heading, and essential facts.
+Homepage promotion remains available on the home route, but it must not delay
+or reorder the record's primary task. Server first paint and client hydration
+therefore share the same composition boundary; legacy shell nodes may remain
+for bindings only when they are inert and do not create hidden focus targets.
+
+Applied to notice routes in [`site/notice_document_composition.mjs`](../site/notice_document_composition.mjs): the edge response and client route
+state both expose the compact mast, while the existing language control is
+retained and moved into the route chrome during hydration.
+
 Trace the task from the initial question through finding, inspecting, acting, and returning. A change that shortens one step — for example, a jump control that moves focus straight to a relevant result group — must account for every other step already in the sequence: it must not issue a new search, change the query, alter the ranking or result set, change any coverage or record-identity state, or rewrite a destination handoff link. The step gets shorter; nothing else in the sequence moves.
 
 Applied first in [`site/search_family_nav.mjs`](../site/search_family_nav.mjs): the result-family jump list above Search's first result group reads each family's already-rendered heading, status, and state and only moves keyboard focus there. It never fetches, never mutates the query, and it labels an empty, loading, unavailable, or error family with that family's own true state rather than inventing a count.

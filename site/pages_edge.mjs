@@ -44,6 +44,7 @@ import {
 } from "./community_board_institution_edges.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import { renderNodeBack } from "./civic_document_chrome.mjs";
+import { renderNoticeRouteChrome } from "./notice_document_composition.mjs";
 import {
   buildCanonicalDocumentReportTarget,
   buildCanonicalDocumentRelationshipReportTarget,
@@ -1098,6 +1099,14 @@ async function handleNotice(request, env, id) {
       : response;
   }
   const transformed = new HTMLRewriter()
+    .on("body", { element(element) {
+      element.setAttribute("data-primary-context", "notice");
+      element.setAttribute("class", "notice-route");
+    } })
+    .on("#notice-route-chrome", { element(element) {
+      element.removeAttribute("hidden");
+      element.setInnerContent(renderNoticeRouteChrome(), { html: true });
+    } })
     .on("title", { element(element) { element.setInnerContent(`${title} · CityScroll`); } })
     .on("head", { element(element) { element.append(renderNoticeModulePreloadHTML(), { html: true }); } })
     .on('link[rel="canonical"]', { element(element) { element.setAttribute("href", canonical); } })
