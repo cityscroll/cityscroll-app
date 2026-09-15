@@ -300,6 +300,9 @@ export function normalizeMeetingObject(row = {}) {
     ...(source === "bsa_calendar" && Array.isArray(row.phases) ? { phases: row.phases } : {}),
     ...(source === "bsa_calendar" && row.schedule_relation ? { schedule_relation: row.schedule_relation } : {}),
     ...(source === "bsa_calendar" && optionalText(row.agenda_url) ? { agenda_url: optionalText(row.agenda_url) } : {}),
+    ...(source === "pdc_calendar" && row.quorum_notice && typeof row.quorum_notice === "object"
+      ? { quorum_notice: { status: optionalText(row.quorum_notice.status), votes: Array.isArray(row.quorum_notice.votes) ? row.quorum_notice.votes : [] } }
+      : {}),
     meeting_documents: Array.isArray(row.meeting_documents) ? row.meeting_documents : [],
     source_url: sourceHref,
     source_system: source,
@@ -434,6 +437,9 @@ export function normalizePdcCalendarMeeting(row = {}) {
     publisher_identifier: row.publisher_identifier || row.pdc_event_id || row.event_id || row.source_record_id,
     source_url: row.source_url || row.record_url,
     activity: "observe",
+    ...(row.quorum_notice && typeof row.quorum_notice === "object"
+      ? { quorum_notice: row.quorum_notice }
+      : {}),
   });
 }
 
