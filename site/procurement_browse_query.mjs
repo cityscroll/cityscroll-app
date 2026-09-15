@@ -24,7 +24,7 @@ export const PROCUREMENT_BROWSE_FIRST_PAGE_MODES = Object.freeze(["award", "arch
 export const PROCUREMENT_BROWSE_QUERY_FIELDS = Object.freeze([
   "procurement_id", "canonical_href", "procurement_stages", "primary_stage", "process_states",
   "request_id", "start_date", "due_date", "agency_name", "short_title", "pin",
-  "contract_id", "contract_amount", "vendor_name", "selection_method_description",
+  "contract_id", "contract_amount", "original_contract_amount", "current_contract_amount", "action_amount", "paid_amount", "encumbered_amount", "vendor_name", "selection_method_description",
   "category_description", "type_of_notice_description", "source_system",
   "method_family", "procurement_category", "coverage_state", "additional_description_1",
   "project_id", "project_name",

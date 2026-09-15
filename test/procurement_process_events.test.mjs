@@ -50,6 +50,19 @@ test("shared materialization carries PASSPort RFx observations with a receipt", 
   assert.equal(record.source_receipt_ref, "site/data/passport_sources/verification_receipts/passport_public_2026-07-30.json");
 });
 
+test("process events retain publication and registration date bases", () => {
+  const model = buildSharedProcurementReadModel({
+    sourceRecords: [sourceRecord("city_record", "20240905001", {
+      request_id: "20240905001", pin: "EPIN-BHRAGS", type_of_notice_description: "Award", start_date: "2024-09-05",
+    }), sourceRecord("passport_public_contracts", "contract:EPIN-BHRAGS:1", {
+      epin: "EPIN-BHRAGS", ctr_id: "1", contract_id: "CT-BHRAGS", status: "Registered", registration_date: "2024-08-28",
+    })],
+  });
+  const events = model.rows[0].process_events;
+  assert.equal(events.find((event) => event.state === "award")?.metadata.date_basis, "publication");
+  assert.equal(events.find((event) => event.state === "registered")?.metadata.date_basis, "registration");
+});
+
 test("Released and Responses Received become explicit process events while legacy solicitation remains", () => {
   const model = buildSharedProcurementReadModel({
     sourceRecords: [rfx("Released", "EPIN-OPEN", "1001"), rfx("Responses Received", "EPIN-EVAL", "1002")],
