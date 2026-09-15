@@ -21,7 +21,7 @@ export const LOCAL_DISTRICT_SUPPORTED_LENSES = Object.freeze([
   "land", "property", "rules", "money",
 ]);
 export const LOCAL_DISTRICT_UNSUPPORTED_LENSES = Object.freeze([
-  "people", "entity", "award", "district", "legal_code", "mandates", "obligations",
+  "people", "entity", "award", "district", "topic", "legal_code", "mandates", "obligations",
 ]);
 
 const DIGEST_SECTION_LABELS = Object.freeze({
