@@ -130,9 +130,16 @@ test("A2: the built AHA and QUIZIZZ artifacts retain source wording without inve
 
 test("A3: retained identifiers, source metadata, links, and exact-ID search survive the built model", () => {
   const model = readModel();
-  const { object, html } = documentFor(model, "CT110220271400991");
+  const { object, observations, html } = documentFor(model, "CT110220271400991");
   assert.deepEqual(object.identity_keys.contract_ids, ["CT110220271400991"]);
   assert.equal(object.source_observation_refs.length, 1);
+  assert.equal(observations[0].snapshot.parent_contract_id, null);
+  assert.equal(observations[0].snapshot.document_code, "CT1");
+  assert.equal(observations[0].snapshot.contract_type, "SUBSCRIPTIONS");
+  assert.deepEqual(observations[0].snapshot.source_fiscal_years, ["2027"]);
+  assert.deepEqual(observations[0].snapshot.date_ownership, { owner: "prime_vendor_slice" });
+  assert.match(html, /href="\/vendors\/S%20P%20GLOBAL%20MARKET%20INTELLIGENCE\/"/);
+  assert.match(html, /href="\/agencies\/city-council\/"/);
   assert.match(html, /href="\/search\/\?q=CT110220271400991"/);
   const documents = buildProcurementSearchDocuments(model).documents;
   const matches = searchKeywordDocuments(documents, resolveKeywordQuery("CT110220271400991"), { limit: 10 });
