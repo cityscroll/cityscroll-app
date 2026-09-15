@@ -53,6 +53,41 @@ test("seven-source parity requires admitted records and consumer read-back", asy
   assert.ok(report.sources.every((source) => source.resource_use.requests > 0));
 });
 
+test("current record count is kept distinct from historical comparison context", () => {
+  const report = buildCommunityBoardAcquisitionParityReport({
+    observations: [{
+      source_id: "manhattan-cb-11",
+      records: [{
+        record_id: "current-record", date: "2026-09-16", title: "Full Board Meeting",
+        source_url: "https://cb11.example/calendar/",
+        observed_receipt: receipt("https://cb11.example/calendar/"),
+      }],
+      receipt: receipt("https://cb11.example/calendar/"),
+    }],
+    consumerReadback: { "manhattan-cb-11": [{
+      record_id: "current-record", date: "2026-09-16", title: "Full Board Meeting",
+      source_url: "https://cb11.example/calendar/",
+      observed_receipt: receipt("https://cb11.example/calendar/"),
+    }] },
+    revision: "test-revision", environment: "scheduled-acquisition-worker",
+    observedAt: OBSERVED_AT,
+    historicalBaseline: { record_count: 203, observed_at: OBSERVED_AT },
+  });
+
+  assert.equal(report.comparison.current_record_count, 1);
+  assert.equal(report.comparison.historical_record_count, 203);
+  assert.deepEqual(report.comparison.count_comparison, {
+    status: "context_only",
+    current_record_count: 1,
+    historical_record_count: 203,
+    delta: -202,
+    note: "current and historical counts are distinct observations; delta is descriptive only",
+  });
+  assert.deepEqual(validateCommunityBoardAcquisitionParityReport(report, { expectedSourceCount: 1 }), {
+    valid: true, errors: [],
+  });
+});
+
 test("transport failure remains open and exposes last-good age", () => {
   const report = buildCommunityBoardAcquisitionParityReport({
     observations: [{
