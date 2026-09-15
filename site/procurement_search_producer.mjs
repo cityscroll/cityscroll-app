@@ -230,7 +230,7 @@ export function materializeProcurementSearchDocument(object = {}, readModel = {}
     facts.title, summary, contractId, epin,
     object.identity_keys?.contract_reporter_numbers?.[0],
     object.identity_keys?.solicitation_ids?.[0], object.identity_keys?.event_ids?.[0],
-    facts.method, facts.program, facts.industry, ...stages,
+    facts.method, facts.contractType, facts.program, facts.industry, ...stages,
     ...evidence.map((entry) => entry.additional_description_1),
     ...aliases.map((entry) => entry.alias),
   ].filter(Boolean).join(" "), SEARCH_TEXT_MAX_LENGTH);

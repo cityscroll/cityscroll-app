@@ -115,8 +115,20 @@ function checkbookRecord(row, generatedAt) {
   const snapshot = {
     id: row.contract_id || row.prime_contract_id,
     contract_id: row.contract_id || row.prime_contract_id,
+    // Keep the publisher's contract facts under their source names. These
+    // fields are already normalized by the Checkbook collector; dropping
+    // them here makes the detail and search projections reconstruct meaning
+    // from a generic contract id.
+    purpose: row.purpose || null,
+    award_method: row.award_method || null,
+    document_code: row.document_code || null,
+    contract_type: row.contract_type || null,
+    contract_version: row.contract_version || null,
+    parent_contract_id: row.parent_contract_id || null,
+    source_fiscal_years: Array.isArray(row.source_fiscal_years) ? row.source_fiscal_years : [],
+    date_ownership: row.date_ownership || null,
     pin: row.pin,
-    title: row.title || null,
+    title: row.purpose || row.title || null,
     vendor: row.prime_vendor,
     agency: row.agency,
     status: row.status,
@@ -125,6 +137,7 @@ function checkbookRecord(row, generatedAt) {
     spent: row.spent,
     start: row.start,
     end: row.end,
+    registration_date: row.registration_date || row.registered || null,
     registered: row.registered,
     received: row.received,
     selection_bucket: row.selection_bucket,

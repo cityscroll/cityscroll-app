@@ -558,7 +558,7 @@ export function renderProcurementDocument(object = {}, observations = [], {
   const projectContextInspect = projectContext ? projectContextInspectSummary(projectContext) : null;
   const factRows = [
     ["Agency", facts.agency, "agency"], ["Vendor", facts.vendor, "vendor"], ["Amount", facts.amount], ["Award date", facts.awardDate],
-    ["PASSPort contract number", facts.contractNumber], ["Method", facts.method],
+    ["PASSPort contract number", facts.contractNumber], ["Method", facts.method], ["Contract type", facts.contractType],
     ["Program", facts.program], ["Industry", facts.industry],
     ["Contract start", facts.start_date || facts.startDate], ["Contract end", facts.end_date || facts.endDate],
     ["Registration date", facts.registrationDate],
