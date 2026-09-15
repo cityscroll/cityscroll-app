@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.public_source_health.v1",
-  "generated_at": "2026-09-14T10:12:41.000Z",
+  "generated_at": "2026-09-14T14:24:52.594Z",
   "available": true,
-  "source_count": 60,
+  "source_count": 61,
   "sources": [
     {
       "source_id": "abo-local-authorities",
@@ -1439,12 +1439,12 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": "2026-09-07T13:41:05.021Z",
+            "at": "2026-09-14T14:24:52.445Z",
             "state": "KNOWN",
             "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": "2026-09-07T13:41:05.246Z",
+            "at": "2026-09-14T14:24:52.594Z",
             "state": "KNOWN",
             "basis": "cityscroll_materialization"
           }
@@ -2733,6 +2733,57 @@
         "publisher_vintage": null,
         "retrieved_at": "2026-09-13T13:01:59.965Z",
         "expected_lag_tolerance_days": 3,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
+      }
+    },
+    {
+      "source_id": "public-consultations",
+      "name": "Public consultation invitations",
+      "publisher": "New York City public agencies and community boards",
+      "official_url": "https://www.nyc.gov/",
+      "expected_cadence": "Daily verification of retained public consultation invitations",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": null,
         "current_lag": {
           "value": null,
           "unit": null

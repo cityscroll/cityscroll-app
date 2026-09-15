@@ -3,6 +3,13 @@
   "observed_on": "2026-08-11",
   "sources": [
     {
+      "id": "public-consultations",
+      "kind": "html",
+      "identifier": "",
+      "response_type": "text/html",
+      "fields": ["id", "title", "organizer", "purpose", "geography", "deadline", "channels", "sources", "observed_at"]
+    },
+    {
       "id": "ibo-fiscal-history",
       "kind": "html",
       "identifier": "fiscalhistory.html",

@@ -4068,6 +4068,43 @@
       }
     },
     {
+      "id": "public-consultations",
+      "name": "Public consultation invitations",
+      "owner": "New York City public agencies and community boards",
+      "status": "live",
+      "scope": "site",
+      "kind": "html",
+      "landing_page": "https://www.nyc.gov/",
+      "required_fields": ["id", "title", "organizer", "purpose", "geography", "deadline", "channels", "sources"],
+      "max_stale_days": 7,
+      "publisher_cadence": "Daily verification of retained public consultation invitations",
+      "product_freshness": "Consultations are retained in a build-time materialization from reviewed organizer sources; resident reads never contact a publisher.",
+      "used_for": "Consultation browsing, local-scope placement, search evidence, and supported response-date actions.",
+      "code_references": [
+        {
+          "path": "site/consultation_acquisition.mjs",
+          "contains": "CONSULTATION_SCHEMA"
+        },
+        {
+          "path": "site/consultation_place_time.mjs",
+          "contains": "CONSULTATION_NOW_HORIZON_DAYS"
+        }
+      ],
+      "delivery_tier": "inline-at-build",
+      "freshness_contract": {
+        "mode": "periodic",
+        "max_stale_days": 7,
+        "clock_basis": "checked_acquired",
+        "serving_max_age_days": 7,
+        "serve_contract_id": null
+      },
+      "health_policy": {
+        "public_visibility": "public",
+        "backstage_detail": "receipts-and-errors",
+        "relationship_coverage": "separate"
+      }
+    },
+    {
       "id": "omb-community-board-budget-requests",
       "name": "Register of Community Board Budget Requests",
       "owner": "New York City Office of Management and Budget",
@@ -4807,6 +4844,41 @@
       "resident_stale_behavior": "Stop describing the contribution edges as confirmed once the check clock passes its hard maximum age, and keep naming the filing period each edge came from.",
       "resident_unavailable_behavior": "Show campaign contributions as unavailable; never report that an official received no contributions because the acquisition failed.",
       "production_evidence_field": "first_class.official_cfb_influence"
+    },
+    {
+      "id": "public-consultations",
+      "public_artifact_path": "site/data/consultations.json",
+      "primary_routes": [
+        "/consultations/",
+        "/now/"
+      ],
+      "source_contract_id": "public-consultations",
+      "acquisition_command": [
+        "node",
+        "site/consultation_acquisition.mjs"
+      ],
+      "owning_builder": "site/consultation_acquisition.mjs",
+      "builder_command": [
+        "node",
+        "site/consultation_acquisition.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_keyword_search_index.mjs"
+      ],
+      "normal_refresh_cadence_hours": 24,
+      "warning_age_hours": 72,
+      "hard_maximum_age_hours": 168,
+      "vintage_fields": [
+        "observed_at"
+      ],
+      "population_fields": [
+        "consultations"
+      ],
+      "last_known_good_behavior": "Retain the last verified consultation materialization and its source links when a refresh fails.",
+      "resident_stale_behavior": "Keep retained consultation records reachable but do not present deadline-driven Now actions from stale observations.",
+      "resident_unavailable_behavior": "Show retained consultation records with source recovery; never turn an unavailable refresh into no consultations.",
+      "production_evidence_field": "first_class.public_consultations"
     }
   ]
 }
