@@ -1,12 +1,18 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import edgeWorker from "../site/pages_edge.mjs";
+import {
+  normalizePerformanceEvidenceItem,
+} from "../site/analytical_performance_evidence.mjs";
+import { withPinnedClock } from "./helpers/test_clock.mjs";
 
 const manifest = JSON.parse(readFileSync(new URL("../site/data/shared_procurement_read_model.json", import.meta.url)));
 const performance = JSON.parse(readFileSync(new URL("../site/data/analytics_performance_evidence.json", import.meta.url)));
 const projectContext = JSON.parse(readFileSync(new URL("../site/data/procurement_project_context.json", import.meta.url)));
+const renderManifest = JSON.parse(readFileSync(new URL("../docs/evidence/procurement-disclosure-production-proof/manifest.json", import.meta.url)));
 
 const CONTRACTS = {
   "CT110220271400991": { amount: "$62,500", vendor: "S &amp; P GLOBAL MARKET INTELLIGENCE LLC" },
@@ -95,6 +101,39 @@ test("A1: real canonical routes never label metadata or summaries as public cont
   }
 });
 
+test("A1: a positive document label is accepted only with URL, exact identity, and dated passage evidence", () => {
+  const qualifying = normalizePerformanceEvidenceItem({
+    kind: "performance_terms",
+    label: "Public performance terms",
+    source_passage: {
+      source_id: "city-record-awards",
+      document_id: "award-notice-2026-001",
+      url: "https://www.nyc.gov/assets/example/award-notice-2026-001.pdf",
+      locator: "Page 4, Performance Requirements",
+      excerpt: "The contractor shall meet the published response-time standard.",
+      publication_date: "2026-08-01",
+      identity_basis: "exact contract identifier CT-FIXTURE-001",
+    },
+  });
+  assert.deepEqual(qualifying, {
+    kind: "performance_terms",
+    label: "Public performance terms",
+    source_passage: {
+      source_id: "city-record-awards",
+      document_id: "award-notice-2026-001",
+      url: "https://www.nyc.gov/assets/example/award-notice-2026-001.pdf",
+      locator: "Page 4, Performance Requirements",
+      excerpt: "The contractor shall meet the published response-time standard.",
+      publication_date: "2026-08-01",
+      identity_basis: "exact contract identifier CT-FIXTURE-001",
+    },
+  });
+  assert.equal(normalizePerformanceEvidenceItem({
+    kind: "performance_terms",
+    source_passage: { ...qualifying.source_passage, url: "https://a0333-passportpublic.nyc.gov/login" },
+  }), null, "a login destination cannot qualify as document evidence");
+});
+
 test("A2: zero accepted performance rows remain an explicit bounded absence on the served routes", async () => {
   assert.ok(performance.rows.length > 0, "registered-contract population is present");
   assert.ok(performance.rows.every((row) => row.evidence_state === "no-located-evidence" && row.unresolved === true));
@@ -153,15 +192,17 @@ test("A4: real canonical routes credit source handoffs and refuse misleading rev
   assert.match(sp, /checkbooknyc\.com\/smart_search\/citywide\?search_term=CT110220271400991/);
   assert.doesNotMatch(sp, /City Record notice/);
   const aha = await servedContract("CT105720278802113");
-  assert.match(aha, /PASSPort Public contracts|Checkbook NYC/);
+  assert.match(aha, /PASSPort Public contracts/);
   const bhrags = await servedContract("CT107120258801626");
   assert.match(bhrags, /checkbooknyc\.com|Checkbook NYC/);
+  assert.match(bhrags, /\$10,869,881/);
   assert.match(bhrags, /20240829105/);
-  for (const id of ["CT185720228800365", "CT185020228802305"]) {
-    const html = await servedContract(id);
-    assert.match(html, /Amendment|Construction Change Order/);
-    assert.doesNotMatch(html, /small base contract|overall contract value/i);
-  }
+  const firematic = await servedContract("CT185720228800365");
+  assert.match(firematic, /Amendment/);
+  assert.doesNotMatch(firematic, /small base contract|overall contract value/i);
+  const tameer = await servedContract("CT185020228802305");
+  assert.match(tameer, /Construction Change Order/);
+  assert.doesNotMatch(tameer, /small base contract|overall contract value/i);
 });
 
 test("A5: real canonical routes remain keyboard-linkable and server-rendered at desktop and mobile request variants", async () => {
@@ -176,4 +217,24 @@ test("A5: real canonical routes remain keyboard-linkable and server-rendered at 
     }
     assert.equal(desktop, mobile, `${id} has deterministic server-rendered markup across viewport variants`);
   }
+});
+
+test("A5: committed manifest records each route, viewport, vintage, assertion, and render hash", async () => {
+  await withPinnedClock(renderManifest.capture_clock, async () => {
+    const entries = new Map(renderManifest.entries.map((entry) => [`${entry.route}|${entry.viewport}`, entry]));
+    assert.equal(entries.size, Object.keys(CONTRACTS).length * 2);
+    for (const id of Object.keys(CONTRACTS)) {
+      for (const [viewport, header] of [["desktop", "1440x900"], ["mobile", "390x844"]]) {
+        const html = await servedContract(id, { "X-Test-Viewport": header });
+        const route = `/procurements/procurement%3Acontract%3A${id}/`;
+        const entry = entries.get(`${route}|${viewport}`);
+        assert.ok(entry, `${route} ${viewport} manifest entry`);
+        assert.equal(entry.revision, renderManifest.revision);
+        assert.equal(entry.data_vintage, performance.snapshot_date);
+        assert.ok(entry.assertion);
+        const hash = createHash("sha256").update(html).digest("hex");
+        assert.equal(entry.sha256, hash);
+      }
+    }
+  });
 });

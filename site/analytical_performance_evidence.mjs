@@ -59,13 +59,26 @@ function sourcePassage(value) {
   const url = clean(value.url, 2000);
   const locator = clean(value.locator, 240);
   const excerpt = clean(value.excerpt, 600);
-  if (!sourceId || !SOURCE_IDS.has(sourceId) || !documentId || !url || !locator || !excerpt) return null;
+  const publicationDate = clean(value.publication_date || value.passage_date, 10);
+  const identityBasis = clean(value.identity_basis, 300);
+  if (!sourceId || !SOURCE_IDS.has(sourceId) || !documentId || !url || !locator || !excerpt
+    || !publicationDate || !/^\d{4}-\d{2}-\d{2}$/.test(publicationDate) || !identityBasis) return null;
   try {
-    if (new URL(url).protocol !== "https:") return null;
+    const parsed = new URL(url);
+    if (parsed.protocol !== "https:") return null;
+    if (parsed.hostname === "a0333-passportpublic.nyc.gov" || /\/(?:login|signin)(?:[/?#]|$)/i.test(parsed.pathname)) return null;
   } catch {
     return null;
   }
-  return { source_id: sourceId, document_id: documentId, url, locator, excerpt };
+  return {
+    source_id: sourceId,
+    document_id: documentId,
+    url,
+    locator,
+    excerpt,
+    publication_date: publicationDate,
+    identity_basis: identityBasis,
+  };
 }
 
 export function normalizePerformanceEvidenceItem(item) {
