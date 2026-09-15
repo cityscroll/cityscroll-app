@@ -930,7 +930,7 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
       <p class="near-kicker">Place-first civic records</p>
       <h1>${esc(view.placePresentation.label)}</h1>
       ${view.placePresentation.boardHref ? `<p class="near-board-link"><a href="${esc(view.placePresentation.boardHref)}">${esc(view.placePresentation.boardLabel)}</a></p>` : ""}
-      <p>${view.isOverview ? "See a bounded summary of this place, then choose the record family you want to explore." : `Browse ${esc(view.lensLabel.toLowerCase())} records for this place. Choosing a place narrows the results without removing your other filters.`}</p>
+      <p>${view.isOverview ? "See this place summary. Then choose records to explore." : `Browse ${esc(view.lensLabel.toLowerCase())} records for this place. Choosing a place narrows the results without removing your other filters.`}</p>
       <ul class="near-scope" aria-label="Active filters"><li data-scope-axis="topic"><span>Topic: ${esc(view.lensLabel)}</span></li>${scopeChips}</ul>
       <nav class="near-actions" aria-label="Map actions">
         <a href="${esc(view.browseHref)}">Open as a list</a>
