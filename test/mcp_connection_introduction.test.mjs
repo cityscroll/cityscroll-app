@@ -1,19 +1,21 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { handleMcp } from "../worker/src/mcp.mjs";
+import { readFile } from "node:fs/promises";
+import { AI_ENDPOINT, renderEndpointControl } from "../site/ai_discovery.mjs";
 
-test("MCP initialize identifies the public product without changing tools", async () => {
-  const request = new Request("https://api.cityscroll.org/mcp", { method: "POST", body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "initialize", params: {} }), headers: { "content-type": "application/json" } });
-  const response = await handleMcp(request, { SUBS: new Map() });
-  const body = await response.json();
-  assert.equal(body.result.serverInfo.name, "CityScroll");
-  assert.match(body.result.instructions, /CityScroll publishes/);
+const introduction = new URL("../site/use-with-ai/index.html", import.meta.url);
+
+test("MCP introduction identifies the public product and endpoint", async () => {
+  const html = await readFile(introduction, "utf8");
+  assert.equal(AI_ENDPOINT, "https://api.cityscroll.org/mcp");
+  assert.match(html, new RegExp(AI_ENDPOINT.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  assert.match(renderEndpointControl(), /mcp-endpoint/);
+  assert.match(html, /CityScroll publishes linked New York City records/);
 });
 
-test("browser GET provides recovery while tools-only POST semantics remain explicit", async () => {
-  const response = await handleMcp(new Request("https://api.cityscroll.org/mcp"), { SUBS: new Map() });
-  assert.equal(response.status, 405);
-  assert.equal(response.headers.get("allow"), "POST");
-  assert.match(await response.text(), /tools-only/);
-  assert.match(await handleMcp(new Request("https://api.cityscroll.org/mcp", { method: "OPTIONS" }), { SUBS: new Map() }).then(r => r.text()), /tools-only/);
+test("MCP introduction explains browser recovery without promising sign-in", async () => {
+  const html = await readFile(introduction, "utf8");
+  assert.match(html, /browser GET cannot run tools|browser response/);
+  assert.match(html, /no key is required and no account is needed/);
+  assert.match(html, /\/api\.html#mcp/);
 });
