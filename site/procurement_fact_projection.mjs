@@ -147,7 +147,7 @@ export function projectProcurementFacts(object = {}, observations = []) {
     if (row.spent != null) add("paid_amount", row.spent, "spent", amount, amountMetadata);
     add("method", row.award_method || row.selection_method_description || row.procurement_method,
       row.award_method ? "award_method" : row.selection_method_description ? "selection_method_description" : "procurement_method", (v) => text(v, 240));
-    add("award_date", row.award_date, "award_date", normalizeProcurementDate, { date_basis: "award_decision" });
+    add("award_date", row.award_date, "award_date", (v) => text(v, 40), { date_basis: "award_decision" });
     add("program", row.program, "program", (v) => text(v, 240));
     add("industry", row.industry, "industry", (v) => text(v, 120));
     if (contractOwned) {

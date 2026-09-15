@@ -15,6 +15,7 @@ import { buildProcurementArtifacts } from "../tools/build_shared_procurement_rea
 import { renderProcurementDocument } from "../site/procurement_document.mjs";
 import { buildAgencyConstellationView } from "../site/agency_constellation_model.mjs";
 import { agencyRouteAliasTarget, resolveAgencyIdentity } from "../site/agency_identity.mjs";
+import { withPinnedClock } from "./helpers/test_clock.mjs";
 
 const fixture = JSON.parse(readFileSync(new URL("../site/data/mta_procurement_sources.json", import.meta.url)));
 
@@ -88,6 +89,15 @@ test("MTA fixtures reach canonical detail and retain independent receipts", () =
     "agency:id:metropolitan-transportation-authority",
     "agency:id:mta-construction-and-development",
   ]);
+});
+
+test("MTA retained award dates survive a one-day clock shift", async () => {
+  await withPinnedClock("2026-07-21T12:00:00Z", () => {
+    const { model } = buildFixture();
+    const award = model.rows.find((row) => row.identity_keys.contract_ids.includes("A37703"));
+    const html = renderProcurementDocument(award, model.observations);
+    assert.match(html, /<dt>Award date<\/dt><dd>July 20, 2026<\/dd>/);
+  });
 });
 
 test("MTA parent aggregation preserves child routing and exact-only joins", () => {
