@@ -8,6 +8,7 @@ import {
   buildCommunityBoardAcquisitionParityReport,
   validateCommunityBoardAcquisitionParityReport,
 } from "../tools/community_board_acquisition_parity.mjs";
+import { withPinnedClock } from "./helpers/test_clock.mjs";
 
 const OBSERVED_AT = "2026-09-14T01:44:00Z";
 const fixtureRoot = new URL("./fixtures/community_board_acquisition_sources/", import.meta.url);
@@ -24,6 +25,30 @@ function receipt(sourceUrl, requests = 1) {
     parser: "html_pdf_v1",
     acquisition: { complete: true, stats: { requests, bytes: 1000, elapsed_ms: 12 } },
   };
+}
+
+function singleSourceObservation() {
+  const url = "https://cb11.example/calendar/";
+  const record = {
+    record_id: "current-record", date: "2026-09-16", title: "Full Board Meeting",
+    source_url: url, observed_receipt: receipt(url),
+  };
+  return {
+    observations: [{
+      source_id: "manhattan-cb-11", records: [record], receipt: receipt(url),
+    }],
+    consumerReadback: { "manhattan-cb-11": [record] },
+  };
+}
+
+function singleSourceReport(overrides = {}) {
+  const fixture = singleSourceObservation();
+  return buildCommunityBoardAcquisitionParityReport({
+    ...fixture,
+    revision: "test-revision", environment: "scheduled-acquisition-worker",
+    observedAt: OBSERVED_AT,
+    ...overrides,
+  });
 }
 
 test("seven-source parity requires admitted records and consumer read-back", async () => {
@@ -85,6 +110,39 @@ test("current record count is kept distinct from historical comparison context",
   });
   assert.deepEqual(validateCommunityBoardAcquisitionParityReport(report, { expectedSourceCount: 1 }), {
     valid: true, errors: [],
+  });
+});
+
+test("validator rejects a copied current count that disagrees with the report", () => {
+  const report = singleSourceReport({
+    historicalBaseline: { record_count: 203, observed_at: OBSERVED_AT },
+  });
+  report.comparison.count_comparison.current_record_count = 2;
+
+  assert.deepEqual(validateCommunityBoardAcquisitionParityReport(report, { expectedSourceCount: 1 }), {
+    valid: false, errors: ["current_count_mismatch"],
+  });
+});
+
+test("validator rejects a copied historical count that disagrees with the report", () => {
+  const report = singleSourceReport({
+    historicalBaseline: { record_count: 203, observed_at: OBSERVED_AT },
+  });
+  report.comparison.count_comparison.historical_record_count = 202;
+
+  assert.deepEqual(validateCommunityBoardAcquisitionParityReport(report, { expectedSourceCount: 1 }), {
+    valid: false, errors: ["historical_count_mismatch"],
+  });
+});
+
+test("validator rejects a report that omits its environment", async () => {
+  const report = await withPinnedClock(OBSERVED_AT, () => singleSourceReport({
+    observedAt: undefined,
+  }));
+  delete report.environment;
+
+  assert.deepEqual(validateCommunityBoardAcquisitionParityReport(report, { expectedSourceCount: 1 }), {
+    valid: false, errors: ["run_metadata"],
   });
 });
 
