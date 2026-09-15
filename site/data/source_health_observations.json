@@ -7,20 +7,20 @@
       "source_id": "abo-local-authorities",
       "contract_fingerprint": "d7bcd2453d15180211aee4e27d1048bfdadbe9845fb73525f5aa02b7dcf3be1f",
       "health": {
-        "status": "Source-unavailable",
+        "status": "Delayed",
         "reason_codes": [
-          "acquisition-status-unknown"
+          "publisher-clock-stale"
         ],
         "clocks": {
           "publisher_updated": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2024-05-06T00:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "warehouse_source_summary"
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-04T11:26:00.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "cityscroll_serving": {
             "at": "2026-08-04T11:26:00.000Z",
@@ -42,6 +42,12 @@
           "path": "site/data/abo_award_residual_lookup.json",
           "at": "2026-08-04T11:26:00.000Z",
           "status": "current"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/abo_residual_2026-08-04.json",
+          "at": "2026-08-04T11:26:00.000Z",
+          "status": "succeeded"
         }
       ],
       "freshness_watchdog": {
@@ -59,9 +65,9 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": null,
+          "observed_at": "2026-08-04T11:26:00.000Z",
           "cadence_days": null,
-          "age_days": null
+          "age_days": 41.12421983796296
         },
         "receipts": [
           {
@@ -78,16 +84,43 @@
         ]
       },
       "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "warehouse/receipts/proof/abo_residual_2026-08-04.json",
+            "at": "2026-08-04T11:26:00.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/abo_residual_2026-08-04.json",
+            "exact_error": null,
+            "attempt_at": "2026-08-04T11:26:00.000Z",
+            "result_at": "2026-08-04T11:26:00.000Z"
+          }
+        ],
+        "acquisition_receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "abo-local-authorities",
+            "observed_at": "2026-08-04T11:26:00.000Z",
+            "status": "succeeded",
+            "run_id": "warehouse/receipts/proof/abo_residual_2026-08-04.json",
+            "publisher_clock_basis": "warehouse_source_summary",
+            "publisher_updated_at": "2024-05-06T00:00:00.000Z",
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-08-04T11:26:00.000Z",
+            "result_at": "2026-08-04T11:26:00.000Z",
+            "input_vintage": "2026-08-04T11:26:00.000Z"
+          }
+        ],
         "clocks": {
           "checked": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-04T11:26:00.000Z",
+            "state": "KNOWN",
+            "basis": "checked_at"
           },
           "acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-04T11:26:00.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "scheduler_heartbeat": {
             "at": null,
@@ -101,20 +134,20 @@
       "source_id": "abo-local-development-corporations",
       "contract_fingerprint": "80dbcff46a9b6fc9783529779b60a6cb4db728ad3e006594ae537086c49cd2e7",
       "health": {
-        "status": "Source-unavailable",
+        "status": "Delayed",
         "reason_codes": [
-          "acquisition-status-unknown"
+          "publisher-clock-stale"
         ],
         "clocks": {
           "publisher_updated": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2024-06-26T00:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "warehouse_source_summary"
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-04T11:26:00.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "cityscroll_serving": {
             "at": "2026-08-04T11:26:00.000Z",
@@ -136,6 +169,12 @@
           "path": "site/data/abo_award_residual_lookup.json",
           "at": "2026-08-04T11:26:00.000Z",
           "status": "current"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/abo_residual_2026-08-04.json",
+          "at": "2026-08-04T11:26:00.000Z",
+          "status": "succeeded"
         }
       ],
       "freshness_watchdog": {
@@ -153,9 +192,9 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": null,
+          "observed_at": "2026-08-04T11:26:00.000Z",
           "cadence_days": null,
-          "age_days": null
+          "age_days": 41.12421983796296
         },
         "receipts": [
           {
@@ -172,16 +211,43 @@
         ]
       },
       "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "warehouse/receipts/proof/abo_residual_2026-08-04.json",
+            "at": "2026-08-04T11:26:00.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/abo_residual_2026-08-04.json",
+            "exact_error": null,
+            "attempt_at": "2026-08-04T11:26:00.000Z",
+            "result_at": "2026-08-04T11:26:00.000Z"
+          }
+        ],
+        "acquisition_receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "abo-local-development-corporations",
+            "observed_at": "2026-08-04T11:26:00.000Z",
+            "status": "succeeded",
+            "run_id": "warehouse/receipts/proof/abo_residual_2026-08-04.json",
+            "publisher_clock_basis": "warehouse_source_summary",
+            "publisher_updated_at": "2024-06-26T00:00:00.000Z",
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-08-04T11:26:00.000Z",
+            "result_at": "2026-08-04T11:26:00.000Z",
+            "input_vintage": "2026-08-04T11:26:00.000Z"
+          }
+        ],
         "clocks": {
           "checked": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-04T11:26:00.000Z",
+            "state": "KNOWN",
+            "basis": "checked_at"
           },
           "acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-04T11:26:00.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "scheduler_heartbeat": {
             "at": null,
@@ -195,10 +261,8 @@
       "source_id": "abo-state-authorities",
       "contract_fingerprint": "62dd427068c43bc8f67b02d44cc117f5b26204ec58ae1e2a8e4e98f3743ffcff",
       "health": {
-        "status": "Source-unavailable",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -206,9 +270,9 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-04T11:26:00.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "cityscroll_serving": {
             "at": "2026-08-04T11:26:00.000Z",
@@ -230,6 +294,12 @@
           "path": "site/data/abo_award_residual_lookup.json",
           "at": "2026-08-04T11:26:00.000Z",
           "status": "current"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/abo_residual_2026-08-04.json",
+          "at": "2026-08-04T11:26:00.000Z",
+          "status": "succeeded"
         }
       ],
       "freshness_watchdog": {
@@ -247,9 +317,9 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": null,
+          "observed_at": "2026-08-04T11:26:00.000Z",
           "cadence_days": null,
-          "age_days": null
+          "age_days": 41.12421983796296
         },
         "receipts": [
           {
@@ -266,16 +336,43 @@
         ]
       },
       "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "warehouse/receipts/proof/abo_residual_2026-08-04.json",
+            "at": "2026-08-04T11:26:00.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/abo_residual_2026-08-04.json",
+            "exact_error": null,
+            "attempt_at": "2026-08-04T11:26:00.000Z",
+            "result_at": "2026-08-04T11:26:00.000Z"
+          }
+        ],
+        "acquisition_receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "abo-state-authorities",
+            "observed_at": "2026-08-04T11:26:00.000Z",
+            "status": "succeeded",
+            "run_id": "warehouse/receipts/proof/abo_residual_2026-08-04.json",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-08-04T11:26:00.000Z",
+            "result_at": "2026-08-04T11:26:00.000Z",
+            "input_vintage": "2026-08-04T11:26:00.000Z"
+          }
+        ],
         "clocks": {
           "checked": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-04T11:26:00.000Z",
+            "state": "KNOWN",
+            "basis": "checked_at"
           },
           "acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-04T11:26:00.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "scheduler_heartbeat": {
             "at": null,
@@ -838,20 +935,18 @@
       "source_id": "cfb-campaign-contributions",
       "contract_fingerprint": "b54bf910e99fc0f772dc48dcdb732a62357da9eef885fbc160b91dc2375f8878",
       "health": {
-        "status": "Source-unavailable",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2025-12-19T15:24:13.000Z",
+            "state": "KNOWN",
+            "basis": "warehouse_source_summary"
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-07T21:21:17.547Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "cityscroll_serving": {
             "at": null,
@@ -867,7 +962,14 @@
         "measured_at": "2026-08-11T20:00:00.000Z",
         "reason_codes": []
       },
-      "evidence": [],
+      "evidence": [
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/official_cfb_influence_latest.json",
+          "at": "2026-09-07T21:21:17.547Z",
+          "status": "succeeded"
+        }
+      ],
       "freshness_watchdog": {
         "status": "STALE",
         "reason_codes": [
@@ -883,9 +985,9 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": null,
+          "observed_at": "2026-09-07T21:21:17.547Z",
           "cadence_days": null,
-          "age_days": null
+          "age_days": 6.71082230324074
         },
         "receipts": [
           {
@@ -902,16 +1004,43 @@
         ]
       },
       "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "warehouse/receipts/proof/official_cfb_influence_latest.json",
+            "at": "2026-09-07T21:21:17.547Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/official_cfb_influence_latest.json",
+            "exact_error": null,
+            "attempt_at": "2026-09-07T21:21:17.547Z",
+            "result_at": "2026-09-07T21:21:17.547Z"
+          }
+        ],
+        "acquisition_receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "cfb-campaign-contributions",
+            "observed_at": "2026-09-07T21:21:17.547Z",
+            "status": "succeeded",
+            "run_id": "warehouse/receipts/proof/official_cfb_influence_latest.json",
+            "publisher_clock_basis": "warehouse_source_summary",
+            "publisher_updated_at": "2025-12-19T15:24:13.000Z",
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-09-07T21:21:17.547Z",
+            "result_at": "2026-09-07T21:21:17.547Z",
+            "input_vintage": "2026-09-07T21:21:17.547Z"
+          }
+        ],
         "clocks": {
           "checked": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-07T21:21:17.547Z",
+            "state": "KNOWN",
+            "basis": "checked_at"
           },
           "acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-07T21:21:17.547Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "scheduler_heartbeat": {
             "at": null,
@@ -925,10 +1054,8 @@
       "source_id": "checkbook-contracts",
       "contract_fingerprint": "50f987de87d19fbc085122ca6cf2253f5135d8cf1dd483940a2b81c0fce9df31",
       "health": {
-        "status": "Source-unavailable",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -936,9 +1063,9 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-09T06:33:01.880Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "cityscroll_serving": {
             "at": "2026-09-09T06:33:01.880Z",
@@ -960,6 +1087,12 @@
           "path": "site/data/procurement_spine_sources.json",
           "at": "2026-09-09T06:33:01.880Z",
           "status": "current"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/checkbook_contracts_population_latest.json",
+          "at": "2026-09-09T06:33:01.880Z",
+          "status": "succeeded"
         }
       ],
       "freshness_watchdog": {
@@ -977,9 +1110,9 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": null,
+          "observed_at": "2026-09-09T06:33:01.880Z",
           "cadence_days": null,
-          "age_days": null
+          "age_days": 5.327670300925926
         },
         "receipts": [
           {
@@ -996,16 +1129,43 @@
         ]
       },
       "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "warehouse/receipts/proof/checkbook_contracts_population_latest.json",
+            "at": "2026-09-09T06:33:01.880Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/checkbook_contracts_population_latest.json",
+            "exact_error": null,
+            "attempt_at": "2026-09-09T06:33:01.880Z",
+            "result_at": "2026-09-09T06:33:01.880Z"
+          }
+        ],
+        "acquisition_receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "checkbook-contracts",
+            "observed_at": "2026-09-09T06:33:01.880Z",
+            "status": "succeeded",
+            "run_id": "warehouse/receipts/proof/checkbook_contracts_population_latest.json",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-09-09T06:33:01.880Z",
+            "result_at": "2026-09-09T06:33:01.880Z",
+            "input_vintage": "2026-09-09T06:33:01.880Z"
+          }
+        ],
         "clocks": {
           "checked": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-09T06:33:01.880Z",
+            "state": "KNOWN",
+            "basis": "checked_at"
           },
           "acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-09T06:33:01.880Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "scheduler_heartbeat": {
             "at": null,
@@ -1106,10 +1266,8 @@
       "source_id": "checkbook-spending",
       "contract_fingerprint": "c415c4fb708d79c72f036b5f6ae0ccbf26dcc8557b57878150d4d40e091697d8",
       "health": {
-        "status": "Source-unavailable",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -1117,9 +1275,9 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-11T19:25:33.574Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "cityscroll_serving": {
             "at": "2026-08-26T00:00:00.000Z",
@@ -1141,6 +1299,12 @@
           "path": "site/data/analytics_payments.json",
           "at": "2026-08-26T00:00:00.000Z",
           "status": "current"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/checkbook_spending_population_latest.json",
+          "at": "2026-08-11T19:25:33.574Z",
+          "status": "succeeded"
         }
       ],
       "freshness_watchdog": {
@@ -1158,9 +1322,9 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": null,
+          "observed_at": "2026-08-11T19:25:33.574Z",
           "cadence_days": null,
-          "age_days": null
+          "age_days": 33.79119236111111
         },
         "receipts": [
           {
@@ -1177,16 +1341,43 @@
         ]
       },
       "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "warehouse/receipts/proof/checkbook_spending_population_latest.json",
+            "at": "2026-08-11T19:25:33.574Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/checkbook_spending_population_latest.json",
+            "exact_error": null,
+            "attempt_at": "2026-08-11T19:25:33.574Z",
+            "result_at": "2026-08-11T19:25:33.574Z"
+          }
+        ],
+        "acquisition_receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "checkbook-spending",
+            "observed_at": "2026-08-11T19:25:33.574Z",
+            "status": "succeeded",
+            "run_id": "warehouse/receipts/proof/checkbook_spending_population_latest.json",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-08-11T19:25:33.574Z",
+            "result_at": "2026-08-11T19:25:33.574Z",
+            "input_vintage": "2026-08-11T19:25:33.574Z"
+          }
+        ],
         "clocks": {
           "checked": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-11T19:25:33.574Z",
+            "state": "KNOWN",
+            "basis": "checked_at"
           },
           "acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-11T19:25:33.574Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "scheduler_heartbeat": {
             "at": null,
@@ -1555,20 +1746,20 @@
       "source_id": "city-record",
       "contract_fingerprint": "d980af194199a9df161642737d83010e1de9bb237ecdb64d38b3244a89aab6d6",
       "health": {
-        "status": "Source-unavailable",
+        "status": "Delayed",
         "reason_codes": [
-          "acquisition-status-unknown"
+          "publisher-clock-stale"
         ],
         "clocks": {
           "publisher_updated": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-04T00:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "warehouse_source_summary"
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-05T10:41:44.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "cityscroll_serving": {
             "at": "2026-08-18T13:12:27.955Z",
@@ -1590,6 +1781,12 @@
           "path": "site/data/city_record_pin_chain_warehouse_lookup.json",
           "at": "2026-08-18T13:12:27.955Z",
           "status": "current"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/city-record_bulk_latest.json",
+          "at": "2026-08-05T10:41:44.000Z",
+          "status": "succeeded"
         }
       ],
       "freshness_watchdog": {
@@ -1607,9 +1804,9 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": null,
+          "observed_at": "2026-08-05T10:41:44.000Z",
           "cadence_days": null,
-          "age_days": null
+          "age_days": 40.1549605787037
         },
         "receipts": [
           {
@@ -1626,16 +1823,43 @@
         ]
       },
       "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "warehouse/receipts/proof/city-record_bulk_latest.json",
+            "at": "2026-08-05T10:41:44.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/city-record_bulk_latest.json",
+            "exact_error": null,
+            "attempt_at": "2026-08-05T10:41:44.000Z",
+            "result_at": "2026-08-05T10:41:44.000Z"
+          }
+        ],
+        "acquisition_receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "city-record",
+            "observed_at": "2026-08-05T10:41:44.000Z",
+            "status": "succeeded",
+            "run_id": "warehouse/receipts/proof/city-record_bulk_latest.json",
+            "publisher_clock_basis": "warehouse_source_summary",
+            "publisher_updated_at": "2026-08-04T00:00:00.000Z",
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-08-05T10:41:44.000Z",
+            "result_at": "2026-08-05T10:41:44.000Z",
+            "input_vintage": "2026-08-05T10:41:44.000Z"
+          }
+        ],
         "clocks": {
           "checked": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-05T10:41:44.000Z",
+            "state": "KNOWN",
+            "basis": "checked_at"
           },
           "acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-05T10:41:44.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "scheduler_heartbeat": {
             "at": null,
@@ -2754,10 +2978,8 @@
       "source_id": "dof-tax-lien-sale-lists",
       "contract_fingerprint": "cb4f6336629e6b89e1031a46d97de49ceadd82e5b1a3877df4f49d829db66be5",
       "health": {
-        "status": "Source-unavailable",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -2765,9 +2987,9 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-03T04:27:32.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "cityscroll_serving": {
             "at": null,
@@ -2783,7 +3005,14 @@
         "measured_at": null,
         "reason_codes": []
       },
-      "evidence": [],
+      "evidence": [
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/dof-tax-lien-sale-lists_bulk_latest.json",
+          "at": "2026-08-03T04:27:32.000Z",
+          "status": "succeeded"
+        }
+      ],
       "freshness_watchdog": {
         "status": "STALE",
         "reason_codes": [
@@ -2799,9 +3028,9 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": null,
+          "observed_at": "2026-08-03T04:27:32.000Z",
           "cadence_days": null,
-          "age_days": null
+          "age_days": 42.414821689814815
         },
         "receipts": [
           {
@@ -2818,16 +3047,43 @@
         ]
       },
       "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "warehouse/receipts/proof/dof-tax-lien-sale-lists_bulk_latest.json",
+            "at": "2026-08-03T04:27:32.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/dof-tax-lien-sale-lists_bulk_latest.json",
+            "exact_error": null,
+            "attempt_at": "2026-08-03T04:27:32.000Z",
+            "result_at": "2026-08-03T04:27:32.000Z"
+          }
+        ],
+        "acquisition_receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "dof-tax-lien-sale-lists",
+            "observed_at": "2026-08-03T04:27:32.000Z",
+            "status": "succeeded",
+            "run_id": "warehouse/receipts/proof/dof-tax-lien-sale-lists_bulk_latest.json",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-08-03T04:27:32.000Z",
+            "result_at": "2026-08-03T04:27:32.000Z",
+            "input_vintage": "2026-08-03T04:27:32.000Z"
+          }
+        ],
         "clocks": {
           "checked": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-03T04:27:32.000Z",
+            "state": "KNOWN",
+            "basis": "checked_at"
           },
           "acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-03T04:27:32.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "scheduler_heartbeat": {
             "at": null,
@@ -2841,10 +3097,8 @@
       "source_id": "doing-business-entities",
       "contract_fingerprint": "cd229d2573d9ef059faa61236882fc23062d6c5b1755351f8b6f4b4da5c7704f",
       "health": {
-        "status": "Source-unavailable",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -2852,9 +3106,9 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-14T14:24:52.445Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "cityscroll_serving": {
             "at": "2026-09-14T14:24:52.594Z",
@@ -2876,13 +3130,30 @@
           "path": "site/data/doing_business_warehouse_lookup.json",
           "at": "2026-09-14T14:24:52.594Z",
           "status": "current"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/wh05_doing_business_lookup_speed.json",
+          "at": "2026-09-14T14:24:52.445Z",
+          "status": "succeeded"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/doing-business-entities_bulk_latest.json",
+          "at": "2026-08-18T02:18:18.000Z",
+          "status": "succeeded"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/doing-business-entities_latest.json",
+          "at": "2026-08-02T10:35:17.000Z",
+          "status": "succeeded"
         }
       ],
       "freshness_watchdog": {
         "status": "STALE",
         "reason_codes": [
-          "monitor-missing",
-          "acquisition-missing"
+          "monitor-missing"
         ],
         "source_contract_id": "doing-business-entities",
         "observed_at": "2026-09-14T14:24:52.594Z",
@@ -2894,9 +3165,9 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": null,
+          "observed_at": "2026-09-14T14:24:52.445Z",
           "cadence_days": 7,
-          "age_days": null
+          "age_days": 0.000001724537037037037
         },
         "receipts": [
           {
@@ -2909,31 +3180,93 @@
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
             "state": "monitor-missing"
-          },
-          {
-            "schema": "cityscroll.source_acquisition_receipt.v1",
-            "source_contract_id": "doing-business-entities",
-            "observed_at": "2026-09-14T14:24:52.594Z",
-            "status": "held",
-            "run_id": "missing:doing-business-entities:2026-09-14T14-24",
-            "publisher_clock_basis": null,
-            "publisher_updated_at": null,
-            "event_kind": "acquisition-cadence",
-            "state": "acquisition-missing"
           }
         ]
       },
       "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "doing-business-entities:2026-09-14T14:24:52.445Z",
+            "at": "2026-09-14T14:24:52.445Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/wh05_doing_business_lookup_speed.json",
+            "exact_error": null,
+            "attempt_at": "2026-09-14T14:24:52.445Z",
+            "result_at": "2026-09-14T14:24:52.445Z"
+          },
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "warehouse/receipts/proof/doing-business-entities_bulk_latest.json",
+            "at": "2026-08-18T02:18:18.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/doing-business-entities_bulk_latest.json",
+            "exact_error": null,
+            "attempt_at": "2026-08-18T02:18:18.000Z",
+            "result_at": "2026-08-18T02:18:18.000Z"
+          },
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "warehouse/receipts/proof/doing-business-entities_latest.json",
+            "at": "2026-08-02T10:35:17.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/doing-business-entities_latest.json",
+            "exact_error": null,
+            "attempt_at": "2026-08-02T10:35:17.000Z",
+            "result_at": "2026-08-02T10:35:17.000Z"
+          }
+        ],
+        "acquisition_receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "doing-business-entities",
+            "observed_at": "2026-09-14T14:24:52.445Z",
+            "status": "succeeded",
+            "run_id": "doing-business-entities:2026-09-14T14:24:52.445Z",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-09-14T14:24:52.445Z",
+            "result_at": "2026-09-14T14:24:52.445Z",
+            "input_vintage": "2026-09-14T14:24:52.445Z"
+          },
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "doing-business-entities",
+            "observed_at": "2026-08-18T02:18:18.000Z",
+            "status": "succeeded",
+            "run_id": "warehouse/receipts/proof/doing-business-entities_bulk_latest.json",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-08-18T02:18:18.000Z",
+            "result_at": "2026-08-18T02:18:18.000Z",
+            "input_vintage": "2026-08-18T02:18:18.000Z"
+          },
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "doing-business-entities",
+            "observed_at": "2026-08-02T10:35:17.000Z",
+            "status": "succeeded",
+            "run_id": "warehouse/receipts/proof/doing-business-entities_latest.json",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-08-02T10:35:17.000Z",
+            "result_at": "2026-08-02T10:35:17.000Z",
+            "input_vintage": "2026-08-02T10:35:17.000Z"
+          }
+        ],
         "clocks": {
           "checked": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-14T14:24:52.445Z",
+            "state": "KNOWN",
+            "basis": "checked_at"
           },
           "acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-14T14:24:52.445Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "scheduler_heartbeat": {
             "at": null,
@@ -3935,7 +4268,7 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": "2026-09-06T07:20:20.822Z",
+            "at": "2026-09-07T18:12:14.249Z",
             "state": "KNOWN",
             "basis": "acquired_at"
           },
@@ -3954,6 +4287,12 @@
         "reason_codes": []
       },
       "evidence": [
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/community_board_hearing_context_latest.json",
+          "at": "2026-09-07T18:12:14.249Z",
+          "status": "succeeded"
+        },
         {
           "kind": "warehouse-acquisition-receipt",
           "path": "site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json",
@@ -3982,9 +4321,9 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": "2026-09-06T07:20:20.822Z",
+          "observed_at": "2026-09-07T18:12:14.249Z",
           "cadence_days": null,
-          "age_days": 8.294812175925927
+          "age_days": 6.842110474537037
         },
         "receipts": [
           {
@@ -4003,6 +4342,16 @@
       "operator": {
         "runs": [
           {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "warehouse/receipts/proof/community_board_hearing_context_latest.json",
+            "at": "2026-09-07T18:12:14.249Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/community_board_hearing_context_latest.json",
+            "exact_error": null,
+            "attempt_at": "2026-09-07T18:12:14.249Z",
+            "result_at": "2026-09-07T18:12:14.249Z"
+          },
+          {
             "adapter": "community-board-minutes-detector",
             "run_id": "cb-minutes-probes:2026-09-06T07:20:20.822Z",
             "at": "2026-09-06T07:20:20.822Z",
@@ -4012,6 +4361,19 @@
           }
         ],
         "acquisition_receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "non-council-board-minutes",
+            "observed_at": "2026-09-07T18:12:14.249Z",
+            "status": "succeeded",
+            "run_id": "warehouse/receipts/proof/community_board_hearing_context_latest.json",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-09-07T18:12:14.249Z",
+            "result_at": "2026-09-07T18:12:14.249Z",
+            "input_vintage": "2026-09-07T18:12:14.249Z"
+          },
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "non-council-board-minutes",
@@ -4026,12 +4388,12 @@
         ],
         "clocks": {
           "checked": {
-            "at": "2026-09-06T07:20:20.822Z",
+            "at": "2026-09-07T18:12:14.249Z",
             "state": "KNOWN",
             "basis": "checked_at"
           },
           "acquired": {
-            "at": "2026-09-06T07:20:20.822Z",
+            "at": "2026-09-07T18:12:14.249Z",
             "state": "KNOWN",
             "basis": "acquired_at"
           },
@@ -4047,10 +4409,8 @@
       "source_id": "nyc-administrative-code",
       "contract_fingerprint": "18463d32f8debe151b554764821a62d4c77a12cc723e39ac83fb0ca4b17361e4",
       "health": {
-        "status": "Source-unavailable",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -4058,9 +4418,9 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-24T08:25:03.900Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "cityscroll_serving": {
             "at": null,
@@ -4076,7 +4436,14 @@
         "measured_at": null,
         "reason_codes": []
       },
-      "evidence": [],
+      "evidence": [
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/admin_code_latest.json",
+          "at": "2026-08-24T08:25:03.900Z",
+          "status": "succeeded"
+        }
+      ],
       "freshness_watchdog": {
         "status": "STALE",
         "reason_codes": [
@@ -4092,9 +4459,9 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": null,
+          "observed_at": "2026-08-24T08:25:03.900Z",
           "cadence_days": null,
-          "age_days": null
+          "age_days": 21.24986914351852
         },
         "receipts": [
           {
@@ -4111,16 +4478,43 @@
         ]
       },
       "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "nyc-administrative-code:2026-08-24T08:25:03.900Z",
+            "at": "2026-08-24T08:25:03.900Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/admin_code_latest.json",
+            "exact_error": null,
+            "attempt_at": "2026-08-24T08:25:03.900Z",
+            "result_at": "2026-08-24T08:25:03.900Z"
+          }
+        ],
+        "acquisition_receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "nyc-administrative-code",
+            "observed_at": "2026-08-24T08:25:03.900Z",
+            "status": "succeeded",
+            "run_id": "nyc-administrative-code:2026-08-24T08:25:03.900Z",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-08-24T08:25:03.900Z",
+            "result_at": "2026-08-24T08:25:03.900Z",
+            "input_vintage": "2026-08-24T08:25:03.900Z"
+          }
+        ],
         "clocks": {
           "checked": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-24T08:25:03.900Z",
+            "state": "KNOWN",
+            "basis": "checked_at"
           },
           "acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-24T08:25:03.900Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "scheduler_heartbeat": {
             "at": null,
@@ -4221,10 +4615,8 @@
       "source_id": "nyc-council-legistar",
       "contract_fingerprint": "d3656e28bfce1fae5e7e8f48fe189580785694b687901380508503b4a061f33c",
       "health": {
-        "status": "Source-unavailable",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -4232,9 +4624,9 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-14T03:54:01.287Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "cityscroll_serving": {
             "at": null,
@@ -4250,7 +4642,14 @@
         "measured_at": "2026-08-02T17:02:36.000Z",
         "reason_codes": []
       },
-      "evidence": [],
+      "evidence": [
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/priority_source_nyc_council_legistar_latest.json",
+          "at": "2026-09-14T03:54:01.287Z",
+          "status": "succeeded"
+        }
+      ],
       "freshness_watchdog": {
         "status": "STALE",
         "reason_codes": [
@@ -4266,9 +4665,9 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": null,
+          "observed_at": "2026-09-14T03:54:01.287Z",
           "cadence_days": null,
-          "age_days": null
+          "age_days": 0.4380938310185185
         },
         "receipts": [
           {
@@ -4285,16 +4684,87 @@
         ]
       },
       "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "warehouse-priority-source-observer:nyc-council-legistar:2026-09-14T03:54:01.287Z",
+            "at": "2026-09-14T03:54:01.287Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/priority_source_nyc_council_legistar_latest.json",
+            "exact_error": null,
+            "attempt_at": "2026-09-14T03:54:00.528Z",
+            "result_at": "2026-09-14T03:54:01.287Z",
+            "producer": "warehouse-priority-source-observer",
+            "provenance": {
+              "schema": "cityscroll.priority_source_observation_provenance.v1",
+              "evidence_class": "scheduled-rail",
+              "isolated": false,
+              "observed_at": "2026-09-14T03:54:01.287Z",
+              "producer": "warehouse-priority-source-observer",
+              "source": "https://webapi.legistar.com/v1/nyc/Events",
+              "bounds": {
+                "endpoint": "Events",
+                "page_size": 1,
+                "max_pages": 1,
+                "lookback_days": 180
+              },
+              "response": {
+                "status": 200,
+                "kind": "ok",
+                "row_count": 1,
+                "complete": false,
+                "content_sha256": "sha256:e66f306927218ad5a5e5873fe40606a81da575dd1c808149d72a89a61d0c94f8"
+              }
+            }
+          }
+        ],
+        "acquisition_receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "nyc-council-legistar",
+            "observed_at": "2026-09-14T03:54:01.287Z",
+            "status": "succeeded",
+            "run_id": "warehouse-priority-source-observer:nyc-council-legistar:2026-09-14T03:54:01.287Z",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-09-14T03:54:00.528Z",
+            "result_at": "2026-09-14T03:54:01.287Z",
+            "input_vintage": "2026-09-14T03:54:01.287Z",
+            "producer": "warehouse-priority-source-observer",
+            "provenance": {
+              "schema": "cityscroll.priority_source_observation_provenance.v1",
+              "evidence_class": "scheduled-rail",
+              "isolated": false,
+              "observed_at": "2026-09-14T03:54:01.287Z",
+              "producer": "warehouse-priority-source-observer",
+              "source": "https://webapi.legistar.com/v1/nyc/Events",
+              "bounds": {
+                "endpoint": "Events",
+                "page_size": 1,
+                "max_pages": 1,
+                "lookback_days": 180
+              },
+              "response": {
+                "status": 200,
+                "kind": "ok",
+                "row_count": 1,
+                "complete": false,
+                "content_sha256": "sha256:e66f306927218ad5a5e5873fe40606a81da575dd1c808149d72a89a61d0c94f8"
+              }
+            }
+          }
+        ],
         "clocks": {
           "checked": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-14T03:54:01.287Z",
+            "state": "KNOWN",
+            "basis": "checked_at"
           },
           "acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-14T03:54:01.287Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "scheduler_heartbeat": {
             "at": null,
@@ -4656,10 +5126,8 @@
       "source_id": "nyc-rules-rss",
       "contract_fingerprint": "15bb8ac7e8a35c509932af20949b82275b228aaaf38647e942cbfbaf073d6d57",
       "health": {
-        "status": "Source-unavailable",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -4667,9 +5135,9 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-14T03:54:01.554Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "cityscroll_serving": {
             "at": null,
@@ -4685,7 +5153,14 @@
         "measured_at": null,
         "reason_codes": []
       },
-      "evidence": [],
+      "evidence": [
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/priority_source_nyc_rules_rss_latest.json",
+          "at": "2026-09-14T03:54:01.554Z",
+          "status": "succeeded"
+        }
+      ],
       "freshness_watchdog": {
         "status": "STALE",
         "reason_codes": [
@@ -4701,9 +5176,9 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": null,
+          "observed_at": "2026-09-14T03:54:01.554Z",
           "cadence_days": null,
-          "age_days": null
+          "age_days": 0.4380907407407407
         },
         "receipts": [
           {
@@ -4720,16 +5195,79 @@
         ]
       },
       "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "warehouse-priority-source-observer:nyc-rules-rss:2026-09-14T03:54:01.554Z",
+            "at": "2026-09-14T03:54:01.554Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/priority_source_nyc_rules_rss_latest.json",
+            "exact_error": null,
+            "attempt_at": "2026-09-14T03:54:00.528Z",
+            "result_at": "2026-09-14T03:54:01.554Z",
+            "producer": "warehouse-priority-source-observer",
+            "provenance": {
+              "schema": "cityscroll.priority_source_observation_provenance.v1",
+              "evidence_class": "scheduled-rail",
+              "isolated": false,
+              "observed_at": "2026-09-14T03:54:01.554Z",
+              "producer": "warehouse-priority-source-observer",
+              "source": "https://rules.cityofnewyork.us/feed/",
+              "bounds": {
+                "endpoint": "https://rules.cityofnewyork.us/feed/",
+                "max_bytes": 2097152
+              },
+              "response": {
+                "status": 200,
+                "row_count": 50,
+                "content_sha256": "sha256:ba7c341bc59dc65e8f20068a9ca06b19a76c3559b20013fd69fa540dbc69e459"
+              }
+            }
+          }
+        ],
+        "acquisition_receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "nyc-rules-rss",
+            "observed_at": "2026-09-14T03:54:01.554Z",
+            "status": "succeeded",
+            "run_id": "warehouse-priority-source-observer:nyc-rules-rss:2026-09-14T03:54:01.554Z",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-09-14T03:54:00.528Z",
+            "result_at": "2026-09-14T03:54:01.554Z",
+            "input_vintage": "2026-09-08T18:32:12.000Z",
+            "producer": "warehouse-priority-source-observer",
+            "provenance": {
+              "schema": "cityscroll.priority_source_observation_provenance.v1",
+              "evidence_class": "scheduled-rail",
+              "isolated": false,
+              "observed_at": "2026-09-14T03:54:01.554Z",
+              "producer": "warehouse-priority-source-observer",
+              "source": "https://rules.cityofnewyork.us/feed/",
+              "bounds": {
+                "endpoint": "https://rules.cityofnewyork.us/feed/",
+                "max_bytes": 2097152
+              },
+              "response": {
+                "status": 200,
+                "row_count": 50,
+                "content_sha256": "sha256:ba7c341bc59dc65e8f20068a9ca06b19a76c3559b20013fd69fa540dbc69e459"
+              }
+            }
+          }
+        ],
         "clocks": {
           "checked": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-14T03:54:01.554Z",
+            "state": "KNOWN",
+            "basis": "checked_at"
           },
           "acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-14T03:54:01.554Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "scheduler_heartbeat": {
             "at": null,
@@ -5103,10 +5641,8 @@
       "source_id": "ocp-recent-contract-awards",
       "contract_fingerprint": "2b51d7bb4007104589e0a763cec66a518a2ca246cd1fbc3e24e4e2a434229eaa",
       "health": {
-        "status": "Source-unavailable",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -5114,9 +5650,9 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-05T13:23:40.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "cityscroll_serving": {
             "at": "2026-09-05T13:44:00.909Z",
@@ -5138,6 +5674,18 @@
           "path": "site/data/ocp_awards_warehouse_lookup.json",
           "at": "2026-09-05T13:44:00.909Z",
           "status": "current"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json",
+          "at": "2026-09-05T13:23:40.000Z",
+          "status": "succeeded"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/ocp-recent-contract-awards_latest.json",
+          "at": "2026-08-03T16:37:39.000Z",
+          "status": "succeeded"
         }
       ],
       "freshness_watchdog": {
@@ -5155,9 +5703,9 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": null,
+          "observed_at": "2026-09-05T13:23:40.000Z",
           "cadence_days": null,
-          "age_days": null
+          "age_days": 9.042506875
         },
         "receipts": [
           {
@@ -5174,16 +5722,66 @@
         ]
       },
       "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json",
+            "at": "2026-09-05T13:23:40.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json",
+            "exact_error": null,
+            "attempt_at": "2026-09-05T13:23:40.000Z",
+            "result_at": "2026-09-05T13:23:40.000Z"
+          },
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "warehouse/receipts/proof/ocp-recent-contract-awards_latest.json",
+            "at": "2026-08-03T16:37:39.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/ocp-recent-contract-awards_latest.json",
+            "exact_error": null,
+            "attempt_at": "2026-08-03T16:37:39.000Z",
+            "result_at": "2026-08-03T16:37:39.000Z"
+          }
+        ],
+        "acquisition_receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "ocp-recent-contract-awards",
+            "observed_at": "2026-09-05T13:23:40.000Z",
+            "status": "succeeded",
+            "run_id": "warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-09-05T13:23:40.000Z",
+            "result_at": "2026-09-05T13:23:40.000Z",
+            "input_vintage": "2026-09-05T13:23:40.000Z"
+          },
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "ocp-recent-contract-awards",
+            "observed_at": "2026-08-03T16:37:39.000Z",
+            "status": "succeeded",
+            "run_id": "warehouse/receipts/proof/ocp-recent-contract-awards_latest.json",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-08-03T16:37:39.000Z",
+            "result_at": "2026-08-03T16:37:39.000Z",
+            "input_vintage": "2026-08-03T16:37:39.000Z"
+          }
+        ],
         "clocks": {
           "checked": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-05T13:23:40.000Z",
+            "state": "KNOWN",
+            "basis": "checked_at"
           },
           "acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-05T13:23:40.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "scheduler_heartbeat": {
             "at": null,
@@ -5197,20 +5795,18 @@
       "source_id": "omb-community-board-budget-requests",
       "contract_fingerprint": "09a82d611767e433095c8d1472aac5385047b5a7317b45cb83220f57c40ea91b",
       "health": {
-        "status": "Source-unavailable",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-06-30T00:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "warehouse_source_summary"
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-07T11:54:00.629Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "cityscroll_serving": {
             "at": "2026-09-07T11:54:00.629Z",
@@ -5232,6 +5828,12 @@
           "path": "site/data/community_board_budget_register.json",
           "at": "2026-09-07T11:54:00.629Z",
           "status": "current"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/community_board_budget_register_latest.json",
+          "at": "2026-09-07T11:54:00.629Z",
+          "status": "succeeded"
         }
       ],
       "freshness_watchdog": {
@@ -5249,9 +5851,9 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": null,
+          "observed_at": "2026-09-07T11:54:00.629Z",
           "cadence_days": null,
-          "age_days": null
+          "age_days": 7.1047681134259255
         },
         "receipts": [
           {
@@ -5268,16 +5870,43 @@
         ]
       },
       "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "omb-community-board-budget-requests:2026-09-07T11:54:00.629Z",
+            "at": "2026-09-07T11:54:00.629Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/community_board_budget_register_latest.json",
+            "exact_error": null,
+            "attempt_at": "2026-09-07T11:54:00.629Z",
+            "result_at": "2026-09-07T11:54:00.629Z"
+          }
+        ],
+        "acquisition_receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "omb-community-board-budget-requests",
+            "observed_at": "2026-09-07T11:54:00.629Z",
+            "status": "succeeded",
+            "run_id": "omb-community-board-budget-requests:2026-09-07T11:54:00.629Z",
+            "publisher_clock_basis": "warehouse_source_summary",
+            "publisher_updated_at": "2026-06-30T00:00:00.000Z",
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-09-07T11:54:00.629Z",
+            "result_at": "2026-09-07T11:54:00.629Z",
+            "input_vintage": "2026-09-07T11:54:00.629Z"
+          }
+        ],
         "clocks": {
           "checked": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-07T11:54:00.629Z",
+            "state": "KNOWN",
+            "basis": "checked_at"
           },
           "acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-07T11:54:00.629Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "scheduler_heartbeat": {
             "at": null,
@@ -5291,25 +5920,23 @@
       "source_id": "passport-public-contracts",
       "contract_fingerprint": "5b4f31730f406787d9ea08c969025567f7401f8a76100a9cffc032b19a8a667c",
       "health": {
-        "status": "Degraded",
-        "reason_codes": [
-          "serving-clock-stale"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-13T05:37:25.000Z",
+            "state": "KNOWN",
+            "basis": "passport_http_last_modified"
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-13T13:01:59.965Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "cityscroll_serving": {
-            "at": "2026-08-06T00:00:00.000Z",
+            "at": "2026-09-13T13:01:59.965Z",
             "state": "KNOWN",
-            "basis": "warehouse_materialization"
+            "basis": "worker_d1_passport_ingest_meta"
           }
         }
       },
@@ -5321,6 +5948,18 @@
         "reason_codes": []
       },
       "evidence": [
+        {
+          "kind": "serving-receipt",
+          "path": "worker/src/passport.mjs#passport_ingest_meta",
+          "at": "2026-09-13T13:01:59.965Z",
+          "status": "current"
+        },
+        {
+          "kind": "worker-d1-passport-ingest-meta",
+          "path": "https://api.cityscroll.org/admin/passport-ingest-meta",
+          "at": "2026-09-13T13:01:59.965Z",
+          "status": "succeeded"
+        },
         {
           "kind": "serving-receipt",
           "path": "site/data/procurement_spine_sources.json",
@@ -5343,9 +5982,9 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": null,
+          "observed_at": "2026-09-13T13:01:59.965Z",
           "cadence_days": null,
-          "age_days": null
+          "age_days": 1.0575535763888888
         },
         "receipts": [
           {
@@ -5362,16 +6001,78 @@
         ]
       },
       "operator": {
+        "runs": [
+          {
+            "adapter": "worker-d1-passport-ingest-meta",
+            "run_id": "passport-d1:2026-09-13T13:01:59.965Z",
+            "at": "2026-09-13T13:01:59.965Z",
+            "status": "succeeded",
+            "receipt_ref": "https://api.cityscroll.org/admin/passport-ingest-meta",
+            "exact_error": null,
+            "attempt_at": "2026-09-13T13:01:59.965Z",
+            "result_at": "2026-09-13T13:01:59.965Z",
+            "producer": "worker-d1-passport-ingest-meta",
+            "production_provenance": {
+              "schema": "cityscroll.production_provenance.v1",
+              "evidence_class": "live-production-read",
+              "isolated": false,
+              "observed_at": "2026-09-14T03:53:56.472Z",
+              "observer": {
+                "tool": "tools/capture_priority_source_health_production_read.mjs",
+                "source_revision": "bcf3cdb7e1c4ea37c2dd35cf1e4c849cf6064303"
+              },
+              "methods": [
+                "GET"
+              ],
+              "bases": [
+                "https://api.cityscroll.org"
+              ]
+            }
+          }
+        ],
+        "acquisition_receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "passport-public-contracts",
+            "observed_at": "2026-09-13T13:01:59.965Z",
+            "status": "succeeded",
+            "run_id": "passport-d1:2026-09-13T13:01:59.965Z",
+            "publisher_clock_basis": "passport_http_last_modified",
+            "publisher_updated_at": "2026-09-13T05:37:25.000Z",
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-09-13T13:01:59.965Z",
+            "result_at": "2026-09-13T13:01:59.965Z",
+            "input_vintage": "2026-09-13T13:01:59.965Z",
+            "producer": "worker-d1-passport-ingest-meta",
+            "production_provenance": {
+              "schema": "cityscroll.production_provenance.v1",
+              "evidence_class": "live-production-read",
+              "isolated": false,
+              "observed_at": "2026-09-14T03:53:56.472Z",
+              "observer": {
+                "tool": "tools/capture_priority_source_health_production_read.mjs",
+                "source_revision": "bcf3cdb7e1c4ea37c2dd35cf1e4c849cf6064303"
+              },
+              "methods": [
+                "GET"
+              ],
+              "bases": [
+                "https://api.cityscroll.org"
+              ]
+            },
+            "event_kind": "acquisition"
+          }
+        ],
         "clocks": {
           "checked": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-13T13:01:59.965Z",
+            "state": "KNOWN",
+            "basis": "checked_at"
           },
           "acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-13T13:01:59.965Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "scheduler_heartbeat": {
             "at": null,
@@ -5385,25 +6086,23 @@
       "source_id": "passport-public-rfx",
       "contract_fingerprint": "aaa6875d66a0de734d0969f339447971e5ac2f9ea4897d57d78d5d1754b56e03",
       "health": {
-        "status": "Source-unavailable",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-13T05:37:26.000Z",
+            "state": "KNOWN",
+            "basis": "passport_http_last_modified"
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-13T13:01:59.965Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "cityscroll_serving": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-13T13:01:59.965Z",
+            "state": "KNOWN",
+            "basis": "worker_d1_passport_ingest_meta"
           }
         }
       },
@@ -5414,7 +6113,20 @@
         "measured_at": "2026-08-02T17:02:36.000Z",
         "reason_codes": []
       },
-      "evidence": [],
+      "evidence": [
+        {
+          "kind": "serving-receipt",
+          "path": "worker/src/passport.mjs#passport_ingest_meta",
+          "at": "2026-09-13T13:01:59.965Z",
+          "status": "current"
+        },
+        {
+          "kind": "worker-d1-passport-ingest-meta",
+          "path": "https://api.cityscroll.org/admin/passport-ingest-meta",
+          "at": "2026-09-13T13:01:59.965Z",
+          "status": "succeeded"
+        }
+      ],
       "freshness_watchdog": {
         "status": "STALE",
         "reason_codes": [
@@ -5430,9 +6142,9 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": null,
+          "observed_at": "2026-09-13T13:01:59.965Z",
           "cadence_days": null,
-          "age_days": null
+          "age_days": 1.0575535763888888
         },
         "receipts": [
           {
@@ -5449,16 +6161,78 @@
         ]
       },
       "operator": {
+        "runs": [
+          {
+            "adapter": "worker-d1-passport-ingest-meta",
+            "run_id": "passport-d1:2026-09-13T13:01:59.965Z",
+            "at": "2026-09-13T13:01:59.965Z",
+            "status": "succeeded",
+            "receipt_ref": "https://api.cityscroll.org/admin/passport-ingest-meta",
+            "exact_error": null,
+            "attempt_at": "2026-09-13T13:01:59.965Z",
+            "result_at": "2026-09-13T13:01:59.965Z",
+            "producer": "worker-d1-passport-ingest-meta",
+            "production_provenance": {
+              "schema": "cityscroll.production_provenance.v1",
+              "evidence_class": "live-production-read",
+              "isolated": false,
+              "observed_at": "2026-09-14T03:53:56.472Z",
+              "observer": {
+                "tool": "tools/capture_priority_source_health_production_read.mjs",
+                "source_revision": "bcf3cdb7e1c4ea37c2dd35cf1e4c849cf6064303"
+              },
+              "methods": [
+                "GET"
+              ],
+              "bases": [
+                "https://api.cityscroll.org"
+              ]
+            }
+          }
+        ],
+        "acquisition_receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "passport-public-rfx",
+            "observed_at": "2026-09-13T13:01:59.965Z",
+            "status": "succeeded",
+            "run_id": "passport-d1:2026-09-13T13:01:59.965Z",
+            "publisher_clock_basis": "passport_http_last_modified",
+            "publisher_updated_at": "2026-09-13T05:37:26.000Z",
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-09-13T13:01:59.965Z",
+            "result_at": "2026-09-13T13:01:59.965Z",
+            "input_vintage": "2026-09-13T13:01:59.965Z",
+            "producer": "worker-d1-passport-ingest-meta",
+            "production_provenance": {
+              "schema": "cityscroll.production_provenance.v1",
+              "evidence_class": "live-production-read",
+              "isolated": false,
+              "observed_at": "2026-09-14T03:53:56.472Z",
+              "observer": {
+                "tool": "tools/capture_priority_source_health_production_read.mjs",
+                "source_revision": "bcf3cdb7e1c4ea37c2dd35cf1e4c849cf6064303"
+              },
+              "methods": [
+                "GET"
+              ],
+              "bases": [
+                "https://api.cityscroll.org"
+              ]
+            },
+            "event_kind": "acquisition"
+          }
+        ],
         "clocks": {
           "checked": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-13T13:01:59.965Z",
+            "state": "KNOWN",
+            "basis": "checked_at"
           },
           "acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-13T13:01:59.965Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "scheduler_heartbeat": {
             "at": null,
@@ -5907,10 +6681,8 @@
       "source_id": "zap-bbl",
       "contract_fingerprint": "09d9722f50b86a9ec692e9497849b84ed8096c22cfd5e4c887733aa0b46bba78",
       "health": {
-        "status": "Source-unavailable",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -5918,9 +6690,9 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-04T11:12:42.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "cityscroll_serving": {
             "at": "2026-09-04T11:12:46.107Z",
@@ -5942,6 +6714,18 @@
           "path": "site/data/zap_bbl_warehouse_lookup.json",
           "at": "2026-09-04T11:12:46.107Z",
           "status": "current"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/zap-bbl_bulk_latest.json",
+          "at": "2026-09-04T11:12:42.000Z",
+          "status": "succeeded"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/zap-bbl_latest.json",
+          "at": "2026-08-02T11:45:54.000Z",
+          "status": "succeeded"
         }
       ],
       "freshness_watchdog": {
@@ -5959,9 +6743,9 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": null,
+          "observed_at": "2026-09-04T11:12:42.000Z",
           "cadence_days": null,
-          "age_days": null
+          "age_days": 10.133455949074074
         },
         "receipts": [
           {
@@ -5978,16 +6762,66 @@
         ]
       },
       "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "warehouse/receipts/proof/zap-bbl_bulk_latest.json",
+            "at": "2026-09-04T11:12:42.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/zap-bbl_bulk_latest.json",
+            "exact_error": null,
+            "attempt_at": "2026-09-04T11:12:42.000Z",
+            "result_at": "2026-09-04T11:12:42.000Z"
+          },
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "warehouse/receipts/proof/zap-bbl_latest.json",
+            "at": "2026-08-02T11:45:54.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/zap-bbl_latest.json",
+            "exact_error": null,
+            "attempt_at": "2026-08-02T11:45:54.000Z",
+            "result_at": "2026-08-02T11:45:54.000Z"
+          }
+        ],
+        "acquisition_receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "zap-bbl",
+            "observed_at": "2026-09-04T11:12:42.000Z",
+            "status": "succeeded",
+            "run_id": "warehouse/receipts/proof/zap-bbl_bulk_latest.json",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-09-04T11:12:42.000Z",
+            "result_at": "2026-09-04T11:12:42.000Z",
+            "input_vintage": "2026-09-04T11:12:42.000Z"
+          },
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "zap-bbl",
+            "observed_at": "2026-08-02T11:45:54.000Z",
+            "status": "succeeded",
+            "run_id": "warehouse/receipts/proof/zap-bbl_latest.json",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-08-02T11:45:54.000Z",
+            "result_at": "2026-08-02T11:45:54.000Z",
+            "input_vintage": "2026-08-02T11:45:54.000Z"
+          }
+        ],
         "clocks": {
           "checked": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-04T11:12:42.000Z",
+            "state": "KNOWN",
+            "basis": "checked_at"
           },
           "acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-09-04T11:12:42.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "scheduler_heartbeat": {
             "at": null,
@@ -6001,10 +6835,8 @@
       "source_id": "zap-projects",
       "contract_fingerprint": "41f9a48c56f7c1dd86827ff0a19fcd73840f73f9c7c9912ccace2102c32134ba",
       "health": {
-        "status": "Source-unavailable",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -6012,9 +6844,9 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-03T05:05:03.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "cityscroll_serving": {
             "at": "2026-09-09T06:54:36.054Z",
@@ -6036,6 +6868,18 @@
           "path": "site/data/zap_projects_warehouse_lookup.json",
           "at": "2026-09-09T06:54:36.054Z",
           "status": "current"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/zap-projects_bulk_latest.json",
+          "at": "2026-08-03T05:05:03.000Z",
+          "status": "succeeded"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/zap-projects_latest.json",
+          "at": "2026-08-02T10:16:52.000Z",
+          "status": "succeeded"
         }
       ],
       "freshness_watchdog": {
@@ -6053,9 +6897,9 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": null,
+          "observed_at": "2026-08-03T05:05:03.000Z",
           "cadence_days": null,
-          "age_days": null
+          "age_days": 42.38876844907407
         },
         "receipts": [
           {
@@ -6072,16 +6916,66 @@
         ]
       },
       "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "warehouse/receipts/proof/zap-projects_bulk_latest.json",
+            "at": "2026-08-03T05:05:03.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/zap-projects_bulk_latest.json",
+            "exact_error": null,
+            "attempt_at": "2026-08-03T05:05:03.000Z",
+            "result_at": "2026-08-03T05:05:03.000Z"
+          },
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "warehouse/receipts/proof/zap-projects_latest.json",
+            "at": "2026-08-02T10:16:52.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/zap-projects_latest.json",
+            "exact_error": null,
+            "attempt_at": "2026-08-02T10:16:52.000Z",
+            "result_at": "2026-08-02T10:16:52.000Z"
+          }
+        ],
+        "acquisition_receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "zap-projects",
+            "observed_at": "2026-08-03T05:05:03.000Z",
+            "status": "succeeded",
+            "run_id": "warehouse/receipts/proof/zap-projects_bulk_latest.json",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-08-03T05:05:03.000Z",
+            "result_at": "2026-08-03T05:05:03.000Z",
+            "input_vintage": "2026-08-03T05:05:03.000Z"
+          },
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "zap-projects",
+            "observed_at": "2026-08-02T10:16:52.000Z",
+            "status": "succeeded",
+            "run_id": "warehouse/receipts/proof/zap-projects_latest.json",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "clock_kind": "acquisition",
+            "attempt_at": "2026-08-02T10:16:52.000Z",
+            "result_at": "2026-08-02T10:16:52.000Z",
+            "input_vintage": "2026-08-02T10:16:52.000Z"
+          }
+        ],
         "clocks": {
           "checked": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-03T05:05:03.000Z",
+            "state": "KNOWN",
+            "basis": "checked_at"
           },
           "acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-03T05:05:03.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "scheduler_heartbeat": {
             "at": null,
