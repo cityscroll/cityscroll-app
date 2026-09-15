@@ -24,6 +24,14 @@ export const LOCAL_DISTRICT_UNSUPPORTED_LENSES = Object.freeze([
   "people", "entity", "award", "district", "legal_code", "mandates", "obligations",
 ]);
 
+const DIGEST_SECTION_LABELS = Object.freeze({
+  meetings: "Community Board meetings",
+  land: "Land and zoning",
+  property: "Property",
+  rules: "Rules and notices",
+  money: "City contracts",
+});
+
 function clean(value) {
   return String(value ?? "").replace(/\s+/g, " ").trim();
 }
@@ -43,6 +51,29 @@ function districtKey(scope) {
   const normalized = normalizeScope(scope);
   const district = normalized.place.community_districts[0];
   return district ? `geography:community_district:${district}` : null;
+}
+
+function stableValue(value) {
+  if (Array.isArray(value)) return value.map(stableValue);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.keys(value).sort().map((key) => [key, stableValue(value[key])]));
+  }
+  return value;
+}
+
+function stableStringify(value) {
+  return JSON.stringify(stableValue(value));
+}
+
+/** Canonical identity for the child predicate, independent of email or cadence. */
+export function canonicalLocalDistrictFollowWatchId(child) {
+  const input = stableStringify({ lens: child?.lens, filter: child?.filter || {} });
+  let hash = 2166136261;
+  for (let i = 0; i < input.length; i += 1) {
+    hash ^= input.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return `local-district-watch:${(hash >>> 0).toString(16).padStart(8, "0")}`;
 }
 
 /**
@@ -76,6 +107,7 @@ export function buildLocalDistrictFollowBundle(input = {}) {
       children.push({ label: `${lens} in this district`, lens, filter });
     }
   }
+  for (const child of children) child.id = canonicalLocalDistrictFollowWatchId(child);
   return {
     id: LOCAL_DISTRICT_FOLLOW_BUNDLE_ID,
     title: "Follow this district",
@@ -104,4 +136,71 @@ export function localDistrictFollowDisclosure(bundle) {
     omitted: value.unsupported_lenses || [],
     unavailable: value.unavailable,
   };
+}
+
+/**
+ * Apply every missing child through the caller's storage function. A successful
+ * child is retained in the supplied ID set so a later pass cannot recreate it.
+ */
+export async function applyLocalDistrictFollowBundle(bundle, createChild, existingIds = []) {
+  if (typeof createChild !== "function" || !bundle?.children?.length) {
+    return { status: "invalid", created: [], failed: [], remaining: bundle?.children || [], digest: localDistrictFollowDigest(bundle) };
+  }
+  const existing = new Set(existingIds);
+  const created = [], failed = [], remaining = [];
+  for (const child of bundle.children) {
+    if (existing.has(child.id)) continue;
+    try {
+      await createChild(child);
+      existing.add(child.id);
+      created.push(child.id);
+    } catch (error) {
+      failed.push({ id: child.id, reason: clean(error?.message || "creation failed") });
+      remaining.push(child);
+    }
+  }
+  return {
+    status: failed.length ? (created.length ? "partial" : "failed") : "created",
+    created,
+    failed,
+    remaining,
+    digest: localDistrictFollowDigest(bundle),
+  };
+}
+
+/** Materialize one immutable source snapshot for both preview and delivery. */
+export function materializeLocalDistrictFollowSnapshot(bundle, snapshot = {}) {
+  const rowsById = snapshot?.children && typeof snapshot.children === "object"
+    ? snapshot.children
+    : snapshot;
+  return {
+    snapshot_id: clean(snapshot?.snapshot_id) || "local-district-follow-snapshot",
+    children: (bundle?.children || []).map((child) => ({
+      id: child.id,
+      lens: child.lens,
+      label: child.label,
+      items: Array.isArray(rowsById?.[child.id]) ? rowsById[child.id] : [],
+    })),
+  };
+}
+
+function localDistrictFollowDigest(bundle, snapshot = {}) {
+  const materialized = materializeLocalDistrictFollowSnapshot(bundle, snapshot);
+  return {
+    title: "District activity digest",
+    snapshot_id: materialized.snapshot_id,
+    sections: materialized.children.map((child) => ({
+      label: DIGEST_SECTION_LABELS[child.lens] || child.label,
+      watch_id: child.id,
+      items: child.items,
+    })),
+  };
+}
+
+export function previewLocalDistrictFollow(bundle, snapshot = {}) {
+  return { mode: "preview", ...localDistrictFollowDigest(bundle, snapshot) };
+}
+
+export function deliverLocalDistrictFollow(bundle, snapshot = {}) {
+  return { mode: "delivery", ...localDistrictFollowDigest(bundle, snapshot) };
 }
