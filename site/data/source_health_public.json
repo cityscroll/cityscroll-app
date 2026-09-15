@@ -2495,6 +2495,57 @@
       }
     },
     {
+      "source_id": "oath-trial-calendar",
+      "name": "NYC OATH conference and trial calendar",
+      "publisher": "NYC Office of Administrative Trials and Hearings",
+      "official_url": "https://www.nyc.gov/site/oath/trials/conference-trial-calendar.page",
+      "expected_cadence": "Calendar postings two to three weeks in advance",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 7,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
+      }
+    },
+    {
       "source_id": "ocp-current-solicitations",
       "name": "Current Solicitations (OCP / Open Data)",
       "publisher": "NYC Department of Citywide Administrative Services",
