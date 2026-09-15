@@ -85,7 +85,21 @@ test("relations reject non-site roles, preserve separate sites, and are determin
   assert.equal(buildProcurementParcelRelations({ siteEvidence: revoked, observations: [award] }).relations.some((edge) => edge.from === "notice:20260728014"), false);
 });
 
-test("no publisher fetch is needed on relation reads", () => {
-  const doc = buildProcurementParcelRelations({ siteEvidence: { records: [] }, fetch: () => { throw new Error("publisher fetch must not occur"); } });
-  assert.deepEqual(doc.relations, []);
+test("no publisher fetch is needed on populated relation reads", async () => {
+  const source = await fixture();
+  const evidence = await makeDoc(source);
+  const award = observationFromMoneyRow({ request_id: "20241104015", pin: "07122P0010020", agency_name: "Homeless Services", vendor_name: "Westhab Inc." });
+  const originalFetch = globalThis.fetch;
+  let fetchCalls = 0;
+  globalThis.fetch = () => {
+    fetchCalls += 1;
+    throw new Error("publisher fetch must not occur");
+  };
+  try {
+    const doc = buildProcurementParcelRelations({ siteEvidence: evidence, observations: [award] });
+    assert.ok(doc.relations.length > 0);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+  assert.equal(fetchCalls, 0);
 });
